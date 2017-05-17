@@ -1,0 +1,25 @@
+{
+  "name": "ng-packagr",
+  "version": "1.0.0-alpha.0",
+  "repository": "https://github.com/dherges/ng-packagr.git",
+  "author": "david <david@spektrakel.de>",
+  "license": "MIT",
+  "dependencies": {
+    "@angular/tsc-wrapped": "^4.1.2",
+    "@types/node": "^7.0.18",
+    "gulp-inline-ng2-template": "^4.0.0",
+    "node-sass": "^4.5.3",
+    "rollup": "^0.41.6",
+    "sorcery": "^0.10.0",
+    "ts-node": "^3.0.4",
+    "typescript": "^2.3.2",
+    "uglify-js": "^3.0.7",
+    "vinyl-fs": "^2.4.4"
+  },
+  "devDependencies": {
+    "@angular/core": "^4.1.2"
+  },
+  "scripts": {
+    "build": "ts-node ng-build.ts"
+  }
+}
