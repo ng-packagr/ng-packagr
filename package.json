@@ -4,11 +4,15 @@
   "repository": "https://github.com/dherges/ng-packagr.git",
   "author": "david <david@spektrakel.de>",
   "license": "MIT",
+  "bin": {
+    "ng-packagr": "cli/ng-packagr.js"
+  },
   "dependencies": {
     "@angular/tsc-wrapped": "^4.1.2",
     "@types/node": "^7.0.18",
     "cpx": "^1.5.0",
     "gulp-inline-ng2-template": "^4.0.0",
+    "minimist": "^1.2.0",
     "mz": "^2.6.0",
     "node-sass": "^4.5.3",
     "rimraf": "^2.6.1",
@@ -28,7 +32,12 @@
     "rxjs": "^5.4.0",
     "zone.js": "^0.8.10"
   },
+  "private": true,
   "scripts": {
-    "build": "node build.js --src sample"
+    "prebuild": "rimraf dist",
+    "build": "tsc -p tsconfig.packagr.json",
+    "postbuild": "cpx '{cli/*,LICENSE,README.md}' dist",
+    "sample": "node sample/build.js",
+    "prepublish": "node prepublish.js"
   }
 }
