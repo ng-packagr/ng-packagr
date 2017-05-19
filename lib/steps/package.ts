@@ -48,16 +48,16 @@ export const preparePackage = (src: string): Promise<any> => {
       if (sourcePackage.pkg.name.includes(GROUP_NAME_SEPARATOR)) {
         const idx = `${sourcePackage.pkg.name}`.indexOf(GROUP_NAME_SEPARATOR);
         sourcePackage.meta.prefix = `${sourcePackage.pkg.name}`.substring(0, idx);
-        sourcePackage.meta.name   = `${sourcePackage.pkg.name}`.substring(idx + 1);
+        sourcePackage.meta.name = `${sourcePackage.pkg.name}`.substring(idx + 1);
       } else {
         sourcePackage.meta.prefix = `${sourcePackage.pkg.name}`;
       }
 
       // set destination paths for package
       sourcePackage.dest = {};
-      sourcePackage.dest.main    = `bundles/${sourcePackage.meta.name}.umd.js`;
-      sourcePackage.dest.module  = `${sourcePackage.meta.prefix}/${sourcePackage.meta.name}.es5.js`;
-      sourcePackage.dest.es2015  = `${sourcePackage.meta.prefix}/${sourcePackage.meta.name}.js`;
+      sourcePackage.dest.main = `bundles/${sourcePackage.meta.name}.umd.js`;
+      sourcePackage.dest.module = `${sourcePackage.meta.prefix}/${sourcePackage.meta.name}.es5.js`;
+      sourcePackage.dest.es2015 = `${sourcePackage.meta.prefix}/${sourcePackage.meta.name}.js`;
       sourcePackage.dest.typings = `src/index.d.ts`;
 
       return Promise.resolve(sourcePackage);
@@ -93,8 +93,8 @@ export const createPackage = (src: string, dest: string, additionalProperties?: 
 
           resolve();
         });
-    });
+      });
 
-  });
+    });
 
 }

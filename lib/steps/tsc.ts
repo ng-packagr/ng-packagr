@@ -1,6 +1,6 @@
 const fs = require('mz/fs');
 import * as ts from 'typescript';
-import {ScriptTarget, ModuleKind} from 'typescript';
+import { ScriptTarget, ModuleKind } from 'typescript';
 import { info } from '../util/log';
 
 /**

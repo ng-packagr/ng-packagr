@@ -9,16 +9,16 @@ import { info } from '../util/log';
  * @param sourceFile Source file
  */
 export const remapSourcemap = (sourceFile: string, base?: string): Promise<any> => {
-    info(`re-mapping sources for ${sourceFile}`);
-    const opts: any = {
-        inline: false,
-        includeContent: true,
-    };
-    if (base) {
-        opts.base = base;
-    }
+  info(`re-mapping sources for ${sourceFile}`);
+  const opts: any = {
+    inline: false,
+    includeContent: true,
+  };
+  if (base) {
+    opts.base = base;
+  }
 
-    // Once sorcery loaded the chain of sourcemaps, the new sourcemap will be written asynchronously.
-    return sorcery.load(sourceFile)
-        .then((chain) => chain.write(opts));
+  // Once sorcery loaded the chain of sourcemaps, the new sourcemap will be written asynchronously.
+  return sorcery.load(sourceFile)
+    .then((chain) => chain.write(opts));
 }
