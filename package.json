@@ -1,11 +1,16 @@
 {
   "name": "ng-packagr",
   "version": "1.0.0-alpha.0",
-  "repository": "https://github.com/dherges/ng-packagr.git",
-  "author": "david <david@spektrakel.de>",
+  "description": "Compile and package a TypeScript library to Angular Package Format",
+  "author": "David Herges <david@spektrakel.de>",
   "license": "MIT",
+  "repository": "https://github.com/dherges/ng-packagr.git",
+  "homepage": "https://github.com/dherges/ng-packagr",
+  "bugs": {
+    "url": "https://github.com/dherges/ng-packagr/issues"
+  },
   "bin": {
-    "ng-packagr": "cli/ng-packagr.js"
+    "ng-packagr": "./cli/ng-packagr.js"
   },
   "dependencies": {
     "@angular/tsc-wrapped": "^4.1.2",
@@ -37,7 +42,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.packagr.json",
-    "postbuild": "cpx 'cli/*' dist",
+    "postbuild": "cpx 'cli/*' dist/cli",
     "prerelease": "yarn build",
     "release": "standard-version --first-release --pre-release alpha",
     "postrelease": "node prepublish.js",
