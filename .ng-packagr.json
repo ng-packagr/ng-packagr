@@ -1,0 +1,12 @@
+{
+  "src": "sample",
+  "dest": "sample/dist",
+  "workingDirectory": ".ng_build",
+  "ngc": {
+    "entry": "src/public_api.ts",
+    "tsconfig": "tsconfig.lib.json"
+  },
+  "rollup": {
+    "config": "rollup-config.js"
+  }
+}
