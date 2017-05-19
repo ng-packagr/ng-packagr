@@ -5,6 +5,7 @@ import { ngc } from './steps/ngc';
 import { createPackage, readPackage, preparePackage } from './steps/package';
 import { rimraf } from './steps/rimraf';
 import { rollup } from './steps/rollup';
+import { remapSourcemap } from './steps/sorcery';
 import { downlevelWithTsc } from './steps/tsc';
 
 
@@ -38,30 +39,35 @@ export const packageAngular = (opts: NgPackagrOptions): Promise<any> => {
       return Promise.resolve(pkg);
     })
     // 2. ASSETS
-    .then(() => processAssets(opts.src, `${opts.workingDirectory}/sources`))
+    .then(() => processAssets(opts.src, `${opts.workingDirectory}`))
     // 3. NGC
-    .then(() => ngc(`${opts.src}/tsconfig.lib.json`, `${opts.workingDirectory}/sources`))
+    .then(() => ngc(`${opts.src}/tsconfig.lib.json`, `${opts.workingDirectory}`))
+    .then(() => remapSourcemap(`${opts.workingDirectory}/src/index.js`))
     // 4. FESM15: ROLLUP
     .then(() => rollup({
       moduleName: `${sourcePkg.meta.name}`,
-      entry: `${opts.workingDirectory}/sources/index.js`,
+      entry: `${opts.workingDirectory}/src/index.js`, // TODO: this could come from tsconfig.lib.json being parsed (OR override tsconfig with default value)
       format: 'es',
-      dest: `${opts.workingDirectory}/packages/${sourcePkg.dest.es2015}`
+      dest: `${opts.workingDirectory}/${sourcePkg.dest.es2015}`
     }))
+    .then(() => remapSourcemap(`${opts.workingDirectory}/${sourcePkg.dest.es2015}`))
     // 5. FESM5: TSC
     .then(() => downlevelWithTsc(
-      `${opts.workingDirectory}/packages/${sourcePkg.dest.es2015}`,
-      `${opts.workingDirectory}/packages/${sourcePkg.dest.module}`))
+      `${opts.workingDirectory}/${sourcePkg.dest.es2015}`,
+      `${opts.workingDirectory}/${sourcePkg.dest.module}`))
+    .then(() => remapSourcemap(`${opts.workingDirectory}/${sourcePkg.dest.module}`))
     // 6. UMD: ROLLUP
     .then(() => rollup({
       moduleName: `${sourcePkg.meta.name}`,
-      entry: `${opts.workingDirectory}/packages/${sourcePkg.dest.module}`,
+      entry: `${opts.workingDirectory}/${sourcePkg.dest.module}`,
       format: 'umd',
-      dest: `${opts.workingDirectory}/packages/${sourcePkg.dest.main}`
+      dest: `${opts.workingDirectory}/${sourcePkg.dest.main}`
     }))
+    .then(() => remapSourcemap(`${opts.workingDirectory}/${sourcePkg.dest.main}`))
     // 7. COPY FILES
-    .then(() => copyFiles(`${opts.workingDirectory}/packages/**/*.{js,js.map}`, `${opts.dest}`))
-    .then(() => copyFiles(`${opts.workingDirectory}/sources/**/*.{d.ts,metadata.json}`, `${opts.dest}/src`))
+    .then(() => copyFiles(`${opts.workingDirectory}/${sourcePkg.meta.prefix}/**/*.{js,js.map}`, `${opts.dest}/${sourcePkg.meta.prefix}`))
+    .then(() => copyFiles(`${opts.workingDirectory}/bundles/**/*.{js,js.map}`, `${opts.dest}/bundles`))
+    .then(() => copyFiles(`${opts.workingDirectory}/**/*.{d.ts,metadata.json}`, `${opts.dest}`))
     .then(() => copyFiles(`${opts.src}/README.md`, opts.dest))
     .then(() => copyFiles(`${opts.src}/LICENSE`, opts.dest))
     // 8. PACKAGE
@@ -70,13 +76,4 @@ export const packageAngular = (opts: NgPackagrOptions): Promise<any> => {
       success(`Built Angular library in ${opts.src}, written to ${opts.dest}`);
     })
 
-}
-
-
-
-// TODO: need to re-map sourcemaps for EVERY transformation step to keep reference to original sources
-// X. REMAPE SOURCEMAP
-async function remapSourcemap(sourceFile: string) {
-  // Once sorcery loaded the chain of sourcemaps, the new sourcemap will be written asynchronously.
-  return (await sorcery.load(sourceFile)).write();
 }
