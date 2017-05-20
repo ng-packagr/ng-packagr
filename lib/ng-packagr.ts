@@ -12,32 +12,14 @@ import { downlevelWithTsc } from './steps/tsc';
 // Logging
 import { error, warn, info, success, debug } from './util/log';
 
+// Interfaces
+import { NgPackagrConfig, NgPackagrCliArguments } from './interfaces';
+
 // There are no type definitions available for these imports.
 const fs = require('mz/fs');
-const uglify = require('uglify-js');
 
 
-/** Options passed to the main entry of the packaging script */
-export interface NgPackagrOptions {
-  /** Path to the '.ng-packagr.json' file */
-  project: string
-}
-
-/** Config object from '.ng-packagr.json' */
-export interface NgPackagrConfig {
-  src: string,
-  dest: string,
-  workingDirectory: string,
-  ngc: {
-    tsconfig: string
-  },
-  rollup: {
-    config: string
-  }
-}
-
-
-export const packageAngular = (opts: NgPackagrOptions): Promise<any> => {
+export const ngPackage = (opts: NgPackagrCliArguments): Promise<any> => {
   info(`Building Angular library from ${opts.project}`);
 
   /** Project configuration */

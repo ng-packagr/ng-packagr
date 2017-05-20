@@ -11,6 +11,6 @@ const project = ARGS.p || ARGS.project || path.resolve(process.cwd(), '.ng-packa
 
 const ngPackagr = require('../lib/ng-packagr');
 
-ngPackagr.packageAngular({
+ngPackagr.ngPackage({
   project
 });

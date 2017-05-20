@@ -13,6 +13,6 @@ require('ts-node').register({
 
 const ngPackagr = require('../lib/ng-packagr');
 
-ngPackagr.packageAngular({
+ngPackagr.ngPackage({
   project
 });
