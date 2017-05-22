@@ -42,6 +42,52 @@ There need to be the following build artefacts:
 
 ---
 
+
+## Tools and implementation details
+
+Internally, `ng-packagr` is going to use several other tools to do the desired transformations from TypeScript sources (+ HTML templates and stylesheets) to Angular package format.
+Here is a trade-off decision:
+
+As first option, `ng-packagr` allows users to provide a full custom configuration for tools such as `ngc`, `rollup`, and so on.
+This forces useer to write a configuration file for these tools and deal with configuration options.
+
+Alternatively, `ng-packagr` will hide configuration and internals of tools such as `ngc`, `rollup`, and so on.
+In this case, the configuration of `ng-packagr` will only allow to configure a limited set of options that will be passed through to the tools.
+
+
+#### NGC: tsconfig.json
+
+Right now, `@angular/tsc-wrapped` does not support the `"extends"` property of `tsconfig.json`.
+Because of that, `ng-packagr` needs to support self-contained JSON configuration files for ngc.
+If auto-generating a tsconfig, `ng-packagr` would need to read its default values, merge that with the custom user tsconfig and copy the result to its working directory.
+
+The most important setting here is the `"files": []` property, which must contain exactly one file since `"flatModuleId"` and `"flatModuleOutFile"` options will also be used for flattended library indexes.
+The value for `"flatModuleId"` could be inferred by the library's name as given in `package.json`, `"flatModuleOutFile"` could be statically set to `"index"`.
+
+Other configuration properties like `"target"` or `"module"` cannot be set by users since the order of transformations relies on certain settings.
+For example, `ngc` will need to compile to `"target": "es2015"` and `"module": "es2015"` in order to allow subsequent steps to happen.
+
+~The path to `tsconfig.json` will be given `ngc.tsconfig` JSON configuration property.~
+~A default configuration file should be provided with the tool, so that users can copy&paste.~
+
+
+#### Rollup Config
+
+For generating the bundled versions of the library, rollup will be used.
+Rollup requires a configuration with a symbol mapping table.
+
+Reasonable default values should be shipped with `ng-packagr` without forcing users to write special configuration.
+The default configuration should try to support `@angular/*` packages as well as `rxjs`, which is a transitive dependency in most cases and also requires special configuration in Rollup.
+
+Other configuration properties like `"entry"` or `"format"` cannot be set by users since their values depend on the order of transformations being applied.
+For example, the transformation to UMD requires an FESM5 input file.
+The FESM5 input file got created prior in the build process, thus `ng-packagr` will pass both the `"entry"` and `"format"` property to `rollup` without users being able to custimize.
+
+~If required, users should be able to provide a custom rollup configuration to `ng-packagr` by settings the `rollup.config` JSON configuation property.~
+
+---
+
+
 ## Configuration and customization
 
 #### Config file ".ng-packagr.json"
@@ -130,28 +176,3 @@ The sample library is built with the following config:
   }
 }
 ```
-
-
----
-
-## Tools and implementation details
-
-
-#### NGC: tsconfig.json
-
-Right now, `@angular/tsc-wrapped` does not support the `"extends"` property of `tsconfig.json`.
-Because of that, `ng-packagr` needs to support self-contained JSON configuration files for ngc.
-If auto-generating a tsconfig, `ng-packagr` would need to read its default values, merge that with the custom user tsconfig and copy the result to its working directory.
-
-The path to `tsconfig.json` will be given `ngc.tsconfig` JSON configuration property.
-A default configuration file should be provided with the tool, so that users can copy&paste.
-
-
-#### Rollup Config
-
-For generating the bundled versions of the library, rollup will be used.
-Rollup requires a configuration with a symbol mapping table.
-
-Reasonable default values should be shipped with `ng-packagr` without forcing users to write special configuration.
-The default configuration should try to support `@angular/*` packages as well as `rxjs`, which is a transitive dependency in most cases and also requires special configuration in Rollup.
-If required, users should be able to provide a custom rollup configuration to `ng-packagr` by settings the `rollup.config` JSON configuation property.
