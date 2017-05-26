@@ -3,7 +3,7 @@ const path = require('path');
 // Read CLI arguments
 const ARGS = require('minimist')(process.argv.slice(2));
 
-const project = ARGS.p || ARGS.project || path.resolve(process.cwd(), '.ng-packagr.json');
+const project = ARGS.p || ARGS.project || path.resolve(process.cwd(), 'ng-package.json');
 
 
 // @see https://github.com/TypeStrong/ts-node#programmatic-usage

@@ -90,12 +90,12 @@ The FESM5 input file got created prior in the build process, thus `ng-packagr` w
 
 ## Configuration and customization
 
-#### Config file ".ng-packagr.json"
+#### Config file "ng-package.json"
 
-`ng-packagr` **WILL** support configuration of the tool through a JSON configuration file similar to `.angular-cli.json` or `tsconfig.json`.
+`ng-packagr` **WILL** support configuration of the tool through a JSON configuration file similar to a `tsconfig.json` or `package.json` per project.
 It can be passed as a CLI argument with `ng-packagr -p myconfig.json`.
-The file is named `.ng-packagr.json` by default.
-The default config file for `.ng-packagr.json` is:
+The default file name is `ng-package.json`.
+The default config file settings are:
 
 ```json
 {
@@ -120,7 +120,7 @@ By default, a source folder of a library should look like this:
 src
 | - public_api.ts
 | - ..
-.ng-packagr.json
+ng-package.json
 package.json
 rollup-config.js
 tsconfig.lib.json
@@ -158,7 +158,7 @@ sample
 | - package.json
 | - rollup-config.js
 | - tsconfig.lib.json
-.ng-packagr.json
+ng-package.json
 ```
 
 The sample library is built with the following config:
