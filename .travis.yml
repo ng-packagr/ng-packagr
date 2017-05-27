@@ -1,0 +1,13 @@
+language: node_js
+
+node_js:
+  - "node"
+  - "iojs"
+  - "7"
+  - "6"
+  - "4"
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
