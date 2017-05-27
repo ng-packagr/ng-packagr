@@ -8,10 +8,10 @@ const project = ARGS.p || ARGS.project || path.resolve(process.cwd(), 'ng-packag
 
 // @see https://github.com/TypeStrong/ts-node#programmatic-usage
 require('ts-node').register({
-  project: path.join(__dirname, '..', 'tsconfig.packagr.json')
+  project: path.join(__dirname, '..', '..', 'tsconfig.packagr.json')
 });
 
-const ngPackagr = require('../lib/ng-packagr');
+const ngPackagr = require('../../lib/ng-packagr');
 
 ngPackagr.ngPackage({
   project
