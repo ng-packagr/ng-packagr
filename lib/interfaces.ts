@@ -1,11 +1,11 @@
 /** CLI arguments passed to `ng-packagr` and `ngPackage()`. */
 export interface NgPackagrCliArguments {
-  /** Path to the '.ng-packagr.json' file */
+  /** Path to the 'ng-package.json' file */
   project: string
 }
 
-/** Config object from '.ng-packagr.json' */
-export interface NgPackagrConfig {
+/** Config object from 'ng-package.json' */
+export interface NgPackageConfig {
   src: string,
   dest: string,
   workingDirectory: string,
