@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-alpha.1"></a>
+# [1.0.0-alpha.1](https://github.com/dherges/ng-packagr/compare/v1.0.0-alpha.0...v1.0.0-alpha.1) (2017-05-27)
+
+
+### Bug Fixes
+
+* resolve pathes relative to `ng-package.json` ([852ce43](https://github.com/dherges/ng-packagr/commit/852ce43))
+
+
+### Features
+
+* [@angular](https://github.com/angular) and rxjs rollup globals ([58702e3](https://github.com/dherges/ng-packagr/commit/58702e3))
+* each Angular package is reflected in one `ng-package.json` file (#8) ([b8d0649](https://github.com/dherges/ng-packagr/commit/b8d0649))
+
+
+
 <a name="1.0.0-alpha.0"></a>
 # 1.0.0-alpha.0 (2017-05-19)
 
