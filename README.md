@@ -2,12 +2,15 @@
 
 > Compile and package a TypeScript library to Angular Package Format
 
-[![npm](https://img.shields.io/npm/dt/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
-[![GitHub stars](https://img.shields.io/github/stars/dherges/ng-packagr.svg?style=social&label=Star&style=flat-square)](https://github.com/dherges/ng-packagr)
+[![npm](https://img.shields.io/npm/v/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
 [![npm](https://img.shields.io/npm/l/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
+[![CircleCI](https://img.shields.io/circleci/project/github/dherges/ng-packagr.svg?style=flat-square)](https://circleci.com/gh/dherges/ng-packagr)
+[![Travis](https://img.shields.io/travis/dherges/ng-packagr.svg?style=flat-square)](https://travis-ci.org/dherges/ng-packagr)
 [![David](https://img.shields.io/david/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
 [![David](https://img.shields.io/david/dev/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
 
+[![npm](https://img.shields.io/npm/dt/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
+[![GitHub stars](https://img.shields.io/github/stars/dherges/ng-packagr.svg?style=social&label=Star&style=flat-square)](https://github.com/dherges/ng-packagr)
 [![GitHub contributors](https://img.shields.io/github/contributors/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
 [![GitHub issues](https://img.shields.io/github/issues/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
