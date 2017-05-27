@@ -1,3 +1,4 @@
+import { NgPackageConfig } from '../interfaces';
 const fs = require('fs');
 const path = require('path');
 
@@ -27,9 +28,30 @@ export const readJson = (file: string): Promise<any> => {
 }
 
 
+/**
+ * Reads an Angular package definition file from 'ng-package.json'
+ *
+ * @param package `ng-package.json` definition file
+ */
+export const readPackage = (ngPkg: string): Promise<NgPackageConfig> => {
+  const base = path.dirname(ngPkg);
+
+  return readJson(ngPkg)
+    .then((p: NgPackageConfig) => {
+      // resolve pathes relative to `ng-package.json` file
+      p.src = path.resolve(base, p.src);
+      p.dest = path.resolve(base, p.dest);
+      p.workingDirectory = path.resolve(base, p.workingDirectory);
+      p.ngc.tsconfig = path.resolve(base, p.ngc.tsconfig);
+      p.rollup.config = path.resolve(base, p.rollup.config);
+
+      return Promise.resolve(p);
+    });
+}
+
 
 /**
- * Prepares a package...
+ * Prepares an Angular package from reading 'package.json'
  *
  * @param src Source directory containg `package.json` file
  */

@@ -2,7 +2,7 @@
 import { processAssets } from './steps/assets';
 import { copyFiles } from './steps/copy';
 import { ngc } from './steps/ngc';
-import { createPackage, readJson, preparePackage } from './steps/package';
+import { createPackage, readJson, preparePackage, readPackage } from './steps/package';
 import { rimraf } from './steps/rimraf';
 import { rollup } from './steps/rollup';
 import { remapSourcemap } from './steps/sorcery';
@@ -13,22 +13,26 @@ import { downlevelWithTsc } from './steps/tsc';
 import { error, warn, info, success, debug } from './util/log';
 
 // Interfaces
-import { NgPackagrConfig, NgPackagrCliArguments } from './interfaces';
+import { NgPackageConfig, NgPackagrCliArguments } from './interfaces';
 
 // There are no type definitions available for these imports.
 const fs = require('mz/fs');
+const path = require('path');
 
 
 export const ngPackage = (opts: NgPackagrCliArguments): Promise<any> => {
   info(`Building Angular library from ${opts.project}`);
+  if (!path.isAbsolute(opts.project)) {
+    opts.project = path.resolve(process.cwd(), opts.project);
+  }
 
   /** Project configuration */
-  let project: NgPackagrConfig;
+  let project: NgPackageConfig;
   let tsConfig: any;
   let flatModuleFile: string;
   let sourcePkg: any;
 
-  return readJson(opts.project)
+  return readPackage(opts.project)
     .then((p) => {
       project = p;
 
@@ -46,7 +50,7 @@ export const ngPackage = (opts: NgPackagrCliArguments): Promise<any> => {
         return Promise.resolve(pkg);
       })
     )
-    .then(() => readJson(`${project.src}/${project.ngc.tsconfig}`)
+    .then(() => readJson(`${project.ngc.tsconfig}`)
       .then((cfg) => {
         tsConfig = cfg;
 
@@ -56,7 +60,7 @@ export const ngPackage = (opts: NgPackagrCliArguments): Promise<any> => {
     // 2. ASSETS
     .then(() => processAssets(project.src, `${project.workingDirectory}`))
     // 3. NGC
-    .then(() => ngc(`${project.src}/${project.ngc.tsconfig}`, `${project.workingDirectory}`))
+    .then(() => ngc(`${project.ngc.tsconfig}`, `${project.workingDirectory}`))
     .then(() => remapSourcemap(flatModuleFile))
     // 4. FESM15: ROLLUP
     .then(() => rollup({
