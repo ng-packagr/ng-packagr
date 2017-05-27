@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "https://github.com/dherges/ng-packagr/blob/master/conf/ng-package.schema.json",
+  "title": "NgPackageConfig",
+  "description": "Angular Package JSON Schema for `ng-package.json`",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "src": {
+      "description": "The source folder of an Angular library.",
+      "type": "string"
+    },
+    "dest": {
+      "description": "The destination folder to output build artefacts and distributables of an Angular library.",
+      "type": "string"
+    },
+    "workingDirectory": {
+      "description": "The internal working directory of ng-packagr where intermediate build files are stored.",
+      "type": "string"
+    },
+    "ngc": {
+      "description": "Options for custimizing the behaviour of ngc during library build - still experimental.",
+      "type": "object",
+      "properties": {
+        "tsconfig": {
+          "description": "Path to a tsconfig.json file",
+          "type": "string"
+        }
+      }
+    },
+    "rollup": {
+      "description": "Rollup options - still experimental.",
+      "type": "object",
+      "properties": {
+        "config": {
+          "description": "Path to a rollup.js config file",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

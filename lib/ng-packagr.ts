@@ -12,12 +12,20 @@ import { downlevelWithTsc } from './steps/tsc';
 // Logging
 import { error, warn, info, success, debug } from './util/log';
 
-// Interfaces
-import { NgPackageConfig, NgPackagrCliArguments } from './interfaces';
+// `ng-package.json` config
+import { NgPackageConfig } from './conf/ng-package.conf';
+
 
 // There are no type definitions available for these imports.
 const fs = require('mz/fs');
 const path = require('path');
+
+
+/** CLI arguments passed to `ng-packagr` and `ngPackage()`. */
+export interface NgPackagrCliArguments {
+  /** Path to the 'ng-package.json' file */
+  project: string
+}
 
 
 export const ngPackage = (opts: NgPackagrCliArguments): Promise<any> => {

@@ -1,4 +1,4 @@
-import { NgPackageConfig } from '../interfaces';
+import { NgPackageConfig } from '../conf/ng-package.conf';
 const fs = require('fs');
 const path = require('path');
 
