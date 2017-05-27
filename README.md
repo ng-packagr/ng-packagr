@@ -15,11 +15,11 @@
 
 ## Usage Example
 
-Create a configuration file `.ng-packagr.json`:
+For an Angular library, create one configuration file `ng-package.json`:
 
 ```json
 {
-  "src": "my-lib-source-folder",
+  "src": "src/my-lib",
   "dest": "dist/my-lib",
   "workingDirectory": ".ng_build",
   "ngc": {
@@ -28,8 +28,28 @@ Create a configuration file `.ng-packagr.json`:
 }
 ```
 
-The `tsconfig` file is located relative to the `src` folder, e.g. in `my-lib-source-folder/tsconfig.lib.json´.
-It must follow this conventions:
+Pathes are resolved relative to the `ng-package.json` file.
+Then, build the library with the following command:
+
+```bash
+$ node_modules/.bin/ng-packagr -p ng-package.json
+```
+
+You can also use a npm/yarn script in `package.json`:
+
+```json
+{
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json"
+  }
+}
+```
+
+The `package.json` describing the library must be located in the `src` folder.
+
+For tsc, the `tsconfig` is resolved relative to the `src` folder.
+In the above example, that is `src/my-lib/tsconfig.lib.json`.
+It must contain some specific configuration values and follow this conventions:
 
  * In `"angularCompilerOptions"`:
    * use `flatModuleId` and `flatModuleOutFile`
