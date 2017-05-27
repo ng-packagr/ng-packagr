@@ -44,7 +44,7 @@
     "build": "tsc -p tsconfig.packagr.json",
     "postbuild": "cpx 'cli/*' dist/cli",
     "prerelease": "yarn build",
-    "release": "standard-version --first-release --pre-release alpha",
+    "release": "standard-version --pre-release alpha",
     "postrelease": "node prepublish.js",
     "sample": "node dist/cli/ng-packagr.js -p integration/sample/ng-package.json",
     "sample:dev": "node integration/sample/build.js -p integration/sample/ng-package.json"
