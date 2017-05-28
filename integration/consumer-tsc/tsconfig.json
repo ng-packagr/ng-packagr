@@ -1,0 +1,22 @@
+{
+  "buildOnSave": false,
+  "compileOnSave": false,
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "baseUrl": "",
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "experimentalDecorators": true,
+    "paths": {
+      "@foo/bar": [ "../sample/dist" ]
+    }
+  },
+  "files": [
+    "consumer.ts"
+  ]
+}
