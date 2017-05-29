@@ -1,5 +1,7 @@
 # ng-packagr
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/dherges/ng-packagr.svg)](https://greenkeeper.io/)
+
 > Compile and package a TypeScript library to Angular Package Format
 
 [![npm](https://img.shields.io/npm/v/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
