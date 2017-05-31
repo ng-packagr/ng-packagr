@@ -43,7 +43,7 @@
   "scripts": {
     "prebuild": "rimraf dist && yarn schema",
     "build": "tsc -p tsconfig.packagr.json",
-    "postbuild": "cpx {ng-package.schema.json,cli/*} dist",
+    "postbuild": "cpx {ng-package.schema.json,cli/*,lib/conf/*.json} dist",
     "schema": "json2ts --input ng-package.schema.json --output lib/conf/ng-package.conf.ts",
     "prerelease": "yarn build",
     "release": "standard-version --prerelease alpha",
