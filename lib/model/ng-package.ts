@@ -59,7 +59,7 @@ export class NgPackage {
     const main: string = `bundles/${this.meta.name}.umd.js`;
     const module: string = `${this.meta.scope}/${this.meta.name}.es5.js`;
     const es2015: string = `${this.meta.scope}/${this.meta.name}.js`;
-    const typings: string = `src/index.d.ts`;
+    const typings: string = `${this.flatModuleFileName}.d.ts`;
 
     return { main, module, es2015, typings };
   }
