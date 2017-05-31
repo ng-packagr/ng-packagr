@@ -17,6 +17,10 @@ export const info = (msg: string) => {
 }
 
 export const debug = (msg: string) => {
-  console.log(chalk.inverse.cyan(msg));
-  console.log('\n');
+
+  if (process.env.DEBUG) {
+    console.log(chalk.inverse.cyan(msg));
+    console.log('\n');
+  }
+
 }

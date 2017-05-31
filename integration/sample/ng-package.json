@@ -1,11 +1,6 @@
 {
-  "src": ".",
-  "dest": "dist",
-  "workingDirectory": ".ng_build",
-  "ngc": {
-    "tsconfig": "tsconfig.lib.json"
-  },
-  "rollup": {
-    "config": "rollup-config.js"
+  "$schema": "../../ng-package.schema.json",
+  "lib": {
+    "entryFile": "public_api.ts"
   }
 }

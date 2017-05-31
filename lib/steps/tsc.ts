@@ -1,7 +1,7 @@
 const fs = require('mz/fs');
 import * as ts from 'typescript';
 import { ScriptTarget, ModuleKind } from 'typescript';
-import { info } from '../util/log';
+import { debug } from '../util/log';
 
 /**
  * Downlevels a .js file from ES2015 to ES5. Internally, uses `tsc`.
@@ -11,7 +11,7 @@ import { info } from '../util/log';
  */
 export const downlevelWithTsc = (inputFile: string, outputFile: string) => {
 
-  return Promise.resolve(info(`tsc ${inputFile} to ${outputFile}`))
+  return Promise.resolve(debug(`tsc ${inputFile} to ${outputFile}`))
     .then(() => fs.readFile(inputFile))
     .then((input) => ts.transpileModule(input.toString(), {
       fileName: inputFile,
