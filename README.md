@@ -22,23 +22,14 @@ For an Angular library, create one configuration file `ng-package.json`:
 
 ```json
 {
-  "src": "src/my-lib",
-  "dest": "dist/my-lib",
-  "workingDirectory": ".ng_build",
-  "ngc": {
-    "tsconfig": "tsconfig.lib.json"
+  "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
+  "lib": {
+    "entryFile": "public_api.ts"
   }
 }
 ```
 
-Pathes are resolved relative to the `ng-package.json` file.
-Then, build the library with the following command:
-
-```bash
-$ node_modules/.bin/ng-packagr -p ng-package.json
-```
-
-You can also use a npm/yarn script in `package.json`:
+Then, build the library from a npm/yarn script defined in `package.json`:
 
 ```json
 {
@@ -48,64 +39,19 @@ You can also use a npm/yarn script in `package.json`:
 }
 ```
 
-The `package.json` describing the library must be located in the `src` folder.
-
-For tsc, the `tsconfig` is resolved relative to the `src` folder.
-In the above example, that is `src/my-lib/tsconfig.lib.json`.
-It must contain some specific configuration values and follow this conventions:
-
- * In `"angularCompilerOptions"`:
-   * use `flatModuleId` and `flatModuleOutFile`
-   * set `"strictMetadataEmit": true` and `"skipTemplateCodegen": true`
- * Has one single entry file to the library in `"files": []`
-   * it's recommended to name it `src/public_api.ts` and set in combination with `"flatModuleOutFile": "index"` (see above)
- * In `"compilerOptions"`:
-   * must transpile to a _real_ ES2015 bundle with `"target": "es2015"` and `"module": "es2015"` (transformations to ES5 and legacy bundle formats are performed by the tool later)
-
-```json
-{
-  "angularCompilerOptions": {
-    "annotateForClosureCompiler": true,
-    "flatModuleId": "@foo/bar",
-    "flatModuleOutFile": "index",
-    "skipTemplateCodegen": true,
-    "strictMetadataEmit": true
-  },
-  "buildOnSave": false,
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "",
-    "target": "es2015",
-    "module": "es2015",
-    "moduleResolution": "node",
-    "outDir": "src",
-    "declaration": true,
-    "sourceMap": true,
-    "inlineSources": true,
-    "skipLibCheck": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "dom",
-      "es2015"
-    ]
-  },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.ngfactory.ts",
-    "**/*.shim.ts",
-    "**/*.spec.ts"
-  ],
-  "files": [
-    "src/public_api.ts"
-  ]
-}
+```bash
+$ yarn build
 ```
 
+Alternatively, build the library with the following command:
+
+```bash
+$ node_modules/.bin/ng-packagr -p ng-package.json
+```
+
+
+Pathes are resolved relative to the location of the `ng-package.json` file.
+The `package.json` describing the library should be located in the same folder, next to `ng-package.json`.
 
 
 ## Knowledge
