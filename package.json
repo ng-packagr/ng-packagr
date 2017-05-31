@@ -49,7 +49,9 @@
     "release": "standard-version --prerelease alpha",
     "postrelease": "node prepublish.js",
     "sample": "node dist/cli/ng-packagr.js -p integration/sample/ng-package.json",
-    "sample:dev": "node integration/sample/build.js -p integration/sample/ng-package.json",
+    "sample:dev": "node integration/sample/build.js",
+    "sampleng": "node dist/cli/ng-packagr.js -p integration/sample_angular/ng-package.json",
+    "sampleng:dev": "node integration/sample_angular/build.js",
     "test": "yarn build && yarn sample"
   }
 }
