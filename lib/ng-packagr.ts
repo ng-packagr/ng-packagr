@@ -1,8 +1,8 @@
 // BUILD STEP IMPLEMENTATIONS
 import { processAssets } from './steps/assets';
 import { copyFiles } from './steps/copy';
-import { ngc } from './steps/ngc';
-import { createPackage, readJson, preparePackage, readPackage } from './steps/package';
+import { ngc, prepareTsConfig } from './steps/ngc';
+import { createPackage, readPackage } from './steps/package';
 import { rimraf } from './steps/rimraf';
 import { rollup } from './steps/rollup';
 import { remapSourcemap } from './steps/sorcery';
@@ -14,6 +14,7 @@ import { error, warn, info, success, debug } from './util/log';
 
 // `ng-package.json` config
 import { NgPackageConfig } from './conf/ng-package.conf';
+import { NgPackage } from './model/ng-package';
 
 
 // There are no type definitions available for these imports.
@@ -35,72 +36,56 @@ export const ngPackage = (opts: NgPackagrCliArguments): Promise<any> => {
   }
 
   /** Project configuration */
-  let project: NgPackageConfig;
-  let tsConfig: any;
-  let flatModuleFile: string;
-  let sourcePkg: any;
+  let ngPkg: NgPackage;
 
+  // 0. READ `ng-package.json` and obtain model
   return readPackage(opts.project)
     .then((p) => {
-      project = p;
+      ngPkg = p;
 
-      // 0. CLEAN
+      // 1. CLEAN
       return Promise.all([
         rimraf(p.dest),
         rimraf(p.workingDirectory)
       ]);
     })
-    // 1. READ PACKGE
-    .then(() => preparePackage(project.src)
-      .then((pkg) => {
-        sourcePkg = pkg;
-
-        return Promise.resolve(pkg);
-      })
-    )
-    .then(() => readJson(`${project.ngc.tsconfig}`)
-      .then((cfg) => {
-        tsConfig = cfg;
-
-        flatModuleFile = `${project.workingDirectory}/${tsConfig.compilerOptions.outDir}/${tsConfig.angularCompilerOptions.flatModuleOutFile}.js`;
-      })
-    )
     // 2. ASSETS
-    .then(() => processAssets(project.src, `${project.workingDirectory}`))
+    .then(() => processAssets(ngPkg.src, `${ngPkg.workingDirectory}/ts`))
     // 3. NGC
-    .then(() => ngc(`${project.ngc.tsconfig}`, `${project.workingDirectory}`))
-    .then(() => remapSourcemap(flatModuleFile))
+    .then(() => prepareTsConfig(ngPkg, `${ngPkg.workingDirectory}/ts/tsconfig.lib.json`)
+      .then((tsConfigFile: string) => ngc(tsConfigFile, `${ngPkg.workingDirectory}/ts`)))
+      // XX .then(() => remapSourcemap(flatModuleFile))
     // 4. FESM15: ROLLUP
-    .then(() => rollup({
-      moduleName: `${sourcePkg.meta.name}`,
-      entry: flatModuleFile,
+    .then((es2015EntryFile: string) => rollup({
+      moduleName: ngPkg.meta.name,
+      entry: es2015EntryFile,
       format: 'es',
-      dest: `${project.workingDirectory}/${sourcePkg.dest.es2015}`
+      dest: `${ngPkg.workingDirectory}/${ngPkg.artefacts.es2015}`
     }))
-    .then(() => remapSourcemap(`${project.workingDirectory}/${sourcePkg.dest.es2015}`))
+      // XX .then(() => remapSourcemap(`${project.workingDirectory}/${sourcePkg.dest.es2015}`))
     // 5. FESM5: TSC
     .then(() => downlevelWithTsc(
-      `${project.workingDirectory}/${sourcePkg.dest.es2015}`,
-      `${project.workingDirectory}/${sourcePkg.dest.module}`))
-    .then(() => remapSourcemap(`${project.workingDirectory}/${sourcePkg.dest.module}`))
+      `${ngPkg.workingDirectory}/${ngPkg.artefacts.es2015}`,
+      `${ngPkg.workingDirectory}/${ngPkg.artefacts.module}`))
+      // XX .then(() => remapSourcemap(`${ngPkg.workingDirectory}/${ngPkg.artefacts.module}`))
     // 6. UMD: ROLLUP
     .then(() => rollup({
-      moduleName: `${sourcePkg.meta.name}`,
-      entry: `${project.workingDirectory}/${sourcePkg.dest.module}`,
+      moduleName: ngPkg.meta.name,
+      entry: `${ngPkg.workingDirectory}/${ngPkg.artefacts.module}`,
       format: 'umd',
-      dest: `${project.workingDirectory}/${sourcePkg.dest.main}`
+      dest: `${ngPkg.workingDirectory}/${ngPkg.artefacts.main}`
     }))
-    .then(() => remapSourcemap(`${project.workingDirectory}/${sourcePkg.dest.main}`))
+      // XX .then(() => remapSourcemap(`${project.workingDirectory}/${sourcePkg.dest.main}`))
     // 7. COPY FILES
-    .then(() => copyFiles(`${project.workingDirectory}/${sourcePkg.meta.prefix}/**/*.{js,js.map}`, `${project.dest}/${sourcePkg.meta.prefix}`))
-    .then(() => copyFiles(`${project.workingDirectory}/bundles/**/*.{js,js.map}`, `${project.dest}/bundles`))
-    .then(() => copyFiles(`${project.workingDirectory}/**/*.{d.ts,metadata.json}`, `${project.dest}`))
-    .then(() => copyFiles(`${project.src}/README.md`, project.dest))
-    .then(() => copyFiles(`${project.src}/LICENSE`, project.dest))
+    .then(() => copyFiles(`${ngPkg.workingDirectory}/${ngPkg.meta.scope}/**/*.{js,js.map}`, `${ngPkg.dest}/${ngPkg.meta.scope}`))
+    .then(() => copyFiles(`${ngPkg.workingDirectory}/bundles/**/*.{js,js.map}`, `${ngPkg.dest}/bundles`))
+    .then(() => copyFiles(`${ngPkg.workingDirectory}/ts/**/*.{d.ts,metadata.json}`, `${ngPkg.dest}`))
+    .then(() => copyFiles(`${ngPkg.src}/README.md`, ngPkg.dest))
+    .then(() => copyFiles(`${ngPkg.src}/LICENSE`, ngPkg.dest))
     // 8. PACKAGE
-    .then(() => createPackage(`${project.src}`, `${project.dest}`, sourcePkg.dest))
+    .then(() => createPackage(ngPkg.src, ngPkg.dest, ngPkg.artefacts))
     .then(() => {
-      success(`Built Angular library in ${project.src}, written to ${project.dest}`);
+      success(`Built Angular library from ${ngPkg.src}, written to ${ngPkg.dest}`);
     });
 
 }
