@@ -1,7 +1,15 @@
 const chalk = require('chalk');
 
-export const error = (msg: string) => {
-  console.log(chalk.red(msg));
+export const error = (err: string | Error) => {
+
+  if (err instanceof Error) {
+    console.log('\n' + chalk.red('BUILD ERROR'));
+    console.log(chalk.red(err.message));
+    console.log(chalk.red(err.stack) + '\n');
+  } else {
+    console.log(chalk.red(err));
+  }
+
 }
 
 export const warn = (msg: string) => {
@@ -19,8 +27,7 @@ export const info = (msg: string) => {
 export const debug = (msg: string) => {
 
   if (process.env.DEBUG) {
-    console.log(chalk.inverse.cyan(msg));
-    console.log('\n');
+    console.log(chalk.inverse.cyan(`[debug] ${msg}`));
   }
 
 }
