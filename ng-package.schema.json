@@ -43,26 +43,6 @@
           "additionalProperties": true
         }
       }
-    },
-    "ngc": {
-      "description": "EXPERIMENTAL - Options for custimizing the behaviour of ngc during library build.",
-      "type": "object",
-      "properties": {
-        "tsconfig": {
-          "description": "Path to a tsconfig.json file",
-          "type": "string"
-        }
-      }
-    },
-    "rollup": {
-      "description": "EXPERIMENTAL - Rollup options.",
-      "type": "object",
-      "properties": {
-        "config": {
-          "description": "Path to a rollup.js config file",
-          "type": "string"
-        }
-      }
     }
   },
   "required": [],
