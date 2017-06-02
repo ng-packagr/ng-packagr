@@ -13,4 +13,5 @@ const ngPackagr = require('../lib/ng-packagr');
 
 ngPackagr.ngPackage({
   project
-});
+})
+.catch((err) => process.exit(111));
