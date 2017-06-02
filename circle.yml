@@ -7,8 +7,6 @@ machine:
 dependencies:
   override:
     - yarn
-  cache_directories:
-    - ~/.cache/yarn
   pre:
     - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
 
