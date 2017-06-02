@@ -86,6 +86,11 @@ export const ngPackage = (opts: NgPackagrCliArguments): Promise<any> => {
     .then(() => createPackage(ngPkg.src, ngPkg.dest, ngPkg.artefacts))
     .then(() => {
       success(`Built Angular library from ${ngPkg.src}, written to ${ngPkg.dest}`);
+    })
+    .catch((err) => {
+      // Report error messages and throw the error further up
+      error(err);
+      return Promise.reject(err);
     });
 
 }
