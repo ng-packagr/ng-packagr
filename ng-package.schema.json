@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "https://github.com/dherges/ng-packagr/blob/master/conf/ng-package.schema.json",
+  "title": "NgPackageConfig",
+  "description": "JSON Schema for `ng-package.json` description file",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "src": {
+      "description": "The source folder of an Angular library. This is the folder where a `package.json` is located and defaults to cwd.",
+      "type": "string",
+      "default": "."
+    },
+    "dest": {
+      "description": "The destination folder to output build artefacts and distributables of an Angular library (default: `dist`).",
+      "type": "string",
+      "default": "dist"
+    },
+    "workingDirectory": {
+      "description": "Internal working directory of ng-packagr where intermediate build files are stored.",
+      "type": "string",
+      "default": ".ng_build"
+    },
+    "lib": {
+      "description": "Description of the library that is being built.",
+      "type": "object",
+      "properties": {
+        "entryFile": {
+          "description": "Entry file to the public API of the library (default: `src/public_api.ts`).",
+          "type": "string",
+          "default": "src/public_api.ts"
+        },
+        "flatModuleFile": {
+          "description": "Filename of the auto-generated flat module file (defaults to the package name as given in `package.json`).",
+          "type": "string",
+          "default": "index"
+        },
+        "externals": {
+          "description": "A symbol map of external dependencies. The purpose of this map is to correctly bundle a flat module file (with `rollup`). By default, `rxjs` and `@angular/*` dependency symbols are supported.",
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "ngc": {
+      "description": "EXPERIMENTAL - Options for custimizing the behaviour of ngc during library build.",
+      "type": "object",
+      "properties": {
+        "tsconfig": {
+          "description": "Path to a tsconfig.json file",
+          "type": "string"
+        }
+      }
+    },
+    "rollup": {
+      "description": "EXPERIMENTAL - Rollup options.",
+      "type": "object",
+      "properties": {
+        "config": {
+          "description": "Path to a rollup.js config file",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

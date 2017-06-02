@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-alpha.3"></a>
+# [1.0.0-alpha.3](https://github.com/dherges/ng-packagr/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2017-05-31)
+
+
+### Features
+
+* implement build steps with updated `ng-package.json` ([259a9fc](https://github.com/dherges/ng-packagr/commit/259a9fc))
+* include `[@angular](https://github.com/angular)/router` in default rollup opts ([3d576ee](https://github.com/dherges/ng-packagr/commit/3d576ee))
+* JSON schema for `ng-package.json` ([76dd2ff](https://github.com/dherges/ng-packagr/commit/76dd2ff))
+
+
+
 <a name="1.0.0-alpha.2"></a>
 # [1.0.0-alpha.2](https://github.com/dherges/ng-packagr/compare/v1.0.0-alpha.1...v1.0.0-alpha.2) (2017-05-27)
 

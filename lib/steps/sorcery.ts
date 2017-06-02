@@ -1,5 +1,5 @@
 const sorcery = require('sorcery');
-import { info } from '../util/log';
+import { debug } from '../util/log';
 
 
 /**
@@ -9,7 +9,7 @@ import { info } from '../util/log';
  * @param sourceFile Source file
  */
 export const remapSourcemap = (sourceFile: string, base?: string): Promise<any> => {
-  info(`re-mapping sources for ${sourceFile}`);
+  debug(`re-mapping sources for ${sourceFile}`);
   const opts: any = {
     inline: false,
     includeContent: true,

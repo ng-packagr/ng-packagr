@@ -25,6 +25,7 @@ export const rollup = (opts: RollupOptions) => {
     '@angular/platform-browser':            'ng.platformBrowser',
     '@angular/platform-browser-dynamic':    'ng.platformBrowserDynamic',
     '@angular/platform-browser/animations': 'ng.platformBrowser.animations',
+    '@angular/router':      'ng.router',
     // RxJS dependencies
     'rxjs/AnonymousSubject':      'Rx',
     'rxjs/AsyncSubject':          'Rx',
