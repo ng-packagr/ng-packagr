@@ -22,3 +22,4 @@ deployment:
     owner: dherges
     commands:
       - yarn publish:ci
+      - npm publish dist
