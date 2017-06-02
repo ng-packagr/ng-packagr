@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-alpha.7"></a>
+# [1.0.0-alpha.7](https://github.com/dherges/ng-packagr/compare/v1.0.0-alpha.3...v1.0.0-alpha.7) (2017-06-02)
+
+
+### Bug Fixes
+
+* correctly locate `typings` file ([3d5c266](https://github.com/dherges/ng-packagr/commit/3d5c266))
+* set flatModuleId to the name from package.json (#24) ([1e2c33f](https://github.com/dherges/ng-packagr/commit/1e2c33f))
+
+
+### Features
+
+* remove deprecated `ng-package.json properties` ([9b988b0](https://github.com/dherges/ng-packagr/commit/9b988b0))
+
+
+
 <a name="1.0.0-alpha.6"></a>
 # [1.0.0-alpha.6](https://github.com/dherges/ng-packagr/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2017-06-02)
 
