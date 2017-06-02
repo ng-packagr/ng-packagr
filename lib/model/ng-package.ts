@@ -40,15 +40,13 @@ export class NgPackage {
   }
 
   /** Package meta information */
-  public get meta() {
+  public get meta(): { name: string, scope?: string } {
     // split into name and scope (`@<scope>/<name>`)
     let scope: string, name: string = `${this.packageJson.name}`;
-    if (name.startsWith(SCOPE_PREFIX)) {
+    if (name.startsWith(SCOPE_PREFIX) && name.indexOf(SCOPE_NAME_SEPARATOR) > 0) {
       const idx = name.indexOf(SCOPE_NAME_SEPARATOR);
       scope = name.substring(0, idx);
       name = name.substring(idx + 1);
-    } else {
-      scope = this.packageJson.name;
     }
 
     return { name, scope };
