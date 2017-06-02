@@ -11,7 +11,7 @@ export const prepareTsConfig = (ngPkg: NgPackage, outFile: string): Promise<stri
   return readJson(path.resolve(__dirname, '..', 'conf', 'tsconfig.ngc.json'))
     .then((tsConfig: any) => {
 
-      tsConfig['angularCompilerOptions']['flatModuleId'] = ngPkg.flatModuleFileName;
+      tsConfig['angularCompilerOptions']['flatModuleId'] = ngPkg.packageJson.name;
       tsConfig['angularCompilerOptions']['flatModuleOutFile'] = `${ngPkg.flatModuleFileName}.js`;
 
       tsConfig['files'] = [ ngPkg.ngPackageJson.lib.entryFile ];
