@@ -8,6 +8,8 @@ dependencies:
   override:
     - yarn
   pre:
+    - rm -rf node_modules
+    - yarn cache clean
     - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
 
 test:
