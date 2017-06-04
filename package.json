@@ -57,10 +57,9 @@
     "release": "standard-version --prerelease pre",
     "postrelease": "node prepublish.js",
     "publish:ci": "yarn prerelease && yarn postrelease",
-    "sample": "node dist/cli/ng-packagr.js -p integration/sample/ng-package.json",
-    "sample:dev": "node integration/sample/build.js",
-    "sampleng": "node dist/cli/ng-packagr.js -p integration/sample_angular/ng-package.json",
-    "sampleng:dev": "node integration/sample_angular/build.js",
-    "test": "yarn build && yarn sample"
+    "samples": "node dist/cli/ng-packagr.js -p integration/sample_core/ng-package.json && node dist/cli/ng-packagr.js -p integration/sample_custom/ng-package.json && node dist/cli/ng-packagr.js -p integration/sample_material/ng-package.json",
+    "samples:dev": "node integration/build.js",
+    "samples:test": "mocha --compilers ts:ts-node/register integration/sample_*/specs/**/*.ts",
+    "test": "yarn build && yarn samples"
   }
 }
