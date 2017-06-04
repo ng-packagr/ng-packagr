@@ -2,7 +2,7 @@
   "buildOnSave": false,
   "compileOnSave": false,
   "compilerOptions": {
-    "moduleResolution": "node",
+    "target": "es5",
     "experimentalDecorators": true,
     "lib": [
       "es2015",
@@ -15,6 +15,9 @@
       "sinon"
     ]
   },
+  "include": [
+    "**/specs/*.ts"
+  ],
   "exclude": [
     ".ng_build"
   ]
