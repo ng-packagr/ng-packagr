@@ -1,4 +1,4 @@
-import { NgPackageConfig } from '../conf/ng-package.conf';
+import { NgPackageConfig } from '../ng-package.schema';
 import { NgPackage } from '../model/ng-package';
 import { readJson, writeJson } from './json';
 

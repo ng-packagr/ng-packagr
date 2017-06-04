@@ -13,8 +13,8 @@ import { downlevelWithTsc } from './steps/tsc';
 import { error, warn, info, success, debug } from './util/log';
 
 // `ng-package.json` config
-import { NgPackageConfig } from './conf/ng-package.conf';
 import { NgPackage } from './model/ng-package';
+import { NgPackageConfig } from './ng-package.schema';
 
 
 // There are no type definitions available for these imports.

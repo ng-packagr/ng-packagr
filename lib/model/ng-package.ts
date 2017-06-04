@@ -1,4 +1,4 @@
-import { NgPackageConfig } from '../conf/ng-package.conf';
+import { NgPackageConfig } from '../ng-package.schema';
 const path = require('path');
 
 const SCOPE_PREFIX = '@';

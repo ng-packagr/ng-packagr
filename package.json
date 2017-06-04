@@ -39,6 +39,7 @@
     "@types/node": "^7.0.18",
     "@types/sinon": "^2.3.0",
     "chai": "^4.0.1",
+    "copyfiles": "^1.2.0",
     "jasmine": "^2.6.0",
     "json-schema-to-typescript": "^4.4.0",
     "mocha": "^3.4.2",
@@ -51,8 +52,8 @@
   "scripts": {
     "prebuild": "rimraf dist && yarn schema",
     "build": "tsc -p tsconfig.packagr.json",
-    "postbuild": "cpx '{ng-package.schema.json,cli/*,lib/conf/*.json}' dist",
-    "schema": "json2ts --input ng-package.schema.json --output lib/conf/ng-package.conf.ts",
+    "postbuild": "copyfiles 'cli/*' dist && copyfiles -f 'lib/ng-package.schema.json' dist && copyfiles 'lib/conf/**/*.json' dist",
+    "schema": "json2ts --input lib/ng-package.schema.json --output lib/ng-package.schema.ts",
     "prerelease": "yarn build",
     "release": "standard-version --prerelease pre",
     "postrelease": "node prepublish.js",
