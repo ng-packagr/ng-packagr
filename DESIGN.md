@@ -6,7 +6,9 @@ Design Doc: "ng-packagr"
 
 ## Library authoring
 
-Design choices of `ng-packagr` from the view of a library author.
+Design choices of `ng-packagr` from the view of library authors and library consumers.
+
+The motivation is to help authors write libraries and generate the expected, distribution-ready artefacts for library consumers.
 
 
 ### Build artefacts
