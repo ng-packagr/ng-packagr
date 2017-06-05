@@ -13,11 +13,12 @@ Design choices of `ng-packagr` from the view of a library author.
 
 According to [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview), there need to be the following build artefacts:
 
-* FESM2015 Bundle: `@<prefix>/<name>.js` in ES2015 syntax and ES2015 module format, a so-called Flat ECMAScript Module. It will be referenced in the es2015 property of `package.json`.
-* FESM5 Bundle: `@<prefix>/<name>.es5.js` in ES5 syntax and ES2015 module format, a so-called Flat ECMAScript Module (ESM, or FESM5, or FESM2014). It will be referenced in the module property of `package.json`.
-* UMD Bundle: `@<prefix>/<name>.umd.js` in ES5 syntax and UMD module format, a so-called universal module definition format. It will be referenced in the main property of `package.json`.
-* Type definitions and AoT metadata: an `index.d.ts` file and a `index.metadata.json` file will be generated to support TypeScript debugging as well as AoT compilation. The `*.metadata.json` file MUST have templates and stylesheets inlined.
-* A `package.json` file: it describes the structure of the library and serves as the entry point for library users, when resolving TypeScript `import { .. } from '@<prefix>/<name>'` statements.
+* FESM2015 Bundle: `@<prefix>/<name>.js` in ES2015 syntax and ES2015 module format, a so-called Flat ECMAScript Module. It is referenced in the `es2015` property of `package.json`.
+* FESM5 Bundle: `@<prefix>/<name>.es5.js` in ES5 syntax and ES2015 module format, a so-called Flat ECMAScript Module (ESM, or FESM5, or FESM2014). It is referenced in the `module` property of `package.json`.
+* UMD Bundle: `@<prefix>/<name>.umd.js` in ES5 syntax and UMD module format, a so-called universal module definition format. It is referenced in the `main` property of `package.json`.
+* Type definitions: an `index.d.ts` file is needed to support TypeScript debugging and rich developer experience. It is references in the `typings` property of `package.json`
+* AoT Metadata: an `index.metadata.json` is needed for library consumers that wish to perform AoT compilation. The `*.metadata.json` file MUST have templates and stylesheets inlined. The `*.metadata.json` file MUST be located next to the type definitions file and MUST have the same base name (e.g. `index.d.ts` and `index.metadata.json´).
+* A `package.json` file: it describes the structure of the library and serves as the entry point for library users, when resolving TypeScript import statements: `import { .. } from '@<prefix>/<name>'`.
 * A `README.md` and `LICENSE` file for the library. These files should be located next to the `package.json` (and can be copied "as is" / static assets).
 
 **DO**: `ng-packagr` generates a TypeScript library in Angular Package Format.
