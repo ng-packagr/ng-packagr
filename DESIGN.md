@@ -106,17 +106,25 @@ The one restriction is that the `package.json` file locates the source folder of
 
 ### Configuration and customization
 
-_TODO_
+Tools in the Angular ecosystem commonly support configuration through a JSON file.
+Typically, people in the Angular community should be somewhat familiar with `tsconfig.json`, `package.json`, `.angular-cli.json`, and others.
+These JSON files can be separated into two categories:
+a JSON configuration file per project (e.g. `tsconfig.json`) or a JSON configuration file per utility tool (possibly, with multiple projects configured inside, e.g. `.angular-cli.json`)
+Other tools support configuration by scripting `*.js` files like `karma.conf.js`, `webpack.conf.js`, or `rollup-config.js`.
+Whether configuration is supported through a declarative JSON file or through a programmatic JS file is a deliberate design choice.
 
-`ng-packagr` **WILL** support configuration of the tool through a JSON configuration file similar to a `tsconfig.json` or `package.json` per project.
-
-_TODO_
-
-**DO**: `ng-packagr` supports configuration through a JSON configuration file.
-By defualt, the name `ng-package.json` in the current working directory is assumed.
+**DO**: `ng-packagr` supports one JSON configuration file per project.
+By default, the name `ng-package.json` in the current working directory is assumed.
 A custom file name can be passed as a CLI argument.
 Further paths are resolved relative to `ng-package.json`.
 To help writing the JSON file, a JSON schema ships with `ng-packagr`.
+
+From that deliberate design choice, the following considerations are derived. `ng-package.json`…
+
+- …IS a declarative way of describing an Angular library.
+  - Multiple libraries are handled by writing one `ng-package.json` file per project and running `ng-packagr` for each project.
+- …SHOULD describe the properties and characteristics of an Angular library . Library authors should take care of describing _WHAT_ their library looks like.
+- …SHOULD NOT try to pass-up configuration of internal tools (e.g. `tsc` or `rollup` configs). This would put burden on library authors to take care of _HOW_ an internal build process is orchestrated.
 
 
 ---
