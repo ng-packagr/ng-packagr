@@ -4,9 +4,12 @@ import * as path from 'path';
 const BASE = path.resolve(__dirname, '..', 'dist');
 
 describe(`sample-custom`, () => {
-  const PACKAGE = JSON.parse(fs.readFileSync(`${BASE}/package.json`, 'utf-8'));
 
   describe(`package.json`, () => {
+    let PACKAGE;
+    before(() => {
+      PACKAGE = JSON.parse(fs.readFileSync(`${BASE}/package.json`, 'utf-8'));
+    });
 
     it(`should exist`, () => {
       expect(PACKAGE).to.be.ok;

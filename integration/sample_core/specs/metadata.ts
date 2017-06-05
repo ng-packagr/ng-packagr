@@ -3,10 +3,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`@sample/core`, () => {
-  const METADATA = JSON.parse(fs.readFileSync(
-    path.resolve(__dirname, '..', 'dist', 'core.metadata.json'), 'utf-8'));
 
   describe(`core.metadata.json`, () => {
+    let METADATA;
+    before(() => {
+      METADATA = JSON.parse(fs.readFileSync(
+        path.resolve(__dirname, '..', 'dist', 'core.metadata.json'), 'utf-8'));
+    });
 
     it(`should exist`, () => {
       expect(METADATA).to.be.ok;

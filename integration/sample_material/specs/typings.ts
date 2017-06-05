@@ -2,13 +2,13 @@ import { expect } from 'chai';
 import * as fs from 'fs';
 import * as path from 'path';
 
-describe(`@sample/core`, () => {
+describe(`@sample/material`, () => {
 
-  describe(`core.d.ts`, () => {
+  describe(`material.d.ts`, () => {
     let TYPINGS;
     before(() => {
       TYPINGS = fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'core.d.ts'), 'utf-8');
+        path.resolve(__dirname, '..', 'dist', 'material.d.ts'), 'utf-8');
     });
 
     it(`should exist`, () => {
