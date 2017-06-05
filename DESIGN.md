@@ -9,7 +9,7 @@ Design Doc: "ng-packagr"
 Design choices of `ng-packagr` from the view of a library author.
 
 
-#### Build artefacts
+### Build artefacts
 
 According to [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview), there need to be the following build artefacts:
 
@@ -25,7 +25,7 @@ According to [Angular Package Format](https://docs.google.com/document/d/1CZC2rc
 JavaScript bundles, type definitions and AoT metadata are auto-generated during build.
 
 
-#### Public API entry
+### Public API entry
 
 Angular core libraries make heavy use of this pattern.
 They provide a `public_api.ts` file as entry point to their library.
@@ -35,7 +35,7 @@ This pattern is also a recommended approach for building flat modules.
 **DO**: `ng-packagr` supports a single entry file to a library's public API.
 
 
-#### Package definition and library metadata
+### Package definition and library metadata
 
 For consumers of a library, the package definition is provided in a `package.json` file, including `peerDependencies`, `name`, `version`, etc.
 Most important, the build artefacts (see above) are referenced in `package.json`.
@@ -54,7 +54,7 @@ If neccessay, it's recommended that these tools pick up the `package.json` gener
 **DON'T**: `ng-packagr` **WILL NOT** implement a publishing workflow.
 
 
-#### Folder layout
+### Folder layout
 
 Various folder layouts exist and are commonly used within the Angular community.
 The different styles are reflected in the [integration samples of ng-packagr](./integration).
@@ -104,7 +104,7 @@ Finally, a custom folder layout:
 The one restriction is that the `package.json` file locates the source folder of a library.
 
 
-#### Configuration and customization
+### Configuration and customization
 
 _TODO_
 
