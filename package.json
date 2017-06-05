@@ -60,7 +60,7 @@
     "publish:ci": "yarn prerelease && yarn postrelease",
     "samples": "node dist/cli/ng-packagr.js -p integration/sample_core/ng-package.json && node dist/cli/ng-packagr.js -p integration/sample_custom/ng-package.json && node dist/cli/ng-packagr.js -p integration/sample_material/ng-package.json",
     "samples:dev": "node integration/build.js",
-    "samples:test": "mocha --compilers ts:ts-node/register integration/sample_*/specs/**/*.ts",
+    "samples:test": "TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --compilers ts:ts-node/register integration/sample_*/specs/**/*.ts",
     "test": "yarn build && yarn samples && yarn samples:test"
   }
 }
