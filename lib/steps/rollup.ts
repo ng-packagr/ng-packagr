@@ -34,6 +34,7 @@ export const rollup = (opts: RollupOptions) => {
     'rxjs/ObservableInput':       'Rx',
     'rxjs/Observable':            'Rx',
     'rxjs/Observer':              'Rx',
+    'rxjs/ReplaySubject':         'Rx',
     'rxjs/Scheduler':             'Rx',
     'rxjs/Subject':               'Rx',
     'rxjs/SubjectSubscriber':     'Rx',
