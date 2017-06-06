@@ -3,10 +3,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`sample-custom`, () => {
-  const METADATA = JSON.parse(fs.readFileSync(
-    path.resolve(__dirname, '..', 'dist', 'sample-custom.metadata.json'), 'utf-8'));
 
   describe(`sample-custom.metadata.json`, () => {
+    let METADATA;
+    before(() => {
+      METADATA = JSON.parse(fs.readFileSync(
+        path.resolve(__dirname, '..', 'dist', 'sample-custom.metadata.json'), 'utf-8'));
+    });
 
     it(`should exist`, () => {
       expect(METADATA).to.be.ok;
