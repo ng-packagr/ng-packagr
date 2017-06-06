@@ -67,7 +67,7 @@
   "scripts": {
     "prebuild": "rimraf dist && yarn schema",
     "build": "tsc -p tsconfig.packagr.json",
-    "postbuild": "copyfiles 'cli/*' dist && copyfiles -f 'lib/ng-package.schema.json' dist && copyfiles 'lib/conf/**/*.json' dist",
+    "postbuild": "node postbuild.js",
     "schema": "json2ts --input lib/ng-package.schema.json --output lib/ng-package.schema.ts",
     "prerelease": "yarn build",
     "release": "standard-version --prerelease pre",
