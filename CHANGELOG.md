@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-pre.2"></a>
+# [1.0.0-pre.2](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.1...v1.0.0-pre.2) (2017-06-06)
+
+
+### Bug Fixes
+
+* **package:** update rollup to version 0.42.0 (#37) ([75f1811](https://github.com/dherges/ng-packagr/commit/75f1811))
+* add `rxjs/ReplaySubject` to rollup defaults (#44) ([237b24e](https://github.com/dherges/ng-packagr/commit/237b24e))
+
+
+
 <a name="1.0.0-pre.1"></a>
 # [1.0.0-pre.1](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.0...v1.0.0-pre.1) (2017-06-02)
 
