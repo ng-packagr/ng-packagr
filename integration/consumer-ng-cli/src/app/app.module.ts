@@ -3,20 +3,22 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { FooComponent, BarComponent } from '@foo/bar';
+import { CustomModule } from 'sample-custom';
+import { UiLibModule } from '@sample/material';
 
 import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    FooComponent,
-    BarComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+
+    CustomModule,
+    UiLibModule
   ],
   providers: [],
   bootstrap: [AppComponent]

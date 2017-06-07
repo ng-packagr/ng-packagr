@@ -1,5 +1,5 @@
-import { FooComponent, BarComponent } from '@foo/bar';
 import { NgModule } from '@angular/core';
+import { FooComponent, BarComponent } from 'sample-custom';
 
 @NgModule({
   declarations: [
@@ -7,5 +7,4 @@ import { NgModule } from '@angular/core';
     BarComponent
   ]
 })
-export class ConsumerModule {
-}
+export class ConsumerModule {}
