@@ -53,29 +53,41 @@ export const ngPackage = (opts: NgPackagrCliArguments): Promise<any> => {
     .then(() => processAssets(ngPkg.src, `${ngPkg.workingDirectory}/ts`))
     // 3. NGC
     .then(() => prepareTsConfig(ngPkg, `${ngPkg.workingDirectory}/ts/tsconfig.lib.json`)
-      .then((tsConfigFile: string) => ngc(tsConfigFile, `${ngPkg.workingDirectory}/ts`)))
-      // XX .then(() => remapSourcemap(flatModuleFile))
+      .then((tsConfigFile: string) => ngc(tsConfigFile, `${ngPkg.workingDirectory}/ts`))
+      .then((es2015EntryFile: string) =>
+        // XX: see #46 - ngc only references to closure-annotated ES6 sources
+        remapSourcemap(`${ngPkg.workingDirectory}/ts/${ngPkg.flatModuleFileName}.js`)
+          .then(() => Promise.resolve(es2015EntryFile)))
+    )
     // 4. FESM15: ROLLUP
-    .then((es2015EntryFile: string) => rollup({
-      moduleName: ngPkg.meta.name,
-      entry: es2015EntryFile,
-      format: 'es',
-      dest: `${ngPkg.workingDirectory}/${ngPkg.artefacts.es2015}`
-    }))
-      // XX .then(() => remapSourcemap(`${project.workingDirectory}/${sourcePkg.dest.es2015}`))
+    .then((es2015EntryFile: string) =>
+      rollup({
+        moduleName: ngPkg.meta.name,
+        entry: es2015EntryFile,
+        format: 'es',
+        dest: `${ngPkg.workingDirectory}/${ngPkg.artefacts.es2015}`
+      })
+      // XX ... rollup generates relative paths in sourcemaps. It would be nice to re-locate source map files
+      // so that `@scope/name/foo/bar.ts` shows up as path in the browser...
+      .then(() => remapSourcemap(`${ngPkg.workingDirectory}/${ngPkg.artefacts.es2015}`))
+    )
     // 5. FESM5: TSC
-    .then(() => downlevelWithTsc(
-      `${ngPkg.workingDirectory}/${ngPkg.artefacts.es2015}`,
-      `${ngPkg.workingDirectory}/${ngPkg.artefacts.module}`))
-      // XX .then(() => remapSourcemap(`${ngPkg.workingDirectory}/${ngPkg.artefacts.module}`))
+    .then(() =>
+      downlevelWithTsc(
+        `${ngPkg.workingDirectory}/${ngPkg.artefacts.es2015}`,
+        `${ngPkg.workingDirectory}/${ngPkg.artefacts.module}`)
+      .then(() => remapSourcemap(`${ngPkg.workingDirectory}/${ngPkg.artefacts.module}`))
+    )
     // 6. UMD: ROLLUP
-    .then(() => rollup({
-      moduleName: ngPkg.meta.name,
-      entry: `${ngPkg.workingDirectory}/${ngPkg.artefacts.module}`,
-      format: 'umd',
-      dest: `${ngPkg.workingDirectory}/${ngPkg.artefacts.main}`
-    }))
-      // XX .then(() => remapSourcemap(`${project.workingDirectory}/${sourcePkg.dest.main}`))
+    .then(() =>
+      rollup({
+        moduleName: ngPkg.meta.name,
+        entry: `${ngPkg.workingDirectory}/${ngPkg.artefacts.module}`,
+        format: 'umd',
+        dest: `${ngPkg.workingDirectory}/${ngPkg.artefacts.main}`
+      })
+      .then(() => remapSourcemap(`${ngPkg.workingDirectory}/${ngPkg.artefacts.main}`))
+    )
     // 7. COPY FILES
     .then(() => copyFiles(`${ngPkg.workingDirectory}/${ngPkg.meta.scope}/**/*.{js,js.map}`, `${ngPkg.dest}/${ngPkg.meta.scope}`))
     .then(() => copyFiles(`${ngPkg.workingDirectory}/bundles/**/*.{js,js.map}`, `${ngPkg.dest}/bundles`))
