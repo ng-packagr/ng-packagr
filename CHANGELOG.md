@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-pre.4"></a>
+# [1.0.0-pre.4](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.3...v1.0.0-pre.4) (2017-06-08)
+
+
+### Bug Fixes
+
+* correct paths in generated sourcemaps (#50) ([c389160](https://github.com/dherges/ng-packagr/commit/c389160)), closes [#46](https://github.com/dherges/ng-packagr/issues/46)
+* temporarily disable es5 source maps ([804dd8c](https://github.com/dherges/ng-packagr/commit/804dd8c))
+
+
+
 <a name="1.0.0-pre.3"></a>
 # [1.0.0-pre.3](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.2...v1.0.0-pre.3) (2017-06-06)
 
