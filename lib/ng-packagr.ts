@@ -7,6 +7,7 @@ import { rimraf } from './steps/rimraf';
 import { rollup } from './steps/rollup';
 import { remapSourcemap } from './steps/sorcery';
 import { downlevelWithTsc } from './steps/tsc';
+import { modifyJsonFiles } from './steps/json';
 
 
 // Logging
@@ -94,7 +95,15 @@ export const ngPackage = (opts: NgPackagrCliArguments): Promise<any> => {
     .then(() => copyFiles(`${ngPkg.workingDirectory}/ts/**/*.{d.ts,metadata.json}`, `${ngPkg.dest}`))
     .then(() => copyFiles(`${ngPkg.src}/README.md`, ngPkg.dest))
     .then(() => copyFiles(`${ngPkg.src}/LICENSE`, ngPkg.dest))
-    // 8. PACKAGE
+    // 8. SOURCEMAPS: RELOCATE PATHS
+    .then(() => modifyJsonFiles(`${ngPkg.dest}/**/*.js.map`, (sourceMap: any): any => {
+      sourceMap['sources'] = sourceMap['sources']
+        .map((path: string): string => path.replace('../ts',
+          ngPkg.meta.scope ? `~/${ngPkg.meta.scope}/${ngPkg.meta.name}` : `~/${ngPkg.meta.name}`));
+
+      return sourceMap;
+    }))
+    // 9. PACKAGE
     .then(() => createPackage(ngPkg.src, ngPkg.dest, ngPkg.artefacts))
     .then(() => {
       success(`Built Angular library from ${ngPkg.src}, written to ${ngPkg.dest}`);
