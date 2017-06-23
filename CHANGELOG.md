@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-pre.5"></a>
+# [1.0.0-pre.5](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.4...v1.0.0-pre.5) (2017-06-23)
+
+
+### Features
+
+* autoprefixer / postcss support ([4115ad1](https://github.com/dherges/ng-packagr/commit/4115ad1)), closes [#54](https://github.com/dherges/ng-packagr/issues/54)
+* version bump to [@angular](https://github.com/angular)/tsc-wrapped 4.2.0 ([7091f2a](https://github.com/dherges/ng-packagr/commit/7091f2a))
+
+
+
 <a name="1.0.0-pre.4"></a>
 # [1.0.0-pre.4](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.3...v1.0.0-pre.4) (2017-06-08)
 
