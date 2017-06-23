@@ -17,10 +17,9 @@ export class NgPackage {
     if (!ngPackageJson.src) this.ngPackageJson.src = '.';
     if (!ngPackageJson.dest) this.ngPackageJson.dest = 'dist';
     if (!ngPackageJson.workingDirectory) this.ngPackageJson.workingDirectory = '.ng_build';
-    if (ngPackageJson.lib) {
-      if (!ngPackageJson.lib.entryFile) this.ngPackageJson.lib.entryFile = 'src/public_api.ts';
-      //if (!ngPackageJson.lib.flatModuleFile) this.ngPackageJson.lib.flatModuleFile = 'index';
-    }
+    if (!ngPackageJson.lib) this.ngPackageJson.lib = {};
+    if (!ngPackageJson.lib.entryFile) this.ngPackageJson.lib.entryFile = 'src/public_api.ts';
+    //if (!ngPackageJson.lib.flatModuleFile) this.ngPackageJson.lib.flatModuleFile = 'index';
   }
 
   public get dest(): string {
@@ -37,6 +36,10 @@ export class NgPackage {
 
   public get flatModuleFileName(): string {
     return path.basename(this.ngPackageJson.lib.flatModuleFile || this.meta.name || 'index');
+  }
+
+  public get libExternals(): Object {
+    return this.ngPackageJson.lib.externals || {};
   }
 
   /** Package meta information */
