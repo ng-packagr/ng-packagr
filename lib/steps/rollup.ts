@@ -6,7 +6,8 @@ export interface RollupOptions {
   moduleName: string,
   entry: string,
   format: string,
-  dest: string
+  dest: string,
+  externals: Object,
 }
 
 /**
@@ -161,7 +162,8 @@ export const rollup = (opts: RollupOptions) => {
     'rxjs/add/operator/windowWhen':     'Rx.Observable.prototype',
     'rxjs/add/operator/withLatestFrom': 'Rx.Observable.prototype',
     'rxjs/add/operator/zipAll':         'Rx.Observable.prototype',
-    'rxjs/add/operator/zipProto':       'Rx.Observable.prototype'
+    'rxjs/add/operator/zipProto':       'Rx.Observable.prototype',
+    ...opts.externals,
   };
 
   let bundleOptions = {
