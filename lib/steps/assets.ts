@@ -1,8 +1,15 @@
-const inlineNg2Template =  require('gulp-inline-ng2-template');
-const sass = require('node-sass');
+const fs = require('mz/fs');
+const path = require('path');
 const vfs = require('vinyl-fs');
 
-import { debug } from '../util/log';
+const inlineNg2Template =  require('gulp-inline-ng2-template');
+
+const autoprefixer = require('autoprefixer');
+const browserslist = require('browserslist');
+const postcss      = require('postcss');
+const sass         = require('node-sass');
+
+import { debug, warn } from '../util/log';
 
 
 /**
@@ -25,17 +32,24 @@ export const processAssets = (src: string, dest: string): Promise<any> => {
         useRelativePaths: true,
         styleProcessor: (path, ext, file, cb) => {
 
-          debug(`sass.render ${path}`);
+          debug(`render stylesheet ${path}`);
+          const render = pickRenderer(path, ext, file);
 
-          sass.render({
-            file: path
-          }, (err, result) => {
-            if (err) {
-              cb(err);
-            } else {
-              cb(null, result.css.toString());
-            }
-          });
+          debug(`postcss with autoprefixer for ${path}`);
+          const browsers = browserslist(undefined, { path });
+          render.then((css: string) => postcss([ autoprefixer({ browsers }) ]).process(css))
+            .then((result) => {
+
+              result.warnings().forEach((msg) => {
+                warn(msg.toString());
+              });
+
+              cb(undefined, result.css);
+            })
+            .catch((err) => {
+              cb(err || new Error(`Cannot inline stylesheet ${path}`));
+            });
+
         }
       }))
       .on('error', reject)
@@ -43,4 +57,36 @@ export const processAssets = (src: string, dest: string): Promise<any> => {
       .on('end', resolve);
   });
 
+}
+
+
+const pickRenderer = (filePath: string, ext: string[], file: string): Promise<string> => {
+
+  switch (path.extname(filePath)) {
+
+    case '.scss':
+    case '.sass':
+      debug(`rendering sass for ${filePath}`);
+      return renderSass({ file: filePath });
+
+    case '.css':
+    default:
+      return Promise.resolve(file);
+  }
+
+}
+
+
+const renderSass = (sassOpts: any): Promise<string> => {
+
+  return new Promise((resolve, reject) => {
+
+    sass.render(sassOpts, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result.css.toString());
+      }
+    });
+  });
 }
