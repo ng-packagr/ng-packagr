@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-pre.7"></a>
+# [1.0.0-pre.7](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.6...v1.0.0-pre.7) (2017-07-04)
+
+
+### Features
+
+* exclude node_modules from being copied to working dir (#60) ([6bfe713](https://github.com/dherges/ng-packagr/commit/6bfe713)), closes [#51](https://github.com/dherges/ng-packagr/issues/51)
+* version bump rollup to ^0.43.0 ([227e3b7](https://github.com/dherges/ng-packagr/commit/227e3b7))
+
+
+
 <a name="1.0.0-pre.6"></a>
 # [1.0.0-pre.6](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.5...v1.0.0-pre.6) (2017-06-24)
 
