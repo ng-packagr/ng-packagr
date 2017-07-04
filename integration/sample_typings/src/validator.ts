@@ -1,4 +1,4 @@
-/// <reference path="./validate-commit-msg.d.ts" />
-import { validate } from 'validate-commit-msg';
+/// <reference path="./chalk.d.ts" />
+import * as chalk from 'chalk';
 
-export const result: boolean = validate("foobar");
+export const result = chalk.blue('message');
