@@ -26,7 +26,7 @@ export const processAssets = (src: string, dest: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     debug(`processAssets ${src} to ${dest}`);
 
-    vfs.src(`${src}/**/*.ts`)
+    vfs.src([`${src}/**/*.ts`, '!node_modules/**/*'])
       .pipe(inlineNg2Template({
         base: `${src}`,
         useRelativePaths: true,
