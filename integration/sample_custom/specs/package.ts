@@ -29,13 +29,11 @@ describe(`sample-custom`, () => {
       expect(PACKAGE['main']).to.equal('bundles/sample-custom.umd.js');
     });
 
-    xit(`should reference "module" bundle (FESM5, also FESM2014)`, () => {
-      // TODO: fix path generation in ng-packagr
+    it(`should reference "module" bundle (FESM5, also FESM2014)`, () => {
       expect(PACKAGE['module']).to.equal('sample-custom/sample-custom.es5.js');
     });
 
-    xit(`should reference "es2015" bundle (FESM2015)`, () => {
-      // TODO: fix path generation in ng-packagr
+    it(`should reference "es2015" bundle (FESM2015)`, () => {
       expect(PACKAGE['es2015']).to.equal('sample-custom/sample-custom.js');
     });
 
