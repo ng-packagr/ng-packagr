@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-pre.9"></a>
+# [1.0.0-pre.9](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.8...v1.0.0-pre.9) (2017-07-11)
+
+
+### Bug Fixes
+
+* use pkg name for es modules folder name when `@<scope>` is undefined (#70) ([cf24b1b](https://github.com/dherges/ng-packagr/commit/cf24b1b))
+
+
+
 <a name="1.0.0-pre.8"></a>
 # [1.0.0-pre.8](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.7...v1.0.0-pre.8) (2017-07-11)
 
