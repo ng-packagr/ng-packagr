@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-pre.8"></a>
+# [1.0.0-pre.8](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.7...v1.0.0-pre.8) (2017-07-11)
+
+
+### Features
+
+* import scss files with "~" syntax from node_modules (#67) ([205bbc0](https://github.com/dherges/ng-packagr/commit/205bbc0))
+* update rollup to version ^0.45.0 (#69) ([d124cb3](https://github.com/dherges/ng-packagr/commit/d124cb3)), closes [#68](https://github.com/dherges/ng-packagr/issues/68)
+
+
+
 <a name="1.0.0-pre.7"></a>
 # [1.0.0-pre.7](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.6...v1.0.0-pre.7) (2017-07-04)
 
