@@ -1,3 +1,4 @@
+import { SchemaClass, SchemaClassFactory } from '@ngtools/json-schema';
 import { NgPackageConfig } from '../ng-package.schema';
 import { NgPackage } from '../model/ng-package';
 import { readJson, writeJson } from './json';
@@ -5,6 +6,17 @@ import { readJson, writeJson } from './json';
 const fs = require('fs');
 const path = require('path');
 
+const findFromDirectory = (dir: string, file: string, cb: any) => {
+
+  let fileName = path.resolve(dir, file);
+  fs.access(fileName, fs.constants.R_OK, (err) => {
+    if (err) {
+      findFromDirectory(path.resolve(dir, '..'), file, cb);
+    } else {
+      cb(fileName);
+    }
+  });
+};
 
 /**
  * Reads an Angular package definition file from 'ng-package.json'
@@ -20,7 +32,23 @@ export const readPackage = (file: string): Promise<NgPackage> => {
       const dir = path.resolve(base, ngPkg.src || '.');
 
       return readJson(`${dir}/package.json`)
-        .then((pkg) => Promise.resolve(new NgPackage(base, ngPkg, pkg)));
+        .then((pkg: any) => {
+
+          return new Promise((resolve, reject) => {
+
+            findFromDirectory(__dirname, 'ng-package.schema.json', (fileName: string) => {
+              resolve(fileName);
+            });
+          })
+          .then((schemaFileName: string) => readJson(schemaFileName))
+          .then((schemaJson: any) => {
+            const NgPackageSchema = SchemaClassFactory(schemaJson);
+            const schema: SchemaClass<NgPackageConfig> = new NgPackageSchema(ngPkg);
+
+            return Promise.resolve(new NgPackage(base, schema.$$root(), pkg));
+          });
+
+        });
     });
 }
 

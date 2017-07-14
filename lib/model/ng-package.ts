@@ -5,6 +5,7 @@ const SCOPE_PREFIX = '@';
 const SCOPE_NAME_SEPARATOR = '/';
 
 
+/** POVO (plain-old value object) of the Angular package being built. */
 export class NgPackage {
 
   constructor(
@@ -13,14 +14,7 @@ export class NgPackage {
     public ngPackageJson: NgPackageConfig,
     /** Contents of `package.json` file. */
     public packageJson: any
-  ) {
-    if (!ngPackageJson.src) this.ngPackageJson.src = '.';
-    if (!ngPackageJson.dest) this.ngPackageJson.dest = 'dist';
-    if (!ngPackageJson.workingDirectory) this.ngPackageJson.workingDirectory = '.ng_build';
-    if (!ngPackageJson.lib) this.ngPackageJson.lib = {};
-    if (!ngPackageJson.lib.entryFile) this.ngPackageJson.lib.entryFile = 'src/public_api.ts';
-    //if (!ngPackageJson.lib.flatModuleFile) this.ngPackageJson.lib.flatModuleFile = 'index';
-  }
+  ) {}
 
   public get dest(): string {
     return path.resolve(this.basePath, this.ngPackageJson.dest);
