@@ -33,9 +33,9 @@
           "default": "src/public_api.ts"
         },
         "flatModuleFile": {
-          "description": "Filename of the auto-generated flat module file (defaults to the package name as given in `package.json`).",
+          "description": "Filename of the auto-generated flat module file (if empty, defaults to the package name as given in `package.json`).",
           "type": "string",
-          "default": "index"
+          "default": ""
         },
         "externals": {
           "description": "A symbol map of external dependencies. The purpose of this map is to correctly bundle a flat module file (with `rollup`). By default, `rxjs` and `@angular/*` dependency symbols are supported.",
