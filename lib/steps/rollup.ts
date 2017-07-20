@@ -9,6 +9,7 @@ export interface RollupOptions {
   format: string,
   dest: string,
   externals: Object,
+	commonjs: string[]
 }
 
 /**
@@ -32,6 +33,12 @@ export const rollup = (opts: RollupOptions) => {
     ...opts.externals,
   };
 
+	const ROLLUP_COMMONJS_INCLUDE = [
+		// RxJS dependencies
+		'node_modules/rxjs/**',
+		...opts.commonjs
+	];
+
   let bundleOptions = {
     context: 'this',
     external: Object.keys(ROLLUP_GLOBALS),
@@ -39,7 +46,7 @@ export const rollup = (opts: RollupOptions) => {
     plugins: [
         nodeResolve({ jsnext: true, module: true }),
         commonjs({
-          include: 'node_modules/**'
+          include: ROLLUP_COMMONJS_INCLUDE
         }),
     ],
     onwarn: (warning) => {
