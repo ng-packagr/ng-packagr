@@ -6,7 +6,8 @@ const inlineNg2Template =  require('gulp-inline-ng2-template');
 
 const autoprefixer = require('autoprefixer');
 const browserslist = require('browserslist');
-const postcss      = require('postcss');
+//const postcss      = require('postcss');
+import postcss = require('postcss');
 const sass         = require('node-sass');
 
 import { debug, warn } from '../util/log';
@@ -37,8 +38,13 @@ export const processAssets = (src: string, dest: string): Promise<any> => {
 
           debug(`postcss with autoprefixer for ${path}`);
           const browsers = browserslist(undefined, { path });
-          render.then((css: string) => postcss([ autoprefixer({ browsers }) ]).process(css))
-            .then((result) => {
+
+          render
+            .then((css: string) => {
+              return postcss([ autoprefixer({ browsers }) ])
+                .process(css, { from: path, to: path.replace(ext, '.css') });
+            })
+            .then((result: postcss.Result) => {
 
               result.warnings().forEach((msg) => {
                 warn(msg.toString());
