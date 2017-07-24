@@ -36,6 +36,7 @@ export const rollup = (opts: RollupOptions) => {
 	const ROLLUP_COMMONJS_INCLUDE = [
 		// RxJS dependencies
 		'node_modules/rxjs/**',
+
 		...opts.commonjs
 	];
 
@@ -46,7 +47,7 @@ export const rollup = (opts: RollupOptions) => {
     plugins: [
         nodeResolve({ jsnext: true, module: true }),
         commonjs({
-          include: ROLLUP_COMMONJS_INCLUDE
+          include: ROLLUP_COMMONJS_INCLUDE,
         }),
     ],
     onwarn: (warning) => {
