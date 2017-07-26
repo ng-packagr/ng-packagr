@@ -9,6 +9,7 @@ const browserslist = require('browserslist');
 //const postcss      = require('postcss');
 import postcss = require('postcss');
 const sass         = require('node-sass');
+import * as less from 'less';
 
 import { debug, warn } from '../util/log';
 
@@ -84,6 +85,10 @@ const pickRenderer = (filePath: string, ext: string[], file: string): Promise<st
       debug(`rendering sass for ${filePath}`);
       return renderSass({ file: filePath, importer: sassImporter });
 
+    case '.less':
+      debug(`rendering less for ${filePath}`);
+      return renderLess({ filename: filePath });
+
     case '.css':
     default:
       return Promise.resolve(file);
@@ -102,6 +107,24 @@ const renderSass = (sassOpts: any): Promise<string> => {
       } else {
         resolve(result.css.toString());
       }
+    });
+  });
+}
+
+const renderLess = (lessOpts: any): Promise<string> => {
+
+  return new Promise((resolve, reject) => {
+
+    fs.readFile(lessOpts.filename, 'utf8', (err1, data) => {
+      if (err1) reject(err1);
+
+        less.render(data, lessOpts, (err2, result) => {
+        if (err2) {
+          reject(err2);
+        } else {
+          resolve(result.css.toString());
+        }
+      });
     });
   });
 }
