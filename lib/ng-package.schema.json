@@ -43,10 +43,21 @@
           "additionalProperties": true
         },
         "commonjs": {
-          "description": "A paths array of external commonjs dependencies. The purpose of this array is to correctly bundle a flat module file (with `rollup`). By default, symbols from `rxjs` are supported.",
-          "type": "array",
-          "items": {
-            "type": "string"
+          "description": "Description of the library that is being built.",
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "Path to the directory containing `node_modules` (if empty, default to '').",
+              "type": "string",
+              "default": ""
+            },
+            "dependencies": {
+              "description": "A paths array of external commonjs dependencies. The purpose of this array is to correctly bundle a flat module file (with `rollup`). By default, symbols from `rxjs` are supported.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         }
       }

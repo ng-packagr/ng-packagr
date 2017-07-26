@@ -9,7 +9,8 @@ export interface RollupOptions {
   format: string,
   dest: string,
   externals: Object,
-  commonjs: string[]
+  commonjs: string[],
+  commonjsPath: string
 }
 
 /**
@@ -33,12 +34,12 @@ export const rollup = (opts: RollupOptions) => {
     ...opts.externals,
   };
 
-  const ROLLUP_COMMONJS_INCLUDE = [
-    // RxJS dependencies
-    'node_modules/rxjs/**',
-    // commonjs symbols passed from the user's ng-package.json
-    ...opts.commonjs
-  ];
+  let ROLLUP_COMMONJS_INCLUDE = [
+	  // RxJS dependencies
+	  opts.commonjsPath.concat('node_modules/rxjs/**'),
+		// commonjs symbols passed from the user's ng-package.json
+		...opts.commonjs.map(lib => opts.commonjsPath.concat(lib))
+	];
 
   let bundleOptions = {
     context: 'this',
