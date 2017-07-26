@@ -38,14 +38,16 @@
           "default": ""
         },
         "externals": {
-          "description": "A symbol map of external dependencies. The purpose of this map is to correctly bundle a flat module file (with `rollup`). By default, `@angular/*` and `rxjs` dependency symbols are supported.",
+          "description": "A symbol map of external dependencies. The purpose of this map is to correctly bundle a flat module file (with `rollup`). By default, symbols from the `@angular/*` packages are supported.",
           "type": "object",
           "additionalProperties": true
         },
-				"commonjs": {
-          "description": "A paths array of external commonjs dependencies. The purpose of this array is to correctly bundle a flat module file (with `rollup`). By default, `@angular/*` and `rxjs` dependency are supported.",
-          "type": "object",
-          "additionalProperties": true
+        "commonjs": {
+          "description": "A paths array of external commonjs dependencies. The purpose of this array is to correctly bundle a flat module file (with `rollup`). By default, symbols from `rxjs` are supported.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     }

@@ -36,11 +36,8 @@ export class NgPackage {
     return this.ngPackageJson.lib.externals || {};
   }
 
-	public get libCommonjs(): any {
-		if(this.ngPackageJson.lib.commonjs) {
-			return (<any>Object).values(this.ngPackageJson.lib.commonjs);
-		}
-   	return [];
+  public get libCommonjs(): string[] {
+    return this.ngPackageJson.lib.commonjs || [];
   }
 
   /** Package meta information */

@@ -1,15 +1,7 @@
 Sample library: multiple rxjs import styles
-==================================
+===========================================
 
-Folder layout from [Angulare core packages](https://github.com/angular/angular/blob/master/packages/core/public_api.ts):
-
-```
-|- package.json
-|- public_api.ts
-|- src
-   |- module.ts
-   |- foo
-      |- foo.ts
-   |- bar
-      |- bar.ts
+```ts
+import { map } from 'rxjs/operator/map';
+import 'rxjs/add/operator/map';
 ```

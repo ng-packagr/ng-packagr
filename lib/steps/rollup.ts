@@ -9,7 +9,7 @@ export interface RollupOptions {
   format: string,
   dest: string,
   externals: Object,
-	commonjs: string[]
+  commonjs: string[]
 }
 
 /**
@@ -29,16 +29,16 @@ export const rollup = (opts: RollupOptions) => {
     '@angular/platform-browser-dynamic':    'ng.platformBrowserDynamic',
     '@angular/platform-browser/animations': 'ng.platformBrowser.animations',
     '@angular/router':      'ng.router',
-
+    // external symbols passed from the user's ng-package.json
     ...opts.externals,
   };
 
-	const ROLLUP_COMMONJS_INCLUDE = [
-		// RxJS dependencies
-		'node_modules/rxjs/**',
-
-		...opts.commonjs
-	];
+  const ROLLUP_COMMONJS_INCLUDE = [
+    // RxJS dependencies
+    'node_modules/rxjs/**',
+    // commonjs symbols passed from the user's ng-package.json
+    ...opts.commonjs
+  ];
 
   let bundleOptions = {
     context: 'this',
