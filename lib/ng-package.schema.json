@@ -41,6 +41,26 @@
           "description": "A symbol map of external dependencies. The purpose of this map is to correctly bundle a flat module file (with `rollup`). By default, `rxjs` and `@angular/*` dependency symbols are supported.",
           "type": "object",
           "additionalProperties": true
+        },
+        "commonjs": {
+          "description": "A configuration object for rollup-plugin-commonjs. The purpose of this object is to correctly bundle a flat module file (with `rollup`) which uses commonjs dependencies.",
+          "type": "object",
+          "properties": {
+            "include": {
+              "description": "A paths array of external commonjs dependencies to include in the bundle.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "exclude": {
+              "description": "A paths array of external commonjs dependencies to exclude in the bundle.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     }

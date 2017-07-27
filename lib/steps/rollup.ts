@@ -1,4 +1,5 @@
 const __rollup = require('rollup');
+const commonjs = require('rollup-plugin-commonjs');
 const nodeResolve = require('rollup-plugin-node-resolve');
 import { debug } from '../util/log';
 
@@ -8,6 +9,8 @@ export interface RollupOptions {
   format: string,
   dest: string,
   externals: Object,
+  commonjsInclude: string[],
+  commonjsExclude: string[],
 }
 
 /**
@@ -166,12 +169,31 @@ export const rollup = (opts: RollupOptions) => {
     ...opts.externals,
   };
 
+
+  // function buildExcludeRegex(includes) {
+  //   const parsedIncludes: string[] = includes.map(lib => lib.replace(/[\/-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'));
+  //   const excludeRegExp = new RegExp('^(?!'+parsedIncludes.join('|')+').*$');
+  //   console.log(excludeRegExp.source)
+  //   return excludeRegExp;
+  // }
+
+  // const ROLLUP_COMMONJS_EXCLUDE = buildExcludeRegex(opts.commonjs);
+  const ROLLUP_COMMONJS_EXCLUDE = [
+    // commonjs symbols passed from the user's ng-package.json
+    ...opts.commonjsInclude
+  ];
+
+
   let bundleOptions = {
     context: 'this',
     external: Object.keys(ROLLUP_GLOBALS),
     entry: opts.entry,
     plugins: [
         nodeResolve({ jsnext: true, module: true }),
+        commonjs({
+          include: [...opts.commonjsInclude],
+          exclude: [...opts.commonjsExclude],
+        }),
     ],
     onwarn: (warning) => {
         if (warning.code === 'THIS_IS_UNDEFINED') {
