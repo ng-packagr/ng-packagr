@@ -57,6 +57,20 @@ Pathes are resolved relative to the location of the `ng-package.json` file.
 The `package.json` describing the library should be located in the same folder, next to `ng-package.json`.
 
 
+## Features
+
+ - :gift: Implements [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview)
+   - :checkered_flag: Bundles your library in FESM2015, FESM5, and UMD formats
+   - :school_satchel: npm package can be consumed by [Angular CLI](https://github.com/angular/angular-cli), [Webpack](https://github.com/webpack/webpack), or [SystemJS](https://github.com/systemjs/systemjs)
+   - :dancer: Creates type definitions (`.d.ts`)
+   - :runner: Generates [Ahead-of-Time](https://angular.io/guide/aot-compiler#why-do-aot-compilation) metadata (`.metadata.json`)
+ - :surfer: Inlines Templates and Stylesheets
+ - :sparkles: CSS Features
+   - :camel: Runs [SCSS](http://sass-lang.com/guide) preprocessor, supporting the [relative `~` import syntax](https://github.com/webpack-contrib/sass-loader#imports)
+   - :elephant: Runs [less](http://lesscss.org/#getting-started) preprocessor
+   - :monkey: Adds vendor-specific prefixes w/ [autoprefixer](https://github.com/postcss/autoprefixer#autoprefixer-) and [browserslist](https://github.com/ai/browserslist#queries) &mdash; just tell your desired `.browserslistrc`
+
+
 ## Knowledge
 
 [Angular Package Format v4.0](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview), design document at Google Docs
