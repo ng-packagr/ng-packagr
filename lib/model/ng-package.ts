@@ -36,6 +36,14 @@ export class NgPackage {
     return this.ngPackageJson.lib.externals || {};
   }
 
+  public get libCommonjsPath(): string {
+    return this.ngPackageJson.lib.commonjs && this.ngPackageJson.lib.commonjs.path || '';
+  }
+
+  public get libCommonjs(): string[] {
+    return this.ngPackageJson.lib.commonjs && this.ngPackageJson.lib.commonjs.dependencies || [];
+  }
+
   /** Package meta information */
   public get meta(): { name: string, scope?: string } {
     // split into name and scope (`@<scope>/<name>`)
