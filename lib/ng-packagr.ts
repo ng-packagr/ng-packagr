@@ -68,8 +68,7 @@ export const ngPackage = (opts: NgPackagrCliArguments): Promise<any> => {
         format: 'es',
         dest: `${ngPkg.workingDirectory}/${ngPkg.artefacts.es2015}`,
         externals: ngPkg.libExternals,
-        commonjsInclude: ngPkg.libCommonjsInclude,
-        commonjsExclude: ngPkg.libCommonjsExclude,
+        commonjsConfig: ngPkg.libCommonjsConfig,
       })
       // XX ... rollup generates relative paths in sourcemaps. It would be nice to re-locate source map files
       // so that `@scope/name/foo/bar.ts` shows up as path in the browser...
@@ -90,8 +89,7 @@ export const ngPackage = (opts: NgPackagrCliArguments): Promise<any> => {
         format: 'umd',
         dest: `${ngPkg.workingDirectory}/${ngPkg.artefacts.main}`,
         externals: ngPkg.libExternals,
-        commonjsInclude: ngPkg.libCommonjsInclude,
-        commonjsExclude: ngPkg.libCommonjsExclude,
+        commonjsConfig: ngPkg.libCommonjsConfig,
       })
       .then(() => remapSourcemap(`${ngPkg.workingDirectory}/${ngPkg.artefacts.main}`))
     )

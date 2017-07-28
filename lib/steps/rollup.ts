@@ -9,8 +9,7 @@ export interface RollupOptions {
   format: string,
   dest: string,
   externals: Object,
-  commonjsInclude: string[],
-  commonjsExclude: string[],
+  commonjsConfig: Object,
 }
 
 /**
@@ -294,16 +293,18 @@ export const rollup = (opts: RollupOptions) => {
     ...opts.externals,
   };
 
+  const ROLLUP_COMMONJS_CONFIG = {
+    // rollup-plugin-commonjs config from the user's ng-package.json
+    ...opts.commonjsConfig,
+  };
+
   let bundleOptions = {
     context: 'this',
     external: Object.keys(ROLLUP_GLOBALS),
     entry: opts.entry,
     plugins: [
         nodeResolve({ jsnext: true, module: true }),
-        commonjs({
-          include: [...opts.commonjsInclude],
-          exclude: [...opts.commonjsExclude],
-        }),
+        commonjs(ROLLUP_COMMONJS_CONFIG),
     ],
     onwarn: (warning) => {
         if (warning.code === 'THIS_IS_UNDEFINED') {

@@ -36,12 +36,8 @@ export class NgPackage {
     return this.ngPackageJson.lib.externals || {};
   }
 
-  public get libCommonjsInclude(): string[] {
-    return this.ngPackageJson.lib.commonjs && this.ngPackageJson.lib.commonjs.include || [];
-  }
-
-  public get libCommonjsExclude(): string[] {
-    return this.ngPackageJson.lib.commonjs && this.ngPackageJson.lib.commonjs.exclude || [];
+  public get libCommonjsConfig(): Object {
+    return this.ngPackageJson.lib.commonjs || {};
   }
 
   /** Package meta information */
