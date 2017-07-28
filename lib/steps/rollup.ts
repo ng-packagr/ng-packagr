@@ -294,21 +294,6 @@ export const rollup = (opts: RollupOptions) => {
     ...opts.externals,
   };
 
-
-  // function buildExcludeRegex(includes) {
-  //   const parsedIncludes: string[] = includes.map(lib => lib.replace(/[\/-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'));
-  //   const excludeRegExp = new RegExp('^(?!'+parsedIncludes.join('|')+').*$');
-  //   console.log(excludeRegExp.source)
-  //   return excludeRegExp;
-  // }
-
-  // const ROLLUP_COMMONJS_EXCLUDE = buildExcludeRegex(opts.commonjs);
-  const ROLLUP_COMMONJS_EXCLUDE = [
-    // commonjs symbols passed from the user's ng-package.json
-    ...opts.commonjsInclude
-  ];
-
-
   let bundleOptions = {
     context: 'this',
     external: Object.keys(ROLLUP_GLOBALS),
