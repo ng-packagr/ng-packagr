@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-pre.13"></a>
+# [1.0.0-pre.13](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.12...v1.0.0-pre.13) (2017-07-28)
+
+
+### Features
+
+* support rxjs operators with different import syntaxes (#82) ([d64aa40](https://github.com/dherges/ng-packagr/commit/d64aa40))
+
+
+
 <a name="1.0.0-pre.12"></a>
 # [1.0.0-pre.12](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.11...v1.0.0-pre.12) (2017-07-27)
 
