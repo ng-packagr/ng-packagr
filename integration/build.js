@@ -2,6 +2,7 @@ const path = require('path');
 process.env.DEBUG = true;
 
 const SAMPLES = [
+  path.resolve(__dirname, 'sample_commonjs', 'ng-package.json'),
   path.resolve(__dirname, 'sample_core', 'ng-package.json'),
   path.resolve(__dirname, 'sample_custom', 'ng-package.json'),
   path.resolve(__dirname, 'sample_material', 'ng-package.json'),

@@ -1,0 +1,12 @@
+{
+  "name": "@sample/commonjs",
+  "description": "A sample library with commonjs dependency",
+  "version": "1.0.0-pre.0",
+  "private": true,
+  "repository": "https://github.com/dherges/ng-packagr.git",
+  "peerDependencies": {
+    "class-transformer": "^0.1.7",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1"
+  }
+}
