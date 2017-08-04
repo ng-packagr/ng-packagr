@@ -1,7 +1,7 @@
-const fs = require('mz/fs');
-const path = require('path');
+import * as path from 'path';
 import * as ts from 'typescript';
 import { ScriptTarget, ModuleKind } from 'typescript';
+import { readFile, writeFile } from '../util/fs';
 import { debug } from '../util/log';
 
 /**
@@ -13,7 +13,7 @@ import { debug } from '../util/log';
 export const downlevelWithTsc = (inputFile: string, outputFile: string) => {
 
   return Promise.resolve(debug(`tsc ${inputFile} to ${outputFile}`))
-    .then(() => fs.readFile(inputFile))
+    .then(() => readFile(inputFile))
     .then((input) => ts.transpileModule(trimSourceMap(input.toString()), {
       fileName: path.basename(outputFile),
       moduleName: path.basename(outputFile, '.js'),
@@ -30,8 +30,8 @@ export const downlevelWithTsc = (inputFile: string, outputFile: string) => {
       sourceMap['sources'] = [path.basename(inputFile)];
 
       return Promise.all([
-        fs.writeFile(outputFile, transpiled.outputText),
-        fs.writeFile(`${outputFile}.map`, JSON.stringify(sourceMap))
+        writeFile(outputFile, transpiled.outputText),
+        writeFile(`${outputFile}.map`, JSON.stringify(sourceMap))
       ]);
     });
 

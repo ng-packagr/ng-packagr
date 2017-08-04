@@ -1,22 +1,10 @@
+import * as path from 'path';
 import { SchemaClass, SchemaClassFactory } from '@ngtools/json-schema';
 import { NgPackageConfig } from '../ng-package.schema';
 import { NgPackage } from '../model/ng-package';
-import { readJson, writeJson } from './json';
+import { findFromDirectory } from '../util/fs';
+import { readJson, writeJson } from '../util/json';
 
-const fs = require('fs');
-const path = require('path');
-
-const findFromDirectory = (dir: string, file: string, cb: any) => {
-
-  let fileName = path.resolve(dir, file);
-  fs.access(fileName, fs.constants.R_OK, (err) => {
-    if (err) {
-      findFromDirectory(path.resolve(dir, '..'), file, cb);
-    } else {
-      cb(fileName);
-    }
-  });
-};
 
 /**
  * Reads an Angular package definition file from 'ng-package.json'

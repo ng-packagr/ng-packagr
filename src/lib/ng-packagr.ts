@@ -1,3 +1,5 @@
+import * as path from 'path';
+
 // BUILD STEP IMPLEMENTATIONS
 import { processAssets } from './steps/assets';
 import { copyFiles } from './steps/copy';
@@ -7,7 +9,7 @@ import { rimraf } from './steps/rimraf';
 import { rollup } from './steps/rollup';
 import { remapSourcemap } from './steps/sorcery';
 import { downlevelWithTsc } from './steps/tsc';
-import { modifyJsonFiles } from './steps/json';
+import { modifyJsonFiles } from './util/json';
 
 
 // Logging
@@ -17,10 +19,6 @@ import { error, warn, info, success, debug } from './util/log';
 import { NgPackage } from './model/ng-package';
 import { NgPackageConfig } from './ng-package.schema';
 
-
-// There are no type definitions available for these imports.
-const fs = require('mz/fs');
-const path = require('path');
 
 
 /** CLI arguments passed to `ng-packagr` and `ngPackage()`. */
@@ -98,6 +96,7 @@ export const ngPackage = (opts: NgPackagrCliArguments): Promise<any> => {
     .then(() => copyFiles(`${ngPkg.src}/README.md`, ngPkg.dest))
     .then(() => copyFiles(`${ngPkg.src}/LICENSE`, ngPkg.dest))
     // 8. SOURCEMAPS: RELOCATE PATHS
+    // XX ... modifyJsonFiles() should maybe called 'relocateSourceMaps()' in 'steps' folder
     .then(() => modifyJsonFiles(`${ngPkg.dest}/**/*.js.map`, (sourceMap: any): any => {
       sourceMap['sources'] = sourceMap['sources']
         .map((path: string): string => path.replace('../ts',
