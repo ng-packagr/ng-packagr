@@ -81,9 +81,9 @@
     "publish:ci": "yarn prerelease && yarn postrelease",
     "samples": "integration/samples.sh",
     "samples:dev": "node integration/samples.js",
-    "samples:test": "TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --compilers ts:ts-node/register integration/sample_*/specs/**/*.ts",
+    "samples:test": "TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --compilers ts:ts-node/register integration/samples/*/specs/**/*.ts",
     "consumer": "integration/consumer.sh",
-    "test": "yarn build && yarn samples && yarn samples:test && yarn consumer",
+    "test": "yarn build && yarn samples && yarn samples:test",
     "commitmsg": "validate-commit-msg"
   }
 }
