@@ -18,9 +18,9 @@ const copy = (paths, opts) => {
 // copyfiles -f 'lib/ng-package.schema.json' dist
 // copyfiles 'lib/conf/**/*.json' dist",
 
-copy(['cli/*', 'dist'])
-  .then(() => copy(['lib/ng-package.schema.json', 'dist'], {up: true}))
-  .then(() => copy(['lib/conf/**/*.json', 'dist']))
+copy(['src/cli/*', 'dist'], {up: 1})
+  .then(() => copy(['src/lib/ng-package.schema.json', 'dist'], {up: 1}))
+  .then(() => copy(['src/lib/conf/**/*.json', 'dist'], {up: 1}))
   .catch((err) => {
     console.error("Cannot copy files", err);
     process.exit(1);
