@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-pre.14"></a>
+# [1.0.0-pre.14](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.13...v1.0.0-pre.14) (2017-08-07)
+
+
+### Bug Fixes
+
+* add 'let' to known rxjs operators ([9927f93](https://github.com/dherges/ng-packagr/commit/9927f93)), closes [#85](https://github.com/dherges/ng-packagr/issues/85)
+* move less from devDependencies to dependencies ([09ef8ce](https://github.com/dherges/ng-packagr/commit/09ef8ce)), closes [#88](https://github.com/dherges/ng-packagr/issues/88)
+* strip utf-8 bom when reading files ([cb34889](https://github.com/dherges/ng-packagr/commit/cb34889)), closes [#87](https://github.com/dherges/ng-packagr/issues/87)
+
+
+
 <a name="1.0.0-pre.13"></a>
 # [1.0.0-pre.13](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.12...v1.0.0-pre.13) (2017-07-28)
 
