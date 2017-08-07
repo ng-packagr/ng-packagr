@@ -2,14 +2,14 @@ import * as path from 'path';
 
 // BUILD STEP IMPLEMENTATIONS
 import { processAssets } from './steps/assets';
-import { copyFiles } from './steps/copy';
 import { ngc, prepareTsConfig } from './steps/ngc';
 import { createPackage, readPackage } from './steps/package';
-import { rimraf } from './steps/rimraf';
 import { rollup } from './steps/rollup';
 import { remapSourcemap } from './steps/sorcery';
 import { downlevelWithTsc } from './steps/tsc';
+import { copyFiles } from './util/copy';
 import { modifyJsonFiles } from './util/json';
+import { rimraf } from './util/rimraf';
 
 
 // Logging

@@ -1,5 +1,3 @@
-// XX: TODO ... this should be moved to util folder
-
 const glob = require('glob')
 import { readFile, writeFile } from '../util/fs';
 
