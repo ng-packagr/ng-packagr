@@ -1,17 +1,18 @@
-const fs = require('mz/fs');
-const path = require('path');
 const vfs = require('vinyl-fs');
+import * as path from 'path';
+import { debug, warn } from '../util/log';
+import { readFile } from '../util/fs';
 
+// Angular Inliner for Templates and Stylesheets
 const inlineNg2Template =  require('gulp-inline-ng2-template');
 
+// CSS Tools
 const autoprefixer = require('autoprefixer');
 const browserslist = require('browserslist');
 //const postcss      = require('postcss');
-import postcss = require('postcss');
+import postcss     = require('postcss');
 const sass         = require('node-sass');
 import * as less from 'less';
-
-import { debug, warn } from '../util/log';
 
 
 /**
@@ -113,18 +114,14 @@ const renderSass = (sassOpts: any): Promise<string> => {
 
 const renderLess = (lessOpts: any): Promise<string> => {
 
-  return new Promise((resolve, reject) => {
-
-    fs.readFile(lessOpts.filename, 'utf8', (err1, data) => {
-      if (err1) reject(err1);
-
-        less.render(data, lessOpts, (err2, result) => {
-        if (err2) {
-          reject(err2);
+  return readFile(lessOpts.filename)
+    .then((lessData: string) => new Promise<string>((resolve, reject) => {
+        less.render(lessData, lessOpts, (err, result) => {
+        if (err) {
+          reject(err);
         } else {
           resolve(result.css.toString());
         }
-      });
-    });
-  });
+      })
+    }));
 }

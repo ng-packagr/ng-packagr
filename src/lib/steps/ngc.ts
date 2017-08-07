@@ -1,7 +1,7 @@
 import { main as tsc } from '@angular/tsc-wrapped';
-import { readJson, writeJson } from './json';
-import { debug } from '../util/log';
 import { NgPackage } from '../model/ng-package';
+import { readJson, writeJson } from '../util/json';
+import { debug } from '../util/log';
 
 const path = require('path');
 
