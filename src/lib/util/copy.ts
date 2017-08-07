@@ -1,4 +1,4 @@
-const cpx = require("cpx");
+const cpx = require('cpx');
 
 export const copyFiles = (src: string, dest: string, options?: any): Promise<any> => {
 
