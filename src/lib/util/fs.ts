@@ -2,6 +2,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 const read = require('read-file');
 
+export const fileExists = (file: string): boolean => {
+
+  return fs.existsSync(file);
+}
+
 export const readFile = (file: string): Promise<string> => {
 
   return new Promise((resolve, reject) => {

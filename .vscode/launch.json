@@ -6,6 +6,20 @@
       "request": "launch",
       "name": "yarn samples:dev",
       "program": "${workspaceRoot}/integration/samples.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug samples:dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run-script",
+        "debug:samples:dev"
+      ],
+      "port": 9229,
+      "stopOnEntry": false,
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector"
     }
   ],
   "compounds": []

@@ -16,6 +16,10 @@ export class NgPackage {
     public packageJson: any
   ) {}
 
+  public get projectPath(): string {
+    return this.basePath;
+  }
+
   public get dest(): string {
     return path.resolve(this.basePath, this.ngPackageJson.dest);
   }
