@@ -1,24 +1,31 @@
 import { main as tsc } from '@angular/tsc-wrapped';
 import { NgPackage } from '../model/ng-package';
 import { readJson, writeJson } from '../util/json';
+import { fileExists } from '../util/fs';
 import { debug } from '../util/log';
+import * as path from 'path';
 
-const path = require('path');
 
+export const prepareTsConfig = async (ngPkg: NgPackage, outFile: string): Promise<string> => {
 
-export const prepareTsConfig = (ngPkg: NgPackage, outFile: string): Promise<string> => {
+  const defaultConfigs = await readJson(path.resolve(__dirname, '..', 'conf', 'tsconfig.ngc.json'));
 
-  return readJson(path.resolve(__dirname, '..', 'conf', 'tsconfig.ngc.json'))
-    .then((tsConfig: any) => {
+  defaultConfigs['angularCompilerOptions']['flatModuleId'] = ngPkg.packageJson.name;
+  defaultConfigs['angularCompilerOptions']['flatModuleOutFile'] = `${ngPkg.flatModuleFileName}.js`;
 
-      tsConfig['angularCompilerOptions']['flatModuleId'] = ngPkg.packageJson.name;
-      tsConfig['angularCompilerOptions']['flatModuleOutFile'] = `${ngPkg.flatModuleFileName}.js`;
+  defaultConfigs['files'] = [ ngPkg.ngPackageJson.lib.entryFile ];
 
-      tsConfig['files'] = [ ngPkg.ngPackageJson.lib.entryFile ];
+  const localTSConfigPath = path.resolve(ngPkg.projectPath, 'tsconfig.json');
+  if (fileExists(localTSConfigPath)) {
+    const localConfigs = await readJson(localTSConfigPath);
+    if (localConfigs['exclude'] instanceof Array) {
+      defaultConfigs['exclude'] = [].concat(defaultConfigs['exclude'], localConfigs['exclude']);
+    }
+  }
 
-      return writeJson(tsConfig, outFile)
-        .then(() => Promise.resolve(outFile));
-    });
+  await writeJson(defaultConfigs, outFile);
+
+  return outFile;
 }
 
 
@@ -27,10 +34,10 @@ export const prepareTsConfig = (ngPkg: NgPackage, outFile: string): Promise<stri
  *
  * @param basePath
  */
-export const ngc = (tsconfig: string, basePath: string): Promise<string> => {
+export const ngc = async (tsconfig: string, basePath: string): Promise<string> => {
   debug(`ngc ${tsconfig}, { basePath: ${basePath} })`);
 
-  return tsc(tsconfig, { basePath })
-    .then(() => readJson(tsconfig)
-      .then(v => `${basePath}/${v.compilerOptions.outDir}/${v.angularCompilerOptions.flatModuleOutFile}`));
+  await tsc(tsconfig, { basePath });
+  const configs = await readJson(tsconfig);
+  return `${basePath}/${configs.compilerOptions.outDir}/${configs.angularCompilerOptions.flatModuleOutFile}`;
 }

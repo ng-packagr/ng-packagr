@@ -84,6 +84,7 @@
     "samples:test": "TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --compilers ts:ts-node/register integration/samples/*/specs/**/*.ts",
     "consumer": "integration/consumer.sh",
     "test": "yarn build && yarn samples && yarn samples:test",
+    "debug:samples:dev": "node --inspect integration/samples.js",
     "commitmsg": "validate-commit-msg"
   }
 }
