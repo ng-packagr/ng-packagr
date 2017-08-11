@@ -1,6 +1,5 @@
 #!/bin/bash
-node dist/cli/ng-packagr.js -p integration/samples/core/ng-package.json
-node dist/cli/ng-packagr.js -p integration/samples/custom/ng-package.json
-node dist/cli/ng-packagr.js -p integration/samples/material/ng-package.json
-node dist/cli/ng-packagr.js -p integration/samples/rxjs/ng-package.json
-node dist/cli/ng-packagr.js -p integration/samples/typings/ng-package.json
+for D in `find ./integration/samples/* -maxdepth 0 -type d`
+do
+    node dist/cli/ng-packagr.js -p ${D}/ng-package.json
+done
