@@ -1,9 +1,8 @@
+import * as path from 'path';
 import { main as tsc } from '@angular/tsc-wrapped';
 import { NgPackage } from '../model/ng-package';
 import { readJson, writeJson } from '../util/json';
 import { debug } from '../util/log';
-
-const path = require('path');
 
 
 export const prepareTsConfig = (ngPkg: NgPackage, outFile: string): Promise<string> => {
@@ -14,7 +13,7 @@ export const prepareTsConfig = (ngPkg: NgPackage, outFile: string): Promise<stri
       tsConfig['angularCompilerOptions']['flatModuleId'] = ngPkg.packageJson.name;
       tsConfig['angularCompilerOptions']['flatModuleOutFile'] = `${ngPkg.flatModuleFileName}.js`;
 
-      tsConfig['files'] = [ ngPkg.ngPackageJson.lib.entryFile ];
+      tsConfig['files'] = [ ngPkg.entryFile ];
 
       return writeJson(tsConfig, outFile)
         .then(() => Promise.resolve(outFile));
