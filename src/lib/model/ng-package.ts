@@ -1,3 +1,4 @@
+import { SchemaClass } from '@ngtools/json-schema';
 import { NgPackageConfig } from '../../ng-package.schema';
 const path = require('path');
 
@@ -5,35 +6,56 @@ const SCOPE_PREFIX = '@';
 const SCOPE_NAME_SEPARATOR = '/';
 
 
-/** POVO (plain-old value object) of the Angular package being built. */
+/** POVO (plain-old value object :-)) of the Angular package being built. */
 export class NgPackage {
 
   constructor(
-    private basePath: string,
-    /** Contents of `ng-package.json` file. */
+    /** Unmodified contents of the project's `package.json` file. */
+    public packageJson: any,
+    /** Unmodified contents of the project's `ng-package.json` file. */
     public ngPackageJson: NgPackageConfig,
-    /** Contents of `package.json` file. */
-    public packageJson: any
+    private basePath: string,
+    private $schema: SchemaClass<NgPackageConfig>
   ) {}
 
+  /*
+  const foo = this.$schema.$$get('lib.entryFile'); // --> "src/public_api.ts"
+  const bar = this.$schema.$$get('lib'); // --> undefined
+  console.log(foo);
+  console.log(bar);
+  */
+
   public get dest(): string {
-    return path.resolve(this.basePath, this.ngPackageJson.dest);
+    return path.resolve(this.basePath, this.$schema.$$get('dest'));
   }
 
   public get src(): string {
-    return path.resolve(this.basePath, this.ngPackageJson.src);
+    return path.resolve(this.basePath, this.$schema.$$get('src'));
   }
 
   public get workingDirectory(): string {
-    return path.resolve(this.basePath, this.ngPackageJson.workingDirectory);
+    return path.resolve(this.basePath, this.$schema.$$get('workingDirectory'));
   }
 
   public get flatModuleFileName(): string {
-    return path.basename(this.ngPackageJson.lib.flatModuleFile || this.meta.name);
+    let name: string = this.$schema.$$get('lib.flatModuleFile');
+    if (!name) {
+      name = this.meta.name;
+    }
+
+    return path.basename(name);
   }
 
   public get libExternals(): Object {
-    return this.ngPackageJson.lib.externals || {};
+    if (this.ngPackageJson.lib) {
+      return this.ngPackageJson.lib.externals;
+    } else {
+      return {};
+    }
+  }
+
+  public get entryFile(): string {
+    return this.$schema.$$get('lib.entryFile');
   }
 
   /** Package meta information */
