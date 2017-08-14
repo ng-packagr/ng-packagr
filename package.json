@@ -74,7 +74,7 @@
     "prebuild": "rimraf dist && yarn schema",
     "build": "tsc -p tsconfig.packagr.json",
     "postbuild": "node scripts/postbuild.js",
-    "schema": "json2ts --input src/lib/ng-package.schema.json --output src/lib/ng-package.schema.ts",
+    "schema": "json2ts --input src/ng-package.schema.json --output src/ng-package.schema.ts",
     "prerelease": "yarn build",
     "release": "standard-version --message 'chore: cut release for v%s' --prerelease pre",
     "postrelease": "node scripts/prepublish.js",

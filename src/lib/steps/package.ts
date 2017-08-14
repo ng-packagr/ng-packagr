@@ -1,43 +1,35 @@
 import * as path from 'path';
 import { SchemaClass, SchemaClassFactory } from '@ngtools/json-schema';
-import { NgPackageConfig } from '../ng-package.schema';
+import { NgPackageConfig } from '../../ng-package.schema';
 import { NgPackage } from '../model/ng-package';
-import { findFromDirectory } from '../util/fs';
 import { readJson, writeJson } from '../util/json';
 
+const schemaPromise = readJson(path.resolve(__dirname, '..', '..', 'ng-package.schema.json'))
+  .then((jsonSchema: any) => SchemaClassFactory<NgPackageConfig>(jsonSchema));
 
 /**
  * Reads an Angular package definition file from 'ng-package.json'
  *
- * @param file `ng-package.json` definition file
+ * @param file path pointing to `ng-package.json` file
  */
 export const readPackage = (file: string): Promise<NgPackage> => {
   const base = path.dirname(file);
 
-  return readJson(file)
-    .then((ngPkg: NgPackageConfig) => {
-      // resolve pathes relative to `ng-package.json` file
-      const dir = path.resolve(base, ngPkg.src || '.');
+  // read 'ng-package.json'
+  return readJson(file).then((ngPkg: NgPackageConfig) => {
+    // resolve pathes relative to `ng-package.json` file
+    const dir = path.resolve(base, ngPkg.src || '.');
 
-      return readJson(`${dir}/package.json`)
-        .then((pkg: any) => {
+    // read 'package.json'
+    return readJson(path.resolve(dir, 'package.json')).then((pkg: any) => {
+      // read 'ng-package.schema.json'
+      return schemaPromise.then((SchemaClass) => {
+        const schema = new SchemaClass(ngPkg);
 
-          return new Promise((resolve, reject) => {
-
-            findFromDirectory(__dirname, 'ng-package.schema.json', (fileName: string) => {
-              resolve(fileName);
-            });
-          })
-          .then((schemaFileName: string) => readJson(schemaFileName))
-          .then((schemaJson: any) => {
-            const NgPackageSchema = SchemaClassFactory(schemaJson);
-            const schema: SchemaClass<NgPackageConfig> = new NgPackageSchema(ngPkg);
-
-            return Promise.resolve(new NgPackage(base, schema.$$root(), pkg));
-          });
-
-        });
+        return Promise.resolve(new NgPackage(pkg, ngPkg, base, schema));
+      });
     });
+  });
 }
 
 
@@ -51,16 +43,14 @@ export const readPackage = (file: string): Promise<NgPackage> => {
  */
 export const createPackage = (src: string, dest: string, additionalProperties?: {}): Promise<any> => {
 
-  return readJson(`${src}/package.json`)
-    .then((packageJson) => {
+  return readJson(path.resolve(src, 'package.json')).then((packageJson) => {
+    // set additional properties
+    if (additionalProperties) {
+      Object.keys(additionalProperties).forEach((key) => {
+        packageJson[key] = additionalProperties[key];
+      });
+    }
 
-      // set additional properties
-      if (additionalProperties) {
-        Object.keys(additionalProperties).forEach((key) => {
-          packageJson[key] = additionalProperties[key];
-        });
-      }
-
-      return writeJson(packageJson, `${dest}/package.json`);
-    });
+    return writeJson(packageJson, `${dest}/package.json`);
+  });
 }
