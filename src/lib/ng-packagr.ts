@@ -17,7 +17,7 @@ import { error, warn, info, success, debug } from './util/log';
 
 // `ng-package.json` config
 import { NgPackage } from './model/ng-package';
-import { NgPackageConfig } from './ng-package.schema';
+import { NgPackageConfig } from '../ng-package.schema';
 
 
 

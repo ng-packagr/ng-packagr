@@ -14,7 +14,7 @@ require('ts-node').register({
   project: path.join(__dirname, '..', 'tsconfig.packagr.json')
 });
 
-const ngPackagr = require('../lib/ng-packagr');
+const ngPackagr = require('../src/lib/ng-packagr');
 
 let promise = Promise.resolve();
 while (SAMPLES.length > 0) {
