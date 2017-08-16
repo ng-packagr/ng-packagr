@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-pre.15"></a>
+# [1.0.0-pre.15](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.14...v1.0.0-pre.15) (2017-08-16)
+
+
+### Bug Fixes
+
+* move ng-package.schema.json to dist root directory ([ad6325b](https://github.com/dherges/ng-packagr/commit/ad6325b))
+* read json config values thru `schema.$$get()` ([0c3130c](https://github.com/dherges/ng-packagr/commit/0c3130c))
+
+
+### Features
+
+* update rollup to version 0.46.0 ([1f25f7a](https://github.com/dherges/ng-packagr/commit/1f25f7a))
+* update rollup to version 0.47.0 ([29a8901](https://github.com/dherges/ng-packagr/commit/29a8901))
+
+
+### BREAKING CHANGES
+
+* the `ng-package.schema.json` was accidentally moved to `lib` folder in a previous release. Restore it in its original location!
+
+
+
 <a name="1.0.0-pre.14"></a>
 # [1.0.0-pre.14](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.13...v1.0.0-pre.14) (2017-08-07)
 
