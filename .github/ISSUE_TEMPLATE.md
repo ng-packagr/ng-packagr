@@ -1,22 +1,23 @@
-#### Type of Issue
+## Type of Issue
 
 - [ ] Bug Report
 - [ ] Feature Request
 
 
-#### Description
+## Description
 
 _please describe the error that you encountered_
 
 
 #### How To Reproduce
 
-_please include instructions how to reproduce_
+_please include instructions how to reproduce / for features: do you have a first draft or idea how to implement?_
 
 
 #### Expected Behaviour
 
 _please describe what behaviour or result you expected_
+
 
 #### Version Information
 
@@ -28,4 +29,4 @@ rxjs:
 zone.js:
 ```
 
-(please include any version information that might be relevant, e.g. other third-party libraries)
+_please include any version information that might be relevant, e.g. other third-party libraries_
