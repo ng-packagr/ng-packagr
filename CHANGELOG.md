@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-pre.16"></a>
+# [1.0.0-pre.16](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.15...v1.0.0-pre.16) (2017-08-22)
+
+
+### Features
+
+* update rollup to version ^0.48.0 ([9110899](https://github.com/dherges/ng-packagr/commit/9110899))
+
+
+
 <a name="1.0.0-pre.15"></a>
 # [1.0.0-pre.15](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.14...v1.0.0-pre.15) (2017-08-16)
 
