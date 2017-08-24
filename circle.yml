@@ -16,7 +16,6 @@ test:
   override:
     - yarn test
   post:
-    - mkdir $CIRCLE_ARTIFACTS
     - cp -r --parents integration/samples/**/dist $CIRCLE_ARTIFACTS
     - cp -r dist $CIRCLE_ARTIFACTS
 
