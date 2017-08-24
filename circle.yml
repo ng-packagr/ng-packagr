@@ -15,6 +15,9 @@ dependencies:
 test:
   override:
     - yarn test
+  post:
+    - cp -r --parents integration/samples/**/dist $CIRCLE_ARTIFACTS
+    - cp -r dist $CIRCLE_ARTIFACTS
 
 deployment:
   npm:
