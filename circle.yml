@@ -17,7 +17,7 @@ test:
     - yarn test
   post:
     - mkdir $CIRCLE_ARTIFACTS/builds
-    - cp -r integration/samples/**/dist $CIRCLE_ARTIFACTS/builds
+    - cp -r --parents integration/samples/**/dist $CIRCLE_ARTIFACTS/builds
     - cp -r dist $CIRCLE_ARTIFACTS/ng-packagr-dist
 
 deployment:
