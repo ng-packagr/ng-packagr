@@ -59,6 +59,7 @@
     "@types/sinon": "^2.3.0",
     "chai": "^4.0.1",
     "copyfiles": "^1.2.0",
+    "cross-env": "^5.0.5",
     "husky": "^0.14.3",
     "jasmine": "^2.6.0",
     "json-schema-to-typescript": "^4.4.0",
@@ -81,7 +82,7 @@
     "publish:ci": "yarn prerelease && yarn postrelease",
     "samples": "integration/samples.sh",
     "samples:dev": "node integration/samples.js",
-    "samples:test": "TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --compilers ts:ts-node/register integration/samples/*/specs/**/*.ts",
+    "samples:test": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --compilers ts:ts-node/register integration/samples/*/specs/**/*.ts",
     "consumer": "integration/consumer.sh",
     "test": "yarn build && yarn samples && yarn samples:test",
     "commitmsg": "validate-commit-msg"
