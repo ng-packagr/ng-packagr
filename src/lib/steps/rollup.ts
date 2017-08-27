@@ -28,7 +28,7 @@ export const rollup = (opts: RollupOptions) => {
   let bundleOptions = {
     context: 'this',
     external: Object.keys(globals),
-    entry: opts.entry,
+    input: opts.entry,
     plugins: [
         nodeResolve({ jsnext: true, module: true }),
     ],
@@ -44,12 +44,12 @@ export const rollup = (opts: RollupOptions) => {
   let writeOptions = {
     // Keep the moduleId empty because we don't want to force developers to a specific moduleId.
     moduleId: '',
-    moduleName: `${opts.moduleName}`,
-    banner: '',
+    name: `${opts.moduleName}`,
+    file: opts.dest,
     format: opts.format,
-    dest: opts.dest,
+    banner: '',
     globals: globals,
-    sourceMap: true
+    sourcemap: true
   };
 
   debug(`rollup ${opts.entry} to ${opts.dest} (${opts.format})`);
