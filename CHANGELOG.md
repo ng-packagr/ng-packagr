@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0-pre.17"></a>
+# [1.0.0-pre.17](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.16...v1.0.0-pre.17) (2017-08-28)
+
+
+### Bug Fixes
+
+* **package:** update rollup to version 0.49.0 ([b5b920c](https://github.com/dherges/ng-packagr/commit/b5b920c))
+
+
+### Features
+
+* support external dependency '[@angular](https://github.com/angular)/common/http' by default ([df44752](https://github.com/dherges/ng-packagr/commit/df44752))
+
+
+
 <a name="1.0.0-pre.16"></a>
 # [1.0.0-pre.16](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.15...v1.0.0-pre.16) (2017-08-22)
 
