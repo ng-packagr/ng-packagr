@@ -56,6 +56,11 @@ $ node_modules/.bin/ng-packagr -p ng-package.json
 Pathes are resolved relative to the location of the `ng-package.json` file.
 The `package.json` describing the library should be located in the same folder, next to `ng-package.json`.
 
+#### More Examples
+
+Nikolas LeBlanc has written a story on medium.com on [Building an Angular 4 Component Library with the Angular CLI and ng-packagr](https://medium.com/@ngl817/building-an-angular-4-component-library-with-the-angular-cli-and-ng-packagr-53b2ade0701e)
+
+The demo repository [ng-packaged](https://github.com/dherges/ng-packaged) shows Angular CLI together with `ng-packagr`.
 
 ## Features
 
