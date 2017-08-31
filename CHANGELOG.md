@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/dherges/ng-packagr/compare/v1.0.0...v1.0.1) (2017-08-31)
+
+
+### Bug Fixes
+
+* make a dummy release for 1.0.1 ([a6d6893](https://github.com/dherges/ng-packagr/commit/a6d6893))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/dherges/ng-packagr/compare/v1.0.0-pre.17...v1.0.0) (2017-08-31)
 
