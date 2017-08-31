@@ -77,7 +77,7 @@
     "postbuild": "node scripts/postbuild.js",
     "schema": "json2ts --input src/ng-package.schema.json --output src/ng-package.schema.ts",
     "prerelease": "yarn build",
-    "release": "standard-version --message 'chore: cut release for v%s' --prerelease pre",
+    "release": "standard-version --message 'chore: cut release for v%s'",
     "postrelease": "node scripts/prepublish.js",
     "publish:ci": "yarn prerelease && yarn postrelease",
     "samples": "integration/samples.sh",
