@@ -62,6 +62,12 @@ Nikolas LeBlanc has written a story on medium.com on [Building an Angular 4 Comp
 
 The demo repository [ng-packaged](https://github.com/dherges/ng-packaged) shows Angular CLI together with `ng-packagr`.
 
+#### Further documentation
+
+We keep track of user questions in GitHub's issue tracker and try to build a documentation from it.
+[Explore issues w/ label documentation](https://github.com/dherges/ng-packagr/issues?q=label%3Adocumentation%20).
+
+
 ## Features
 
  - :gift: Implements [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview)
