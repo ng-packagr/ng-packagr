@@ -13,6 +13,7 @@ const browserslist = require('browserslist');
 import postcss     = require('postcss');
 const sass         = require('node-sass');
 import * as less from 'less';
+import * as stylus from 'stylus';
 
 
 /**
@@ -36,7 +37,7 @@ export const processAssets = (src: string, dest: string): Promise<any> => {
         styleProcessor: (path, ext, file, cb) => {
 
           debug(`render stylesheet ${path}`);
-          const render = pickRenderer(path, ext, file);
+          const render = pickRenderer(path, ext, file, src);
 
           debug(`postcss with autoprefixer for ${path}`);
           const browsers = browserslist(undefined, { path });
@@ -77,7 +78,7 @@ const sassImporter = (url: string): any => {
 }
 
 
-const pickRenderer = (filePath: string, ext: string[], file: string): Promise<string> => {
+const pickRenderer = (filePath: string, ext: string[], file: string, ctx: string): Promise<string> => {
 
   switch (path.extname(filePath)) {
 
@@ -89,6 +90,11 @@ const pickRenderer = (filePath: string, ext: string[], file: string): Promise<st
     case '.less':
       debug(`rendering less for ${filePath}`);
       return renderLess({ filename: filePath });
+
+    case '.styl':
+    case '.stylus':
+      debug(`rendering styl for ${filePath}`);
+      return renderStylus({ filename: filePath, ctx });
 
     case '.css':
     default:
@@ -124,4 +130,19 @@ const renderLess = (lessOpts: any): Promise<string> => {
         }
       })
     }));
+}
+
+const renderStylus = (stylusOpts: any): Promise<string> => {
+  return readFile(stylusOpts.filename)
+    .then((stylusData: string) => new Promise<string>((resolve, reject) => {
+      stylus(stylusData)
+        .include(stylusOpts.ctx)
+        .render(function(err, css) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(css);
+          }
+        });
+      }));
 }

@@ -49,6 +49,14 @@ describe(`sample-custom`, () => {
       expect(baz.styles[0]).to.not.contain(`@red: #ff0000`);
     });
 
+    it(`should contain styl-rendered styles`, () => {
+      const fooBar = METADATA['metadata']['FooBarComponent']['decorators'][0]['arguments'][0];
+
+      expect(fooBar).to.be.ok;
+      expect(fooBar.styles[0]).to.contain(`color: #f00;`);
+      expect(fooBar.styles[0]).to.not.contain(`color: $color`);
+    });
+
     it(`should re-export 'InternalService' with an auto-generated symbol`, () => {
       expect(METADATA['metadata']['ɵa']).to.be.ok;
       expect(METADATA['origins']['ɵa']).to.equal('./internal.service');
