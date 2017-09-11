@@ -78,7 +78,7 @@ const sassImporter = (url: string): any => {
 }
 
 
-const pickRenderer = (filePath: string, ext: string[], file: string, ctx: string): Promise<string> => {
+const pickRenderer = (filePath: string, ext: string[], file: string, ctx?: string): Promise<string> => {
 
   switch (path.extname(filePath)) {
 
