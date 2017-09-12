@@ -79,6 +79,7 @@ We keep track of user questions in GitHub's issue tracker and try to build a doc
  - :sparkles: CSS Features
    - :camel: Runs [SCSS](http://sass-lang.com/guide) preprocessor, supporting the [relative `~` import syntax](https://github.com/webpack-contrib/sass-loader#imports)
    - :elephant: Runs [less](http://lesscss.org/#getting-started) preprocessor
+   - :snake: Runs [Stylus](http://stylus-lang.com) preprocessor, resolves relative paths relative to ng-package.json
    - :monkey: Adds vendor-specific prefixes w/ [autoprefixer](https://github.com/postcss/autoprefixer#autoprefixer-) and [browserslist](https://github.com/ai/browserslist#queries) &mdash; just tell your desired `.browserslistrc`
 
 

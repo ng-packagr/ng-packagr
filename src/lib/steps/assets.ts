@@ -13,6 +13,7 @@ const browserslist = require('browserslist');
 import postcss     = require('postcss');
 const sass         = require('node-sass');
 import * as less from 'less';
+import * as stylus from 'stylus';
 
 
 /**
@@ -36,7 +37,7 @@ export const processAssets = (src: string, dest: string): Promise<any> => {
         styleProcessor: (path, ext, file, cb) => {
 
           debug(`render stylesheet ${path}`);
-          const render = pickRenderer(path, ext, file);
+          const render = pickRenderer(path, ext, file, src);
 
           debug(`postcss with autoprefixer for ${path}`);
           const browsers = browserslist(undefined, { path });
@@ -77,7 +78,7 @@ const sassImporter = (url: string): any => {
 }
 
 
-const pickRenderer = (filePath: string, ext: string[], file: string): Promise<string> => {
+const pickRenderer = (filePath: string, ext: string[], file: string, srcPath: string): Promise<string> => {
 
   switch (path.extname(filePath)) {
 
@@ -89,6 +90,11 @@ const pickRenderer = (filePath: string, ext: string[], file: string): Promise<st
     case '.less':
       debug(`rendering less for ${filePath}`);
       return renderLess({ filename: filePath });
+
+    case '.styl':
+    case '.stylus':
+      debug(`rendering styl for ${filePath}`);
+      return renderStylus({ filename: filePath, root: srcPath });
 
     case '.css':
     default:
@@ -124,4 +130,31 @@ const renderLess = (lessOpts: any): Promise<string> => {
         }
       })
     }));
+}
+
+/**
+ * filename - absolute path to file
+ * root - root folder of project (where ng-package.json is located)
+ */
+const renderStylus = ({ filename, root }): Promise<string> => {
+  return readFile(filename)
+    .then((stylusData: string) => new Promise<string>((resolve, reject) => {
+      stylus(stylusData)
+        // add paths for resolve
+        .include(root)
+        .include('.')
+        // add support for resolving plugins from node_modules
+        .include('node_modules')
+        .set('filename', filename)
+        // turn on url resolver in stylus, same as flag --resolve-url
+        .set('resolve url', true)
+        .define('url', stylus.resolver())
+        .render((err, css) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(css);
+          }
+        });
+      }));
 }

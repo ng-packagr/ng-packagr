@@ -49,6 +49,34 @@ describe(`sample-custom`, () => {
       expect(baz.styles[0]).to.not.contain(`@red: #ff0000`);
     });
 
+    describe(`stylus styles`, () => {
+      it(`should contain rendered styles`, () => {
+        const fooBar = METADATA['metadata']['FooBarComponent']['decorators'][0]['arguments'][0];
+
+        expect(fooBar).to.be.ok;
+        expect(fooBar.styles[0]).to.contain(`color: #f00;`);
+        expect(fooBar.styles[0]).to.not.contain(`color: $color`);
+      });
+
+      it(`should contain imported styles`, () => {
+        const fooBar = METADATA['metadata']['FooBarComponent']['decorators'][0]['arguments'][0];
+
+        expect(fooBar).to.be.ok;
+        expect(fooBar.styles[0]).to.contain(`background-color: #008000;`);
+        expect(fooBar.styles[0]).to.not.contain(`background-color: $color-green;`);
+      });
+
+      it(`should contain imported image path`, () => {
+        const fooBar = METADATA['metadata']['FooBarComponent']['decorators'][0]['arguments'][0];
+
+        expect(fooBar).to.be.ok;
+        expect(fooBar.styles[0]).to.contain(`background-image: url("../styles/assets/test.png");`);
+        expect(fooBar.styles[0]).to.not.contain(`background-color: url(./assets/test.png);`);
+      });
+    });
+
+
+
     it(`should re-export 'InternalService' with an auto-generated symbol`, () => {
       expect(METADATA['metadata']['ɵa']).to.be.ok;
       expect(METADATA['origins']['ɵa']).to.equal('./internal.service');
