@@ -78,7 +78,7 @@ const sassImporter = (url: string): any => {
 }
 
 
-const pickRenderer = (filePath: string, ext: string[], file: string, ctx?: string): Promise<string> => {
+const pickRenderer = (filePath: string, ext: string[], file: string, srcPath: string): Promise<string> => {
 
   switch (path.extname(filePath)) {
 
@@ -94,7 +94,7 @@ const pickRenderer = (filePath: string, ext: string[], file: string, ctx?: strin
     case '.styl':
     case '.stylus':
       debug(`rendering styl for ${filePath}`);
-      return renderStylus({ filename: filePath, ctx });
+      return renderStylus({ filename: filePath, root: srcPath });
 
     case '.css':
     default:
@@ -132,12 +132,24 @@ const renderLess = (lessOpts: any): Promise<string> => {
     }));
 }
 
-const renderStylus = (stylusOpts: any): Promise<string> => {
-  return readFile(stylusOpts.filename)
+/**
+ * filename - absolute path to file
+ * root - root folder of project (where ng-package.json is located)
+ */
+const renderStylus = ({ filename, root }): Promise<string> => {
+  return readFile(filename)
     .then((stylusData: string) => new Promise<string>((resolve, reject) => {
       stylus(stylusData)
-        .include(stylusOpts.ctx)
-        .render(function(err, css) {
+        // add paths for resolve
+        .include(root)
+        .include('.')
+        // add support for resolving plugins from node_modules
+        .include('node_modules')
+        .set('filename', filename)
+        // turn on url resolver in stylus, same as flag --resolve-url
+        .set('resolve url', true)
+        .define('url', stylus.resolver())
+        .render((err, css) => {
           if (err) {
             reject(err);
           } else {
