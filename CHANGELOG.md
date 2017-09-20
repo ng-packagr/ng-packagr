@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/dherges/ng-packagr/compare/v1.1.0...v1.2.0) (2017-09-20)
+
+
+### Features
+
+* add rollup commonjs plugin to support all library types ([#121](https://github.com/dherges/ng-packagr/issues/121)) ([3f87f5e](https://github.com/dherges/ng-packagr/commit/3f87f5e))
+* update rollup to version 0.50.0 ([#124](https://github.com/dherges/ng-packagr/issues/124)) ([fb9f529](https://github.com/dherges/ng-packagr/commit/fb9f529))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/dherges/ng-packagr/compare/v1.0.1...v1.1.0) (2017-09-12)
 
