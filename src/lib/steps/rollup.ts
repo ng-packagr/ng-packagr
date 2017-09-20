@@ -1,5 +1,6 @@
 const __rollup = require('rollup');
 const nodeResolve = require('rollup-plugin-node-resolve');
+const commonJs = require('rollup-plugin-commonjs');
 import { debug } from '../util/log';
 import { ROLLUP_GLOBALS } from '../conf/rollup.globals';
 
@@ -31,6 +32,7 @@ export const rollup = (opts: RollupOptions) => {
     input: opts.entry,
     plugins: [
         nodeResolve({ jsnext: true, module: true }),
+        commonJs(),
     ],
     onwarn: (warning) => {
         if (warning.code === 'THIS_IS_UNDEFINED') {
