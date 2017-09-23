@@ -1,36 +1,32 @@
 import * as fs from 'fs';
 import * as path from 'path';
 const read = require('read-file');
+import { promisify } from './promisify';
 
 export const readFile = (file: string): Promise<string> => {
 
-  return new Promise<string>((resolve, reject) => {
-
+  return promisify<string>((resolveOrReject) => {
     const fileReadOptions = {
       encoding: 'utf8',
       normalize: true
     };
     read(file, fileReadOptions, (err, buffer?: Buffer) => {
-      if (err) {
-        reject(err);
+      if (buffer) {
+        resolveOrReject(err, buffer.toString());
       } else {
-        resolve(buffer!.toString());
+        resolveOrReject(err);
       }
     });
   });
+
 };
 
-export const writeFile = (file: string, content: any): Promise<void> => {
+export const writeFile = (file: string, content: any): Promise<string> => {
 
-  return new Promise<void>((resolve, reject): void => {
-    fs.writeFile(file, content, (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
+  return promisify<string>((resolveOrReject) => {
+    fs.writeFile(file, content, resolveOrReject);
   });
+
 };
 
 
