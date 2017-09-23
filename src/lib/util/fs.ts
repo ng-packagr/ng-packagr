@@ -4,27 +4,31 @@ const read = require('read-file');
 
 export const readFile = (file: string): Promise<string> => {
 
-  return new Promise((resolve, reject) => {
+  return new Promise<string>((resolve, reject) => {
 
-    read(file, { encoding: 'utf8', normalize: true }, (err, buffer: Buffer) => {
+    const fileReadOptions = {
+      encoding: 'utf8',
+      normalize: true
+    };
+    read(file, fileReadOptions, (err, buffer?: Buffer) => {
       if (err) {
         reject(err);
+      } else {
+        resolve(buffer!.toString());
       }
-
-      resolve(buffer.toString());
     });
   });
 };
 
-export const writeFile = (file: string, content: any): Promise<any> => {
+export const writeFile = (file: string, content: any): Promise<void> => {
 
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject): void => {
     fs.writeFile(file, content, (err) => {
       if (err) {
         reject(err);
+      } else {
+        resolve();
       }
-
-      resolve();
     });
   });
 };
