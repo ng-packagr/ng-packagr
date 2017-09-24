@@ -1,29 +1,16 @@
 const rm = require('rimraf');
-import { debug } from '../util/log';
+import { promisify } from './promisify';
+import { debug } from './log';
 
 export const rimraf = (f: any, opts?: any) => {
+  debug(`rimraf ${f}`);
 
-  return new Promise((resolve, reject) => {
-    debug(`rimraf ${f}`);
-
+  return promisify<void>((resolveOrReject) => {
     if (opts) {
-      rm(f, opts, (err) => {
-        if (err) {
-          reject(err);
-        }
-
-        resolve();
-      });
+      rm(f, opts, resolveOrReject);
     } else {
-      rm(f, (err) => {
-        if (err) {
-          reject(err);
-        }
-
-        resolve();
-      });
+      rm(f, resolveOrReject);
     }
-
   });
 
-}
+};
