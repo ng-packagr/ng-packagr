@@ -53,6 +53,8 @@
     "@angular/core": "^4.2.0",
     "@angular/http": "^4.2.0",
     "@angular/platform-browser": "^4.2.0",
+    "@commitlint/cli": "^3.2.0",
+    "@commitlint/config-angular": "^3.1.1",
     "@types/chai": "^4.0.0",
     "@types/jasmine": "^2.5.51",
     "@types/less": "^0.0.32",
@@ -69,7 +71,6 @@
     "rxjs": "^5.4.0",
     "sinon": "^4.0.0",
     "standard-version": "^4.0.0",
-    "validate-commit-msg": "^2.12.2",
     "zone.js": "^0.8.10"
   },
   "private": true,
@@ -87,6 +88,6 @@
     "samples:test": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --compilers ts:ts-node/register integration/samples/*/specs/**/*.ts",
     "consumer": "integration/consumer.sh",
     "test": "yarn build && yarn samples && yarn samples:test",
-    "commitmsg": "validate-commit-msg"
+    "commitmsg": "commitlint -e"
   }
 }
