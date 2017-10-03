@@ -88,7 +88,7 @@
     "samples:dev": "node integration/samples.js",
     "samples:test": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --compilers ts:ts-node/register integration/samples/*/specs/**/*.ts",
     "consumer": "integration/consumer.sh",
-    "test": "yarn build && yarn samples && yarn samples:test",
+    "test": "yarn build && yarn samples && yarn samples:test && yarn consumer",
     "commitmsg": "commitlint -e"
   }
 }
