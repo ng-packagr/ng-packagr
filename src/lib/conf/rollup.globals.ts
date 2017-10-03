@@ -5,16 +5,33 @@
  */
 export const ROLLUP_GLOBALS = {
   // Angular dependencies
-  '@angular/animations':  'ng.animations',
-  '@angular/core':        'ng.core',
-  '@angular/common':      'ng.common',
-  '@angular/common/http': 'ng.common.http',
-  '@angular/forms':       'ng.forms',
-  '@angular/http':        'ng.http',
+  '@angular/animations':      'ng.animations',
+  '@angular/core':            'ng.core',
+  '@angular/common':          'ng.common',
+  '@angular/common/http':     'ng.common.http',
+  '@angular/cdk':             'ng.cdk',
+  '@angular/cdk/a11y':        'ng.cdk.a11y',
+  '@angular/cdk/bidi':        'ng.cdk.bidi',
+  '@angular/cdk/coercion':    'ng.cdk.coercion',
+  '@angular/cdk/collections': 'ng.cdk.collections',
+  '@angular/cdk/keycodes':    'ng.cdk.keycodes',
+  '@angular/cdk/observers':   'ng.cdk.observers',
+  '@angular/cdk/overlay':     'ng.cdk.overlay',
+  '@angular/cdk/platform':    'ng.cdk.platform',
+  '@angular/cdk/portal':      'ng.cdk.portal',
+  '@angular/cdk/rxjs':        'ng.cdk.rxjs',
+  '@angular/cdk/scrolling':   'ng.cdk.scrolling',
+  '@angular/cdk/stepper':     'ng.cdk.stepper',
+  '@angular/cdk/table':       'ng.cdk.table',
+  '@angular/forms':           'ng.forms',
+  '@angular/http':            'ng.http',
+  '@angular/router':          'ng.router',
+  // XX: it could also be discussed to exclude the platform libraries here
+  // Why? Library authors should try to not use the platform-specific code directly
+  // Instead, libraries should depend on CommonModule from @angular/common
   '@angular/platform-browser':            'ng.platformBrowser',
   '@angular/platform-browser-dynamic':    'ng.platformBrowserDynamic',
   '@angular/platform-browser/animations': 'ng.platformBrowser.animations',
-  '@angular/router':      'ng.router',
   // RxJS dependencies
   'rxjs/AnonymousSubject':      'Rx',
   'rxjs/AsyncSubject':          'Rx',
