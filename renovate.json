@@ -1,0 +1,37 @@
+{
+  "pinVersions": false,
+  "semanticCommits": true,
+  "semanticPrefix": "chore:",
+  "commitMessage": "{{semanticPrefix}} update {{depName}} to version {{newVersion}}",
+  "packageFiles": [
+    "package.json",
+    "integration/consumers/ng-cli/package.json"
+  ],
+  "packages": [
+    {
+      "packagePattern": "^@angular\/.*",
+      "groupName": "angular",
+      "pinVersions": false
+    },
+    {
+      "packagePattern": "^@types\/.*",
+      "groupName": "type definitions",
+      "pinVersions": false
+    },
+    {
+      "packagePattern": "^jasmine.*",
+      "groupName": "jasmine",
+      "pinVersions": false
+    },
+    {
+      "packagePattern": "^karma.*",
+      "groupName": "karma",
+      "pinVersions": false
+    },
+    {
+      "packagePattern": "^protractor.*",
+      "groupName": "protractor",
+      "pinVersions": false
+    }
+  ]
+}
