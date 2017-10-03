@@ -1,4 +1,3 @@
-
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operator/map';
 import 'rxjs/add/operator/map';
