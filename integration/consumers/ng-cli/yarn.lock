@@ -124,6 +124,10 @@
   dependencies:
     tslib "^1.7.1"
 
+"@angular/language-service@^4.0.0":
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-4.4.4.tgz#0f686052e3950c19128f13b7429fc14bafe69bd4"
+
 "@angular/platform-browser-dynamic@^4.0.0":
   version "4.4.4"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-4.4.4.tgz#c3c9eb854a528556a07054127932e527fa932e14"
@@ -5226,11 +5230,7 @@ type-is@~1.6.15:
     media-typer "0.3.0"
     mime-types "~2.1.15"
 
-"typescript@>=2.0.0 <2.6.0", typescript@^2.3.3:
-  version "2.5.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.3.tgz#df3dcdc38f3beb800d4bc322646b04a3f6ca7f0d"
-
-typescript@~2.2.0:
+"typescript@>=2.0.0 <2.6.0", typescript@^2.3.3, typescript@~2.2.0:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.2.2.tgz#606022508479b55ffa368b58fee963a03dfd7b0c"
 
