@@ -41,7 +41,7 @@ export const readPackage = (file: string): Promise<NgPackage> => {
  * @param dest Destination folder
  * @param additionalProperties These properties are added to the `package.json`
  */
-export const createPackage = (src: string, dest: string, additionalProperties?: {}): Promise<any> => {
+export const writePackage = (src: string, dest: string, additionalProperties?: {}): Promise<any> => {
 
   return readJson(path.resolve(src, 'package.json')).then((packageJson) => {
     // set additional properties
