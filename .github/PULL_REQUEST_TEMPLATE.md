@@ -7,7 +7,7 @@
 
 ## Checklist
 
-- [ ] Commit Messages follow the [Conventional Commits](https://conventionalcommits.org/) pattern, see current [`.vcmrc`](https://github.com/dherges/ng-packagr/blob/master/.vcmrc)
+- [ ] Commit Messages follow the [Conventional Commits](https://conventionalcommits.org/) pattern
 - [ ] Tests for the changes have been added
 
 
