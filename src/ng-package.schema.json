@@ -32,6 +32,28 @@
           "type": "string",
           "default": "src/public_api.ts"
         },
+        "secondaryEntrypoints": {
+          "description": "Secondary entrypoints of this library like '@angular/common/http'",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "",
+                "type": "string"
+              },
+              "entryFile": {
+                "description": "TypeScript source file to the entrypoint's public API.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "entryFile"
+            ],
+            "additionalProperties": false
+          }
+        },
         "flatModuleFile": {
           "description": "Filename of the auto-generated flat module file (if empty, defaults to the package name as given in `package.json`).",
           "type": "string",

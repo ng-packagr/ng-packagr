@@ -1,6 +1,24 @@
 {
-  "$schema": "../../../src/lib/ng-package.schema.json",
+  "$schema": "../../../src/ng-package.schema.json",
   "lib": {
-    "entryFile": "public_api.ts"
+    "entryFile": "public_api.ts",
+    "secondaryEntrypoints": [
+      {
+        "name": "bar",
+        "entryFile": "bar/public_api.ts"
+      },
+      {
+        "name": "baz",
+        "entryFile": "baz/public_api.ts"
+      },
+      {
+        "name": "foo",
+        "entryFile": "foo/public_api.ts"
+      },
+      {
+        "name": "foo-bar",
+        "entryFile": "foo-bar/public_api.ts"
+      }
+    ]
   }
 }
