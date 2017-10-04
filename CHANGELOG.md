@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/dherges/ng-packagr/compare/v1.2.1...v1.3.0) (2017-10-04)
+
+
+### Features
+
+* external dependencies from `[@angular](https://github.com/angular)/cdk` are supported by default ([4b20e29](https://github.com/dherges/ng-packagr/commit/4b20e29))
+
+
+
 <a name="1.2.1"></a>
 ## [1.2.1](https://github.com/dherges/ng-packagr/compare/v1.2.0...v1.2.1) (2017-09-29)
 
