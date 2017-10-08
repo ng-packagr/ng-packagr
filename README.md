@@ -55,8 +55,25 @@ $ node_modules/.bin/ng-packagr -p ng-package.json
 ```
 
 
-Pathes are resolved relative to the location of the `ng-package.json` file.
+Paths are resolved relative to the location of the `ng-package.json` file.
 The `package.json` describing the library should be located in the same folder, next to `ng-package.json`.
+
+#### Configuration Locations
+
+Configuration is picked up from the cli `-p` parameter, then from the default location for 
+`ng-package.json`, then from `package.json`.
+
+To configure with `package.json`, put your ng-package configuration 
+in the `ngPackage` field:
+```json
+{
+  "ngPackage": {
+    "lib": {
+      "entryFile": "public_api.ts"
+    }
+  }
+}
+```
 
 #### More Examples
 

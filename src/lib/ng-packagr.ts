@@ -1,5 +1,3 @@
-import * as path from 'path';
-
 // BUILD STEP IMPLEMENTATIONS
 import { readPackage, writePackage } from './steps/package';
 import { copyFiles } from './util/copy';
@@ -11,7 +9,6 @@ import * as log from './util/log';
 
 // `ng-package.json` config
 import { NgPackage } from './model/ng-package';
-import { NgPackageConfig } from '../ng-package.schema';
 
 
 
@@ -23,10 +20,7 @@ export interface NgPackagrCliArguments {
 
 
 export const ngPackage = (opts: NgPackagrCliArguments): Promise<any> => {
-  log.info(`Building Angular library from ${opts.project}`);
-  if (!path.isAbsolute(opts.project)) {
-    opts.project = path.resolve(process.cwd(), opts.project);
-  }
+  log.info(`Building Angular library`);
 
   /** Project configuration */
   let ngPkg: NgPackage;
@@ -34,6 +28,8 @@ export const ngPackage = (opts: NgPackagrCliArguments): Promise<any> => {
   // 0. READ `ng-package.json` and obtain model
   return readPackage(opts.project)
     .then((p) => {
+      log.debug('package loaded');
+      log.debug(JSON.stringify(p));
       ngPkg = p;
 
       // 1. CLEAN
