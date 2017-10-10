@@ -1,8 +1,9 @@
 ## Type of Issue
 
-- [ ] Bug Report
-- [ ] Feature Request
-
+```
+[ ] Bug Report
+[ ] Feature Request
+```
 
 ## Description
 
