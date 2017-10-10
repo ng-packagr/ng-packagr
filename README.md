@@ -65,8 +65,10 @@ Configuration is picked up from the cli `-p` parameter, then from the default lo
 
 To configure with `package.json`, put your ng-package configuration 
 in the `ngPackage` field:
+
 ```json
 {
+  "$schema": "./node_modules/ng-packagr/package.schema.json",
   "ngPackage": {
     "lib": {
       "entryFile": "public_api.ts"
@@ -74,6 +76,8 @@ in the `ngPackage` field:
   }
 }
 ```
+
+Note: the JSON `$schema` reference enables JSON editing support (autocompletion) for the custom `ngPackage` property in an IDE like [VSCode](https://github.com/Microsoft/vscode).
 
 #### More Examples
 
