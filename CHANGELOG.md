@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/dherges/ng-packagr/compare/v1.3.0...v1.4.0) (2017-10-10)
+
+
+### Bug Fixes
+
+* pass empty string to `less.render()` ([f5106eb](https://github.com/dherges/ng-packagr/commit/f5106eb)), closes [#165](https://github.com/dherges/ng-packagr/issues/165)
+
+
+### Features
+
+* add json schema for `package.json` with custom `ngPackage` property ([#173](https://github.com/dherges/ng-packagr/issues/173)) ([dd85fd2](https://github.com/dherges/ng-packagr/commit/dd85fd2))
+* resolve ng-package config from multiple sources ([c193b68](https://github.com/dherges/ng-packagr/commit/c193b68))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/dherges/ng-packagr/compare/v1.2.1...v1.3.0) (2017-10-04)
 
