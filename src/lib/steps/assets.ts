@@ -122,7 +122,7 @@ const renderLess = (lessOpts: any): Promise<string> => {
 
   return readFile(lessOpts.filename)
     .then((lessData: string) => new Promise<string>((resolve, reject) => {
-        less.render(lessData, lessOpts, (err, result) => {
+        less.render(lessData || '', lessOpts, (err, result) => {
         if (err) {
           reject(err);
         } else {
