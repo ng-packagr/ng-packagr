@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.4.1"></a>
+## [1.4.1](https://github.com/dherges/ng-packagr/compare/v1.4.0...v1.4.1) (2017-10-11)
+
+
+### Bug Fixes
+
+* include `package.schema.json` in dist artefacts and npm package ([e660545](https://github.com/dherges/ng-packagr/commit/e660545))
+
+
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/dherges/ng-packagr/compare/v1.3.0...v1.4.0) (2017-10-10)
 
