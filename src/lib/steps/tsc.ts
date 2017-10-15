@@ -1,40 +1,44 @@
 import * as path from 'path';
-import * as ts from 'typescript';
-import { ScriptTarget, ModuleKind } from 'typescript';
-import { readFile, writeFile } from '../util/fs';
+import {
+  ScriptTarget,
+  ModuleKind,
+  TranspileOutput,
+  transpileModule,
+  CompilerOptions
+} from 'typescript';
+import { readFile, writeFile } from 'fs-extra';
 import { debug } from '../util/log';
 
 /**
  * Downlevels a .js file from ES2015 to ES5. Internally, uses `tsc`.
  *
- * @param inputFile Tran
+ * @param inputFile
  * @param outputFile
  */
-export const downlevelWithTsc = (inputFile: string, outputFile: string) => {
+export async function downlevelWithTsc(inputFile: string, outputFile: string): Promise<void> {
+  debug(`tsc ${inputFile} to ${outputFile}`);
+  const inputBuffer: Buffer = await readFile(inputFile);
+  const input: string = inputBuffer.toString();
+  const compilerOptions: CompilerOptions = {
+    target: ScriptTarget.ES5,
+    module: ModuleKind.ES2015,
+    allowJs: true,
+    sourceMap: true
+  };
+  const transpiled: TranspileOutput = transpileModule(trimSourceMap(input.toString()), {
+    fileName: path.basename(outputFile),
+    moduleName: path.basename(outputFile, '.js'),
+    compilerOptions
+  });
 
-  return Promise.resolve(debug(`tsc ${inputFile} to ${outputFile}`))
-    .then(() => readFile(inputFile))
-    .then((input) => ts.transpileModule(trimSourceMap(input.toString()), {
-      fileName: path.basename(outputFile),
-      moduleName: path.basename(outputFile, '.js'),
-      compilerOptions: {
-        target: ScriptTarget.ES5,
-        module: ModuleKind.ES2015,
-        allowJs: true,
-        sourceMap: true
-      }
-    }))
-    .then((transpiled) => {
-      const sourceMap = JSON.parse(transpiled.sourceMapText);
-      sourceMap['file'] = path.basename(outputFile);
-      sourceMap['sources'] = [path.basename(inputFile)];
+  const sourceMap = JSON.parse(transpiled.sourceMapText);
+  sourceMap['file'] = path.basename(outputFile);
+  sourceMap['sources'] = [path.basename(inputFile)];
 
-      return Promise.all([
-        writeFile(outputFile, transpiled.outputText),
-        writeFile(`${outputFile}.map`, JSON.stringify(sourceMap))
-      ]);
-    });
-
+  await Promise.all([
+    writeFile(outputFile, transpiled.outputText),
+    writeFile(`${outputFile}.map`, JSON.stringify(sourceMap))
+  ]);
 };
 
 

@@ -79,6 +79,56 @@ in the `ngPackage` field:
 
 Note: the JSON `$schema` reference enables JSON editing support (autocompletion) for the custom `ngPackage` property in an IDE like [VSCode](https://github.com/Microsoft/vscode).
 
+#### Secondary Entry-Points
+
+Besides the primary entry point, a package can contain one or more secondary entry points (e.g. `@angular/core/testing`).
+These contain symbols that we don't want to group together with the symbols in the main entry point.
+Module ID of an import for a secondary entry point directs a module loader to a directory by the secondary entry point’s name.
+For instance, “@angular/core/testing” resolves to a directory by the same name, “@angular/core/testing”.
+This directory contains a package.json file that directs the loader to the correct location for what it’s looking for.
+To that end, secondary entry points are dynamically discovered by searching for `package.json`
+files within sub directories of the main `package.json` file's folder.
+
+##### So how do I use it?
+
+All you have to do is create a `package.json` file and put it where you want a secondary entry
+point to be created. One way this can be done is by mimicking the folder structure of the 
+following example which has a testing entry point in addition to it's main entry point.
+
+```
+src  
+├── testing   
+│   ├── *.ts   
+│   ├── public_api.ts  
+│   └── package.json  
+├── *.ts  
+├── public_api.ts  
+├── ng-package.json   
+└── package.json   
+```
+
+The contents of the secondary `package.json` can be as simple as:
+```json
+{}
+```
+
+No, that is not a typo. No name is required. No version is required. It's all handled for you by ng-packagr!
+When built, the secondary bundles would be accessible as `$(your-primary-package-name)/testing`.
+##### What if I don't like `public_api.ts`?
+
+You can change the entry point file by using the `ngPackage` configuration field in your secondary `package.json`.
+For example, the following would use `index.ts` as the secondary entry point:
+
+```json
+{
+  "ngPackage": {
+    "lib": {
+      "entryFile": "index.ts"
+    }
+  }
+}
+```
+
 #### More Examples
 
 Nikolas LeBlanc has written a story on medium.com on [Building an Angular 4 Component Library with the Angular CLI and ng-packagr](https://medium.com/@ngl817/building-an-angular-4-component-library-with-the-angular-cli-and-ng-packagr-53b2ade0701e)
@@ -99,6 +149,8 @@ We keep track of user questions in GitHub's issue tracker and try to build a doc
    - :dancer: Creates type definitions (`.d.ts`)
    - :runner: Generates [Ahead-of-Time](https://angular.io/guide/aot-compiler#why-do-aot-compilation) metadata (`.metadata.json`)
  - :surfer: Inlines Templates and Stylesheets
+ - :trophy: Supports dynamic discovery and bundling of secondary entry points
+ - :mag_right: Supports scoped, and non-scoped packages
  - :sparkles: CSS Features
    - :camel: Runs [SCSS](http://sass-lang.com/guide) preprocessor, supporting the [relative `~` import syntax](https://github.com/webpack-contrib/sass-loader#imports)
    - :elephant: Runs [less](http://lesscss.org/#getting-started) preprocessor

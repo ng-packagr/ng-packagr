@@ -1,85 +1,74 @@
-import { NgEntrypoint, NgArtefacts, NgPackage } from './model/ng-package';
+import { NgPackageData } from './model/ng-package-data';
+import { NgArtifacts } from './model/ng-artifacts';
+import { NgArtifactsFactory } from './model/ng-artifacts-factory';
+import { writePackage } from './steps/package';
 import { processAssets } from './steps/assets';
-import { prepareTsConfig, ngc } from './steps/ngc';
-import { remapSourcemap } from './steps/sorcery';
+import { ngc } from './steps/ngc';
+import { remapSourcemap, relocateSourcemapRoot } from './steps/sorcery';
 import { rollup } from './steps/rollup';
 import { downlevelWithTsc } from './steps/tsc';
-import { copyFiles } from './util/copy';
-import { modifyJsonFiles } from './util/json';
+import { copySourceFilesToDestination } from './steps/transfer';
+import { rimraf } from './util/rimraf';
+import * as log from './util/log';
 
 /**
  * Main Angular bundling processing.
  *
- * @param entry A TypeScript source file (`*.ts`) of the bundle's entrypoint.
  * @param ngPkg Parent Angular package.
- * @returns Distribution-ready build artefacts.
  */
-export const generateNgBundle = (entry: NgEntrypoint, ngPkg: NgPackage): Promise<NgArtefacts> => Promise.resolve()
+export async function generateNgBundle(ngPkg: NgPackageData): Promise<void> {
+
+  log.info(`Generating bundle for ${ngPkg.fullPackageName}`);
+  const artifactFactory: NgArtifactsFactory = new NgArtifactsFactory();
+  const baseBuildPath: string = `${ngPkg.buildDirectory}/ts${ngPkg.pathOffsetFromSourceRoot}`;
+  const artifactPaths: NgArtifacts = artifactFactory.calculateArtifactPathsForBuild(ngPkg);
+
+  // 0. CLEAN BUILD DIRECTORY
+  await rimraf(ngPkg.buildDirectory);
+
   // 1. ASSETS
-  .then(() => processAssets(ngPkg.src, `${ngPkg.workingDirectory}/ts`))
+  await processAssets(ngPkg.sourcePath, baseBuildPath);
+
   // 2. NGC
-  .then(() => prepareTsConfig(ngPkg, `${ngPkg.workingDirectory}/ts/tsconfig.lib.json`)
-    .then((tsConfigFile: string) => ngc(tsConfigFile, `${ngPkg.workingDirectory}/ts`))
-    .then((es2015EntryFile: string) =>
-      // XX: see #46 - ngc only references to closure-annotated ES6 sources
-      remapSourcemap(`${ngPkg.workingDirectory}/ts/${ngPkg.flatModuleFileName}.js`)
-        .then(() => Promise.resolve(es2015EntryFile)))
-  )
+  const es2015EntryFile: string = await ngc(ngPkg, baseBuildPath);
+  // XX: see #46 - ngc only references to closure-annotated ES6 sources
+  await remapSourcemap(`${baseBuildPath}/${ngPkg.flatModuleFileName}.js`);
+
   // 3. FESM15: ROLLUP
-  .then((es2015EntryFile: string) =>
-    rollup({
-      moduleName: ngPkg.meta.name,
-      entry: es2015EntryFile,
-      format: 'es',
-      dest: `${ngPkg.workingDirectory}/${ngPkg.artefacts.es2015}`,
-      externals: ngPkg.libExternals
-    })
-    // XX ... rollup generates relative paths in sourcemaps. It would be nice to re-locate source map files
-    // so that `@scope/name/foo/bar.ts` shows up as path in the browser...
-    .then(() => remapSourcemap(`${ngPkg.workingDirectory}/${ngPkg.artefacts.es2015}`))
-  )
-  // 4. FESM5: TSC
-  .then(() =>
-    downlevelWithTsc(
-      `${ngPkg.workingDirectory}/${ngPkg.artefacts.es2015}`,
-      `${ngPkg.workingDirectory}/${ngPkg.artefacts.module}`)
-    .then(() => remapSourcemap(`${ngPkg.workingDirectory}/${ngPkg.artefacts.module}`))
-  )
-  // 5. UMD: ROLLUP
-  .then(() =>
-    rollup({
-      moduleName: ngPkg.meta.name,
-      entry: `${ngPkg.workingDirectory}/${ngPkg.artefacts.module}`,
-      format: 'umd',
-      dest: `${ngPkg.workingDirectory}/${ngPkg.artefacts.main}`,
-      externals: ngPkg.libExternals
-    })
-    .then(() => remapSourcemap(`${ngPkg.workingDirectory}/${ngPkg.artefacts.main}`))
-  )
-  // 6. COPY FILES
-  .then(() => copyFiles(`${ngPkg.workingDirectory}/${ngPkg.meta.scope}/**/*.{js,js.map}`, `${ngPkg.dest}/${ngPkg.meta.scope}`))
-  .then(() => copyFiles(`${ngPkg.workingDirectory}/bundles/**/*.{js,js.map}`, `${ngPkg.dest}/bundles`))
-  .then(() => copyFiles(`${ngPkg.workingDirectory}/ts/**/*.{d.ts,metadata.json}`, `${ngPkg.dest}`))
-  // 7. SOURCEMAPS: RELOCATE PATHS
-  // XX ... modifyJsonFiles() should maybe called 'relocateSourceMaps()' in 'steps' folder
-  .then(() => modifyJsonFiles(`${ngPkg.dest}/**/*.js.map`, (sourceMap: any): any => {
-    sourceMap['sources'] = sourceMap['sources']
-      .map((path: string): string => path.replace('../ts',
-        ngPkg.meta.scope ? `~/${ngPkg.meta.scope}/${ngPkg.meta.name}` : `~/${ngPkg.meta.name}`));
-
-    return sourceMap;
-  }))
-  // 8. COLLECT GENERATED ARTEFACTS
-  .then(() => {
-
-    return ngPkg.artefacts;
-    /*
-    return {
-      main: '',
-      module: '',
-      es2015: '',
-      typings: '',
-      metadata: ''
-    };
-    */
+  await rollup({
+    moduleName: ngPkg.packageNameWithoutScope,
+    entry: es2015EntryFile,
+    format: 'es',
+    dest: artifactPaths.es2015,
+    externals: ngPkg.libExternals
   });
+  await remapSourcemap(artifactPaths.es2015);
+
+  // 4. FESM5: TSC
+  await downlevelWithTsc(
+    artifactPaths.es2015,
+    artifactPaths.module);
+  await remapSourcemap(artifactPaths.module);
+
+  // 5. UMD: ROLLUP
+  await rollup({
+    moduleName: ngPkg.packageNameWithoutScope,
+    entry: artifactPaths.module,
+    format: 'umd',
+    dest: artifactPaths.main,
+    externals: ngPkg.libExternals
+  });
+  await remapSourcemap(artifactPaths.main);
+
+  // 6. SOURCEMAPS: RELOCATE ROOT PATHS
+  await relocateSourcemapRoot(ngPkg);
+
+  // 7. COPY SOURCE FILES TO DESTINATION
+  await copySourceFilesToDestination(ngPkg, baseBuildPath);
+
+  // 8. WRITE PACKAGE.JSON and OTHER DOC FILES
+  const packageJsonArtifactPaths: NgArtifacts = artifactFactory.calculateArtifactPathsForPackageJson(ngPkg);
+  await writePackage(ngPkg, packageJsonArtifactPaths);
+
+  log.success(`Built Angular bundle for ${ngPkg.fullPackageName}`);
+}

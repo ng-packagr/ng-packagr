@@ -1,6 +1,7 @@
-const sorcery = require('sorcery');
+import * as sorcery from 'sorcery';
+import { NgPackageData } from './../model/ng-package-data';
+import { modifyJsonFiles } from './../util/json';
 import { debug } from '../util/log';
-
 
 /**
  * Re-maps the source `.map` file for the given `sourceFile`. This keeps source maps intact over
@@ -8,17 +9,28 @@ import { debug } from '../util/log';
  *
  * @param sourceFile Source file
  */
-export const remapSourcemap = (sourceFile: string, base?: string): Promise<any> => {
+export async function remapSourcemap(sourceFile: string): Promise<void> {
   debug(`re-mapping sources for ${sourceFile}`);
   const opts: any = {
     inline: false,
     includeContent: true,
   };
-  if (base) {
-    opts.base = base;
-  }
 
   // Once sorcery loaded the chain of sourcemaps, the new sourcemap will be written asynchronously.
-  return sorcery.load(sourceFile)
-    .then((chain) => chain.write(opts));
+  const chain = await sorcery.load(sourceFile);
+  await chain.write(opts);
+}
+
+/**
+ * Relocates the source `.map` file's relative root file paths to the module's name.
+ *
+ * @param ngPkg Angular package data
+ */
+export async function relocateSourcemapRoot(ngPkg: NgPackageData): Promise<void> {
+  const replaceValue: string = `~/${ngPkg.fullPackageName}`;
+  await modifyJsonFiles(`${ngPkg.buildDirectory}/**/*.js.map`, (sourceMap: any): any => {
+    sourceMap.sources = sourceMap.sources
+      .map((path: string): string => path.replace('../ts', replaceValue));
+    return sourceMap;
+  });
 }
