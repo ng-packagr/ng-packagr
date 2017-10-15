@@ -1,17 +1,16 @@
-const vfs = require('vinyl-fs');
+import * as vfs from 'vinyl-fs';
 import * as path from 'path';
 import { debug, warn } from '../util/log';
-import { readFile } from '../util/fs';
+import { readFile } from 'fs-extra';
 
 // Angular Inliner for Templates and Stylesheets
-const inlineNg2Template =  require('gulp-inline-ng2-template');
+import * as inlineNg2Template from 'gulp-inline-ng2-template';
 
 // CSS Tools
-const autoprefixer = require('autoprefixer');
-const browserslist = require('browserslist');
-//const postcss      = require('postcss');
-import postcss     = require('postcss');
-const sass         = require('node-sass');
+import * as autoprefixer from 'autoprefixer';
+import * as browserslist from 'browserslist';
+import * as postcss from 'postcss';
+import * as sass from 'node-sass';
 import * as less from 'less';
 import * as stylus from 'stylus';
 
@@ -30,35 +29,30 @@ export const processAssets = (src: string, dest: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     debug(`processAssets ${src} to ${dest}`);
 
-    vfs.src([`${src}/**/*.ts`, '!node_modules/**/*'])
+    vfs.src([`${src}/**/*.ts`, '!node_modules/**/*', '!${dest}/**/*'])
       .pipe(inlineNg2Template({
         base: `${src}`,
         useRelativePaths: true,
-        styleProcessor: (path, ext, file, cb) => {
+        styleProcessor: async (path, ext, file, cb) => {
 
           debug(`render stylesheet ${path}`);
-          const render = pickRenderer(path, ext, file, src);
+          const renderPickTask: Promise<string> = pickRenderer(path, file, src);
 
           debug(`postcss with autoprefixer for ${path}`);
           const browsers = browserslist(undefined, { path });
 
-          render
-            .then((css: string) => {
-              return postcss([ autoprefixer({ browsers }) ])
-                .process(css, { from: path, to: path.replace(ext, '.css') });
-            })
-            .then((result: postcss.Result) => {
-
-              result.warnings().forEach((msg) => {
-                warn(msg.toString());
-              });
-
-              cb(undefined, result.css);
-            })
-            .catch((err) => {
-              cb(err || new Error(`Cannot inline stylesheet ${path}`));
+          try {
+            const css: string = await renderPickTask;
+            const result: postcss.Result = await postcss([ autoprefixer({ browsers }) ])
+              .process(css, { from: path, to: path.replace(ext, '.css') });
+            result.warnings().forEach((msg) => {
+              warn(msg.toString());
             });
 
+            cb(undefined, result.css);
+          } catch (err) {
+            cb(err || new Error(`Cannot inline stylesheet ${path}`));
+          }
         }
       }))
       .on('error', reject)
@@ -78,27 +72,30 @@ const sassImporter = (url: string): any => {
 }
 
 
-const pickRenderer = (filePath: string, ext: string[], file: string, srcPath: string): Promise<string> => {
+async function pickRenderer(
+  filePath: string,
+  file: string,
+  srcPath: string): Promise<string> {
 
   switch (path.extname(filePath)) {
 
     case '.scss':
     case '.sass':
       debug(`rendering sass for ${filePath}`);
-      return renderSass({ file: filePath, importer: sassImporter });
+      return await renderSass({ file: filePath, importer: sassImporter });
 
     case '.less':
       debug(`rendering less for ${filePath}`);
-      return renderLess({ filename: filePath });
+      return await renderLess({ filename: filePath });
 
     case '.styl':
     case '.stylus':
       debug(`rendering styl for ${filePath}`);
-      return renderStylus({ filename: filePath, root: srcPath });
+      return await renderStylus({ filename: filePath, root: srcPath });
 
     case '.css':
     default:
-      return Promise.resolve(file);
+      return file;
   }
 
 }
@@ -121,6 +118,7 @@ const renderSass = (sassOpts: any): Promise<string> => {
 const renderLess = (lessOpts: any): Promise<string> => {
 
   return readFile(lessOpts.filename)
+    .then(buffer => buffer.toString())
     .then((lessData: string) => new Promise<string>((resolve, reject) => {
         less.render(lessData || '', lessOpts, (err, result) => {
         if (err) {
@@ -138,6 +136,7 @@ const renderLess = (lessOpts: any): Promise<string> => {
  */
 const renderStylus = ({ filename, root }): Promise<string> => {
   return readFile(filename)
+    .then(buffer => buffer.toString())
     .then((stylusData: string) => new Promise<string>((resolve, reject) => {
       stylus(stylusData)
         // add paths for resolve

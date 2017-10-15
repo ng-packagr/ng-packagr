@@ -1,27 +1,7 @@
 const glob = require('glob')
-import { readFile, writeFile } from './fs';
+import { readJson, writeJson } from 'fs-extra';
 import { promisify } from './promisify';
-
-/**
- * Reads a JSON file.
- *
- * @param file Source file name.
- */
-export const readJson = (file: string): Promise<any> =>
-  readFile(file)
-    .then((content: string) => Promise.resolve(JSON.parse(content)));
-
-
-/**
- * Writes a JSON file.
- *
- * @param object Object literal that is stringified.
- * @param file Target file name.
- */
-export const writeJson = (object: any, file: string): Promise<any> =>
-  writeFile(file, JSON.stringify(object, undefined, 2));
-
-
+import { debug } from './log';
 /**
  * Modifies a set of JSON files by invoking `modifyFn`
  *
@@ -29,20 +9,18 @@ export const writeJson = (object: any, file: string): Promise<any> =>
  * @param modifyFn A callback function that takes a JSON-parsed input and should return an output
  *                  that will be JSON-stringified
  */
-export const modifyJsonFiles = (globPattern: string, modifyFn: (jsonObj: any) => any): Promise<void> => {
+export async function modifyJsonFiles(globPattern: string, modifyFn: (jsonObj: any) => any): Promise<void> {
 
-  return promisify<string[]>((resolveOrReject) => {
+  debug('modifyJsonFiles');
+  const fileNames: string[] = await promisify<string[]>((resolveOrReject) => {
     glob(globPattern, resolveOrReject);
-  })
-  .then((fileNames: string[]): Promise<string[]> =>
-    Promise.all(
-      fileNames.map((fileName: string): Promise<string> =>
-        readFile(fileName)
-          .then((fileContent: string) =>
-            writeFile(fileName, JSON.stringify(modifyFn(JSON.parse(fileContent))))
-          )
-      ))
-    )
-  .then(() => Promise.resolve());
+  });
 
-};
+  await Promise.all(
+    fileNames.map(async (fileName: string): Promise<void> => {
+      const fileContent: any = await readJson(fileName);
+      const modified = modifyFn(fileContent);
+      await writeJson(fileName, modified);
+    }
+  ));
+}

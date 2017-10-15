@@ -19,6 +19,8 @@
     "**/specs/*.ts"
   ],
   "exclude": [
-    ".ng_build"
+    ".ng_build",
+    ".ng_pkgr_build",
+    ".ng_pkg_build"
   ]
 }

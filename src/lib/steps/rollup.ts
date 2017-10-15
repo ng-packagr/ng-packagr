@@ -1,6 +1,6 @@
-const __rollup = require('rollup');
-const nodeResolve = require('rollup-plugin-node-resolve');
-const commonJs = require('rollup-plugin-commonjs');
+import * as  __rollup from 'rollup';
+import * as nodeResolve from 'rollup-plugin-node-resolve';
+import * as commonJs from 'rollup-plugin-commonjs';
 import { debug } from '../util/log';
 import { ROLLUP_GLOBALS } from '../conf/rollup.globals';
 
@@ -17,7 +17,7 @@ export interface RollupOptions {
  *
  * @param opts
  */
-export const rollup = (opts: RollupOptions) => {
+export async function rollup(opts: RollupOptions): Promise<void> {
 
   const globals = {
     // default externals for '@angular/*' and 'rxjs'
@@ -31,19 +31,19 @@ export const rollup = (opts: RollupOptions) => {
     external: Object.keys(globals),
     input: opts.entry,
     plugins: [
-        nodeResolve({ jsnext: true, module: true }),
-        commonJs(),
+      nodeResolve({ jsnext: true, module: true }),
+      commonJs(),
     ],
     onwarn: (warning) => {
-        if (warning.code === 'THIS_IS_UNDEFINED') {
-          return;
-        }
+      if (warning.code === 'THIS_IS_UNDEFINED') {
+        return;
+      }
 
-        console.warn(warning.message);
+      console.warn(warning.message);
     }
   };
 
-  let writeOptions = {
+  const writeOptions = {
     // Keep the moduleId empty because we don't want to force developers to a specific moduleId.
     moduleId: '',
     name: `${opts.moduleName}`,
@@ -56,5 +56,6 @@ export const rollup = (opts: RollupOptions) => {
 
   debug(`rollup ${opts.entry} to ${opts.dest} (${opts.format})`);
 
-  return __rollup.rollup(bundleOptions).then((bundle: any) => bundle.write(writeOptions));
+  const bundle: any = await __rollup.rollup(bundleOptions);
+  await bundle.write(writeOptions);
 }

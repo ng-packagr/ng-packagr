@@ -14,12 +14,12 @@
       "default": "."
     },
     "dest": {
-      "description": "The destination folder to output build artefacts and distributables of an Angular library (default: `dist`).",
+      "description": "The destination folder to output build artifacts and distributables of an Angular library (default: `dist`).",
       "type": "string",
       "default": "dist"
     },
     "workingDirectory": {
-      "description": "Internal working directory of ng-packagr where intermediate build files are stored.",
+      "description": "Internal working directory of ng-packagr where intermediate build files are stored (default: `.ng_pkg_build`).",
       "type": "string",
       "default": ".ng_build"
     },
