@@ -18,9 +18,23 @@ export async function modifyJsonFiles(globPattern: string, modifyFn: (jsonObj: a
 
   await Promise.all(
     fileNames.map(async (fileName: string): Promise<void> => {
-      const fileContent: any = await readJson(fileName);
+      const fileContent: any = await tryReadJson(fileName);
       const modified = modifyFn(fileContent);
       await writeJson(fileName, modified);
     }
   ));
+}
+
+/**
+ * Read json and don't throw if json parsing fails.
+ *
+ * @param filePath Path to the file which is parsed.
+ */
+export async function tryReadJson(filePath: string): Promise<any> {
+  try {
+    return await readJson(filePath);
+  } catch {
+    // this means the file was empty or not json, which is fine
+    return {};
+  }
 }

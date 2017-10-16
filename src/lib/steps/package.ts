@@ -3,6 +3,7 @@ import { NgPackageConfig } from '../../ng-package.schema';
 import { NgPackageData, DEFAULT_BUILD_FOLDER } from '../model/ng-package-data';
 import { NgArtifacts } from '../model/ng-artifacts';
 import { copyFiles } from '../util/copy';
+import { tryReadJson } from '../util/json';
 import { readJson, writeJson, readdir, lstat, Stats } from 'fs-extra';
 import { merge, isArray } from 'lodash';
 import * as log from '../util/log';
@@ -172,9 +173,13 @@ async function readSecondaryPackage(rootPackage: NgPackageData, filePath: string
   const packageJsonFile = path.resolve(baseDirectory, 'package.json');
 
   let ngPackage: NgPackageConfig = await readNgPackageFile(ngPackageFile);
-  const packageJson = await readJson(packageJsonFile);
+  const packageJson: any = await tryReadJson(packageJsonFile);
 
   ngPackage = merge(ngPackage, packageJson.ngPackage, arrayMergeLogic);
+  if (!ngPackage.lib) {
+    ngPackage.lib = {};
+  }
+
   ngPackage.lib.externals = rootPackage.libExternals;
 
   return new NgPackageData(
@@ -182,7 +187,7 @@ async function readSecondaryPackage(rootPackage: NgPackageData, filePath: string
     rootPackage.fullPackageName,
     rootPackage.destinationPath,
     baseDirectory,
-    ngPackage
+    rootPackage.libExternals
   );
 }
 
