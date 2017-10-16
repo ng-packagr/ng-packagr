@@ -8,7 +8,7 @@ export class NgArtifactsFactory {
   }
 
   private _unixPathJoin(...paths: string[]): string {
-    return path.join(...paths).replace('\\', '/');
+    return path.posix.join(...paths);
   }
 
   public calculateArtifactPathsForBuild(ngPkg: NgPackageData): NgArtifacts {
