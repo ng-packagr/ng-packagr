@@ -22,20 +22,20 @@
     "url": "https://github.com/dherges/ng-packagr/issues"
   },
   "bin": {
-    "ng-packagr": "./cli/ng-packagr.js"
+    "ng-packagr": "./cli/main.js"
   },
   "dependencies": {
     "@angular/tsc-wrapped": "^4.2.0",
     "@ngtools/json-schema": "^1.1.0",
     "autoprefixer": "^7.1.1",
     "browserslist": "^2.1.5",
+    "commander": "^2.11.0",
     "cpx": "^1.5.0",
     "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
     "gulp-inline-ng2-template": "^4.0.0",
     "less": "^2.7.2",
     "lodash": "^4.17.4",
-    "minimist": "^1.2.0",
     "node-sass": "^4.5.3",
     "postcss": "^6.0.2",
     "read-file": "^0.2.0",
@@ -59,6 +59,7 @@
     "@commitlint/cli": "^4.0.0",
     "@commitlint/config-angular": "^3.1.1",
     "@types/chai": "^4.0.0",
+    "@types/commander": "^2.11.0",
     "@types/fs-extra": "^4.0.2",
     "@types/jasmine": "^2.5.51",
     "@types/less": "^0.0.32",
