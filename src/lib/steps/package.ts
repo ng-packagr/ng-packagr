@@ -234,5 +234,7 @@ export async function writePackage(ngPkg: NgPackageData, packageArtifacts: NgArt
     packageJson[fieldName] = packageArtifacts[fieldName];
   }
 
+  packageJson.name = ngPkg.fullPackageName;
+
   await writeJson(`${ngPkg.destinationPath}/package.json`, packageJson);
 }
