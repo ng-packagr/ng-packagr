@@ -1,13 +1,13 @@
 import { expect } from 'chai';
-import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`@sample/material`, () => {
 
   describe(`material.umd.js`, () => {
     let GENERATED;
-    before(() => {
+    before(done => {
       GENERATED = require(path.resolve(__dirname, '..', 'dist', 'bundles', 'material.umd.js'));
+      done();
     });
 
     it(`should exist`, () => {

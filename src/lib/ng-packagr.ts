@@ -18,7 +18,7 @@ export interface NgPackagrCliArguments {
   project: string
 }
 
-export async function ngPackage(opts: NgPackagrCliArguments): Promise<void> {
+export async function createNgPackage(opts: NgPackagrCliArguments): Promise<void> {
   log.info(`Building Angular library`);
 
   let buildDirectoryRoot: string;
@@ -32,7 +32,7 @@ export async function ngPackage(opts: NgPackagrCliArguments): Promise<void> {
     await rimraf(rootPackage.destinationPath);
 
     const packageSpecificPath: string = path.basename(rootPackage.buildDirectory);
-    buildDirectoryRoot = rootPackage.buildDirectory.substring(rootPackage.buildDirectory.lastIndexOf(packageSpecificPath));
+    buildDirectoryRoot = rootPackage.buildDirectory.substring(0, rootPackage.buildDirectory.lastIndexOf(packageSpecificPath));
     await generateNgBundle(rootPackage);
 
     for(const secondaryPackage of ngPackages.secondaryPackages) {

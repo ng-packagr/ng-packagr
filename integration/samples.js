@@ -21,7 +21,7 @@ while (SAMPLES.length > 0) {
   const project = SAMPLES.pop();
 
   promise = promise
-    .then(() => ngPackagr.ngPackage({ project }))
+    .then(() => ngPackagr.createNgPackage({ project }))
     .catch((err) => {
       console.error('Samples failed.', err);
       process.exit(1);
