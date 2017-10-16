@@ -1,6 +1,6 @@
-import * as path from "path";
-import {NgArtifacts} from "./ng-artifacts";
-import {NgPackageData, SCOPE_NAME_SEPARATOR} from "./ng-package-data";
+import * as path from 'path';
+import { NgArtifacts } from './ng-artifacts';
+import { NgPackageData, SCOPE_NAME_SEPARATOR } from './ng-package-data';
 
 export class NgArtifactsFactory {
   private _makeUmdPackageName(ngPkg: NgPackageData): string {
