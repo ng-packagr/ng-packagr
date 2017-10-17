@@ -158,6 +158,7 @@ async function readRootPackage(filePath: string): Promise<NgPackageData> {
   // make sure we provide default values for src and dest
   finalPackageConfig.src = finalPackageConfig.src || packageConfigurationDirectory;
   finalPackageConfig.dest = finalPackageConfig.dest || path.resolve(packageConfigurationDirectory,'dist');
+
   return new NgPackageData(
     finalPackageConfig.src,
     pkg.name,
