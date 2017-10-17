@@ -109,10 +109,10 @@ src
 
 The contents of the secondary `package.json` can be as simple as:
 ```json
-{}
 ```
 
-No, that is not a typo. No name is required. No version is required. It's all handled for you by ng-packagr!
+No, that is not a typo. No name is required. No version is required. Not even a json object is required. 
+It's all handled for you by ng-packagr!
 When built, the secondary bundles would be accessible as `$(your-primary-package-name)/testing`.
 ##### What if I don't like `public_api.ts`?
 
