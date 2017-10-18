@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.0-rc.0"></a>
+# [1.5.0-rc.0](https://github.com/dherges/ng-packagr/compare/v1.4.1...v1.5.0-rc.0) (2017-10-18)
+
+
+### Bug Fixes
+
+* regression in cli defaults ([18515af](https://github.com/dherges/ng-packagr/commit/18515af))
+
+
+### Features
+
+* allow empty package.json for 2ndary entries ([c0af605](https://github.com/dherges/ng-packagr/commit/c0af605))
+* dynamic secondary entry points ([5922cb1](https://github.com/dherges/ng-packagr/commit/5922cb1))
+* help command on cli ([c68a190](https://github.com/dherges/ng-packagr/commit/c68a190))
+
+
+
 <a name="1.4.1"></a>
 ## [1.4.1](https://github.com/dherges/ng-packagr/compare/v1.4.0...v1.4.1) (2017-10-11)
 
