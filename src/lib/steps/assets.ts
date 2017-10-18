@@ -69,13 +69,6 @@ export const processAssets = (src: string, dest: string): Promise<any> => {
 }
 
 
-const sassImporter = (url: string): any => {
-  if (url[0] === '~') {
-    url = path.resolve('node_modules', url.substr(1));
-  }
-
-  return { file: url };
-}
 
 
 const pickRenderer = (filePath: string, ext: string[], file: string, srcPath: string): Promise<string> => {
@@ -85,7 +78,7 @@ const pickRenderer = (filePath: string, ext: string[], file: string, srcPath: st
     case '.scss':
     case '.sass':
       debug(`rendering sass for ${filePath}`);
-      return renderSass({ file: filePath, importer: sassImporter });
+      return renderSass({ file: filePath,  importer: require('node-sass-import') });
 
     case '.less':
       debug(`rendering less for ${filePath}`);
