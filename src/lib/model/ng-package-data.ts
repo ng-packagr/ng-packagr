@@ -1,5 +1,5 @@
 import { NgPackageConfig } from '../../ng-package.schema';
-import * as path from 'path';
+import { path } from '../util/path';
 
 export const SCOPE_PREFIX = '@';
 export const SCOPE_NAME_SEPARATOR = '/';
@@ -35,7 +35,7 @@ export class NgPackageData {
     this.pathOffsetFromSourceRoot = this.sourcePath.substring(rootSourcePath.length);
     // destination path of secondary modules is not configurable - this is to meet the Angular package format.
     this.destinationPath = rootDestinationPath + this.pathOffsetFromSourceRoot;
-    this.fullPackageName = rootPackageName + this.pathOffsetFromSourceRoot.replace('\\', SCOPE_NAME_SEPARATOR);
+    this.fullPackageName = path.ensureUnixPath(rootPackageName + this.pathOffsetFromSourceRoot);
 
     if (this.fullPackageName.startsWith(SCOPE_PREFIX)) {
       const firstSeparatorIndex: number = this.fullPackageName.indexOf(SCOPE_NAME_SEPARATOR);

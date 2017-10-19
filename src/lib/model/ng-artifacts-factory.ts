@@ -1,4 +1,4 @@
-import * as path from 'path';
+import { path } from './../util/path';
 import { NgArtifacts } from './ng-artifacts';
 import { NgPackageData, SCOPE_NAME_SEPARATOR } from './ng-package-data';
 
@@ -8,7 +8,8 @@ export class NgArtifactsFactory {
   }
 
   private _unixPathJoin(...paths: string[]): string {
-    return path.posix.join(...paths);
+    const joined: string = path.join(...paths);
+    return path.ensureUnixPath(joined);
   }
 
   public calculateArtifactPathsForBuild(ngPkg: NgPackageData): NgArtifacts {
@@ -30,8 +31,8 @@ export class NgArtifactsFactory {
       main: this._unixPathJoin(rootPathFromSelf, 'bundles', `${this._makeUmdPackageName(ngPkg)}.umd.js`),
       module: this._unixPathJoin(rootPathFromSelf, `${ngPkg.fullPackageName}.es5.js`),
       es2015: this._unixPathJoin(rootPathFromSelf, `${ngPkg.fullPackageName}.js`),
-      typings: `${ngPkg.flatModuleFileName}.d.ts`,
-      metadata: `${ngPkg.flatModuleFileName}.metadata.json`
+      typings: path.ensureUnixPath(`${ngPkg.flatModuleFileName}.d.ts`),
+      metadata: path.ensureUnixPath(`${ngPkg.flatModuleFileName}.metadata.json`)
     }
   }
 }
