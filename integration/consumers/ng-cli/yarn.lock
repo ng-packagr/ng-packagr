@@ -2,39 +2,39 @@
 # yarn lockfile v1
 
 
-"@angular-devkit/build-optimizer@~0.0.23":
-  version "0.0.25"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/build-optimizer/-/build-optimizer-0.0.25.tgz#eec690b6c31bba169fe5378ac1f3b6c4faf93920"
+"@angular-devkit/build-optimizer@~0.0.28":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/build-optimizer/-/build-optimizer-0.0.28.tgz#96db6361b9bd5e0609e07a391c96aaf888d71aa6"
   dependencies:
     loader-utils "^1.1.0"
     source-map "^0.5.6"
     typescript "^2.3.3"
     webpack-sources "^1.0.1"
 
-"@angular-devkit/core@0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-0.0.17.tgz#12409d66541e8e27094a2697e73db5241a6352ce"
+"@angular-devkit/core@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-0.0.20.tgz#2ad36dd210fccd0e156d01c6499082ad4cd8c2af"
   dependencies:
     source-map "^0.5.6"
 
-"@angular-devkit/schematics@~0.0.25":
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.0.30.tgz#9582019fc85bf058c749a832a1c20406fd933ff2"
+"@angular-devkit/schematics@~0.0.34":
+  version "0.0.34"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.0.34.tgz#c3ef61b0e49e585d9982f2828e9a67b3879a6b1b"
   dependencies:
-    "@angular-devkit/core" "0.0.17"
+    "@angular-devkit/core" "0.0.20"
     "@ngtools/json-schema" "^1.1.0"
     minimist "^1.2.0"
     rxjs "^5.4.2"
 
-"@angular/cli@1.4.7":
-  version "1.4.7"
-  resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-1.4.7.tgz#56bc32db264b9e6666d7628c7d4018a02c23e4ff"
+"@angular/cli@1.4.8":
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-1.4.8.tgz#3d5399c1cf86696aa790ed93afd5d865b0a5b7ee"
   dependencies:
-    "@angular-devkit/build-optimizer" "~0.0.23"
-    "@angular-devkit/schematics" "~0.0.25"
+    "@angular-devkit/build-optimizer" "~0.0.28"
+    "@angular-devkit/schematics" "~0.0.34"
     "@ngtools/json-schema" "1.1.0"
     "@ngtools/webpack" "1.7.4"
-    "@schematics/angular" "~0.0.38"
+    "@schematics/angular" "~0.0.46"
     autoprefixer "^6.5.3"
     chalk "^2.0.1"
     circular-dependency-plugin "^3.0.0"
@@ -47,7 +47,7 @@
     ember-cli-string-utils "^1.0.0"
     exports-loader "^0.6.3"
     extract-text-webpack-plugin "3.0.0"
-    file-loader "^0.10.0"
+    file-loader "^1.1.5"
     fs-extra "^4.0.0"
     glob "^7.0.3"
     html-webpack-plugin "^2.29.0"
@@ -76,12 +76,13 @@
     stylus "^0.54.5"
     stylus-loader "^3.0.1"
     typescript ">=2.0.0 <2.6.0"
-    url-loader "^0.6.0"
-    webpack "~3.6.0"
+    url-loader "^0.6.2"
+    webpack "~3.7.1"
     webpack-concat-plugin "1.4.0"
     webpack-dev-middleware "~1.12.0"
     webpack-dev-server "~2.7.1"
     webpack-merge "^4.1.0"
+    webpack-sources "^1.0.0"
     zone.js "^0.8.14"
   optionalDependencies:
     node-sass "^4.3.0"
@@ -165,9 +166,9 @@
     magic-string "^0.22.3"
     source-map "^0.5.6"
 
-"@schematics/angular@~0.0.38":
-  version "0.0.41"
-  resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-0.0.41.tgz#9deccd92791877f87365ed8991062132f3b645e0"
+"@schematics/angular@~0.0.46":
+  version "0.0.46"
+  resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-0.0.46.tgz#a177dbed008860d455f586eccc82dbc34685b407"
 
 "@types/jasmine@~2.6.0":
   version "2.6.0"
@@ -1895,11 +1896,12 @@ faye-websocket@~0.11.0:
   dependencies:
     websocket-driver ">=0.5.1"
 
-file-loader@^0.10.0:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-0.10.1.tgz#815034119891fc6441fb5a64c11bc93c22ddd842"
+file-loader@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-1.1.5.tgz#91c25b6b6fbe56dae99f10a425fd64933b5c9daa"
   dependencies:
     loader-utils "^1.0.2"
+    schema-utils "^0.3.0"
 
 filename-regex@^2.0.0:
   version "2.0.1"
@@ -5327,7 +5329,7 @@ upper-case@^1.1.1:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/upper-case/-/upper-case-1.1.3.tgz#f6b4501c2ec4cdd26ba78be7222961de77621598"
 
-url-loader@^0.6.0:
+url-loader@^0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/url-loader/-/url-loader-0.6.2.tgz#a007a7109620e9d988d14bce677a1decb9a993f7"
   dependencies:
@@ -5524,16 +5526,16 @@ webpack-merge@^4.1.0:
   dependencies:
     lodash "^4.17.4"
 
-webpack-sources@^1.0.1:
+webpack-sources@^1.0.0, webpack-sources@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-1.0.1.tgz#c7356436a4d13123be2e2426a05d1dad9cbe65cf"
   dependencies:
     source-list-map "^2.0.0"
     source-map "~0.5.3"
 
-webpack@~3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.6.0.tgz#a89a929fbee205d35a4fa2cc487be9cbec8898bc"
+webpack@~3.7.1:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-3.7.1.tgz#6046b5c415ff7df7a0dc54c5b6b86098e8b952da"
   dependencies:
     acorn "^5.0.0"
     acorn-dynamic-import "^2.0.0"
