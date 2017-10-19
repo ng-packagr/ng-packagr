@@ -188,7 +188,7 @@ async function readSecondaryPackage(rootPackage: NgPackageData, filePath: string
     rootPackage.fullPackageName,
     rootPackage.destinationPath,
     baseDirectory,
-    rootPackage.libExternals
+    ngPackage
   );
 }
 
