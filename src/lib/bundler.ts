@@ -4,7 +4,8 @@ import { NgArtifactsFactory } from './model/ng-artifacts-factory';
 import { writePackage } from './steps/package';
 import { processAssets } from './steps/assets';
 import { ngc } from './steps/ngc';
-import { remapSourcemap, relocateSourcemapRoot } from './steps/sorcery';
+import { minifyJsFile } from './steps/uglify';
+import { remapSourceMap, relocateSourceMapRoot } from './steps/sorcery';
 import { rollup } from './steps/rollup';
 import { downlevelWithTsc } from './steps/tsc';
 import { copySourceFilesToDestination } from './steps/transfer';
@@ -32,7 +33,7 @@ export async function generateNgBundle(ngPkg: NgPackageData): Promise<void> {
   // 2. NGC
   const es2015EntryFile: string = await ngc(ngPkg, baseBuildPath);
   // XX: see #46 - ngc only references to closure-annotated ES6 sources
-  await remapSourcemap(`${baseBuildPath}/${ngPkg.flatModuleFileName}.js`);
+  await remapSourceMap(`${baseBuildPath}/${ngPkg.flatModuleFileName}.js`);
 
   // 3. FESM15: ROLLUP
   await rollup({
@@ -42,13 +43,13 @@ export async function generateNgBundle(ngPkg: NgPackageData): Promise<void> {
     dest: artifactPaths.es2015,
     externals: ngPkg.libExternals
   });
-  await remapSourcemap(artifactPaths.es2015);
+  await remapSourceMap(artifactPaths.es2015);
 
   // 4. FESM5: TSC
   await downlevelWithTsc(
     artifactPaths.es2015,
     artifactPaths.module);
-  await remapSourcemap(artifactPaths.module);
+  await remapSourceMap(artifactPaths.module);
 
   // 5. UMD: ROLLUP
   await rollup({
@@ -58,15 +59,19 @@ export async function generateNgBundle(ngPkg: NgPackageData): Promise<void> {
     dest: artifactPaths.main,
     externals: ngPkg.libExternals
   });
-  await remapSourcemap(artifactPaths.main);
+  await remapSourceMap(artifactPaths.main);
 
-  // 6. SOURCEMAPS: RELOCATE ROOT PATHS
-  await relocateSourcemapRoot(ngPkg);
+  // 6. UMD: Minify
+  const minifiedFilePath: string = await minifyJsFile(artifactPaths.main);
+  await remapSourceMap(minifiedFilePath);
 
-  // 7. COPY SOURCE FILES TO DESTINATION
+  // 7. SOURCEMAPS: RELOCATE ROOT PATHS
+  await relocateSourceMapRoot(ngPkg);
+
+  // 8. COPY SOURCE FILES TO DESTINATION
   await copySourceFilesToDestination(ngPkg, baseBuildPath);
 
-  // 8. WRITE PACKAGE.JSON and OTHER DOC FILES
+  // 9. WRITE PACKAGE.JSON and OTHER DOC FILES
   const packageJsonArtifactPaths: NgArtifacts = artifactFactory.calculateArtifactPathsForPackageJson(ngPkg);
   await writePackage(ngPkg, packageJsonArtifactPaths);
 
