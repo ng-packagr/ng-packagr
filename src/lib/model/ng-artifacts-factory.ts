@@ -4,7 +4,7 @@ import { NgPackageData, SCOPE_NAME_SEPARATOR } from './ng-package-data';
 
 export class NgArtifactsFactory {
   private _makeUmdPackageName(ngPkg: NgPackageData): string {
-    return ngPkg.packageNameWithoutScope.replace(SCOPE_NAME_SEPARATOR, '-');
+    return ngPkg.packageNameWithoutScope.replace(SCOPE_NAME_SEPARATOR, '-') + '.umd.js';
   }
 
   private _unixPathJoin(...paths: string[]): string {
@@ -16,11 +16,11 @@ export class NgArtifactsFactory {
     const pathFromRoot: string = path.resolve(ngPkg.buildDirectory, ngPkg.pathOffsetFromSourceRoot);
 
     return {
-      main: `${ngPkg.buildDirectory}/bundles/${this._makeUmdPackageName(ngPkg)}.umd.js`,
-      module: `${ngPkg.buildDirectory}/${ngPkg.fullPackageName}.es5.js`,
-      es2015: `${ngPkg.buildDirectory}/${ngPkg.fullPackageName}.js`,
-      typings: `${pathFromRoot}/${ngPkg.flatModuleFileName}.d.ts`,
-      metadata: `${pathFromRoot}/${ngPkg.flatModuleFileName}.metadata.json`
+      main: path.join(ngPkg.buildDirectory,'bundles', this._makeUmdPackageName(ngPkg)),
+      module: path.join(ngPkg.buildDirectory, ngPkg.fullPackageName + '.es5.js'),
+      es2015: path.join(ngPkg.buildDirectory, ngPkg.fullPackageName + '.js'),
+      typings: path.join(pathFromRoot, ngPkg.flatModuleFileName + '.d.ts'),
+      metadata: path.join(pathFromRoot, ngPkg.flatModuleFileName + '.metadata.json')
     }
   }
 
@@ -28,7 +28,7 @@ export class NgArtifactsFactory {
     const rootPathFromSelf: string = path.relative(ngPkg.sourcePath, ngPkg.rootSourcePath);
 
     return {
-      main: this._unixPathJoin(rootPathFromSelf, 'bundles', `${this._makeUmdPackageName(ngPkg)}.umd.js`),
+      main: this._unixPathJoin(rootPathFromSelf, 'bundles', this._makeUmdPackageName(ngPkg)),
       module: this._unixPathJoin(rootPathFromSelf, `${ngPkg.fullPackageName}.es5.js`),
       es2015: this._unixPathJoin(rootPathFromSelf, `${ngPkg.fullPackageName}.js`),
       typings: path.ensureUnixPath(`${ngPkg.flatModuleFileName}.d.ts`),

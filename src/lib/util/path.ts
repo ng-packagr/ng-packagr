@@ -8,6 +8,6 @@ export const path = {
       return null;
     }
 
-    return path.replace(/\\/g, '/');
+    return path.replace(nodePath.win32.sep, '/');
   }
 };
