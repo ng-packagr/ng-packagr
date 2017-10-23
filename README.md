@@ -116,13 +116,13 @@ One way this can be done is by mimicking the folder structure of the following e
 ```
 my_package  
 ├── src
-    └── *.ts  
+|   └── *.ts  
 ├── public_api.ts  
 ├── ng-package.json   
-└── package.json
+├── package.json
 ├── testing   
     ├── src
-      └── *.ts   
+    |   └── *.ts   
     ├── public_api.ts  
     └── package.json  
 ```
