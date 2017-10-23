@@ -114,15 +114,17 @@ All you have to do is create a `package.json` file and put it where you want a s
 One way this can be done is by mimicking the folder structure of the following example which has a testing entry point in addition to its main entry point.
 
 ```
-src  
-├── testing   
-│   ├── *.ts   
-│   ├── public_api.ts  
-│   └── package.json  
-├── *.ts  
+my_package  
+├── src
+|   └── *.ts  
 ├── public_api.ts  
 ├── ng-package.json   
-└── package.json   
+├── package.json
+├── testing   
+    ├── src
+    |   └── *.ts   
+    ├── public_api.ts  
+    └── package.json  
 ```
 
 The contents of the secondary `package.json` can be as simple as:
