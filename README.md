@@ -98,17 +98,16 @@ To configure with `package.json`, put your ng-package configuration in the `ngPa
 
 Note: the JSON `$schema` reference enables JSON editing support (autocompletion) for the custom `ngPackage` property in an IDE like [VSCode](https://github.com/Microsoft/vscode).
 
-#### Secondary Entry-Points
+#### Secondary Entry Points
 
-Besides the primary entry point, a package can contain one or more secondary entry points (e.g. `@angular/core/testing`, `@angular/cdk/a11y`, …).
-These contain symbols that we don't want to group together with the symbols in the main entry point.
-The module id of a secondary entry point directs the module loader to a sub-directory by the name of the secondary entry point.
-For instance, “@angular/core/testing” resolves to a directory by the same name, “@angular/core/testing”.
-This directory contains a package.json file that directs the loader to the correct location for what it's looking for.
+Beside the primary entry point, a package can contain one or more secondary entry points (e.g. `@angular/core/testing`, `@angular/cdk/a11y`, …).
+These contain symbols that we don't want to group together with the symbols in the main entry.
+The module id of a secondary entry directs the module loader to a sub-directory by the secondary's name.
+For instance, `@angular/core/testing` resolves to a directory under `node_modules/@angular/core/testing` containing a `package.json` file that directs the loader to the correct location for what it's looking for.
 
 For library developers, secondary entry points are dynamically discovered by searching for `package.json` files within sub directories of the main `package.json` file's folder!
 
-##### So how do I use sub-packages?
+##### So how do I use secondary entry points (sub-packages)?
 
 All you have to do is create a `package.json` file and put it where you want a secondary entry point to be created.
 One way this can be done is by mimicking the folder structure of the following example which has a testing entry point in addition to its main entry point.
