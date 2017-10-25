@@ -150,7 +150,7 @@ For example, the following would use `index.ts` as the secondary entry point:
 ```
 
 
-#### Further documentation
+## Further documentation
 
 We keep track of user questions in GitHub's issue tracker and try to build a documentation from it.
 [Explore issues w/ label documentation](https://github.com/dherges/ng-packagr/issues?q=label%3Adocumentation%20).
