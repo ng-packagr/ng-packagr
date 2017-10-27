@@ -1,8 +1,11 @@
 // BUILD STEP IMPLEMENTATIONS
 import { discoverPackages } from './steps/package';
 import { rimraf } from './util/rimraf';
+import { copyFiles } from './util/copy';
 import { generateNgBundle } from './bundler';
 import { PackageSearchResult } from './model/package-search-result';
+
+// Node API
 import * as path from 'path';
 
 // Logging
@@ -38,6 +41,9 @@ export async function createNgPackage(opts: NgPackagrCliArguments): Promise<void
     for(const secondaryPackage of ngPackages.secondaryPackages) {
       await generateNgBundle(secondaryPackage);
     }
+
+    await copyFiles(`${rootPackage.sourcePath}/README.md`, rootPackage.destinationPath);
+    await copyFiles(`${rootPackage.sourcePath}/LICENSE`, rootPackage.destinationPath);
 
     log.success(`Built Angular library from ${rootPackage.sourcePath}, written to ${rootPackage.destinationPath}`);
   } catch (error) {

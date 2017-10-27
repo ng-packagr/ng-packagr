@@ -9,15 +9,19 @@ import { debug } from '../util/log';
  *
  * @param sourceFile Source file
  */
-export async function remapSourcemap(sourceFile: string): Promise<void> {
+export async function remapSourceMap(sourceFile: string): Promise<void> {
   debug(`re-mapping sources for ${sourceFile}`);
   const opts: any = {
     inline: false,
     includeContent: true,
   };
 
-  // Once sorcery loaded the chain of sourcemaps, the new sourcemap will be written asynchronously.
+  // Once sorcery loads the chain of sourcemaps, the new sourcemap will be written asynchronously.
   const chain = await sorcery.load(sourceFile);
+  if (!chain) {
+    throw new Error('Failed to load sourceMap chain for ' + sourceFile);
+  }
+
   await chain.write(opts);
 }
 
@@ -26,7 +30,7 @@ export async function remapSourcemap(sourceFile: string): Promise<void> {
  *
  * @param ngPkg Angular package data
  */
-export async function relocateSourcemapRoot(ngPkg: NgPackageData): Promise<void> {
+export async function relocateSourceMapRoot(ngPkg: NgPackageData): Promise<void> {
   const replaceValue: string = `~/${ngPkg.fullPackageName}`;
   await modifyJsonFiles(`${ngPkg.buildDirectory}/**/*.js.map`, (sourceMap: any): any => {
     sourceMap.sources = sourceMap.sources

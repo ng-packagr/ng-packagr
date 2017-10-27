@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.0-rc.1"></a>
+# [1.5.0-rc.1](https://github.com/dherges/ng-packagr/compare/v1.5.0-rc.0...v1.5.0-rc.1) (2017-10-23)
+
+
+### Bug Fixes
+
+* produce correct secondary package paths ([#197](https://github.com/dherges/ng-packagr/issues/197)) ([4ca213e](https://github.com/dherges/ng-packagr/commit/4ca213e))
+* respect secondary entry file customizations ([#198](https://github.com/dherges/ng-packagr/issues/198)) ([9de7524](https://github.com/dherges/ng-packagr/commit/9de7524))
+
+
+### Features
+
+* bump angular/[@tsc-wrapped](https://github.com/tsc-wrapped) to ^4.4.5 and [@typescript](https://github.com/typescript) to ^2.3.4 ([#200](https://github.com/dherges/ng-packagr/issues/200)) ([b2b369a](https://github.com/dherges/ng-packagr/commit/b2b369a))
+* minify UMD bundles ([#205](https://github.com/dherges/ng-packagr/issues/205)) ([c58689b](https://github.com/dherges/ng-packagr/commit/c58689b))
+
+
+
 <a name="1.5.0-rc.0"></a>
 # [1.5.0-rc.0](https://github.com/dherges/ng-packagr/compare/v1.4.1...v1.5.0-rc.0) (2017-10-18)
 

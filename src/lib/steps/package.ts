@@ -231,9 +231,6 @@ export async function discoverPackages(rootPath: string): Promise<PackageSearchR
 export async function writePackage(ngPkg: NgPackageData, packageArtifacts: NgArtifacts): Promise<void> {
 
   log.debug('writePackage');
-  await copyFiles(`${ngPkg.sourcePath}/**/*.md`, ngPkg.destinationPath);
-  await copyFiles(`${ngPkg.sourcePath}/LICENSE`, ngPkg.destinationPath);
-
   const packageJson: any = await readJson(path.resolve(ngPkg.sourcePath, 'package.json'));
   // set additional properties
   for(const fieldName in packageArtifacts) {
