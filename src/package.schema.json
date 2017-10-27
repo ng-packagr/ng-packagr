@@ -4,7 +4,10 @@
     { "$ref": "http://json.schemastore.org/package" },
     {
       "properties": {
-        "ngPackage": { "$ref": "./ng-package.schema.json" }
+        "ngPackage": {
+          "$ref": "./ng-package.schema.json",
+          "description": "Angular Package description"
+        }
       },
       "required": []
     }
