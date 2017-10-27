@@ -43,8 +43,9 @@
           "additionalProperties": true
         },
         "jsx": {
-          "description": "A property to indicate whether your library is going to be bundling jsx/tsx files. This passes through to the tsconfig jsx property and accepts anything that tsconfig does.",
+          "description": "A property to indicate whether your library is going to be bundling jsx/tsx files. This passes through to tsconfig - see https://www.typescriptlang.org/docs/handbook/jsx.html",
           "type": "string",
+          "enum": ["preserve", "react", "react-native"],
           "default": ""
         }
       }
