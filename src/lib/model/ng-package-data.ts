@@ -54,9 +54,7 @@ export class NgPackageData {
       this.libExternals = ngPackageConfig.lib.externals;
       this.flatModuleFileName = ngPackageConfig.lib.flatModuleFile;
       this.entryFile = ngPackageConfig.lib.entryFile;
-      if (ngPackageConfig.lib.jsx) {
-        this.jsxConfig = ngPackageConfig.lib.jsx;
-      }
+      this.jsxConfig = ngPackageConfig.lib.jsx;
     }
 
     if (!this.libExternals) {
