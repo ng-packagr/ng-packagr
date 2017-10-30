@@ -18,8 +18,8 @@ async function prepareTsConfig(ngPkg: NgPackageData, outFile: string): Promise<v
   tsConfig['files'] = [ ngPkg.entryFile ];
 
   if (ngPkg.jsxConfig) {
-    debug('prepareTsConfig: Applying jsx flag to tsconfig');
-    tsConfig['jsx'] = ngPkg.jsxConfig;
+    debug('prepareTsConfig: Applying jsx flag to tsconfig ' + ngPkg.jsxConfig);
+    tsConfig['compilerOptions']['jsx'] = ngPkg.jsxConfig;
   }
 
   await writeJson(outFile, tsConfig);
