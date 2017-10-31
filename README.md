@@ -165,6 +165,8 @@ construct them, you can set the `jsx` flag for your library through `ng-package`
 }
 ```
 
+The `jsx` flag will accept anything that `tsconfig` accepts, more information [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
+
 Note: You probably also want to include `react` and `react-dom` in your `externals`.
 
 
