@@ -5,7 +5,7 @@ import { AngularReactLabel } from './react-integration.component';
 @NgModule({
   declarations: [ AngularReactLabel ],
   imports: [ CommonModule ],
-  exports: [],
+  exports: [ AngularReactLabel ],
   providers: [],
 })
 export class ReactIntegrationModule {}
