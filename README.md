@@ -156,18 +156,21 @@ construct them, you can set the `jsx` flag for your library through `ng-package`
 
 ```json
 {
-  "ngPackage": {
-    "lib": {
-      "entryFile": "public_api.ts",
-      "jsx": "react"
-    }
+  "$schema": "../../../src/ng-package.schema.json",
+  "lib": {
+    "entryFile": "public_api.ts",
+    "externals": {
+      "react": "React",
+      "react-dom": "ReactDOM"
+    },
+    "jsx": "react"
   }
 }
 ```
 
 The `jsx` flag will accept anything that `tsconfig` accepts, more information [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
-Note: You probably also want to include `react` and `react-dom` in your `externals`.
+Note: Don't forget to include `react` and `react-dom` in your `externals` so that you're not bundling those dependencies.
 
 
 ## Further documentation
