@@ -8,7 +8,7 @@
 [![CircleCI](https://img.shields.io/circleci/project/github/dherges/ng-packagr/master.svg?style=flat-square)](https://circleci.com/gh/dherges/ng-packagr)
 [![Travis](https://img.shields.io/travis/dherges/ng-packagr/master.svg?style=flat-square)](https://travis-ci.org/dherges/ng-packagr)
 
-[![GitHub stars](https://img.shields.io/github/stars/dherges/ng-packagr.svg?style=social&label=Star&style=flat-square)](https://github.com/dherges/ng-packagr)
+[![GitHub stars](https://img.shields.io/github/stars/dherges/ng-packagr.svg?label=GitHub%20Stars&style=flat-square)](https://github.com/dherges/ng-packagr)
 [![npm Downloads](https://img.shields.io/npm/dw/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
 [![GitHub contributors](https://img.shields.io/github/contributors/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
 [![GitHub issues](https://img.shields.io/github/issues/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
