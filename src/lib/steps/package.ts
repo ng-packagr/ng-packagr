@@ -2,12 +2,13 @@ import * as path from 'path';
 import { NgPackageConfig } from '../../ng-package.schema';
 import { NgPackageData, DEFAULT_BUILD_FOLDER } from '../model/ng-package-data';
 import { NgArtifacts } from '../model/ng-artifacts';
-import { copyFiles } from '../util/copy';
 import { tryReadJson } from '../util/json';
 import { readJson, writeJson, readdir, lstat, Stats } from 'fs-extra';
 import { merge, isArray } from 'lodash';
 import * as log from '../util/log';
 import { PackageSearchResult } from '../model/package-search-result';
+
+const PACKAGE_JSON_FILE_NAME = 'package.json';
 
 // this prevents array objects from getting merged to each other one by one
 function arrayMergeLogic(objValue, srcValue) {
@@ -29,7 +30,7 @@ function resolvePaths(workingDirectory: string, packageConfig: NgPackageConfig):
   }
 };
 
-async function readNgPackageFile(filePath: string): Promise<NgPackageConfig> {
+async function readNgPackageFile(filePath: string): Promise<NgPackageConfig | null> {
 
   log.debug('Searching for ng-package config at ' + filePath);
   try {
@@ -42,7 +43,7 @@ async function readNgPackageFile(filePath: string): Promise<NgPackageConfig> {
     if (error.code === 'ENOENT') {
       log.debug('ng-package config file not found');
       // if the file does not exist, that's ok
-      return {};
+      return null;
     }
     throw error;
   }
@@ -102,7 +103,7 @@ async function findSecondaryPackagePaths(rootPackage: NgPackageData): Promise<st
       if (pathStats.isDirectory() && !shouldExcludeFromDirectorySearch(fileSystemPath, foldersToExclude)) {
         directoriesToSearch.push(fullPath);
       } else if (!packageFileFound && pathStats.isFile()) {
-        if (fileSystemPath.endsWith('package.json')) {
+        if (fileSystemPath.endsWith(PACKAGE_JSON_FILE_NAME)) {
           packagePaths.push(fullPath);
           packageFileFound = true;
           // we can't `break` here because doing so might cause us to miss some directories
@@ -133,14 +134,16 @@ async function readRootPackage(filePath: string): Promise<NgPackageData> {
   const baseDirectory = path.dirname(filePath);
 
   // read custom ng-package config file
-  let promiseChain: Promise<NgPackageConfig> = readNgPackageFile(filePath);
+  let promiseChain: Promise<NgPackageConfig> = readNgPackageFile(filePath)
+    .then((ngPkg: NgPackageConfig | null) => ngPkg || {});
 
   const defaultPath = path.join(baseDirectory, 'ng-package.json');
   if (defaultPath !== filePath) {
     // read default ng-package config file
     promiseChain = promiseChain.then(async (ngPkg: NgPackageConfig) => {
-      const otherNgPkg: NgPackageConfig = await readNgPackageFile(defaultPath);
+      const otherNgPkg: NgPackageConfig | null = await readNgPackageFile(defaultPath);
       // merge both ng-package config objects
+      // merge will never return null
       return merge(ngPkg, otherNgPkg, arrayMergeLogic);
     });
   }
@@ -152,7 +155,7 @@ async function readRootPackage(filePath: string): Promise<NgPackageData> {
   // read 'package.json'
   log.debug('loading package.json');
 
-  const pkg: any = await readJson(path.resolve(packageConfigurationDirectory, 'package.json'));
+  const pkg: any = await readJson(path.resolve(packageConfigurationDirectory, PACKAGE_JSON_FILE_NAME));
   // merge package.json ng-package config
   const finalPackageConfig = merge(ngPkg, pkg.ngPackage, arrayMergeLogic);
   // make sure we provide default values for src and dest
@@ -168,13 +171,21 @@ async function readRootPackage(filePath: string): Promise<NgPackageData> {
   );
 }
 
-async function readSecondaryPackage(rootPackage: NgPackageData, filePath: string): Promise<NgPackageData> {
+async function readSecondaryPackage(rootPackage: NgPackageData, filePath: string): Promise<NgPackageData | null> {
   const baseDirectory = path.dirname(filePath);
   const ngPackageFile = path.resolve(baseDirectory, 'ng-package.json');
-  const packageJsonFile = path.resolve(baseDirectory, 'package.json');
+  const packageJsonFile = path.resolve(baseDirectory, PACKAGE_JSON_FILE_NAME);
 
-  let ngPackage: NgPackageConfig = await readNgPackageFile(ngPackageFile);
+  let ngPackage: NgPackageConfig | null = await readNgPackageFile(ngPackageFile);
   const packageJson: any = await tryReadJson(packageJsonFile);
+
+  // if we don't detect any explicit package configurations, then ignore
+  if (!ngPackage) {
+    if (!packageJson || !packageJson.ngPackage) {
+      log.debug(`No secondary package found in ${baseDirectory}`);
+      return null;
+    }
+  }
 
   ngPackage = merge(ngPackage, packageJson.ngPackage, arrayMergeLogic);
   if (!ngPackage.lib) {
@@ -212,7 +223,10 @@ export async function discoverPackages(rootPath: string): Promise<PackageSearchR
   const secondaryPackagePromises: Promise<NgPackageData>[] = secondaryPackagePaths
     .map(secondaryPackagePath => readSecondaryPackage(rootPackage, secondaryPackagePath));
 
-  const secondaryPackages: NgPackageData[] = await Promise.all(secondaryPackagePromises);
+  const secondaryPackagesFromPaths: (NgPackageData | null)[] = await Promise.all(secondaryPackagePromises);
+
+  // The packages that are null should be excluded because they were not explicitly meant to be secondary entries
+  const secondaryPackages: NgPackageData[] = secondaryPackagesFromPaths.filter(x => !!x);
 
   return {
     rootPackage,
@@ -231,7 +245,7 @@ export async function discoverPackages(rootPath: string): Promise<PackageSearchR
 export async function writePackage(ngPkg: NgPackageData, packageArtifacts: NgArtifacts): Promise<void> {
 
   log.debug('writePackage');
-  const packageJson: any = await readJson(path.resolve(ngPkg.sourcePath, 'package.json'));
+  const packageJson: any = await readJson(path.resolve(ngPkg.sourcePath, PACKAGE_JSON_FILE_NAME));
   // set additional properties
   for(const fieldName in packageArtifacts) {
     packageJson[fieldName] = packageArtifacts[fieldName];
@@ -239,5 +253,9 @@ export async function writePackage(ngPkg: NgPackageData, packageArtifacts: NgArt
 
   packageJson.name = ngPkg.fullPackageName;
 
-  await writeJson(`${ngPkg.destinationPath}/package.json`, packageJson);
+  // keep the dist package.json clean
+  // this will not throw if ngPackage field does not exist
+  delete packageJson.ngPackage;
+
+  await writeJson(path.resolve(ngPkg.destinationPath, PACKAGE_JSON_FILE_NAME), packageJson);
 }
