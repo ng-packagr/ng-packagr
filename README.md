@@ -1,6 +1,6 @@
 # ng-packagr
 
-> Compile and package a TypeScript library to Angular Package Format
+> Compile a TypeScript library to Angular Package Format
 
 [![npm](https://img.shields.io/npm/v/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
 [![npm License](https://img.shields.io/npm/l/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr/blob/master/LICENSE)
@@ -8,16 +8,16 @@
 [![CircleCI](https://img.shields.io/circleci/project/github/dherges/ng-packagr/master.svg?style=flat-square)](https://circleci.com/gh/dherges/ng-packagr)
 [![Travis](https://img.shields.io/travis/dherges/ng-packagr/master.svg?style=flat-square)](https://travis-ci.org/dherges/ng-packagr)
 
-[![GitHub stars](https://img.shields.io/github/stars/dherges/ng-packagr.svg?style=social&label=Star&style=flat-square)](https://github.com/dherges/ng-packagr)
-[![npm Downloads](https://img.shields.io/npm/dt/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
+[![GitHub stars](https://img.shields.io/github/stars/dherges/ng-packagr.svg?label=GitHub%20Stars&style=flat-square)](https://github.com/dherges/ng-packagr)
+[![npm Downloads](https://img.shields.io/npm/dw/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
 [![GitHub contributors](https://img.shields.io/github/contributors/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
 [![GitHub issues](https://img.shields.io/github/issues/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
 
-[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovateapp.com/)
-[![Greenkeeper badge](https://badges.greenkeeper.io/dherges/ng-packagr.svg)](https://greenkeeper.io/)
+[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg?style=flat-square)](https://renovateapp.com/)
 [![David](https://img.shields.io/david/dherges/ng-packagr.svg?style=flat-square)](https://david-dm.org/dherges/ng-packagr)
 [![David](https://img.shields.io/david/dev/dherges/ng-packagr.svg?style=flat-square)](https://david-dm.org/dherges/ng-packagr?type=dev)
+[![David](https://img.shields.io/david/peer/dherges/ng-packagr.svg?style=flat-square)](https://david-dm.org/dherges/ng-packagr?type=dev)
 
 
 
@@ -74,9 +74,11 @@ The `package.json` describing the library should be located in the same folder, 
 
 #### Examples and Tutorials
 
-Nikolas LeBlanc has written a story on medium.com on [Building an Angular 4 Component Library with the Angular CLI and ng-packagr](https://medium.com/@ngl817/building-an-angular-4-component-library-with-the-angular-cli-and-ng-packagr-53b2ade0701e)
+Nikolas LeBlanc's story on medium.com: [Building an Angular 4 Component Library with the Angular CLI and ng-packagr](https://medium.com/@ngl817/building-an-angular-4-component-library-with-the-angular-cli-and-ng-packagr-53b2ade0701e)
 
-The demo repository [ng-packaged](https://github.com/dherges/ng-packaged) shows Angular CLI together with `ng-packagr`.
+Here is a [demo repository showing ng-packagr and Angular CLI](https://github.com/dherges/ng-packaged) in action.
+
+What about [ng-packagr alongside Nx Workspace](https://github.com/dherges/nx-packaged)? Well, they work well together!
 
 
 #### Configuration Locations
@@ -128,11 +130,15 @@ my_package
 
 The contents of the secondary `package.json` can be as simple as:
 ```json
+{
+  "ngPackage": {}
+}
 ```
 
-No, that is not a typo. No name is required. No version is required. Not even a json object is required.
+No, that is not a typo. No name is required. No version is required. 
+
 It's all handled for you by ng-packagr!
-When built, the secondary bundles would be accessible as `$(your-primary-package-name)/testing`.
+When built, the primary entry is imported with `@my/library` and the secondary entry with `@my/library/testing`.
 
 ##### What if I don't like `public_api.ts`?
 

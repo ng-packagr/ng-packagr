@@ -15,6 +15,10 @@ describe(`@sample/secondary`, () => {
       expect(PACKAGE).to.be.ok;
     });
 
+    it(`should not have ngPackage field`, () => {
+      expect(PACKAGE.ngPackage).to.be.undefined;
+    });
+
     it(`should be named '@sample/secondary-lib'`, () => {
       expect(PACKAGE['name']).to.equal('@sample/secondary-lib');
     });
@@ -47,6 +51,10 @@ describe(`@sample/secondary`, () => {
       expect(PACKAGE).to.be.ok;
     });
 
+    it(`should not have ngPackage field`, () => {
+      expect(PACKAGE.ngPackage).to.be.undefined;
+    });
+
     it(`should be named '@sample/secondary-lib/sub-module'`, () => {
       expect(PACKAGE['name']).to.equal('@sample/secondary-lib/sub-module');
     });
@@ -65,6 +73,14 @@ describe(`@sample/secondary`, () => {
 
     it(`should reference "typings" files`, () => {
       expect(PACKAGE['typings']).to.equal('sub-module.d.ts');
+    });
+  });
+
+  describe(`should-be-ignored/package.json`, () => {
+    const BASE = path.resolve(__dirname, '..', 'dist', 'should-be-ignored');
+
+    it(`should not exist`, () => {
+      expect(() => fs.readFileSync(`${BASE}/package.json`, 'utf-8')).throw();
     });
   });
 

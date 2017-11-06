@@ -4,6 +4,11 @@ machine:
   node:
     version: node
 
+general:
+  branches:
+    ignore:
+      - gh-pages
+
 dependencies:
   override:
     - yarn

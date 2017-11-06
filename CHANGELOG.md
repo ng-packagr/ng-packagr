@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/dherges/ng-packagr/compare/v1.4.0...v1.5.0) (2017-11-05)
+
+Secondary entrypoints – such as `@angular/core/testing`, `@angular/common/http`, `@angular/cdk/a11y`, et al. – can now be bundled with ng-packagr. Angular's `tsc-wrapped` is now version ^4.4.5 and `typescript` is ^2.3.4 – whether these work well with Angular 5 needs to be verified.
+
+### Bug Fixes
+
+* add description for `ngPackage` property in `package.json` ([3f8e25c](https://github.com/dherges/ng-packagr/commit/3f8e25c))
+* copy `README.md` and `LICENSE` just for primary entry ([#215](https://github.com/dherges/ng-packagr/issues/215))([38776d8](https://github.com/dherges/ng-packagr/commit/38776d8))
+* validate `ngPackage` property for secondary entry resolution ([#229](https://github.com/dherges/ng-packagr/issues/229)) ([ee5949b](https://github.com/dherges/ng-packagr/commit/ee5949b))
+* resolve node_modules folder dynamically from typescript ([#211](https://github.com/dherges/ng-packagr/issues/211)) ([9a7008d](https://github.com/dherges/ng-packagr/commit/9a7008d))
+* produce correct secondary package paths ([#197](https://github.com/dherges/ng-packagr/issues/197)) ([4ca213e](https://github.com/dherges/ng-packagr/commit/4ca213e))
+* respect secondary entry file customizations ([#198](https://github.com/dherges/ng-packagr/issues/198)) ([9de7524](https://github.com/dherges/ng-packagr/commit/9de7524))
+* regression in cli defaults ([18515af](https://github.com/dherges/ng-packagr/commit/18515af))
+
+
+### Features
+
+* bump [`@angular/tsc-wrapped`](https://github.com/angular/angular) to ^4.4.5 and [`typescript`](https://github.com/Microsoft/TypeScript) to ^2.3.4 ([#200](https://github.com/dherges/ng-packagr/issues/200)) ([b2b369a](https://github.com/dherges/ng-packagr/commit/b2b369a))
+* minify UMD bundles ([#205](https://github.com/dherges/ng-packagr/issues/205)) ([c58689b](https://github.com/dherges/ng-packagr/commit/c58689b))
+* dynamic secondary entry points ([5922cb1](https://github.com/dherges/ng-packagr/commit/5922cb1))
+* allow empty package.json for secondary entries ([c0af605](https://github.com/dherges/ng-packagr/commit/c0af605))
+* help command on cli ([c68a190](https://github.com/dherges/ng-packagr/commit/c68a190))
+* provide more frequent console feedback ([#212](https://github.com/dherges/ng-packagr/issues/212)) ([2801db9](https://github.com/dherges/ng-packagr/commit/2801db9))
+
+
+### BREAKING CHANGES
+
+* for auto-discovery of secondary entries, `package.json` files are now validated whether a `ngPackage` property exists; the value can be an empty object. This is a breaking change for a feature introduced in release candidate versions 1.5.0-rc.0/1.5.0-rc.1. **When upgrading from 1.4.x to 1.5.0, it is not-breaking**.
+
+
+
 <a name="1.5.0-rc.1"></a>
 # [1.5.0-rc.1](https://github.com/dherges/ng-packagr/compare/v1.5.0-rc.0...v1.5.0-rc.1) (2017-10-23)
 
