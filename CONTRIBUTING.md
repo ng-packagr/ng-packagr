@@ -3,8 +3,8 @@ Contributing
 
 Contributions are welcome!
 
-Since an _official_ tool from the Angular team is nowhere to be seen in the near future,
-`ng-packagr` should be a community-driven effort for developing an Angular component libraries!
+Since an _official_ tool is nowhere to be seen right now,
+ng-packagr is a community-driven effort for developing Angular component libraries!
 
 
 ## For Users
@@ -14,6 +14,6 @@ Please use the [issue template](./.github/ISSUE_TEMPLATE.md) and [pull request t
 
 ## For Developers
 
-Please make sure to read the [design doc](./DESIGN.md) and understand the motivations behind `ng-packagr`!
+Please make sure to read the [design doc](./docs/DESIGN.md) and understand the motivations behind `ng-packagr`!
 
-Please read the [developer guide](./DEVELOP.md) for further instructions.
+Please read the [developer guide](./docs/DEVELOP.md) for further instructions.
