@@ -1,6 +1,6 @@
 # ng-packagr
 
-> Compile and package a TypeScript library to Angular Package Format
+> Compile a TypeScript library to Angular Package Format
 
 [![npm](https://img.shields.io/npm/v/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
 [![npm License](https://img.shields.io/npm/l/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr/blob/master/LICENSE)
