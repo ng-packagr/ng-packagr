@@ -135,7 +135,12 @@ The contents of the secondary `package.json` can be as simple as:
 }
 ```
 
+<<<<<<< HEAD
 No, that is not a typo. No name is required. No version is required.
+=======
+No, that is not a typo. No name is required. No version is required. 
+
+>>>>>>> 31c33e7812df39d005dd9cf1079fd9f79054eb93
 It's all handled for you by ng-packagr!
 When built, the primary entry is imported with `@my/library` and the secondary entry with `@my/library/testing`.
 
