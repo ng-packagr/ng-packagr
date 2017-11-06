@@ -70,6 +70,7 @@
     "chai": "^4.0.1",
     "copyfiles": "^1.2.0",
     "cross-env": "^5.0.5",
+    "gh-pages": "^1.0.0",
     "husky": "^0.14.3",
     "jasmine": "^2.6.0",
     "json-schema-to-typescript": "^4.4.0",
@@ -94,6 +95,7 @@
     "samples:test": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --compilers ts:ts-node/register integration/samples/*/specs/**/*.ts",
     "consumer": "integration/consumer.sh",
     "test": "yarn build && yarn samples && yarn samples:test && yarn consumer",
-    "commitmsg": "commitlint -e"
+    "commitmsg": "commitlint -e",
+    "gh-pages": "gh-pages -d docs/angularconnect"
   }
 }

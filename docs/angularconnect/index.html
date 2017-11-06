@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CLEAN MARKUP = GOOD KARMA.
+      Hi source code lover,
+
+      you're a curious person and a fast learner ;)
+      Let's make something beautiful together. Contribute on Github:
+      https://github.com/webslides/webslides
+
+      Thanks,
+      @jlantunez.
+    -->
+
+    <!-- SEO -->
+    <title>Packaging Angular Libraries</title>
+    <meta name="description" content="From Components to Angular Package Format">
+
+    <!-- URL CANONICAL -->
+    <link rel="canonical" href="http://spektrakel.de/ng-packagr/">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,700,700i%7CMaitree:200,300,400,600,700&amp;subset=latin-ext" rel="stylesheet">
+
+    <!-- CSS WebSlides -->
+    <link rel="stylesheet" type='text/css' media='all' href="static/css/webslides.css">
+
+    <!-- Optional - CSS SVG Icons (Font Awesome) -->
+    <link rel="stylesheet" type='text/css' media='all' href="static/css/svg-icons.css">
+
+    <!-- SOCIAL CARDS (ADD YOUR INFO) -->
+
+    <!-- FACEBOOK -->
+    <meta property="og:url" content="http://spektrakel.de/ng-packagr/"> <!-- YOUR URL -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Packaging Angular Libraries"> <!-- EDIT -->
+    <meta property="og:description" content="From Components to Angular Package Format"> <!-- EDIT -->
+    <meta property="og:updated_time" content="2017-11-05T17:20:50"> <!-- EDIT -->
+    <meta property="og:image" content="static/images/build-with-ng-packagr.gif"> <!-- EDIT -->
+
+    <!-- TWITTER -->
+    <meta name="twitter:card" content="static/images/build-with-ng-packagr.gif">
+    <meta name="twitter:site" content="@davidh_23"> <!-- EDIT -->
+    <meta name="twitter:creator" content="@davidh_23"> <!-- EDIT -->
+    <meta name="twitter:title" content="Packaging Angular Libraries"> <!-- EDIT -->
+    <meta name="twitter:description" content="From Components to Angular Package Format"> <!-- EDIT -->
+    <meta name="twitter:image" content="static/images/build-with-ng-packagr.gif"> <!-- EDIT -->
+
+    <!-- FAVICONS -->
+    <link rel="shortcut icon" sizes="128x128" href="static/images/favicons/favicon.png">
+
+    <!-- Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#333333">
+
+  </head>
+  <body>
+
+    <main role="main">
+      <article id="webslides" class="vertical">
+        <!-- Quick Guide
+          - Each parent <section> in the <article id="webslides"> element is an individual slide.
+          - Vertical sliding = <article id="webslides" class="vertical">
+          - <div class="wrap"> = container 90% / <div class="wrap size-50"> = 45%;
+        -->
+
+        <section>
+          <div class="wrap aligncenter">
+            <h1><strong>Packaging Angular Libraries</strong></h1>
+            <p class="text-intro">From Components to Angular Package Format.</p>
+            <p>
+              David Herges<br>
+              Agfa HealthCare, Trier, Germany<br>
+              Angular Connect 2017 &mdash; Lightning Talks
+            </p>
+          </div>
+        </section>
+        <section class="slide-top">
+          <div class="wrap">
+            <h2 class="content-center">Where do we start?</h2>
+            <div class="grid ms">
+              <div class="column">
+                <figure><img class="aligncenter" src="static/images/clarity-styleguide.png" alt="Clarity Design Guideline" width="540" height="auto"></figure>
+              </div>
+              <div class="column">
+                <figure><img class="aligncenter" src="static/images/twitter-styleguide.png" alt="Twitter Style Guide" width="540" height="auto"></figure>
+                <figure><img class="aligncenter" src="static/images/u-guideline.png" alt="Another Guideline" width="540" height="auto"></figure>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="slide-top">
+            <!--.wrap = container (width: 90%) -->
+            <div class="wrap">
+              <div class="grid ms">
+                <div class="column">
+                  <pre>@Component({
+  selector: 'a-button-group',
+  templateUrl: './my-button-group.component.html',
+  styleUrls: ['./my-button.group.component.scss']
+})
+export class ButtonGroupComponent { /* ... */ }
+
+@Component({
+  selector: 'a-button',
+  template: '&lt;button class="btn btn-xl"&gt;{{ label }}&lt;/button&gt;'
+})
+export class ButtonComponent {
+  @Input() public label: string;
+  /* ... */
+}
+
+@Component({
+  selector: 'a-tab',
+  templateUrl: './u-have-more-than-me.components.html',
+  styleUrls: ['./yet-another.component.styl']
+})
+export class TabComponentWontBeYourLast {
+  /* ... */
+}
+</pre>
+                </div>
+                <!-- .end .column -->
+                <div class="column">
+                  <h3><strong>Com&shy;po&shy;nentize all the things!</strong></h3>
+                  <p class="text-intro">But wait &hellip; why?</p>
+                  <p><code>import { &hellip; } from '@your/components';</code></p>
+                </div>
+                <!-- .end .column -->
+              </div>
+              <!-- .end .grid -->
+            </div>
+            <!-- .end .wrap -->
+          </section>
+          <section class="fullscreen">
+            <div class="card-50">
+              <figure><img class="" src="static/images/angular-package-format.png" alt="Clarity StyleGuide" width="540" height="auto"></figure>
+              <div class="flex-content">
+                <h2><strong>$ npm publish <!--@your/components--></strong></h2>
+                <p class="text-intro">Spec: <a href="https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/edit">Angular Package Format 4.0</a></p>
+              </div>
+            </div>
+          </section>
+          <section>
+              <div class="wrap">
+                <h2>Almost there?</h2>
+                <ul class="flexblock features">
+                  <li>
+                    <div>
+                      <h2>
+                        <svg class="fa-exchange">
+                          <use xlink:href="#fa-exchange"></use>
+                        </svg>
+                        Stylesheet Languages
+                      </h2>
+                      css, scss, less &mdash; or styl?
+                    </div>
+                  </li>
+                  <li>
+                      <div>
+                        <h2>
+                          <svg class="fa-question">
+                            <use xlink:href="#fa-question"></use>
+                          </svg>
+                          Browser Support
+                        </h2>
+                        Autoprefixer, Browserslist
+                      </div>
+                    </li>
+                  <li>
+                      <div>
+                        <h2>
+                          <svg class="fa-clock-o">
+                            <use xlink:href="#fa-clock-o"></use>
+                          </svg>
+                          Back to the Future
+                        </h2>
+                        Ahead-of-Time compilation
+                      </div>
+                    </li>
+                    <li>
+                        <div>
+                          <h2>
+                            <svg class="fa-wrench">
+                              <use xlink:href="#fa-wrench"></use>
+                            </svg>
+                            JavaScript Modules
+                          </h2>
+                          FESM2015, FESM5, UMD
+                        </div>
+                      </li>
+                      <li>
+                    <div>
+                      <h2>
+                        <svg class="fa-cogs">
+                          <use xlink:href="#fa-cogs"></use>
+                        </svg>
+                        Know your consumers
+                      </h2>
+                      Webpack, Angular CLI, SystemJS, Bazel, &hellip;
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <h2>
+                        <svg class="fa-flag">
+                          <use xlink:href="#fa-flag"></use>
+                        </svg>
+                        What Next?
+                      </h2>
+                      (…yet another tool for sure!)
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </section>
+
+            <section class="slide-top">
+              <span class="background-center" style="background-image:url('./static/images/build-with-ng-packagr.gif')"></span>
+              <!--div class="wrap">
+                <img class="aligncenter size-100" src="https://raw.githubusercontent.com/dherges/nx-packaged/master/docs/build-with-ng-packagr.gif">
+              </div-->
+            </section>
+
+            <section class="slide-top">
+              <div class="wrap">
+                <h2 class="content-center">ng-packagr</h2>
+                <p class="content-center">(publicApi: TypeScript) => NgPackageFormat</p>
+                <div class="content-left">
+                  <h4>When Not To</h4>
+                  <ul>
+                    <li>You have existing, customized build scripts &mdash; does it break?</li>
+                    <li>Third-party dependencies can be tricky <a href="https://github.com/dherges/ng-packagr/issues/129">(#129)</a></li>
+                    <li>Angular 5 works … maybe?</li>
+                  </ul>
+                </div>
+                <div class="content-left">
+                  <h4>When To</h4>
+                  <ul>
+                    <li>Less Configuration, More Convention</li>
+                    <li>Small and focused: just an "orchestrator" for a complex build tool pipeline</li>
+                    <li>Secondary entry points (like <code>@angular/cdk/portal</code>)</li>
+                    <li>Complementary to <a href="https://medium.com/@ngl817/building-an-angular-4-component-library-with-the-angular-cli-and-ng-packagr-53b2ade0701e">Angular CLI</a>, <a href="https://github.com/dherges/nx-packaged">Nx Workspace</a>, or whatsoever!</li>
+                  </ul>
+                </div>
+                <div class="aligncenter">
+                  <img src="./static/images/github-stats.png">
+                  <p>
+                    <a href="https://github.com/dherges/ng-packagr">https://github.com/dherges/ng-packagr</a>
+                  </p>
+                </div>
+              </div>
+            </section>
+            <section class="slide-bottom">
+              <span class="background" style="background-image:url('./static/images/bernkastel-kues.jpg')"></span>
+              <div class="wrap">
+                <div class="content-right" style="color: white;">
+                  <h1><strong>Get In Touch</strong></h2>
+                  <ul>
+                      <li class="github">
+                        <a rel="external" href="https://github.com/dherges/ng-packagr" title="Github" style="color: white; font-weight: bold;">
+                          <svg class="fa-github">
+                            <use xlink:href="#fa-github"></use>
+                          </svg>
+                          <em>dherges/ng-packagr</em>
+                        </a>
+                      </li>
+                      <li class="twitter">
+                        <a rel="external" href="https://twitter.com/davidh_23" title="Twitter" style="color: white; font-weight: bold;">
+                          <svg class="fa-twitter">
+                            <use xlink:href="#fa-twitter"></use>
+                          </svg>
+                          <em>@davidh_23</em>
+                        </a>
+                      </li>
+                    </ul>
+                </div>
+              </div>
+            </section>
+      </article>
+      <!-- end article -->
+    </main>
+    <!-- end main -->
+
+    <!-- Required -->
+    <script src="static/js/webslides.js"></script>
+    <script>
+      window.ws = new WebSlides();
+    </script>
+
+    <!-- OPTIONAL - svg-icons.js (fontastic.me - Font Awesome as svg icons) -->
+    <script defer src="static/js/svg-icons.js"></script>
+
+  </body>
+</html>
