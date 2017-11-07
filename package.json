@@ -96,6 +96,6 @@
     "consumer": "integration/consumer.sh",
     "test": "yarn build && yarn samples && yarn samples:test && yarn consumer",
     "commitmsg": "commitlint -e",
-    "gh-pages": "gh-pages -d docs/angularconnect"
+    "gh-pages": "gh-pages -d docs/ghpages"
   }
 }

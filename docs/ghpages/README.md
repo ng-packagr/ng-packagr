@@ -23,10 +23,3 @@ E.g. `es5.js` for webpack / ng CLI.
 
 Packaging Angular - Jason Aden at ng-conf:
 https://youtu.be/unICbsPGFIA
-
-
-## Closing Slide
-
-http://www.corneli.de/wp-content/uploads/2013/09/DEU-03219-klein.jpg
-
-https://i.ytimg.com/vi/TXVJo7RSSOY/maxresdefault.jpg
