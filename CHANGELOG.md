@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### Features
 
 * add tsx/jsx support ([#228](https://github.com/dherges/ng-packagr/issues/228)) ([4068664](https://github.com/dherges/ng-packagr/commit/4068664))
-* invoke ngc thru `[@angular](https://github.com/angular)/compiler-cli` version 5.0.x ([c5c32c5](https://github.com/dherges/ng-packagr/commit/c5c32c5)), closes [#219](https://github.com/dherges/ng-packagr/issues/219)
+* invoke ngc thru `@angular/compiler-cli` version 5.0.x ([#271](https://github.com/dherges/ng-packagr/issues/271)) ([c5c32c5](https://github.com/dherges/ng-packagr/commit/c5c32c5)), closes [#219](https://github.com/dherges/ng-packagr/issues/219)
 * update typescript to ~2.4.2 for Angular v5 support ([#270](https://github.com/dherges/ng-packagr/issues/270)) ([2c6db4f](https://github.com/dherges/ng-packagr/commit/2c6db4f))
 
 
