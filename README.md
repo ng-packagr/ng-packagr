@@ -1,40 +1,41 @@
 # ng-packagr
 
-> Compile a TypeScript library to Angular Package Format
+> Transpile your libraries to Angular Package Format
 
 [![npm](https://img.shields.io/npm/v/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
 [![npm License](https://img.shields.io/npm/l/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr/blob/master/LICENSE)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat-square)](https://conventionalcommits.org)
-[![CircleCI](https://img.shields.io/circleci/project/github/dherges/ng-packagr/master.svg?style=flat-square)](https://circleci.com/gh/dherges/ng-packagr)
-[![Travis](https://img.shields.io/travis/dherges/ng-packagr/master.svg?style=flat-square)](https://travis-ci.org/dherges/ng-packagr)
+[![CircleCI](https://img.shields.io/circleci/project/github/dherges/ng-packagr/master.svg?label=Circle%20CI&style=flat-square)](https://circleci.com/gh/dherges/ng-packagr)
+[![Travis](https://img.shields.io/travis/dherges/ng-packagr/master.svg?label=Travis%20CI&style=flat-square)](https://travis-ci.org/dherges/ng-packagr)
+
+[![GitHub contributors](https://img.shields.io/github/contributors/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
+[![GitHub PR Stats](http://issuestats.com/github/dherges/ng-packagr/badge/pr?style=flat-square)](http://issuestats.com/github/angular/angular)
+[![GitHub Issue Stats](http://issuestats.com/github/dherges/ng-packagr/badge/issue?style=flat-square)](http://issuestats.com/github/angular/angular)
 
 [![GitHub stars](https://img.shields.io/github/stars/dherges/ng-packagr.svg?label=GitHub%20Stars&style=flat-square)](https://github.com/dherges/ng-packagr)
 [![npm Downloads](https://img.shields.io/npm/dw/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
-[![GitHub contributors](https://img.shields.io/github/contributors/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
-[![GitHub issues](https://img.shields.io/github/issues/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
-
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg?style=flat-square)](https://renovateapp.com/)
-[![David](https://img.shields.io/david/dherges/ng-packagr.svg?style=flat-square)](https://david-dm.org/dherges/ng-packagr)
-[![David](https://img.shields.io/david/dev/dherges/ng-packagr.svg?style=flat-square)](https://david-dm.org/dherges/ng-packagr?type=dev)
-[![David](https://img.shields.io/david/peer/dherges/ng-packagr.svg?style=flat-square)](https://david-dm.org/dherges/ng-packagr?type=dev)
-
 
 
 ## Usage Example
 
-For an Angular library, create one configuration file `ng-package.json`:
+For publishing your Angular library, create a `package.json` file and add the custom `ngPackage` property:
 
 ```json
 {
-  "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
-  "lib": {
-    "entryFile": "public_api.ts"
+  "$schema": "./node_modules/ng-packagr/package.schema.json",
+  "name": "@my/foo",
+  "version": "1.0.0",
+  "ngPackage": {
+    "lib": {
+      "entryFile": "public_api.ts"
+    }
   }
 }
 ```
 
-Then, build the library from a npm/yarn script defined in `package.json`:
+Paths in the `ngPackage` configuration are resolved relative to the location of the `package.json` file.
+You should use a npm/yarn script to run _ng-packagr_:
 
 ```json
 {
@@ -44,14 +45,15 @@ Then, build the library from a npm/yarn script defined in `package.json`:
 }
 ```
 
-Now build with this command:
+Now, build with the following command:
 
 ```bash
 $ yarn build
 ```
 
-Paths are resolved relative to the location of the `ng-package.json` file.
-The `package.json` describing the library should be located in the same folder, next to `ng-package.json`.
+You like to publish more libraries to npm?
+Create one `package.json` per npm package, run _ng-packagr_ for each!
+
 
 ## Features
 
@@ -60,8 +62,8 @@ The `package.json` describing the library should be located in the same folder, 
    - :school_satchel: npm package can be consumed by [Angular CLI](https://github.com/angular/angular-cli), [Webpack](https://github.com/webpack/webpack), or [SystemJS](https://github.com/systemjs/systemjs)
    - :dancer: Creates type definitions (`.d.ts`)
    - :runner: Generates [Ahead-of-Time](https://angular.io/guide/aot-compiler#why-do-aot-compilation) metadata (`.metadata.json`)
- - :trophy: Supports dynamic discovery and bundling of secondary entry points
- - :mag_right: Creates either [a scoped or a non-scoped packages](https://docs.npmjs.com/misc/scope) for publishing to npm registry
+   - :trophy: Auto-discovers and bundles secondary entry points such as `@my/foo`, `@my/foo/testing`, `@my/foo/bar`
+ - :mag_right: Creates [scoped and non-scoped packages](https://docs.npmjs.com/misc/scope) for publishing to npm registry
  - :surfer: Inlines Templates and Stylesheets
  - :sparkles: CSS Features
    - :camel: Runs [SCSS](http://sass-lang.com/guide) preprocessor, supporting the [relative `~` import syntax](https://github.com/webpack-contrib/sass-loader#imports)
@@ -85,7 +87,19 @@ What about [ng-packagr alongside Nx Workspace](https://github.com/dherges/nx-pac
 
 Configuration is picked up from the cli `-p` parameter, then from the default location for  `ng-package.json`, then from `package.json`.
 
-To configure with `package.json`, put your ng-package configuration in the `ngPackage` field:
+To configure with a `ng-package.json`, put the `package.json` of the library in the same folder next to the `ng-package.json`.
+Contents of `ng-package.json` are for example:
+
+```json
+{
+  "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
+  "lib": {
+    "entryFile": "public_api.ts"
+  }
+}
+```
+
+To configure with a `package.json`, put the configuration in the `ngPackage` custom property:
 
 ```json
 {
@@ -98,7 +112,7 @@ To configure with `package.json`, put your ng-package configuration in the `ngPa
 }
 ```
 
-Note: the JSON `$schema` reference enables JSON editing support (autocompletion) for the custom `ngPackage` property in an IDE like [VSCode](https://github.com/Microsoft/vscode).
+Note: referencing the `$schema` enables JSON editing support (auto-completion for configuration) in IDEs like [VSCode](https://github.com/Microsoft/vscode).
 
 #### Secondary Entry Points
 
@@ -154,10 +168,12 @@ For example, the following would use `index.ts` as the secondary entry point:
 }
 ```
 
-##### What if I want to use React Components?
+#### React loves Angular, Angular loves React
+
+What if I want to use React Components in Angular?
 
 If you have React Components that you're using in your library, and want to use proper JSX/TSX syntax in order to
-construct them, you can set the `jsx` flag for your library through `ng-package` like so:
+construct them, you can set the `jsx` flag for your library through `ng-package.json` like so:
 
 ```json
 {
@@ -173,9 +189,9 @@ construct them, you can set the `jsx` flag for your library through `ng-package`
 }
 ```
 
-The `jsx` flag will accept anything that `tsconfig` accepts, more information [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
+The `jsx` flag will accept what the corresponding `tsconfig` accepts, more information [in the TypeScript Handbook chaper on JSX](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
-Note: Don't forget to include `react` and `react-dom` in your `externals` so that you're not bundling those dependencies.
+Note: Don't forget to include `react` and `react-dom` in your `externals` so that you're not bundling those dependencies!
 
 
 ## Further documentation
