@@ -1,6 +1,6 @@
 {
   "name": "ng-packagr",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Compile and package a TypeScript library to Angular Package Format",
   "keywords": [
     "angular",
@@ -25,7 +25,6 @@
     "ng-packagr": "./cli/main.js"
   },
   "dependencies": {
-    "@angular/tsc-wrapped": "^4.4.5",
     "@ngtools/json-schema": "^1.1.0",
     "autoprefixer": "^7.1.1",
     "browserslist": "^2.1.5",
@@ -40,15 +39,18 @@
     "postcss": "^6.0.2",
     "read-file": "^0.2.0",
     "rimraf": "^2.6.1",
-    "rollup": "^0.50.0",
+    "rollup": "^0.51.0",
     "rollup-plugin-commonjs": "^8.2.1",
     "rollup-plugin-node-resolve": "^3.0.0",
     "sorcery": "^0.10.0",
     "stylus": "^0.54.5",
     "ts-node": "^3.0.4",
-    "typescript": "^2.3.4",
     "uglify-js": "^3.0.7",
     "vinyl-fs": "^2.4.4"
+  },
+  "peerDependencies": {
+    "@angular/tsc-wrapped": "~4.4.5",
+    "typescript": "~2.3.4"
   },
   "devDependencies": {
     "@angular/cdk": "^2.0.0-beta.11",
@@ -56,6 +58,7 @@
     "@angular/core": "^4.4.5",
     "@angular/http": "^4.4.5",
     "@angular/platform-browser": "^4.4.5",
+    "@angular/tsc-wrapped": "~4.4.5",
     "@commitlint/cli": "^4.0.0",
     "@commitlint/config-angular": "^4.2.0",
     "@types/chai": "^4.0.0",
@@ -66,6 +69,8 @@
     "@types/lodash": "^4.14.77",
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.0",
+    "@types/react": "^16.0.19",
+    "@types/react-dom": "^16.0.2",
     "@types/sinon": "^2.3.0",
     "chai": "^4.0.1",
     "copyfiles": "^1.2.0",
@@ -75,9 +80,12 @@
     "jasmine": "^2.6.0",
     "json-schema-to-typescript": "^5.0.0",
     "mocha": "^4.0.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "rxjs": "^5.4.0",
     "sinon": "^4.0.0",
     "standard-version": "^4.0.0",
+    "typescript": "~2.3.4",
     "zone.js": "^0.8.10"
   },
   "private": true,

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.1"></a>
+## [1.5.1](https://github.com/dherges/ng-packagr/compare/v1.5.0...v1.5.1) (2017-11-10)
+
+
+### Bug Fixes
+
+* depend on user's typescript and tsc-wrapped ([#268](https://github.com/dherges/ng-packagr/issues/268)) ([42b2f08](https://github.com/dherges/ng-packagr/commit/42b2f08))
+
+
+
 <a name="1.5.0"></a>
 # [1.5.0](https://github.com/dherges/ng-packagr/compare/v1.4.0...v1.5.0) (2017-11-05)
 

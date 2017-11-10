@@ -115,17 +115,17 @@ All you have to do is create a `package.json` file and put it where you want a s
 One way this can be done is by mimicking the folder structure of the following example which has a testing entry point in addition to its main entry point.
 
 ```
-my_package  
+my_package
 ├── src
-|   └── *.ts  
-├── public_api.ts  
-├── ng-package.json   
+|   └── *.ts
+├── public_api.ts
+├── ng-package.json
 ├── package.json
-├── testing   
+├── testing
     ├── src
-    |   └── *.ts   
-    ├── public_api.ts  
-    └── package.json  
+    |   └── *.ts
+    ├── public_api.ts
+    └── package.json
 ```
 
 The contents of the secondary `package.json` can be as simple as:
@@ -135,7 +135,7 @@ The contents of the secondary `package.json` can be as simple as:
 }
 ```
 
-No, that is not a typo. No name is required. No version is required. 
+No, that is not a typo. No name is required. No version is required.
 It's all handled for you by ng-packagr!
 When built, the primary entry is imported with `@my/library` and the secondary entry with `@my/library/testing`.
 
@@ -153,6 +153,29 @@ For example, the following would use `index.ts` as the secondary entry point:
   }
 }
 ```
+
+##### What if I want to use React Components?
+
+If you have React Components that you're using in your library, and want to use proper JSX/TSX syntax in order to
+construct them, you can set the `jsx` flag for your library through `ng-package` like so:
+
+```json
+{
+  "$schema": "../../../src/ng-package.schema.json",
+  "lib": {
+    "entryFile": "public_api.ts",
+    "externals": {
+      "react": "React",
+      "react-dom": "ReactDOM"
+    },
+    "jsx": "react"
+  }
+}
+```
+
+The `jsx` flag will accept anything that `tsconfig` accepts, more information [here](https://www.typescriptlang.org/docs/handbook/jsx.html).
+
+Note: Don't forget to include `react` and `react-dom` in your `externals` so that you're not bundling those dependencies.
 
 
 ## Further documentation
