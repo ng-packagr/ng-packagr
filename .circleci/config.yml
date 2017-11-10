@@ -48,5 +48,5 @@ workflows:
           filters:
             tags:
               only: /.*/
-            branches
+            branches:
               ignore: /gh-pages/
