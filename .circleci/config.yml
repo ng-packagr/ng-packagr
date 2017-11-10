@@ -16,6 +16,7 @@ jobs:
       - run: yarn install
       - run: yarn test
       # Store artefacts on circle
+      - run: mkdir -p /tmp/samples
       - run: cp -r --parents integration/samples/**/dist /tmp/samples
       - store_artifacts:
           path: /tmp/samples
