@@ -41,6 +41,12 @@
           "description": "A symbol map of external dependencies. The purpose of this map is to correctly bundle a flat module file (with `rollup`). By default, `rxjs` and `@angular/*` dependency symbols are supported.",
           "type": "object",
           "additionalProperties": true
+        },
+        "jsx": {
+          "description": "A property to indicate whether your library is going to be bundling jsx/tsx files. This passes through to tsconfig - see https://www.typescriptlang.org/docs/handbook/jsx.html",
+          "type": "string",
+          "enum": ["preserve", "react", "react-native"],
+          "default": ""
         }
       }
     }

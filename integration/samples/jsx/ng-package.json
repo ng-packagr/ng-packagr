@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../src/ng-package.schema.json",
+  "lib": {
+    "entryFile": "public_api.ts",
+    "externals": {
+      "react": "React",
+      "react-dom": "ReactDOM"
+    },
+    "jsx": "react"
+  }
+}
