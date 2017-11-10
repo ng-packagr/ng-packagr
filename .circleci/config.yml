@@ -1,0 +1,53 @@
+version: 2
+jobs:
+  build-and-deploy:
+    docker:
+      - image: angular/ngcontainer:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      # Run the ci build
+      - run: yarn install
+      - run: yarn test
+      # Store artefacts on circle
+      - run: mkdir -p /tmp/samples
+      - run: cp -r --parents integration/samples/**/dist /tmp/samples
+      - store_artifacts:
+          path: /tmp/samples/integration/samples
+          destination: samples
+      - store_artifacts:
+          path: ~/repo/dist
+          destination: dist
+      # Deployment for git tags
+      - deploy:
+          name: Deploy tag to npm registry
+          command: |
+            if [ "${CIRCLE_TAG}" ]; then
+              echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+              yarn publish:ci
+              if [[ "${CIRCLE_TAG}" =~ v([0-9]{1,1})\.([0-9]{1,1})\.([0-9]{1,1})-([a-zA-Z]+)\.*.* ]]; then
+                # Publish prerelease version with tag to npm registry
+                npm publish --tag ${BASH_REMATCH[4]}              
+              else
+                # Pack and publish latest version to npm registry
+                npm pack dist
+                npm publish dist
+              fi
+            fi
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build-and-deploy:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /gh-pages/
