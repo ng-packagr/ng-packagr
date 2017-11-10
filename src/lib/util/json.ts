@@ -1,7 +1,8 @@
-const glob = require('glob')
+import * as glob from 'glob';
 import { readJson, writeJson } from 'fs-extra';
 import { promisify } from './promisify';
 import { debug } from './log';
+
 /**
  * Modifies a set of JSON files by invoking `modifyFn`
  *
@@ -33,8 +34,8 @@ export async function modifyJsonFiles(globPattern: string, modifyFn: (jsonObj: a
 export async function tryReadJson(filePath: string): Promise<any> {
   try {
     return await readJson(filePath);
-  } catch {
+  } catch (e) {
     // this means the file was empty or not json, which is fine
-    return {};
+    return await Promise.resolve({});
   }
 }
