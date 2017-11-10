@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { main as tsc, AngularCompilerOptions } from '@angular/tsc-wrapped';
+import { performCompilation, readConfiguration, AngularCompilerOptions } from '@angular/compiler-cli';
 import { NgPackageData } from '../model/ng-package-data';
 import { readJson, writeJson } from 'fs-extra';
 import { debug } from '../util/log';
@@ -37,7 +37,10 @@ export async function ngc(ngPkg: NgPackageData, basePath: string): Promise<strin
   debug(`ngc ${tsConfigPath}, { basePath: ${basePath} })`);
 
   await prepareTsConfig(ngPkg, tsConfigPath);
-  await tsc(tsConfigPath, { basePath });
+
+  // invoke ngc programmatic API
+  const compilerConfig = readConfiguration(tsConfigPath);
+  performCompilation(compilerConfig);
 
   debug('Reading tsconfig from ' + tsConfigPath);
   const tsConfig = await readJson(tsConfigPath);

@@ -49,16 +49,18 @@
     "vinyl-fs": "^2.4.4"
   },
   "peerDependencies": {
-    "@angular/tsc-wrapped": "~4.4.5",
+    "@angular/compiler": "~5.0.0",
+    "@angular/compiler-cli": "~5.0.0",
     "typescript": "~2.4.2"
   },
   "devDependencies": {
     "@angular/cdk": "~5.0.0-rc0",
     "@angular/common": "~5.0.0",
+    "@angular/compiler": "~5.0.0",
+    "@angular/compiler-cli": "~5.0.0",
     "@angular/core": "~5.0.0",
     "@angular/http": "~5.0.0",
     "@angular/platform-browser": "~5.0.0",
-    "@angular/tsc-wrapped": "~4.4.5",
     "@commitlint/cli": "^4.0.0",
     "@commitlint/config-angular": "^4.2.0",
     "@types/chai": "^4.0.0",
