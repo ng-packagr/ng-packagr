@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build-and-deploy:
     docker:
       - image: angular/ngcontainer:latest
     working_directory: ~/repo
@@ -42,7 +42,7 @@ jobs:
 
 workflows:
   version: 2
-  build-on-ci:
+  build-and-deploy:
     jobs:
       - build:
           filters:
