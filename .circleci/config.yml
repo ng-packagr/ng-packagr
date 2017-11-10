@@ -1,19 +1,20 @@
 version: 2
+defaults: &defaults
+  docker:
+    - image: angular/ngcontainer:latest
+  working_directory: ~/repo
+
 jobs:
-  build-and-deploy:
-    docker:
-      - image: angular/ngcontainer:latest
-    working_directory: ~/repo
+  # Build for all branches and tags
+  build:
+    <<: *defaults
     steps:
+      # Checkout, Download and cache dependencies
       - checkout
-      # Download and cache dependencies
       - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
       # Run the ci build
-      - run: yarn install
+      - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn test
       # Store artefacts on circle
       - run: mkdir -p /tmp/samples
@@ -24,30 +25,71 @@ jobs:
       - store_artifacts:
           path: ~/repo/dist
           destination: dist
-      # Deployment for git tags
+      - save_cache:
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+          paths:
+            - "node_modules"
+
+  # Deployment for git tag
+  publish-npm-latest:
+    <<: *defaults
+    steps:
+      # Checkout, Download and cache dependencies
+      - checkout
+      - restore_cache:
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
       - deploy:
-          name: Deploy tag to npm registry
+          name: Deploy Git tag to npm registry (latest)
           command: |
-            if [ "${CIRCLE_TAG}" ]; then
+            GIT_TAG=$(git tag -l --points-at HEAD)
+            if [ "${GIT_TAG}" ]; then
               echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
               yarn publish:ci
-              if [[ "${CIRCLE_TAG}" =~ v([0-9]{1,1})\.([0-9]{1,1})\.([0-9]{1,1})-([a-zA-Z]+)\.*.* ]]; then
-                # Publish prerelease version with tag to npm registry
-                npm publish --tag ${BASH_REMATCH[4]}              
-              else
-                # Pack and publish latest version to npm registry
-                npm pack dist
-                npm publish dist
-              fi
+              # Pack and publish latest version to npm registry
+              npm pack dist
+              npm publish dist
+            fi
+
+  # Deployment for git tag (pre-releases)
+  publish-npm-prerelease:
+    <<: *defaults
+    steps:
+      # Checkout, Download and cache dependencies
+      - checkout
+      - restore_cache:
+          key: v1-dependencies-{{ checksum "yarn.lock" }}
+      - deploy:
+          name: Deploy Git tag to npm registry (pre-release)
+          command: |
+            GIT_TAG=$(git tag -l --points-at HEAD)
+            if [ "${GIT_TAG}" ]; then
+              echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+              yarn publish:ci
+              # Publish prerelease version with tag to npm registry
+              npm publish --tag ${GIT_TAG}
             fi
 
 workflows:
   version: 2
-  build-and-deploy:
+  cirunner:
     jobs:
-      - build-and-deploy:
+      - build:
           filters:
-            tags:
-              only: /.*/
             branches:
               ignore: /gh-pages/
+      - publish-npm-latest:
+          filters:
+            tags:
+              only: /v.*/
+            branches:
+              ignore: /.*/
+          requires:
+            - build
+      - publish-npm-prerelease:
+          filters:
+            tags:
+              only: /v([0-9]+)\.([0-9]+)\.([0-9]+)-([a-zA-Z]+)\.*.*/
+            branches:
+              ignore: /.*/
+          requires:
+            - build
