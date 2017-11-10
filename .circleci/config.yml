@@ -19,7 +19,7 @@ jobs:
       - run: mkdir -p /tmp/samples
       - run: cp -r --parents integration/samples/**/dist /tmp/samples
       - store_artifacts:
-          path: /tmp/samples
+          path: /tmp/samples/integration/samples
           destination: samples
       - store_artifacts:
           path: ~/repo/dist
