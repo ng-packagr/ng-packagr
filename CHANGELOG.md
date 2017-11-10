@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.6.0-rc.0"></a>
+# [1.6.0-rc.0](https://github.com/dherges/ng-packagr/compare/v1.5.1...v1.6.0-rc.0) (2017-11-10)
+
+
+### Bug Fixes
+
+*  update rollup to version ^0.51.0 ([#260](https://github.com/dherges/ng-packagr/issues/260)) ([c652f4e](https://github.com/dherges/ng-packagr/commit/c652f4e))
+
+
+### Features
+
+* add tsx/jsx support ([#228](https://github.com/dherges/ng-packagr/issues/228)) ([4068664](https://github.com/dherges/ng-packagr/commit/4068664))
+* invoke ngc thru `[@angular](https://github.com/angular)/compiler-cli` version 5.0.x ([c5c32c5](https://github.com/dherges/ng-packagr/commit/c5c32c5)), closes [#219](https://github.com/dherges/ng-packagr/issues/219)
+* update typescript to ~2.4.2 for Angular v5 support ([#270](https://github.com/dherges/ng-packagr/issues/270)) ([2c6db4f](https://github.com/dherges/ng-packagr/commit/2c6db4f))
+
+
+
 <a name="1.5.1"></a>
 ## [1.5.1](https://github.com/dherges/ng-packagr/compare/v1.5.0...v1.5.1) (2017-11-10)
 
