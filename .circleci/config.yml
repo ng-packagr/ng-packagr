@@ -30,12 +30,14 @@ jobs:
             if [ "${CIRCLE_TAG}" ]; then
               echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
               yarn publish:ci
-            fi
-            if [[ "${CIRCLE_TAG}" =~ v([0-9]{1,1})\.([0-9]{1,1})\.([0-9]{1,1})-([a-zA-Z]+)\.*.* ]]; then
-              npm publish --tag ${BASH_REMATCH[4]}              
-            else
-              npm pack dist
-              npm publish dist
+              if [[ "${CIRCLE_TAG}" =~ v([0-9]{1,1})\.([0-9]{1,1})\.([0-9]{1,1})-([a-zA-Z]+)\.*.* ]]; then
+                # Publish prerelease version with tag to npm registry
+                npm publish --tag ${BASH_REMATCH[4]}              
+              else
+                # Pack and publish latest version to npm registry
+                npm pack dist
+                npm publish dist
+              fi
             fi
 
 workflows:
