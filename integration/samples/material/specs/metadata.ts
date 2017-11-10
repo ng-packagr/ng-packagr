@@ -23,5 +23,19 @@ describe(`@sample/material`, () => {
       expect(METADATA['importAs']).to.equal('@sample/material');
     });
 
+    describe(`BazComponent`, () => {
+      it(`should have "BazComponent.decorators"`, () => {
+        expect(METADATA['metadata'].BazComponent.decorators).to.be.ok;
+      });
+  
+      it(`should have styles for "BazComponent"`, () => {
+        expect(METADATA['metadata'].BazComponent.decorators[0].arguments[0].styles).to.be.ok;
+      });
+  
+      it(`should have style with: "color: red"`, () => {
+        expect(METADATA['metadata'].BazComponent.decorators[0].arguments[0].styles[0]).to.have.string('color: "red"');
+      });
+    });
+
   });
 });
