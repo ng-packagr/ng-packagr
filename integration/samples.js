@@ -5,8 +5,7 @@ process.env.DEBUG = true;
 const PATH = path.resolve(__dirname, 'samples');
 const SAMPLES = fs.readdirSync(PATH)
   .map(dir => path.resolve(PATH, dir))
-  .filter(file => fs.lstatSync(file).isDirectory())
-  .map(dir => path.resolve(dir, 'ng-package.json'));
+  .filter(file => fs.lstatSync(file).isDirectory());
 
 
 // @see https://github.com/TypeStrong/ts-node#programmatic-usage
