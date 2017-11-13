@@ -41,7 +41,7 @@ export async function generateNgBundle(ngPkg: NgPackageData): Promise<void> {
   // 3. FESM15: ROLLUP
   log.info('Compiling to FESM15');
   await rollup({
-    moduleName: ngPkg.packageNameWithoutScope,
+    moduleName: ngPkg.moduleName,
     entry: es2015EntryFile,
     format: 'es',
     dest: artifactPaths.es2015,
@@ -59,7 +59,7 @@ export async function generateNgBundle(ngPkg: NgPackageData): Promise<void> {
   // 5. UMD: ROLLUP
   log.info('Compiling to UMD');
   await rollup({
-    moduleName: ngPkg.packageNameWithoutScope,
+    moduleName: ngPkg.moduleName,
     entry: artifactPaths.module,
     format: 'umd',
     dest: artifactPaths.main,

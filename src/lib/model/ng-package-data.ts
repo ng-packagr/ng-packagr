@@ -9,6 +9,7 @@ export class NgPackageData {
   public readonly pathOffsetFromSourceRoot: string;
   public readonly fullPackageName: string;
   public readonly packageNameWithoutScope: string;
+  public readonly moduleName: string;
   public readonly scope?: string;
   public readonly flatModuleFileName: string;
   public readonly entryFile: string;
@@ -37,6 +38,7 @@ export class NgPackageData {
     // destination path of secondary modules is not configurable - this is to meet the Angular package format.
     this.destinationPath = rootDestinationPath + this.pathOffsetFromSourceRoot;
     this.fullPackageName = path.ensureUnixPath(rootPackageName + this.pathOffsetFromSourceRoot);
+    this.moduleName = this.fullPackageName.replace(SCOPE_PREFIX, '').split(SCOPE_NAME_SEPARATOR).join('.');
 
     if (this.fullPackageName.startsWith(SCOPE_PREFIX)) {
       const firstSeparatorIndex: number = this.fullPackageName.indexOf(SCOPE_NAME_SEPARATOR);
@@ -67,7 +69,7 @@ export class NgPackageData {
       this.entryFile = 'public_api.ts';
     }
 
-    // Each entry point gets it's own unique build directory based upon the package name.
+    // Each entry point gets its own unique build directory based upon the package name.
     const packageBuildFolderName: string = this.fullPackageName.replace(SCOPE_NAME_SEPARATOR, '-');
     this.buildDirectory = path.resolve(this.rootSourcePath, DEFAULT_BUILD_FOLDER, packageBuildFolderName);
   }
