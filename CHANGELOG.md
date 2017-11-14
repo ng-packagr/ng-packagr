@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.6.0"></a>
+# [1.6.0](https://github.com/dherges/ng-packagr/compare/v1.5.2...v1.6.0) (2017-11-14)
+
+This release rolls back premature Angular v5 support in `v1.6.0-rc.0`.
+It is recommended to use this version of ng-packagr for building Angular v4 libraries,
+as `typescript` in `2.3.x` and `@angular/tsc-wrapped` in `4.4.x` are used.
+
+Libraries generated with this version of ng-packagr will ship with AoT metadata in version 3,
+which is intended for Angular v4.
+
+### Bug Fixes
+
+*  update rollup to version ^0.51.0 ([#260](https://github.com/dherges/ng-packagr/issues/260)) ([0fe359e](https://github.com/dherges/ng-packagr/commit/0fe359e))
+
+
+### Features
+
+* add tsx/jsx support ([#228](https://github.com/dherges/ng-packagr/issues/228)) ([a8eefb9](https://github.com/dherges/ng-packagr/commit/a8eefb9))
+
+
+
 <a name="1.5.2"></a>
 ## [1.5.2](https://github.com/dherges/ng-packagr/compare/v1.5.1...v1.5.2) (2017-11-14)
 
