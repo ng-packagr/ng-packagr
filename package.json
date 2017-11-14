@@ -46,9 +46,11 @@
     "sorcery": "^0.10.0",
     "stylus": "^0.54.5",
     "ts-node": "^3.0.4",
-    "typescript": "^2.3.4",
     "uglify-js": "^3.0.7",
     "vinyl-fs": "^2.4.4"
+  },
+  "peerDependencies": {
+    "typescript": "^2.3.4"
   },
   "devDependencies": {
     "@angular/cdk": "^2.0.0-beta.11",
@@ -78,6 +80,7 @@
     "rxjs": "^5.4.0",
     "sinon": "^4.0.0",
     "standard-version": "^4.0.0",
+    "typescript": "^2.3.4",
     "zone.js": "^0.8.10"
   },
   "private": true,
