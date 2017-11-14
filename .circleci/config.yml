@@ -37,13 +37,16 @@ jobs:
               echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
               yarn publish:ci
               # Publish prerelease version with tag to npm registry
+              pushd dist
               npm publish --tag next
+              npm pack .
             elif [[ "${GIT_TAG}" =~ v.* ]]; then
               echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
               yarn publish:ci
               # Pack and publish latest version to npm registry
-              npm pack dist
-              npm publish dist
+              push dist
+              npm publish
+              npm pack .
             fi
 
 workflows:
