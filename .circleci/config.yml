@@ -29,44 +29,21 @@ jobs:
           key: v1-dependencies-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
-
-  # Deployment for git tag
-  publish-npm-latest:
-    <<: *defaults
-    steps:
-      # Checkout, Download and cache dependencies
-      - checkout
-      - restore_cache:
-          key: v1-dependencies-{{ checksum "yarn.lock" }}
       - deploy:
-          name: Deploy Git tag to npm registry (latest)
+          name: Deploy Git tag to npm registry
           command: |
             GIT_TAG=$(git tag -l --points-at HEAD)
-            if [ "${GIT_TAG}" ]; then
+            if [[ "${GIT_TAG}" =~ v([0-9]+)\.([0-9]+)\.([0-9]+)-([a-zA-Z]+)\..* ]]; then
+              echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+              yarn publish:ci
+              # Publish prerelease version with tag to npm registry
+              npm publish --tag next
+            elif [[ "${GIT_TAG}" =~ v.* ]]; then
               echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
               yarn publish:ci
               # Pack and publish latest version to npm registry
               npm pack dist
               npm publish dist
-            fi
-
-  # Deployment for git tag (pre-releases)
-  publish-npm-prerelease:
-    <<: *defaults
-    steps:
-      # Checkout, Download and cache dependencies
-      - checkout
-      - restore_cache:
-          key: v1-dependencies-{{ checksum "yarn.lock" }}
-      - deploy:
-          name: Deploy Git tag to npm registry (pre-release)
-          command: |
-            GIT_TAG=$(git tag -l --points-at HEAD)
-            if [ "${GIT_TAG}" ]; then
-              echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-              yarn publish:ci
-              # Publish prerelease version with tag to npm registry
-              npm publish --tag ${GIT_TAG}
             fi
 
 workflows:
@@ -77,19 +54,5 @@ workflows:
           filters:
             branches:
               ignore: /gh-pages/
-      - publish-npm-latest:
-          filters:
             tags:
               only: /v.*/
-            branches:
-              ignore: /.*/
-          requires:
-            - build
-      - publish-npm-prerelease:
-          filters:
-            tags:
-              only: /v([0-9]+)\.([0-9]+)\.([0-9]+)-([a-zA-Z]+)\.*.*/
-            branches:
-              ignore: /.*/
-          requires:
-            - build
