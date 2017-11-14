@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.2"></a>
+## [1.5.2](https://github.com/dherges/ng-packagr/compare/v1.5.1...v1.5.2) (2017-11-14)
+
+This release reverts a regression introduced in `v1.5.1`.
+See pull request [#268](https://github.com/dherges/ng-packagr/issues/268).
+
+Previously, a user of ng-packagr could install an incompatible typescript version for ng-packagr.
+Prevent inadvertent typescript installs by depending on a user's typescript isntallation (peerDependencies).
+This should be (is a) non-breaking change as any Angular project requires typescript as devDependency.
+
+### Bug Fixes
+
+* depend on user's typescript ([8f5bb9c](https://github.com/dherges/ng-packagr/commit/8f5bb9c))
+
+
+
 <a name="1.5.1"></a>
 ## [1.5.1](https://github.com/dherges/ng-packagr/compare/v1.5.0...v1.5.1) (2017-11-10)
 
