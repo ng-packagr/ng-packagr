@@ -2,6 +2,71 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.0"></a>
+# [2.0.0-rc.0](https://github.com/dherges/ng-packagr/compare/v1.6.0...v2.0.0-rc.0) (2017-11-14)
+
+Migrating towards Angular v5, a series of `v2.0.0` release candidates will be published.
+These releases will be published using the `next` tag on npm.
+Please install the versions with `"ng-packagr: "^2.0.0-rc.0"` or `yarn add --dev ng-packagr@next`.
+
+The `v2.0.0` release candidates collect several breaking changes compared to the last `v1.x`.
+
+
+### Bug Fixes
+
+* include scope name in module name of Rollup bundle ([#280](https://github.com/dherges/ng-packagr/issues/280)) ([3446453](https://github.com/dherges/ng-packagr/commit/3446453)), closes [#251](https://github.com/dherges/ng-packagr/issues/251)
+
+
+### Features
+
+* invoke ngc thru `@angular/compiler-cli` version 5.0.x ([c5c32c5](https://github.com/dherges/ng-packagr/commit/c5c32c5)), closes [#219](https://github.com/dherges/ng-packagr/issues/219)
+* update typescript to ~2.4.2 for Angular v5 support ([#270](https://github.com/dherges/ng-packagr/issues/270)) ([2c6db4f](https://github.com/dherges/ng-packagr/commit/2c6db4f))
+
+
+### BREAKING CHANGES
+
+* when you published a scoped npm package, e.g. `@sample/core`, the UMD module ID used to be `core` including only the second part of the npm package name. With this change, the UMD module ID is now `sample.core`. For secondary entrypoints, e.g. `@sample/core/testing`, the UMD module ID now also includes every part of the npm package name, e.g. `sample.core.testing`. Publishing your npm packages built with this version of ng-packagr causes a new UMD module ID to be generated. Users of your library need to update their configuration, e.g. when using SystemJS!
+* Users now need to install `@angular/compiler` and `@angular/compiler-cli` to the `devDependency` section of their project (if not already installed). ng-packagr uses both the TypeScript and the Angular compiler version provided by the user workspace.
+
+
+
+<a name="1.6.0"></a>
+# [1.6.0](https://github.com/dherges/ng-packagr/compare/v1.5.2...v1.6.0) (2017-11-14)
+
+This release rolls back premature Angular v5 support in `v1.6.0-rc.0`.
+It is recommended to use this version of ng-packagr for building Angular v4 libraries,
+as `typescript` in `2.3.x` and `@angular/tsc-wrapped` in `4.4.x` are used.
+
+Libraries generated with this version of ng-packagr will ship with AoT metadata in version 3,
+which is intended for Angular v4.
+
+### Bug Fixes
+
+*  update rollup to version ^0.51.0 ([#260](https://github.com/dherges/ng-packagr/issues/260)) ([0fe359e](https://github.com/dherges/ng-packagr/commit/0fe359e))
+
+
+### Features
+
+* add tsx/jsx support ([#228](https://github.com/dherges/ng-packagr/issues/228)) ([a8eefb9](https://github.com/dherges/ng-packagr/commit/a8eefb9))
+
+
+
+<a name="1.5.2"></a>
+## [1.5.2](https://github.com/dherges/ng-packagr/compare/v1.5.1...v1.5.2) (2017-11-14)
+
+This release reverts a regression introduced in `v1.5.1`.
+See pull request [#268](https://github.com/dherges/ng-packagr/issues/268).
+
+Previously, a user of ng-packagr could install an incompatible typescript version for ng-packagr.
+Prevent inadvertent typescript installs by depending on a user's typescript isntallation (peerDependencies).
+This should be (is a) non-breaking change as any Angular project requires typescript as devDependency.
+
+### Bug Fixes
+
+* depend on user's typescript ([8f5bb9c](https://github.com/dherges/ng-packagr/commit/8f5bb9c))
+
+
+
 <a name="1.6.0-rc.0"></a>
 # [1.6.0-rc.0](https://github.com/dherges/ng-packagr/compare/v1.5.1...v1.6.0-rc.0) (2017-11-10)
 
