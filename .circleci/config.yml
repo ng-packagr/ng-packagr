@@ -37,12 +37,14 @@ jobs:
             if [[ "${GIT_TAG}" =~ v([0-9]+)\.([0-9]+)\.([0-9]+)-([a-zA-Z]+)\..* ]]; then
               NPM_TAG=next
             fi
-            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-            yarn publish:ci
-            # Pack and publish latest version to npm registry
-            push dist
-            npm publish --tag ${NPM_TAG}
-            npm pack .
+            if [ "${GIT_TAG}" ]; then
+              echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+              yarn publish:ci
+              # Pack and publish latest version to npm registry
+              push dist
+              npm publish --tag ${NPM_TAG}
+              npm pack .
+            fi
 
 workflows:
   version: 2
