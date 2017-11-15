@@ -58,7 +58,7 @@ This release reverts a regression introduced in `v1.5.1`.
 See pull request [#268](https://github.com/dherges/ng-packagr/issues/268).
 
 Previously, a user of ng-packagr could install an incompatible typescript version for ng-packagr.
-Prevent inadvertent typescript installs by depending on a user's typescript isntallation (peerDependencies).
+Prevent inadvertent typescript installs by depending on a user's typescript installation (peerDependencies).
 This should be (is a) non-breaking change as any Angular project requires typescript as devDependency.
 
 ### Bug Fixes
