@@ -32,19 +32,25 @@ jobs:
       - deploy:
           name: Deploy Git tag to npm registry
           command: |
+            # CIRCLE_TAG indicates whether the job runs for the tag (as opposed to: the commit on the branch)
+            if [ -z "${CIRCLE_TAG}" ]; then
+              echo "Skipping deployment. This build job runs for a branch."
+              exit 0
+            fi
+            echo "Deploying..."
+            # The git tag that Circle CI checked out
             GIT_TAG=$(git tag -l --points-at HEAD)
+            # The npm tag for publishing this release either as "latest" or "next"
             NPM_TAG=latest
             if [[ "${GIT_TAG}" =~ v([0-9]+)\.([0-9]+)\.([0-9]+)-([a-zA-Z]+)\..* ]]; then
               NPM_TAG=next
             fi
-            if [ "${GIT_TAG}" ]; then
-              echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-              yarn publish:ci
-              # Pack and publish latest version to npm registry
-              push dist
-              npm publish --tag ${NPM_TAG}
-              npm pack .
-            fi
+            # Build, pack and publish to npm registry
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+            yarn publish:ci
+            pushd dist
+            npm publish --tag ${NPM_TAG}
+            npm pack .
 
 workflows:
   version: 2
