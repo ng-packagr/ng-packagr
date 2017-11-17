@@ -1,8 +1,9 @@
+import * as fs from 'fs';
 import * as path from 'path';
-import { performCompilation, readConfiguration, AngularCompilerOptions } from '@angular/compiler-cli';
+import { performCompilation, readConfiguration, AngularCompilerOptions, Diagnostic } from '@angular/compiler-cli';
 import { NgPackageData } from '../model/ng-package-data';
 import { readJson, writeJson } from 'fs-extra';
-import { debug } from '../util/log';
+import { debug, error, warn, info } from '../util/log';
 
 
 async function prepareTsConfig(ngPkg: NgPackageData, outFile: string): Promise<void> {
@@ -25,6 +26,9 @@ async function prepareTsConfig(ngPkg: NgPackageData, outFile: string): Promise<v
   await writeJson(outFile, tsConfig);
 }
 
+// function isTSDiagnostic(diagnostic: Diagnostic | ts.Diagnostic): diagnostic is ts.Diagnostic {
+//     return (<ts.Diagnostic>diagnostic).file !== undefined;
+// }
 
 /**
  * Compiles typescript sources with 'ngc'.
@@ -40,7 +44,32 @@ export async function ngc(ngPkg: NgPackageData, basePath: string): Promise<strin
 
   // invoke ngc programmatic API
   const compilerConfig = readConfiguration(tsConfigPath);
-  performCompilation(compilerConfig);
+  const compilerResult = performCompilation(compilerConfig);
+
+  if (!compilerResult.emitResult) {
+    let hasError = false;
+    for (const diagnostic of compilerResult.diagnostics) {
+      let msg = diagnostic.messageText;
+      //   if (isTSDiagnostic(diagnostic) && diagnostic.file) {
+      //       msg += ` in ${diagnostic.file.fileName}`
+      //   }
+      switch (diagnostic.category) {
+        case 0:
+          warn("Warning: " + msg);
+          break;
+        case 1:
+          error(`Error: [${diagnostic.code}] ` + msg);
+          hasError = true;
+          break;
+        default:
+          info(msg.toString());
+        }
+      }
+
+      if (hasError) {
+        throw new Error("Build Error");
+      }
+  }
 
   debug('Reading tsconfig from ' + tsConfigPath);
   const tsConfig = await readJson(tsConfigPath);
