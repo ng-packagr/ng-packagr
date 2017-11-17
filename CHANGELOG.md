@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.1"></a>
+# [2.0.0-rc.1](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.0...v2.0.0-rc.1) (2017-11-17)
+
+
+### Bug Fixes
+
+* report ngc compiler diagnostics and throw an error ([#292](https://github.com/dherges/ng-packagr/issues/292)) ([815509b](https://github.com/dherges/ng-packagr/commit/815509b))
+
+
+### Features
+
+* add rxjs mapTo operator to rollup globals ([#293](https://github.com/dherges/ng-packagr/issues/293)) ([1a42ce1](https://github.com/dherges/ng-packagr/commit/1a42ce1))
+
+
+
 <a name="2.0.0-rc.0"></a>
 # [2.0.0-rc.0](https://github.com/dherges/ng-packagr/compare/v1.6.0...v2.0.0-rc.0) (2017-11-14)
 
