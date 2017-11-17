@@ -1,5 +1,6 @@
+import * as fs from 'fs';
 import * as path from 'path';
-import { performCompilation, readConfiguration, AngularCompilerOptions } from '@angular/compiler-cli';
+import { performCompilation, readConfiguration, AngularCompilerOptions, exitCodeFromResult, formatDiagnostics } from '@angular/compiler-cli';
 import { NgPackageData } from '../model/ng-package-data';
 import { readJson, writeJson } from 'fs-extra';
 import { debug } from '../util/log';
@@ -25,7 +26,6 @@ async function prepareTsConfig(ngPkg: NgPackageData, outFile: string): Promise<v
   await writeJson(outFile, tsConfig);
 }
 
-
 /**
  * Compiles typescript sources with 'ngc'.
  *
@@ -40,7 +40,12 @@ export async function ngc(ngPkg: NgPackageData, basePath: string): Promise<strin
 
   // invoke ngc programmatic API
   const compilerConfig = readConfiguration(tsConfigPath);
-  performCompilation(compilerConfig);
+  const compilerResult = performCompilation(compilerConfig);
+
+  const exitCode = exitCodeFromResult(compilerResult.diagnostics);
+  if (exitCode !== 0) {
+      throw new Error(formatDiagnostics(compilerResult.diagnostics));
+  }
 
   debug('Reading tsconfig from ' + tsConfigPath);
   const tsConfig = await readJson(tsConfigPath);
