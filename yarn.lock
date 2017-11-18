@@ -58,9 +58,15 @@
     lodash "^4.17.4"
     meow "^3.7.0"
 
-"@commitlint/config-angular@^4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@commitlint/config-angular/-/config-angular-4.2.0.tgz#1f6f5211b623870dc0fd3c8061c6d5827ba6897e"
+"@commitlint/config-angular-type-enum@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/config-angular-type-enum/-/config-angular-type-enum-5.0.0.tgz#3d7b52b3b44178a61a2709a4a3afcfd2ee565f78"
+
+"@commitlint/config-angular@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/config-angular/-/config-angular-5.0.0.tgz#3fb80fb7697369a444e18dd13b78582d5431d587"
+  dependencies:
+    "@commitlint/config-angular-type-enum" "^5.0.0"
 
 "@commitlint/core@^5.0.0":
   version "5.0.0"
