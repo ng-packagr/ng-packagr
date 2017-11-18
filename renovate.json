@@ -1,8 +1,8 @@
 {
   "pinVersions": false,
   "semanticCommits": true,
-  "semanticPrefix": "chore:",
-  "commitMessage": "{{semanticPrefix}} update {{depName}} to version {{newVersion}}",
+  "semanticPrefix": "build:",
+  "commitMessage": "{{semanticPrefix}}update {{depName}} to version {{newVersion}}",
   "packageFiles": [
     "package.json",
     "integration/consumers/ng-cli/package.json"
