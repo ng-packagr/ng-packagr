@@ -17,11 +17,17 @@
   dependencies:
     source-map "^0.5.6"
 
-"@angular-devkit/schematics@^0.0.36":
-  version "0.0.36"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.0.36.tgz#9f351317759774f930c2d8cef90f87cf02f69cef"
+"@angular-devkit/core@0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-0.0.21.tgz#e2ba4ac0a4e1156f884c083b15eb1c26ddfb2ba8"
   dependencies:
-    "@angular-devkit/core" "0.0.20"
+    source-map "^0.5.6"
+
+"@angular-devkit/schematics@^0.0.37":
+  version "0.0.37"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.0.37.tgz#d86ff93b14a44b766e72bcea1569b5d36063210e"
+  dependencies:
+    "@angular-devkit/core" "0.0.21"
     "@ngtools/json-schema" "^1.1.0"
     minimist "^1.2.0"
     rxjs "^5.5.2"
