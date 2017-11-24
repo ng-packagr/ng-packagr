@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.3"></a>
+# [2.0.0-rc.3](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.2...v2.0.0-rc.3) (2017-11-24)
+
+
+### Bug Fixes
+
+* support new cdk modules 'accordion' and 'layout' ([@angular](https://github.com/angular)/cdk@5.0.0-rc0) ([#297](https://github.com/dherges/ng-packagr/issues/297)) ([3016585](https://github.com/dherges/ng-packagr/commit/3016585))
+* **deps:** update [@angular-devkit](https://github.com/angular-devkit)/schematics to version ^0.0.37 ([#306](https://github.com/dherges/ng-packagr/issues/306)) ([8cb4d07](https://github.com/dherges/ng-packagr/commit/8cb4d07))
+* support rxjs lettable operators ([#307](https://github.com/dherges/ng-packagr/issues/307)) ([5de8045](https://github.com/dherges/ng-packagr/commit/5de8045)), closes [#247](https://github.com/dherges/ng-packagr/issues/247)
+
+
+
 <a name="2.0.0-rc.2"></a>
 # [2.0.0-rc.2](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.1...v2.0.0-rc.2) (2017-11-17)
 
