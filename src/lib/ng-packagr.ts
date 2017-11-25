@@ -15,13 +15,15 @@ import * as log from './util/log';
 import { NgPackageData } from './model/ng-package-data';
 
 
-/** CLI arguments passed to `ng-packagr` and `ngPackage()`. */
-export interface NgPackagrCliArguments {
+/**
+ * Arguments passed to `ng-packagr` binary (from CLI) and `createNgPackage()`.
+ */
+export interface CliArguments {
   /** Path to the 'ng-package.json' file */
   project: string
 }
 
-export async function createNgPackage(opts: NgPackagrCliArguments): Promise<void> {
+export async function createNgPackage(opts: CliArguments): Promise<void> {
   log.info(`Building Angular library`);
 
   let buildDirectoryRoot: string;
@@ -45,7 +47,10 @@ export async function createNgPackage(opts: NgPackagrCliArguments): Promise<void
     await copyFiles(`${rootPackage.sourcePath}/README.md`, rootPackage.destinationPath);
     await copyFiles(`${rootPackage.sourcePath}/LICENSE`, rootPackage.destinationPath);
 
-    log.success(`Built Angular library from ${rootPackage.sourcePath}, written to ${rootPackage.destinationPath}`);
+    log.success(
+`Built Angular library
+  from:       ${rootPackage.sourcePath}
+  written to: ${rootPackage.destinationPath}`);
   } catch (error) {
     // Report error messages and throw the error further up
     log.error(error);
