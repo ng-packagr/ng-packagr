@@ -8,8 +8,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* support new cdk modules 'accordion' and 'layout' ([@angular](https://github.com/angular)/cdk@5.0.0-rc0) ([#297](https://github.com/dherges/ng-packagr/issues/297)) ([3016585](https://github.com/dherges/ng-packagr/commit/3016585))
-* **deps:** update [@angular-devkit](https://github.com/angular-devkit)/schematics to version ^0.0.37 ([#306](https://github.com/dherges/ng-packagr/issues/306)) ([8cb4d07](https://github.com/dherges/ng-packagr/commit/8cb4d07))
+* support new cdk modules 'accordion' and 'layout' `@angular/cdk@5.0.0-rc0` ([#297](https://github.com/dherges/ng-packagr/issues/297)) ([3016585](https://github.com/dherges/ng-packagr/commit/3016585))
 * support rxjs lettable operators ([#307](https://github.com/dherges/ng-packagr/issues/307)) ([5de8045](https://github.com/dherges/ng-packagr/commit/5de8045)), closes [#247](https://github.com/dherges/ng-packagr/issues/247)
 
 

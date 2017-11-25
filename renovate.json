@@ -3,38 +3,42 @@
   "semanticCommits": true,
   "semanticPrefix": "build:",
   "commitMessage": "{{semanticPrefix}}update {{depName}} to version {{newVersion}}",
+  "separateMajorReleases": false,
+  "dependencies": {
+    "semanticPrefix": "fix:"
+  },
   "packageFiles": [
     "package.json",
     "integration/consumers/ng-cli/package.json"
   ],
-  "packages": [
+  "packageRules": [
     {
-      "packagePattern": "^@angular\/.*",
+      "packagePatterns": ["^@angular\/.*"],
       "groupName": "angular",
       "pinVersions": false
     },
     {
-      "packagePattern": "^@commitlint\/.*",
+      "packagePatterns": ["^@commitlint\/.*"],
       "groupName": "commitlint",
       "pinVersions": false
     },
     {
-      "packagePattern": "^@types\/.*",
+      "packagePatterns": ["^@types\/.*"],
       "groupName": "type definitions",
       "pinVersions": false
     },
     {
-      "packagePattern": "^jasmine.*",
+      "packagePatterns": ["^jasmine.*"],
       "groupName": "jasmine",
       "pinVersions": false
     },
     {
-      "packagePattern": "^karma.*",
+      "packagePatterns": ["^karma.*"],
       "groupName": "karma",
       "pinVersions": false
     },
     {
-      "packagePattern": "^protractor.*",
+      "packagePatterns": ["^protractor.*"],
       "groupName": "protractor",
       "pinVersions": false
     }
