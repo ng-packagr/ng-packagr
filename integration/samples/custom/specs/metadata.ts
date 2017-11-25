@@ -7,12 +7,15 @@ describe(`sample-custom`, () => {
   describe(`sample-custom.metadata.json`, () => {
     let METADATA;
     before(() => {
-      METADATA = JSON.parse(fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'sample-custom.metadata.json'), 'utf-8'));
+      METADATA = require('../dist/sample-custom.metadata.json');
     });
 
     it(`should exist`, () => {
       expect(METADATA).to.be.ok;
+    });
+
+    it(`should be version 4`, () => {
+      expect(METADATA.version).to.equal(4);
     });
 
     it(`should be "__symbolic": "module"`, () => {
