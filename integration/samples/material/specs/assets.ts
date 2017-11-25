@@ -1,21 +1,20 @@
 import { expect } from 'chai';
 import * as path from 'path';
 
-xdescribe(`@sample/material`, () => {
+describe(`@sample/material`, () => {
 
-  xdescribe(`material.umd.js`, () => {
-    let GENERATED;
-    before(done => {
-      GENERATED = require(path.resolve(__dirname, '..', 'dist', 'bundles', 'material.umd.js'));
-      done();
+  describe(`material.umd.js`, () => {
+    let UMD_MODULE;
+    before(() => {
+      UMD_MODULE = require('../dist/bundles/material.umd.js');
     });
 
-    xit(`should exist`, () => {
-      expect(GENERATED.BazComponent).to.be.ok;
+    it(`should exist`, () => {
+      expect(UMD_MODULE).to.be.ok;
     });
 
-    xit(`should have "BazComponent"`, () => {
-      expect(GENERATED).to.be.ok;
+    it(`should have "BazComponent"`, () => {
+      expect(UMD_MODULE.BazComponent).to.be.ok;
     });
 
   });

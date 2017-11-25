@@ -7,20 +7,27 @@ describe(`@sample/core`, () => {
   describe(`core.metadata.json`, () => {
     let METADATA;
     before(() => {
-      METADATA = JSON.parse(fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'core.metadata.json'), 'utf-8'));
+      METADATA = require('../dist/core.metadata.json');
     });
 
     it(`should exist`, () => {
       expect(METADATA).to.be.ok;
     });
 
-    it(`should be "__symbolic": "module"`, () => {
-      expect(METADATA['__symbolic']).to.equal('module');
+    it(`should be version 4`, () => {
+      expect(METADATA.version).to.equal(4);
+    });
+
+    it(`should be version 4`, () => {
+      expect(METADATA.version).to.equal(4);
     });
 
     it(`should "importAs": "@sample/core"`, () => {
       expect(METADATA['importAs']).to.equal('@sample/core');
+    });
+
+    it(`should be "__symbolic": "module"`, () => {
+      expect(METADATA['__symbolic']).to.equal('module');
     });
 
     it(`should have "__symbolic": "reference" for 'peerDependencies' modules`, () => {
