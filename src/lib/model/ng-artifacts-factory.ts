@@ -20,8 +20,8 @@ export class NgArtifactsFactory {
       main: path.join(buildDirectory, 'bundles', this._makeUmdPackageName(ngPkg)),
       module: path.join(buildDirectory, 'esm5', `${flatModuleFileName}.js`),
       es2015: path.join(buildDirectory, 'esm2015', `${flatModuleFileName}.js`),
-      typings: path.join(pathFromRoot, flatModuleFileName + '.d.ts'),
-      metadata: path.join(pathFromRoot, flatModuleFileName + '.metadata.json')
+      typings: path.join(pathFromRoot, `${flatModuleFileName}.d.ts`),
+      metadata: path.join(pathFromRoot, `${flatModuleFileName}.metadata.json`)
     }
   }
 
