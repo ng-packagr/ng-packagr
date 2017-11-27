@@ -12,12 +12,13 @@ export class NgArtifactsFactory {
       return this._makeEsmPackageNameVal;
     }
 
-    const { packageNameWithoutScope, flatModuleFileName, buildDirectory } = ngPkg;
+    const { packageNameWithoutScope, flatModuleFileName, buildDirectory, pathOffsetFromSourceRoot } = ngPkg;
 
     if (packageNameWithoutScope === flatModuleFileName) {
       this._makeEsmPackageNameVal = `${flatModuleFileName}.js`;
     } else {
-      const modulePath = path.join(buildDirectory, 'esm2015', `${flatModuleFileName}.js`);
+      const pathFromRoot = buildDirectory.replace(pathOffsetFromSourceRoot, "");
+      const modulePath = path.join(pathFromRoot, 'esm2015', `${flatModuleFileName}.js`);
       const pkgName = pathExistsSync(modulePath) ? packageNameWithoutScope : flatModuleFileName;
       this._makeEsmPackageNameVal = `${pkgName}.js`;
     }
@@ -30,13 +31,13 @@ export class NgArtifactsFactory {
   }
 
   private _unixPathJoin(...paths: string[]): string {
-    const joined: string = path.join(...paths);
+    const joined = path.join(...paths);
     return path.ensureUnixPath(joined);
   }
 
   public calculateArtifactPathsForBuild(ngPkg: NgPackageData): NgArtifacts {
     const { buildDirectory, pathOffsetFromSourceRoot, flatModuleFileName } = ngPkg;
-    const pathFromRoot: string = path.resolve(buildDirectory, pathOffsetFromSourceRoot);
+    const pathFromRoot = path.resolve(buildDirectory, pathOffsetFromSourceRoot);
 
     return {
       main: path.join(buildDirectory, 'bundles', this._makeUmdPackageName(ngPkg)),
@@ -49,7 +50,7 @@ export class NgArtifactsFactory {
 
   public calculateArtifactPathsForPackageJson(ngPkg: NgPackageData): NgArtifacts {
     const { sourcePath, rootSourcePath, flatModuleFileName } = ngPkg;
-    const rootPathFromSelf: string = path.relative(sourcePath, rootSourcePath);
+    const rootPathFromSelf = path.relative(sourcePath, rootSourcePath);
 
     return {
       main: this._unixPathJoin(rootPathFromSelf, 'bundles', this._makeUmdPackageName(ngPkg)),
