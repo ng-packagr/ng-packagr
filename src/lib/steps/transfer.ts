@@ -1,6 +1,5 @@
 import { NgPackageData, SCOPE_NAME_SEPARATOR } from './../model/ng-package-data';
 import { copyFiles } from './../util/copy';
-import * as path from 'path';
 
 /**
  * Copies compiled source files from the build directory to the correct locations in the destination directory.
