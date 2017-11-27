@@ -17,7 +17,7 @@ export class NgArtifactsFactory {
     if (packageNameWithoutScope === flatModuleFileName) {
       this._makeEsmPackageNameVal = `${flatModuleFileName}.js`;
     } else {
-      const pathFromRoot = buildDirectory.replace(pathOffsetFromSourceRoot, "");
+      const pathFromRoot = buildDirectory.replace(pathOffsetFromSourceRoot, '');
       const modulePath = path.join(pathFromRoot, 'esm2015', `${flatModuleFileName}.js`);
       const pkgName = pathExistsSync(modulePath) ? packageNameWithoutScope : flatModuleFileName;
       this._makeEsmPackageNameVal = `${pkgName}.js`;
