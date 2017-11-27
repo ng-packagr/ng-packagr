@@ -27,14 +27,14 @@ export async function createNgPackage(opts: NgPackagrCliArguments): Promise<void
   let buildDirectoryRoot: string;
   try {
     // READ `ng-package.json` and obtain model, as well as secondary packages
-    const ngPackages: PackageSearchResult = await discoverPackages(opts.project);
+    const ngPackages = await discoverPackages(opts.project);
 
-    const rootPackage: NgPackageData = ngPackages.rootPackage;
+    const rootPackage = ngPackages.rootPackage;
 
     // clean the root (should clean all secondary module directories as well)
     await rimraf(rootPackage.destinationPath);
 
-    const packageSpecificPath: string = path.basename(rootPackage.buildDirectory);
+    const packageSpecificPath = path.basename(rootPackage.buildDirectory);
     buildDirectoryRoot = rootPackage.buildDirectory.substring(0, rootPackage.buildDirectory.lastIndexOf(packageSpecificPath));
     await generateNgBundle(rootPackage);
 
@@ -42,8 +42,10 @@ export async function createNgPackage(opts: NgPackagrCliArguments): Promise<void
       await generateNgBundle(secondaryPackage);
     }
 
-    await copyFiles(`${rootPackage.sourcePath}/README.md`, rootPackage.destinationPath);
-    await copyFiles(`${rootPackage.sourcePath}/LICENSE`, rootPackage.destinationPath);
+    await Promise.all([
+      copyFiles(`${rootPackage.sourcePath}/README.md`, rootPackage.destinationPath),
+      copyFiles(`${rootPackage.sourcePath}/LICENSE`, rootPackage.destinationPath)
+    ]);
 
     log.success(`Built Angular library from ${rootPackage.sourcePath}, written to ${rootPackage.destinationPath}`);
   } catch (error) {
