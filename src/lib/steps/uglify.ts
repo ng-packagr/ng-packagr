@@ -29,7 +29,7 @@ export async function minifyJsFile(inputPath: string): Promise<string> {
   });
 
   if (result.warnings) {
-    for(const warningMessage of result.warnings) {
+    for (const warningMessage of result.warnings) {
       warn(warningMessage);
     }
   }
@@ -38,7 +38,9 @@ export async function minifyJsFile(inputPath: string): Promise<string> {
     throw result.error;
   }
 
-  await writeFile(outputPath, result.code);
-  await writeFile(sourcemapOut, result.map);
+  await Promise.all([
+    writeFile(outputPath, result.code),
+    writeFile(sourcemapOut, result.map)
+  ]);
   return outputPath;
 }

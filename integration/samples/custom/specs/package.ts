@@ -30,11 +30,11 @@ describe(`sample-custom`, () => {
     });
 
     it(`should reference "module" bundle (FESM5, also FESM2015)`, () => {
-      expect(PACKAGE['module']).to.equal('sample-custom.es5.js');
+      expect(PACKAGE['module']).to.equal('esm5/sample-custom.js');
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('sample-custom.js');
+      expect(PACKAGE['es2015']).to.equal('esm2015/sample-custom.js');
     });
 
     it(`should reference "typings" files`, () => {

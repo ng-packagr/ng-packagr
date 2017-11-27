@@ -6,7 +6,7 @@ import {
   transpileModule,
   CompilerOptions
 } from 'typescript';
-import { readFile, writeFile } from 'fs-extra';
+import { readFile, outputJson, outputFile as fsOutputFile } from 'fs-extra';
 import { debug } from '../util/log';
 
 /**
@@ -23,7 +23,8 @@ export async function downlevelWithTsc(inputFile: string, outputFile: string): P
     target: ScriptTarget.ES5,
     module: ModuleKind.ES2015,
     allowJs: true,
-    sourceMap: true
+    sourceMap: true,
+    mapRoot: path.dirname(inputFile)
   };
   const transpiled: TranspileOutput = transpileModule(trimSourceMap(input.toString()), {
     fileName: path.basename(outputFile),
@@ -36,11 +37,10 @@ export async function downlevelWithTsc(inputFile: string, outputFile: string): P
   sourceMap['sources'] = [path.basename(inputFile)];
 
   await Promise.all([
-    writeFile(outputFile, transpiled.outputText),
-    writeFile(`${outputFile}.map`, JSON.stringify(sourceMap))
+    fsOutputFile(outputFile, transpiled.outputText),
+    outputJson(`${outputFile}.map`, sourceMap, { spaces: 2 })
   ]);
 };
-
 
 const REGEXP = /\/\/# sourceMappingURL=.*\.js\.map/;
 const trimSourceMap = (fileContent: string): string => {

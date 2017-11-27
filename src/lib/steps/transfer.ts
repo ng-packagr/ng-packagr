@@ -9,15 +9,10 @@ import * as path from 'path';
  * @param baseBuildPath Path to where the source files are staged.
  */
 export async function copySourceFilesToDestination(ngPkg: NgPackageData, baseBuildPath: string): Promise<void> {
-  const separatorIndex: number = ngPkg.fullPackageName.lastIndexOf(SCOPE_NAME_SEPARATOR);
-  if (separatorIndex > -1) {
-    const packageNameWithoutEndPart: string = ngPkg.fullPackageName.substring(0, separatorIndex);
-    const destinationPath: string = path.resolve(ngPkg.rootDestinationPath, packageNameWithoutEndPart);
-    await copyFiles(`${ngPkg.buildDirectory}/${packageNameWithoutEndPart}/**/*.{js,js.map}`, destinationPath);
-  } else {
-    await copyFiles(`${ngPkg.buildDirectory}/${ngPkg.fullPackageName}*.{js,js.map}`, ngPkg.rootDestinationPath);
-  }
-
-  await copyFiles(`${ngPkg.buildDirectory}/bundles/**/*.{js,js.map}`, `${ngPkg.rootDestinationPath}/bundles`);
-  await copyFiles(`${baseBuildPath}/**/*.{d.ts,metadata.json}`, ngPkg.destinationPath);
+  await Promise.all([
+    copyFiles(`${ngPkg.buildDirectory}/bundles/**/*.{js,js.map}`, `${ngPkg.rootDestinationPath}/bundles`),
+    copyFiles(`${ngPkg.buildDirectory}/esm5/**/*.{js,js.map}`, `${ngPkg.rootDestinationPath}/esm5`),
+    copyFiles(`${ngPkg.buildDirectory}/esm2015/**/*.{js,js.map}`, `${ngPkg.rootDestinationPath}/esm2015`),
+    copyFiles(`${baseBuildPath}/**/*.{d.ts,metadata.json}`, ngPkg.destinationPath)
+  ]);
 }

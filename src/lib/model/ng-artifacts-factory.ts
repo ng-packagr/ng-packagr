@@ -13,26 +13,28 @@ export class NgArtifactsFactory {
   }
 
   public calculateArtifactPathsForBuild(ngPkg: NgPackageData): NgArtifacts {
-    const pathFromRoot: string = path.resolve(ngPkg.buildDirectory, ngPkg.pathOffsetFromSourceRoot);
+    const { buildDirectory, pathOffsetFromSourceRoot, flatModuleFileName } = ngPkg;
+    const pathFromRoot: string = path.resolve(buildDirectory, pathOffsetFromSourceRoot);
 
     return {
-      main: path.join(ngPkg.buildDirectory,'bundles', this._makeUmdPackageName(ngPkg)),
-      module: path.join(ngPkg.buildDirectory, ngPkg.fullPackageName + '.es5.js'),
-      es2015: path.join(ngPkg.buildDirectory, ngPkg.fullPackageName + '.js'),
-      typings: path.join(pathFromRoot, ngPkg.flatModuleFileName + '.d.ts'),
-      metadata: path.join(pathFromRoot, ngPkg.flatModuleFileName + '.metadata.json')
+      main: path.join(buildDirectory, 'bundles', this._makeUmdPackageName(ngPkg)),
+      module: path.join(buildDirectory, 'esm5', `${flatModuleFileName}.js`),
+      es2015: path.join(buildDirectory, 'esm2015', `${flatModuleFileName}.js`),
+      typings: path.join(pathFromRoot, flatModuleFileName + '.d.ts'),
+      metadata: path.join(pathFromRoot, flatModuleFileName + '.metadata.json')
     }
   }
 
   public calculateArtifactPathsForPackageJson(ngPkg: NgPackageData): NgArtifacts {
-    const rootPathFromSelf: string = path.relative(ngPkg.sourcePath, ngPkg.rootSourcePath);
+    const { sourcePath, rootSourcePath, flatModuleFileName } = ngPkg;
+    const rootPathFromSelf: string = path.relative(sourcePath, rootSourcePath);
 
     return {
       main: this._unixPathJoin(rootPathFromSelf, 'bundles', this._makeUmdPackageName(ngPkg)),
-      module: this._unixPathJoin(rootPathFromSelf, `${ngPkg.fullPackageName}.es5.js`),
-      es2015: this._unixPathJoin(rootPathFromSelf, `${ngPkg.fullPackageName}.js`),
-      typings: path.ensureUnixPath(`${ngPkg.flatModuleFileName}.d.ts`),
-      metadata: path.ensureUnixPath(`${ngPkg.flatModuleFileName}.metadata.json`)
+      module: this._unixPathJoin(rootPathFromSelf, 'esm5', `${flatModuleFileName}.js`),
+      es2015: this._unixPathJoin(rootPathFromSelf, 'esm2015', `${flatModuleFileName}.js`),
+      typings: path.ensureUnixPath(`${flatModuleFileName}.d.ts`),
+      metadata: path.ensureUnixPath(`${flatModuleFileName}.metadata.json`)
     }
   }
 }

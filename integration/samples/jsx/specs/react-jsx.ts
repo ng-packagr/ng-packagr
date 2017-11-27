@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as API from '../dist/@sample/jsx.es5.js';
+import * as API from '../dist/esm5/jsx.js';
 
 describe(`@sample/jsx`, () => {
 

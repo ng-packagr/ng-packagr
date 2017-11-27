@@ -89,7 +89,7 @@ async function findSecondaryPackagePaths(rootPackage: NgPackageData): Promise<st
   const packagePaths: string[] = [];
 
   // read all directories (without recursion)
-  while(directoriesToSearch.length > 0) {
+  while (directoriesToSearch.length > 0) {
     const searchDirectory: string = directoriesToSearch.pop();
     const fileSystemEntries: string[] = await readdir(searchDirectory);
     let packageFileFound = false;
@@ -160,7 +160,7 @@ async function readRootPackage(filePath: string): Promise<NgPackageData> {
   const finalPackageConfig = merge(ngPkg, pkg.ngPackage, arrayMergeLogic);
   // make sure we provide default values for src and dest
   finalPackageConfig.src = finalPackageConfig.src || packageConfigurationDirectory;
-  finalPackageConfig.dest = finalPackageConfig.dest || path.resolve(packageConfigurationDirectory,'dist');
+  finalPackageConfig.dest = finalPackageConfig.dest || path.resolve(packageConfigurationDirectory, 'dist');
 
   return new NgPackageData(
     finalPackageConfig.src,
@@ -247,7 +247,7 @@ export async function writePackage(ngPkg: NgPackageData, packageArtifacts: NgArt
   log.debug('writePackage');
   const packageJson: any = await readJson(path.resolve(ngPkg.sourcePath, PACKAGE_JSON_FILE_NAME));
   // set additional properties
-  for(const fieldName in packageArtifacts) {
+  for (const fieldName in packageArtifacts) {
     packageJson[fieldName] = packageArtifacts[fieldName];
   }
 
@@ -257,5 +257,5 @@ export async function writePackage(ngPkg: NgPackageData, packageArtifacts: NgArt
   // this will not throw if ngPackage field does not exist
   delete packageJson.ngPackage;
 
-  await writeJson(path.resolve(ngPkg.destinationPath, PACKAGE_JSON_FILE_NAME), packageJson);
+  await writeJson(path.resolve(ngPkg.destinationPath, PACKAGE_JSON_FILE_NAME), packageJson, { spaces: 2 });
 }

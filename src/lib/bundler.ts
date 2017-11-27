@@ -20,9 +20,9 @@ import * as log from './util/log';
 export async function generateNgBundle(ngPkg: NgPackageData): Promise<void> {
 
   log.info(`Generating bundle for ${ngPkg.fullPackageName}`);
-  const artifactFactory: NgArtifactsFactory = new NgArtifactsFactory();
-  const baseBuildPath: string = `${ngPkg.buildDirectory}/ts${ngPkg.pathOffsetFromSourceRoot}`;
-  const artifactPaths: NgArtifacts = artifactFactory.calculateArtifactPathsForBuild(ngPkg);
+  const artifactFactory = new NgArtifactsFactory();
+  const baseBuildPath = `${ngPkg.buildDirectory}/ts${ngPkg.pathOffsetFromSourceRoot}`;
+  const artifactPaths = artifactFactory.calculateArtifactPathsForBuild(ngPkg);
 
   // 0. CLEAN BUILD DIRECTORY
   log.info('Cleaning bundle build directory');
@@ -34,9 +34,9 @@ export async function generateNgBundle(ngPkg: NgPackageData): Promise<void> {
 
   // 2. NGC
   log.info('Running ngc');
-  const es2015EntryFile: string = await ngc(ngPkg, baseBuildPath);
+  const es2015EntryFile = await ngc(ngPkg, baseBuildPath);
   // XX: see #46 - ngc only references to closure-annotated ES6 sources
-  await remapSourceMap(`${baseBuildPath}/${ngPkg.flatModuleFileName}.js`);
+  await remapSourceMap(es2015EntryFile);
 
   // 3. FESM15: ROLLUP
   log.info('Compiling to FESM15');
@@ -69,7 +69,7 @@ export async function generateNgBundle(ngPkg: NgPackageData): Promise<void> {
 
   // 6. UMD: Minify
   log.info('Minifying UMD bundle');
-  const minifiedFilePath: string = await minifyJsFile(artifactPaths.main);
+  const minifiedFilePath = await minifyJsFile(artifactPaths.main);
   await remapSourceMap(minifiedFilePath);
 
   // 7. SOURCEMAPS: RELOCATE ROOT PATHS
@@ -82,7 +82,7 @@ export async function generateNgBundle(ngPkg: NgPackageData): Promise<void> {
 
   // 9. WRITE PACKAGE.JSON and OTHER DOC FILES
   log.info('Writing package metadata');
-  const packageJsonArtifactPaths: NgArtifacts = artifactFactory.calculateArtifactPathsForPackageJson(ngPkg);
+  const packageJsonArtifactPaths = artifactFactory.calculateArtifactPathsForPackageJson(ngPkg);
   await writePackage(ngPkg, packageJsonArtifactPaths);
 
   log.success(`Built Angular bundle for ${ngPkg.fullPackageName}`);
