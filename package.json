@@ -99,11 +99,11 @@
     "release": "standard-version --message 'release: cut v%s'",
     "postrelease": "node scripts/prepublish.js",
     "publish:ci": "yarn prerelease && yarn postrelease",
-    "samples": "integration/samples.sh",
-    "samples:dev": "node integration/samples.js",
-    "samples:test": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --require ts-node/register integration/samples/*/specs/**/*.ts",
-    "consumer": "integration/consumer.sh",
-    "test": "yarn build && yarn samples && yarn samples:test && yarn consumer",
+    "integration:samples": "integration/samples.sh",
+    "integration:samples:dev": "node integration/samples.js",
+    "integration:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --require ts-node/register integration/samples/*/specs/**/*.ts",
+    "integration:consumer": "integration/consumer.sh",
+    "test": "yarn build && yarn integration:samples && yarn integration:specs && yarn integration:consumer",
     "commitmsg": "commitlint -e",
     "gh-pages": "gh-pages -d docs/ghpages"
   }
