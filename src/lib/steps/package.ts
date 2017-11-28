@@ -1,4 +1,5 @@
 import * as path from 'path';
+import { json } from '@speedy/json-extends';
 import { NgPackageConfig } from '../../ng-package.schema';
 import { NgPackageData, DEFAULT_BUILD_FOLDER } from '../model/ng-package-data';
 import { tryReadJson } from '../util/json';
@@ -33,7 +34,7 @@ async function readNgPackageFile(filePath: string): Promise<NgPackageConfig | nu
 
   log.debug('Searching for ng-package config at ' + filePath);
   try {
-    const ngPkg: NgPackageConfig = await readJson(filePath);
+    const ngPkg = await json.read<NgPackageConfig>(filePath);
     log.debug('Ng-package config found at ' + filePath);
     const basePath: string = path.dirname(filePath);
     resolvePaths(basePath, ngPkg);
