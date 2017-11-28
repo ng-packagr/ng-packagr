@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 for D in `find ./integration/samples/* -maxdepth 0 -type d`
 do
     P=${D}/ng-package.json
