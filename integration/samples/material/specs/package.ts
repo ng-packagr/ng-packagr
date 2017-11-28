@@ -24,11 +24,11 @@ describe(`@sample/material`, () => {
     });
 
     it(`should reference "module" bundle (FESM5, also FESM2014)`, () => {
-      expect(PACKAGE['module']).to.equal('@sample/material.es5.js');
+      expect(PACKAGE['module']).to.equal('esm5/material.js');
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('@sample/material.js');
+      expect(PACKAGE['es2015']).to.equal('esm2015/material.js');
     });
 
     it(`should reference "typings" files`, () => {

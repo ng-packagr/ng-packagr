@@ -1,11 +1,11 @@
 import { expect } from 'chai';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as API from '../dist/sample-custom.es5.js';
+import * as API from '../dist/esm5/sample-custom.js';
 
 describe(`sample-custom`, () => {
 
-  describe(`sample-custom.es5.js`, () => {
+  describe(`esm5/sample-custom.js`, () => {
 
     it(`should exist`, () => {
       expect(API).to.be.ok;

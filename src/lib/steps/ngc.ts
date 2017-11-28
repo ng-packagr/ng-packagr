@@ -23,7 +23,7 @@ async function prepareTsConfig(ngPkg: NgPackageData, outFile: string): Promise<v
     tsConfig['compilerOptions']['jsx'] = ngPkg.jsxConfig;
   }
 
-  await writeJson(outFile, tsConfig);
+  await writeJson(outFile, tsConfig, { spaces: 2 });
 }
 
 /**

@@ -19,7 +19,7 @@ export async function remapSourceMap(sourceFile: string): Promise<void> {
   // Once sorcery loads the chain of sourcemaps, the new sourcemap will be written asynchronously.
   const chain = await sorcery.load(sourceFile);
   if (!chain) {
-    throw new Error('Failed to load sourceMap chain for ' + sourceFile);
+    throw new Error(`Failed to load sourceMap chain for ${sourceFile}`);
   }
 
   await chain.write(opts);

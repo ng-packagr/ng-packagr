@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as API from '../dist/@sample/secondary-lib.es5.js';
-import * as SECONDARY from '../dist/@sample/secondary-lib/sub-module.es5.js'
+import * as API from '../dist/esm5/secondary-lib.js';
+import * as SECONDARY from '../dist/esm5/sub-module.js';
 
 describe(`@sample/secondary-lib`, () => {
 

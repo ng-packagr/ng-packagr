@@ -28,11 +28,11 @@ describe(`@sample/secondary`, () => {
     });
 
     it(`should reference "module" bundle (FESM5, also FESM2015)`, () => {
-      expect(PACKAGE['module']).to.equal('@sample/secondary-lib.es5.js');
+      expect(PACKAGE['module']).to.equal('esm5/secondary-lib.js');
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('@sample/secondary-lib.js');
+      expect(PACKAGE['es2015']).to.equal('esm2015/secondary-lib.js');
     });
 
     it(`should reference "typings" files`, () => {
@@ -64,11 +64,11 @@ describe(`@sample/secondary`, () => {
     });
 
     it(`should reference "module" bundle (FESM5, also FESM2015)`, () => {
-      expect(PACKAGE['module']).to.equal('../@sample/secondary-lib/sub-module.es5.js');
+      expect(PACKAGE['module']).to.equal('../esm5/sub-module.js');
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('../@sample/secondary-lib/sub-module.js');
+      expect(PACKAGE['es2015']).to.equal('../esm2015/sub-module.js');
     });
 
     it(`should reference "typings" files`, () => {
