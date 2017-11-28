@@ -22,7 +22,7 @@ export async function generateNgBundle(ngPkg: NgPackageData): Promise<void> {
   log.info(`Generating bundle for ${ngPkg.fullPackageName}`);
   const artifactFactory = new NgArtifactsFactory();
   const baseBuildPath = `${ngPkg.buildDirectory}/ts${ngPkg.pathOffsetFromSourceRoot}`;
-  const artifactPaths = artifactFactory.calculateArtifactPathsForBuild(ngPkg);
+  const artifactPaths: NgArtifacts = artifactFactory.calculateArtifactPathsForBuild(ngPkg);
 
   // 0. CLEAN BUILD DIRECTORY
   log.info('Cleaning bundle build directory');
@@ -82,7 +82,7 @@ export async function generateNgBundle(ngPkg: NgPackageData): Promise<void> {
 
   // 9. WRITE PACKAGE.JSON and OTHER DOC FILES
   log.info('Writing package metadata');
-  const packageJsonArtifactPaths = artifactFactory.calculateArtifactPathsForPackageJson(ngPkg);
+  const packageJsonArtifactPaths: NgArtifacts = artifactFactory.calculateArtifactPathsForPackageJson(ngPkg);
   await writePackage(ngPkg, packageJsonArtifactPaths);
 
   log.success(`Built Angular bundle for ${ngPkg.fullPackageName}`);

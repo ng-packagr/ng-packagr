@@ -3,6 +3,10 @@ import { path } from './../util/path';
 import { NgArtifacts } from './ng-artifacts';
 import { NgPackageData, SCOPE_NAME_SEPARATOR } from './ng-package-data';
 
+export const ESM2015_DIR_NAME = 'esm2015';
+export const ESM5_DIR_NAME = 'esm5';
+export const BUNDLES_DIR_NAME = 'bundles';
+
 export class NgArtifactsFactory {
 
   private _makeEsmPackageNameVal: string | undefined;
@@ -18,7 +22,7 @@ export class NgArtifactsFactory {
       this._makeEsmPackageNameVal = `${flatModuleFileName}.js`;
     } else {
       const pathFromRoot = buildDirectory.replace(pathOffsetFromSourceRoot, '');
-      const modulePath = path.join(pathFromRoot, 'esm2015', `${flatModuleFileName}.js`);
+      const modulePath = path.join(pathFromRoot, ESM2015_DIR_NAME, `${flatModuleFileName}.js`);
       const pkgName = pathExistsSync(modulePath) ? packageNameWithoutScope : flatModuleFileName;
       this._makeEsmPackageNameVal = `${pkgName}.js`;
     }
@@ -40,9 +44,9 @@ export class NgArtifactsFactory {
     const pathFromRoot = path.resolve(buildDirectory, pathOffsetFromSourceRoot);
 
     return {
-      main: path.join(buildDirectory, 'bundles', this._makeUmdPackageName(ngPkg)),
-      module: path.join(buildDirectory, 'esm5', this._makeEsmPackageName(ngPkg)),
-      es2015: path.join(buildDirectory, 'esm2015', this._makeEsmPackageName(ngPkg)),
+      main: path.join(buildDirectory, BUNDLES_DIR_NAME, this._makeUmdPackageName(ngPkg)),
+      module: path.join(buildDirectory, ESM5_DIR_NAME, this._makeEsmPackageName(ngPkg)),
+      es2015: path.join(buildDirectory, ESM5_DIR_NAME, this._makeEsmPackageName(ngPkg)),
       typings: path.join(pathFromRoot, `${flatModuleFileName}.d.ts`),
       metadata: path.join(pathFromRoot, `${flatModuleFileName}.metadata.json`)
     }
@@ -53,9 +57,9 @@ export class NgArtifactsFactory {
     const rootPathFromSelf = path.relative(sourcePath, rootSourcePath);
 
     return {
-      main: this._unixPathJoin(rootPathFromSelf, 'bundles', this._makeUmdPackageName(ngPkg)),
-      module: this._unixPathJoin(rootPathFromSelf, 'esm5', this._makeEsmPackageName(ngPkg)),
-      es2015: this._unixPathJoin(rootPathFromSelf, 'esm2015', this._makeEsmPackageName(ngPkg)),
+      main: this._unixPathJoin(rootPathFromSelf, BUNDLES_DIR_NAME, this._makeUmdPackageName(ngPkg)),
+      module: this._unixPathJoin(rootPathFromSelf, ESM5_DIR_NAME, this._makeEsmPackageName(ngPkg)),
+      es2015: this._unixPathJoin(rootPathFromSelf, ESM5_DIR_NAME, this._makeEsmPackageName(ngPkg)),
       typings: path.ensureUnixPath(`${flatModuleFileName}.d.ts`),
       metadata: path.ensureUnixPath(`${flatModuleFileName}.metadata.json`)
     }

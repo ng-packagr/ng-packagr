@@ -38,9 +38,8 @@ export async function minifyJsFile(inputPath: string): Promise<string> {
     throw result.error;
   }
 
-  await Promise.all([
-    writeFile(outputPath, result.code),
-    writeFile(sourcemapOut, result.map)
-  ]);
+  await writeFile(outputPath, result.code);
+  await writeFile(sourcemapOut, result.map);
+
   return outputPath;
 }
