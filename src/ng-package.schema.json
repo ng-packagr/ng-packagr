@@ -8,6 +8,22 @@
     "$schema": {
       "type": "string"
     },
+    "extends": {
+      "description": "One or more paths from where to extend Ng Package configuration.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": [
+            {
+              "type": "string"
+            }
+          ]
+        }
+      ]
+    },
     "src": {
       "description": "The source folder of an Angular library. This is the folder where a `package.json` is located and defaults to cwd.",
       "type": "string",
@@ -45,7 +61,11 @@
         "jsx": {
           "description": "A property to indicate whether your library is going to be bundling jsx/tsx files. This passes through to tsconfig - see https://www.typescriptlang.org/docs/handbook/jsx.html",
           "type": "string",
-          "enum": ["preserve", "react", "react-native"],
+          "enum": [
+            "preserve",
+            "react",
+            "react-native"
+          ],
           "default": ""
         }
       }

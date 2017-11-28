@@ -18,10 +18,6 @@ describe(`@sample/core`, () => {
       expect(METADATA.version).to.equal(4);
     });
 
-    it(`should be version 4`, () => {
-      expect(METADATA.version).to.equal(4);
-    });
-
     it(`should "importAs": "@sample/core"`, () => {
       expect(METADATA['importAs']).to.equal('@sample/core');
     });
