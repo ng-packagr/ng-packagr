@@ -4,11 +4,10 @@ import * as ng from '@angular/compiler-cli';
 // XX: has or is using name 'ParsedConfiguration' ... but cannot be named
 import { ParsedConfiguration } from '@angular/compiler-cli';
 import * as ts from 'typescript';
+import { NgArtefacts } from '../domain/ng-artefacts';
 import { NgPackageData } from '../model/ng-package-data';
 import * as log from '../util/log';
-import { componentTransformer } from './ts-transformers';
-import { NgArtefacts } from '../domain/ng-artefacts';
-import { SourceFile } from 'typescript';
+import { componentTransformer } from '../util/ts-transformers';
 
 /** TypeScript configuration used internally (marker typer). */
 export type TsConfig = ng.ParsedConfiguration;
@@ -99,10 +98,10 @@ export const collectTemplateAndStylesheetFiles =
   (tsConfig: TsConfig, artefacts: NgArtefacts): ts.TransformationResult<ts.SourceFile> => {
     const collector = componentTransformer({
       templateProcessor: (a, b, templateFilePath) => {
-        artefacts.template(templateFilePath, '');
+        artefacts.template(templateFilePath, null);
       },
       stylesheetProcessor: (a, b, styleFilePath) => {
-        artefacts.stylesheet(styleFilePath, '');
+        artefacts.stylesheet(styleFilePath, null);
       }
     });
 
@@ -117,8 +116,8 @@ export const inlineTemplatesAndStyles =
   (tsConfig: TsConfig, artefacts: NgArtefacts): ts.TransformationResult<ts.SourceFile> => {
     // inline contents from artefacts set (generated in a previous step)
     const transformer = componentTransformer({
-      templateProcessor: (a, b, templateFilePath) => artefacts.template(templateFilePath) || undefined,
-      stylesheetProcessor: (a, b, styleFilePath) => artefacts.stylesheet(styleFilePath) || undefined
+      templateProcessor: (a, b, templateFilePath) => artefacts.template(templateFilePath) || '',
+      stylesheetProcessor: (a, b, styleFilePath) => artefacts.stylesheet(styleFilePath) || ''
     });
 
     return transformSources(
@@ -133,7 +132,7 @@ export const inlineTemplatesAndStyles =
  * @param ngPkg Angular package data
  * @returns Promise<{}> Pathes of the flatModuleOutFile
  */
-export async function ngc(ngPkg: NgPackageData, sources: ts.TransformationResult<SourceFile>, tsConfig: TsConfig) {
+export async function ngc(ngPkg: NgPackageData, sources: ts.TransformationResult<ts.SourceFile>, tsConfig: TsConfig) {
   log.debug(`ngc (v${ng.VERSION.full}): ${ngPkg.entryFile}`);
 
   // ng.CompilerHost

@@ -66,9 +66,9 @@ export const componentTransformer: ComponentTransformer =
           const stylesheets = styleUrls.map((url: string) => {
             const sourceFilePath = sourceFile.fileName;
             const styleFilePath = path.resolve(path.dirname(sourceFilePath), url);
-            const template = stylesheetProcessor(sourceFilePath, url, styleFilePath);
+            const content = stylesheetProcessor(sourceFilePath, url, styleFilePath);
 
-            return typeof template === 'string' ? template : url;
+            return typeof content === 'string' ? content : url;
           });
 
           const hasChanged = stylesheets.every((value, index) => {
