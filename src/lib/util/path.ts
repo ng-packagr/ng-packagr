@@ -1,9 +1,7 @@
 import * as nodePath from 'path';
 
-// by exporting this way, we can add custom functions and still be type safe
-export const path = {
-  ...nodePath,
-  ensureUnixPath: (path?: string): string | null => {
+export const ensureUnixPath =
+  (path?: string): string | null => {
     if (!path) {
       return null;
     }
@@ -13,4 +11,3 @@ export const path = {
     const regex = new RegExp('\\' + nodePath.win32.sep, 'g');
     return path.replace(regex, nodePath.posix.sep);
   }
-};

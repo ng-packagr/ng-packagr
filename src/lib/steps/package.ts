@@ -1,7 +1,6 @@
 import * as path from 'path';
 import { NgPackageConfig } from '../../ng-package.schema';
 import { NgPackageData, DEFAULT_BUILD_FOLDER } from '../model/ng-package-data';
-import { NgArtifacts } from '../model/ng-artifacts';
 import { tryReadJson } from '../util/json';
 import { readJson, writeJson, readdir, lstat, Stats } from 'fs-extra';
 import { merge, isArray } from 'lodash';
@@ -89,7 +88,7 @@ async function findSecondaryPackagePaths(rootPackage: NgPackageData): Promise<st
   const packagePaths: string[] = [];
 
   // read all directories (without recursion)
-  while (directoriesToSearch.length > 0) {
+  while(directoriesToSearch.length > 0) {
     const searchDirectory: string = directoriesToSearch.pop();
     const fileSystemEntries: string[] = await readdir(searchDirectory);
     let packageFileFound = false;
@@ -160,7 +159,7 @@ async function readRootPackage(filePath: string): Promise<NgPackageData> {
   const finalPackageConfig = merge(ngPkg, pkg.ngPackage, arrayMergeLogic);
   // make sure we provide default values for src and dest
   finalPackageConfig.src = finalPackageConfig.src || packageConfigurationDirectory;
-  finalPackageConfig.dest = finalPackageConfig.dest || path.resolve(packageConfigurationDirectory, 'dist');
+  finalPackageConfig.dest = finalPackageConfig.dest || path.resolve(packageConfigurationDirectory,'dist');
 
   return new NgPackageData(
     finalPackageConfig.src,
@@ -199,7 +198,8 @@ async function readSecondaryPackage(rootPackage: NgPackageData, filePath: string
     rootPackage.fullPackageName,
     rootPackage.destinationPath,
     baseDirectory,
-    ngPackage
+    ngPackage,
+    true
   );
 }
 
@@ -242,7 +242,7 @@ export async function discoverPackages(rootPath: string): Promise<PackageSearchR
  * @param ngPkg Angular package data
  * @param packageArtifacts Package artifacts to merge into package.json
  */
-export async function writePackage(ngPkg: NgPackageData, packageArtifacts: NgArtifacts): Promise<void> {
+export async function writePackage(ngPkg: NgPackageData, packageArtifacts: { [key: string]: string }): Promise<void> {
 
   log.debug('writePackage');
   const packageJson: any = await readJson(path.resolve(ngPkg.sourcePath, PACKAGE_JSON_FILE_NAME));

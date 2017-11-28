@@ -1,12 +1,14 @@
 import { expect } from 'chai';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as API from '../dist/esm5/testing.js';
-import * as APITesting from '../dist/esm5/testing/testing.js';
 
 describe(`@sample/same-name`, () => {
 
   describe(`esm5/testing.js`, () => {
+    let API;
+    before(() => {
+      API = require('../dist/esm5/testing.js');
+    })
 
     it(`should exist`, () => {
       expect(API).to.be.ok;
@@ -19,6 +21,10 @@ describe(`@sample/same-name`, () => {
   });
 
   describe(`esm5/testing/testing.js`, () => {
+    let APITesting;
+    before(() => {
+      APITesting = require('../dist/esm5/testing/testing.js');
+    });
 
     it(`should exist`, () => {
       expect(APITesting).to.be.ok;

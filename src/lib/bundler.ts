@@ -1,89 +1,103 @@
+import * as path from 'path';
+import { NgArtefacts } from './domain/ng-artefacts';
 import { NgPackageData } from './model/ng-package-data';
-import { NgArtifacts } from './model/ng-artifacts';
-import { NgArtifactsFactory } from './model/ng-artifacts-factory';
 import { writePackage } from './steps/package';
 import { processAssets } from './steps/assets';
-import { ngc } from './steps/ngc';
+import { ngc, prepareTsConfig, collectTemplateAndStylesheetFiles, inlineTemplatesAndStyles } from './steps/ngc';
 import { minifyJsFile } from './steps/uglify';
-import { remapSourceMap, relocateSourceMapRoot } from './steps/sorcery';
+import { remapSourceMap } from './steps/sorcery';
 import { rollup } from './steps/rollup';
 import { downlevelWithTsc } from './steps/tsc';
 import { copySourceFilesToDestination } from './steps/transfer';
-import { rimraf } from './util/rimraf';
 import * as log from './util/log';
+import { ensureUnixPath } from './util/path';
+import { rimraf } from './util/rimraf';
 
 /**
- * Main Angular bundling processing.
+ * Transforms TypeScript source files to Angular Package Format.
  *
  * @param ngPkg Parent Angular package.
  */
-export async function generateNgBundle(ngPkg: NgPackageData): Promise<void> {
-
-  log.info(`Generating bundle for ${ngPkg.fullPackageName}`);
-  const artifactFactory = new NgArtifactsFactory();
-  const baseBuildPath = `${ngPkg.buildDirectory}/ts${ngPkg.pathOffsetFromSourceRoot}`;
-  const artifactPaths = artifactFactory.calculateArtifactPathsForBuild(ngPkg);
+export async function transformSources(ngPkg: NgPackageData): Promise<void> {
+  log.info(`Building from sources for entry point '${ngPkg.fullPackageName}'`);
+  const artefacts = new NgArtefacts(ngPkg);
 
   // 0. CLEAN BUILD DIRECTORY
-  log.info('Cleaning bundle build directory');
+  log.info('Cleaning build directory');
   await rimraf(ngPkg.buildDirectory);
 
-  // 1. ASSETS
-  log.info('Processing assets');
-  await processAssets(ngPkg.sourcePath, baseBuildPath);
+  // 0. TWO-PASS TSC TRANSFORMATION
+  artefacts.tsConfig = prepareTsConfig(ngPkg);
 
-  // 2. NGC
-  log.info('Running ngc');
-  const es2015EntryFile = await ngc(ngPkg, baseBuildPath);
-  // XX: see #46 - ngc only references to closure-annotated ES6 sources
-  await remapSourceMap(es2015EntryFile);
+  // First pass: collect templateUrl and stylesUrl referencing source files.
+  log.info('Extracting templateUrl and stylesUrl');
+  const result = collectTemplateAndStylesheetFiles(artefacts.tsConfig, artefacts);
+  result.dispose();
+
+  // Then, process assets keeping transformed contents in memory.
+  log.info('Processing assets');
+  await processAssets(artefacts, ngPkg);
+
+  // Second pass: inline templateUrl and stylesUrl
+  log.info('Inlining templateUrl and stylesUrl');
+  artefacts.tsSources = inlineTemplatesAndStyles(artefacts.tsConfig, artefacts);
+
+  // 1. NGC
+  log.info('Compiling with ngc');
+  const tsOutput = await ngc(ngPkg, artefacts.tsSources, artefacts.tsConfig);
+  artefacts.tsSources.dispose();
+
+  // await remapSourceMap(tsOutput.js);
 
   // 3. FESM15: ROLLUP
-  log.info('Compiling to FESM15');
+  log.info('Bundling to FESM15');
+  const fesm15File = path.resolve(ngPkg.buildDirectory, 'esm2015', ngPkg.esmPackageName);
   await rollup({
     moduleName: ngPkg.moduleName,
-    entry: es2015EntryFile,
+    entry: tsOutput.js,
     format: 'es',
-    dest: artifactPaths.es2015,
+    dest: fesm15File,
     externals: ngPkg.libExternals
   });
-  await remapSourceMap(artifactPaths.es2015);
+  await remapSourceMap(fesm15File);
 
   // 4. FESM5: TSC
-  log.info('Compiling to FESM5');
-  await downlevelWithTsc(
-    artifactPaths.es2015,
-    artifactPaths.module);
-  await remapSourceMap(artifactPaths.module);
+  log.info('Bundling to FESM5');
+  const fesm5File = path.resolve(ngPkg.buildDirectory, 'esm5', ngPkg.esmPackageName);
+  await downlevelWithTsc(fesm15File, fesm5File);
+  await remapSourceMap(fesm5File);
 
   // 5. UMD: ROLLUP
-  log.info('Compiling to UMD');
+  log.info('Bundling to UMD');
+  const umdFile = path.resolve(ngPkg.buildDirectory, 'bundles', ngPkg.umdPackageName);
   await rollup({
     moduleName: ngPkg.moduleName,
-    entry: artifactPaths.module,
+    entry: fesm5File,
     format: 'umd',
-    dest: artifactPaths.main,
+    dest: umdFile,
     externals: ngPkg.libExternals
   });
-  await remapSourceMap(artifactPaths.main);
+  await remapSourceMap(umdFile);
 
   // 6. UMD: Minify
   log.info('Minifying UMD bundle');
-  const minifiedFilePath = await minifyJsFile(artifactPaths.main);
-  await remapSourceMap(minifiedFilePath);
-
-  // 7. SOURCEMAPS: RELOCATE ROOT PATHS
-  log.info('Remapping source maps');
-  await relocateSourceMapRoot(ngPkg);
+  const minUmdFile: string = await minifyJsFile(umdFile);
+  await remapSourceMap(minUmdFile);
 
   // 8. COPY SOURCE FILES TO DESTINATION
   log.info('Copying staged files');
-  await copySourceFilesToDestination(ngPkg, baseBuildPath);
+  await copySourceFilesToDestination(ngPkg);
 
-  // 9. WRITE PACKAGE.JSON and OTHER DOC FILES
+  // 9. WRITE PACKAGE.JSON
   log.info('Writing package metadata');
-  const packageJsonArtifactPaths = artifactFactory.calculateArtifactPathsForPackageJson(ngPkg);
-  await writePackage(ngPkg, packageJsonArtifactPaths);
+  const rootPathFromSelf: string = path.relative(ngPkg.sourcePath, ngPkg.rootSourcePath);
+  await writePackage(ngPkg, {
+    main: ensureUnixPath(path.join(rootPathFromSelf, 'bundles', ngPkg.umdPackageName)),
+    module: ensureUnixPath(path.join(rootPathFromSelf, 'esm5', ngPkg.esmPackageName)),
+    es2015: ensureUnixPath(path.join(rootPathFromSelf, 'esm2015', ngPkg.esmPackageName)),
+    typings: ensureUnixPath(`${ngPkg.flatModuleFileName}.d.ts`),
+    metadata: ensureUnixPath(`${ngPkg.flatModuleFileName}.metadata.json`)
+  });
 
-  log.success(`Built Angular bundle for ${ngPkg.fullPackageName}`);
+  log.success(`Built ${ngPkg.fullPackageName}`);
 }
