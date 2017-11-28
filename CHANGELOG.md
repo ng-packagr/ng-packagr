@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.4"></a>
+# [2.0.0-rc.4](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.3...v2.0.0-rc.4) (2017-11-28)
+
+
+### Bug Fixes
+
+* bump `commander` to `^2.12.0`, optimize typings for `cpx` and `commander` ([#323](https://github.com/dherges/ng-packagr/issues/323)) ([68d0c34](https://github.com/dherges/ng-packagr/commit/68d0c34))
+
+
+### Features
+
+* align distributed files with `Angular Package Format v5.0` ([#322](https://github.com/dherges/ng-packagr/issues/322)) ([fff712a](https://github.com/dherges/ng-packagr/commit/fff712a)), closes [#257](https://github.com/dherges/ng-packagr/issues/257) [#319](https://github.com/dherges/ng-packagr/issues/319) [#321](https://github.com/dherges/ng-packagr/issues/321)
+
+
+
 <a name="2.0.0-rc.3"></a>
 # [2.0.0-rc.3](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.2...v2.0.0-rc.3) (2017-11-24)
 
