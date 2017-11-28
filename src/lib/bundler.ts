@@ -5,7 +5,7 @@ import { writePackage } from './steps/package';
 import { processAssets } from './steps/assets';
 import { ngc, prepareTsConfig, collectTemplateAndStylesheetFiles, inlineTemplatesAndStyles } from './steps/ngc';
 import { minifyJsFile } from './steps/uglify';
-import { remapSourceMap } from './steps/sorcery';
+import { remapSourceMap, relocateSourceMapSources } from './steps/sorcery';
 import { rollup } from './steps/rollup';
 import { downlevelWithTsc } from './steps/tsc';
 import { copySourceFilesToDestination } from './steps/transfer';
@@ -83,6 +83,10 @@ export async function transformSources(ngPkg: NgPackageData): Promise<void> {
   log.info('Minifying UMD bundle');
   const minUmdFile: string = await minifyJsFile(umdFile);
   await remapSourceMap(minUmdFile);
+
+  // 7. SOURCEMAPS: RELOCATE ROOT PATHS
+  log.info('Remapping source maps');
+  await relocateSourceMapSources(ngPkg);
 
   // 8. COPY SOURCE FILES TO DESTINATION
   log.info('Copying staged files');

@@ -24,3 +24,34 @@ export async function remapSourceMap(sourceFile: string): Promise<void> {
 
   await chain.write(opts);
 }
+
+
+/**
+ * Relocates pathes of the `sources` file array in `*.js.map` files.
+ *
+ * Simply said, because `sourcesContent` are inlined in the source maps, it's possible to pass an
+ * arbitrary file name and path in the `sources` property. By setting the value to a common prefix,
+ * i.e. `ng://@org/package/secondary`,
+ * the source map p `.map` file's relative root file paths to the module's name.
+ *
+ * @param ngPkg Angular package data
+ */
+export async function relocateSourceMapSources(ngPkg: NgPackageData): Promise<void> {
+
+  await modifyJsonFiles(`${ngPkg.buildDirectory}/+(bundles|esm2015|esm5)/**/*.js.map`,
+    (sourceMap: any): any => {
+      sourceMap.sources = (sourceMap.sources as string[])
+        .map((path) => {
+          let trimmedPath = path;
+          // Trim leading '../' path separators
+          while (trimmedPath.startsWith('../')) {
+            trimmedPath = trimmedPath.substring(3);
+          }
+
+          return `ng://${ngPkg.fullPackageName}/${trimmedPath}`;
+        });
+
+      return sourceMap;
+    }
+  );
+}
