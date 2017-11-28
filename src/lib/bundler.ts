@@ -29,8 +29,8 @@ export async function transformSources(ngPkg: NgPackageData): Promise<void> {
   // 0. TWO-PASS TSC TRANSFORMATION
   artefacts.tsConfig = prepareTsConfig(ngPkg);
 
-  // First pass: collect templateUrl and stylesUrl referencing source files.
-  log.info('Extracting templateUrl and stylesUrl');
+  // First pass: collect templateUrl and styleUrls referencing source files.
+  log.info('Extracting templateUrl and styleUrls');
   const result = collectTemplateAndStylesheetFiles(artefacts.tsConfig, artefacts);
   result.dispose();
 
@@ -38,8 +38,8 @@ export async function transformSources(ngPkg: NgPackageData): Promise<void> {
   log.info('Processing assets');
   await processAssets(artefacts, ngPkg);
 
-  // Second pass: inline templateUrl and stylesUrl
-  log.info('Inlining templateUrl and stylesUrl');
+  // Second pass: inline templateUrl and styleUrls
+  log.info('Inlining templateUrl and styleUrls');
   artefacts.tsSources = inlineTemplatesAndStyles(artefacts.tsConfig, artefacts);
 
   // 1. NGC
