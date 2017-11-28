@@ -1,11 +1,14 @@
 import { expect } from 'chai';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as API from '../dist/esm5/core.js';
 
 describe(`@sample/core`, () => {
 
   describe(`esm5/core.js`, () => {
+    let API;
+    before(() => {
+      API = require('../dist/esm5/core.js');
+    })
 
     it(`should exist`, () => {
       expect(API).to.be.ok;

@@ -6,6 +6,18 @@
       "request": "launch",
       "name": "yarn samples:dev",
       "program": "${workspaceRoot}/integration/samples.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "sample: material",
+      "program": "${workspaceRoot}/integration/samples/material/build.dev.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "sample: same-name",
+      "program": "${workspaceRoot}/integration/samples/same-name/build.dev.js"
     }
   ],
   "compounds": []

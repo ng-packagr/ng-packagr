@@ -2,7 +2,7 @@
 import { discoverPackages } from './steps/package';
 import { rimraf } from './util/rimraf';
 import { copyFiles } from './util/copy';
-import { generateNgBundle } from './bundler';
+import { transformSources } from './bundler';
 import { PackageSearchResult } from './model/package-search-result';
 
 // Node API
@@ -22,7 +22,7 @@ export interface NgPackagrCliArguments {
 }
 
 export async function createNgPackage(opts: NgPackagrCliArguments): Promise<void> {
-  log.info(`Building Angular library`);
+  log.info(`Building Angular Package`);
 
   let buildDirectoryRoot: string;
   try {
@@ -36,16 +36,19 @@ export async function createNgPackage(opts: NgPackagrCliArguments): Promise<void
 
     const packageSpecificPath: string = path.basename(rootPackage.buildDirectory);
     buildDirectoryRoot = rootPackage.buildDirectory.substring(0, rootPackage.buildDirectory.lastIndexOf(packageSpecificPath));
-    await generateNgBundle(rootPackage);
+    await transformSources(rootPackage);
 
     for(const secondaryPackage of ngPackages.secondaryPackages) {
-      await generateNgBundle(secondaryPackage);
+      await transformSources(secondaryPackage);
     }
 
     await copyFiles(`${rootPackage.sourcePath}/README.md`, rootPackage.destinationPath);
     await copyFiles(`${rootPackage.sourcePath}/LICENSE`, rootPackage.destinationPath);
 
-    log.success(`Built Angular library from ${rootPackage.sourcePath}, written to ${rootPackage.destinationPath}`);
+    log.success(`Built Angular Package!
+ - from: ${rootPackage.sourcePath}
+ - to:   ${rootPackage.destinationPath}
+    `);
   } catch (error) {
     // Report error messages and throw the error further up
     log.error(error);

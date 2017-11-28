@@ -1,11 +1,14 @@
 import { expect } from 'chai';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as API from '../dist/esm5/jsx.js';
 
 describe(`@sample/jsx`, () => {
 
   describe(`jsx.es5.js`, () => {
+    let API;
+    before(() => {
+      API = require('../dist/esm5/jsx.js');
+    });
 
     it(`should exist`, () => {
       expect(API).to.be.ok;
