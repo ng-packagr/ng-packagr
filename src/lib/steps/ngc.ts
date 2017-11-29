@@ -4,7 +4,7 @@ import * as ng from '@angular/compiler-cli';
 // XX: has or is using name 'ParsedConfiguration' ... but cannot be named
 import { ParsedConfiguration } from '@angular/compiler-cli';
 import * as ts from 'typescript';
-import { NgArtefacts } from '../domain/ng-artefacts';
+import { NgArtifacts } from '../domain/ng-artifacts';
 import { NgPackageData } from '../model/ng-package-data';
 import * as log from '../util/log';
 import { componentTransformer } from '../util/ts-transformers';
@@ -95,13 +95,13 @@ const compilerHostFromTransformation =
 
 /** Extracts templateUrl and styleUrls from `@Component({..})` decorators. */
 export const collectTemplateAndStylesheetFiles =
-  (tsConfig: TsConfig, artefacts: NgArtefacts): ts.TransformationResult<ts.SourceFile> => {
+  (tsConfig: TsConfig, artifacts: NgArtifacts): ts.TransformationResult<ts.SourceFile> => {
     const collector = componentTransformer({
       templateProcessor: (a, b, templateFilePath) => {
-        artefacts.template(templateFilePath, null);
+        artifacts.template(templateFilePath, null);
       },
       stylesheetProcessor: (a, b, styleFilePath) => {
-        artefacts.stylesheet(styleFilePath, null);
+        artifacts.stylesheet(styleFilePath, null);
       }
     });
 
@@ -113,11 +113,11 @@ export const collectTemplateAndStylesheetFiles =
 
 /** Transforms templateUrl and styleUrls in `@Component({..})` decorators. */
 export const inlineTemplatesAndStyles =
-  (tsConfig: TsConfig, artefacts: NgArtefacts): ts.TransformationResult<ts.SourceFile> => {
-    // inline contents from artefacts set (generated in a previous step)
+  (tsConfig: TsConfig, artifacts: NgArtifacts): ts.TransformationResult<ts.SourceFile> => {
+    // inline contents from artifacts set (generated in a previous step)
     const transformer = componentTransformer({
-      templateProcessor: (a, b, templateFilePath) => artefacts.template(templateFilePath) || '',
-      stylesheetProcessor: (a, b, styleFilePath) => artefacts.stylesheet(styleFilePath) || ''
+      templateProcessor: (a, b, templateFilePath) => artifacts.template(templateFilePath) || '',
+      stylesheetProcessor: (a, b, styleFilePath) => artifacts.stylesheet(styleFilePath) || ''
     });
 
     return transformSources(

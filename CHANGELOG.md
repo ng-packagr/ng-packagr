@@ -212,7 +212,7 @@ Secondary entrypoints – such as `@angular/core/testing`, `@angular/common/http
 
 ### Bug Fixes
 
-* include `package.schema.json` in dist artefacts and npm package ([e660545](https://github.com/dherges/ng-packagr/commit/e660545))
+* include `package.schema.json` in dist artifacts and npm package ([e660545](https://github.com/dherges/ng-packagr/commit/e660545))
 
 
 

@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { readFile } from 'fs-extra';
-import { NgArtefacts } from '../domain/ng-artefacts';
+import { NgArtifacts } from '../domain/ng-artifacts';
 import { NgPackageData } from '../model/ng-package-data';
 import * as log from '../util/log';
 
@@ -13,10 +13,10 @@ import * as less from 'less';
 import * as stylus from 'stylus';
 
 export const processAssets =
-  async (artefacts: NgArtefacts, pkg: NgPackageData): Promise<NgArtefacts> => {
+  async (artifacts: NgArtifacts, pkg: NgPackageData): Promise<NgArtifacts> => {
     // process templates
     const templates = await Promise.all(
-      artefacts.templates()
+      artifacts.templates()
         .map(async (template) => {
           return {
             name: template,
@@ -25,12 +25,12 @@ export const processAssets =
         })
     );
     templates.forEach((template) => {
-      artefacts.template(template.name, template.content);
+      artifacts.template(template.name, template.content);
     });
 
     // TODO: process stylesheets
     const stylesheets = await Promise.all(
-      artefacts.stylesheets()
+      artifacts.stylesheets()
         .map(async (stylesheet) => {
           return {
             name: stylesheet,
@@ -39,10 +39,10 @@ export const processAssets =
         })
     );
     stylesheets.forEach((stylesheet) => {
-      artefacts.stylesheet(stylesheet.name, stylesheet.content);
+      artifacts.stylesheet(stylesheet.name, stylesheet.content);
     });
 
-    return Promise.resolve(artefacts);
+    return Promise.resolve(artifacts);
   }
 
 /**

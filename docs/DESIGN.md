@@ -8,12 +8,12 @@ Design Doc: "ng-packagr"
 
 Design choices of `ng-packagr` from the view of library authors and library consumers.
 
-The motivation is to help authors write libraries and generate the expected, distribution-ready artefacts for library consumers.
+The motivation is to help authors write libraries and generate the expected, distribution-ready artifacts for library consumers.
 
 
-### Build artefacts
+### Build artifacts
 
-According to [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview), there need to be the following build artefacts:
+According to [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview), there need to be the following build artifacts:
 
 * FESM2015 Bundle: `@<prefix>/<name>.js` in ES2015 syntax and ES2015 module format, a so-called Flat ECMAScript Module. It is referenced in the `es2015` property of `package.json`.
 * FESM5 Bundle: `@<prefix>/<name>.es5.js` in ES5 syntax and ES2015 module format, a so-called Flat ECMAScript Module (ESM, or FESM5, or FESM2014). It is referenced in the `module` property of `package.json`.
@@ -40,11 +40,11 @@ This pattern is also a recommended approach for building flat modules.
 ### Package definition and library metadata
 
 For consumers of a library, the package definition is provided in a `package.json` file, including `peerDependencies`, `name`, `version`, etc.
-Most important, the build artefacts (see above) are referenced in `package.json`.
-In this way, library consumers and build tools will pick-up the correct build artefact of the library for compiling their applications.
+Most important, the build artifacts (see above) are referenced in `package.json`.
+In this way, library consumers and build tools will pick-up the correct build artifact of the library for compiling their applications.
 
 **DO**: `ng-packagr` generates a `package.json` for library consumers.
-To do so, it needs an input `package.json` that includes basic information like `name` and `version` and it will add references to the auto-generated build artefacts.
+To do so, it needs an input `package.json` that includes basic information like `name` and `version` and it will add references to the auto-generated build artifacts.
 
 
 A `package.json` also includes information needed to distribute and publish the library.
