@@ -6,6 +6,10 @@ export const SCOPE_PREFIX = '@';
 export const SCOPE_NAME_SEPARATOR = '/';
 export const DEFAULT_BUILD_FOLDER = '.ng_pkg_build';
 
+export const ESM2015_FOLDER = 'esm2015';
+export const ESM5_FOLDER = 'esm5';
+export const BUNDLES_FOLDER = 'bundles';
+
 // TODO: this is obviously stuff derived from 'ng-package.json'
 // TODO: use @ngtools/json-schema to parse the JSON configuration
 export class NgPackageData {
