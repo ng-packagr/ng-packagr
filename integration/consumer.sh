@@ -7,13 +7,13 @@ echo "Running consumer builds in $parent_path"
 
 # Prepare 'sample-custom'
 pushd samples/custom/dist
-yarn unlink
+yarn unlink || true
 yarn link
 popd
 
 # Prepare '@sample/material'
 pushd samples/material/dist
-yarn unlink
+yarn unlink || true
 yarn link
 popd
 

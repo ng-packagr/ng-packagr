@@ -30,7 +30,7 @@ describe(`sample-custom`, () => {
       const foo = METADATA['metadata']['FooComponent']['decorators'][0]['arguments'][0];
 
       expect(foo).to.be.ok;
-      expect(foo.selector).to.equal('sample-foo');
+      expect(foo.selector).to.equal('custom-foo');
       expect(foo.template).to.contain('<h1>Foo!</h1>');
       expect(foo.styles[0]).to.contain('h1 {');
       expect(foo.styles[0]).to.contain('color: #ff0000; }');

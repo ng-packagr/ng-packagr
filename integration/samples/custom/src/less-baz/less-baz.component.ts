@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'baz',
+  selector: 'custom-less-baz',
   template: '<h2>LessBaz works!</h2>',
   styleUrls: ['./less-baz.component.less']
 })

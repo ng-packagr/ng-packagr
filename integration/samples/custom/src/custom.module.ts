@@ -10,8 +10,19 @@ import { InternalService } from './internal.service';
 
 @NgModule({
   imports: [ CommonModule ],
-  declarations: [ FooComponent, BarComponent, BazComponent, FooBarComponent, LessBazComponent ],
-  exports: [ FooComponent, BarComponent, BazComponent, FooBarComponent ]
+  declarations: [
+    BarComponent,
+    BazComponent,
+    FooComponent,
+    FooBarComponent,
+    LessBazComponent
+  ],
+  exports: [
+    BazComponent,
+    FooComponent,
+    FooBarComponent,
+    LessBazComponent
+  ]
 })
 export class CustomModule {
 

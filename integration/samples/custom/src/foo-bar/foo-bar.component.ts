@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'sample-foo-bar',
+  selector: 'custom-foo-bar',
   templateUrl: './foo-bar.component.html',
   styleUrls: ['./foo-bar.component.styl']
 })
