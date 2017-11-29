@@ -17,8 +17,10 @@ export const prepareTsConfig =
   (ngPkg: NgPackageData): TsConfig => {
     const basePath = ngPkg.sourcePath;
 
+    log.debug(`Loading tsconfig from ${ngPkg.tsconfigPath}`);
     // Read the default configuration and overwrite package-specific options
-    const tsConfig = ng.readConfiguration(path.resolve(__dirname, '..', 'conf', 'tsconfig.ngc.json'));
+    const tsConfig: TsConfig = ng.readConfiguration(ngPkg.tsconfigPath);
+
     tsConfig.rootNames = [ path.resolve(basePath, ngPkg.entryFile) ];
     tsConfig.options.flatModuleId = ngPkg.fullPackageName
     tsConfig.options.flatModuleOutFile = `${ngPkg.flatModuleFileName}.js`;
@@ -26,6 +28,31 @@ export const prepareTsConfig =
     tsConfig.options.baseUrl = basePath;
     tsConfig.options.outDir = ngPkg.buildDirectory; // path.resolve(basePath, '.ng_pkg_build');
     tsConfig.options.genDir = ngPkg.buildDirectory; // path.resolve(basePath, '.ng_pkg_build');
+    tsConfig.options.outFile = undefined;
+    tsConfig.options.target = ts.ScriptTarget.ES2015;
+    tsConfig.options.module = ts.ModuleKind.ES2015;
+    tsConfig.options.moduleResolution = ts.ModuleResolutionKind.NodeJs;
+
+    // force correct declaration options
+    tsConfig.options.declaration = true;
+    tsConfig.options.declarationDir = undefined;
+
+    // force correct source map options
+    tsConfig.options.sourceMap = true;
+    tsConfig.options.inlineSources = true;
+    tsConfig.options.inlineSourceMap = false;
+    tsConfig.options.mapRoot = undefined;
+
+    tsConfig.options.allowSyntheticDefaultImports = true;
+    tsConfig.options.skipLibCheck = true;
+    tsConfig.options.emitDecoratorMetadata = true;
+    tsConfig.options.experimentalDecorators = true;
+    tsConfig.options.annotateForClosureCompiler = true;
+    tsConfig.options.skipTemplateCodegen = true;
+    tsConfig.options.strictMetadataEmit = true;
+
+    // this must be set to true or component selectors might be renamed
+    tsConfig.options.generateCodeForLibraries = true;
 
     switch (ngPkg.jsxConfig) {
       case 'preserve':

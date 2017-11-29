@@ -5,19 +5,22 @@ parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd "$parent_path"
 echo "Running consumer builds in $parent_path"
 
-# Prepare 'sample-custom'
-pushd samples/custom/dist
-yarn unlink || true
-yarn link
-popd
+# Link a library
+link(){
+   # libPath stores $1 argument passed to link()
+   libPath=$1
+   echo "Prepare '$libPath'"
+   pushd $libPath
+   # never fail unlink for the case where nothing has been linked before
+   yarn unlink || true
+   yarn link
+   popd
+}
 
-# Prepare '@sample/material'
-pushd samples/material/dist
-yarn unlink || true
-yarn link
-popd
+link samples/custom/dist
+link samples/material/dist
 
-# Build ng cli app
+echo "Build ng cli app"
 pushd consumers/ng-cli
 yarn install
 yarn link sample-custom
