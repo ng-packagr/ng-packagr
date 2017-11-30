@@ -4,10 +4,10 @@ import { NgPackageData } from '../model/ng-package-data';
 import { TsConfig } from '../steps/ngc';
 
 /**
- * Build artefacts generated for an Angular libraries.
+ * Build artefacts generated for an Angular library.
  *
- * The artefacts include the distribution-ready 'binaries'
- * as well as temporary files and intermediate build stuff.
+ * The artefacts include distribution-ready 'binaries' as well as temporary files and
+ * intermediate build output.
  */
 export class NgArtefacts {
 

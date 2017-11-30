@@ -1,11 +1,21 @@
+import { SchemaClassFactory } from '@ngtools/json-schema';
+import { readJson, writeJson, readdir, lstat, Stats } from 'fs-extra';
+import { merge, isArray } from 'lodash';
 import * as path from 'path';
 import { NgPackageConfig } from '../../ng-package.schema';
 import { NgPackageData, DEFAULT_BUILD_FOLDER } from '../model/ng-package-data';
-import { tryReadJson } from '../util/json';
-import { readJson, writeJson, readdir, lstat, Stats } from 'fs-extra';
-import { merge, isArray } from 'lodash';
-import * as log from '../util/log';
 import { PackageSearchResult } from '../model/package-search-result';
+import { tryReadJson } from '../util/json';
+import * as log from '../util/log';
+
+/** Returns a SchemaClassFactory for `NgPackageConfig` */
+const schemaClassFactory = readJson(path.resolve(__dirname, '..', '..', 'ng-package.schema.json'))
+  .then((jsonSchema: any) => SchemaClassFactory<NgPackageConfig>(jsonSchema));
+
+/** Returns a SchemaClass for `NgPackageConfig` */
+const schemaClass = (ngPackageJson: any) => schemaClassFactory
+  .then((SchemaClass) => new SchemaClass(ngPackageJson));
+
 
 const PACKAGE_JSON_FILE_NAME = 'package.json';
 
