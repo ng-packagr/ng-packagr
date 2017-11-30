@@ -106,5 +106,7 @@
     "test": "yarn build && yarn integration:samples && yarn integration:specs && yarn integration:consumer",
     "commitmsg": "commitlint -e",
     "gh-pages": "gh-pages -d docs/ghpages"
-  }
+  },
+  "main": "lib/ng-packagr.js",
+  "typings": "lib/ng-packagr.d.ts"
 }
