@@ -1,6 +1,7 @@
 import * as  __rollup from 'rollup';
 import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as commonJs from 'rollup-plugin-commonjs';
+import * as json from 'rollup-plugin-json';
 import { debug } from '../util/log';
 import { ROLLUP_GLOBALS } from '../conf/rollup.globals';
 
@@ -33,6 +34,7 @@ export async function rollup(opts: RollupOptions): Promise<void> {
     plugins: [
       nodeResolve({ jsnext: true, module: true }),
       commonJs(),
+      json()
     ],
     onwarn: (warning) => {
       if (warning.code === 'THIS_IS_UNDEFINED') {
