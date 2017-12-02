@@ -74,11 +74,9 @@ const processStylesheet =
       const browsers = browserslist(undefined, { stylesheetFilePath });
 
       log.debug(`postcss with autoprefixer for ${stylesheetFilePath}`);
-
       const postCssPlugins = [autoprefixer({ browsers })];
 
       log.debug(`Inline assets is ${embedAssets ? 'enabled' : 'disabled'}`);
-
       if (embedAssets) {
         postCssPlugins.push(postcssUrl({ url: 'inline' }));
       }
