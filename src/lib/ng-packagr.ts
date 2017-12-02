@@ -43,6 +43,7 @@ export async function createNgPackage(opts: NgPackagrCliArguments): Promise<void
     }
 
     await copyFiles(`${rootPackage.sourcePath}/README.md`, rootPackage.destinationPath);
+    await copyFiles(`${rootPackage.sourcePath}/CHANGELOG.md`, rootPackage.destinationPath);
     await copyFiles(`${rootPackage.sourcePath}/LICENSE`, rootPackage.destinationPath);
 
     log.success(`Built Angular Package!
