@@ -9,6 +9,7 @@ import * as autoprefixer from 'autoprefixer';
 import * as browserslist from 'browserslist';
 import * as postcss from 'postcss';
 import * as sass from 'node-sass';
+import * as nodeSassTildeImporter from 'node-sass-tilde-importer';
 import * as less from 'less';
 import * as stylus from 'stylus';
 
@@ -99,7 +100,7 @@ async function renderPreProcessor(filePath: string, srcPath: string): Promise<st
     case '.scss':
     case '.sass':
       log.debug(`rendering sass from ${filePath}`);
-      return await renderSass({ file: filePath, importer: sassImporter });
+      return await renderSass({ file: filePath, importer: nodeSassTildeImporter });
 
     case '.less':
       log.debug(`rendering less from ${filePath}`);
@@ -116,15 +117,6 @@ async function renderPreProcessor(filePath: string, srcPath: string): Promise<st
       return readFile(filePath).then((buffer) => buffer.toString());
   }
 
-}
-
-// TODO: use node-sass-magic-importer
-const sassImporter = (url: string): any => {
-  if (url[0] === '~') {
-    url = path.resolve('node_modules', url.substr(1));
-  }
-
-  return { file: url };
 }
 
 const renderSass = (sassOpts: any): Promise<string> => {
