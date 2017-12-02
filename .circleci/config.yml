@@ -1,7 +1,7 @@
 version: 2
 defaults: &defaults
   docker:
-    - image: angular/ngcontainer:latest
+    - image: angular/ngcontainer:0.0.5
   working_directory: ~/repo
 
 jobs:
