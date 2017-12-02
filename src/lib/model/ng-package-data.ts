@@ -21,6 +21,7 @@ export class NgPackageData {
   public readonly buildDirectory: string;
   public readonly libExternals: any;
   public readonly jsxConfig?: string;
+  public readonly embedAssets: boolean;
 
   constructor(
     /**
@@ -62,6 +63,7 @@ export class NgPackageData {
       this.flatModuleFileName = ngPackageConfig.lib.flatModuleFile;
       this.entryFile = ngPackageConfig.lib.entryFile;
       this.jsxConfig = ngPackageConfig.lib.jsx;
+      this.embedAssets = ngPackageConfig.lib.embedAssets;
     }
 
     if (!this.libExternals) {
