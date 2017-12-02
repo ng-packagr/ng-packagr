@@ -114,6 +114,43 @@ To configure with a `package.json`, put the configuration in the `ngPackage` cus
 
 Note: referencing the `$schema` enables JSON editing support (auto-completion for configuration) in IDEs like [VSCode](https://github.com/Microsoft/vscode).
 
+To configure with a custom `tsconfig` file, put the path relative to your source path in the `tsconfig` field:
+
+```json
+{
+  "$schema": "./node_modules/ng-packagr/package.schema.json",
+  "ngPackage": {
+    "tsconfig": "my-custom-tsconfig.json",
+    "lib": {
+      "entryFile": "public_api.ts"
+    }
+  }
+}
+```
+
+> Note: Many fields are not overridable in order to adhere to the angular package format. Any attempt to edit the following fields will have no effect:
+> - flatModuleId
+> - flatModuleOutFile
+> - basePath
+> - baseUrl
+> - outDir
+> - genDir
+> - target
+> - module
+> - moduleResolution
+> - declaration
+> - sourceMap
+> - inlineSources
+> - inlineSourceMap
+> - mapRoot
+> - allowSyntheticDefaultImports
+> - skipLibCheck
+> - emitDecoratorMetadata
+> - experimentalDecorators
+> - annotateForClosureCompiler
+> - skipTemplateCodegen
+> - strictMetadataEmit
+
 #### Secondary Entry Points
 
 Beside the primary entry point, a package can contain one or more secondary entry points (e.g. `@angular/core/testing`, `@angular/cdk/a11y`, …).

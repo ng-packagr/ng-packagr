@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { NgArtefacts } from './domain/ng-artefacts';
+import { NgArtifacts } from './domain/ng-artifacts';
 import { NgPackageData } from './model/ng-package-data';
 import { writePackage } from './steps/package';
 import { processAssets } from './steps/assets';
@@ -20,32 +20,32 @@ import { rimraf } from './util/rimraf';
  */
 export async function transformSources(ngPkg: NgPackageData): Promise<void> {
   log.info(`Building from sources for entry point '${ngPkg.fullPackageName}'`);
-  const artefacts = new NgArtefacts(ngPkg);
+  const artifacts = new NgArtifacts(ngPkg);
 
   // 0. CLEAN BUILD DIRECTORY
   log.info('Cleaning build directory');
   await rimraf(ngPkg.buildDirectory);
 
   // 0. TWO-PASS TSC TRANSFORMATION
-  artefacts.tsConfig = prepareTsConfig(ngPkg);
+  artifacts.tsConfig = prepareTsConfig(ngPkg);
 
   // First pass: collect templateUrl and styleUrls referencing source files.
   log.info('Extracting templateUrl and styleUrls');
-  const result = collectTemplateAndStylesheetFiles(artefacts.tsConfig, artefacts);
+  const result = collectTemplateAndStylesheetFiles(artifacts.tsConfig, artifacts);
   result.dispose();
 
   // Then, process assets keeping transformed contents in memory.
   log.info('Processing assets');
-  await processAssets(artefacts, ngPkg);
+  await processAssets(artifacts, ngPkg);
 
   // Second pass: inline templateUrl and styleUrls
   log.info('Inlining templateUrl and styleUrls');
-  artefacts.tsSources = inlineTemplatesAndStyles(artefacts.tsConfig, artefacts);
+  artifacts.tsSources = inlineTemplatesAndStyles(artifacts.tsConfig, artifacts);
 
   // 1. NGC
   log.info('Compiling with ngc');
-  const tsOutput = await ngc(ngPkg, artefacts.tsSources, artefacts.tsConfig);
-  artefacts.tsSources.dispose();
+  const tsOutput = await ngc(ngPkg, artifacts.tsSources, artifacts.tsConfig);
+  artifacts.tsSources.dispose();
 
   // await remapSourceMap(tsOutput.js);
 

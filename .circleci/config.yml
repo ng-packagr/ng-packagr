@@ -16,7 +16,7 @@ jobs:
       # Run the ci build
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn test
-      # Store artefacts on circle
+      # Store artifacts on circle
       - run: mkdir -p /tmp/samples
       - run: cp -r --parents integration/samples/**/dist /tmp/samples
       - store_artifacts:

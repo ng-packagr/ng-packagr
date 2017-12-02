@@ -18,10 +18,15 @@
       "type": "string",
       "default": "dist"
     },
+    "tsconfig": {
+      "description": "The name of the typescript configuration file.",
+      "type": "string",
+      "default": ""
+    },
     "workingDirectory": {
       "description": "Internal working directory of ng-packagr where intermediate build files are stored (default: `.ng_pkg_build`).",
       "type": "string",
-      "default": ".ng_build"
+      "default": ".ng_pkg_build"
     },
     "lib": {
       "description": "Description of the library that is being built.",

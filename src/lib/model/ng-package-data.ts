@@ -21,6 +21,7 @@ export class NgPackageData {
   public readonly buildDirectory: string;
   public readonly libExternals: any;
   public readonly jsxConfig?: string;
+  public readonly tsconfigPath: string;
 
   constructor(
     /**
@@ -44,6 +45,9 @@ export class NgPackageData {
     this.destinationPath = rootDestinationPath + this.pathOffsetFromSourceRoot;
     this.fullPackageName = ensureUnixPath(rootPackageName + this.pathOffsetFromSourceRoot);
     this.moduleName = this.fullPackageName.replace(SCOPE_PREFIX, '').split(SCOPE_NAME_SEPARATOR).join('.');
+    this.tsconfigPath = ngPackageConfig.tsconfig
+      ? path.resolve(this.sourcePath, ngPackageConfig.tsconfig)
+      : path.resolve(__dirname, '..', 'conf', 'tsconfig.ngc.json');
 
     if (this.fullPackageName.startsWith(SCOPE_PREFIX)) {
       const firstSeparatorIndex: number = this.fullPackageName.indexOf(SCOPE_NAME_SEPARATOR);
