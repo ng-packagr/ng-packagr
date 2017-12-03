@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "https://github.com/dherges/ng-packagr/blob/master/conf/ng-package.schema.json",
+  "id": "https://github.com/dherges/ng-packagr/blob/master/src/ng-package.schema.json",
   "title": "NgPackageConfig",
   "description": "JSON Schema for `ng-package.json` description file",
   "type": "object",
@@ -21,7 +21,7 @@
     "workingDirectory": {
       "description": "Internal working directory of ng-packagr where intermediate build files are stored (default: `.ng_pkg_build`).",
       "type": "string",
-      "default": ".ng_build"
+      "default": ".ng_pkg_build"
     },
     "lib": {
       "description": "Description of the library that is being built.",
@@ -45,7 +45,7 @@
         "jsx": {
           "description": "A property to indicate whether your library is going to be bundling jsx/tsx files. This passes through to tsconfig - see https://www.typescriptlang.org/docs/handbook/jsx.html",
           "type": "string",
-          "enum": ["preserve", "react", "react-native"],
+          "enum": ["preserve", "react", "react-native", ""],
           "default": ""
         }
       }

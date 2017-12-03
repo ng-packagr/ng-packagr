@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { readFile } from 'fs-extra';
-import { NgArtefacts } from '../domain/ng-artefacts';
-import { NgPackageData } from '../model/ng-package-data';
+import { Artefacts } from '../domain/build-artefacts';
+import { NgPackage } from '../domain/ng-package-format';
 import * as log from '../util/log';
 
 // CSS Tools
@@ -14,7 +14,7 @@ import * as less from 'less';
 import * as stylus from 'stylus';
 
 export const processAssets =
-  async (artefacts: NgArtefacts, pkg: NgPackageData): Promise<NgArtefacts> => {
+  async (artefacts: Artefacts, pkg: NgPackage): Promise<Artefacts> => {
     // process templates
     const templates = await Promise.all(
       artefacts.templates()
@@ -35,7 +35,7 @@ export const processAssets =
         .map(async (stylesheet) => {
           return {
             name: stylesheet,
-            content: await processStylesheet(stylesheet, pkg.sourcePath)
+            content: await processStylesheet(stylesheet, pkg.src)
           };
         })
     );

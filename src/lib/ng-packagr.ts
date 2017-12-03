@@ -1,9 +1,12 @@
 // BUILD STEP IMPLEMENTATIONS
-import { discoverPackages } from './steps/package';
+import { discoverPackages } from './steps/init';
 import { rimraf } from './util/rimraf';
 import { copyFiles } from './util/copy';
-import { transformSources } from './bundler';
-import { PackageSearchResult } from './model/package-search-result';
+import { transformSources } from './entry-point-transforms';
+
+// Domain
+import { CliArguments } from './domain/cli-arguments';
+import { NgPackage } from './domain/ng-package-format';
 
 // Node API
 import * as path from 'path';
@@ -11,51 +14,37 @@ import * as path from 'path';
 // Logging
 import * as log from './util/log';
 
-// `ng-package.json` config
-import { NgPackageData } from './model/ng-package-data';
 
-
-/** CLI arguments passed to `ng-packagr` and `ngPackage()`. */
-export interface NgPackagrCliArguments {
-  /** Path to the 'ng-package.json' file */
-  project: string
-}
-
-export async function createNgPackage(opts: NgPackagrCliArguments): Promise<void> {
+export async function createNgPackage(opts: CliArguments): Promise<void> {
   log.info(`Building Angular Package`);
 
-  let buildDirectoryRoot: string;
+  let ngPackage: NgPackage;
   try {
-    // READ `ng-package.json` and obtain model, as well as secondary packages
-    const ngPackages: PackageSearchResult = await discoverPackages(opts.project);
+    // READ `NgPackage` from either 'package.json', 'ng-package.json', or 'ng-package.js'
+    ngPackage = await discoverPackages(opts);
 
-    const rootPackage: NgPackageData = ngPackages.rootPackage;
+    // clean the primar dest folder (should clean all secondary module directories as well)
+    await rimraf(ngPackage.dest);
 
-    // clean the root (should clean all secondary module directories as well)
-    await rimraf(rootPackage.destinationPath);
-
-    const packageSpecificPath: string = path.basename(rootPackage.buildDirectory);
-    buildDirectoryRoot = rootPackage.buildDirectory.substring(0, rootPackage.buildDirectory.lastIndexOf(packageSpecificPath));
-    await transformSources(rootPackage);
-
-    for(const secondaryPackage of ngPackages.secondaryPackages) {
-      await transformSources(secondaryPackage);
+    await transformSources({ entryPoint: ngPackage.primary, pkg: ngPackage });
+    for (const secondary of ngPackage.secondaries) {
+      await transformSources({ entryPoint: secondary, pkg: ngPackage });
     }
 
-    await copyFiles(`${rootPackage.sourcePath}/README.md`, rootPackage.destinationPath);
-    await copyFiles(`${rootPackage.sourcePath}/LICENSE`, rootPackage.destinationPath);
+    await copyFiles(`${ngPackage.src}/README.md`, ngPackage.dest);
+    await copyFiles(`${ngPackage.src}/LICENSE`, ngPackage.dest);
 
     log.success(`Built Angular Package!
- - from: ${rootPackage.sourcePath}
- - to:   ${rootPackage.destinationPath}
+ - from: ${ngPackage.src}
+ - to:   ${ngPackage.dest}
     `);
   } catch (error) {
     // Report error messages and throw the error further up
     log.error(error);
     throw error;
   } finally {
-    if (buildDirectoryRoot) {
-      await rimraf(buildDirectoryRoot);
+    if (ngPackage) {
+      await rimraf(ngPackage.workingDirectory);
     }
   }
 }
