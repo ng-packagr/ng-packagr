@@ -6,15 +6,18 @@ import { Observable } from 'rxjs/Observable';
 describe(`@sample/externals`, () => {
 
   describe(`UMD Bundle`, () => {
-    const api = require('../dist/bundles/externals.umd.min.js');
+    let API;
+    before(() => {
+      API = require('../dist/bundles/sample-externals.umd.min.js');
+    });
 
     it(`should export 'target$'`, () => {
-      expect(api.target$).to.be.instanceof(Observable);
+      expect(API.target$).to.be.instanceof(Observable);
     });
 
     it(`'target$' should be .subscribe()-able and emit values`, () => {
       const values: number[] = [];
-      const subscription = api.target$.subscribe(
+      const subscription = API.target$.subscribe(
         (next) => values.push(next),
         (err) => {},
         () => {}
@@ -25,11 +28,11 @@ describe(`@sample/externals`, () => {
     });
 
     it(`should export 'SomeModule'`, () => {
-      expect(api.SomeModule).to.be.ok;
+      expect(API.SomeModule).to.be.ok;
     });
 
     it(`should export RxJsOperators`, () => {
-      expect(api.RxJsOperators).to.be.ok;
+      expect(API.RxJsOperators).to.be.ok;
     });
   });
 

@@ -4,10 +4,10 @@ import * as path from 'path';
 
 describe(`@sample/secondary-lib`, () => {
 
-  describe(`es5: secondary-lib.js`, () => {
+  describe(`es5: sample-secondary-lib.js`, () => {
     let API;
     before(() => {
-      API = require('../dist/esm5/secondary-lib.js');
+      API = require('../dist/esm5/sample-secondary-lib.js');
     });
 
     it(`should exist`, () => {
@@ -23,10 +23,10 @@ describe(`@sample/secondary-lib`, () => {
 
 describe(`@sample/secondary-lib/sub-module`, () => {
 
-  describe(`es5: sub-module.js`, () => {
+  describe(`es5: sample-secondary-lib-sub-module.js`, () => {
     let SECONDARY;
     before(() => {
-      SECONDARY = require('../dist/esm5/secondary-lib/sub-module.js');
+      SECONDARY = require('../dist/esm5/sample-secondary-lib-sub-module.js');
     });
 
     it(`should exist`, () => {

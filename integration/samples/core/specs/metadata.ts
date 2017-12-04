@@ -7,7 +7,7 @@ describe(`@sample/core`, () => {
   describe(`core.metadata.json`, () => {
     let METADATA;
     before(() => {
-      METADATA = require('../dist/core.metadata.json');
+      METADATA = require('../dist/sample-core.metadata.json');
     });
 
     it(`should exist`, () => {

@@ -4,10 +4,10 @@ import * as path from 'path';
 
 describe(`@sample/same-name`, () => {
 
-  describe(`testing.umd.min.js`, () => {
+  describe(`sample-testing.umd.min.js`, () => {
     let API;
     before(() => {
-      API = require('../dist/bundles/testing.umd.min.js');
+      API = require('../dist/bundles/sample-testing.umd.min.js');
     });
 
     it(`should exist`, () => {
@@ -24,10 +24,10 @@ describe(`@sample/same-name`, () => {
 
   });
 
-  describe(`testing-testing.umd.min.js`, () => {
+  describe(`sample-testing-testing.umd.min.js`, () => {
     let API;
     before(() => {
-      API = require('../dist/bundles/testing-testing.umd.min.js');
+      API = require('../dist/bundles/sample-testing-testing.umd.min.js');
     });
 
     it(`should exist`, () => {

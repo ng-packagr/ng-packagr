@@ -8,7 +8,7 @@ describe(`@sample/core`, () => {
     let TYPINGS;
     before(() => {
       TYPINGS = fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'core.d.ts'), 'utf-8');
+        path.resolve(__dirname, '..', 'dist', 'sample-core.d.ts'), 'utf-8');
     });
 
     it(`should exist`, () => {
