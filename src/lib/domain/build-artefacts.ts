@@ -1,29 +1,30 @@
 import * as path from 'path';
 import * as ts from 'typescript';
-import { NgPackageData } from '../model/ng-package-data';
 import { TsConfig } from '../steps/ngc';
+import { NgEntryPoint, NgPackage } from './ng-package-format';
 
 /**
- * Build artefacts generated for an Angular library.
+ * Build artefacts generated for an entry point (Angular library).
  *
  * The artefacts include distribution-ready 'binaries' as well as temporary files and
  * intermediate build output.
  */
-export class NgArtefacts {
+export class Artefacts {
 
   /** Directory for temporary files */
   public stageDir: string;
 
   /** Directory for build output */
-  private outDir: string;
+  public outDir: string;
 
   private _extras: { [key: string]: any } = {};
 
   constructor(
-    private pkg: NgPackageData
+    entryPoint: NgEntryPoint,
+    pkg: NgPackage
   ) {
-    this.stageDir = path.resolve(pkg.buildDirectory, pkg.pathOffsetFromSourceRoot);
-    this.outDir = path.relative(pkg.sourcePath, pkg.rootSourcePath);
+    this.stageDir = path.resolve(pkg.workingDirectory, entryPoint.flatModuleFile, 'stage');
+    this.outDir = path.resolve(pkg.workingDirectory, entryPoint.flatModuleFile, 'out');
   }
 
   public extras<T> (key: string): T;
