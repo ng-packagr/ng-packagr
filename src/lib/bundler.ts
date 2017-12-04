@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { NgArtefacts } from './domain/ng-artefacts';
-import { NgPackageData } from './model/ng-package-data';
+import { NgPackageData, ESM2015_FOLDER, ESM5_FOLDER, BUNDLES_FOLDER } from './model/ng-package-data';
 import { writePackage } from './steps/package';
 import { processAssets } from './steps/assets';
 import { ngc, prepareTsConfig, collectTemplateAndStylesheetFiles, inlineTemplatesAndStyles } from './steps/ngc';
@@ -51,7 +51,7 @@ export async function transformSources(ngPkg: NgPackageData): Promise<void> {
 
   // 3. FESM15: ROLLUP
   log.info('Bundling to FESM15');
-  const fesm15File = path.resolve(ngPkg.buildDirectory, 'esm2015', ngPkg.esmPackageName);
+  const fesm15File = path.resolve(ngPkg.buildDirectory, ESM2015_FOLDER, ngPkg.esmPackageName);
   await rollup({
     moduleName: ngPkg.moduleName,
     entry: tsOutput.js,
@@ -63,13 +63,13 @@ export async function transformSources(ngPkg: NgPackageData): Promise<void> {
 
   // 4. FESM5: TSC
   log.info('Bundling to FESM5');
-  const fesm5File = path.resolve(ngPkg.buildDirectory, 'esm5', ngPkg.esmPackageName);
+  const fesm5File = path.resolve(ngPkg.buildDirectory, ESM5_FOLDER, ngPkg.esmPackageName);
   await downlevelWithTsc(fesm15File, fesm5File);
   await remapSourceMap(fesm5File);
 
   // 5. UMD: ROLLUP
   log.info('Bundling to UMD');
-  const umdFile = path.resolve(ngPkg.buildDirectory, 'bundles', ngPkg.umdPackageName);
+  const umdFile = path.resolve(ngPkg.buildDirectory, BUNDLES_FOLDER, ngPkg.umdPackageName);
   await rollup({
     moduleName: ngPkg.moduleName,
     entry: fesm5File,
@@ -96,9 +96,9 @@ export async function transformSources(ngPkg: NgPackageData): Promise<void> {
   log.info('Writing package metadata');
   const rootPathFromSelf: string = path.relative(ngPkg.sourcePath, ngPkg.rootSourcePath);
   await writePackage(ngPkg, {
-    main: ensureUnixPath(path.join(rootPathFromSelf, 'bundles', ngPkg.umdPackageName)),
-    module: ensureUnixPath(path.join(rootPathFromSelf, 'esm5', ngPkg.esmPackageName)),
-    es2015: ensureUnixPath(path.join(rootPathFromSelf, 'esm2015', ngPkg.esmPackageName)),
+    main: ensureUnixPath(path.join(rootPathFromSelf, BUNDLES_FOLDER, ngPkg.umdPackageName)),
+    module: ensureUnixPath(path.join(rootPathFromSelf, ESM5_FOLDER, ngPkg.esmPackageName)),
+    es2015: ensureUnixPath(path.join(rootPathFromSelf, ESM2015_FOLDER, ngPkg.esmPackageName)),
     typings: ensureUnixPath(`${ngPkg.flatModuleFileName}.d.ts`),
     metadata: ensureUnixPath(`${ngPkg.flatModuleFileName}.metadata.json`)
   });
