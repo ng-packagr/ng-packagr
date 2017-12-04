@@ -1,6 +1,7 @@
 import * as sorcery from 'sorcery';
-import { NgPackageData } from './../model/ng-package-data';
-import { modifyJsonFiles } from './../util/json';
+import { Artefacts } from '../domain/build-artefacts';
+import { NgEntryPoint, NgPackage } from '../domain/ng-package-format';
+import { modifyJsonFiles } from '../util/json';
 import { debug } from '../util/log';
 
 /**
@@ -34,11 +35,12 @@ export async function remapSourceMap(sourceFile: string): Promise<void> {
  * i.e. `ng://@org/package/secondary`,
  * the source map p `.map` file's relative root file paths to the module's name.
  *
- * @param ngPkg Angular package data
+ * @param pkg Angular package
  */
-export async function relocateSourceMapSources(ngPkg: NgPackageData): Promise<void> {
+export async function relocateSourceMapSources(
+  { artefacts, entryPoint }: { artefacts: Artefacts, entryPoint: NgEntryPoint }): Promise<void> {
 
-  await modifyJsonFiles(`${ngPkg.buildDirectory}/+(bundles|esm2015|esm5)/**/*.js.map`,
+  await modifyJsonFiles(`${artefacts.stageDir}/+(bundles|esm2015|esm5)/**/*.js.map`,
     (sourceMap: any): any => {
       sourceMap.sources = (sourceMap.sources as string[])
         .map((path) => {
@@ -48,7 +50,7 @@ export async function relocateSourceMapSources(ngPkg: NgPackageData): Promise<vo
             trimmedPath = trimmedPath.substring(3);
           }
 
-          return `ng://${ngPkg.fullPackageName}/${trimmedPath}`;
+          return `ng://${entryPoint.moduleId}/${trimmedPath}`;
         });
 
       return sourceMap;

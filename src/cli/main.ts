@@ -2,7 +2,8 @@
 
 import * as program from 'commander';
 import * as path from 'path';
-import { createNgPackage, NgPackagrCliArguments } from './../lib/ng-packagr';
+import { CliArguments } from '../lib/domain/cli-arguments'
+import { createNgPackage } from '../lib/ng-packagr';
 
 const DEFAULT_PROJECT_PATH = path.resolve(process.cwd(), 'ng-package.json');
 
@@ -21,5 +22,5 @@ program
 
 const cliArguments: any = program;
 
-createNgPackage(cliArguments as NgPackagrCliArguments)
+createNgPackage(cliArguments as CliArguments)
   .catch((err) => process.exit(111));
