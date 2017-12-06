@@ -7,7 +7,7 @@ describe(`@sample/embed-assets`, () => {
   describe(`embed-assets.metadata.json`, () => {
     let METADATA;
     before(() => {
-      METADATA = METADATA = require('../dist/embed-assets.metadata.json');
+      METADATA = require('../dist/embed-assets.metadata.json');
     });
 
     it(`should exist`, () => {
