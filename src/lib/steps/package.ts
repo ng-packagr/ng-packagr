@@ -18,7 +18,7 @@ import { NgEntryPoint } from '../domain/ng-package-format';
  * @param entryPoint An entry point of an Angular package / library
  * @param binaries Binary artefacts (bundle files) to merge into `package.json`
  */
-export async function writePackage(entryPoint: NgEntryPoint, binaries: { [key: string]: string }): Promise<void> {
+export async function writePackage(entryPoint: NgEntryPoint, binaries: { [key: string]: string }, extraDependencies?: { [key: string]: string }): Promise<void> {
 
   log.debug('writePackage');
   const packageJson: any = entryPoint.packageJson;
@@ -27,8 +27,17 @@ export async function writePackage(entryPoint: NgEntryPoint, binaries: { [key: s
     packageJson[fieldName] = binaries[fieldName];
   }
 
-  packageJson.name = entryPoint.moduleId;
+  if (extraDependencies) {
+    if (packageJson.dependencies) {
+      for (const depenency in extraDependencies) {
+        packageJson.dependencies[depenency] = extraDependencies[depenency];
+      }
+    } else {
+      packageJson.dependencies = extraDependencies;
+    }
+  }
 
+  packageJson.name = entryPoint.moduleId;
   // keep the dist package.json clean
   // this will not throw if ngPackage field does not exist
   delete packageJson.ngPackage;

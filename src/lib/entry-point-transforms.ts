@@ -17,6 +17,11 @@ import { rollup } from './steps/rollup';
 import { downlevelWithTsc } from './steps/tsc';
 import { copySourceFilesToDestination } from './steps/transfer';
 
+export const TS_HELPERS_LIB = {
+  name: "tslib",
+  version: "^1.7.1"
+};
+
 /**
  * Transforms TypeScript source files to Angular Package Format.
  *
@@ -59,12 +64,16 @@ export const transformSources =
     // 3. FESM15: ROLLUP
     log.info('Bundling to FESM15');
     const fesm15File = path.resolve(artefacts.stageDir, 'esm2015', entryPoint.flatModuleFile + '.js');
+
     await rollup({
       moduleName: entryPoint.moduleId,
       entry: tsOutput.js,
       format: 'es',
       dest: fesm15File,
-      externals: entryPoint.externals
+      externals: {
+        ...entryPoint.externals,
+        [TS_HELPERS_LIB.name]: TS_HELPERS_LIB.name
+      }
     });
     await remapSourceMap(fesm15File);
 
@@ -104,14 +113,20 @@ export const transformSources =
     log.info('Writing package metadata');
     // TODO: doesn't work any more .... path.relative(secondary.basePath, primary.basePath);
     const relativeDestPath: string = path.relative(entryPoint.destinationPath, pkg.primary.destinationPath);
+
+    let extraDependencies: { [key: string]: string } | undefined;
+    if (artefacts.tsConfig.options.importHelpers) {
+      extraDependencies = { [TS_HELPERS_LIB.name]: TS_HELPERS_LIB.version }
+    }
+
     await writePackage(entryPoint, {
       main: ensureUnixPath(path.join(relativeDestPath, 'bundles', entryPoint.flatModuleFile + '.umd.js')),
       module: ensureUnixPath(path.join(relativeDestPath, 'esm5', entryPoint.flatModuleFile + '.js')),
       es2015: ensureUnixPath(path.join(relativeDestPath, 'esm2015', entryPoint.flatModuleFile + '.js')),
       typings: ensureUnixPath(`${entryPoint.flatModuleFile}.d.ts`),
       // XX 'metadata' property in 'package.json' is non-standard. Keep it anyway?
-      metadata: ensureUnixPath(`${entryPoint.flatModuleFile}.metadata.json`)
-    });
+      metadata: ensureUnixPath(`${entryPoint.flatModuleFile}.metadata.json`),
+    }, extraDependencies);
 
     log.success(`Built ${entryPoint.moduleId}`);
   }

@@ -33,7 +33,6 @@
     "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
     "less": "^2.7.2",
-    "lodash": "^4.17.4",
     "node-sass": "^4.5.3",
     "node-sass-tilde-importer": "^1.0.0",
     "postcss": "^6.0.2",
@@ -49,6 +48,7 @@
   "peerDependencies": {
     "@angular/compiler": "~5.0.0",
     "@angular/compiler-cli": "~5.0.0",
+    "tslib": "^1.7.1",
     "typescript": "~2.4.2"
   },
   "devDependencies": {
@@ -68,7 +68,6 @@
     "@types/glob": "^5.0.33",
     "@types/jasmine": "^2.5.51",
     "@types/less": "^0.0.32",
-    "@types/lodash": "^4.14.77",
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.0",
     "@types/react": "^16.0.19",
@@ -88,6 +87,7 @@
     "sinon": "^4.0.0",
     "standard-version": "^4.0.0",
     "ts-node": "^3.0.4",
+    "tslib": "^1.7.1",
     "typescript": "~2.4.2",
     "zone.js": "^0.8.10"
   },
