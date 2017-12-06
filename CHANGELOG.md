@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.5"></a>
+# [2.0.0-rc.5](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.4...v2.0.0-rc.5) (2017-12-06)
+
+
+### Bug Fixes
+
+* inline empty stylesheets ([aa621b1](https://github.com/dherges/ng-packagr/commit/aa621b1))
+* update rollup to version ^0.52.0 ([#318](https://github.com/dherges/ng-packagr/issues/318)) ([317c88b](https://github.com/dherges/ng-packagr/commit/317c88b))
+
+
+### Features
+
+* consistent `flatModuleFile` naming for bundles ([#361](https://github.com/dherges/ng-packagr/issues/361)) ([17b4e0f](https://github.com/dherges/ng-packagr/commit/17b4e0f))
+* enable tslib `importHelpers`, reducing bundle sizes ([#338](https://github.com/dherges/ng-packagr/issues/338)) ([f1e4cf6](https://github.com/dherges/ng-packagr/commit/f1e4cf6))
+* expose programmatic API and typings ([#342](https://github.com/dherges/ng-packagr/issues/342)) ([61c7b50](https://github.com/dherges/ng-packagr/commit/61c7b50))
+* implement `transformSources()` w/ domain model ([#356](https://github.com/dherges/ng-packagr/issues/356)) ([89ce2ce](https://github.com/dherges/ng-packagr/commit/89ce2ce))
+* relocate source map file paths to `ng://<(at)org>/<package>/<sub>` ([#332](https://github.com/dherges/ng-packagr/issues/332)) ([c9b8d73](https://github.com/dherges/ng-packagr/commit/c9b8d73))
+* resolve "~" scss import statements to nearest `node_modules` ([#352](https://github.com/dherges/ng-packagr/issues/352)) ([ee9800b](https://github.com/dherges/ng-packagr/commit/ee9800b)), closes [#346](https://github.com/dherges/ng-packagr/issues/346)
+* resource inlining w/ TypeScript transformations ([#279](https://github.com/dherges/ng-packagr/issues/279)) ([4753066](https://github.com/dherges/ng-packagr/commit/4753066))
+
+
+### BREAKING CHANGES
+
+* Introduces a domain model for _Package_ and _Entry Point_ (as defined in Angular Package Format Specification Glossary). Refactors the source code transformation pipeline. Albeit the refactoring was undertaken with care and integration tests were not changed, it may cause undesired behaviour.
+
+
+
 <a name="2.0.0-rc.4"></a>
 # [2.0.0-rc.4](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.3...v2.0.0-rc.4) (2017-11-28)
 
