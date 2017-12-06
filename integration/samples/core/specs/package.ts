@@ -1,14 +1,11 @@
 import { expect } from 'chai';
-import * as fs from 'fs';
-import * as path from 'path';
-const BASE = path.resolve(__dirname, '..', 'dist');
 
 describe(`@sample/core`, () => {
 
   describe(`package.json`, () => {
     let PACKAGE;
     before(() => {
-      PACKAGE = JSON.parse(fs.readFileSync(`${BASE}/package.json`, 'utf-8'));
+      PACKAGE = require('../dist/package.json');
     });
 
     it(`should exist`, () => {
@@ -20,19 +17,19 @@ describe(`@sample/core`, () => {
     });
 
     it(`should reference "main" bundle (UMD)`, () => {
-      expect(PACKAGE['main']).to.equal('bundles/core.umd.js');
+      expect(PACKAGE['main']).to.equal('bundles/sample-core.umd.js');
     });
 
     it(`should reference "module" bundle (FESM5, also FESM2014)`, () => {
-      expect(PACKAGE['module']).to.equal('esm5/core.js');
+      expect(PACKAGE['module']).to.equal('esm5/sample-core.js');
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('esm2015/core.js');
+      expect(PACKAGE['es2015']).to.equal('esm2015/sample-core.js');
     });
 
     it(`should reference "typings" files`, () => {
-      expect(PACKAGE['typings']).to.equal('core.d.ts');
+      expect(PACKAGE['typings']).to.equal('sample-core.d.ts');
     });
 
   });

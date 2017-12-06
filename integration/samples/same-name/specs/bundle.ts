@@ -8,7 +8,7 @@ describe(`@sample/same-name`, () => {
     let BUNDLE;
     before(() => {
       BUNDLE = fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'bundles', 'testing.umd.js'), 'utf-8');
+        path.resolve(__dirname, '..', 'dist', 'bundles', 'sample-testing.umd.js'), 'utf-8');
     });
 
     it(`should exist`, () => {
@@ -25,7 +25,7 @@ describe(`@sample/same-name`, () => {
     let BUNDLE;
     before(() => {
       BUNDLE = fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'bundles', 'testing-testing.umd.js'), 'utf-8');
+        path.resolve(__dirname, '..', 'dist', 'bundles', 'sample-testing-testing.umd.js'), 'utf-8');
     });
 
     it(`should exist`, () => {
