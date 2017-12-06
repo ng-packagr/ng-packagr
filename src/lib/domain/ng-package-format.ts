@@ -123,8 +123,7 @@ export class NgEntryPoint {
   }
 
   public get flatModuleFile(): string {
-    return this.$get('lib.flatModuleFile') || path.basename(this.moduleId);
-    // XX: new behaviour: return this.$get('lib.flatModuleFile') || this.moduleId.replace('@', '').split('/').join('-');
+    return this.$get('lib.flatModuleFile') || this.flattenModuleId('-');
   }
 
   /**
@@ -146,21 +145,15 @@ export class NgEntryPoint {
    * Example: `@my/foo/bar` registers as `global['my']['foo']['bar']`.
    */
   public get umdModuleId(): string {
-    return this.moduleId.replace('@', '').split('/').join('.')
+    return this.flattenModuleId();
   }
 
-  /** @deprecated */
-  get umdPackageName(): string {
-    const firstIndexOfSlash = this.moduleId.startsWith('@') ? (this.moduleId.indexOf('/') + 1) : 0;
-
-    return this.moduleId.substring(firstIndexOfSlash).replace('/', '-') + '.umd.js';
-  }
-
-  /** @deprecated */
-  get esmPackageName(): string {
-    const firstIndexOfSlash = this.moduleId.startsWith('@') ? (this.moduleId.indexOf('/') + 1) : 0;
-
-    return this.moduleId.substring(firstIndexOfSlash) + '.js';
+  private flattenModuleId(separator: string = '.') {
+    if (this.moduleId.startsWith('@')) {
+      return this.moduleId.substring(1).split('/').join(separator);
+    } else {
+      return this.moduleId.split('/').join(separator);
+    }
   }
 
 }

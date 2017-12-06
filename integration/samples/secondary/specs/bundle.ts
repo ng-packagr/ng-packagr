@@ -4,11 +4,11 @@ import * as path from 'path';
 
 describe(`@sample/secondary`, () => {
 
-  describe(`bundle secondary-lib.umd.js`, () => {
+  describe(`bundle: sample-secondary-lib.umd.js`, () => {
     let BUNDLE;
     before(() => {
       BUNDLE = fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'bundles', 'secondary-lib.umd.js'), 'utf-8');
+        path.resolve(__dirname, '..', 'dist', 'bundles', 'sample-secondary-lib.umd.js'), 'utf-8');
     });
 
     it(`should exist`, () => {
@@ -20,11 +20,11 @@ describe(`@sample/secondary`, () => {
     });
   });
 
-  describe(`bundle secondary-lib-sub-module.umd.js`, () => {
+  describe(`bundle: sample-secondary-lib-sub-module.umd.js`, () => {
     let BUNDLE;
     before(() => {
       BUNDLE = fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'bundles', 'secondary-lib-sub-module.umd.js'), 'utf-8');
+        path.resolve(__dirname, '..', 'dist', 'bundles', 'sample-secondary-lib-sub-module.umd.js'), 'utf-8');
     });
 
     it(`should exist`, () => {

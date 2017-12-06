@@ -4,10 +4,10 @@ import * as path from 'path';
 
 describe(`@sample/same-name`, () => {
 
-  describe(`esm5/testing.js`, () => {
+  describe(`esm5/sample-testing.js`, () => {
     let API;
     before(() => {
-      API = require('../dist/esm5/testing.js');
+      API = require('../dist/esm5/sample-testing.js');
     })
 
     it(`should exist`, () => {
@@ -20,10 +20,10 @@ describe(`@sample/same-name`, () => {
 
   });
 
-  describe(`esm5/testing/testing.js`, () => {
+  describe(`esm5/sample-testing-testing.js`, () => {
     let APITesting;
     before(() => {
-      APITesting = require('../dist/esm5/testing/testing.js');
+      APITesting = require('../dist/esm5/sample-testing-testing.js');
     });
 
     it(`should exist`, () => {

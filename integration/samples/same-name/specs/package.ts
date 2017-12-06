@@ -1,15 +1,11 @@
 import { expect } from 'chai';
-import * as fs from 'fs';
-import * as path from 'path';
-const BASE = path.resolve(__dirname, '..', 'dist');
-const BASE_TESTING = path.resolve(__dirname, '..', 'dist', 'testing');
 
 describe(`@sample/same-name`, () => {
 
   describe(`package.json`, () => {
     let PACKAGE;
     before(() => {
-      PACKAGE = JSON.parse(fs.readFileSync(`${BASE}/package.json`, 'utf-8'));
+      PACKAGE = require('../dist/package.json');
     });
 
     it(`should exist`, () => {
@@ -21,19 +17,19 @@ describe(`@sample/same-name`, () => {
     });
 
     it(`should reference "main" bundle (UMD)`, () => {
-      expect(PACKAGE['main']).to.equal('bundles/testing.umd.js');
+      expect(PACKAGE['main']).to.equal('bundles/sample-testing.umd.js');
     });
 
     it(`should reference "module" bundle (FESM5, also FESM2014)`, () => {
-      expect(PACKAGE['module']).to.equal('esm5/testing.js');
+      expect(PACKAGE['module']).to.equal('esm5/sample-testing.js');
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('esm2015/testing.js');
+      expect(PACKAGE['es2015']).to.equal('esm2015/sample-testing.js');
     });
 
     it(`should reference "typings" files`, () => {
-      expect(PACKAGE['typings']).to.equal('testing.d.ts');
+      expect(PACKAGE['typings']).to.equal('sample-testing.d.ts');
     });
 
   });
@@ -41,7 +37,7 @@ describe(`@sample/same-name`, () => {
   describe(`testing/package.json`, () => {
     let PACKAGE;
     before(() => {
-      PACKAGE = JSON.parse(fs.readFileSync(`${BASE_TESTING}/package.json`, 'utf-8'));
+      PACKAGE = require('../dist/testing/package.json');
     });
 
     it(`should exist`, () => {
@@ -53,19 +49,19 @@ describe(`@sample/same-name`, () => {
     });
 
     it(`should reference "main" bundle (UMD)`, () => {
-      expect(PACKAGE['main']).to.equal('../bundles/testing-testing.umd.js');
+      expect(PACKAGE['main']).to.equal('../bundles/sample-testing-testing.umd.js');
     });
 
     it(`should reference "module" bundle (FESM5, also FESM2014)`, () => {
-      expect(PACKAGE['module']).to.equal('../esm5/testing/testing.js');
+      expect(PACKAGE['module']).to.equal('../esm5/sample-testing-testing.js');
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('../esm2015/testing/testing.js');
+      expect(PACKAGE['es2015']).to.equal('../esm2015/sample-testing-testing.js');
     });
 
     it(`should reference "typings" files`, () => {
-      expect(PACKAGE['typings']).to.equal('testing.d.ts');
+      expect(PACKAGE['typings']).to.equal('sample-testing-testing.d.ts');
     });
 
   });

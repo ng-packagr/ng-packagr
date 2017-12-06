@@ -1,14 +1,11 @@
 import { expect } from 'chai';
-import * as fs from 'fs';
-import * as path from 'path';
-const BASE = path.resolve(__dirname, '..', 'dist');
 
 describe(`sample-custom`, () => {
 
   describe(`package.json`, () => {
     let PACKAGE;
     before(() => {
-      PACKAGE = JSON.parse(fs.readFileSync(`${BASE}/package.json`, 'utf-8'));
+      PACKAGE = require('../dist/package.json');
     });
 
     it(`should exist`, () => {

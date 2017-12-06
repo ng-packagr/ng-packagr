@@ -1,13 +1,13 @@
 import { expect } from 'chai';
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import * as path from 'path';
 
 describe(`@sample/core`, () => {
 
-  describe(`esm5/core.js.map`, () => {
+  describe(`esm5/sample-core.js.map`, () => {
     let sourceMap;
     before(() => {
-      sourceMap = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'esm5', 'core.js.map'), 'utf-8'));
+      sourceMap = fs.readJsonSync(path.resolve(__dirname, '../dist/esm5/sample-core.js.map'));
     })
 
     it(`should exist`, () => {
