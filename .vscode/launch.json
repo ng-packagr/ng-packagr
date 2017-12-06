@@ -18,7 +18,14 @@
       "request": "launch",
       "name": "sample: same-name",
       "program": "${workspaceRoot}/integration/samples/same-name/build.dev.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "sample: secondary",
+      "program": "${workspaceRoot}/integration/samples/secondary/build.dev.js"
     }
+
   ],
   "compounds": []
 }

@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { readFile } from 'fs-extra';
-import { NgArtefacts } from '../domain/ng-artefacts';
-import { NgPackageData } from '../model/ng-package-data';
+import { Artefacts } from '../domain/build-artefacts';
+import { NgPackage } from '../domain/ng-package-format';
 import * as log from '../util/log';
 
 // CSS Tools
@@ -9,12 +9,13 @@ import * as autoprefixer from 'autoprefixer';
 import * as browserslist from 'browserslist';
 import * as postcss from 'postcss';
 import * as sass from 'node-sass';
+import * as nodeSassTildeImporter from 'node-sass-tilde-importer';
 import * as less from 'less';
 import * as stylus from 'stylus';
 import * as postcssUrl from 'postcss-url';
 
 export const processAssets =
-  async (artefacts: NgArtefacts, pkg: NgPackageData): Promise<NgArtefacts> => {
+  async (artefacts: Artefacts, pkg: NgPackage): Promise<Artefacts> => {
     // process templates
     const templates = await Promise.all(
       artefacts.templates()
@@ -35,7 +36,7 @@ export const processAssets =
         .map(async (stylesheet) => {
           return {
             name: stylesheet,
-            content: await processStylesheet(stylesheet, pkg.sourcePath, pkg.embedAssets)
+            content: await processStylesheet(stylesheet, pkg.src, artefacts.embedAssets)
           };
         })
     );
@@ -107,7 +108,7 @@ async function renderPreProcessor(filePath: string, srcPath: string): Promise<st
     case '.scss':
     case '.sass':
       log.debug(`rendering sass from ${filePath}`);
-      return await renderSass({ file: filePath, importer: sassImporter });
+      return await renderSass({ file: filePath, importer: nodeSassTildeImporter });
 
     case '.less':
       log.debug(`rendering less from ${filePath}`);
@@ -124,15 +125,6 @@ async function renderPreProcessor(filePath: string, srcPath: string): Promise<st
       return readFile(filePath).then((buffer) => buffer.toString());
   }
 
-}
-
-// TODO: use node-sass-magic-importer
-const sassImporter = (url: string): any => {
-  if (url[0] === '~') {
-    url = path.resolve('node_modules', url.substr(1));
-  }
-
-  return { file: url };
 }
 
 const renderSass = (sassOpts: any): Promise<string> => {
