@@ -23,11 +23,12 @@ _please describe what behaviour or result you expected_
 #### Version Information
 
 ```
-ng-packagr: v1.x.y
-node: v8.x.y
-@angular: v4.x.y
-rxjs:
-zone.js:
+ng-packagr: x.y.z
+@angular/*: x.y.z
+typescript: x.y.z
+rxjs: x.y.z
+node: x.y.z
+npm/yarn: x.y.z
 ```
 
 _please include any version information that might be relevant, e.g. other third-party libraries_
