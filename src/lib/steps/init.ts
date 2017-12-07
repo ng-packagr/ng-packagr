@@ -85,12 +85,8 @@ const resolvePackageConf =
           basePath: folderPath
         };
       } else if (path.extname(folderPathOrFilePath) === '.js') {
-
         // TODO: enable this, see #278
-        if (4 == 4) {
-          throw new Error(`Reading 'ngPackage' from a .js file is not yet implemented.`);
-        }
-
+        throw new Error(`Reading 'ngPackage' from a .js file is not yet implemented.`);
       } else {
         throw new Error(`Trying to read a package from unsupported file extension. Path=${folderPathOrFilePath}`);
       }
