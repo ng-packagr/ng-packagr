@@ -4,29 +4,13 @@ import * as path from 'path';
 
 describe(`@sample/core`, () => {
 
-  describe(`sample-core.umd.js`, () => {
-    let BUNDLE;
-    before(() => {
-      BUNDLE = fs.readFileSync(path.resolve(__dirname, '../dist/bundles/sample-core.umd.js'), 'utf-8');
-    });
-
-    it(`should exist`, () => {
-      expect(BUNDLE).to.be.ok;
-    });
-
-    it(`should export the module with module name 'sample.core'`, () => {
-      expect(BUNDLE).to.contain(`global.sample.core = {}`);
-    });
-
-    it(`should not import TS helpers from 'tslib'`, () => {
-      expect(BUNDLE).not.to.contain('tslib');
-    });
-  });
-
-  describe(`sample-core.umd.min.js`, () => {
+  describe(`esm2015/sample-core.js`, () => {
     let API;
+    let BUNDLE;
+
     before(() => {
-      API = require('../dist/bundles/sample-core.umd.min.js');
+      API = require('../dist/esm2015/sample-core.js');
+      BUNDLE = fs.readFileSync(path.resolve(__dirname, '../dist/esm2015/sample-core.js'), 'utf-8');
     });
 
     it(`should exist`, () => {
@@ -51,6 +35,10 @@ describe(`@sample/core`, () => {
 
     it(`should export AngularService`, () => {
       expect(API.AngularService).to.be.ok;
+    });
+
+    it(`should import TS helpers from 'tslib'`, () => {
+      expect(BUNDLE).to.contain(`from 'tslib'`);
     });
 
   });
