@@ -5,27 +5,36 @@
       "type": "node",
       "request": "launch",
       "name": "yarn samples:dev",
-      "program": "${workspaceRoot}/integration/samples.js"
+      "program": "${workspaceRoot}/integration/samples.dev.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "sample: custom",
+      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "args": [ "custom" ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "sample: material",
-      "program": "${workspaceRoot}/integration/samples/material/build.dev.js"
+      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "args": [ "material" ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "sample: same-name",
-      "program": "${workspaceRoot}/integration/samples/same-name/build.dev.js"
+      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "args": [ "same-name" ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "sample: secondary",
-      "program": "${workspaceRoot}/integration/samples/secondary/build.dev.js"
+      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "args": [ "secondary" ]
     }
-
   ],
   "compounds": []
 }

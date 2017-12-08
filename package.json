@@ -89,6 +89,7 @@
     "sinon": "^4.0.0",
     "standard-version": "^4.0.0",
     "ts-node": "^3.0.4",
+    "tsickle": "^0.24.0",
     "typescript": "~2.4.2",
     "zone.js": "^0.8.10"
   },
@@ -103,7 +104,7 @@
     "postrelease": "node scripts/prepublish.js",
     "publish:ci": "yarn prerelease && yarn postrelease",
     "integration:samples": "integration/samples.sh",
-    "integration:samples:dev": "node integration/samples.js",
+    "integration:samples:dev": "./integration/samples.dev.js",
     "integration:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --require ts-node/register integration/samples/*/specs/**/*.ts",
     "integration:consumer": "integration/consumer.sh",
     "test": "yarn build && yarn integration:samples && yarn integration:specs && yarn integration:consumer",
