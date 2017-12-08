@@ -58,7 +58,7 @@ export const transformSources =
 
     // 3. FESM15: ROLLUP
     log.info('Bundling to FESM15');
-    const fesm15File = path.resolve(artefacts.stageDir, 'esm2015', entryPoint.esmPackageName); // XX entryPoint.flatModuleFile + '.js');
+    const fesm15File = path.resolve(artefacts.stageDir, 'esm2015', entryPoint.flatModuleFile + '.js');
     await rollup({
       moduleName: entryPoint.moduleId,
       entry: tsOutput.js,
@@ -70,13 +70,13 @@ export const transformSources =
 
     // 4. FESM5: TSC
     log.info('Bundling to FESM5');
-    const fesm5File = path.resolve(artefacts.stageDir, 'esm5', entryPoint.esmPackageName); // XX entryPoint.flatModuleFile + '.js');
+    const fesm5File = path.resolve(artefacts.stageDir, 'esm5', entryPoint.flatModuleFile + '.js');
     await downlevelWithTsc(fesm15File, fesm5File);
     await remapSourceMap(fesm5File);
 
     // 5. UMD: ROLLUP
     log.info('Bundling to UMD');
-    const umdFile = path.resolve(artefacts.stageDir, 'bundles', entryPoint.umdPackageName); // XX entryPoint.flatModuleFile + '.umd.js');
+    const umdFile = path.resolve(artefacts.stageDir, 'bundles', entryPoint.flatModuleFile + '.umd.js');
     await rollup({
       moduleName: entryPoint.umdModuleId,
       entry: fesm5File,
@@ -105,9 +105,9 @@ export const transformSources =
     // TODO: doesn't work any more .... path.relative(secondary.basePath, primary.basePath);
     const relativeDestPath: string = path.relative(entryPoint.destinationPath, pkg.primary.destinationPath);
     await writePackage(entryPoint, {
-      main: ensureUnixPath(path.join(relativeDestPath, 'bundles', entryPoint.umdPackageName)), // XX entryPoint.flatModuleFile + '.umd.js')),
-      module: ensureUnixPath(path.join(relativeDestPath, 'esm5', entryPoint.esmPackageName)), // XX entryPoint.flatModuleFile + '.js')),
-      es2015: ensureUnixPath(path.join(relativeDestPath, 'esm2015', entryPoint.esmPackageName)), // XX entryPoint.flatModuleFile + '.js')),
+      main: ensureUnixPath(path.join(relativeDestPath, 'bundles', entryPoint.flatModuleFile + '.umd.js')),
+      module: ensureUnixPath(path.join(relativeDestPath, 'esm5', entryPoint.flatModuleFile + '.js')),
+      es2015: ensureUnixPath(path.join(relativeDestPath, 'esm2015', entryPoint.flatModuleFile + '.js')),
       typings: ensureUnixPath(`${entryPoint.flatModuleFile}.d.ts`),
       // XX 'metadata' property in 'package.json' is non-standard. Keep it anyway?
       metadata: ensureUnixPath(`${entryPoint.flatModuleFile}.metadata.json`)

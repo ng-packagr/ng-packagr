@@ -4,10 +4,10 @@ import * as path from 'path';
 
 describe(`@sample/embed-assets`, () => {
 
-  describe(`embed-assets.metadata.json`, () => {
+  describe(`sample-embed-assets.metadata.json`, () => {
     let METADATA;
     before(() => {
-      METADATA = require('../dist/embed-assets.metadata.json');
+      METADATA = require('../dist/sample-embed-assets.metadata.json');
     });
 
     it(`should exist`, () => {

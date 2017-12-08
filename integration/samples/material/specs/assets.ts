@@ -6,7 +6,7 @@ describe(`@sample/material`, () => {
   describe(`material.umd.js`, () => {
     let UMD_MODULE;
     before(() => {
-      UMD_MODULE = require('../dist/bundles/material.umd.js');
+      UMD_MODULE = require('../dist/bundles/sample-material.umd.js');
     });
 
     it(`should exist`, () => {

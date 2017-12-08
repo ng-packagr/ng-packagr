@@ -7,7 +7,7 @@ describe(`@sample/jsx`, () => {
   describe(`jsx.es5.js`, () => {
     let API;
     before(() => {
-      API = require('../dist/esm5/jsx.js');
+      API = require('../dist/esm5/sample-jsx.js');
     });
 
     it(`should exist`, () => {

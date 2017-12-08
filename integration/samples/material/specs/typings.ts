@@ -8,7 +8,7 @@ describe(`@sample/material`, () => {
     let TYPINGS;
     before(() => {
       TYPINGS = fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'material.d.ts'), 'utf-8');
+        path.resolve(__dirname, '..', 'dist', 'sample-material.d.ts'), 'utf-8');
     });
 
     it(`should exist`, () => {

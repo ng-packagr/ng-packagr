@@ -1,14 +1,11 @@
 import { expect } from 'chai';
-import * as fs from 'fs';
-import * as path from 'path';
 
 describe(`@sample/secondary`, () => {
 
-  describe(`secondary-lib.metadata.json`, () => {
+  describe(`sample-secondary-lib.metadata.json`, () => {
     let METADATA;
     before(() => {
-      METADATA = JSON.parse(fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'secondary-lib.metadata.json'), 'utf-8'));
+      METADATA = require('../dist/sample-secondary-lib.metadata.json');
     });
 
     it(`should exist`, () => {
@@ -24,11 +21,10 @@ describe(`@sample/secondary`, () => {
     });
   });
 
-  describe(`sub-module.metadata.json`, () => {
+  describe(`sample-secondary-lib-sub-module.metadata.json`, () => {
     let METADATA;
     before(() => {
-      METADATA = JSON.parse(fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'sub-module', 'sub-module.metadata.json'), 'utf-8'));
+      METADATA = require('../dist/sub-module/sample-secondary-lib-sub-module.metadata.json');
     });
 
     it(`should exist`, () => {

@@ -4,10 +4,10 @@ import * as path from 'path';
 
 describe(`@sample/same-name`, () => {
 
-  describe(`testing.metadata.json`, () => {
+  describe(`sample-testing.metadata.json`, () => {
     let METADATA;
     before(() => {
-      METADATA = require('../dist/testing.metadata.json');
+      METADATA = require('../dist/sample-testing.metadata.json');
     });
 
     it(`should exist`, () => {
@@ -32,10 +32,10 @@ describe(`@sample/same-name`, () => {
 
   });
 
-  describe(`testing/testing.metadata.json`, () => {
+  describe(`testing/sample-testing-testing.metadata.json`, () => {
     let METADATA;
     before(() => {
-      METADATA = require('../dist/testing/testing.metadata.json');
+      METADATA = require('../dist/testing/sample-testing-testing.metadata.json');
     });
 
     it(`should exist`, () => {
