@@ -85,10 +85,11 @@ What about [ng-packagr alongside Nx Workspace](https://github.com/dherges/nx-pac
 
 #### Configuration Locations
 
-Configuration is picked up from the cli `-p` parameter, then from the default location for  `ng-package.json`, then from `package.json`.
+Configuration is picked up from the cli `-p` parameter, then from `package.json`, then from `ng-package.json` and lastly from `ng-package.js`.
 
-To configure with a `ng-package.json`, put the `package.json` of the library in the same folder next to the `ng-package.json`.
-Contents of `ng-package.json` are for example:
+To configure with a `ng-package.json` or `ng-package.js`, put the `package.json` of the library in the same folder next to the `ng-package.json` or `ng-package.js`.
+
+Example of `ng-package.json`:
 
 ```json
 {
@@ -97,6 +98,16 @@ Contents of `ng-package.json` are for example:
     "entryFile": "public_api.ts"
   }
 }
+```
+
+Example of `ng-package.js`:
+
+```js
+module.exports = {
+  lib: {
+    entryFile: 'public_api.ts'
+  }
+};
 ```
 
 To configure with a `package.json`, put the configuration in the `ngPackage` custom property:

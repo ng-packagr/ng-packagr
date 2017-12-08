@@ -16,6 +16,12 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "sample: package-js",
+      "program": "${workspaceRoot}/integration/samples/package-js/build.dev.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "sample: same-name",
       "program": "${workspaceRoot}/integration/samples/same-name/build.dev.js"
     },
