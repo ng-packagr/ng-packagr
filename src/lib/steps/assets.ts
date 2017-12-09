@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { readFile } from 'fs-extra';
 import { Artefacts } from '../domain/build-artefacts';
-import { NgPackage } from '../domain/ng-package-format';
+import { NgPackage, CssUrl } from '../domain/ng-package-format';
 import * as log from '../util/log';
 
 // CSS Tools
@@ -36,7 +36,7 @@ export const processAssets =
         .map(async (stylesheet) => {
           return {
             name: stylesheet,
-            content: await processStylesheet(stylesheet, pkg.src, artefacts.embedAssets)
+            content: await processStylesheet(stylesheet, pkg.src, artefacts.cssUrl)
           };
         })
     );
@@ -65,7 +65,7 @@ const processTemplate =
  * @return Rendered CSS content of stylesheet file
  */
 const processStylesheet =
-  async (stylesheetFilePath: string, srcFolder: string, embedAssets: boolean): Promise<string> => {
+  async (stylesheetFilePath: string, srcFolder: string, cssUrl: CssUrl): Promise<string> => {
 
     try {
       log.debug(`Render styles for ${stylesheetFilePath}`);
@@ -77,11 +77,10 @@ const processStylesheet =
       log.debug(`postcss with autoprefixer for ${stylesheetFilePath}`);
       const postCssPlugins = [autoprefixer({ browsers })];
 
-      log.debug(`Inline assets is ${embedAssets ? 'enabled' : 'disabled'}`);
-      if (embedAssets) {
-        postCssPlugins.push(postcssUrl({ url: 'inline' }));
+      log.debug(`styles cssUrl ${cssUrl}`);
+      if (cssUrl !== CssUrl.none) {
+        postCssPlugins.push(postcssUrl({ url: cssUrl }));
       }
-
       const result: postcss.Result = await postcss(postCssPlugins)
         .process(cssStyles, {
           from: stylesheetFilePath,

@@ -173,11 +173,13 @@ For example, the following would use `index.ts` as the secondary entry point:
 
 You can embed assets such as font and images inside the outputted css. More information [in the CSS tricks website](https://css-tricks.com/data-uris)
 
+Valid values: `none` or `inline`.
+
 ```json
 {
   "ngPackage": {
     "lib": {
-      "embedAssets": true
+      "cssUrl": "inline"
     }
   }
 }

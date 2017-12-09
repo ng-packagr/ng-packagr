@@ -114,8 +114,8 @@ export class NgEntryPoint {
     return this.$get('lib.entryFile');
   }
 
-  public get embedAssets(): boolean {
-    return this.$get('lib.embedAssets');
+  public get cssUrl(): CssUrl {
+    return this.$get('lib.cssUrl');
   }
 
   public get externals(): { [key: string]: string } {
@@ -173,3 +173,8 @@ export class NgEntryPoint {
 export type SourceFilePath = string;
 
 export type DirectoryPath = string;
+
+export enum CssUrl {
+  inline = 'inline',
+  none = 'none'
+}
