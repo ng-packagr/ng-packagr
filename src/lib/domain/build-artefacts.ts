@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as ts from 'typescript';
 import { TsConfig } from '../steps/ngc';
-import { NgEntryPoint, NgPackage } from './ng-package-format';
+import { NgEntryPoint, NgPackage, CssUrl } from './ng-package-format';
 
 /**
  * Build artefacts generated for an entry point (Angular library).
@@ -17,6 +17,9 @@ export class Artefacts {
   /** Directory for build output */
   public outDir: string;
 
+  /** Embed assets in css file using data URI */
+  public cssUrl: CssUrl;
+
   private _extras: { [key: string]: any } = {};
 
   constructor(
@@ -25,6 +28,7 @@ export class Artefacts {
   ) {
     this.stageDir = path.resolve(pkg.workingDirectory, entryPoint.flatModuleFile, 'stage');
     this.outDir = path.resolve(pkg.workingDirectory, entryPoint.flatModuleFile, 'out');
+    this.cssUrl = entryPoint.cssUrl;
   }
 
   public extras<T> (key: string): T;

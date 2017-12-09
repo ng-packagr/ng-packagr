@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { readFile } from 'fs-extra';
 import { Artefacts } from '../domain/build-artefacts';
-import { NgPackage } from '../domain/ng-package-format';
+import { NgPackage, CssUrl } from '../domain/ng-package-format';
 import * as log from '../util/log';
 
 // CSS Tools
@@ -12,6 +12,7 @@ import * as sass from 'node-sass';
 import * as nodeSassTildeImporter from 'node-sass-tilde-importer';
 import * as less from 'less';
 import * as stylus from 'stylus';
+import * as postcssUrl from 'postcss-url';
 
 export const processAssets =
   async (artefacts: Artefacts, pkg: NgPackage): Promise<Artefacts> => {
@@ -35,7 +36,7 @@ export const processAssets =
         .map(async (stylesheet) => {
           return {
             name: stylesheet,
-            content: await processStylesheet(stylesheet, pkg.src)
+            content: await processStylesheet(stylesheet, pkg.src, artefacts.cssUrl)
           };
         })
     );
@@ -64,7 +65,7 @@ const processTemplate =
  * @return Rendered CSS content of stylesheet file
  */
 const processStylesheet =
-  async (stylesheetFilePath: string, srcFolder: string): Promise<string> => {
+  async (stylesheetFilePath: string, srcFolder: string, cssUrl: CssUrl): Promise<string> => {
 
     try {
       log.debug(`Render styles for ${stylesheetFilePath}`);
@@ -74,7 +75,13 @@ const processStylesheet =
       const browsers = browserslist(undefined, { stylesheetFilePath });
 
       log.debug(`postcss with autoprefixer for ${stylesheetFilePath}`);
-      const result: postcss.Result = await postcss([ autoprefixer({ browsers }) ])
+      const postCssPlugins = [autoprefixer({ browsers })];
+
+      log.debug(`styles cssUrl ${cssUrl}`);
+      if (cssUrl !== CssUrl.none) {
+        postCssPlugins.push(postcssUrl({ url: cssUrl }));
+      }
+      const result: postcss.Result = await postcss(postCssPlugins)
         .process(cssStyles, {
           from: stylesheetFilePath,
           to: stylesheetFilePath.replace(path.extname(stylesheetFilePath), '.css')
@@ -138,7 +145,7 @@ const renderLess = (lessOpts: any): Promise<string> => {
   return readFile(lessOpts.filename)
     .then(buffer => buffer.toString())
     .then((lessData: string) => new Promise<string>((resolve, reject) => {
-        less.render(lessData || '', lessOpts, (err, result) => {
+      less.render(lessData || '', lessOpts, (err, result) => {
         if (err) {
           reject(err);
         } else {
@@ -173,5 +180,5 @@ const renderStylus = ({ filename, root }): Promise<string> => {
             resolve(css);
           }
         });
-      }));
+    }));
 }
