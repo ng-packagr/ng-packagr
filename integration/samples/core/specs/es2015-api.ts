@@ -38,7 +38,7 @@ describe(`@sample/core`, () => {
     });
 
     it(`should not import TS helpers from 'tslib'`, () => {
-      expect(BUNDLE).not.to.contain(`from 'tslib'`);
+      expect(BUNDLE).not.to.contain('tslib');
     });
 
   });

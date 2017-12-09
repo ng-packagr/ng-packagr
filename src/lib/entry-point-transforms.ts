@@ -80,7 +80,19 @@ export const transformSources =
     // 4. FESM5: TSC
     log.info('Bundling to FESM5');
     const fesm5File = path.resolve(artefacts.stageDir, 'esm5', entryPoint.flatModuleFile + '.js');
-    await downlevelWithTsc(fesm15File, fesm5File);
+    const downLevelTmp = path.resolve(pkg.workingDirectory, entryPoint.flatModuleFile + '.js');
+    await downlevelWithTsc(fesm15File, downLevelTmp);
+    await remapSourceMap(downLevelTmp);
+    await rollup({
+      moduleName: entryPoint.moduleId,
+      entry: downLevelTmp,
+      format: 'es',
+      dest: fesm5File,
+      externals: {
+        ...entryPoint.externals,
+        [TS_HELPERS_LIB.name]: TS_HELPERS_LIB.name
+      }
+    });
     await remapSourceMap(fesm5File);
 
     // 5. UMD: ROLLUP
