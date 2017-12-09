@@ -51,7 +51,7 @@ export const transformSources =
 
     // 1. NGC
     log.info('Compiling with ngc');
-    const tsOutput = await ngc(entryPoint, artefacts.tsSources, artefacts.tsConfig);
+    const tsOutput = await ngc(entryPoint, artefacts);
     artefacts.tsSources.dispose();
 
     // await remapSourceMap(tsOutput.js);

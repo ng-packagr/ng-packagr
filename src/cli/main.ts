@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 
 import * as program from 'commander';
 import * as path from 'path';
