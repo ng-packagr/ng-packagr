@@ -17,10 +17,7 @@ export class Artefacts {
   /** Directory for build output */
   public outDir: string;
 
-  /** Embed assets in css file using data URI */
-  public cssUrl: CssUrl;
-
-  private _extras: { [key: string]: any } = {};
+  private _extras: Map<string, any> = new Map();
 
   constructor(
     entryPoint: NgEntryPoint,
@@ -28,27 +25,26 @@ export class Artefacts {
   ) {
     this.stageDir = path.resolve(pkg.workingDirectory, entryPoint.flatModuleFile, 'stage');
     this.outDir = path.resolve(pkg.workingDirectory, entryPoint.flatModuleFile, 'out');
-    this.cssUrl = entryPoint.cssUrl;
   }
 
   public extras<T> (key: string): T;
-  public extras<T> (key: string, content: T);
-  public extras<T> (key: string, content?: T): T | undefined {
-    if (content !== undefined) {
+  public extras<T> (key: string, value: T);
+  public extras<T> (key: string, value?: T): T | undefined {
+    if (value !== undefined) {
       // write
-      this._extras[key] = content;
+      this._extras.set(key, value);
     } else {
       // read
-      return this._extras[key] as T;
+      return this._extras.get(key);
     }
   }
 
   public get tsConfig(): TsConfig {
-    return this.extras('tsconfig');
+    return this.extras('tsConfig');
   }
 
   public set tsConfig(value: TsConfig) {
-    this.extras('tsconfig', value);
+    this.extras('tsConfig', value);
   }
 
   public get tsSources(): ts.TransformationResult<ts.SourceFile> {
@@ -72,7 +68,7 @@ export class Artefacts {
   }
 
   public templates(): string[] {
-    return Object.keys(this._extras)
+    return Array.from(this._extras.keys())
       .filter((key) => key.startsWith('template:'))
       .map((key) => key.substring('template:'.length));
   }
@@ -90,7 +86,7 @@ export class Artefacts {
   }
 
   public stylesheets(): string[] {
-    return Object.keys(this._extras)
+    return Array.from(this._extras.keys())
       .filter((key) => key.startsWith('stylesheet:'))
       .map((key) => key.substring('stylesheet:'.length));
   }

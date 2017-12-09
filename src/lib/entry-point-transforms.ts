@@ -16,45 +16,41 @@ import { remapSourceMap, relocateSourceMapSources } from './steps/sorcery';
 import { rollup } from './steps/rollup';
 import { downlevelWithTsc } from './steps/tsc';
 import { copySourceFilesToDestination } from './steps/transfer';
+import { BuildStep } from './domain/build-step';
 
 /**
  * Transforms TypeScript source files to Angular Package Format.
  *
  * @param entryPoint The entry point that will be transpiled to a set of artefacts.
  */
-export const transformSources =
-  async ({ entryPoint, pkg }: { entryPoint: NgEntryPoint, pkg: NgPackage }): Promise<void> => {
-
+export const transformSources: BuildStep =
+  async (args): Promise<void> => {
+    const { artefacts, entryPoint, pkg } = args;
     log.info(`Building from sources for entry point '${entryPoint.moduleId}'`);
-    const artefacts = new Artefacts(entryPoint, pkg);
 
     // 0. CLEAN BUILD DIRECTORY
     log.info('Cleaning build directory');
     await rimraf(artefacts.outDir);
     await rimraf(artefacts.stageDir);
 
-    // 0. TWO-PASS TSC TRANSFORMATION
-    artefacts.tsConfig = prepareTsConfig(entryPoint, artefacts);
+    // 1. TWO-PASS TSC TRANSFORMATION
+    prepareTsConfig(args);
 
     // First pass: collect templateUrl and styleUrls referencing source files.
     log.info('Extracting templateUrl and styleUrls');
-    const result = collectTemplateAndStylesheetFiles(artefacts.tsConfig, artefacts);
-    result.dispose();
+    collectTemplateAndStylesheetFiles(args);
 
     // Then, process assets keeping transformed contents in memory.
     log.info('Processing assets');
-    await processAssets(artefacts, pkg);
+    await processAssets(args);
 
     // Second pass: inline templateUrl and styleUrls
     log.info('Inlining templateUrl and styleUrls');
-    artefacts.tsSources = inlineTemplatesAndStyles(artefacts.tsConfig, artefacts);
+    inlineTemplatesAndStyles(args);
 
-    // 1. NGC
+    // 2. NGC
     log.info('Compiling with ngc');
     const tsOutput = await ngc(entryPoint, artefacts);
-    artefacts.tsSources.dispose();
-
-    // await remapSourceMap(tsOutput.js);
 
     // 3. FESM15: ROLLUP
     log.info('Bundling to FESM15');

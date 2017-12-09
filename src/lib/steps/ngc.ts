@@ -5,6 +5,7 @@ import * as ng from '@angular/compiler-cli';
 import { ParsedConfiguration } from '@angular/compiler-cli';
 import * as ts from 'typescript';
 import { Artefacts } from '../domain/build-artefacts';
+import { BuildStep } from '../domain/build-step';
 import { NgEntryPoint } from '../domain/ng-package-format';
 import * as log from '../util/log';
 // XX: internal in ngc's `main()`, a tsickle emit callback is passed to the tsc compiler
@@ -17,8 +18,8 @@ import { componentTransformer } from '../util/ts-transformers';
 export type TsConfig = ng.ParsedConfiguration;
 
 /** Prepares TypeScript Compiler and Angular Compiler option. */
-export const prepareTsConfig =
-  (entryPoint: NgEntryPoint, artefacts: Artefacts): TsConfig => {
+export const prepareTsConfig: BuildStep =
+  ({ artefacts, entryPoint, pkg }) => {
     const basePath = path.dirname(entryPoint.entryFilePath);
 
     // Read the default configuration and overwrite package-specific options
@@ -45,7 +46,7 @@ export const prepareTsConfig =
         break;
     }
 
-    return tsConfig;
+    artefacts.tsConfig = tsConfig;
   }
 
 /** Transforms TypeScript AST */
@@ -114,8 +115,10 @@ const compilerHostFromArtefacts =
   }
 
 /** Extracts templateUrl and styleUrls from `@Component({..})` decorators. */
-export const collectTemplateAndStylesheetFiles =
-  (tsConfig: TsConfig, artefacts: Artefacts): ts.TransformationResult<ts.SourceFile> => {
+export const collectTemplateAndStylesheetFiles: BuildStep =
+  ({ artefacts, entryPoint, pkg }) => {
+    const tsConfig = artefacts.tsConfig;
+
     const collector = componentTransformer({
       templateProcessor: (a, b, templateFilePath) => {
         artefacts.template(templateFilePath, null);
@@ -125,7 +128,7 @@ export const collectTemplateAndStylesheetFiles =
       }
     });
 
-    return transformSources(
+    artefacts.tsSources = transformSources(
       tsConfig,
       [ collector ]
     );
@@ -161,8 +164,9 @@ class SynthesizedSourceFile {
 }
 
 /** Transforms templateUrl and styleUrls in `@Component({..})` decorators. */
-export const inlineTemplatesAndStyles =
-  (tsConfig: TsConfig, artefacts: Artefacts): ts.TransformationResult<ts.SourceFile> => {
+export const inlineTemplatesAndStyles: BuildStep =
+  ({ artefacts, entryPoint, pkg }) => {
+    const tsConfig = artefacts.tsConfig;
     // inline contents from artefacts set (generated in a previous step)
     const transformer = componentTransformer({
       templateProcessor: (a, b, templateFilePath) => artefacts.template(templateFilePath) || '',
@@ -181,8 +185,8 @@ export const inlineTemplatesAndStyles =
       }
     });
 
-    return transformSources(
-      tsConfig,
+    artefacts.tsSources = ts.transform(
+      artefacts.tsSources.transformed,
       [ transformer ]
     );
   }
@@ -201,11 +205,6 @@ export async function ngc(entryPoint: NgEntryPoint, artefacts: Artefacts) {
   const ngCompilerHost = ng.createCompilerHost({
     options: tsConfig.options,
     tsHost: compilerHostFromArtefacts(artefacts)
-
-    /*{
-      options: artefacts.tsConfig.options,
-      transformation: artefacts.tsSources
-    })*/
   });
 
   // ng.Program
@@ -230,6 +229,8 @@ export async function ngc(entryPoint: NgEntryPoint, artefacts: Artefacts) {
     const outDir = tsConfig.options.outDir;
     const outFile = tsConfig.options.flatModuleOutFile;
     const extName = path.extname(outFile);
+
+    artefacts.tsSources.dispose();
 
     return Promise.resolve({
       js: path.resolve(outDir, outFile),
