@@ -14,7 +14,7 @@ export class AngularService {
   constructor(
     private http: Http,
     private httpClient: HttpClient
-  ) {}
+  ) { }
 
   public foo(): Observable<string> {
     return map.call(
@@ -27,4 +27,8 @@ export class AngularService {
     return this._subject.asObservable();
   }
 
+}
+
+@Injectable()
+export class AngularService4 extends AngularService {
 }
