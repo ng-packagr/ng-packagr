@@ -28,30 +28,41 @@ export type StylesheetProcessor = (sourceFile: string, styleUrl: string, styleFi
 export type TemplateProcessor = (sourceFile: string, templateUrl: string, templateFilePath: string) => string | undefined | void;
 
 export type ComponentTransformer =
-  ({}: {templateProcessor: TemplateProcessor, stylesheetProcessor: StylesheetProcessor}) => ts.TransformerFactory<ts.SourceFile>;
+  ({}: {
+    templateProcessor: TemplateProcessor,
+    stylesheetProcessor: StylesheetProcessor,
+    sourceFileWriter?: any
+  }) => ts.TransformerFactory<ts.SourceFile>;
 
 export const componentTransformer: ComponentTransformer =
-  ({ templateProcessor, stylesheetProcessor }) =>
+  ({ templateProcessor, stylesheetProcessor, sourceFileWriter }) =>
     (context: ts.TransformationContext) => (sourceFile: ts.SourceFile): ts.SourceFile => {
       // skip source files from 'node_modules' directory (third-party source)
       if (sourceFile.fileName.includes('node_modules')) {
         return sourceFile;
       }
+      const sourceFilePath = sourceFile.fileName;
 
       const visitComponents = (node: ts.Decorator): ts.Node => {
         if (isTemplateUrl(node)) {
           // XX: strip quotes (' or ") from path
           const templatePath = node.initializer.getText().substring(1, node.initializer.getText().length - 1);
-          const sourceFilePath = sourceFile.fileName;
           const templateFilePath = path.resolve(path.dirname(sourceFilePath), templatePath);
           const template = templateProcessor(sourceFilePath, templatePath, templateFilePath);
 
           if (typeof template === 'string') {
-            return ts.updatePropertyAssignment(
+            const synthesizedNode = ts.updatePropertyAssignment(
               node,
               ts.createIdentifier('template'),
               ts.createLiteral(template)
             );
+
+            if (sourceFileWriter) {
+              const synthesizedSourceText = 'template: `'.concat(template).concat('`');
+              sourceFileWriter(sourceFile, node, synthesizedSourceText);
+            }
+
+            return synthesizedNode;
           } else {
             return node;
           }
@@ -64,7 +75,6 @@ export const componentTransformer: ComponentTransformer =
             .map((url) => url.substring(1, url.length - 1));
 
           const stylesheets = styleUrls.map((url: string) => {
-            const sourceFilePath = sourceFile.fileName;
             const styleFilePath = path.resolve(path.dirname(sourceFilePath), url);
             const content = stylesheetProcessor(sourceFilePath, url, styleFilePath);
 
@@ -76,13 +86,22 @@ export const componentTransformer: ComponentTransformer =
           });
 
           if (hasChanged) {
-            return ts.updatePropertyAssignment(
+            const synthesizedNode = ts.updatePropertyAssignment(
               node,
               ts.createIdentifier('styles'),
               ts.createArrayLiteral(
                 stylesheets.map((value) => ts.createLiteral(value))
               )
-            )
+            );
+
+            if (sourceFileWriter) {
+              const synthesizedSourceText = 'styles: ['
+                .concat(stylesheets.map((value) => `\`${value}\``).join(', '))
+                .concat(']');
+              sourceFileWriter(sourceFile, node, synthesizedSourceText);
+            }
+
+            return synthesizedNode;
           } else {
             return node;
           }
