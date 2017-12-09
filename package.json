@@ -33,12 +33,10 @@
     "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
     "less": "^2.7.2",
-    "lodash": "^4.17.4",
     "node-sass": "^4.5.3",
     "node-sass-tilde-importer": "^1.0.0",
     "postcss": "^6.0.2",
     "postcss-url": "^7.3.0",
-    "read-file": "^0.2.0",
     "rimraf": "^2.6.1",
     "rollup": "^0.52.0",
     "rollup-plugin-commonjs": "^8.2.1",
@@ -50,11 +48,11 @@
   "peerDependencies": {
     "@angular/compiler": "^5.0.0",
     "@angular/compiler-cli": "^5.0.0",
-    "tsickle": "^0.24.1",
-    "typescript": "^2.4.2"
+    "tsickle": "^0.24.0",
+    "typescript": ">=2.4.2 <2.6"
   },
   "devDependencies": {
-    "@angular/cdk": "~5.0.0-rc.0",
+    "@angular/cdk": "~5.0.0",
     "@angular/common": "~5.1.0",
     "@angular/compiler": "~5.1.0",
     "@angular/compiler-cli": "~5.1.0",
@@ -70,7 +68,6 @@
     "@types/glob": "^5.0.33",
     "@types/jasmine": "^2.5.51",
     "@types/less": "^0.0.32",
-    "@types/lodash": "^4.14.77",
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.0",
     "@types/react": "^16.0.19",
@@ -90,8 +87,8 @@
     "sinon": "^4.0.0",
     "standard-version": "^4.0.0",
     "ts-node": "^3.0.4",
-    "tsickle": "^0.24.0",
-    "typescript": "~2.4.2",
+    "tsickle": "^0.25.5",
+    "typescript": "~2.5.1",
     "zone.js": "^0.8.10"
   },
   "private": true,
