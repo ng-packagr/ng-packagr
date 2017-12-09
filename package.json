@@ -48,19 +48,20 @@
     "uglify-js": "^3.0.7"
   },
   "peerDependencies": {
-    "@angular/compiler": "~5.0.0",
-    "@angular/compiler-cli": "~5.0.0",
-    "typescript": "~2.4.2"
+    "@angular/compiler": "^5.0.0",
+    "@angular/compiler-cli": "^5.0.0",
+    "tsickle": "^0.24.1",
+    "typescript": "^2.4.2"
   },
   "devDependencies": {
     "@angular/cdk": "~5.0.0-rc.0",
-    "@angular/common": "~5.0.0",
-    "@angular/compiler": "~5.0.0",
-    "@angular/compiler-cli": "~5.0.0",
-    "@angular/core": "~5.0.0",
-    "@angular/http": "~5.0.0",
-    "@angular/language-service": "~5.0.0",
-    "@angular/platform-browser": "~5.0.0",
+    "@angular/common": "~5.1.0",
+    "@angular/compiler": "~5.1.0",
+    "@angular/compiler-cli": "~5.1.0",
+    "@angular/core": "~5.1.0",
+    "@angular/http": "~5.1.0",
+    "@angular/language-service": "~5.1.0",
+    "@angular/platform-browser": "~5.1.0",
     "@commitlint/cli": "^5.0.0",
     "@commitlint/config-angular": "^5.0.0",
     "@types/chai": "^4.0.0",
@@ -89,6 +90,7 @@
     "sinon": "^4.0.0",
     "standard-version": "^4.0.0",
     "ts-node": "^3.0.4",
+    "tsickle": "^0.24.0",
     "typescript": "~2.4.2",
     "zone.js": "^0.8.10"
   },
@@ -103,7 +105,7 @@
     "postrelease": "node scripts/prepublish.js",
     "publish:ci": "yarn prerelease && yarn postrelease",
     "integration:samples": "integration/samples.sh",
-    "integration:samples:dev": "node integration/samples.js",
+    "integration:samples:dev": "./integration/samples.dev.js",
     "integration:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --require ts-node/register integration/samples/*/specs/**/*.ts",
     "integration:consumer": "integration/consumer.sh",
     "test": "yarn build && yarn integration:samples && yarn integration:specs && yarn integration:consumer",

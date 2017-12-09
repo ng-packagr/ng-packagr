@@ -14,14 +14,10 @@ describe(`@sample/core`, () => {
       expect(sourceMap).to.be.ok;
     });
 
-    it(`should have 'sources' property`, () => {
+    it(`should have 'sources' and 'sourcesContent' property`, () => {
       expect(sourceMap.sources).to.be.an('array').that.is.not.empty;
-      expect(sourceMap.sources).to.have.lengthOf(7);
-    });
-
-    it(`should have 'sourcesContent' property`, () => {
       expect(sourceMap.sourcesContent).to.be.an('array').that.is.not.empty;
-      expect(sourceMap.sourcesContent).to.have.lengthOf(7);
+      expect(sourceMap.sources).to.have.lengthOf(sourceMap.sourcesContent.length);
     });
 
     it(`should reference each 'sources' path with a common prefix`, () => {

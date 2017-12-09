@@ -5,21 +5,21 @@ module.exports = {
     'scope-enum': [2, 'always', []],
     'scope-empty': [2, 'always'],
     'type-enum': [
-			2,
-			'always',
-			[
-				'build',
-				'ci',
-				'docs',
-				'feat',
-				'fix',
-				'perf',
+      2,
+      'always',
+      [
+        'build',
+        'ci',
+        'docs',
+        'feat',
+        'fix',
+        'perf',
         'refactor',
         'release',
-				'revert',
-				'style',
-				'test'
-			]
-		]
+        'revert',
+        'style',
+        'test'
+      ]
+    ]
   }
 };

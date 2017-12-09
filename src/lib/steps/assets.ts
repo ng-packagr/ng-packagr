@@ -94,7 +94,7 @@ const processStylesheet =
 
       return Promise.resolve(result.css);
     } catch (err) {
-      return Promise.reject(new Error(`Cannot inline stylesheet ${path}`));
+      return Promise.reject(new Error(`Cannot inline stylesheet ${stylesheetFilePath}`));
     }
 
   }
