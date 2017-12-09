@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.6"></a>
+# [2.0.0-rc.6](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.5...v2.0.0-rc.6) (2017-12-09)
+
+Bug fixes for the previous release candidate.
+
+Contains a fix addressing typescript build errors due to synthesized nodes, see [#369](https://github.com/dherges/ng-packagr/issues/369).
+
+Peer Dependencies on ngc and tsc changed to caret version ranges:
+ - `"@angular/compiler: "^5.0.0"`
+ - `"typescript: "^2.4.2"`
+
+Make sure to use an [appropriate combination of Angular and TypeScript](https://blog.angular.io/angular-5-1-more-now-available-27d372f5eb4e)!
+
+
+### Bug Fixes
+
+* peer depend on angular >=5.0.0 <6.0.0, typescript >= 2.4.2 < 3.0.0 ([3674f0e](https://github.com/dherges/ng-packagr/commit/3674f0e))
+* register ngc emit callback for `tsickle`  processing ([#384](https://github.com/dherges/ng-packagr/issues/384)) ([15bd7c1](https://github.com/dherges/ng-packagr/commit/15bd7c1))
+* show proper path of failure on sass inline ([#380](https://github.com/dherges/ng-packagr/issues/380)) ([8c380aa](https://github.com/dherges/ng-packagr/commit/8c380aa))
+
+
+### Features
+
+* add option `cssUrl`, inline css `url:()` to `data:` URIs ([#345](https://github.com/dherges/ng-packagr/issues/345)) ([1c71f24](https://github.com/dherges/ng-packagr/commit/1c71f24)), closes [#263](https://github.com/dherges/ng-packagr/issues/263)
+
+
+
 <a name="2.0.0-rc.5"></a>
 # [2.0.0-rc.5](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.4...v2.0.0-rc.5) (2017-12-06)
 
