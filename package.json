@@ -37,7 +37,6 @@
     "node-sass-tilde-importer": "^1.0.0",
     "postcss": "^6.0.2",
     "postcss-url": "^7.3.0",
-    "read-file": "^0.2.0",
     "rimraf": "^2.6.1",
     "rollup": "^0.52.0",
     "rollup-plugin-commonjs": "^8.2.1",
@@ -49,12 +48,12 @@
   "peerDependencies": {
     "@angular/compiler": "^5.0.0",
     "@angular/compiler-cli": "^5.0.0",
-    "tsickle": "^0.24.1",
     "tslib": "^1.7.1",
-    "typescript": "^2.4.2"
+    "tsickle": "^0.24.0",
+    "typescript": ">=2.4.2 <2.6"
   },
   "devDependencies": {
-    "@angular/cdk": "~5.0.0-rc.0",
+    "@angular/cdk": "~5.0.0",
     "@angular/common": "~5.1.0",
     "@angular/compiler": "~5.1.0",
     "@angular/compiler-cli": "~5.1.0",
@@ -90,8 +89,8 @@
     "standard-version": "^4.0.0",
     "ts-node": "^3.0.4",
     "tslib": "^1.7.1",
-    "tsickle": "^0.24.0",
-    "typescript": "~2.4.2",
+    "tsickle": "^0.25.5",
+    "typescript": "~2.5.1",
     "zone.js": "^0.8.10"
   },
   "private": true,
