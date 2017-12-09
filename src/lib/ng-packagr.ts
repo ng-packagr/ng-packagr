@@ -5,6 +5,7 @@ import { copyFiles } from './util/copy';
 import { transformSources } from './entry-point-transforms';
 
 // Domain
+import { Artefacts } from './domain/build-artefacts';
 import { CliArguments } from './domain/cli-arguments';
 import { NgPackage } from './domain/ng-package-format';
 
@@ -23,12 +24,14 @@ export async function createNgPackage(opts: CliArguments): Promise<void> {
     // READ `NgPackage` from either 'package.json', 'ng-package.json', or 'ng-package.js'
     ngPackage = await discoverPackages(opts);
 
-    // clean the primar dest folder (should clean all secondary module directories as well)
+    // clean the primary dest folder (should clean all secondary module directories as well)
     await rimraf(ngPackage.dest);
 
-    await transformSources({ entryPoint: ngPackage.primary, pkg: ngPackage });
+    const artefacts = new Artefacts(ngPackage.primary, ngPackage);
+    await transformSources({ artefacts, entryPoint: ngPackage.primary, pkg: ngPackage });
     for (const secondary of ngPackage.secondaries) {
-      await transformSources({ entryPoint: secondary, pkg: ngPackage });
+      const artefacts = new Artefacts(secondary, ngPackage);
+      await transformSources({ artefacts, entryPoint: secondary, pkg: ngPackage });
     }
 
     await copyFiles(`${ngPackage.src}/README.md`, ngPackage.dest);
