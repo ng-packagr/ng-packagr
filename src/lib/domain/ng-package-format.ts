@@ -114,6 +114,10 @@ export class NgEntryPoint {
     return this.$get('lib.entryFile');
   }
 
+  public get cssUrl(): CssUrl {
+    return this.$get('lib.cssUrl');
+  }
+
   public get externals(): { [key: string]: string } {
     return this.$get('lib.externals');
   }
@@ -169,3 +173,8 @@ export class NgEntryPoint {
 export type SourceFilePath = string;
 
 export type DirectoryPath = string;
+
+export enum CssUrl {
+  inline = 'inline',
+  none = 'none'
+}

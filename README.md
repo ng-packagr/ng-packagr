@@ -70,6 +70,7 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
    - :elephant: Runs [less](http://lesscss.org/#getting-started) preprocessor
    - :snake: Runs [Stylus](http://stylus-lang.com) preprocessor, resolves relative paths relative to ng-package.json
    - :monkey: Adds vendor-specific prefixes w/ [autoprefixer](https://github.com/postcss/autoprefixer#autoprefixer-) and [browserslist](https://github.com/ai/browserslist#queries) &mdash; just tell your desired `.browserslistrc`
+   - :tiger: Embed assets data w/ [postcss-url](https://github.com/postcss/postcss-url#inline)
 
 
 ## Advanced Use Cases
@@ -163,6 +164,22 @@ For example, the following would use `index.ts` as the secondary entry point:
   "ngPackage": {
     "lib": {
       "entryFile": "index.ts"
+    }
+  }
+}
+```
+
+#### How to embed assets in CSS?
+
+You can embed assets such as font and images inside the outputted css. More information [in the CSS tricks website](https://css-tricks.com/data-uris)
+
+Valid values: `none` or `inline`.
+
+```json
+{
+  "ngPackage": {
+    "lib": {
+      "cssUrl": "inline"
     }
   }
 }

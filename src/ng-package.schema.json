@@ -47,6 +47,12 @@
           "type": "string",
           "enum": ["preserve", "react", "react-native", ""],
           "default": ""
+        },
+        "cssUrl": {
+          "description": "Embed assets in css file using data URIs - see https://css-tricks.com/data-uris",
+          "type": "string",
+          "enum": ["none", "inline"],
+          "default": "none"
         }
       }
     }

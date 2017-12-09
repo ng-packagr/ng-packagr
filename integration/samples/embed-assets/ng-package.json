@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../src/ng-package.schema.json",
+  "lib": {
+    "entryFile": "public_api.ts",
+    "cssUrl": "inline",
+    "externals": {
+      "rxjs/operator/map": "Rx.Observable.prototype"
+    }
+  }
+}
