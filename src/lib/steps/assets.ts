@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { readFile } from 'fs-extra';
 import { Artefacts } from '../domain/build-artefacts';
+import { BuildStep } from '../domain/build-step';
 import { NgPackage, CssUrl } from '../domain/ng-package-format';
 import * as log from '../util/log';
 
@@ -14,8 +15,8 @@ import * as less from 'less';
 import * as stylus from 'stylus';
 import * as postcssUrl from 'postcss-url';
 
-export const processAssets =
-  async (artefacts: Artefacts, pkg: NgPackage): Promise<Artefacts> => {
+export const processAssets: BuildStep =
+  async ({ artefacts, entryPoint, pkg }): Promise<Artefacts> => {
     // process templates
     const templates = await Promise.all(
       artefacts.templates()
@@ -30,13 +31,13 @@ export const processAssets =
       artefacts.template(template.name, template.content);
     });
 
-    // TODO: process stylesheets
+    // process stylesheets
     const stylesheets = await Promise.all(
       artefacts.stylesheets()
         .map(async (stylesheet) => {
           return {
             name: stylesheet,
-            content: await processStylesheet(stylesheet, pkg.src, artefacts.cssUrl)
+            content: await processStylesheet(stylesheet, pkg.src, entryPoint.cssUrl)
           };
         })
     );
@@ -77,8 +78,8 @@ const processStylesheet =
       log.debug(`postcss with autoprefixer for ${stylesheetFilePath}`);
       const postCssPlugins = [autoprefixer({ browsers })];
 
-      log.debug(`styles cssUrl ${cssUrl}`);
       if (cssUrl !== CssUrl.none) {
+        log.debug(`postcssUrl: ${cssUrl}`);
         postCssPlugins.push(postcssUrl({ url: cssUrl }));
       }
       const result: postcss.Result = await postcss(postCssPlugins)
