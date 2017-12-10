@@ -1,7 +1,7 @@
 version: 2
 defaults: &defaults
   docker:
-    - image: angular/ngcontainer:0.0.5
+    - image: angular/ngcontainer:latest
   working_directory: ~/repo
 
 jobs:
@@ -12,9 +12,14 @@ jobs:
       # Checkout, Download and cache dependencies
       - checkout
       - restore_cache:
-          key: v1-dependencies-{{ checksum "yarn.lock" }}
-      # Run the ci build
+          key: v2-dependencies-{{ checksum "yarn.lock" }}
+      # Install dependencies
       - run: yarn install --frozen-lockfile --non-interactive
+      - save_cache:
+          key: v2-dependencies-{{ checksum "yarn.lock" }}
+          paths:
+            - "node_modules"
+      # Run the ci build
       - run: yarn test
       # Store artefacts on circle
       - run:
@@ -32,10 +37,6 @@ jobs:
       - store_artifacts:
           path: ~/repo/dist
           destination: dist
-      - save_cache:
-          key: v1-dependencies-{{ checksum "yarn.lock" }}
-          paths:
-            - "node_modules"
       - deploy:
           name: Deploy Git tag to npm registry
           command: |
