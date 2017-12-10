@@ -4,7 +4,47 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "yarn samples:dev",
+      "name": "Mocha Tests",
+      "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+      "env": {
+        "TS_NODE_PROJECT": "src/tsconfig.specs.json"
+      },
+      "args": [
+        "--ui",
+        "tdd",
+        "--timeout",
+        "4000",
+        "--colors",
+        "--require",
+        "ts-node/register",
+        "${workspaceRoot}/src/**/*.spec.ts"
+      ],
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Mocha Integration Tests",
+      "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+      "env": {
+        "TS_NODE_PROJECT": "integration/tsconfig.specs.json"
+      },
+      "args": [
+        "--ui",
+        "tdd",
+        "--timeout",
+        "4000",
+        "--colors",
+        "--require",
+        "ts-node/register",
+        "${workspaceRoot}/integration/samples/*/specs/**.ts"
+      ],
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "samples (all)",
       "program": "${workspaceRoot}/integration/samples.dev.js"
     },
     {
