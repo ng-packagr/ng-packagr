@@ -1,7 +1,7 @@
 import * as  __rollup from 'rollup';
 import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as commonJs from 'rollup-plugin-commonjs';
-import { debug } from '../util/log';
+import * as log from '../util/log';
 import { ROLLUP_GLOBALS } from '../conf/rollup.globals';
 
 export interface RollupOptions {
@@ -39,7 +39,7 @@ export async function rollup(opts: RollupOptions): Promise<void> {
         return;
       }
 
-      console.warn(warning.message);
+      log.warn(warning.message);
     }
   };
 
@@ -54,7 +54,7 @@ export async function rollup(opts: RollupOptions): Promise<void> {
     sourcemap: true
   };
 
-  debug(`rollup ${opts.entry} to ${opts.dest} (${opts.format})`);
+  log.debug(`rollup ${opts.entry} to ${opts.dest} (${opts.format})`);
 
   const bundle: any = await __rollup.rollup(bundleOptions);
   await bundle.write(writeOptions);
