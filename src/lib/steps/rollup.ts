@@ -3,13 +3,16 @@ import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as commonJs from 'rollup-plugin-commonjs';
 import * as log from '../util/log';
 import { ROLLUP_GLOBALS } from '../conf/rollup.globals';
+const ROLLUP_VERSION = (__rollup as any).VERSION;
+
+export type BundleFormat = __rollup.Format;
 
 export interface RollupOptions {
   moduleName: string,
   entry: string,
-  format: string,
+  format: BundleFormat,
   dest: string,
-  externals: Object,
+  externals: {[key: string]: string},
 }
 
 /**
@@ -18,6 +21,7 @@ export interface RollupOptions {
  * @param opts
  */
 export async function rollup(opts: RollupOptions): Promise<void> {
+  log.debug(`rollup (v${ROLLUP_VERSION}) ${opts.entry} to ${opts.dest} (${opts.format})`);
 
   const globals = {
     // default externals for '@angular/*' and 'rxjs'
@@ -27,7 +31,8 @@ export async function rollup(opts: RollupOptions): Promise<void> {
   };
   const globalsKeys = Object.keys(globals);
 
-  let bundleOptions: __rollup.Options = {
+  // Create the bundle
+  const bundle: __rollup.Bundle = await __rollup.rollup({
     context: 'this',
     external: (moduleId) => { // XX: was before `external: Object.keys(globals)`,
       return globalsKeys.some((global) => global === moduleId);
@@ -44,9 +49,10 @@ export async function rollup(opts: RollupOptions): Promise<void> {
 
       log.warn(warning.message);
     }
-  };
+  });
 
-  const writeOptions = {
+  // Output the bundle to disk
+  await bundle.write({
     // Keep the moduleId empty because we don't want to force developers to a specific moduleId.
     moduleId: '',
     name: `${opts.moduleName}`,
@@ -55,10 +61,5 @@ export async function rollup(opts: RollupOptions): Promise<void> {
     banner: '',
     globals: globals,
     sourcemap: true
-  };
-
-  log.debug(`rollup ${opts.entry} to ${opts.dest} (${opts.format})`);
-
-  const bundle: any = await __rollup.rollup(bundleOptions);
-  await bundle.write(writeOptions);
+  });
 }
