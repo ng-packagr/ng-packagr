@@ -57,6 +57,13 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "sample: externals",
+      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "args": [ "externals" ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "sample: material",
       "program": "${workspaceRoot}/integration/samples.dev.js",
       "args": [ "material" ]

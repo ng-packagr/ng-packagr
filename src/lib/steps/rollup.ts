@@ -1,6 +1,7 @@
 import * as  __rollup from 'rollup';
 import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as commonJs from 'rollup-plugin-commonjs';
+import * as path from 'path';
 import * as log from '../util/log';
 import { ROLLUP_GLOBALS } from '../conf/rollup.globals';
 const ROLLUP_VERSION = (__rollup as any).VERSION;
@@ -34,8 +35,25 @@ export async function rollup(opts: RollupOptions): Promise<void> {
   // Create the bundle
   const bundle: __rollup.Bundle = await __rollup.rollup({
     context: 'this',
-    external: (moduleId) => { // XX: was before `external: Object.keys(globals)`,
-      return globalsKeys.some((global) => global === moduleId);
+    external: (moduleId) => {
+      const isExplicitExternal = globalsKeys.some((global) => global === moduleId);
+      if (isExplicitExternal === true) {
+        return true;
+      }
+
+      // Determine from the path
+      if (moduleId.startsWith('/')) {
+        const moduleIdPath = path.parse(moduleId);
+        const entryPath = path.parse(opts.entry);
+
+        // `moduleId` is a file in the sub-tree of `opts.entry` -> inline to bundle
+        if (moduleIdPath.dir.startsWith(entryPath.dir)) {
+          return false;
+        }
+      }
+
+      // XX: by default, the referenced module is inlined
+      return false;
     },
     input: opts.entry,
     plugins: [
