@@ -28,8 +28,11 @@ yarn build:prod:aot
 popd
 
 
-
-# node_modules/.bin/tsc -p integration/consumer-tsc/tsconfig.json --target es2015 --module es2015
-# node_modules/.bin/tsc -p integration/consumer-tsc/tsconfig.json --target es5 --module es2015
-# node_modules/.bin/tsc -p integration/consumer-tsc/tsconfig.json --target es5 --module umd
-# node_modules/.bin/tsc -p integration/consumer-tsc/tsconfig.json --target es5 --module commonjs
+# Plain typescript consumer
+pushd consumers/tsc
+../../../node_modules/.bin/tsc -p tsconfig.json
+# node_modules/.bin/tsc -p tsconfig.json --target es2015 --module es2015
+# node_modules/.bin/tsc -p tsconfig.json --target es5 --module es2015
+# node_modules/.bin/tsc -p tsconfig.json --target es5 --module umd
+# node_modules/.bin/tsc -p tsconfig.json --target es5 --module commonjs
+popd

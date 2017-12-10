@@ -17,11 +17,18 @@ jobs:
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn test
       # Store artefacts on circle
-      - run: mkdir -p /tmp/samples
-      - run: cp -r --parents integration/samples/**/dist /tmp/samples
+      - run:
+        name: Collect artefacts
+        command: |
+          mkdir -p /tmp/samples && mkdir -p /tmp/consumers \
+            && cp -r --parents integration/samples/**/dist /tmp/samples \
+            && cp -r --parents integration/consumers/**/dist /tmp/consumers
       - store_artifacts:
           path: /tmp/samples/integration/samples
           destination: samples
+      - store_artifacts:
+          path: /tmp/samples/integration/consumers
+          destination: consumers
       - store_artifacts:
           path: ~/repo/dist
           destination: dist
