@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const copyfiles = require('copyfiles');
 
 const copy = (paths, opts) => {
@@ -13,10 +14,6 @@ const copy = (paths, opts) => {
     });
   });
 };
-
-// copyfiles 'cli/*' dist
-// copyfiles -f 'lib/ng-package.schema.json' dist
-// copyfiles 'lib/conf/**/*.json' dist",
 
 copy(['src/cli/*', 'dist'], {up: 1})
   .then(() => copy(['src/**.schema.json', 'dist'], {up: 1}))

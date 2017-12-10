@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const cpx = require('cpx');
 const fs = require('fs');
 
