@@ -18,11 +18,11 @@ jobs:
       - run: yarn test
       # Store artefacts on circle
       - run:
-        name: Collect artefacts
-        command: |
-          mkdir -p /tmp/samples && mkdir -p /tmp/consumers \
-            && cp -r --parents integration/samples/**/dist /tmp/samples \
-            && cp -r --parents integration/consumers/**/dist /tmp/consumers
+          name: Collect artefacts
+          command: |
+            mkdir -p /tmp/samples && mkdir -p /tmp/consumers \
+              && cp -r --parents integration/samples/**/dist /tmp/samples \
+              && cp -r --parents integration/consumers/**/dist /tmp/consumers
       - store_artifacts:
           path: /tmp/samples/integration/samples
           destination: samples
