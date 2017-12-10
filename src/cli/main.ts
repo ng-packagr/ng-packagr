@@ -2,8 +2,8 @@
 
 import * as program from 'commander';
 import * as path from 'path';
-import { CliArguments } from '../lib/domain/cli-arguments'
 import { createNgPackage } from '../lib/ng-packagr';
+import { printVersionInfo } from '../lib/version-info';
 
 const DEFAULT_PROJECT_PATH = path.resolve(process.cwd(), 'ng-package.json');
 
@@ -14,13 +14,21 @@ function parseProjectPath(parsed: string): string {
 program
   .name('ng-packagr')
   .option(
-    '-p, --project <path>',
+    '-V, --version',
+    'Prints version info')
+  .option(
+    '-p, --project [path]',
     'Path to the \'ng-package.json\' or \'package.json\' file.',
     parseProjectPath,
     DEFAULT_PROJECT_PATH)
-  .parse(process.argv);
 
-const cliArguments: any = program;
+program.on('option:version', () => {
+  printVersionInfo();
+  process.exit(0);
+});
 
-createNgPackage(cliArguments as CliArguments)
+program
+  .parse(process.argv)
+
+createNgPackage({ project: program.opts().project })
   .catch((err) => process.exit(111));
