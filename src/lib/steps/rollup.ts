@@ -25,10 +25,13 @@ export async function rollup(opts: RollupOptions): Promise<void> {
     // external symbols passed from the user's ng-package.json
     ...opts.externals,
   };
+  const globalsKeys = Object.keys(globals);
 
-  let bundleOptions = {
+  let bundleOptions: __rollup.Options = {
     context: 'this',
-    external: Object.keys(globals),
+    external: (moduleId) => { // XX: was before `external: Object.keys(globals)`,
+      return globalsKeys.some((global) => global === moduleId);
+    },
     input: opts.entry,
     plugins: [
       nodeResolve({ jsnext: true, module: true }),
