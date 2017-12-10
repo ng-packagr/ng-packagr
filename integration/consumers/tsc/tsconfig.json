@@ -1,22 +1,29 @@
 {
   "buildOnSave": false,
   "compileOnSave": false,
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true
+  },
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
+    "target": "es2015",
+    "module": "es2015",
     "moduleResolution": "node",
     "outDir": "dist",
-    "baseUrl": "",
+    "rootDir": "src",
+    "baseUrl": "src",
     "lib": [
       "es2015",
       "dom"
     ],
     "experimentalDecorators": true,
     "paths": {
-      "sample-custom": [ "../sample_custom/dist" ]
-    }
+      "sample-custom": [ "../../../samples/custom/dist" ]
+    },
+    "types": [
+      "jasmine"
+    ]
   },
   "files": [
-    "consumer.ts"
+    "src/main.ts"
   ]
 }
