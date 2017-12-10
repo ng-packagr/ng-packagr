@@ -16,7 +16,7 @@ if (process.argv[2]) {
 
 // @see https://github.com/TypeStrong/ts-node#programmatic-usage
 require('ts-node').register({
-  project: path.join(__dirname, '..', 'tsconfig.packagr.json')
+  project: path.join(__dirname, '..', 'src', 'tsconfig.packagr.json')
 });
 
 const ngPackagr = require('../src/lib/ng-packagr');
