@@ -1,0 +1,27 @@
+{
+  "buildOnSave": false,
+  "compileOnSave": false,
+  "compilerOptions": {
+    "target": "es5",
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "es2015",
+      "es2016"
+    ],
+    "types": [
+      "chai",
+      "mocha",
+      "node",
+      "sinon"
+    ]
+  },
+  "include": [
+    "**/specs/*.ts"
+  ],
+  "exclude": [
+    ".ng_build",
+    ".ng_pkgr_build",
+    ".ng_pkg_build"
+  ]
+}
