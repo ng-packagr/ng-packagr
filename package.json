@@ -94,7 +94,7 @@
   "private": true,
   "scripts": {
     "prebuild": "rimraf dist && yarn schema",
-    "build": "tsc -p tsconfig.packagr.json",
+    "build": "tsc -p src/tsconfig.packagr.json",
     "postbuild": "node scripts/postbuild.js",
     "schema": "json2ts --input src/ng-package.schema.json --output src/ng-package.schema.ts",
     "prerelease": "yarn build",
