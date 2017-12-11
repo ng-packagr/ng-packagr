@@ -118,10 +118,13 @@ export class NgEntryPoint {
     return this.$get('lib.cssUrl');
   }
 
-  public get externals(): { [key: string]: string } {
-    return this.$get('lib.externals');
+  public get umdModuleIds(): { [key: string]: string } {
+    return this.$get('lib.umdModuleIds');
   }
 
+  public get embedded(): string[] {
+    return this.$get('lib.embedded');
+  }
   public get jsxConfig(): string {
     return this.$get('lib.jsx');
   }

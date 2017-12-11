@@ -199,6 +199,38 @@ Valid values: `none` or `inline`.
 }
 ```
 
+#### Externals and embedded Dependencies
+By default all dependencies are treated as externals and thus are not embedded in the final bundle. 
+
+However, If you want to embed one or more of them into the final bundle you can do so by adding the library in the `embeeded` section like so;
+
+```json
+{
+  "$schema": "../../../src/ng-package.schema.json",
+  "lib": {
+    "embedded": [
+      "lodash",
+      "date-fns"
+    ]
+  }
+}
+```
+
+While `rollup` will do it's best to guess the name of an external library some modules are hard to guess and it's 
+recommended to provide the name of the external dependency. This can be done by using `umdModuleIds` in the config section like so;
+
+```json
+{
+  "$schema": "../../../src/ng-package.schema.json",
+  "lib": {
+    "umdModuleIds": {
+      "lodash" : "_",
+      "date-fns" : "DateFns",
+    }
+  }
+}
+```
+
 #### React loves Angular, Angular loves React
 
 What if I want to use React Components in Angular?
@@ -211,7 +243,7 @@ construct them, you can set the `jsx` flag for your library through `ng-package.
   "$schema": "../../../src/ng-package.schema.json",
   "lib": {
     "entryFile": "public_api.ts",
-    "externals": {
+    "umdModuleIds": {
       "react": "React",
       "react-dom": "ReactDOM"
     },
@@ -222,7 +254,7 @@ construct them, you can set the `jsx` flag for your library through `ng-package.
 
 The `jsx` flag will accept what the corresponding `tsconfig` accepts, more information [in the TypeScript Handbook chaper on JSX](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
-Note: Don't forget to include `react` and `react-dom` in your `externals` so that you're not bundling those dependencies!
+Note: Don't forget to include `react` and `react-dom` in your `umdModuleIds` so that you're not bundling those dependencies!
 
 
 ## Further documentation
