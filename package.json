@@ -97,11 +97,11 @@
   "scripts": {
     "prebuild": "rimraf dist && yarn schema",
     "build": "tsc -p src/tsconfig.packagr.json",
-    "postbuild": "./scripts/postbuild.js",
+    "postbuild": "node ./scripts/postbuild.js",
     "schema": "json2ts --input src/ng-package.schema.json --output src/ng-package.schema.ts",
     "prerelease": "yarn build",
     "release": "standard-version --message 'release: cut v%s'",
-    "postrelease": "./scripts/prepublish.js",
+    "postrelease": "node ./scripts/prepublish.js",
     "publish:ci": "yarn prerelease && yarn postrelease",
     "integration:samples": "integration/samples.sh",
     "integration:samples:dev": "./integration/samples.dev.js",
