@@ -107,6 +107,7 @@
     "integration:samples:dev": "./integration/samples.dev.js",
     "integration:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --require ts-node/register integration/samples/*/specs/**/*.ts",
     "integration:consumer": "integration/consumer.sh",
+    "integration:consumer:ngc": "ngc -p integration/consumers/tsc/tsconfig.json",
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json mocha --require ts-node/register src/**/*.spec.ts",
     "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:consumer",
     "commitmsg": "commitlint -e",
