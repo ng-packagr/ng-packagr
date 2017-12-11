@@ -85,9 +85,25 @@ What about [ng-packagr alongside Nx Workspace](https://github.com/dherges/nx-pac
 
 #### Configuration Locations
 
-Configuration is picked up from the cli `-p` parameter, then from `package.json`, then from `ng-package.json` and lastly from `ng-package.js`.
+Configuration is picked up from the project file given by the `-p` CLI option.
+The `-p `option may refer to a `package.json` (with custom `ngPackage` property), an `ng-package.json`, or an `ng-package.js` file.
+When the `-p` option refers to a directory, the configuration is picked up from the first matching source;
+locations are tried in the above-mentioned order.
 
-To configure with a `ng-package.json` or `ng-package.js`, put the `package.json` of the library in the same folder next to the `ng-package.json` or `ng-package.js`.
+To configure with a `package.json`, put the configuration in the `ngPackage` custom property:
+
+```json
+{
+  "$schema": "./node_modules/ng-packagr/package.schema.json",
+  "ngPackage": {
+    "lib": {
+      "entryFile": "public_api.ts"
+    }
+  }
+}
+```
+
+To configure with a `ng-package.json` or `ng-package.js`, keep the library's `package.json` in the same folder next to `ng-package.json` or `ng-package.js`.
 
 Example of `ng-package.json`:
 
@@ -108,19 +124,6 @@ module.exports = {
     entryFile: 'public_api.ts'
   }
 };
-```
-
-To configure with a `package.json`, put the configuration in the `ngPackage` custom property:
-
-```json
-{
-  "$schema": "./node_modules/ng-packagr/package.schema.json",
-  "ngPackage": {
-    "lib": {
-      "entryFile": "public_api.ts"
-    }
-  }
-}
 ```
 
 Note: referencing the `$schema` enables JSON editing support (auto-completion for configuration) in IDEs like [VSCode](https://github.com/Microsoft/vscode).
