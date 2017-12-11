@@ -136,7 +136,7 @@ my_package
 ├── public_api.ts
 ├── ng-package.json
 ├── package.json
-├── testing
+└── testing
     ├── src
     |   └── *.ts
     ├── public_api.ts
