@@ -6,6 +6,7 @@ import * as log from '../util/log';
 import { ensureUnixPath } from '../util/path';
 import { NgPackageConfig } from '../../ng-package.schema';
 import { NgPackage, NgEntryPoint } from '../domain/ng-package-format';
+import { debug } from '../util/log';
 
 /** Creates a SchemaClass for `NgPackageConfig` */
 const NgPackageSchemaClass =
@@ -33,73 +34,48 @@ interface UserPackage {
  */
 const resolvePackageConf =
   async (folderPathOrFilePath: string): Promise<UserPackage> => {
-
     const pathStats = await lstat(folderPathOrFilePath);
-    if (pathStats.isDirectory()) {
-      const basePath = path.isAbsolute(folderPathOrFilePath) ? folderPathOrFilePath : path.resolve(folderPathOrFilePath);
-      const packageJson = await readJson(path.resolve(folderPathOrFilePath, 'package.json'));
+    const fullPath = path.isAbsolute(folderPathOrFilePath) ? folderPathOrFilePath : path.resolve(folderPathOrFilePath);
+    const basePath = pathStats.isDirectory() ? fullPath : path.dirname(fullPath);
 
-      if (packageJson['ngPackage']) {
-        log.debug(`Found package file ${folderPathOrFilePath}`);
+    const packageJson = await readJson(path.join(basePath, 'package.json'));
+    const packageConfPathJson = path.join(basePath, 'ng-package.json');
+    const packageConfPathJs = path.join(basePath, 'ng-package.js');
 
-        return {
-          packageJson: packageJson,
-          ngPackageJson: Object.assign({}, packageJson['ngPackage']),
-          basePath
-        };
-      } else if (await fileExists(path.resolve(basePath, 'ng-package.json'))) {
+    let packageConf: UserPackage | undefined = {
+      basePath,
+      packageJson,
+      ngPackageJson: {}
+    };
 
-        return {
-          packageJson: packageJson,
-          ngPackageJson: await readJson(path.resolve(basePath, 'ng-package.json')),
-          basePath
-        };
-      } else if ((await fileExists(path.resolve(basePath, 'ng-package.js')))) {
+    if (packageJson['ngPackage']) {
+      packageConf.ngPackageJson = { ...packageJson['ngPackage'] }
+    } else if (await fileExists(packageConfPathJson)) {
+      packageConf.ngPackageJson = await readJson(packageConfPathJson);
+    } else if ((await fileExists(packageConfPathJs))) {
+      packageConf.ngPackageJson = await import(packageConfPathJs);
+    } else {
+      packageConf = undefined;
+    }
 
-        // TODO: enable this, see #278
-        if (4 == 4) {
-          throw new Error(`Reading 'ngPackage' from a .js file is not yet implemented.`);
-        }
+    if (packageConf || pathStats.isDirectory()) {
+      // return even if it's undefined and use defaults when it's not a file
+      return packageConf;
+    }
+
+    if (pathStats.isFile()) {
+      // a project file was specified but was in valid
+      if (path.basename(folderPathOrFilePath) === "package.json") {
+        throw new Error(`Cannot read a package from 'package.json' without 'ngPackage' property.`);
       }
 
-    } else if (pathStats.isFile()) {
-
-      const fileName = path.basename(folderPathOrFilePath);
-      const folderPath = path.dirname(folderPathOrFilePath);
-      if (fileName=== 'ng-package.json') {
-
-        return {
-          packageJson: await readJson(path.resolve(folderPath, 'package.json')),
-          ngPackageJson: await readJson(folderPathOrFilePath),
-          basePath: folderPath
-        };
-      } else if (fileName === 'package.json') {
-        const packageJson = await readJson(folderPathOrFilePath);
-        if (!packageJson['ngPackage']) {
-          throw new Error(`Cannot read a package from 'package.json' without 'ngPackage' property.`);
-        }
-
-        return {
-          packageJson: packageJson,
-          ngPackageJson: Object.assign({}, packageJson['ngPackage']),
-          basePath: folderPath
-        };
-      } else if (path.extname(folderPathOrFilePath) === '.js') {
-
-        // TODO: enable this, see #278
-        if (4 == 4) {
-          throw new Error(`Reading 'ngPackage' from a .js file is not yet implemented.`);
-        }
-
-      } else {
-        throw new Error(`Trying to read a package from unsupported file extension. Path=${folderPathOrFilePath}`);
-      }
-
+      throw new Error(`Trying to read a package from unsupported file extension. Path=${folderPathOrFilePath}`);
     }
 
     throw new Error(`Cannot discover package sources at ${folderPathOrFilePath}`);
   }
 
+   
 /** Reads a primary entry point from it's package file. */
 const primaryEntryPoint =
   ({ packageJson, ngPackageJson, basePath }: UserPackage): NgEntryPoint =>
@@ -125,12 +101,12 @@ const findSecondaryPackagesPaths =
       '.ng_build',
       '.ng_pkg_build',
     ]
-    .map((directoryName) => `**/${directoryName}/**/package.json`)
-    .concat([
-      path.resolve(directoryPath, 'package.json'),
-      path.resolve(directoryPath, 'ng-package.json'),
-      path.resolve(directoryPath, excludeFolder) + '/**/package.json'
-    ]);
+      .map((directoryName) => `**/${directoryName}/**/package.json`)
+      .concat([
+        path.resolve(directoryPath, 'package.json'),
+        path.resolve(directoryPath, 'ng-package.json'),
+        path.resolve(directoryPath, excludeFolder) + '/**/package.json'
+      ]);
 
     return new Promise<string[]>((resolve, reject) => {
       glob(`${directoryPath}/**/*package.json`,
@@ -144,11 +120,11 @@ const findSecondaryPackagesPaths =
         }
       );
     })
-    .then((filePaths) => Promise.all(
-      filePaths
-        .map((filePath) => path.dirname(filePath))
-        .filter((value, index, array) => array.indexOf(value) === index)
-    ));
+      .then((filePaths) => Promise.all(
+        filePaths
+          .map((filePath) => path.dirname(filePath))
+          .filter((value, index, array) => array.indexOf(value) === index)
+      ));
   }
 
 /**
@@ -158,7 +134,7 @@ const findSecondaryPackagesPaths =
  * @param primary The primary entry point.
  */
 const secondaryEntryPoint =
-  (primaryDirectoryPath: string, primary: NgEntryPoint, { packageJson, ngPackageJson, basePath}: UserPackage) : NgEntryPoint => {
+  (primaryDirectoryPath: string, primary: NgEntryPoint, { packageJson, ngPackageJson, basePath }: UserPackage): NgEntryPoint => {
 
     if (basePath === primaryDirectoryPath) {
       log.error(`Cannot read secondary entry point. It's already a primary entry point. path=${basePath}`);
