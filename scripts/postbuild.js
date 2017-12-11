@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 const copyfiles = require('copyfiles');
 
 const copy = (paths, opts) => {
