@@ -2,7 +2,12 @@
   "buildOnSave": false,
   "compileOnSave": false,
   "angularCompilerOptions": {
-    "annotateForClosureCompiler": true
+    "annotateForClosureCompiler": false,
+    "fullTemplateTypeCheck": true,
+    "generateCodeForLibraries": true,
+    "skipTemplateCodegen": false,
+    "strictMetadataEmit": true,
+    "trace": true
   },
   "compilerOptions": {
     "target": "es2015",
@@ -17,7 +22,10 @@
     ],
     "experimentalDecorators": true,
     "paths": {
-      "sample-custom": [ "../../../samples/custom/dist" ]
+      "@sample/core": [ "../../../samples/core/dist" ],
+      "sample-custom": [ "../../../samples/custom/dist" ],
+      "@sample/jsx": [ "../../../samples/jsx/dist" ],
+      "@sample/material": [ "../../../samples/material/dist" ]
     },
     "types": [
       "jasmine"
