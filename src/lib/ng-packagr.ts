@@ -37,6 +37,8 @@ export async function createNgPackage(opts: CliArguments): Promise<void> {
     await copyFiles(`${ngPackage.src}/README.md`, ngPackage.dest);
     await copyFiles(`${ngPackage.src}/LICENSE`, ngPackage.dest);
 
+    // clean the working directory for a successful build only
+    await rimraf(ngPackage.workingDirectory);
     log.success(`Built Angular Package!
  - from: ${ngPackage.src}
  - to:   ${ngPackage.dest}
@@ -47,7 +49,7 @@ export async function createNgPackage(opts: CliArguments): Promise<void> {
     throw error;
   } finally {
     if (ngPackage) {
-      await rimraf(ngPackage.workingDirectory);
+      log.info(`Build failed. The working directory was not pruned. Files are stored at {ngPackage.workingDirectory}.`);
     }
   }
 }
