@@ -27,29 +27,32 @@ interface UserPackage {
 }
 
 /**
- * Resolves a package conf by testing for 'package.json', 'ng-package.json', or 'ng-package.js'.
+ * Resolves a user's package by testing for 'package.json', 'ng-package.json', or 'ng-package.js'.
  *
  * @param folderPathOrFilePath A path pointing either to a file or a directory
- * @return The user's package conf
+ * @return The user's package
  */
-const resolvePackageConf =
+const resolveUserPackage =
   async (folderPathOrFilePath: string): Promise<UserPackage | undefined> => {
     const pathStats = await lstat(folderPathOrFilePath);
     const fullPath = path.isAbsolute(folderPathOrFilePath) ? folderPathOrFilePath : path.resolve(folderPathOrFilePath);
     const basePath = pathStats.isDirectory() ? fullPath : path.dirname(fullPath);
 
     const packageJson = await readJson(path.join(basePath, 'package.json'));
-    const packageConfPathJson = path.join(basePath, 'ng-package.json');
-    const packageConfPathJs = path.join(basePath, 'ng-package.js');
+    const ngPackageJsonPath = path.join(basePath, 'ng-package.json');
+    const ngPackageJsPath = path.join(basePath, 'ng-package.js');
 
     let ngPackageJson: undefined | object;
 
     if (packageJson['ngPackage']) {
+      // Read `ngPackage` from `package.json`
       ngPackageJson = { ...packageJson['ngPackage'] }
-    } else if (await fileExists(packageConfPathJson)) {
-      ngPackageJson = await readJson(packageConfPathJson);
-    } else if ((await fileExists(packageConfPathJs))) {
-      ngPackageJson = await import(packageConfPathJs);
+    } else if (await fileExists(ngPackageJsonPath)) {
+      // Read 'ng-package.json' file
+      ngPackageJson = await readJson(ngPackageJsonPath);
+    } else if ((await fileExists(ngPackageJsPath))) {
+      // Dynamic `require('<path>') the given file
+      ngPackageJson = await import(ngPackageJsPath);
     }
 
     if (ngPackageJson) {
@@ -161,13 +164,13 @@ export const discoverPackages =
   async ({ project }: { project: string }): Promise<NgPackage> => {
     project = path.isAbsolute(project) ? project : path.resolve(project);
 
-    const primaryPackage = await resolvePackageConf(project);
+    const primaryPackage = await resolveUserPackage(project);
     const primary = primaryEntryPoint(primaryPackage);
     log.debug(`Found primary entry point: ${primary.moduleId}`);
 
     const secondaries = await (findSecondaryPackagesPaths(primaryPackage.basePath, primary.$get('dest'))
       .then((folderPaths) => Promise.all(folderPaths
-        .map((folderPath) => resolvePackageConf(folderPath)
+        .map((folderPath) => resolveUserPackage(folderPath)
           .catch(() => {
             log.warn(`Cannot read secondary entry point at ${folderPath}. Skipping.`);
 
