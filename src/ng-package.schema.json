@@ -23,6 +23,11 @@
       "type": "string",
       "default": ".ng_pkg_build"
     },
+    "paths": {
+      "description": "Path to sub-libraries.",
+      "type": "object",
+      "additionalProperties": true
+    },
     "lib": {
       "description": "Description of the library that is being built.",
       "type": "object",

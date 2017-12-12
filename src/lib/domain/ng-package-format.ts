@@ -110,6 +110,14 @@ export class NgEntryPoint {
     return this.$schema.$$get(key);
   }
 
+  public get src(): SourceFilePath {
+    return this.$get('src');
+  }
+
+  public get paths(): any {
+    return this.$get('paths');
+  }
+
   public get entryFile(): SourceFilePath {
     return this.$get('lib.entryFile');
   }
