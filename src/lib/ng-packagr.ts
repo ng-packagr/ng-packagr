@@ -46,10 +46,10 @@ export async function createNgPackage(opts: CliArguments): Promise<void> {
   } catch (error) {
     // Report error messages and throw the error further up
     log.error(error);
-    throw error;
-  } finally {
     if (ngPackage) {
       log.info(`Build failed. The working directory was not pruned. Files are stored at {ngPackage.workingDirectory}.`);
     }
+
+    throw error;
   }
 }
