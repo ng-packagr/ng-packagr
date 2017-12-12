@@ -11,14 +11,14 @@ Contains a fix addressing typescript build errors due to synthesized nodes, see 
 
 Peer Dependencies on ngc and tsc changed to caret version ranges:
  - `"@angular/compiler: "^5.0.0"`
- - `"typescript: "^2.4.2"`
+ - `"typescript: ">= 2.4.2 < 2.6`
 
 Make sure to use an [appropriate combination of Angular and TypeScript](https://blog.angular.io/angular-5-1-more-now-available-27d372f5eb4e)!
 
 
 ### Bug Fixes
 
-* peer depend on angular >=5.0.0 <6.0.0, typescript >= 2.4.2 < 3.0.0 ([3674f0e](https://github.com/dherges/ng-packagr/commit/3674f0e))
+* peer depend on angular >=5.0.0 <6.0.0, typescript >= 2.4.2 < 2.6 ([3674f0e](https://github.com/dherges/ng-packagr/commit/3674f0e))
 * register ngc emit callback for `tsickle`  processing ([#384](https://github.com/dherges/ng-packagr/issues/384)) ([15bd7c1](https://github.com/dherges/ng-packagr/commit/15bd7c1))
 * show proper path of failure on sass inline ([#380](https://github.com/dherges/ng-packagr/issues/380)) ([8c380aa](https://github.com/dherges/ng-packagr/commit/8c380aa))
 
