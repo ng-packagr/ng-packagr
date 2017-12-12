@@ -77,7 +77,6 @@ const resolvePackageConf =
     throw new Error(`Cannot discover package sources at ${folderPathOrFilePath}`);
   }
 
-
 /** Reads a primary entry point from it's package file. */
 const primaryEntryPoint =
   ({ packageJson, ngPackageJson, basePath }: UserPackage): NgEntryPoint =>
