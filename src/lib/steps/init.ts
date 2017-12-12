@@ -21,8 +21,8 @@ const fileExists =
     await pathExists(pathLike) && (await lstat(pathLike)).isFile();
 
 interface UserPackage {
-  packageJson: any,
-  ngPackageJson: any,
+  packageJson: object,
+  ngPackageJson: object,
   basePath: string
 }
 
@@ -33,7 +33,7 @@ interface UserPackage {
  * @return The user's package conf
  */
 const resolvePackageConf =
-  async (folderPathOrFilePath: string): Promise<UserPackage> => {
+  async (folderPathOrFilePath: string): Promise<UserPackage | undefined> => {
     const pathStats = await lstat(folderPathOrFilePath);
     const fullPath = path.isAbsolute(folderPathOrFilePath) ? folderPathOrFilePath : path.resolve(folderPathOrFilePath);
     const basePath = pathStats.isDirectory() ? fullPath : path.dirname(fullPath);
@@ -42,25 +42,27 @@ const resolvePackageConf =
     const packageConfPathJson = path.join(basePath, 'ng-package.json');
     const packageConfPathJs = path.join(basePath, 'ng-package.js');
 
-    let packageConf: UserPackage | undefined = {
-      basePath,
-      packageJson,
-      ngPackageJson: {}
-    };
+    let ngPackageJson: undefined | object;
 
     if (packageJson['ngPackage']) {
-      packageConf.ngPackageJson = { ...packageJson['ngPackage'] }
+      ngPackageJson = { ...packageJson['ngPackage'] }
     } else if (await fileExists(packageConfPathJson)) {
-      packageConf.ngPackageJson = await readJson(packageConfPathJson);
+      ngPackageJson = await readJson(packageConfPathJson);
     } else if ((await fileExists(packageConfPathJs))) {
-      packageConf.ngPackageJson = await import(packageConfPathJs);
-    } else {
-      packageConf = undefined;
+      ngPackageJson = await import(packageConfPathJs);
     }
 
-    if (packageConf || pathStats.isDirectory()) {
+    if (ngPackageJson) {
+      return {
+        basePath,
+        packageJson,
+        ngPackageJson
+      } as UserPackage;
+    }
+
+    if (pathStats.isDirectory()) {
       // return even if it's undefined and use defaults when it's not a file
-      return packageConf;
+      return undefined;
     }
 
     if (pathStats.isFile()) {
@@ -75,7 +77,6 @@ const resolvePackageConf =
     throw new Error(`Cannot discover package sources at ${folderPathOrFilePath}`);
   }
 
-   
 /** Reads a primary entry point from it's package file. */
 const primaryEntryPoint =
   ({ packageJson, ngPackageJson, basePath }: UserPackage): NgEntryPoint =>
