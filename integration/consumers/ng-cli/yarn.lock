@@ -17,7 +17,17 @@
   dependencies:
     source-map "^0.5.6"
 
-"@angular-devkit/schematics@^0.0.41", "@angular-devkit/schematics@~0.0.40":
+"@angular-devkit/schematics@^0.0.42":
+  version "0.0.42"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.0.42.tgz#34eea7136455545c8abd21edf94a36870a073fea"
+  dependencies:
+    "@angular-devkit/core" "0.0.22"
+    "@ngtools/json-schema" "^1.1.0"
+    "@schematics/schematics" "0.0.11"
+    minimist "^1.2.0"
+    rxjs "^5.5.2"
+
+"@angular-devkit/schematics@~0.0.40":
   version "0.0.41"
   resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.0.41.tgz#9a066e442bdf10de4a093d6dd33a58e600d1b101"
   dependencies:
@@ -177,6 +187,10 @@
 "@schematics/schematics@0.0.10":
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/@schematics/schematics/-/schematics-0.0.10.tgz#b27b49a1a5482dc6c1c93fb3c20371c95874938b"
+
+"@schematics/schematics@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@schematics/schematics/-/schematics-0.0.11.tgz#c8f70f270ed38f29b2873248126fd59abd635862"
 
 "@types/jasmine@~2.8.0":
   version "2.8.2"
