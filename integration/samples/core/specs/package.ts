@@ -32,5 +32,9 @@ describe(`@sample/core`, () => {
       expect(PACKAGE['typings']).to.equal('sample-core.d.ts');
     });
 
+    it(`should inluce "tslib" as dependency`, () => {
+      expect(PACKAGE['dependencies']['tslib']).to.be.ok;
+    });
+
   });
 });
