@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.7"></a>
+# [2.0.0-rc.7](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.6...v2.0.0-rc.7) (2017-12-15)
+
+
+### Bug Fixes
+
+* log error message only on build failure ([51643e1](https://github.com/dherges/ng-packagr/commit/51643e1))
+* print `[@angular](https://github.com/angular)/compiler-cli` version ([b0e362e](https://github.com/dherges/ng-packagr/commit/b0e362e))
+* print rollup warnings to `log.warn()` ([356a01b](https://github.com/dherges/ng-packagr/commit/356a01b))
+* relax on non-call-expression decorators in typescript parsing ([7135c42](https://github.com/dherges/ng-packagr/commit/7135c42))
+* set `peerDependencies` to `tsickle: ^0.24.0` and `typescript: >=2.4.2 <2.6` ([#387](https://github.com/dherges/ng-packagr/issues/387)) ([001f63f](https://github.com/dherges/ng-packagr/commit/001f63f))
+* set peerDependency tsickle to `>=0.24.0 <0.26" ([d682cd2](https://github.com/dherges/ng-packagr/commit/d682cd2))
+* update fs-extra to version ^5.0.0 ([#400](https://github.com/dherges/ng-packagr/issues/400)) ([9e6d081](https://github.com/dherges/ng-packagr/commit/9e6d081))
+
+
+### Features
+
+* discover entry points from user packages ([#383](https://github.com/dherges/ng-packagr/issues/383)) ([4a7e96e](https://github.com/dherges/ng-packagr/commit/4a7e96e)), closes [#190](https://github.com/dherges/ng-packagr/issues/190)
+* do not prune working directory on build failure ([6445316](https://github.com/dherges/ng-packagr/commit/6445316))
+* provide version info with `ng-packagr --version` cli option ([#393](https://github.com/dherges/ng-packagr/issues/393)) ([758c403](https://github.com/dherges/ng-packagr/commit/758c403))
+
+
+### Performance Improvements
+
+* read set of typescript source files only once ([#388](https://github.com/dherges/ng-packagr/issues/388)) ([bbbbd27](https://github.com/dherges/ng-packagr/commit/bbbbd27))
+
+
+### BREAKING CHANGES
+
+* Discovery of primary and secondary entry points is changed to read from the following file sources. File locations are tried in this order:
+ - `package.json` with `ngPackage` property
+ - `ng-package.json` (requires a `package.json` as sibling)
+ - `ng-package.js` (with a default export, requires a `package.json` as sibling)
+
+
+
 <a name="2.0.0-rc.6"></a>
 # [2.0.0-rc.6](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.5...v2.0.0-rc.6) (2017-12-09)
 
