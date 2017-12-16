@@ -29,6 +29,7 @@ export const prepareTsConfig: BuildStep =
     tsConfig.options.flatModuleOutFile = `${entryPoint.flatModuleFile}.js`;
     tsConfig.options.basePath = basePath;
     tsConfig.options.baseUrl = basePath;
+    tsConfig.options.paths = entryPoint.paths;
     tsConfig.options.outDir = artefacts.outDir;
     tsConfig.options.genDir = artefacts.outDir;
 
@@ -232,10 +233,16 @@ export async function ngc(entryPoint: NgEntryPoint, artefacts: Artefacts) {
 
     artefacts.tsSources.dispose();
 
+    // FIXME sometimes the lib is generated in a subfolder
+    // this searchs NgPackage.src as the subpath to search
+    const basePath = fs.existsSync(path.resolve(outDir, entryPoint.src, outFile)) ?
+      path.resolve(outDir, entryPoint.src, outFile) :
+      path.resolve(outDir, outFile);
+
     return Promise.resolve({
-      js: path.resolve(outDir, outFile),
-      metadata: path.resolve(outDir, outFile.replace(extName, '.metadata.json')),
-      typings: path.resolve(outDir, outFile.replace(extName, '.d.ts'))
+      js: basePath,
+      metadata: basePath.replace(extName, '.metadata.json'),
+      typings: basePath.replace(extName, '.d.ts')
     });
   } else {
     return Promise.reject(new Error(
