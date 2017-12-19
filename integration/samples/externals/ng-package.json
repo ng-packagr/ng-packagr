@@ -1,6 +1,9 @@
 {
   "$schema": "../../../src/ng-package.schema.json",
   "lib": {
+    "embedded": [
+      "trim-newlines"
+    ],
     "entryFile": "public_api.ts"
   }
 }

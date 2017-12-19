@@ -60,7 +60,8 @@ export const transformSources: BuildStep =
       entry: tsOutput.js,
       format: 'es',
       dest: fesm15File,
-      externals: entryPoint.externals
+      umdModuleIds: entryPoint.umdModuleIds,
+      embedded: entryPoint.embedded
     });
     await remapSourceMap(fesm15File);
 
@@ -78,7 +79,8 @@ export const transformSources: BuildStep =
       entry: fesm5File,
       format: 'umd',
       dest: umdFile,
-      externals: entryPoint.externals
+      umdModuleIds: entryPoint.umdModuleIds,
+      embedded: entryPoint.embedded
     });
     await remapSourceMap(umdFile);
 
