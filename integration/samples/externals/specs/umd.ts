@@ -7,7 +7,9 @@ describe(`@sample/externals`, () => {
 
   describe(`UMD Bundle`, () => {
     let API;
+    let BUNDLE;
     before(() => {
+      BUNDLE = fs.readFileSync(path.resolve(__dirname, '../dist/bundles/sample-externals.umd.js'), { encoding: 'utf-8' });
       API = require('../dist/bundles/sample-externals.umd.min.js');
     });
 
@@ -33,6 +35,18 @@ describe(`@sample/externals`, () => {
 
     it(`should export RxJsOperators`, () => {
       expect(API.RxJsOperators).to.be.ok;
+    });
+
+    it(`should import '@angular/core'`, () => {
+      expect(BUNDLE).to.contain("require('@angular/core')")
+    });
+
+    it(`should embed 'createCommonjsModule' method`, () => {
+      expect(BUNDLE).to.contain("function createCommonjsModule")
+    });
+
+    it(`should embed 'fn.start' method`, () => {
+      expect(BUNDLE).to.contain("n.start = function")
     });
   });
 

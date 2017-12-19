@@ -199,6 +199,44 @@ Valid values: `none` or `inline`.
 }
 ```
 
+#### Third-party dependencies: external and embedded dependencies
+
+By default, dependencies of a library are treated as external dependencies and thus are not embedded in the final bundle.
+In most cases, you should expect that third-party dependencies will be part of the [`peerDependencies` of your distributables](https://nodejs.org/uk/blog/npm/peer-dependencies/).
+
+However, if you want to embed a dependency into the distributable bundle you are able to do so by adding the dependency in the `embedded` section like so:
+
+***HEADS UP***: embedding a dependency will result in you shipping the dependency's source code to your users!
+
+```json
+{
+  "$schema": "../../../src/ng-package.schema.json",
+  "lib": {
+    "embedded": [
+      "lodash",
+      "date-fns"
+    ]
+  }
+}
+```
+
+By default, ng-packagr will treat dependencies as external dependencies.
+When writing the [UMD bundle](https://github.com/umdjs/umd), ng-packagr does its best to provide common default values for the UMD module identifiers and `rollup` will also do its best to guess the module ID of an external dependency.
+Even then, you should make sure that the UMD module identifiers of the external dependencies are correct.
+In case ng-packagr doesn't provide a default and rollup is unable to guess the correct identifier, you should explicitly provide the module identifier by using `umdModuleIds` in the library's package file section like so:
+
+```json
+{
+  "$schema": "../../../src/ng-package.schema.json",
+  "lib": {
+    "umdModuleIds": {
+      "lodash" : "_",
+      "date-fns" : "DateFns",
+    }
+  }
+}
+```
+
 #### React loves Angular, Angular loves React
 
 What if I want to use React Components in Angular?
@@ -211,7 +249,7 @@ construct them, you can set the `jsx` flag for your library through `ng-package.
   "$schema": "../../../src/ng-package.schema.json",
   "lib": {
     "entryFile": "public_api.ts",
-    "externals": {
+    "umdModuleIds": {
       "react": "React",
       "react-dom": "ReactDOM"
     },
@@ -222,7 +260,7 @@ construct them, you can set the `jsx` flag for your library through `ng-package.
 
 The `jsx` flag will accept what the corresponding `tsconfig` accepts, more information [in the TypeScript Handbook chaper on JSX](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
-Note: Don't forget to include `react` and `react-dom` in your `externals` so that you're not bundling those dependencies!
+Note: Don't forget to include `react` and `react-dom` in your `umdModuleIds` so that you're not bundling those dependencies!
 
 
 ## Further documentation
