@@ -199,10 +199,14 @@ Valid values: `none` or `inline`.
 }
 ```
 
-#### Externals and embedded Dependencies
-By default all dependencies are treated as externals and thus are not embedded in the final bundle. 
+#### Third-party dependencies: external and embedded dependencies
 
-However, If you want to embed one or more of them into the final bundle you can do so by adding the library in the `embeeded` section like so;
+By default, dependencies of a library are treated as external dependencies and thus are not embedded in the final bundle.
+In most cases, you should expect that third-party dependencies will be part of the [`peerDependencies` of your distributables](https://nodejs.org/uk/blog/npm/peer-dependencies/).
+
+However, if you want to embed a dependency into the distributable bundle you are able to do so by adding the dependency in the `embedded` section like so:
+
+***HEADS UP***: embedding a dependency will result in you shipping the dependency's source code to your users!
 
 ```json
 {
@@ -216,8 +220,10 @@ However, If you want to embed one or more of them into the final bundle you can 
 }
 ```
 
-While `rollup` will do it's best to guess the name of an external library some modules are hard to guess and it's 
-recommended to provide the name of the external dependency. This can be done by using `umdModuleIds` in the config section like so;
+By default, ng-packagr will treat dependencies as external dependencies.
+When writing the [UMD bundle](https://github.com/umdjs/umd), ng-packagr does its best to provide common default values for the UMD module identifiers and `rollup` will also do its best to guess the module ID of an external dependency.
+Even then, you should make sure that the UMD module identifiers of the external dependencies are correct.
+In case ng-packagr doesn't provide a default and rollup is unable to guess the correct identifier, you should explicitly provide the module identifier by using `umdModuleIds` in the library's package file section like so:
 
 ```json
 {
