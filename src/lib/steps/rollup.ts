@@ -90,6 +90,7 @@ export async function rollup(opts: RollupOptions): Promise<void> {
     plugins: [
       nodeResolve({ jsnext: true, module: true }),
       commonJs(),
+      json()
     ],
     onwarn: (warning) => {
       if (warning.code === 'THIS_IS_UNDEFINED') {
