@@ -1,4 +1,4 @@
-import { outputJson } from 'fs-extra';
+import { outputJson, readJsonSync } from 'fs-extra';
 import * as path from 'path';
 import * as log from '../util/log';
 import { NgEntryPoint } from '../domain/ng-package-format';
@@ -25,6 +25,15 @@ export async function writePackage(entryPoint: NgEntryPoint, binaries: { [key: s
   // set additional properties
   for (const fieldName in binaries) {
     packageJson[fieldName] = binaries[fieldName];
+  }
+
+  // read tslib version from our peerDependencies
+  const tslibVersion = readJsonSync(path.resolve('./package.json')).peerDependencies.tslib;
+  if (tslibVersion) {
+    packageJson.dependencies = {
+      ...packageJson.dependencies,
+      'tslib': tslibVersion
+    }
   }
 
   packageJson.name = entryPoint.moduleId;

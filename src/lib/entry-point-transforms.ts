@@ -60,15 +60,23 @@ export const transformSources: BuildStep =
       entry: tsOutput.js,
       format: 'es',
       dest: fesm15File,
-      umdModuleIds: entryPoint.umdModuleIds,
       embedded: entryPoint.embedded
     });
     await remapSourceMap(fesm15File);
 
     // 4. FESM5: TSC
     log.info('Bundling to FESM5');
+    const fesm5DownlevelFile = path.resolve(artefacts.stageDir, 'esm5-downlevel', entryPoint.flatModuleFile + '.js');
     const fesm5File = path.resolve(artefacts.stageDir, 'esm5', entryPoint.flatModuleFile + '.js');
-    await downlevelWithTsc(fesm15File, fesm5File);
+    await downlevelWithTsc(fesm15File, fesm5DownlevelFile);
+    await remapSourceMap(fesm5DownlevelFile);
+    await rollup({
+      moduleName: entryPoint.moduleId,
+      entry: fesm5DownlevelFile,
+      format: 'es',
+      dest: fesm5File,
+      embedded: entryPoint.embedded
+    });
     await remapSourceMap(fesm5File);
 
     // 5. UMD: ROLLUP
@@ -76,11 +84,11 @@ export const transformSources: BuildStep =
     const umdFile = path.resolve(artefacts.stageDir, 'bundles', entryPoint.flatModuleFile + '.umd.js');
     await rollup({
       moduleName: entryPoint.umdModuleId,
-      entry: fesm5File,
+      entry: fesm5DownlevelFile,
       format: 'umd',
       dest: umdFile,
       umdModuleIds: entryPoint.umdModuleIds,
-      embedded: entryPoint.embedded
+      embedded: entryPoint.embedded ? ['tslib', ...entryPoint.embedded] : ['tslib']
     });
     await remapSourceMap(umdFile);
 

@@ -23,6 +23,7 @@ export async function downlevelWithTsc(inputFile: string, outputFile: string): P
     target: ScriptTarget.ES5,
     module: ModuleKind.ES2015,
     allowJs: true,
+    importHelpers: true,
     sourceMap: true,
     mapRoot: path.dirname(inputFile)
   };

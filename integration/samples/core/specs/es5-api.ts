@@ -6,8 +6,10 @@ describe(`@sample/core`, () => {
 
   describe(`esm5/sample-core.js`, () => {
     let API;
+    let BUNDLE;
     before(() => {
       API = require('../dist/esm5/sample-core.js');
+      BUNDLE = fs.readFileSync(path.resolve(__dirname, '../dist/esm5/sample-core.js'), 'utf-8');
     })
 
     it(`should exist`, () => {
@@ -34,5 +36,8 @@ describe(`@sample/core`, () => {
       expect(API.AngularService).to.be.ok;
     });
 
+    it(`should import TS helpers from 'tslib'`, () => {
+      expect(BUNDLE).to.contain(`from 'tslib'`);
+    });
   });
 });
