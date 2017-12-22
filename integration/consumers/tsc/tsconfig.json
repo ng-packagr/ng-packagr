@@ -15,17 +15,17 @@
     "moduleResolution": "node",
     "outDir": "dist",
     "rootDir": "src",
-    "baseUrl": "src",
+    "baseUrl": "./",
     "lib": [
       "es2015",
       "dom"
     ],
     "experimentalDecorators": true,
     "paths": {
-      "@sample/core": [ "../../../samples/core/dist" ],
-      "sample-custom": [ "../../../samples/custom/dist" ],
-      "@sample/jsx": [ "../../../samples/jsx/dist" ],
-      "@sample/material": [ "../../../samples/material/dist" ]
+      "@sample/core": [ "../../samples/core/dist" ],
+      "sample-custom": [ "../../samples/custom/dist" ],
+      "@sample/jsx": [ "../../samples/jsx/dist" ],
+      "@sample/material": [ "../../samples/material/dist" ]
     },
     "types": [
       "jasmine"
