@@ -22,9 +22,9 @@ pushd consumers/ng-cli
 yarn install
 yarn link sample-custom
 yarn link @sample/material
-yarn build:dev
-yarn build:prod:jit
-yarn build:prod:aot
+yarn build:dev --output-path dist/dev
+yarn build:prod:jit --output-path dist/jit
+yarn build:prod:aot --output-path dist/aot
 popd
 
 
