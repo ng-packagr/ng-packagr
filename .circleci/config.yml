@@ -25,15 +25,12 @@ jobs:
       - run:
           name: Collect artefacts
           command: |
-            mkdir -p /tmp/samples && mkdir -p /tmp/consumers \
-              && cp -r --parents integration/samples/**/dist /tmp/samples \
-              && cp -r --parents integration/consumers/**/dist /tmp/consumers
+            mkdir -p /tmp/artefacts \
+              && cp -r --parents integration/samples/**/dist /tmp/artefacts \
+              && cp -r --parents integration/consumers/**/dist /tmp/artefacts
       - store_artifacts:
-          path: /tmp/samples/integration/samples
-          destination: samples
-      - store_artifacts:
-          path: /tmp/samples/integration/consumers
-          destination: consumers
+          path: /tmp/artefacts/integration
+          destination: integration
       - store_artifacts:
           path: ~/repo/dist
           destination: dist
