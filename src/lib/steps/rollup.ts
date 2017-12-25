@@ -102,8 +102,6 @@ export async function rollup(opts: RollupOptions): Promise<void> {
 
   // Output the bundle to disk
   await bundle.write({
-    // Keep the moduleId empty because we don't want to force developers to a specific moduleId.
-    moduleId: '',
     name: `${opts.moduleName}`,
     file: opts.dest,
     format: opts.format,
