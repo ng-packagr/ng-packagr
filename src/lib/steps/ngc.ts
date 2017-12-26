@@ -29,6 +29,7 @@ export const prepareTsConfig: BuildStep =
     tsConfig.options.flatModuleOutFile = `${entryPoint.flatModuleFile}.js`;
     tsConfig.options.basePath = basePath;
     tsConfig.options.baseUrl = basePath;
+    tsConfig.options.rootDir = basePath;
     tsConfig.options.outDir = artefacts.outDir;
     tsConfig.options.genDir = artefacts.outDir;
 

@@ -3,6 +3,7 @@ import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as commonJs from 'rollup-plugin-commonjs';
 import * as path from 'path';
 import * as log from '../util/log';
+import { BuildStep } from '../domain/build-step';
 
 export type BundleFormat = __rollup.Format;
 
@@ -74,18 +75,14 @@ export const umdModuleIdStrategy = (moduleId: string, umdModuleIds: { [key: stri
   return ''; // leave it up to rollup to guess the global name
 }
 
-/**
- * Runs rollup over the given entry file, bundling it up.
- *
- * @param opts
- */
-export async function rollup(opts: RollupOptions): Promise<void> {
+/** Runs rollup over the given entry file, writes a bundle file. */
+async function rollup(opts: RollupOptions): Promise<void> {
   log.debug(`rollup (v${__rollup.VERSION}) ${opts.entry} to ${opts.dest} (${opts.format})`);
 
   // Create the bundle
   const bundle: __rollup.Bundle = await __rollup.rollup({
     context: 'this',
-    external: moduleId => externalModuleIdStrategy(moduleId, opts.embedded),
+    external: moduleId => externalModuleIdStrategy(moduleId, opts.embedded || []),
     input: opts.entry,
     plugins: [
       nodeResolve({ jsnext: true, module: true }),
@@ -106,7 +103,38 @@ export async function rollup(opts: RollupOptions): Promise<void> {
     file: opts.dest,
     format: opts.format,
     banner: '',
-    globals: moduleId => umdModuleIdStrategy(moduleId, opts.umdModuleIds),
+    globals: moduleId => umdModuleIdStrategy(moduleId, opts.umdModuleIds || {}),
     sourcemap: true
   });
 }
+
+export const flattenToFesm15: BuildStep =
+  async ({ artefacts, entryPoint, pkg }) => {
+    const fesm15File = path.resolve(artefacts.stageDir, 'esm2015', entryPoint.flatModuleFile + '.js');
+    await rollup({
+      moduleName: entryPoint.moduleId,
+      entry: artefacts.es2015EntryFile,
+      format: 'es',
+      dest: fesm15File,
+      embedded: entryPoint.embedded
+    });
+
+    artefacts.fesm15BundleFile = fesm15File;
+  };
+
+export const flattenToUmd: BuildStep =
+  async ({ artefacts, entryPoint, pkg }) => {
+    const umdFile = path.resolve(artefacts.stageDir, 'bundles', entryPoint.flatModuleFile + '.umd.js');
+    await rollup({
+      moduleName: entryPoint.umdModuleId,
+      entry: artefacts.fesm5BundleFile,
+      format: 'umd',
+      dest: umdFile,
+      umdModuleIds: {
+        ...entryPoint.umdModuleIds
+      },
+      embedded: entryPoint.embedded
+    });
+
+    artefacts.umdBundleFile = umdFile;
+  };
