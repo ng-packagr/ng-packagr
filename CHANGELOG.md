@@ -9,11 +9,11 @@ All notable changes to this project will be documented in this file. See [standa
 ### Bug Fixes
 
 * log error message only on build failure ([51643e1](https://github.com/dherges/ng-packagr/commit/51643e1))
-* print `[@angular](https://github.com/angular)/compiler-cli` version ([b0e362e](https://github.com/dherges/ng-packagr/commit/b0e362e))
+* print `@angular/compiler-cli` version ([b0e362e](https://github.com/dherges/ng-packagr/commit/b0e362e))
 * print rollup warnings to `log.warn()` ([356a01b](https://github.com/dherges/ng-packagr/commit/356a01b))
 * relax on non-call-expression decorators in typescript parsing ([7135c42](https://github.com/dherges/ng-packagr/commit/7135c42))
 * set `peerDependencies` to `tsickle: ^0.24.0` and `typescript: >=2.4.2 <2.6` ([#387](https://github.com/dherges/ng-packagr/issues/387)) ([001f63f](https://github.com/dherges/ng-packagr/commit/001f63f))
-* set peerDependency tsickle to `>=0.24.0 <0.26" ([d682cd2](https://github.com/dherges/ng-packagr/commit/d682cd2))
+* set peerDependency `tsickle: >=0.24.0 <0.26` ([d682cd2](https://github.com/dherges/ng-packagr/commit/d682cd2))
 * update fs-extra to version ^5.0.0 ([#400](https://github.com/dherges/ng-packagr/issues/400)) ([9e6d081](https://github.com/dherges/ng-packagr/commit/9e6d081))
 
 
