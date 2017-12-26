@@ -5,8 +5,8 @@ import { copyFiles } from './util/copy';
 import { transformSources } from './entry-point-transforms';
 
 // Domain
+import { CliArguments } from './commands/build.command';
 import { Artefacts } from './domain/build-artefacts';
-import { CliArguments } from './domain/cli-arguments';
 import { NgPackage } from './domain/ng-package-format';
 
 // Node API
@@ -15,8 +15,14 @@ import * as path from 'path';
 // Logging
 import * as log from './util/log';
 
-
 export async function createNgPackage(opts: CliArguments): Promise<void> {
+  log.warn(`DEPRECATED: createNgPackage() is becoming deprecated. Invoke the 'build: Command' instead.`);
+  return buildNgPackage(opts);
+}
+
+
+// XX: should eventually become a BuildStep
+export async function buildNgPackage(opts: CliArguments): Promise<void> {
   log.info(`Building Angular Package`);
 
   let ngPackage: NgPackage;

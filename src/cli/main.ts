@@ -2,8 +2,9 @@
 
 import * as program from 'commander';
 import * as path from 'path';
-import { createNgPackage } from '../lib/ng-packagr';
-import { printVersionInfo } from '../lib/version-info';
+import { execute } from '../lib/commands/command';
+import { build } from '../lib/commands/build.command';
+import { version } from '../lib/commands/version.command';
 
 const DEFAULT_PROJECT_PATH = path.resolve(process.cwd(), 'ng-package.json');
 
@@ -23,12 +24,12 @@ program
     DEFAULT_PROJECT_PATH)
 
 program.on('option:version', () => {
-  printVersionInfo();
+  version();
   process.exit(0);
 });
 
 program
-  .parse(process.argv)
+  .parse(process.argv);
 
-createNgPackage({ project: program.opts().project })
+execute(build, { project: program.opts().project })
   .catch((err) => process.exit(111));
