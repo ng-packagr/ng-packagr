@@ -13,7 +13,7 @@ import { processAssets } from './steps/assets';
 import { ngc, prepareTsConfig, collectTemplateAndStylesheetFiles, inlineTemplatesAndStyles } from './steps/ngc';
 import { minifyJsFile } from './steps/uglify';
 import { remapSourceMap, relocateSourceMapSources } from './steps/sorcery';
-import { rollup } from './steps/rollup';
+import { flattenToFesm15, flattenToUmd } from './steps/rollup';
 import { downlevelWithTsc } from './steps/tsc';
 import { copySourceFilesToDestination } from './steps/transfer';
 import { BuildStep } from './domain/build-step';
@@ -51,41 +51,30 @@ export const transformSources: BuildStep =
     // 2. NGC
     log.info('Compiling with ngc');
     const tsOutput = await ngc(entryPoint, artefacts);
+    artefacts.es2015EntryFile = tsOutput.js;
+    artefacts.typingsEntryFile = tsOutput.typings;
+    artefacts.aotBundleFile = tsOutput.metadata;
 
     // 3. FESM15: ROLLUP
     log.info('Bundling to FESM15');
-    const fesm15File = path.resolve(artefacts.stageDir, 'esm2015', entryPoint.flatModuleFile + '.js');
-    await rollup({
-      moduleName: entryPoint.moduleId,
-      entry: tsOutput.js,
-      format: 'es',
-      dest: fesm15File,
-      embedded: entryPoint.embedded
-    });
-    await remapSourceMap(fesm15File);
+    await flattenToFesm15(args);
+    await remapSourceMap(artefacts.fesm15BundleFile);
 
     // 4. FESM5: TSC
     log.info('Bundling to FESM5');
     const fesm5File = path.resolve(artefacts.stageDir, 'esm5', entryPoint.flatModuleFile + '.js');
-    await downlevelWithTsc(fesm15File, fesm5File);
+    await downlevelWithTsc(artefacts.fesm15BundleFile, fesm5File);
+    artefacts.fesm5BundleFile = fesm5File;
     await remapSourceMap(fesm5File);
 
     // 5. UMD: ROLLUP
     log.info('Bundling to UMD');
-    const umdFile = path.resolve(artefacts.stageDir, 'bundles', entryPoint.flatModuleFile + '.umd.js');
-    await rollup({
-      moduleName: entryPoint.umdModuleId,
-      entry: fesm5File,
-      format: 'umd',
-      dest: umdFile,
-      umdModuleIds: entryPoint.umdModuleIds,
-      embedded: entryPoint.embedded
-    });
-    await remapSourceMap(umdFile);
+    await flattenToUmd(args);
+    await remapSourceMap(artefacts.umdBundleFile);
 
     // 6. UMD: Minify
     log.info('Minifying UMD bundle');
-    const minUmdFile: string = await minifyJsFile(umdFile);
+    const minUmdFile: string = await minifyJsFile(artefacts.umdBundleFile);
     await remapSourceMap(minUmdFile);
 
     // 7. SOURCEMAPS: RELOCATE ROOT PATHS

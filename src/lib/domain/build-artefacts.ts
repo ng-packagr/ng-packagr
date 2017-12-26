@@ -91,4 +91,52 @@ export class Artefacts {
       .map((key) => key.substring('stylesheet:'.length));
   }
 
+  public get es2015EntryFile(): string {
+    return this.extras('es2015:entryFile');
+  }
+
+  public set es2015EntryFile(filePath: string) {
+    this.extras('es2015:entryFile', filePath);
+  }
+
+  public get typingsEntryFile(): string {
+    return this.extras('typings:entryFile');
+  }
+
+  public set typingsEntryFile(filePath: string) {
+    this.extras('typings:entryFile', filePath);
+  }
+
+  public get fesm15BundleFile(): string {
+    return this.extras('fesm15:bundleFile');
+  }
+
+  public set fesm15BundleFile(filePath: string) {
+    this.extras('fesm15:bundleFile', filePath);
+  }
+
+  public get fesm5BundleFile(): string {
+    return this.extras('fesm5:bundleFile');
+  }
+
+  public set fesm5BundleFile(filePath: string) {
+    this.extras('fesm5:bundleFile', filePath);
+  }
+
+  public get umdBundleFile(): string {
+    return this.extras('umd:bundleFile');
+  }
+
+  public set umdBundleFile(filePath: string) {
+    this.extras('umd:bundleFile', filePath);
+  }
+
+  public get aotBundleFile(): string {
+    return this.extras('aot:bundleFile');
+  }
+
+  public set aotBundleFile(filePath: string) {
+    this.extras('aot:bundleFile', filePath);
+  }
+
 }
