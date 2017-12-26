@@ -7,6 +7,7 @@ import { CustomModule } from 'sample-custom';
 import { UiLibModule } from '@sample/material';
 
 import { AppComponent } from './app.component';
+import { CdkModule } from './cdk/cdk.module';
 
 @NgModule({
   declarations: [
@@ -17,8 +18,12 @@ import { AppComponent } from './app.component';
     FormsModule,
     HttpModule,
 
+    // samples
     CustomModule,
-    UiLibModule
+    UiLibModule,
+
+    // app
+    CdkModule
   ],
   providers: [],
   bootstrap: [AppComponent]

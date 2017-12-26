@@ -2,12 +2,12 @@ import { expect } from 'chai';
 import * as fs from 'fs';
 import * as path from 'path';
 
-describe(`@sample/secondary-lib`, () => {
+describe(`@sample/secondary`, () => {
 
-  describe(`es5: sample-secondary-lib.js`, () => {
+  describe(`es5: sample-secondary.js`, () => {
     let API;
     before(() => {
-      API = require('../dist/esm5/sample-secondary-lib.js');
+      API = require('../dist/esm5/sample-secondary.js');
     });
 
     it(`should exist`, () => {
@@ -21,12 +21,12 @@ describe(`@sample/secondary-lib`, () => {
   });
 });
 
-describe(`@sample/secondary-lib/sub-module`, () => {
+describe(`@sample/secondary/sub-module`, () => {
 
-  describe(`es5: sample-secondary-lib-sub-module.js`, () => {
+  describe(`es5: sample-secondary-sub-module.js`, () => {
     let SECONDARY;
     before(() => {
-      SECONDARY = require('../dist/esm5/sample-secondary-lib-sub-module.js');
+      SECONDARY = require('../dist/esm5/sample-secondary-sub-module.js');
     });
 
     it(`should exist`, () => {

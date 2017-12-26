@@ -5,23 +5,21 @@ parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd "$parent_path"
 echo "Running consumer builds in $parent_path"
 
-# Prepare 'sample-custom'
-pushd samples/custom/dist
-yarn unlink || true
-yarn link
-popd
-
-# Prepare '@sample/material'
-pushd samples/material/dist
-yarn unlink || true
-yarn link
-popd
+# Prepare samples
+array=( 'custom' 'material' 'secondary' )
+for sample in "${array[@]}"; do
+    pushd "samples/${sample}/dist"
+    yarn unlink || true
+    yarn link
+    popd
+done
 
 # Build ng cli app
 pushd consumers/ng-cli
 yarn install
 yarn link sample-custom
 yarn link @sample/material
+yarn link @sample/secondary
 yarn build:dev --output-path dist/dev
 yarn build:prod:jit --output-path dist/jit
 yarn build:prod:aot --output-path dist/aot
