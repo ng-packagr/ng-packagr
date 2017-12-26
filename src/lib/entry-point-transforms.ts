@@ -10,7 +10,7 @@ import { NgEntryPoint, NgPackage } from './domain/ng-package-format';
 // Build steps
 import { writePackage } from './steps/package';
 import { processAssets } from './steps/assets';
-import { ngc, prepareTsConfig, collectTemplateAndStylesheetFiles, inlineTemplatesAndStyles } from './steps/ngc';
+import { ngc, prepareTsConfig, analyseSourceFiles, inlineTemplatesAndStyles } from './steps/ngc';
 import { minifyJsFile } from './steps/uglify';
 import { remapSourceMap, relocateSourceMapSources } from './steps/sorcery';
 import { flattenToFesm15, flattenToUmd } from './steps/rollup';
@@ -24,8 +24,9 @@ import { BuildStep } from './domain/build-step';
  * @param entryPoint The entry point that will be transpiled to a set of artefacts.
  */
 export const transformSources: BuildStep =
-  async (args): Promise<void> => {
+  async (args): Promise<void | any> => {
     const { artefacts, entryPoint, pkg } = args;
+    entryPoint.buildStatus = 'inprogress';
     log.info(`Building from sources for entry point '${entryPoint.moduleId}'`);
 
     // 0. CLEAN BUILD DIRECTORY
@@ -36,9 +37,34 @@ export const transformSources: BuildStep =
     // 1. TWO-PASS TSC TRANSFORMATION
     prepareTsConfig(args);
 
-    // First pass: collect templateUrl and styleUrls referencing source files.
-    log.info('Extracting templateUrl and styleUrls');
-    collectTemplateAndStylesheetFiles(args);
+    // First pass: extract templateUrl and styleUrls, analyse dependencies
+    analyseSourceFiles(args);
+
+    // XX: here starts the real work :-)
+    if (entryPoint.dependendingOnEntryPoints.length > 0) {
+      log.info(`${entryPoint.moduleId} depends on ${entryPoint.dependendingOnEntryPoints.join(', ')}.`);
+
+      // Were the depending entry points already built?
+      const unsatisfiedDependencies = entryPoint.dependendingOnEntryPoints
+        .filter((moduleId) => pkg.entryPoint(moduleId).buildStatus !== 'success');
+      if (unsatisfiedDependencies.length > 0) {
+        // No: skip this entry point, build the dependee entry point first
+        log.warn(`Need to build ${unsatisfiedDependencies.join(', ')} first.`);
+        // XX: atm, it's safe to dispose the source set as the entry point build will re-start from top
+        artefacts.tsSources.dispose();
+        return Promise.resolve('dependencies-not-satisfied');
+        // (TODO): resume the entry point's build at this state...
+      } else {
+        // Yes: adjust `compilerOptions.paths`
+        if (!artefacts.tsConfig.options.paths) {
+          artefacts.tsConfig.options.paths = {};
+        }
+        for (const dependency of entryPoint.dependendingOnEntryPoints) {
+          artefacts.tsConfig.options.paths[dependency] = [ pkg.entryPoint(dependency).destinationPath ];
+        }
+      }
+    }
+    // XX: the above could be a separate build step or moved to `analyseSourceFiles()`
 
     // Then, process assets keeping transformed contents in memory.
     log.info('Processing assets');
@@ -99,5 +125,6 @@ export const transformSources: BuildStep =
       metadata: ensureUnixPath(`${entryPoint.flatModuleFile}.metadata.json`)
     });
 
+    entryPoint.buildStatus = 'success';
     log.success(`Built ${entryPoint.moduleId}`);
   }

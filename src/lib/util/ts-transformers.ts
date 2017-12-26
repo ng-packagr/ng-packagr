@@ -34,6 +34,7 @@ export type StylesheetProcessor = (sourceFile: string, styleUrl: string, styleFi
 
 export type TemplateProcessor = (sourceFile: string, templateUrl: string, templateFilePath: string) => string | undefined | void;
 
+// TODO: change signature to `(templateUrlVisitor, styleUrlsVisitor)`
 export type ComponentTransformer =
   ({}: {
     templateProcessor: TemplateProcessor,
@@ -52,6 +53,11 @@ export const componentTransformer: ComponentTransformer =
 
       const visitComponents = (node: ts.Decorator): ts.Node => {
         if (isTemplateUrl(node)) {
+
+          //
+          // TODO: return templateUrlVisitor(node);
+          //
+
           // XX: strip quotes (' or ") from path
           const templatePath = node.initializer.getText().substring(1, node.initializer.getText().length - 1);
           const templateFilePath = path.resolve(path.dirname(sourceFilePath), templatePath);
@@ -74,6 +80,11 @@ export const componentTransformer: ComponentTransformer =
             return node;
           }
         } else if (isStyleUrls(node)) {
+
+          //
+          // TODO: return styleUrlsVisitor(node);
+          //
+
           // handle array arguments for styleUrls
           const styleUrls = node.initializer.getChildren()
             .filter((node) => node.kind === ts.SyntaxKind.SyntaxList)
@@ -124,3 +135,36 @@ export const componentTransformer: ComponentTransformer =
 
       return ts.visitNode(sourceFile, visitDecorators);
     }
+
+export const dependencyAnalyser =
+  (allModuleIds: string[], dependsOn: (moduleId: string) => void) =>
+    (context: ts.TransformationContext) => (sourceFile: ts.SourceFile): ts.SourceFile => {
+      // skip source files from 'node_modules' directory (third-party source)
+      if (sourceFile.fileName.includes('node_modules')) {
+        return sourceFile;
+      }
+
+      const findModuleIdFromImport = (node: ts.ImportDeclaration) => {
+        const text = node.moduleSpecifier.getText();
+
+        return text.substring(1, text.length - 1);
+      };
+
+      const visitImports: ts.Visitor = (node) => {
+        if (ts.isImportDeclaration(node)) {
+          // Found an 'import ...' declaration
+          const moduleIdInImport: string = findModuleIdFromImport(node);
+
+          const dependentModuleId = allModuleIds.find((moduleId) => moduleId === moduleIdInImport);
+          if (dependentModuleId) {
+            dependsOn(dependentModuleId);
+          }
+        } else {
+          return ts.visitEachChild(node, visitImports, context);
+        }
+
+        return node;
+      }
+
+      return ts.visitEachChild(sourceFile, visitImports, context);
+    };

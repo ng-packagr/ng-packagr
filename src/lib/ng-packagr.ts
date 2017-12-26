@@ -33,11 +33,19 @@ export async function buildNgPackage(opts: CliArguments): Promise<void> {
     // clean the primary dest folder (should clean all secondary module directories as well)
     await rimraf(ngPackage.dest);
 
-    const artefacts = new Artefacts(ngPackage.primary, ngPackage);
-    await transformSources({ artefacts, entryPoint: ngPackage.primary, pkg: ngPackage });
-    for (const secondary of ngPackage.secondaries) {
-      const artefacts = new Artefacts(secondary, ngPackage);
-      await transformSources({ artefacts, entryPoint: secondary, pkg: ngPackage });
+    const entryPoints = [ ngPackage.primary, ...ngPackage.secondaries ];
+    while (entryPoints.length > 0) {
+      const entryPoint = entryPoints.shift();
+      if (entryPoint.buildStatus === 'inprogress') {
+        console.warn(`${entryPoint.moduleId} already in-progress...cyclic dependency?`);
+        throw 'cyclic-dependency-possible?'
+      }
+      const artefacts = new Artefacts(entryPoint, ngPackage);
+      const buildResult = await transformSources({ artefacts, entryPoint, pkg: ngPackage })
+      if (buildResult === 'dependencies-not-satisfied') {
+        entryPoint.buildStatus = 'pending';
+        entryPoints.push(entryPoint);
+      }
     }
 
     await copyFiles(`${ngPackage.src}/README.md`, ngPackage.dest);
