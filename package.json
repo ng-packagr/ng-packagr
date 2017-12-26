@@ -24,6 +24,8 @@
   "bin": {
     "ng-packagr": "./cli/main.js"
   },
+  "main": "./public_api.js",
+  "typings": "./public_api.d.ts",
   "dependencies": {
     "@ngtools/json-schema": "^1.1.0",
     "autoprefixer": "^7.1.1",
@@ -112,7 +114,5 @@
     "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:consumers",
     "commitmsg": "commitlint -e",
     "gh-pages": "gh-pages -d docs/ghpages"
-  },
-  "main": "lib/ng-packagr.js",
-  "typings": "lib/ng-packagr.d.ts"
+  }
 }
