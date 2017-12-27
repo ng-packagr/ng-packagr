@@ -108,6 +108,20 @@ async function rollup(opts: RollupOptions): Promise<void> {
   });
 }
 
+export const flattenToFesm5: BuildStep =
+  async ({ artefacts, entryPoint, pkg }) => {
+    const fesm5File = path.resolve(artefacts.stageDir, 'esm5', entryPoint.flatModuleFile + '.js');
+    await rollup({
+      moduleName: entryPoint.moduleId,
+      entry: artefacts.fesm5DownlevelFile,
+      format: 'es',
+      dest: fesm5File,
+      embedded: entryPoint.embedded
+    });
+
+    artefacts.fesm5BundleFile = fesm5File;
+  };
+
 export const flattenToFesm15: BuildStep =
   async ({ artefacts, entryPoint, pkg }) => {
     const fesm15File = path.resolve(artefacts.stageDir, 'esm2015', entryPoint.flatModuleFile + '.js');
@@ -133,7 +147,7 @@ export const flattenToUmd: BuildStep =
       umdModuleIds: {
         ...entryPoint.umdModuleIds
       },
-      embedded: entryPoint.embedded
+      embedded: entryPoint.embedded ? ['tslib', ...entryPoint.embedded] : ['tslib']
     });
 
     artefacts.umdBundleFile = umdFile;
