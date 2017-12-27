@@ -3,7 +3,7 @@ import { externalModuleIdStrategy, umdModuleIdStrategy } from './rollup';
 
 describe('rollup', () => {
 
-  describe(externalModuleIdStrategy.name, () => {
+  describe(`externalModuleIdStrategy`, () => {
     it(`should return 'false' paths starting with '.'`, () => {
       expect(externalModuleIdStrategy('./foo/bar')).to.be.false;
     });
@@ -34,7 +34,7 @@ describe('rollup', () => {
 
   });
 
-  describe(umdModuleIdStrategy.name, () => {
+  describe(`umdModuleIdStrategy`, () => {
     it(`should map 'rxjs/add/observable/bindCallback' to 'Rx.Observable'`, () => {
       expect(umdModuleIdStrategy('rxjs/add/observable/bindCallback')).to.equal('Rx.Observable');
     });

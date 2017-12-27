@@ -47,9 +47,9 @@ export class NgPackage {
     public readonly secondaries: NgEntryPoint[] = []
   ) {}
 
-  /** Absolute path of the package's source directory. */
+  /** Absolute path of the package's source folder, derived from the user's (primary) package location. */
   public get src(): DirectoryPath {
-    return this.absolutePathFromPrimary('src');
+    return this.basePath;
   }
 
   /** Absolute path of the package's destination directory. */

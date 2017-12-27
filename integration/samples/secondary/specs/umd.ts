@@ -3,10 +3,10 @@ import * as path from 'path';
 
 describe(`@sample/secondary`, () => {
 
-  describe(`sample-secondary-lib.umd.js`, () => {
+  describe(`sample-secondary.umd.js`, () => {
     let GENERATED;
     before(done => {
-      GENERATED = require('../dist/bundles/sample-secondary-lib.umd.js');
+      GENERATED = require('../dist/bundles/sample-secondary.umd.js');
       done();
     });
 
@@ -19,10 +19,10 @@ describe(`@sample/secondary`, () => {
     });
   });
 
-  describe(`sample-secondary-lib.umd.min.js`, () => {
+  describe(`sample-secondary.umd.min.js`, () => {
     let GENERATED;
     before(done => {
-      GENERATED = require('../dist/bundles/sample-secondary-lib.umd.min.js');
+      GENERATED = require('../dist/bundles/sample-secondary.umd.min.js');
       done();
     });
 
@@ -35,10 +35,10 @@ describe(`@sample/secondary`, () => {
     });
   });
 
-  describe(`sample-secondary-lib-sub-module.umd.js`, () => {
+  describe(`sample-secondary-sub-module.umd.js`, () => {
     let GENERATED;
     before(done => {
-      GENERATED = require('../dist/bundles/sample-secondary-lib-sub-module.umd.js');
+      GENERATED = require('../dist/bundles/sample-secondary-sub-module.umd.js');
       done();
     });
 
@@ -51,10 +51,10 @@ describe(`@sample/secondary`, () => {
     });
   });
 
-  describe(`sample-secondary-lib-sub-module.umd.min.js`, () => {
+  describe(`sample-secondary-sub-module.umd.min.js`, () => {
     let GENERATED;
     before(done => {
-      GENERATED = require('../dist/bundles/sample-secondary-lib-sub-module.umd.min.js');
+      GENERATED = require('../dist/bundles/sample-secondary-sub-module.umd.min.js');
       done();
     });
 

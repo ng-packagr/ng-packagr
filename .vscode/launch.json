@@ -44,49 +44,63 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "samples (all)",
+      "name": "Samples (all)",
       "program": "${workspaceRoot}/integration/samples.dev.js"
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "sample: custom",
+      "name": "Sample: core",
+      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "args": [ "core" ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Sample: custom",
       "program": "${workspaceRoot}/integration/samples.dev.js",
       "args": [ "custom" ]
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "sample: externals",
+      "name": "Sample: externals",
       "program": "${workspaceRoot}/integration/samples.dev.js",
       "args": [ "externals" ]
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "sample: material",
+      "name": "Sample: material",
       "program": "${workspaceRoot}/integration/samples.dev.js",
       "args": [ "material" ]
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "sample: package-js",
+      "name": "Sample: package-js",
       "program": "${workspaceRoot}/integration/samples/package-js/build.dev.js"
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "sample: same-name",
+      "name": "Sample: same-name",
       "program": "${workspaceRoot}/integration/samples.dev.js",
       "args": [ "same-name" ]
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "sample: secondary",
+      "name": "Sample: secondary",
       "program": "${workspaceRoot}/integration/samples.dev.js",
       "args": [ "secondary" ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Sample: typings",
+      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "args": [ "typings" ]
     }
   ],
   "compounds": []

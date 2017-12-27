@@ -4,7 +4,7 @@ import * as fs from 'fs';
 
 describe(`@sample/secondary`, () => {
 
-  describe(`secondary-lib/package.json`, () => {
+  describe(`secondary/package.json`, () => {
     let PACKAGE;
     before(() => {
       PACKAGE = require('../dist/package.json');
@@ -18,24 +18,24 @@ describe(`@sample/secondary`, () => {
       expect(PACKAGE.ngPackage).to.be.undefined;
     });
 
-    it(`should be named '@sample/secondary-lib'`, () => {
-      expect(PACKAGE['name']).to.equal('@sample/secondary-lib');
+    it(`should be named '@sample/secondary'`, () => {
+      expect(PACKAGE['name']).to.equal('@sample/secondary');
     });
 
     it(`should reference "main" bundle (UMD)`, () => {
-      expect(PACKAGE['main']).to.equal('bundles/sample-secondary-lib.umd.js');
+      expect(PACKAGE['main']).to.equal('bundles/sample-secondary.umd.js');
     });
 
     it(`should reference "module" bundle (FESM5, also FESM2015)`, () => {
-      expect(PACKAGE['module']).to.equal('esm5/sample-secondary-lib.js');
+      expect(PACKAGE['module']).to.equal('esm5/sample-secondary.js');
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('esm2015/sample-secondary-lib.js');
+      expect(PACKAGE['es2015']).to.equal('esm2015/sample-secondary.js');
     });
 
     it(`should reference "typings" files`, () => {
-      expect(PACKAGE['typings']).to.equal('sample-secondary-lib.d.ts');
+      expect(PACKAGE['typings']).to.equal('sample-secondary.d.ts');
     });
   });
 
@@ -53,24 +53,24 @@ describe(`@sample/secondary`, () => {
       expect(PACKAGE.ngPackage).to.be.undefined;
     });
 
-    it(`should be named '@sample/secondary-lib/sub-module'`, () => {
-      expect(PACKAGE['name']).to.equal('@sample/secondary-lib/sub-module');
+    it(`should be named '@sample/secondary/sub-module'`, () => {
+      expect(PACKAGE['name']).to.equal('@sample/secondary/sub-module');
     });
 
     it(`should reference "main" bundle (UMD)`, () => {
-      expect(PACKAGE['main']).to.equal('../bundles/sample-secondary-lib-sub-module.umd.js');
+      expect(PACKAGE['main']).to.equal('../bundles/sample-secondary-sub-module.umd.js');
     });
 
     it(`should reference "module" bundle (FESM5, also FESM2015)`, () => {
-      expect(PACKAGE['module']).to.equal('../esm5/sample-secondary-lib-sub-module.js');
+      expect(PACKAGE['module']).to.equal('../esm5/sample-secondary-sub-module.js');
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('../esm2015/sample-secondary-lib-sub-module.js');
+      expect(PACKAGE['es2015']).to.equal('../esm2015/sample-secondary-sub-module.js');
     });
 
     it(`should reference "typings" files`, () => {
-      expect(PACKAGE['typings']).to.equal('sample-secondary-lib-sub-module.d.ts');
+      expect(PACKAGE['typings']).to.equal('sample-secondary-sub-module.d.ts');
     });
   });
 

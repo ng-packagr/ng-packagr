@@ -19,7 +19,7 @@
 
 ## Usage Example
 
-For publishing your Angular library, create a `package.json` file and add the custom `ngPackage` property:
+To publish your Angular library, create a `package.json` file, add the custom `ngPackage` property, and run `ng-packagr -p package.json`:
 
 ```json
 {
@@ -34,24 +34,24 @@ For publishing your Angular library, create a `package.json` file and add the cu
 }
 ```
 
-Paths in the `ngPackage` configuration are resolved relative to the location of the `package.json` file.
-You should use a npm/yarn script to run _ng-packagr_:
+Note: Paths in the `ngPackage` section are resolved relative to the location of the `package.json` file.
+You can easily run _ng-packagr_ through a npm/yarn script:
 
 ```json
 {
   "scripts": {
-    "build": "ng-packagr -p ng-package.json"
+    "build": "ng-packagr -p package.json"
   }
 }
 ```
 
-Now, build with the following command:
+Now, execute the build with the following command:
 
 ```bash
 $ yarn build
 ```
 
-You like to publish more libraries to npm?
+Do you like to publish more libraries to npm?
 Create one `package.json` per npm package, run _ng-packagr_ for each!
 
 

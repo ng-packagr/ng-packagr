@@ -2,10 +2,10 @@ import { expect } from 'chai';
 
 describe(`@sample/secondary`, () => {
 
-  describe(`sample-secondary-lib.metadata.json`, () => {
+  describe(`sample-secondary.metadata.json`, () => {
     let METADATA;
     before(() => {
-      METADATA = require('../dist/sample-secondary-lib.metadata.json');
+      METADATA = require('../dist/sample-secondary.metadata.json');
     });
 
     it(`should exist`, () => {
@@ -16,15 +16,15 @@ describe(`@sample/secondary`, () => {
       expect(METADATA['__symbolic']).to.equal('module');
     });
 
-    it(`should "importAs": "@sample/secondary-lib"`, () => {
-      expect(METADATA['importAs']).to.equal('@sample/secondary-lib');
+    it(`should "importAs": "@sample/secondary"`, () => {
+      expect(METADATA['importAs']).to.equal('@sample/secondary');
     });
   });
 
-  describe(`sample-secondary-lib-sub-module.metadata.json`, () => {
+  describe(`sample-secondary-sub-module.metadata.json`, () => {
     let METADATA;
     before(() => {
-      METADATA = require('../dist/sub-module/sample-secondary-lib-sub-module.metadata.json');
+      METADATA = require('../dist/sub-module/sample-secondary-sub-module.metadata.json');
     });
 
     it(`should exist`, () => {
@@ -35,8 +35,8 @@ describe(`@sample/secondary`, () => {
       expect(METADATA['__symbolic']).to.equal('module');
     });
 
-    it(`should "importAs": "@sample/secondary-lib/sub-module"`, () => {
-      expect(METADATA['importAs']).to.equal('@sample/secondary-lib/sub-module');
+    it(`should "importAs": "@sample/secondary/sub-module"`, () => {
+      expect(METADATA['importAs']).to.equal('@sample/secondary/sub-module');
     });
 
   });

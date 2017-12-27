@@ -1,6 +1,6 @@
 {
   "name": "ng-packagr",
-  "version": "2.0.0-rc.7",
+  "version": "2.0.0-rc.8",
   "description": "Compile and package a TypeScript library to Angular Package Format",
   "keywords": [
     "angular",
@@ -24,6 +24,8 @@
   "bin": {
     "ng-packagr": "./cli/main.js"
   },
+  "main": "./public_api.js",
+  "typings": "./public_api.d.ts",
   "dependencies": {
     "@ngtools/json-schema": "^1.1.0",
     "autoprefixer": "^7.1.1",
@@ -38,7 +40,7 @@
     "postcss": "^6.0.2",
     "postcss-url": "^7.3.0",
     "rimraf": "^2.6.1",
-    "rollup": "^0.52.0",
+    "rollup": "^0.53.0",
     "rollup-plugin-commonjs": "^8.2.1",
     "rollup-plugin-node-resolve": "^3.0.0",
     "sorcery": "^0.10.0",
@@ -53,7 +55,7 @@
     "typescript": ">=2.4.2 <2.6"
   },
   "devDependencies": {
-    "@angular-devkit/core": "^0.0.22",
+    "@angular-devkit/core": "^0.0.23",
     "@angular/cdk": "~5.0.0",
     "@angular/common": "~5.1.0",
     "@angular/compiler": "~5.1.0",
@@ -106,14 +108,13 @@
     "postrelease": "node ./scripts/prepublish.js",
     "publish:ci": "yarn prerelease && yarn postrelease",
     "integration:samples": "integration/samples.sh",
-    "integration:samples:dev": "./integration/samples.dev.js",
+    "integration:samples:dev": "ts-node --project src/tsconfig.packagr.json ./integration/samples.dev.ts",
     "integration:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --require ts-node/register integration/samples/*/specs/**/*.ts",
-    "integration:consumer": "integration/consumer.sh",
+    "integration:consumers": "integration/consumers.sh",
+    "integration:consumers:ngc": "ngc -p integration/consumers/tsc/tsconfig.json",
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json mocha --require ts-node/register src/**/*.spec.ts",
-    "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:consumer",
+    "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:consumers",
     "commitmsg": "commitlint -e",
     "gh-pages": "gh-pages -d docs/ghpages"
-  },
-  "main": "lib/ng-packagr.js",
-  "typings": "lib/ng-packagr.d.ts"
+  }
 }
