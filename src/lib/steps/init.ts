@@ -5,7 +5,10 @@ import * as path from 'path';
 import * as log from '../util/log';
 import { ensureUnixPath } from '../util/path';
 import { NgPackageConfig } from '../../ng-package.schema';
-import { NgPackage, NgEntryPoint } from '../domain/ng-package-format';
+import { Artefacts } from '../ng-package-format/artefacts';
+import { NgEntryPoint } from '../ng-package-format/entry-point';
+import { NgPackage } from '../ng-package-format/package';
+import { BuildStep } from '../deprecations';
 import { debug } from '../util/log';
 
 /** Creates a SchemaClass for `NgPackageConfig` */

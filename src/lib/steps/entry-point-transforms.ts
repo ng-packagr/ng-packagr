@@ -1,22 +1,19 @@
 import * as path from 'path';
-import * as log from './util/log';
-import { ensureUnixPath } from './util/path';
-import { rimraf } from './util/rimraf';
-
-// Domain
-import { Artefacts } from './domain/build-artefacts';
-import { NgEntryPoint, NgPackage } from './domain/ng-package-format';
-
-// Build steps
-import { writePackage } from './steps/package';
-import { processAssets } from './steps/assets';
-import { ngc, prepareTsConfig, collectTemplateAndStylesheetFiles, inlineTemplatesAndStyles } from './steps/ngc';
-import { minifyJsFile } from './steps/uglify';
-import { remapSourceMap, relocateSourceMapSources } from './steps/sorcery';
-import { flattenToFesm15, flattenToUmd } from './steps/rollup';
-import { downlevelWithTsc } from './steps/tsc';
-import { copySourceFilesToDestination } from './steps/transfer';
-import { BuildStep } from './domain/build-step';
+import { Artefacts } from '../ng-package-format/artefacts';
+import { NgEntryPoint } from '../ng-package-format/entry-point';
+import { NgPackage } from '../ng-package-format/package';
+import { BuildStep } from '../deprecations';
+import { writePackage } from '../steps/package';
+import { processAssets } from '../steps/assets';
+import { ngc, prepareTsConfig, collectTemplateAndStylesheetFiles, inlineTemplatesAndStyles } from '../steps/ngc';
+import { minifyJsFile } from '../steps/uglify';
+import { remapSourceMap, relocateSourceMapSources } from '../steps/sorcery';
+import { flattenToFesm15, flattenToUmd } from '../steps/rollup';
+import { downlevelWithTsc } from '../steps/tsc';
+import { copySourceFilesToDestination } from '../steps/transfer';
+import * as log from '../util/log';
+import { ensureUnixPath } from '../util/path';
+import { rimraf } from '../util/rimraf';
 
 /**
  * Transforms TypeScript source files to Angular Package Format.

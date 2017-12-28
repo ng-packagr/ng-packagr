@@ -1,5 +1,5 @@
 import { Command } from './command';
-import { buildNgPackage } from '../ng-packagr';
+import { buildNgPackage } from '../steps/build-ng-package';
 
 /** CLI arguments passed to `ng-packagr` executable and `build()` command. */
 export interface CliArguments {

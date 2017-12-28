@@ -3,7 +3,7 @@ import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as commonJs from 'rollup-plugin-commonjs';
 import * as path from 'path';
 import * as log from '../util/log';
-import { BuildStep } from '../domain/build-step';
+import { BuildStep } from '../deprecations';
 
 export type BundleFormat = __rollup.Format;
 

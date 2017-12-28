@@ -1,7 +1,7 @@
 import { outputJson } from 'fs-extra';
 import * as path from 'path';
 import * as log from '../util/log';
-import { NgEntryPoint } from '../domain/ng-package-format';
+import { NgEntryPoint } from '../ng-package-format/entry-point';
 
 /**
  * Creates and writes a `package.json` file of the entry point used by the `node_module`

@@ -1,7 +1,8 @@
 import * as path from 'path';
 import * as ts from 'typescript';
 import { TsConfig } from '../steps/ngc';
-import { NgEntryPoint, NgPackage, CssUrl } from './ng-package-format';
+import { NgEntryPoint } from './entry-point';
+import { NgPackage } from './package';
 
 /**
  * Build artefacts generated for an entry point (Angular library).

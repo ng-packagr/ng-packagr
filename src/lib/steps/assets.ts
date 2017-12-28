@@ -1,8 +1,9 @@
 import * as path from 'path';
 import { readFile } from 'fs-extra';
-import { Artefacts } from '../domain/build-artefacts';
-import { BuildStep } from '../domain/build-step';
-import { NgPackage, CssUrl } from '../domain/ng-package-format';
+import { Artefacts } from '../ng-package-format/artefacts';
+import { NgPackage } from '../ng-package-format/package';
+import { CssUrl } from '../ng-package-format/entry-point';
+import { BuildStep } from '../deprecations';
 import * as log from '../util/log';
 
 // CSS Tools
