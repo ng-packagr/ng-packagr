@@ -13,10 +13,10 @@ import { NgPackage } from './package';
 export class NgArtefacts {
 
   /** Directory for temporary files */
-  public stageDir: string;
+  public readonly stageDir: string;
 
   /** Directory for build output */
-  public outDir: string;
+  public readonly outDir: string;
 
   private _extras: Map<string, any> = new Map();
 
