@@ -1,4 +1,4 @@
-import { Artefacts } from './ng-package-format/artefacts';
+import { NgArtefacts } from './ng-package-format/artefacts';
 import { NgEntryPoint } from './ng-package-format/entry-point';
 import { NgPackage } from './ng-package-format/package';
 import { build, CliArguments } from './commands/build.command';
@@ -20,7 +20,7 @@ export async function createNgPackage(opts: CliArguments): Promise<void> {
 export interface BuildStep {
 
   ({}: {
-    artefacts: Artefacts,
+    artefacts: NgArtefacts,
     entryPoint: NgEntryPoint,
     pkg: NgPackage
   }): void | any | Promise<void | any>;

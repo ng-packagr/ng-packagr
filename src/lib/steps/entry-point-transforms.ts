@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { Artefacts } from '../ng-package-format/artefacts';
+import { NgArtefacts } from '../ng-package-format/artefacts';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
 import { NgPackage } from '../ng-package-format/package';
 import { BuildStep } from '../deprecations';

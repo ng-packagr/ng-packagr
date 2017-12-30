@@ -4,20 +4,33 @@ import { NgPackageConfig } from '../../ng-package.schema';
 import { DirectoryPath, SourceFilePath } from './shared';
 
 /**
- * XX: to be renamed to EntryPoint?
+ * An entry point - quoting Angular Package Format - is:
  *
- * An Angular library being compiled and transpiled to Angular Package Format.
+ * > a module intended to be imported by the user. It is referenced by a unique module ID and
+ * > exports the public API referenced by that module ID. An example is `@angular/core` or
+ * > `@angular/core/testing`. Both entry points exist in the `@angular/core` package, but they
+ * > export different symbols. A package can have many entry points.
  *
- * #### Relationship in the domain
+ * #### Public API, source file tree and build output
  *
- * _TBD_ the thing that - in effect - gets compiled from `*.ts`, `*.html`, `*.css` (and so on)
- * to FESM'5, FESM2015, UMD, AoT metadata, typings.
+ * An entry point serves as the root of a source tree.
+ * The entry point's public API references one TypeScript source file (`*.ts`).
+ * That source file, e.g. `public_api.ts`, references other source files who in turn may reference
+ * other source files, thus creating a tree of source code files.
+ * The source files may be TypeScript (`*.ts`), Templates (`.html`) or Stylesheets
+ * (`.css`, `.scss`, ..), or other formats.
  *
- * An `NgEntryPoint` serves as the root of a library's source tree.
- * During the compilation process (a tree transformation / transformation pipeline) it will be
- * transpiled to a set of artefacts such as a FESM'5 bundle, a FESM2015 bundle, AoT metadata,
- * and so on.
- * The set of artefacts is reflected in `NgArtefacts`.
+ * The compilation process for an entry point is a series of transformations applied to the source
+ * files, e.g. TypeScript compilation, Inlining of Stylesheets and Templates, and so on.
+ * As a result of the compilation process, an entry point is transpiled to a set of artefacts
+ * (the build output) which include a FESM'15 Bundle, a FESM'5 Bundle, AoT metadata, TypeScript
+ * type definitions, and so on.
+ *
+ * #### Representation in the domain
+ *
+ * The set of artefacts is reflected by `NgArtefacts`;
+ * one `NgEntryPoint` relates to one `NgArtefacts`.
+ * The parent package of an entry point is reflected by `NgPackage`.
  */
 export class NgEntryPoint {
 

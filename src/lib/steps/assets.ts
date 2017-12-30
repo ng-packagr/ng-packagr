@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { readFile } from 'fs-extra';
-import { Artefacts } from '../ng-package-format/artefacts';
+import { NgArtefacts } from '../ng-package-format/artefacts';
 import { NgPackage } from '../ng-package-format/package';
 import { CssUrl } from '../ng-package-format/entry-point';
 import { BuildStep } from '../deprecations';
@@ -17,7 +17,7 @@ import * as stylus from 'stylus';
 import * as postcssUrl from 'postcss-url';
 
 export const processAssets: BuildStep =
-  async ({ artefacts, entryPoint, pkg }): Promise<Artefacts> => {
+  async ({ artefacts, entryPoint, pkg }): Promise<NgArtefacts> => {
     // process templates
     const templates = await Promise.all(
       artefacts.templates()

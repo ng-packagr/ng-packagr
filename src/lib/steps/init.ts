@@ -5,7 +5,7 @@ import * as path from 'path';
 import * as log from '../util/log';
 import { ensureUnixPath } from '../util/path';
 import { NgPackageConfig } from '../../ng-package.schema';
-import { Artefacts } from '../ng-package-format/artefacts';
+import { NgArtefacts } from '../ng-package-format/artefacts';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
 import { NgPackage } from '../ng-package-format/package';
 import { BuildStep } from '../deprecations';

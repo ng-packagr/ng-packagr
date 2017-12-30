@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { CliArguments } from '../commands/build.command';
-import { Artefacts } from '../ng-package-format/artefacts';
+import { NgArtefacts } from '../ng-package-format/artefacts';
 import { NgPackage } from '../ng-package-format/package';
 import { copyFiles } from '../util/copy';
 import * as log from '../util/log';
@@ -20,10 +20,10 @@ export async function buildNgPackage(opts: CliArguments): Promise<void> {
     // clean the primary dest folder (should clean all secondary module directories as well)
     await rimraf(ngPackage.dest);
 
-    const artefacts = new Artefacts(ngPackage.primary, ngPackage);
+    const artefacts = new NgArtefacts(ngPackage.primary, ngPackage);
     await transformSources({ artefacts, entryPoint: ngPackage.primary, pkg: ngPackage });
     for (const secondary of ngPackage.secondaries) {
-      const artefacts = new Artefacts(secondary, ngPackage);
+      const artefacts = new NgArtefacts(secondary, ngPackage);
       await transformSources({ artefacts, entryPoint: secondary, pkg: ngPackage });
     }
 

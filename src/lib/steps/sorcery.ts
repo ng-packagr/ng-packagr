@@ -1,5 +1,5 @@
 import * as sorcery from 'sorcery';
-import { Artefacts } from '../ng-package-format/artefacts';
+import { NgArtefacts } from '../ng-package-format/artefacts';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
 import { NgPackage } from '../ng-package-format/package';
 import { modifyJsonFiles } from '../util/json';
@@ -39,7 +39,7 @@ export async function remapSourceMap(sourceFile: string): Promise<void> {
  * @param pkg Angular package
  */
 export async function relocateSourceMapSources(
-  { artefacts, entryPoint }: { artefacts: Artefacts, entryPoint: NgEntryPoint }): Promise<void> {
+  { artefacts, entryPoint }: { artefacts: NgArtefacts, entryPoint: NgEntryPoint }): Promise<void> {
 
   await modifyJsonFiles(`${artefacts.stageDir}/+(bundles|esm2015|esm5)/**/*.js.map`,
     (sourceMap: any): any => {

@@ -10,7 +10,7 @@ import { NgPackage } from './package';
  * The artefacts include distribution-ready 'binaries' as well as temporary files and
  * intermediate build output.
  */
-export class Artefacts {
+export class NgArtefacts {
 
   /** Directory for temporary files */
   public stageDir: string;
