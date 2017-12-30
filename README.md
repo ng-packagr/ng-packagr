@@ -20,7 +20,8 @@
 ## Usage Example
 
 Let's talk us through a _getting started_ that'll build an Angular library from TypeScript sources and create a distribution-ready npm package:
-create a `package.json` file, add the custom `ngPackage` property, and run `ng-packagr -p package.json`.
+create a `package.json` file, add the custom `ngPackage` property, and eventually run `ng-packagr -p package.json`
+– Here we go:
 
 ```json
 {
@@ -36,6 +37,7 @@ create a `package.json` file, add the custom `ngPackage` property, and run `ng-p
 ```
 
 Note: Paths in the `ngPackage` section are resolved relative to the location of the `package.json` file.
+In the above example, `public_api.ts` is the entry file to the library's sources and must be placed next to `package.json` (a sibling in the same folder).
 
 You can easily run _ng-packagr_ through a npm/yarn script:
 
