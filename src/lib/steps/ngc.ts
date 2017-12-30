@@ -12,7 +12,7 @@ import * as log from '../util/log';
 // ... blatanlty copy-paste the emit callback here. it's not a public api.
 // ... @link https://github.com/angular/angular/blob/24bf3e2a251634811096b939e61d63297934579e/packages/compiler-cli/src/main.ts#L36-L38
 import { createEmitCallback } from '../util/ngc-patches';
-import { componentTransformer } from '../util/ts-transformers';
+import { componentTransformer, dependencyAnalyser } from '../util/ts-transformers';
 
 /** TypeScript configuration used internally (marker typer). */
 export type TsConfig = ng.ParsedConfiguration;
@@ -50,31 +50,88 @@ export const prepareTsConfig: BuildStep =
     artefacts.tsConfig = tsConfig;
   }
 
-/** Transforms TypeScript AST */
-const transformSources =
-  (tsConfig: TsConfig, transformers: ts.TransformerFactory<ts.SourceFile>[]): ts.TransformationResult<ts.SourceFile> => {
+/**
+ * Analyses the TypeScript source set: extracts assets references in `templateUrl` and `stylUrls`,
+ * analyses dependencies.
+ */
+export const analyseSourceFiles: BuildStep =
+  ({ artefacts, entryPoint, pkg }) => {
+    // Extracts templateUrl and styleUrls from `@Component({..})` decorators.
+    const templateAndStylesExtractor = componentTransformer({
+      templateProcessor: (a, b, templateFilePath) => {
+        artefacts.template(templateFilePath, null);
+      },
+      stylesheetProcessor: (a, b, styleFilePath) => {
+        artefacts.stylesheet(styleFilePath, null);
+      }
+    });
+
+    // Analyse intra-package dependencies
+    const allModuleIds = [ pkg.primary, ...pkg.secondaries ]
+      .map((entryPoint) => entryPoint.moduleId);
+    const depsAnalyser = dependencyAnalyser(allModuleIds, (id) => {
+      entryPoint.dependendingOnEntryPoints.push(id);
+    });
+
+    // Prepare ts stuff
+    const tsConfig = artefacts.tsConfig;
     const compilerHost: ng.CompilerHost = ng.createCompilerHost({
       options: tsConfig.options
     });
-    const program: ng.Program = ng.createProgram({
+    const program = ng.createProgram({
       rootNames: [ ...tsConfig.rootNames ],
       options: tsConfig.options,
       host: compilerHost
     });
-    const transformationResult: ts.TransformationResult<ts.SourceFile> = ts.transform(
+
+    // Apply ts transformations
+    artefacts.tsSources = ts.transform(
       program.getTsProgram().getSourceFiles(),
-      transformers,
+      [
+        (context) => {
+          log.info(`Extracting templateUrl and styleUrls`);
+          return templateAndStylesExtractor(context);
+        },
+        (context) => {
+          log.info(`Analysing dependencies`);
+          return depsAnalyser(context);
+        }
+      ],
       tsConfig.options
     );
-
-    return transformationResult;
   }
 
-//const compilerHostFromTransformation =
-//  ({transformation, options}: {transformation: ts.TransformationResult<ts.SourceFile>, options: ts.CompilerOptions}): ts.CompilerHost => {
+class SynthesizedSourceFile {
+
+  private replacemenets: { from: number, to: number, text: string}[] = [];
+
+  constructor(
+    private original: ts.SourceFile
+  ) {}
+
+  addReplacement(replacement: { from: number, to: number, text: string}) {
+    this.replacemenets.push(replacement);
+  }
+
+  public writeSourceText(): string {
+    const originalSource = this.original.getFullText();
+
+    let newSource = '';
+    let position = 0;
+    for (let replacement of this.replacemenets) {
+      newSource = newSource.concat(originalSource.substring(position, replacement.from))
+        .concat(replacement.text);
+      position = replacement.to;
+    }
+    newSource = newSource.concat(originalSource.substring(position));
+
+    return newSource;
+  }
+
+}
 
 const compilerHostFromArtefacts =
-  (artefacts: Artefacts) => {
+  (artefacts: Artefacts): ts.CompilerHost => {
     const wrapped = ts.createCompilerHost(artefacts.tsConfig.options);
 
     return {
@@ -114,55 +171,6 @@ const compilerHostFromArtefacts =
       }
     };
   }
-
-/** Extracts templateUrl and styleUrls from `@Component({..})` decorators. */
-export const collectTemplateAndStylesheetFiles: BuildStep =
-  ({ artefacts, entryPoint, pkg }) => {
-    const tsConfig = artefacts.tsConfig;
-
-    const collector = componentTransformer({
-      templateProcessor: (a, b, templateFilePath) => {
-        artefacts.template(templateFilePath, null);
-      },
-      stylesheetProcessor: (a, b, styleFilePath) => {
-        artefacts.stylesheet(styleFilePath, null);
-      }
-    });
-
-    artefacts.tsSources = transformSources(
-      tsConfig,
-      [ collector ]
-    );
-  }
-
-class SynthesizedSourceFile {
-
-  private replacemenets: { from: number, to: number, text: string}[] = [];
-
-  constructor(
-    private original: ts.SourceFile
-  ) {}
-
-  addReplacement(replacement: { from: number, to: number, text: string}) {
-    this.replacemenets.push(replacement);
-  }
-
-  public writeSourceText(): string {
-    const originalSource = this.original.getFullText();
-
-    let newSource = '';
-    let position = 0;
-    for (let replacement of this.replacemenets) {
-      newSource = newSource.concat(originalSource.substring(position, replacement.from))
-        .concat(replacement.text);
-      position = replacement.to;
-    }
-    newSource = newSource.concat(originalSource.substring(position));
-
-    return newSource;
-  }
-
-}
 
 /** Transforms templateUrl and styleUrls in `@Component({..})` decorators. */
 export const inlineTemplatesAndStyles: BuildStep =

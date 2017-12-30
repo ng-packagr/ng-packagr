@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { SHARED_MAGIC_STUFF } from '@sample/secondary/shared-module';
 
 @Component({
-  selector: 'bar-component',
-  templateUrl: './bar.component.html',
-  styleUrls: ['./bar.component.scss']
+  selector: 'dependent-component',
+  template: `I depend on {{ message }}`
 })
 export class BarComponent {
 

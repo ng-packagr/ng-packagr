@@ -124,6 +124,13 @@ export const flattenToFesm15: BuildStep =
 
 export const flattenToUmd: BuildStep =
   async ({ artefacts, entryPoint, pkg }) => {
+    const intraPackageUmdsModules = entryPoint.dependendingOnEntryPoints
+      .reduce((prev, current) => {
+        prev[current] = pkg.entryPoint(current).umdModuleId;
+
+        return prev;
+      }, {});
+
     const umdFile = path.resolve(artefacts.stageDir, 'bundles', entryPoint.flatModuleFile + '.umd.js');
     await rollup({
       moduleName: entryPoint.umdModuleId,
@@ -131,7 +138,8 @@ export const flattenToUmd: BuildStep =
       format: 'umd',
       dest: umdFile,
       umdModuleIds: {
-        ...entryPoint.umdModuleIds
+        ...entryPoint.umdModuleIds,
+        ...intraPackageUmdsModules
       },
       embedded: entryPoint.embedded
     });

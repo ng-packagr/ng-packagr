@@ -66,6 +66,11 @@ export class NgPackage {
     return path.resolve(this.basePath, this.primary.$get(key));
   }
 
+  public entryPoint(moduleId: string): NgEntryPoint {
+    return [ this.primary, ...this.secondaries]
+      .find((entryPoint) => entryPoint.moduleId === moduleId);
+  }
+
 }
 
 /**
@@ -162,6 +167,15 @@ export class NgEntryPoint {
       return this.moduleId.split('/').join(separator);
     }
   }
+
+  /**
+   * TODO
+   * Dependencies of this entry point on other entry points in the package.
+   * List of module IDs
+   */
+  public dependendingOnEntryPoints: string[] = [];
+
+  public buildStatus: 'failed'|'success'|'pending'|'inprogress' = 'pending';
 
 }
 
