@@ -19,7 +19,8 @@
 
 ## Usage Example
 
-To publish your Angular library, create a `package.json` file, add the custom `ngPackage` property, and run `ng-packagr -p package.json`:
+Let's talk us through a _getting started_ that'll build an Angular library from TypeScript sources and create a distribution-ready npm package:
+create a `package.json` file, add the custom `ngPackage` property, and run `ng-packagr -p package.json`.
 
 ```json
 {
@@ -35,6 +36,7 @@ To publish your Angular library, create a `package.json` file, add the custom `n
 ```
 
 Note: Paths in the `ngPackage` section are resolved relative to the location of the `package.json` file.
+
 You can easily run _ng-packagr_ through a npm/yarn script:
 
 ```json
@@ -51,7 +53,11 @@ Now, execute the build with the following command:
 $ yarn build
 ```
 
-Do you like to publish more libraries to npm?
+The build output is written to the `dist` folder, containing all those _binaries_ to meet the Angular Package Format specification.
+You'll now be able to go ahead and `npm publish dist` your Angular library to the npm registry.
+
+Do you like to publish more libraries?
+Is your code living in a monorepo?
 Create one `package.json` per npm package, run _ng-packagr_ for each!
 
 
@@ -260,7 +266,7 @@ construct them, you can set the `jsx` flag for your library through `ng-package.
 
 The `jsx` flag will accept what the corresponding `tsconfig` accepts, more information [in the TypeScript Handbook chaper on JSX](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
-Note: Don't forget to include `react` and `react-dom` in your `umdModuleIds` so that you're not bundling those dependencies!
+Note: Don't forget to include `react` and `react-dom` in `umdModuleIds` so that you're shipping a correct UMD bundle!
 
 
 ## Further documentation
