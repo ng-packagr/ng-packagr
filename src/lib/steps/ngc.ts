@@ -4,9 +4,10 @@ import * as ng from '@angular/compiler-cli';
 // XX: has or is using name 'ParsedConfiguration' ... but cannot be named
 import { ParsedConfiguration } from '@angular/compiler-cli';
 import * as ts from 'typescript';
-import { Artefacts } from '../domain/build-artefacts';
-import { BuildStep } from '../domain/build-step';
-import { NgEntryPoint } from '../domain/ng-package-format';
+import { NgArtefacts } from '../ng-package-format/artefacts';
+import { NgEntryPoint } from '../ng-package-format/entry-point';
+import { NgPackage } from '../ng-package-format/package';
+import { BuildStep } from '../deprecations';
 import * as log from '../util/log';
 // XX: internal in ngc's `main()`, a tsickle emit callback is passed to the tsc compiler
 // ... blatanlty copy-paste the emit callback here. it's not a public api.
@@ -74,7 +75,7 @@ const transformSources =
 //  ({transformation, options}: {transformation: ts.TransformationResult<ts.SourceFile>, options: ts.CompilerOptions}): ts.CompilerHost => {
 
 const compilerHostFromArtefacts =
-  (artefacts: Artefacts) => {
+  (artefacts: NgArtefacts) => {
     const wrapped = ts.createCompilerHost(artefacts.tsConfig.options);
 
     return {
@@ -198,7 +199,7 @@ export const inlineTemplatesAndStyles: BuildStep =
  * @param entryPoint Angular package data
  * @returns Promise<{}> Pathes of the flatModuleOutFile
  */
-export async function ngc(entryPoint: NgEntryPoint, artefacts: Artefacts) {
+export async function ngc(entryPoint: NgEntryPoint, artefacts: NgArtefacts) {
   log.debug(`ngc (v${ng.VERSION.full}): ${entryPoint.entryFile}`);
 
   // ng.CompilerHost

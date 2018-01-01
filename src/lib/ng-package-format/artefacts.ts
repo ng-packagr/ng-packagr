@@ -1,7 +1,8 @@
 import * as path from 'path';
 import * as ts from 'typescript';
 import { TsConfig } from '../steps/ngc';
-import { NgEntryPoint, NgPackage, CssUrl } from './ng-package-format';
+import { NgEntryPoint } from './entry-point';
+import { NgPackage } from './package';
 
 /**
  * Build artefacts generated for an entry point (Angular library).
@@ -9,13 +10,13 @@ import { NgEntryPoint, NgPackage, CssUrl } from './ng-package-format';
  * The artefacts include distribution-ready 'binaries' as well as temporary files and
  * intermediate build output.
  */
-export class Artefacts {
+export class NgArtefacts {
 
   /** Directory for temporary files */
-  public stageDir: string;
+  public readonly stageDir: string;
 
   /** Directory for build output */
-  public outDir: string;
+  public readonly outDir: string;
 
   private _extras: Map<string, any> = new Map();
 

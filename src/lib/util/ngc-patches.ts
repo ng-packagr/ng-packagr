@@ -16,7 +16,7 @@ import * as path from 'path';
 import * as tsickle from 'tsickle';
 import * as api from '@angular/compiler-cli';
 
-// @link https://github.com/angular/angular/blob/24bf3e2a251634811096b939e61d63297934579e/packages/compiler-cli/src/main.ts#L41-L80
+// @link https://github.com/angular/angular/blob/83d207d/packages/compiler-cli/src/main.ts#L42-L84
 export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCallback|undefined {
   const transformDecorators = options.annotationsAs !== 'decorators';
   const transformTypesToClosure = options.annotateForClosureCompiler;
@@ -29,7 +29,10 @@ export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCall
     // as TypeScript elided the import.
     options.emitDecoratorMetadata = true;
   }
-  const tsickleHost: tsickle.TsickleHost = {
+  const tsickleHost: Pick<
+      tsickle.TsickleHost, 'shouldSkipTsickleProcessing'|'pathToModuleName'|
+      'shouldIgnoreWarningsForPath'|'fileNameToModuleId'|'googmodule'|'untyped'|
+      'convertIndexImportShorthand'|'transformDecorators'|'transformTypesToClosure'> = {
     shouldSkipTsickleProcessing: (fileName) =>
                                      /\.d\.ts$/.test(fileName) || GENERATED_FILES.test(fileName),
     pathToModuleName: (context, importPath) => '',
@@ -51,8 +54,8 @@ export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCall
            options
          }) =>
              tsickle.emitWithTsickle(
-                 program, tsickleHost, host, options, targetSourceFile, writeFile,
-                 cancellationToken, emitOnlyDtsFiles, {
+                 program, {...tsickleHost, options, host}, host, options, targetSourceFile,
+                 writeFile, cancellationToken, emitOnlyDtsFiles, {
                    beforeTs: customTransformers.before,
                    afterTs: customTransformers.after,
                  });

@@ -1,25 +1,12 @@
-// BUILD STEP IMPLEMENTATIONS
-import { discoverPackages } from './steps/init';
-import { rimraf } from './util/rimraf';
-import { copyFiles } from './util/copy';
-import { transformSources } from './entry-point-transforms';
-
-// Domain
-import { CliArguments } from './commands/build.command';
-import { Artefacts } from './domain/build-artefacts';
-import { NgPackage } from './domain/ng-package-format';
-
-// Node API
 import * as path from 'path';
-
-// Logging
-import * as log from './util/log';
-
-export async function createNgPackage(opts: CliArguments): Promise<void> {
-  log.warn(`DEPRECATED: createNgPackage() is becoming deprecated. Invoke the 'build: Command' instead.`);
-  return buildNgPackage(opts);
-}
-
+import { CliArguments } from '../commands/build.command';
+import { NgArtefacts } from '../ng-package-format/artefacts';
+import { NgPackage } from '../ng-package-format/package';
+import { copyFiles } from '../util/copy';
+import * as log from '../util/log';
+import { rimraf } from '../util/rimraf';
+import { discoverPackages } from './init';
+import { transformSources } from './entry-point-transforms';
 
 // XX: should eventually become a BuildStep
 export async function buildNgPackage(opts: CliArguments): Promise<void> {
@@ -33,10 +20,10 @@ export async function buildNgPackage(opts: CliArguments): Promise<void> {
     // clean the primary dest folder (should clean all secondary module directories as well)
     await rimraf(ngPackage.dest);
 
-    const artefacts = new Artefacts(ngPackage.primary, ngPackage);
+    const artefacts = new NgArtefacts(ngPackage.primary, ngPackage);
     await transformSources({ artefacts, entryPoint: ngPackage.primary, pkg: ngPackage });
     for (const secondary of ngPackage.secondaries) {
-      const artefacts = new Artefacts(secondary, ngPackage);
+      const artefacts = new NgArtefacts(secondary, ngPackage);
       await transformSources({ artefacts, entryPoint: secondary, pkg: ngPackage });
     }
 
