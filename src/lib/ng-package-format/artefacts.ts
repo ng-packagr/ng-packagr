@@ -1,7 +1,8 @@
 import * as path from 'path';
 import * as ts from 'typescript';
 import { TsConfig } from '../steps/ngc';
-import { NgEntryPoint, NgPackage, CssUrl } from './ng-package-format';
+import { NgEntryPoint } from './entry-point';
+import { NgPackage } from './package';
 
 /**
  * Build artefacts generated for an entry point (Angular library).
@@ -9,13 +10,13 @@ import { NgEntryPoint, NgPackage, CssUrl } from './ng-package-format';
  * The artefacts include distribution-ready 'binaries' as well as temporary files and
  * intermediate build output.
  */
-export class Artefacts {
+export class NgArtefacts {
 
   /** Directory for temporary files */
-  public stageDir: string;
+  public readonly stageDir: string;
 
   /** Directory for build output */
-  public outDir: string;
+  public readonly outDir: string;
 
   private _extras: Map<string, any> = new Map();
 
@@ -89,6 +90,54 @@ export class Artefacts {
     return Array.from(this._extras.keys())
       .filter((key) => key.startsWith('stylesheet:'))
       .map((key) => key.substring('stylesheet:'.length));
+  }
+
+  public get es2015EntryFile(): string {
+    return this.extras('es2015:entryFile');
+  }
+
+  public set es2015EntryFile(filePath: string) {
+    this.extras('es2015:entryFile', filePath);
+  }
+
+  public get typingsEntryFile(): string {
+    return this.extras('typings:entryFile');
+  }
+
+  public set typingsEntryFile(filePath: string) {
+    this.extras('typings:entryFile', filePath);
+  }
+
+  public get fesm15BundleFile(): string {
+    return this.extras('fesm15:bundleFile');
+  }
+
+  public set fesm15BundleFile(filePath: string) {
+    this.extras('fesm15:bundleFile', filePath);
+  }
+
+  public get fesm5BundleFile(): string {
+    return this.extras('fesm5:bundleFile');
+  }
+
+  public set fesm5BundleFile(filePath: string) {
+    this.extras('fesm5:bundleFile', filePath);
+  }
+
+  public get umdBundleFile(): string {
+    return this.extras('umd:bundleFile');
+  }
+
+  public set umdBundleFile(filePath: string) {
+    this.extras('umd:bundleFile', filePath);
+  }
+
+  public get aotBundleFile(): string {
+    return this.extras('aot:bundleFile');
+  }
+
+  public set aotBundleFile(filePath: string) {
+    this.extras('aot:bundleFile', filePath);
   }
 
 }

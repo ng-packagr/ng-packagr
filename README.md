@@ -19,7 +19,9 @@
 
 ## Usage Example
 
-For publishing your Angular library, create a `package.json` file and add the custom `ngPackage` property:
+Let's talk us through a _getting started_ that'll build an Angular library from TypeScript sources and create a distribution-ready npm package:
+create a `package.json` file, add the custom `ngPackage` property, and eventually run `ng-packagr -p package.json`
+– Here we go:
 
 ```json
 {
@@ -34,24 +36,30 @@ For publishing your Angular library, create a `package.json` file and add the cu
 }
 ```
 
-Paths in the `ngPackage` configuration are resolved relative to the location of the `package.json` file.
-You should use a npm/yarn script to run _ng-packagr_:
+Note: Paths in the `ngPackage` section are resolved relative to the location of the `package.json` file.
+In the above example, `public_api.ts` is the entry file to the library's sources and must be placed next to `package.json` (a sibling in the same folder).
+
+You can easily run _ng-packagr_ through a npm/yarn script:
 
 ```json
 {
   "scripts": {
-    "build": "ng-packagr -p ng-package.json"
+    "build": "ng-packagr -p package.json"
   }
 }
 ```
 
-Now, build with the following command:
+Now, execute the build with the following command:
 
 ```bash
 $ yarn build
 ```
 
-You like to publish more libraries to npm?
+The build output is written to the `dist` folder, containing all those _binaries_ to meet the Angular Package Format specification.
+You'll now be able to go ahead and `npm publish dist` your Angular library to the npm registry.
+
+Do you like to publish more libraries?
+Is your code living in a monorepo?
 Create one `package.json` per npm package, run _ng-packagr_ for each!
 
 
@@ -260,7 +268,7 @@ construct them, you can set the `jsx` flag for your library through `ng-package.
 
 The `jsx` flag will accept what the corresponding `tsconfig` accepts, more information [in the TypeScript Handbook chaper on JSX](https://www.typescriptlang.org/docs/handbook/jsx.html).
 
-Note: Don't forget to include `react` and `react-dom` in your `umdModuleIds` so that you're not bundling those dependencies!
+Note: Don't forget to include `react` and `react-dom` in `umdModuleIds` so that you're shipping a correct UMD bundle!
 
 
 ## Further documentation

@@ -1,6 +1,9 @@
 {
   "$schema": "../../../src/ng-package.schema.json",
   "lib": {
-    "entryFile": "src/public_api.ts"
-}
+    "entryFile": "src/public_api.ts",
+    "embedded": [
+      "chalk"
+    ]
+  }
 }

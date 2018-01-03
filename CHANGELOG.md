@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.9"></a>
+# [2.0.0-rc.9](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.8...v2.0.0-rc.9) (2017-12-30)
+
+
+### Bug Fixes
+
+* supports extracting styles from multiple styleUrls ([#455](https://github.com/dherges/ng-packagr/issues/455)) ([4cfd98d](https://github.com/dherges/ng-packagr/commit/4cfd98d))
+
+
+
+<a name="2.0.0-rc.8"></a>
+# [2.0.0-rc.8](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.7...v2.0.0-rc.8) (2017-12-26)
+
+
+### Bug Fixes
+
+* remove `umdModuleIds` for esm2015 flattening (rollup `es` format) ([#429](https://github.com/dherges/ng-packagr/issues/429)) ([b103b74](https://github.com/dherges/ng-packagr/commit/b103b74))
+* remove moduleId from rollup bundle options ([#444](https://github.com/dherges/ng-packagr/issues/444)) ([da332d2](https://github.com/dherges/ng-packagr/commit/da332d2))
+* update rollup to version ^0.53.0 ([#438](https://github.com/dherges/ng-packagr/issues/438)) ([8918809](https://github.com/dherges/ng-packagr/commit/8918809))
+
+
+### Features
+
+* dynamic rollup configuration for esm flattening ([#395](https://github.com/dherges/ng-packagr/issues/395)) ([5712429](https://github.com/dherges/ng-packagr/commit/5712429))
+* expose `build` and `version` commands from public API ([#447](https://github.com/dherges/ng-packagr/issues/447)) ([286819c](https://github.com/dherges/ng-packagr/commit/286819c))
+* expose a public API surface for programmatic usage ([ec2b29f](https://github.com/dherges/ng-packagr/commit/ec2b29f))
+* remove `src` property from package schema ([#431](https://github.com/dherges/ng-packagr/issues/431)) ([960484c](https://github.com/dherges/ng-packagr/commit/960484c))
+
+
+### BREAKING CHANGES
+
+* Setting `ngPackage.src` has no effect any more. The source directory (base path) is equivalent to the location of the (primary) `ng-package.json`, `package.json`, or `ng-package.js`.
+* `lib.externals` has been removed in favour of `lib.umdModuleIds` which is now just used to provide the UMD module identifiers of external dependencies.
+By default, all dependencies are now treated as externals and thus are not embedded in the final bundle.
+If a dependency should be embedded in the distributables, it needs to be explicity added to `lib.embedded`.
+Please consult the updated README on migrating your package confguration from `lib.externals` to `lib.umdModuleIds` and `lib.embedded`.
+
+
+
 <a name="2.0.0-rc.7"></a>
 # [2.0.0-rc.7](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.6...v2.0.0-rc.7) (2017-12-15)
 
@@ -9,11 +48,11 @@ All notable changes to this project will be documented in this file. See [standa
 ### Bug Fixes
 
 * log error message only on build failure ([51643e1](https://github.com/dherges/ng-packagr/commit/51643e1))
-* print `[@angular](https://github.com/angular)/compiler-cli` version ([b0e362e](https://github.com/dherges/ng-packagr/commit/b0e362e))
+* print `@angular/compiler-cli` version ([b0e362e](https://github.com/dherges/ng-packagr/commit/b0e362e))
 * print rollup warnings to `log.warn()` ([356a01b](https://github.com/dherges/ng-packagr/commit/356a01b))
 * relax on non-call-expression decorators in typescript parsing ([7135c42](https://github.com/dherges/ng-packagr/commit/7135c42))
 * set `peerDependencies` to `tsickle: ^0.24.0` and `typescript: >=2.4.2 <2.6` ([#387](https://github.com/dherges/ng-packagr/issues/387)) ([001f63f](https://github.com/dherges/ng-packagr/commit/001f63f))
-* set peerDependency tsickle to `>=0.24.0 <0.26" ([d682cd2](https://github.com/dherges/ng-packagr/commit/d682cd2))
+* set peerDependency `tsickle: >=0.24.0 <0.26` ([d682cd2](https://github.com/dherges/ng-packagr/commit/d682cd2))
 * update fs-extra to version ^5.0.0 ([#400](https://github.com/dherges/ng-packagr/issues/400)) ([9e6d081](https://github.com/dherges/ng-packagr/commit/9e6d081))
 
 

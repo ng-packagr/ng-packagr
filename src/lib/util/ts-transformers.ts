@@ -79,6 +79,7 @@ export const componentTransformer: ComponentTransformer =
             .filter((node) => node.kind === ts.SyntaxKind.SyntaxList)
             .map((node) => node.getChildren().map(n => n.getText()))
             .reduce((prev, current) => prev.concat(...current), [])
+            .filter(text => text !== ',')
             .map((url) => url.substring(1, url.length - 1));
 
           const stylesheets = styleUrls.map((url: string) => {

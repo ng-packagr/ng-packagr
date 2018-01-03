@@ -1,5 +1,6 @@
-import { Artefacts } from '../domain/build-artefacts';
-import { NgEntryPoint, NgPackage } from '../domain/ng-package-format'
+import { NgArtefacts } from '../ng-package-format/artefacts';
+import { NgEntryPoint } from '../ng-package-format/entry-point';
+import { NgPackage } from '../ng-package-format/package';
 import { copyFiles } from '../util/copy';
 import * as path from 'path';
 
@@ -8,7 +9,7 @@ import * as path from 'path';
  * in the npm package's destination directory.
  */
 export const copySourceFilesToDestination =
-  async ({artefacts, entryPoint, pkg}: { artefacts: Artefacts, entryPoint: NgEntryPoint, pkg: NgPackage }): Promise<void> => {
+  async ({artefacts, entryPoint, pkg}: { artefacts: NgArtefacts, entryPoint: NgEntryPoint, pkg: NgPackage }): Promise<void> => {
 
     await copyFiles(`${artefacts.stageDir}/bundles/**/*.{js,js.map}`,
       path.resolve(pkg.dest, 'bundles'));
