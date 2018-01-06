@@ -18,6 +18,6 @@ describe(`provideProject()`, () => {
   it(`should return the ValueProvider`, () => {
     const provider = provideProject('foo');
     expect(provider.provide).to.equal(PROJECT_TOKEN);
-    expect(provider.useValue).to.be.ok;
+    expect(provider.useValue).to.equal('foo');
   });
 });
