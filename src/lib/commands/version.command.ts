@@ -23,6 +23,7 @@ function tryReadVersion(paths: string[] = []) {
   }
 }
 
+/** @stable */
 export const version: Command<undefined, void> =
   () => {
     tryReadVersion(['../../package.json', '../../../package.json']);
