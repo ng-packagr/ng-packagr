@@ -18,9 +18,9 @@ export class NgPackagr {
 
   public build(): Promise<void> {
     const injector = ReflectiveInjector.resolveAndCreate(this.providers);
-    const fooToken = injector.get(PROJECT_TOKEN);
+    const project = injector.get(PROJECT_TOKEN);
 
-    return buildNgPackage({ project: fooToken });
+    return buildNgPackage({ project });
   }
 
 }
