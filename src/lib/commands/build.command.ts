@@ -1,5 +1,5 @@
 import { Command } from './command';
-import { buildNgPackage } from '../steps/build-ng-package';
+import { ngPackagr, provideProject } from '../ng-v5/packagr';
 
 /** CLI arguments passed to `ng-packagr` executable and `build()` command. */
 export interface CliArguments {
@@ -8,5 +8,10 @@ export interface CliArguments {
   project: string
 }
 
+/** @stable */
 export const build: Command<CliArguments, void> =
-  (opts) => buildNgPackage(opts);
+  (opts) => ngPackagr()
+    .withProviders([
+      provideProject(opts.project)
+    ])
+    .build();
