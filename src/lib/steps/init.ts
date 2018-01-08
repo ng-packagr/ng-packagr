@@ -107,7 +107,6 @@ const findSecondaryPackagesPaths =
       'dist',
       '.ng_build',
       '.ng_pkg_build',
-      directoryPath,
       path.resolve(directoryPath, excludeFolder)
     ]
 
@@ -116,6 +115,10 @@ const findSecondaryPackagesPaths =
       EXCLUDE_FOLDERS.push(`**/${folder}/**/package.json`);
       EXCLUDE_FOLDERS.push(`**/${folder}/**/ng-package.json`);
     }
+    EXCLUDE_FOLDERS.push(directoryPath + '/package.json');
+    EXCLUDE_FOLDERS.push(directoryPath + '/ng-package.json');
+
+
 
     return new Promise<string[]>((resolve, reject) => {
       glob(`${directoryPath}/**/*package.json`,
@@ -184,8 +187,8 @@ export const discoverPackages =
         )
       ))
       .then((secondaryPackages) => secondaryPackages
-          .filter((value) => !!value)
-          .map((secondaryPackage) => secondaryEntryPoint(primaryPackage.basePath, primary, secondaryPackage))
+        .filter((value) => !!value)
+        .map((secondaryPackage) => secondaryEntryPoint(primaryPackage.basePath, primary, secondaryPackage))
       )
     );
     if (secondaries.length > 0) {
