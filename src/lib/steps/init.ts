@@ -102,18 +102,20 @@ const primaryEntryPoint =
  */
 const findSecondaryPackagesPaths =
   async (directoryPath: string, excludeFolder: string): Promise<string[]> => {
-    const EXCLUDE_FOLDERS = [
+    let excludedFolders = [
       'node_modules',
       'dist',
       '.ng_build',
       '.ng_pkg_build',
+      directoryPath,
+      path.resolve(directoryPath, excludeFolder)
     ]
-      .map((directoryName) => `**/${directoryName}/**/package.json`)
-      .concat([
-        path.resolve(directoryPath, 'package.json'),
-        path.resolve(directoryPath, 'ng-package.json'),
-        path.resolve(directoryPath, excludeFolder) + '/**/package.json'
-      ]);
+
+    const EXCLUDE_FOLDERS = [];
+    for (let folder of excludedFolders) {
+      EXCLUDE_FOLDERS.push(`**/${folder}/**/package.json`);
+      EXCLUDE_FOLDERS.push(`**/${folder}/**/ng-package.json`);
+    }
 
     return new Promise<string[]>((resolve, reject) => {
       glob(`${directoryPath}/**/*package.json`,
@@ -143,7 +145,7 @@ const findSecondaryPackagesPaths =
 const secondaryEntryPoint =
   (primaryDirectoryPath: string, primary: NgEntryPoint, { packageJson, ngPackageJson, basePath }: UserPackage): NgEntryPoint => {
 
-    if (basePath === primaryDirectoryPath) {
+    if (path.resolve(basePath) === path.resolve(primaryDirectoryPath)) {
       log.error(`Cannot read secondary entry point. It's already a primary entry point. path=${basePath}`);
       throw new Error(`Secondary entry point is already a primary.`);
     }
@@ -182,8 +184,8 @@ export const discoverPackages =
         )
       ))
       .then((secondaryPackages) => secondaryPackages
-        .filter((value) => !!value)
-        .map((secondaryPackage) => secondaryEntryPoint(primaryPackage.basePath, primary, secondaryPackage))
+          .filter((value) => !!value)
+          .map((secondaryPackage) => secondaryEntryPoint(primaryPackage.basePath, primary, secondaryPackage))
       )
     );
     if (secondaries.length > 0) {
