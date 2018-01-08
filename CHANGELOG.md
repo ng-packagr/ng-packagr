@@ -2,15 +2,6 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-<a name="2.0.0-rc.10"></a>
-# [2.0.0-rc.10](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.9...v2.0.0-rc.10) (2018-01-08)
-
-
-### Bug Fixes
-
-* add ng-package.json to excluded secondary files, resolve paths when used in comparison ([#463](https://github.com/dherges/ng-packagr/issues/463)) ([3c3c6a7](https://github.com/dherges/ng-packagr/commit/3c3c6a7))
-
-
 <a name="2.0.0-rc.9"></a>
 # [2.0.0-rc.9](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.8...v2.0.0-rc.9) (2017-12-30)
 
