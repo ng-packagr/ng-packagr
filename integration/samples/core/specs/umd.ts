@@ -50,5 +50,12 @@ describe(`@sample/core`, () => {
       expect(API.AngularService).to.be.ok;
     });
 
+    it (`should downlevel iteration`, () => {
+      const iterable = function*() { yield* [1, 2, 3]; };
+      const values = API.AngularService.iterableToArray(iterable());
+
+      expect(values).to.deep.equal([1, 2, 3]);
+    });
+
   });
 });
