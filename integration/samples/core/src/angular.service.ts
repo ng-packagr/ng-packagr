@@ -27,4 +27,8 @@ export class AngularService {
     return this._subject.asObservable();
   }
 
+  public static iterableToArray<T>(iterable: Iterable<T>): T[] {
+    return [...iterable];
+  }
+
 }
