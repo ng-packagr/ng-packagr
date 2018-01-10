@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.10"></a>
+# [2.0.0-rc.10](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.9...v2.0.0-rc.10) (2018-01-10)
+
+
+### Bug Fixes
+
+* exclude ng-package.json from entry point discovery ([#471](https://github.com/dherges/ng-packagr/issues/471)) ([38103ac](https://github.com/dherges/ng-packagr/commit/38103ac)), closes [#463](https://github.com/dherges/ng-packagr/issues/463)
+* relax version constraints, enable TypeScript 2.6 (w/ tsickle ^0.26.0) ([3c3c6a7](https://github.com/dherges/ng-packagr/commit/3c3c6a7))
+* update dependendy tsickle to >=0.25.5 <0.26.0 ([#456](https://github.com/dherges/ng-packagr/issues/456)) ([136867a](https://github.com/dherges/ng-packagr/commit/136867a)), closes [#452](https://github.com/dherges/ng-packagr/issues/452)
+
+
+### Features
+
+* stabilize command API, move towards customizing through DI ([#470](https://github.com/dherges/ng-packagr/issues/470)) ([f992283](https://github.com/dherges/ng-packagr/commit/f992283))
+* turn on `downlevelIteration` flag for ES5 bundles ([#475](https://github.com/dherges/ng-packagr/issues/475)) ([616888a](https://github.com/dherges/ng-packagr/commit/616888a)), closes [#418](https://github.com/dherges/ng-packagr/issues/418)
+
+
+
 <a name="2.0.0-rc.9"></a>
 # [2.0.0-rc.9](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.8...v2.0.0-rc.9) (2017-12-30)
 
