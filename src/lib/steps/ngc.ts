@@ -62,8 +62,11 @@ const transformSources =
       options: tsConfig.options,
       host: compilerHost
     });
+
+    const sourceFiles = program.getTsProgram().getSourceFiles();
     const transformationResult: ts.TransformationResult<ts.SourceFile> = ts.transform(
-      program.getTsProgram().getSourceFiles(),
+      // XX: circumvent tsc compile error in 2.6
+      Array.from(sourceFiles as any as ts.SourceFile[]),
       transformers,
       tsConfig.options
     );
