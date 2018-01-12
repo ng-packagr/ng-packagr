@@ -2,10 +2,11 @@
 # yarn lockfile v1
 
 
-"@angular-devkit/core@^0.0.23":
-  version "0.0.23"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-0.0.23.tgz#47cddcefb3dc3dae7e01539057a0a6cd6597a076"
+"@angular-devkit/core@^0.0.24":
+  version "0.0.24"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-0.0.24.tgz#d57a49d42ce81cb5f299dcaee2025fd03b7aad70"
   dependencies:
+    ajv "~5.5.1"
     chokidar "^1.7.0"
     source-map "^0.5.6"
 
@@ -328,6 +329,15 @@ ajv@^4.9.1:
 ajv@^5.1.0:
   version "5.5.1"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.1.tgz#b38bb8876d9e86bee994956a04e721e88b248eb2"
+  dependencies:
+    co "^4.6.0"
+    fast-deep-equal "^1.0.0"
+    fast-json-stable-stringify "^2.0.0"
+    json-schema-traverse "^0.3.0"
+
+ajv@~5.5.1:
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.2.tgz#73b5eeca3fab653e3d3f9422b341ad42205dc965"
   dependencies:
     co "^4.6.0"
     fast-deep-equal "^1.0.0"
