@@ -63,6 +63,17 @@
             "inline"
           ],
           "default": "none"
+        },
+        "languageLevel": {
+          "description": "Set typescript language level, i.e. tsconfig.lib. This will enable accessing typescript features available in es2016, es2017, etc.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "dom",
+            "es2015"
+          ]
         }
       }
     }

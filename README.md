@@ -191,6 +191,21 @@ For example, the following would use `index.ts` as the secondary entry point:
 }
 ```
 
+##### How do I use es2016 or es2017 features in my TypeScript library?
+
+You can change the TypeScript language level support in tsconfig by also using the `ngPackage` configuration field in your secondary `package.json` and setting the `languageLevel` property in `lib`:
+For example,:
+
+```json
+{
+  "ngPackage": {
+    "lib": {
+      "languageLevel": [ "dom", "es2017" ]
+    }
+  }
+}
+```
+
 #### How to embed assets in CSS?
 
 You can embed assets such as font and images inside the outputted css. More information [in the CSS tricks website](https://css-tricks.com/data-uris)
