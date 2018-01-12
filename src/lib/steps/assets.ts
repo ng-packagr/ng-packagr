@@ -89,6 +89,9 @@ const processStylesheet =
           to: stylesheetFilePath.replace(path.extname(stylesheetFilePath), '.css')
         });
 
+      // Escape existing backslashes for the final output into a string literal, which would otherwise escape the character after it
+      result.css = result.css.replace(/\\/g, '\\\\');
+
       // Log warnings from postcss
       result.warnings().forEach((msg) => {
         log.warn(msg.toString());
