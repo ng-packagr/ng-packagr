@@ -74,7 +74,7 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
  - :mag_right: Creates [scoped and non-scoped packages](https://docs.npmjs.com/misc/scope) for publishing to npm registry
  - :surfer: Inlines Templates and Stylesheets
  - :sparkles: CSS Features
-   - :camel: Runs [SCSS](http://sass-lang.com/guide) preprocessor, supporting the [relative `~` import syntax](https://github.com/webpack-contrib/sass-loader#imports)
+   - :camel: Runs [SCSS](http://sass-lang.com/guide) preprocessor, supporting the [relative `~` import syntax](https://github.com/webpack-contrib/sass-loader#imports) and custom include paths
    - :elephant: Runs [less](http://lesscss.org/#getting-started) preprocessor
    - :snake: Runs [Stylus](http://stylus-lang.com) preprocessor, resolves relative paths relative to ng-package.json
    - :monkey: Adds vendor-specific prefixes w/ [autoprefixer](https://github.com/postcss/autoprefixer#autoprefixer-) and [browserslist](https://github.com/ai/browserslist#queries) &mdash; just tell your desired `.browserslistrc`
@@ -202,6 +202,21 @@ Valid values: `none` or `inline`.
   "ngPackage": {
     "lib": {
       "cssUrl": "inline"
+    }
+  }
+}
+```
+
+#### What if I have multiple SASS include paths?
+
+If you have multiple include paths for SASS @import statements, such as when using the stylePreprocessorOptions in .angular-cli.json, you can
+configure the additional paths using the `sassIncludePaths` option.
+
+```json
+{
+  "ngPackage": {
+    "lib": {
+      "sassIncludePaths": ["./src/assets/styles"]
     }
   }
 }

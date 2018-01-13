@@ -63,6 +63,13 @@
             "inline"
           ],
           "default": "none"
+        },
+        "sassIncludePaths": {
+          "description": "Any additional paths that should used to resolve SASS imports",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     }

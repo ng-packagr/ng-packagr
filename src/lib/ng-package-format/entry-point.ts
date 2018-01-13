@@ -84,6 +84,12 @@ export class NgEntryPoint {
     return this.$get('lib.flatModuleFile') || this.flattenModuleId('-');
   }
 
+  public get sassIncludePaths(): string[] {
+    const includePaths = this.$get('lib.sassIncludePaths') || [];
+    return includePaths.map(includePath =>
+      path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath));
+  }
+
   /**
    * The module ID is an "identifier of a module used in the import statements, e.g.
    * '@angular/core'. The ID often maps directly to a path on the filesystem, but this
