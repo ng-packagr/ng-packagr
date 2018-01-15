@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 describe(`@sample/same-name`, () => {
-
   describe(`package.json`, () => {
     let PACKAGE;
     before(() => {
@@ -31,7 +30,6 @@ describe(`@sample/same-name`, () => {
     it(`should reference "typings" files`, () => {
       expect(PACKAGE['typings']).to.equal('sample-testing.d.ts');
     });
-
   });
 
   describe(`testing/package.json`, () => {
@@ -49,7 +47,9 @@ describe(`@sample/same-name`, () => {
     });
 
     it(`should reference "main" bundle (UMD)`, () => {
-      expect(PACKAGE['main']).to.equal('../bundles/sample-testing-testing.umd.js');
+      expect(PACKAGE['main']).to.equal(
+        '../bundles/sample-testing-testing.umd.js'
+      );
     });
 
     it(`should reference "module" bundle (FESM5, also FESM2014)`, () => {
@@ -57,12 +57,13 @@ describe(`@sample/same-name`, () => {
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('../esm2015/sample-testing-testing.js');
+      expect(PACKAGE['es2015']).to.equal(
+        '../esm2015/sample-testing-testing.js'
+      );
     });
 
     it(`should reference "typings" files`, () => {
       expect(PACKAGE['typings']).to.equal('sample-testing-testing.d.ts');
     });
-
   });
 });

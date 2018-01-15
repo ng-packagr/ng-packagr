@@ -6,12 +6,12 @@ import 'rxjs/add/observable/of';
 import { $$observable as observable } from 'rxjs/symbol/observable';
 
 export class RxJsOperators {
-
   public observableMap() {
-    return Observable.of('foo', 'bar', 'foobar')
-      .map((value: string, index: number) => {
+    return Observable.of('foo', 'bar', 'foobar').map(
+      (value: string, index: number) => {
         return `Value ${value} at position ${index}`;
-      });
+      }
+    );
   }
 
   public callMapOperator() {
@@ -26,5 +26,4 @@ export class RxJsOperators {
   public observableSymbole() {
     return observable;
   }
-
 }

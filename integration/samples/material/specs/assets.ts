@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import * as path from 'path';
 
 describe(`@sample/material`, () => {
-
   describe(`material.umd.js`, () => {
     let UMD_MODULE;
     before(() => {
@@ -16,6 +15,5 @@ describe(`@sample/material`, () => {
     it(`should have "BazComponent"`, () => {
       expect(UMD_MODULE.BazComponent).to.be.ok;
     });
-
   });
 });

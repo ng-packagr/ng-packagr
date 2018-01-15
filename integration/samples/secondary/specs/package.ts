@@ -3,7 +3,6 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 describe(`@sample/secondary`, () => {
-
   describe(`secondary/package.json`, () => {
     let PACKAGE;
     before(() => {
@@ -58,15 +57,21 @@ describe(`@sample/secondary`, () => {
     });
 
     it(`should reference "main" bundle (UMD)`, () => {
-      expect(PACKAGE['main']).to.equal('../bundles/sample-secondary-sub-module.umd.js');
+      expect(PACKAGE['main']).to.equal(
+        '../bundles/sample-secondary-sub-module.umd.js'
+      );
     });
 
     it(`should reference "module" bundle (FESM5, also FESM2015)`, () => {
-      expect(PACKAGE['module']).to.equal('../esm5/sample-secondary-sub-module.js');
+      expect(PACKAGE['module']).to.equal(
+        '../esm5/sample-secondary-sub-module.js'
+      );
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('../esm2015/sample-secondary-sub-module.js');
+      expect(PACKAGE['es2015']).to.equal(
+        '../esm2015/sample-secondary-sub-module.js'
+      );
     });
 
     it(`should reference "typings" files`, () => {
@@ -75,12 +80,19 @@ describe(`@sample/secondary`, () => {
   });
 
   describe(`should-be-ignored/package.json`, () => {
-
     it(`should not exist`, () => {
-      expect(() => fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'should-be-ignored', 'package.json'), 'utf-8')
+      expect(() =>
+        fs.readFileSync(
+          path.resolve(
+            __dirname,
+            '..',
+            'dist',
+            'should-be-ignored',
+            'package.json'
+          ),
+          'utf-8'
+        )
       ).throw();
     });
   });
-
 });

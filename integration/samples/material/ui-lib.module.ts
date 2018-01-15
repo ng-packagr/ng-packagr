@@ -5,17 +5,7 @@ import { FooBarComponent } from './foo-bar/foo-bar.component';
 import { BazComponent } from './baz/baz.component';
 
 @NgModule({
-  declarations: [
-    FooComponent,
-    BarComponent,
-    FooBarComponent,
-    BazComponent,
-  ],
-  exports: [
-    FooComponent,
-    BarComponent,
-    FooBarComponent,
-    BazComponent,
-  ]
+  declarations: [FooComponent, BarComponent, FooBarComponent, BazComponent],
+  exports: [FooComponent, BarComponent, FooBarComponent, BazComponent]
 })
 export class UiLibModule {}

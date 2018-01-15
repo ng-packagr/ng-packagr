@@ -6,7 +6,9 @@ import { execute } from './commands/command';
 import * as log from './util/log';
 
 export async function createNgPackage(opts: CliArguments): Promise<void> {
-  log.warn(`DEPRECATED: createNgPackage() is becoming deprecated. Invoke the 'build: Command' instead.`);
+  log.warn(
+    `DEPRECATED: createNgPackage() is becoming deprecated. Invoke the 'build: Command' instead.`
+  );
   return execute(build, opts);
 }
 
@@ -18,11 +20,13 @@ export async function createNgPackage(opts: CliArguments): Promise<void> {
  * @experimental Might change in the future!
  */
 export interface BuildStep {
+  (
+    {
 
-  ({}: {
-    artefacts: NgArtefacts,
-    entryPoint: NgEntryPoint,
-    pkg: NgPackage
-  }): void | any | Promise<void | any>;
-
+    }: {
+      artefacts: NgArtefacts;
+      entryPoint: NgEntryPoint;
+      pkg: NgPackage;
+    }
+  ): void | any | Promise<void | any>;
 }

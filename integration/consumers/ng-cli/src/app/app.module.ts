@@ -10,9 +10,7 @@ import { AppComponent } from './app.component';
 import { CdkModule } from './cdk/cdk.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -28,4 +26,4 @@ import { CdkModule } from './cdk/cdk.module';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

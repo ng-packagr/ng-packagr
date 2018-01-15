@@ -7,9 +7,9 @@ import { UiLibModule } from '@sample/secondary';
 @NgModule({
   imports: [
     CommonModule,
-    UiLibModule,
-//    SubModule
+    UiLibModule
+    //    SubModule
   ],
   declarations: []
 })
-export class SecondaryModule { }
+export class SecondaryModule {}

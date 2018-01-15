@@ -5,5 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './baz.component.html',
   styleUrls: ['./baz.component.scss']
 })
-export class BazComponent {
-}
+export class BazComponent {}

@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`@sample/same-name`, () => {
-
   describe(`sample-testing.umd.min.js`, () => {
     let API;
     before(() => {
@@ -21,7 +20,6 @@ describe(`@sample/same-name`, () => {
     it(`should export AngularModule`, () => {
       expect(API.AngularModule).to.be.ok;
     });
-
   });
 
   describe(`sample-testing-testing.umd.min.js`, () => {
@@ -41,6 +39,5 @@ describe(`@sample/same-name`, () => {
     it(`should export AngularModule`, () => {
       expect(API.AngularModule).to.be.ok;
     });
-
   });
 });
