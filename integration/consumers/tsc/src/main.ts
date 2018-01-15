@@ -13,10 +13,6 @@ import { ModuleImportDirective } from './module-imports';
     JsxConsumerModule,
     MaterialConsumerModule
   ],
-  declarations: [
-    FooComponent,
-    BarComponent,
-    ModuleImportDirective
-  ]
+  declarations: [FooComponent, BarComponent, ModuleImportDirective]
 })
 export class ConsumerModule {}

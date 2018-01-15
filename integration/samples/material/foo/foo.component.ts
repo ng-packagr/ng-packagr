@@ -8,17 +8,12 @@ import 'rxjs/add/operator/map';
   template: 'foo'
 })
 export class FooComponent {
-
-  constructor(
-    private http: Http
-  ) {}
+  constructor(private http: Http) {}
 
   doSomething() {
-
-    this.http.get('/foo/bar')
+    this.http
+      .get('/foo/bar')
       .map((res: Response) => res.ok)
       .subscribe();
-
   }
-
 }

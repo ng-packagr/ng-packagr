@@ -9,5 +9,4 @@ import { Component } from '@angular/core';
 <custom-less-baz></custom-less-baz>
 `
 })
-export class CustomConsumerComponent {
-}
+export class CustomConsumerComponent {}

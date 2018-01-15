@@ -4,12 +4,14 @@ import * as path from 'path';
 import { Observable } from 'rxjs/Observable';
 
 describe(`@sample/externals`, () => {
-
   describe(`UMD Bundle`, () => {
     let API;
     let BUNDLE;
     before(() => {
-      BUNDLE = fs.readFileSync(path.resolve(__dirname, '../dist/bundles/sample-externals.umd.js'), { encoding: 'utf-8' });
+      BUNDLE = fs.readFileSync(
+        path.resolve(__dirname, '../dist/bundles/sample-externals.umd.js'),
+        { encoding: 'utf-8' }
+      );
       API = require('../dist/bundles/sample-externals.umd.min.js');
     });
 
@@ -20,8 +22,8 @@ describe(`@sample/externals`, () => {
     it(`'target$' should be .subscribe()-able and emit values`, () => {
       const values: number[] = [];
       const subscription = API.target$.subscribe(
-        (next) => values.push(next),
-        (err) => {},
+        next => values.push(next),
+        err => {},
         () => {}
       );
 
@@ -38,16 +40,15 @@ describe(`@sample/externals`, () => {
     });
 
     it(`should import '@angular/core'`, () => {
-      expect(BUNDLE).to.contain("require('@angular/core')")
+      expect(BUNDLE).to.contain("require('@angular/core')");
     });
 
     it(`should embed 'createCommonjsModule' method`, () => {
-      expect(BUNDLE).to.contain("function createCommonjsModule")
+      expect(BUNDLE).to.contain('function createCommonjsModule');
     });
 
     it(`should embed 'fn.start' method`, () => {
-      expect(BUNDLE).to.contain("n.start = function")
+      expect(BUNDLE).to.contain('n.start = function');
     });
   });
-
 });

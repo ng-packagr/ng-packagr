@@ -13,18 +13,9 @@ const CDK_VERSION_TOKEN = new InjectionToken<Version>('VERSION_TOKEN');
 export class SomeCdkComponent {}
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ObserversModule,
-    CdkTableModule
-  ],
-  declarations: [
-    SomeCdkComponent
-  ],
-  exports: [
-    ObserversModule,
-    SomeCdkComponent
-  ],
+  imports: [CommonModule, ObserversModule, CdkTableModule],
+  declarations: [SomeCdkComponent],
+  exports: [ObserversModule, SomeCdkComponent],
   providers: [
     {
       provide: CDK_VERSION_TOKEN,
