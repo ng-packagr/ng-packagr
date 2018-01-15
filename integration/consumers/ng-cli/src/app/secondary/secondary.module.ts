@@ -8,7 +8,7 @@ import { UiLibModule } from '@sample/secondary';
   imports: [
     CommonModule,
     UiLibModule,
-//    SubModule
+    //    SubModule
   ],
   declarations: []
 })

@@ -21,8 +21,8 @@ describe(`@sample/externals`, () => {
       const values: number[] = [];
       const subscription = API.target$.subscribe(
         (next) => values.push(next),
-        (err) => {},
-        () => {}
+        (err) => { },
+        () => { }
       );
 
       expect(subscription).to.be.ok;

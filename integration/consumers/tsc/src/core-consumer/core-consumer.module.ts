@@ -15,4 +15,4 @@ import { CoreConsumerComponent } from './core-consumer.component';
     CoreConsumerComponent
   ]
 })
-export class CoreConsumerModule {}
+export class CoreConsumerModule { }

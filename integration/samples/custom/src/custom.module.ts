@@ -9,7 +9,7 @@ import { LessBazComponent } from './less-baz/less-baz.component';
 import { InternalService } from './internal.service';
 
 @NgModule({
-  imports: [ CommonModule ],
+  imports: [CommonModule],
   declarations: [
     BarComponent,
     BazComponent,
@@ -30,7 +30,7 @@ export class CustomModule {
 
     return {
       ngModule: CustomModule,
-      providers: [ InternalService ]
+      providers: [InternalService]
     };
   }
 }

@@ -14,5 +14,5 @@ export class CoreConsumerComponent {
 
   constructor(
     private service: AngularService
-  ) {}
+  ) { }
 }

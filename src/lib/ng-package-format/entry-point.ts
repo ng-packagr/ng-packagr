@@ -40,7 +40,7 @@ export class NgEntryPoint {
     private readonly $schema: SchemaClass<NgPackageConfig>,
     private basePath: string,
     private readonly secondaryData?: { [key: string]: any }
-  ) {}
+  ) { }
 
   /** Absolute file path of the entry point's source code entry file. */
   public get entryFilePath(): SourceFilePath {

@@ -47,7 +47,7 @@ export class NgPackage {
      * An array of seconary entry points.
      */
     public readonly secondaries: NgEntryPoint[] = []
-  ) {}
+  ) { }
 
   /** Absolute path of the package's source folder, derived from the user's (primary) package location. */
   public get src(): DirectoryPath {
@@ -69,7 +69,7 @@ export class NgPackage {
   }
 
   public entryPoint(moduleId: string): NgEntryPoint {
-    return [ this.primary, ...this.secondaries]
+    return [this.primary, ...this.secondaries]
       .find((entryPoint) => entryPoint.moduleId === moduleId);
   }
 

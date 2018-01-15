@@ -4,4 +4,4 @@ import { Component } from '@angular/core';
   selector: 'custom-bar',
   template: `<h1>Bar!</h1>`
 })
-export class BarComponent {}
+export class BarComponent { }

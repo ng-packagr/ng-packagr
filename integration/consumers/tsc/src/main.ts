@@ -19,4 +19,4 @@ import { ModuleImportDirective } from './module-imports';
     ModuleImportDirective
   ]
 })
-export class ConsumerModule {}
+export class ConsumerModule { }

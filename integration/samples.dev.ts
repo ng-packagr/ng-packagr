@@ -7,7 +7,7 @@ process.env.DEBUG = 'true';
 const PATH = path.resolve(__dirname, 'samples');
 let SAMPLES = [];
 if (process.argv[2]) {
-  SAMPLES = [ path.resolve(PATH, process.argv[2]) ];
+  SAMPLES = [path.resolve(PATH, process.argv[2])];
 } else {
   SAMPLES = fs.readdirSync(PATH)
     .map(dir => path.resolve(PATH, dir))

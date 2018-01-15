@@ -11,7 +11,7 @@ export class FooComponent {
 
   constructor(
     private http: Http
-  ) {}
+  ) { }
 
   doSomething() {
 

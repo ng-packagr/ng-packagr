@@ -10,7 +10,7 @@ const CDK_VERSION_TOKEN = new InjectionToken<Version>('VERSION_TOKEN');
   selector: 'app-some-cdk-component',
   template: `<div cdkObserveContent></div><cdk-table></cdk-table>`
 })
-export class SomeCdkComponent {}
+export class SomeCdkComponent { }
 
 @NgModule({
   imports: [
@@ -32,4 +32,4 @@ export class SomeCdkComponent {}
     }
   ]
 })
-export class CdkModule {}
+export class CdkModule { }

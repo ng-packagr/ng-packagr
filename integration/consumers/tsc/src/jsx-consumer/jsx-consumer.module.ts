@@ -15,4 +15,4 @@ import { JsxConsumerComponent } from './jsx-consumer.component';
     JsxConsumerComponent
   ]
 })
-export class JsxConsumerModule {}
+export class JsxConsumerModule { }

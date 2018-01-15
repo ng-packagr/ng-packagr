@@ -5,4 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './foo.component.html',
   styleUrls: ['./foo.component.scss',]
 })
-export class FooComponent {}
+export class FooComponent { }

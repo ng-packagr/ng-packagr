@@ -4,4 +4,4 @@ import { Component } from '@angular/core';
   selector: 'material-bar-consumer',
   template: `<bar-component></bar-component>`
 })
-export class BarConsumerComponent {}
+export class BarConsumerComponent { }

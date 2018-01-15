@@ -5,7 +5,7 @@ export class NgPackagr {
 
   constructor(
     private providers: Provider[]
-  ) {}
+  ) { }
 
   public withProviders(providers: Provider[]): NgPackagr {
     this.providers = [

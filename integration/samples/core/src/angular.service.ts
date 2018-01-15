@@ -14,7 +14,7 @@ export class AngularService {
   constructor(
     private http: Http,
     private httpClient: HttpClient
-  ) {}
+  ) { }
 
   public foo(): Observable<string> {
     return map.call(

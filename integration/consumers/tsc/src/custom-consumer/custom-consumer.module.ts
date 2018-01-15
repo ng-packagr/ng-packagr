@@ -15,4 +15,4 @@ import { CustomConsumerComponent } from './custom-consumer.component';
     CustomConsumerComponent
   ]
 })
-export class CustomConsulerModule {}
+export class CustomConsulerModule { }

@@ -94,6 +94,7 @@
     "ts-node": "^4.0.0",
     "tsickle": "^0.26.0",
     "typescript": "~2.6.1",
+    "typescript-formatter": "^7.0.1",
     "zone.js": "^0.8.10"
   },
   "private": true,
@@ -114,6 +115,7 @@
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json mocha --require ts-node/register src/**/*.spec.ts",
     "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:consumers",
     "commitmsg": "commitlint -e",
-    "gh-pages": "gh-pages -d docs/ghpages"
+    "gh-pages": "gh-pages -d docs/ghpages",
+    "precommit": "tsfmt -r"
   }
 }

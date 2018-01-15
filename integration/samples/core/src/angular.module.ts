@@ -23,4 +23,4 @@ import { AngularService } from './angular.service';
     AngularService
   ]
 })
-export class AngularModule {}
+export class AngularModule { }

@@ -15,13 +15,13 @@ function parseProjectPath(parsed: string): string {
 program
   .name('ng-packagr')
   .option(
-    '-V, --version',
-    'Prints version info')
+  '-V, --version',
+  'Prints version info')
   .option(
-    '-p, --project [path]',
-    'Path to the \'ng-package.json\' or \'package.json\' file.',
-    parseProjectPath,
-    DEFAULT_PROJECT_PATH)
+  '-p, --project [path]',
+  'Path to the \'ng-package.json\' or \'package.json\' file.',
+  parseProjectPath,
+  DEFAULT_PROJECT_PATH)
 
 program.on('option:version', () => {
   version();

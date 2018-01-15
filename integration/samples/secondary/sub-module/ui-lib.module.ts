@@ -10,4 +10,4 @@ import { BarComponent } from './bar/bar.component';
     BarComponent,
   ]
 })
-export class UiLibModule {}
+export class UiLibModule { }

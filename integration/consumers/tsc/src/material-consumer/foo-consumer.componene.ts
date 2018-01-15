@@ -4,4 +4,4 @@ import { Component } from '@angular/core';
   selector: 'material-foo-consumer',
   template: `<foo-component></foo-component>`
 })
-export class FooConsumerComponent {}
+export class FooConsumerComponent { }
