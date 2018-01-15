@@ -12,4 +12,4 @@ import { AngularComponent } from './angular.component';
 
   ]
 })
-export class AngularModule {}
+export class AngularModule { }

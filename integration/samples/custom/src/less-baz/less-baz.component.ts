@@ -5,4 +5,4 @@ import { Component } from '@angular/core';
   template: '<h2>LessBaz works!</h2>',
   styleUrls: ['./less-baz.component.less']
 })
-export class LessBazComponent {}
+export class LessBazComponent { }

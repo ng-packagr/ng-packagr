@@ -8,4 +8,4 @@ import { Component } from '@angular/core';
     './baz.component.css'
   ]
 })
-export class BazComponent {}
+export class BazComponent { }

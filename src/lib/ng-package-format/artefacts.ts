@@ -28,9 +28,9 @@ export class NgArtefacts {
     this.outDir = path.resolve(pkg.workingDirectory, entryPoint.flatModuleFile, 'out');
   }
 
-  public extras<T> (key: string): T;
-  public extras<T> (key: string, value: T);
-  public extras<T> (key: string, value?: T): T | undefined {
+  public extras<T>(key: string): T;
+  public extras<T>(key: string, value: T);
+  public extras<T>(key: string, value?: T): T | undefined {
     if (value !== undefined) {
       // write
       this._extras.set(key, value);

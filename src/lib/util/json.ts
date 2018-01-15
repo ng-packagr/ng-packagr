@@ -23,7 +23,7 @@ export async function modifyJsonFiles(globPattern: string, modifyFn: (jsonObj: a
       const modified = modifyFn(fileContent);
       await writeJson(fileName, modified, { spaces: 2 });
     }
-  ));
+    ));
 }
 
 /**

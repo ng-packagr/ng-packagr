@@ -35,7 +35,7 @@ export type StylesheetProcessor = (sourceFile: string, styleUrl: string, styleFi
 export type TemplateProcessor = (sourceFile: string, templateUrl: string, templateFilePath: string) => string | undefined | void;
 
 export type ComponentTransformer =
-  ({}: {
+  ({ }: {
     templateProcessor: TemplateProcessor,
     stylesheetProcessor: StylesheetProcessor,
     sourceFileWriter?: any

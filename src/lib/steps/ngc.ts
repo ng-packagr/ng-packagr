@@ -25,7 +25,7 @@ export const prepareTsConfig: BuildStep =
 
     // Read the default configuration and overwrite package-specific options
     const tsConfig = ng.readConfiguration(path.resolve(__dirname, '..', 'conf', 'tsconfig.ngc.json'));
-    tsConfig.rootNames = [ entryPoint.entryFilePath ];
+    tsConfig.rootNames = [entryPoint.entryFilePath];
     tsConfig.options.flatModuleId = entryPoint.moduleId;
     tsConfig.options.flatModuleOutFile = `${entryPoint.flatModuleFile}.js`;
     tsConfig.options.basePath = basePath;
@@ -63,7 +63,7 @@ const transformSources =
       options: tsConfig.options
     });
     const program: ng.Program = ng.createProgram({
-      rootNames: [ ...tsConfig.rootNames ],
+      rootNames: [...tsConfig.rootNames],
       options: tsConfig.options,
       host: compilerHost
     });
@@ -140,19 +140,19 @@ export const collectTemplateAndStylesheetFiles: BuildStep =
 
     artefacts.tsSources = transformSources(
       tsConfig,
-      [ collector ]
+      [collector]
     );
   }
 
 class SynthesizedSourceFile {
 
-  private replacemenets: { from: number, to: number, text: string}[] = [];
+  private replacemenets: { from: number, to: number, text: string }[] = [];
 
   constructor(
     private original: ts.SourceFile
-  ) {}
+  ) { }
 
-  addReplacement(replacement: { from: number, to: number, text: string}) {
+  addReplacement(replacement: { from: number, to: number, text: string }) {
     this.replacemenets.push(replacement);
   }
 
@@ -197,7 +197,7 @@ export const inlineTemplatesAndStyles: BuildStep =
 
     artefacts.tsSources = ts.transform(
       artefacts.tsSources.transformed,
-      [ transformer ]
+      [transformer]
     );
   }
 
@@ -219,14 +219,14 @@ export async function ngc(entryPoint: NgEntryPoint, artefacts: NgArtefacts) {
 
   // ng.Program
   const ngProgram = ng.createProgram({
-    rootNames: [ ...tsConfig.rootNames ],
+    rootNames: [...tsConfig.rootNames],
     options: tsConfig.options,
     host: ngCompilerHost
   });
 
   // ngc
   const result = ng.performCompilation({
-    rootNames: [ ...tsConfig.rootNames ],
+    rootNames: [...tsConfig.rootNames],
     options: tsConfig.options,
     emitFlags: tsConfig.emitFlags,
     emitCallback: createEmitCallback(tsConfig.options),

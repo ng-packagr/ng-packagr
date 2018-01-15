@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
     <react-integration-test></react-integration-test>
   `
 })
-export class JsxConsumerComponent {}
+export class JsxConsumerComponent { }

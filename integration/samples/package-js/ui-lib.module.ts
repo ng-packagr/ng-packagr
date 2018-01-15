@@ -10,4 +10,4 @@ import { BazComponent } from './baz/baz.component';
     BazComponent,
   ]
 })
-export class UiLibModule {}
+export class UiLibModule { }

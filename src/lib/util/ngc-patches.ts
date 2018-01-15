@@ -17,7 +17,7 @@ import * as tsickle from 'tsickle';
 import * as api from '@angular/compiler-cli';
 
 // @link https://github.com/angular/angular/blob/83d207d/packages/compiler-cli/src/main.ts#L42-L84
-export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCallback|undefined {
+export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCallback | undefined {
   const transformDecorators = options.annotationsAs !== 'decorators';
   const transformTypesToClosure = options.annotateForClosureCompiler;
   if (!transformDecorators && !transformTypesToClosure) {
@@ -30,33 +30,33 @@ export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCall
     options.emitDecoratorMetadata = true;
   }
   const tsickleHost: Pick<
-      tsickle.TsickleHost, 'shouldSkipTsickleProcessing'|'pathToModuleName'|
-      'shouldIgnoreWarningsForPath'|'fileNameToModuleId'|'googmodule'|'untyped'|
-      'convertIndexImportShorthand'|'transformDecorators'|'transformTypesToClosure'> = {
-    shouldSkipTsickleProcessing: (fileName) =>
-                                     /\.d\.ts$/.test(fileName) || GENERATED_FILES.test(fileName),
-    pathToModuleName: (context, importPath) => '',
-    shouldIgnoreWarningsForPath: (filePath) => false,
-    fileNameToModuleId: (fileName) => fileName,
-    googmodule: false,
-    untyped: true,
-    convertIndexImportShorthand: false, transformDecorators, transformTypesToClosure,
-  };
+    tsickle.TsickleHost, 'shouldSkipTsickleProcessing' | 'pathToModuleName' |
+    'shouldIgnoreWarningsForPath' | 'fileNameToModuleId' | 'googmodule' | 'untyped' |
+    'convertIndexImportShorthand' | 'transformDecorators' | 'transformTypesToClosure'> = {
+      shouldSkipTsickleProcessing: (fileName) =>
+        /\.d\.ts$/.test(fileName) || GENERATED_FILES.test(fileName),
+      pathToModuleName: (context, importPath) => '',
+      shouldIgnoreWarningsForPath: (filePath) => false,
+      fileNameToModuleId: (fileName) => fileName,
+      googmodule: false,
+      untyped: true,
+      convertIndexImportShorthand: false, transformDecorators, transformTypesToClosure,
+    };
 
   return ({
            program,
-           targetSourceFile,
-           writeFile,
-           cancellationToken,
-           emitOnlyDtsFiles,
-           customTransformers = {},
-           host,
-           options
+    targetSourceFile,
+    writeFile,
+    cancellationToken,
+    emitOnlyDtsFiles,
+    customTransformers = {},
+    host,
+    options
          }) =>
-             tsickle.emitWithTsickle(
-                 program, {...tsickleHost, options, host}, host, options, targetSourceFile,
-                 writeFile, cancellationToken, emitOnlyDtsFiles, {
-                   beforeTs: customTransformers.before,
-                   afterTs: customTransformers.after,
-                 });
+    tsickle.emitWithTsickle(
+      program, { ...tsickleHost, options, host }, host, options, targetSourceFile,
+      writeFile, cancellationToken, emitOnlyDtsFiles, {
+        beforeTs: customTransformers.before,
+        afterTs: customTransformers.after,
+      });
 }

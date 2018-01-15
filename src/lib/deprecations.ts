@@ -19,10 +19,10 @@ export async function createNgPackage(opts: CliArguments): Promise<void> {
  */
 export interface BuildStep {
 
-  ({}: {
+  ({ }: {
     artefacts: NgArtefacts,
     entryPoint: NgEntryPoint,
     pkg: NgPackage
-  }): void | any | Promise<void | any>;
+  }): void | any |  Promise<void | any>;
 
 }
