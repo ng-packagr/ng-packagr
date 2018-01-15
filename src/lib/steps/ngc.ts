@@ -26,13 +26,18 @@ export const prepareTsConfig: BuildStep =
     // Read the default configuration and overwrite package-specific options
     const tsConfig = ng.readConfiguration(path.resolve(__dirname, '..', 'conf', 'tsconfig.ngc.json'));
     tsConfig.rootNames = [ entryPoint.entryFilePath ];
-    tsConfig.options.flatModuleId = entryPoint.moduleId
+    tsConfig.options.flatModuleId = entryPoint.moduleId;
     tsConfig.options.flatModuleOutFile = `${entryPoint.flatModuleFile}.js`;
     tsConfig.options.basePath = basePath;
     tsConfig.options.baseUrl = basePath;
     tsConfig.options.rootDir = basePath;
     tsConfig.options.outDir = artefacts.outDir;
     tsConfig.options.genDir = artefacts.outDir;
+
+    if (entryPoint.languageLevel) {
+      // ng.readConfiguration implicitly converts "es6" to "lib.es6.d.ts", etc.
+      tsConfig.options.lib = entryPoint.languageLevel.map(lib => `lib.${lib}.d.ts`);
+    }
 
     switch (entryPoint.jsxConfig) {
       case 'preserve':
