@@ -84,6 +84,10 @@ export class NgEntryPoint {
     return this.$get('lib.flatModuleFile') || this.flattenModuleId('-');
   }
 
+  public get languageLevel(): string[] {
+    return this.$get('lib.languageLevel');
+  }
+
   /**
    * The module ID is an "identifier of a module used in the import statements, e.g.
    * '@angular/core'. The ID often maps directly to a path on the filesystem, but this
