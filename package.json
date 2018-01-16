@@ -87,6 +87,8 @@
     "jasmine": "^2.6.0",
     "json-schema-to-typescript": "^5.0.0",
     "mocha": "^4.0.0",
+    "prettier": "^1.10.2",
+    "pretty-quick": "^1.2.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "sinon": "^4.0.0",
@@ -108,12 +110,15 @@
     "publish:ci": "yarn prerelease && yarn postrelease",
     "integration:samples": "integration/samples.sh",
     "integration:samples:dev": "ts-node --project src/tsconfig.packagr.json ./integration/samples.dev.ts",
-    "integration:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --require ts-node/register integration/samples/*/specs/**/*.ts",
+    "integration:specs":
+      "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --require ts-node/register integration/samples/*/specs/**/*.ts",
     "integration:consumers": "integration/consumers.sh",
     "integration:consumers:ngc": "ngc -p integration/consumers/tsc/tsconfig.json",
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json mocha --require ts-node/register src/**/*.spec.ts",
-    "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:consumers",
+    "test":
+      "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:consumers",
     "commitmsg": "commitlint -e",
+    "precommit": "pretty-quick --staged",
     "gh-pages": "gh-pages -d docs/ghpages"
   }
 }
