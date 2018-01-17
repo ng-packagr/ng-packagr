@@ -222,10 +222,10 @@ Valid values: `none` or `inline`.
 }
 ```
 
-#### What if I have multiple SASS include paths?
+#### What if I have multiple SASS/SCSS include paths?
 
-If you have multiple include paths for SASS @import statements, such as when using the stylePreprocessorOptions in .angular-cli.json, you can
-configure the additional paths using the `sassIncludePaths` option.
+In case you have multiple include paths for `@import` statements (e.g., when setting the `stylePreprocessorOptions` in `.angular-cli.json`),
+the additional paths may be configured through the the `sassIncludePaths` option.
 
 ```json
 {
