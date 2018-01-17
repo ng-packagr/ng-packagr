@@ -36,6 +36,25 @@ describe(`sample-custom`, () => {
       expect(foo.styles[0]).to.contain('color: #ff0000; }');
     });
 
+    describe(`BazComponent`, () => {
+      let baz;
+      before(() => {
+        baz = METADATA['metadata']['BazComponent']['decorators'][0]['arguments'][0];
+      });
+
+      it(`should be exported`, () => {
+        expect(baz).to.be.ok;
+      })
+
+      it(`should have the <h1> template inlined`, () => {
+        expect(baz.template).to.satisfy(str => str.startsWith(`<h1 class="supersized">Baz!</h1>`));
+      });
+
+      it(`should have a styles array with two stylesheets`, () => {
+        expect(baz.styles).to.be.an('array').that.has.length(2);
+      });
+    });
+
     it(`should contain scss-rendered styles`, () => {
       const foo = METADATA['metadata']['FooComponent']['decorators'][0]['arguments'][0];
 

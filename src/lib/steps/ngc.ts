@@ -4,9 +4,10 @@ import * as ng from '@angular/compiler-cli';
 // XX: has or is using name 'ParsedConfiguration' ... but cannot be named
 import { ParsedConfiguration } from '@angular/compiler-cli';
 import * as ts from 'typescript';
-import { Artefacts } from '../domain/build-artefacts';
-import { BuildStep } from '../domain/build-step';
-import { NgEntryPoint } from '../domain/ng-package-format';
+import { NgArtefacts } from '../ng-package-format/artefacts';
+import { NgEntryPoint } from '../ng-package-format/entry-point';
+import { NgPackage } from '../ng-package-format/package';
+import { BuildStep } from '../deprecations';
 import * as log from '../util/log';
 // XX: internal in ngc's `main()`, a tsickle emit callback is passed to the tsc compiler
 // ... blatanlty copy-paste the emit callback here. it's not a public api.
@@ -25,15 +26,21 @@ export const prepareTsConfig: BuildStep =
     // Read the default configuration and overwrite package-specific options
     const tsConfig = ng.readConfiguration(path.resolve(__dirname, '..', 'conf', 'tsconfig.ngc.json'));
     tsConfig.rootNames = [ entryPoint.entryFilePath ];
-    tsConfig.options.flatModuleId = entryPoint.moduleId
+    tsConfig.options.flatModuleId = entryPoint.moduleId;
     tsConfig.options.flatModuleOutFile = `${entryPoint.flatModuleFile}.js`;
     tsConfig.options.basePath = basePath;
     tsConfig.options.outDir = artefacts.outDir;
+    tsConfig.options.rootDir = basePath;
     tsConfig.options.genDir = artefacts.outDir;
 
     // this is here because if it's in tsconfig.json it will cause:
     // False expression: Host should not return a redirect source file from `getSourceFile` when building
     tsConfig.options.baseUrl = ".";
+
+    if (entryPoint.languageLevel) {
+      // ng.readConfiguration implicitly converts "es6" to "lib.es6.d.ts", etc.
+      tsConfig.options.lib = entryPoint.languageLevel.map(lib => `lib.${lib}.d.ts`);
+    }
 
     switch (entryPoint.jsxConfig) {
       case 'preserve':
@@ -63,8 +70,11 @@ const transformSources =
       options: tsConfig.options,
       host: compilerHost
     });
+
+    const sourceFiles = program.getTsProgram().getSourceFiles();
     const transformationResult: ts.TransformationResult<ts.SourceFile> = ts.transform(
-      program.getTsProgram().getSourceFiles(),
+      // XX: circumvent tsc compile error in 2.6
+      Array.from(sourceFiles as any as ts.SourceFile[]),
       transformers,
       tsConfig.options
     );
@@ -76,7 +86,7 @@ const transformSources =
 //  ({transformation, options}: {transformation: ts.TransformationResult<ts.SourceFile>, options: ts.CompilerOptions}): ts.CompilerHost => {
 
 const compilerHostFromArtefacts =
-  (artefacts: Artefacts) => {
+  (artefacts: NgArtefacts) => {
     const wrapped = ts.createCompilerHost(artefacts.tsConfig.options);
 
     return {
@@ -200,7 +210,7 @@ export const inlineTemplatesAndStyles: BuildStep =
  * @param entryPoint Angular package data
  * @returns Promise<{}> Pathes of the flatModuleOutFile
  */
-export async function ngc(entryPoint: NgEntryPoint, artefacts: Artefacts) {
+export async function ngc(entryPoint: NgEntryPoint, artefacts: NgArtefacts) {
   log.debug(`ngc (v${ng.VERSION.full}): ${entryPoint.entryFile}`);
 
   // ng.CompilerHost

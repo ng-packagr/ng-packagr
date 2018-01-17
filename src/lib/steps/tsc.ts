@@ -24,6 +24,7 @@ export async function downlevelWithTsc(inputFile: string, outputFile: string): P
     module: ModuleKind.ES2015,
     allowJs: true,
     sourceMap: true,
+    downlevelIteration: true,
     mapRoot: path.dirname(inputFile)
   };
   const transpiled: TranspileOutput = transpileModule(trimSourceMap(input.toString()), {
