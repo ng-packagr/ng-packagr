@@ -2,7 +2,7 @@ import * as path from 'path';
 import { readFile } from 'fs-extra';
 import { NgArtefacts } from '../ng-package-format/artefacts';
 import { NgPackage } from '../ng-package-format/package';
-import { CssUrl } from '../ng-package-format/entry-point';
+import { CssUrl, NgEntryPoint } from '../ng-package-format/entry-point';
 import { BuildStep } from '../deprecations';
 import * as log from '../util/log';
 
@@ -38,7 +38,7 @@ export const processAssets: BuildStep =
         .map(async (stylesheet) => {
           return {
             name: stylesheet,
-            content: await processStylesheet(stylesheet, pkg.src, entryPoint.cssUrl)
+            content: await processStylesheet(stylesheet, pkg.src, entryPoint)
           };
         })
     );
@@ -64,14 +64,18 @@ const processTemplate =
  *
  * @param stylesheetFilePath Path of the stylesheet, e.g. '/Users/foo/Project/bar/bar.component.scss'
  * @param srcFolder Source folder from 'ng-package.json'
+ * @param entryPoint the entrypoint of the stylesheet being processed
+ *
  * @return Rendered CSS content of stylesheet file
  */
 const processStylesheet =
-  async (stylesheetFilePath: string, srcFolder: string, cssUrl: CssUrl): Promise<string> => {
+  async (stylesheetFilePath: string, srcFolder: string, entryPoint: NgEntryPoint): Promise<string> => {
 
     try {
+      const cssUrl = entryPoint.cssUrl;
+
       log.debug(`Render styles for ${stylesheetFilePath}`);
-      const cssStyles: string = await renderPreProcessor(stylesheetFilePath, srcFolder);
+      const cssStyles: string = await renderPreProcessor(stylesheetFilePath, srcFolder, entryPoint);
 
       log.debug(`determine browserslist for ${stylesheetFilePath}`);
       const browsers = browserslist(undefined, { stylesheetFilePath });
@@ -105,14 +109,14 @@ const processStylesheet =
   }
 
 
-async function renderPreProcessor(filePath: string, srcPath: string): Promise<string> {
+async function renderPreProcessor(filePath: string, srcPath: string, entryPoint: NgEntryPoint): Promise<string> {
 
   switch (path.extname(filePath)) {
 
     case '.scss':
     case '.sass':
       log.debug(`rendering sass from ${filePath}`);
-      return await renderSass({ file: filePath, importer: nodeSassTildeImporter });
+      return await renderSass({ file: filePath, importer: nodeSassTildeImporter, includePaths: entryPoint.sassIncludePaths });
 
     case '.less':
       log.debug(`rendering less from ${filePath}`);

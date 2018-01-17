@@ -84,6 +84,12 @@ export class NgEntryPoint {
     return this.$get('lib.flatModuleFile') || this.flattenModuleId('-');
   }
 
+  public get sassIncludePaths(): string[] {
+    const includePaths = this.$get('lib.sassIncludePaths') || [];
+    return includePaths.map(includePath =>
+      path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath));
+  }
+
   public get languageLevel(): string[] {
     return this.$get('lib.languageLevel');
   }
