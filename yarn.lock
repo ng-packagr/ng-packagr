@@ -2,12 +2,13 @@
 # yarn lockfile v1
 
 
-"@angular-devkit/core@^0.0.25":
-  version "0.0.25"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-0.0.25.tgz#9ddbdcccd2aeb9c029c83815f9d01806e7971f99"
+"@angular-devkit/core@^0.0.28":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-0.0.28.tgz#840b6efa728bc3e93a1c469e482cf1095c96561f"
   dependencies:
     ajv "~5.5.1"
     chokidar "^1.7.0"
+    rxjs "^5.5.6"
     source-map "^0.5.6"
 
 "@angular/cdk@~5.1.0":
@@ -3079,7 +3080,7 @@ rollup@^0.53.0:
   version "0.53.0"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.53.0.tgz#7a3d5a04ba2b0a8f2405899fa6a0ac48da480ed1"
 
-rxjs@^5.5.0:
+rxjs@^5.5.0, rxjs@^5.5.6:
   version "5.5.6"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.6.tgz#e31fb96d6fd2ff1fd84bcea8ae9c02d007179c02"
   dependencies:
