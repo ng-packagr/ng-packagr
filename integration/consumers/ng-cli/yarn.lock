@@ -17,22 +17,11 @@
   dependencies:
     source-map "^0.5.6"
 
-"@angular-devkit/core@0.0.25":
-  version "0.0.25"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-0.0.25.tgz#9ddbdcccd2aeb9c029c83815f9d01806e7971f99"
+"@angular-devkit/schematics@^0.0.51":
+  version "0.0.51"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.0.51.tgz#5b5e5b1604a34e200fb749d1076064374f757276"
   dependencies:
-    ajv "~5.5.1"
-    chokidar "^1.7.0"
-    source-map "^0.5.6"
-
-"@angular-devkit/schematics@^0.0.48":
-  version "0.0.48"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.0.48.tgz#54262b02de7de260798c392f8231d21d38418c90"
-  dependencies:
-    "@angular-devkit/core" "0.0.25"
     "@ngtools/json-schema" "^1.1.0"
-    "@schematics/schematics" "0.0.13"
-    minimist "^1.2.0"
     rxjs "^5.5.6"
 
 "@angular-devkit/schematics@~0.0.40":
@@ -202,10 +191,6 @@
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/@schematics/schematics/-/schematics-0.0.10.tgz#b27b49a1a5482dc6c1c93fb3c20371c95874938b"
 
-"@schematics/schematics@0.0.13":
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/@schematics/schematics/-/schematics-0.0.13.tgz#f7eda5c7caab714f2675dca9cb8301a737acdba2"
-
 "@types/jasmine@~2.8.0":
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.8.2.tgz#6ae4d8740c0da5d5a627df725b4eed71b8e36668"
@@ -316,7 +301,7 @@ ajv@^5.0.0, ajv@^5.1.5:
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.3.0"
 
-ajv@^5.1.0, ajv@~5.5.1:
+ajv@^5.1.0:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.2.tgz#73b5eeca3fab653e3d3f9422b341ad42205dc965"
   dependencies:
