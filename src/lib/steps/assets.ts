@@ -15,6 +15,7 @@ import * as nodeSassTildeImporter from 'node-sass-tilde-importer';
 import * as less from 'less';
 import * as stylus from 'stylus';
 import * as postcssUrl from 'postcss-url';
+import * as postcssComments from 'postcss-discard-comments';
 
 export const processAssets: BuildStep =
   async ({ artefacts, entryPoint, pkg }): Promise<NgArtefacts> => {
@@ -85,7 +86,10 @@ const processStylesheet =
 
       if (cssUrl !== CssUrl.none) {
         log.debug(`postcssUrl: ${cssUrl}`);
-        postCssPlugins.push(postcssUrl({ url: cssUrl }));
+        postCssPlugins.push(
+          postcssUrl({ url: cssUrl }),
+          postcssComments({ removeAll: true })
+        );
       }
       const result: postcss.Result = await postcss(postCssPlugins)
         .process(cssStyles, {
