@@ -29,10 +29,13 @@ export const prepareTsConfig: BuildStep =
     tsConfig.options.flatModuleId = entryPoint.moduleId;
     tsConfig.options.flatModuleOutFile = `${entryPoint.flatModuleFile}.js`;
     tsConfig.options.basePath = basePath;
-    tsConfig.options.baseUrl = basePath;
-    tsConfig.options.rootDir = basePath;
     tsConfig.options.outDir = artefacts.outDir;
+    tsConfig.options.rootDir = basePath;
     tsConfig.options.genDir = artefacts.outDir;
+
+    // this is here because if it's in tsconfig.json it will cause:
+    // False expression: Host should not return a redirect source file from `getSourceFile` when building
+    tsConfig.options.baseUrl = ".";
 
     if (entryPoint.languageLevel) {
       // ng.readConfiguration implicitly converts "es6" to "lib.es6.d.ts", etc.
