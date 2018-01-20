@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as ts from 'typescript';
-import { TsConfig } from '../steps/ngc';
+import { TsConfig } from '../steps/ngc-tsconfig';
 import { NgEntryPoint } from './entry-point';
 import { NgPackage } from './package';
 

@@ -14,47 +14,7 @@ import * as log from '../util/log';
 // ... @link https://github.com/angular/angular/blob/24bf3e2a251634811096b939e61d63297934579e/packages/compiler-cli/src/main.ts#L36-L38
 import { createEmitCallback } from '../util/ngc-patches';
 import { componentTransformer } from '../util/ts-transformers';
-
-/** TypeScript configuration used internally (marker typer). */
-export type TsConfig = ng.ParsedConfiguration;
-
-/** Prepares TypeScript Compiler and Angular Compiler option. */
-export const prepareTsConfig: BuildStep =
-  ({ artefacts, entryPoint, pkg }) => {
-    const basePath = path.dirname(entryPoint.entryFilePath);
-
-    // Read the default configuration and overwrite package-specific options
-    const tsConfig = ng.readConfiguration(path.resolve(__dirname, '..', 'conf', 'tsconfig.ngc.json'));
-    tsConfig.rootNames = [ entryPoint.entryFilePath ];
-    tsConfig.options.flatModuleId = entryPoint.moduleId;
-    tsConfig.options.flatModuleOutFile = `${entryPoint.flatModuleFile}.js`;
-    tsConfig.options.basePath = basePath;
-    tsConfig.options.baseUrl = basePath;
-    tsConfig.options.rootDir = basePath;
-    tsConfig.options.outDir = artefacts.outDir;
-    tsConfig.options.genDir = artefacts.outDir;
-
-    if (entryPoint.languageLevel) {
-      // ng.readConfiguration implicitly converts "es6" to "lib.es6.d.ts", etc.
-      tsConfig.options.lib = entryPoint.languageLevel.map(lib => `lib.${lib}.d.ts`);
-    }
-
-    switch (entryPoint.jsxConfig) {
-      case 'preserve':
-        tsConfig.options.jsx = ts.JsxEmit.Preserve;
-        break;
-      case 'react':
-        tsConfig.options.jsx = ts.JsxEmit.React;
-        break;
-      case 'react-native':
-        tsConfig.options.jsx = ts.JsxEmit.ReactNative;
-        break;
-      default:
-        break;
-    }
-
-    artefacts.tsConfig = tsConfig;
-  }
+import { TsConfig } from './ngc-tsconfig';
 
 /** Transforms TypeScript AST */
 const transformSources =

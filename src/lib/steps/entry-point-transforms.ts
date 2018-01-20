@@ -1,11 +1,12 @@
 import * as path from 'path';
+import { InjectionToken, FactoryProvider } from 'injection-js';
 import { NgArtefacts } from '../ng-package-format/artefacts';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
 import { NgPackage } from '../ng-package-format/package';
 import { BuildStep } from '../deprecations';
 import { writePackage } from '../steps/package';
 import { processAssets } from '../steps/assets';
-import { ngc, prepareTsConfig, collectTemplateAndStylesheetFiles, inlineTemplatesAndStyles } from '../steps/ngc';
+import { ngc, collectTemplateAndStylesheetFiles, inlineTemplatesAndStyles } from '../steps/ngc';
 import { minifyJsFile } from '../steps/uglify';
 import { remapSourceMap, relocateSourceMapSources } from '../steps/sorcery';
 import { flattenToFesm15, flattenToUmd } from '../steps/rollup';
@@ -14,14 +15,15 @@ import { copySourceFilesToDestination } from '../steps/transfer';
 import * as log from '../util/log';
 import { ensureUnixPath } from '../util/path';
 import { rimraf } from '../util/rimraf';
+import { PREPARE_TS_CONFIG_TOKEN } from './ngc-tsconfig';
 
 /**
  * Transforms TypeScript source files to Angular Package Format.
  *
  * @param entryPoint The entry point that will be transpiled to a set of artefacts.
  */
-export const transformSources: BuildStep =
-  async (args): Promise<void> => {
+export function transformSourcesFactory(prepareTsConfig: BuildStep) {
+  return async (args): Promise<void> => {
     const { artefacts, entryPoint, pkg } = args;
     log.info(`Building from sources for entry point '${entryPoint.moduleId}'`);
 
@@ -98,3 +100,12 @@ export const transformSources: BuildStep =
 
     log.success(`Built ${entryPoint.moduleId}`);
   }
+}
+
+export const ENTRY_POINT_TRANSFORMS_TOKEN = new InjectionToken<BuildStep>('ng.v5.entryPointTransforms');
+
+export const ENTRY_POINT_TRANSFORMS_PROVIDER: FactoryProvider = {
+  provide: ENTRY_POINT_TRANSFORMS_TOKEN,
+  useFactory: transformSourcesFactory,
+  deps: [ PREPARE_TS_CONFIG_TOKEN ]
+};
