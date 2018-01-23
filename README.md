@@ -139,12 +139,12 @@ Note: referencing the `$schema` enables JSON editing support (auto-completion fo
 
 #### Secondary Entry Points
 
-Beside the primary entry point, a package can contain one or more secondary entry points (e.g. `@angular/core/testing`, `@angular/cdk/a11y`, …).
+Besides the primary entry point, a package can contain one or more secondary entry points (e.g. `@angular/core/testing`, `@angular/cdk/a11y`, …).
 These contain symbols that we don't want to group together with the symbols in the main entry.
 The module id of a secondary entry directs the module loader to a sub-directory by the secondary's name.
 For instance, `@angular/core/testing` resolves to a directory under `node_modules/@angular/core/testing` containing a `package.json` file that directs the loader to the correct location for what it's looking for.
 
-For library developers, secondary entry points are dynamically discovered by searching for `package.json` files within sub directories of the main `package.json` file's folder!
+For library developers, secondary entry points are dynamically discovered by searching for `package.json` files within subdirectories of the main `package.json` file's folder!
 
 ##### So how do I use secondary entry points (sub-packages)?
 
@@ -225,7 +225,7 @@ Valid values: `none` or `inline`.
 #### What if I have multiple SASS/SCSS include paths?
 
 In case you have multiple include paths for `@import` statements (e.g., when setting the `stylePreprocessorOptions` in `.angular-cli.json`),
-the additional paths may be configured through the the `sassIncludePaths` option.
+the additional paths may be configured through the `sassIncludePaths` option.
 
 ```json
 {
