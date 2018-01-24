@@ -11,6 +11,8 @@ import { BuildStep } from '../deprecations';
 import * as log from '../util/log';
 import { createEmitCallback } from '../ngc/create-emit-callback';
 import { componentTransformer } from '../ts/ng-component-transformer';
+import { replaceWithSynthesizedSourceText, SynthesizedSourceFile } from '../ts/synthesized-source-file';
+import { createCompilerHostForSynthesizedSourceFiles } from '../ts/synthesized-compiler-host';
 import { TsConfig } from '../ts/default-tsconfig';
 
 /** Transforms TypeScript AST */
@@ -38,51 +40,6 @@ const transformSources = (
   return transformationResult;
 };
 
-//const compilerHostFromTransformation =
-//  ({transformation, options}: {transformation: ts.TransformationResult<ts.SourceFile>, options: ts.CompilerOptions}): ts.CompilerHost => {
-
-const compilerHostFromArtefacts = (artefacts: NgArtefacts) => {
-  const wrapped = ts.createCompilerHost(artefacts.tsConfig.options);
-
-  return {
-    ...wrapped,
-    getSourceFile: (fileName, version) => {
-      const inTransformation = artefacts.tsSources.transformed.find(file => file.fileName === fileName);
-
-      if (inTransformation) {
-        // FIX see https://github.com/Microsoft/TypeScript/issues/19950
-        if (!inTransformation['ambientModuleNames']) {
-          inTransformation['ambientModuleNames'] = inTransformation['original']['ambientModuleNames'];
-        }
-
-        // FIX synthesized source files cause ngc/tsc/tsickle to chock
-        if ((inTransformation.flags & 8) !== 0) {
-          const sourceText = artefacts
-            .extras<SynthesizedSourceFile>(`ts:${inTransformation.fileName}`)
-            .writeSourceText();
-
-          return ts.createSourceFile(
-            inTransformation.fileName,
-            sourceText,
-            inTransformation.languageVersion,
-            true,
-            ts.ScriptKind.TS
-          );
-        }
-
-        return inTransformation;
-      } else {
-        return wrapped.getSourceFile(fileName, version);
-      }
-    },
-    getSourceFileByPath: (fileName, path, languageVersion) => {
-      console.warn('getSourceFileByPath');
-
-      return wrapped.getSourceFileByPath(fileName, path, languageVersion);
-    }
-  };
-};
-
 /** Extracts templateUrl and styleUrls from `@Component({..})` decorators. */
 export const collectTemplateAndStylesheetFiles: BuildStep = ({ artefacts, entryPoint, pkg }) => {
   const tsConfig = artefacts.tsConfig;
@@ -99,47 +56,15 @@ export const collectTemplateAndStylesheetFiles: BuildStep = ({ artefacts, entryP
   artefacts.tsSources = transformSources(tsConfig, [collector]);
 };
 
-class SynthesizedSourceFile {
-  private replacemenets: { from: number; to: number; text: string }[] = [];
-
-  constructor(private original: ts.SourceFile) {}
-
-  addReplacement(replacement: { from: number; to: number; text: string }) {
-    this.replacemenets.push(replacement);
-  }
-
-  public writeSourceText(): string {
-    const originalSource = this.original.getFullText();
-
-    let newSource = '';
-    let position = 0;
-    for (let replacement of this.replacemenets) {
-      newSource = newSource.concat(originalSource.substring(position, replacement.from)).concat(replacement.text);
-      position = replacement.to;
-    }
-    newSource = newSource.concat(originalSource.substring(position));
-
-    return newSource;
-  }
-}
-
 /** Transforms templateUrl and styleUrls in `@Component({..})` decorators. */
 export const inlineTemplatesAndStyles: BuildStep = ({ artefacts, entryPoint, pkg }) => {
-  const tsConfig = artefacts.tsConfig;
   // inline contents from artefacts set (generated in a previous step)
   const transformer = componentTransformer({
     templateProcessor: (a, b, templateFilePath) => artefacts.template(templateFilePath) || '',
     stylesheetProcessor: (a, b, styleFilePath) => artefacts.stylesheet(styleFilePath) || '',
     sourceFileWriter: (sourceFile, node, synthesizedSourceText) => {
       const key = `ts:${sourceFile.fileName}`;
-
-      const synthesizedSourceFile =
-        artefacts.extras<SynthesizedSourceFile>(key) || new SynthesizedSourceFile(sourceFile);
-      synthesizedSourceFile.addReplacement({
-        from: node.getStart(),
-        to: node.getEnd(),
-        text: synthesizedSourceText
-      });
+      const synthesizedSourceFile = replaceWithSynthesizedSourceText(node, synthesizedSourceText);
 
       artefacts.extras(key, synthesizedSourceFile);
     }
@@ -157,11 +82,14 @@ export const inlineTemplatesAndStyles: BuildStep = ({ artefacts, entryPoint, pkg
 export async function ngc(entryPoint: NgEntryPoint, artefacts: NgArtefacts) {
   log.debug(`ngc (v${ng.VERSION.full}): ${entryPoint.entryFile}`);
 
+  // XX ... hacky
+  const mixedSourceFiles = [...artefacts.tsSyntheticSourcFiles(), ...artefacts.tsSources.transformed];
+
   // ng.CompilerHost
   const tsConfig = artefacts.tsConfig;
   const ngCompilerHost = ng.createCompilerHost({
     options: tsConfig.options,
-    tsHost: compilerHostFromArtefacts(artefacts)
+    tsHost: createCompilerHostForSynthesizedSourceFiles(mixedSourceFiles, artefacts.tsConfig.options)
   });
 
   // ng.Program
