@@ -1,6 +1,7 @@
 import * as ts from 'typescript';
 import * as path from 'path';
 import { isComponentDecorator, isTemplateUrl, isStyleUrls } from './ng-type-guards';
+import { transformComponent } from './transform-component';
 
 export type StylesheetProcessor = (
   sourceFile: string,
@@ -30,15 +31,12 @@ export const componentTransformer: ComponentTransformer = ({
   templateProcessor,
   stylesheetProcessor,
   sourceFileWriter
-}) => (context: ts.TransformationContext) => (sourceFile: ts.SourceFile): ts.SourceFile => {
-  // skip source files from 'node_modules' directory (third-party source)
-  if (sourceFile.fileName.includes('node_modules')) {
-    return sourceFile;
-  }
-  const sourceFilePath = sourceFile.fileName;
+}) =>
+  transformComponent({
+    templateVisitor: node => {
+      const sourceFile = node.getSourceFile();
+      const sourceFilePath = node.getSourceFile().fileName;
 
-  const visitComponents = (node: ts.Decorator): ts.Node => {
-    if (isTemplateUrl(node)) {
       // XX: strip quotes (' or ") from path
       const templatePath = node.initializer.getText().substring(1, node.initializer.getText().length - 1);
       const templateFilePath = path.resolve(path.dirname(sourceFilePath), templatePath);
@@ -60,7 +58,11 @@ export const componentTransformer: ComponentTransformer = ({
       } else {
         return node;
       }
-    } else if (isStyleUrls(node)) {
+    },
+    stylesheetVisitor: node => {
+      const sourceFile = node.getSourceFile();
+      const sourceFilePath = node.getSourceFile().fileName;
+
       // handle array arguments for styleUrls
       const styleUrls = node.initializer
         .getChildren()
@@ -100,14 +102,4 @@ export const componentTransformer: ComponentTransformer = ({
         return node;
       }
     }
-
-    return ts.visitEachChild(node, visitComponents, context);
-  };
-
-  const visitDecorators = (node: ts.Node): ts.Node =>
-    isComponentDecorator(node)
-      ? ts.visitEachChild(node, visitComponents, context)
-      : ts.visitEachChild(node, visitDecorators, context);
-
-  return ts.visitNode(sourceFile, visitDecorators);
-};
+  });
