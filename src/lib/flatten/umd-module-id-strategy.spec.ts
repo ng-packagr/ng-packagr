@@ -1,40 +1,8 @@
 import { expect } from 'chai';
-import { externalModuleIdStrategy, umdModuleIdStrategy } from './rollup';
+import { umdModuleIdStrategy } from './umd-module-id-strategy';
 
-describe('rollup', () => {
-
-  describe(`externalModuleIdStrategy`, () => {
-    it(`should return 'false' paths starting with '.'`, () => {
-      expect(externalModuleIdStrategy('./foo/bar')).to.be.false;
-    });
-
-    it(`should return 'false' for paths starting with '/'`, () => {
-      expect(externalModuleIdStrategy('/foo/bar')).to.be.false;
-    });
-
-    it(`should return 'false' for absolute paths`, () => {
-      expect(externalModuleIdStrategy(__filename)).to.be.false;
-    });
-
-    it(`should return 'false' for embedded modules`, () => {
-      expect(externalModuleIdStrategy('lodash', ['lodash'])).to.be.false;
-    });
-
-    it(`should return 'false' for 'commonjsHelpers'`, () => {
-      expect(externalModuleIdStrategy('commonjsHelpers')).to.be.false;
-    });
-
-    it(`should return 'true' for external modules like '@angular/core'`, () => {
-      expect(externalModuleIdStrategy('@angular/core')).to.be.true;
-    });
-
-    it(`should return 'true' for modules with '.' like 'ui.core'`, () => {
-      expect(externalModuleIdStrategy('ui.core')).to.be.true;
-    });
-
-  });
-
-  describe(`umdModuleIdStrategy`, () => {
+describe(`rollup`, () => {
+  describe(`umdModuleIdStrategy()`, () => {
     it(`should map 'rxjs/add/observable/bindCallback' to 'Rx.Observable'`, () => {
       expect(umdModuleIdStrategy('rxjs/add/observable/bindCallback')).to.equal('Rx.Observable');
     });
@@ -105,7 +73,7 @@ describe('rollup', () => {
 
     const FOO_MODULE = 'FooModule';
     it(`should map 'foo' to '${FOO_MODULE}' when 'umdModuleIds' is provided`, () => {
-      expect(umdModuleIdStrategy('foo', { 'foo': FOO_MODULE})).to.equal(FOO_MODULE);
+      expect(umdModuleIdStrategy('foo', { foo: FOO_MODULE })).to.equal(FOO_MODULE);
     });
 
     it(`should map 'foo' to '' when no 'umdModuleIds' is provided`, () => {

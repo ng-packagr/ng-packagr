@@ -1,11 +1,5 @@
 import * as path from 'path';
-import {
-  ScriptTarget,
-  ModuleKind,
-  TranspileOutput,
-  transpileModule,
-  CompilerOptions
-} from 'typescript';
+import { ScriptTarget, ModuleKind, TranspileOutput, transpileModule, CompilerOptions } from 'typescript';
 import { readFile, outputJson, outputFile as fsOutputFile } from 'fs-extra';
 import { debug } from '../util/log';
 
@@ -41,15 +35,13 @@ export async function downlevelWithTsc(inputFile: string, outputFile: string): P
     fsOutputFile(outputFile, transpiled.outputText),
     outputJson(`${outputFile}.map`, sourceMap, { spaces: 2 })
   ]);
-};
+}
 
 const REGEXP = /\/\/# sourceMappingURL=.*\.js\.map/;
 const trimSourceMap = (fileContent: string): string => {
-
   if (fileContent.match(REGEXP)) {
     return fileContent.replace(/\/\/# sourceMappingURL=.*\.js\.map/, '');
   } else {
     return fileContent;
   }
-
 };
