@@ -52,12 +52,6 @@ export class NgArtefacts {
     this.extras('tsSources', value);
   }
 
-  public tsSyntheticSourcFiles(): ts.SourceFile[] {
-    return Array.from(this._extras.keys())
-      .filter(key => key.startsWith('ts:'))
-      .map(key => <ts.SourceFile>this.extras(key));
-  }
-
   public template(file: string): string;
   public template(file: string, content: string);
   public template(file: string, content?: string): string | undefined {

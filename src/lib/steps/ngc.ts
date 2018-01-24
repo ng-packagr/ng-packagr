@@ -41,14 +41,14 @@ const transformSources = (
 };
 
 /** Extracts templateUrl and styleUrls from `@Component({..})` decorators. */
-export const collectTemplateAndStylesheetFiles: BuildStep = ({ artefacts, entryPoint, pkg }) => {
+export const extractTemplateAndStylesheetFiles: BuildStep = ({ artefacts, entryPoint, pkg }) => {
   const tsConfig = artefacts.tsConfig;
 
   const collector = componentTransformer({
-    templateProcessor: (a, b, templateFilePath) => {
+    template: ({ templateFilePath }) => {
       artefacts.template(templateFilePath, null);
     },
-    stylesheetProcessor: (a, b, styleFilePath) => {
+    stylesheet: ({ styleFilePath }) => {
       artefacts.stylesheet(styleFilePath, null);
     }
   });
@@ -60,17 +60,15 @@ export const collectTemplateAndStylesheetFiles: BuildStep = ({ artefacts, entryP
 export const inlineTemplatesAndStyles: BuildStep = ({ artefacts, entryPoint, pkg }) => {
   // inline contents from artefacts set (generated in a previous step)
   const transformer = componentTransformer({
-    templateProcessor: (a, b, templateFilePath) => artefacts.template(templateFilePath) || '',
-    stylesheetProcessor: (a, b, styleFilePath) => artefacts.stylesheet(styleFilePath) || '',
-    sourceFileWriter: (sourceFile, node, synthesizedSourceText) => {
-      const key = `ts:${sourceFile.fileName}`;
-      const synthesizedSourceFile = replaceWithSynthesizedSourceText(node, synthesizedSourceText);
-
-      artefacts.extras(key, synthesizedSourceFile);
-    }
+    template: ({ templateFilePath }) => artefacts.template(templateFilePath) || '',
+    stylesheet: ({ styleFilePath }) => artefacts.stylesheet(styleFilePath) || ''
   });
 
-  artefacts.tsSources = ts.transform(artefacts.tsSources.transformed, [transformer]);
+  const preTransform = artefacts.tsSources;
+
+  artefacts.tsSources = ts.transform([...artefacts.tsSources.transformed], [transformer]);
+
+  preTransform.dispose();
 };
 
 /**
@@ -82,14 +80,11 @@ export const inlineTemplatesAndStyles: BuildStep = ({ artefacts, entryPoint, pkg
 export async function ngc(entryPoint: NgEntryPoint, artefacts: NgArtefacts) {
   log.debug(`ngc (v${ng.VERSION.full}): ${entryPoint.entryFile}`);
 
-  // XX ... hacky
-  const mixedSourceFiles = [...artefacts.tsSyntheticSourcFiles(), ...artefacts.tsSources.transformed];
-
   // ng.CompilerHost
   const tsConfig = artefacts.tsConfig;
   const ngCompilerHost = ng.createCompilerHost({
     options: tsConfig.options,
-    tsHost: createCompilerHostForSynthesizedSourceFiles(mixedSourceFiles, artefacts.tsConfig.options)
+    tsHost: createCompilerHostForSynthesizedSourceFiles(artefacts.tsSources.transformed, artefacts.tsConfig.options)
   });
 
   // ng.Program

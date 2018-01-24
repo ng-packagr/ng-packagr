@@ -18,21 +18,21 @@ export function createCompilerHostForSynthesizedSourceFiles(
   return {
     ...wrapped,
     getSourceFile: (fileName, version) => {
-      const fromCollection = sourceFiles.find(file => file.fileName === fileName);
+      const sourceFile = sourceFiles.find(file => file.fileName === fileName);
 
-      if (fromCollection) {
+      if (sourceFile) {
         // FIX @link https://github.com/Microsoft/TypeScript/issues/19950
-        if (!fromCollection['ambientModuleNames']) {
-          fromCollection['ambientModuleNames'] = fromCollection['original']['ambientModuleNames'];
+        if (!sourceFile['ambientModuleNames'] && sourceFile['original']) {
+          sourceFile['ambientModuleNames'] = sourceFile['original']['ambientModuleNames'];
         }
 
         // FIX synthesized source files cause ngc/tsc/tsickle to chock
-        const hasSyntheticFlag = (fromCollection.flags & 8) !== 0;
-        if (hasSyntheticFlag || isSynthesizedSourceFile(fromCollection)) {
-          return writeSourceFile(fromCollection);
+        const hasSyntheticFlag = (sourceFile.flags & 8) !== 0;
+        if (hasSyntheticFlag || isSynthesizedSourceFile(sourceFile)) {
+          return writeSourceFile(sourceFile);
         }
 
-        return fromCollection;
+        return sourceFile;
       } else {
         return wrapped.getSourceFile(fileName, version);
       }

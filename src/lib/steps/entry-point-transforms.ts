@@ -6,7 +6,7 @@ import { NgPackage } from '../ng-package-format/package';
 import { BuildStep } from '../deprecations';
 import { writePackage } from '../steps/package';
 import { processAssets } from '../steps/assets';
-import { ngc, collectTemplateAndStylesheetFiles, inlineTemplatesAndStyles } from '../steps/ngc';
+import { ngc, extractTemplateAndStylesheetFiles, inlineTemplatesAndStyles } from '../steps/ngc';
 import { FlattenOpts, writeFlatBundleFiles } from '../flatten/flatten';
 import { relocateSourceMaps } from '../sourcemaps/relocate';
 import { copySourceFilesToDestination } from '../steps/transfer';
@@ -35,7 +35,7 @@ export function transformSourcesFactory(prepareTsConfig: BuildStep) {
 
     // First pass: collect templateUrl and styleUrls referencing source files.
     log.info('Extracting templateUrl and styleUrls');
-    collectTemplateAndStylesheetFiles(args);
+    extractTemplateAndStylesheetFiles(args);
 
     // Then, process assets keeping transformed contents in memory.
     log.info('Processing assets');
