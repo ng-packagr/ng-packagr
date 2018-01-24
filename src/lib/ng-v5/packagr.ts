@@ -1,11 +1,7 @@
 import { InjectionToken, Provider, ReflectiveInjector, ValueProvider } from 'injection-js';
 import { BUILD_NG_PACKAGE_TOKEN, BUILD_NG_PACKAGE_PROVIDER, BuildCallSignature } from '../steps/build-ng-package';
-import {
-  TsConfig,
-  DEFAULT_TS_CONFIG_PROVIDER,
-  DEFAULT_TS_CONFIG_TOKEN,
-  PREPARE_TS_CONFIG_PROVIDER
-} from '../steps/ngc-tsconfig';
+import { TsConfig, DEFAULT_TS_CONFIG_PROVIDER, DEFAULT_TS_CONFIG_TOKEN } from '../ts/default-tsconfig';
+import { INIT_TS_CONFIG_PROVIDER } from '../ts/init-tsconfig';
 import { ENTRY_POINT_TRANSFORMS_PROVIDER } from '../steps/entry-point-transforms';
 
 export class NgPackagr {
@@ -43,7 +39,7 @@ export const ngPackagr = (): NgPackagr =>
     BUILD_NG_PACKAGE_PROVIDER,
     ENTRY_POINT_TRANSFORMS_PROVIDER,
     DEFAULT_TS_CONFIG_PROVIDER,
-    PREPARE_TS_CONFIG_PROVIDER
+    INIT_TS_CONFIG_PROVIDER
   ]);
 
 export const PROJECT_TOKEN = new InjectionToken<string>('ng.v5.project');

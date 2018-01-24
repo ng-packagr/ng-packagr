@@ -1,12 +1,12 @@
 import { tags } from '@angular-devkit/core';
 import { expect } from 'chai';
 import * as ts from 'typescript';
-import { isComponentDecorator, isTemplateUrl, isStyleUrls } from './ts-transformers';
+import { isComponentDecorator, isTemplateUrl, isStyleUrls } from './ng-type-guards';
 
 const createSourceFile = (sourceText: string, sourceName: string = 'foo.ts') =>
   ts.createSourceFile(sourceName, sourceText, ts.ScriptTarget.ES5, true, ts.ScriptKind.TS);
 
-describe(`ts-transformers`, () => {
+describe(`ng-type-guards`, () => {
   const sourceFileOne = createSourceFile(tags.stripIndent`
     import {Component} from '@angular/core';
 
@@ -22,20 +22,34 @@ describe(`ts-transformers`, () => {
     })
     class MyComponent {}
   `);
-  const sourceTwo_syntaxList = sourceFileTwo.getChildAt(0).getChildAt(0).getChildAt(0).getChildAt(0)
-    .getChildAt(1).getChildAt(2).getChildAt(0).getChildAt(1);
+  const sourceTwo_syntaxList = sourceFileTwo
+    .getChildAt(0)
+    .getChildAt(0)
+    .getChildAt(0)
+    .getChildAt(0)
+    .getChildAt(1)
+    .getChildAt(2)
+    .getChildAt(0)
+    .getChildAt(1);
   const sourceTwo_templateUrlNode = sourceTwo_syntaxList.getChildAt(0);
   const sourceTwo_styleUrlsNode = sourceTwo_syntaxList.getChildAt(2);
 
-
   describe(`isComponentDecorator`, () => {
     it(`should return true for '@Component()'`, () => {
-      const decoratorNode = sourceFileOne.getChildAt(0).getChildAt(1).getChildAt(0).getChildAt(0);
+      const decoratorNode = sourceFileOne
+        .getChildAt(0)
+        .getChildAt(1)
+        .getChildAt(0)
+        .getChildAt(0);
       expect(isComponentDecorator(decoratorNode)).to.be.true;
     });
 
     it(`should return false for other decorator`, () => {
-      const otherDecorator = sourceFileOne.getChildAt(0).getChildAt(1).getChildAt(0).getChildAt(1);
+      const otherDecorator = sourceFileOne
+        .getChildAt(0)
+        .getChildAt(1)
+        .getChildAt(0)
+        .getChildAt(1);
       expect(isComponentDecorator(otherDecorator)).to.be.false;
     });
 
@@ -74,5 +88,4 @@ describe(`ts-transformers`, () => {
       expect(isStyleUrls(sourceTwo_syntaxList)).to.be.false;
     });
   });
-
 });

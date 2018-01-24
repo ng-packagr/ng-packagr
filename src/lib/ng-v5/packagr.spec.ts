@@ -1,7 +1,7 @@
 import * as ng from '@angular/compiler-cli';
 import { expect } from 'chai';
 import { provideProject, PROJECT_TOKEN, ngPackagr, NgPackagr } from './packagr';
-import { DEFAULT_TS_CONFIG_TOKEN } from '../steps/ngc-tsconfig';
+import { DEFAULT_TS_CONFIG_TOKEN } from '../ts/default-tsconfig';
 
 describe(`ngPackagr()`, () => {
   it(`should return a NgPackagr instance`, () => {

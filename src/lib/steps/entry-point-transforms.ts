@@ -15,7 +15,7 @@ import { copySourceFilesToDestination } from '../steps/transfer';
 import * as log from '../util/log';
 import { ensureUnixPath } from '../util/path';
 import { rimraf } from '../util/rimraf';
-import { PREPARE_TS_CONFIG_TOKEN } from './ngc-tsconfig';
+import { INIT_TS_CONFIG_TOKEN } from '../ts/init-tsconfig';
 
 /**
  * Transforms TypeScript source files to Angular Package Format.
@@ -99,7 +99,7 @@ export function transformSourcesFactory(prepareTsConfig: BuildStep) {
     });
 
     log.success(`Built ${entryPoint.moduleId}`);
-  }
+  };
 }
 
 export const ENTRY_POINT_TRANSFORMS_TOKEN = new InjectionToken<BuildStep>('ng.v5.entryPointTransforms');
@@ -107,5 +107,5 @@ export const ENTRY_POINT_TRANSFORMS_TOKEN = new InjectionToken<BuildStep>('ng.v5
 export const ENTRY_POINT_TRANSFORMS_PROVIDER: FactoryProvider = {
   provide: ENTRY_POINT_TRANSFORMS_TOKEN,
   useFactory: transformSourcesFactory,
-  deps: [ PREPARE_TS_CONFIG_TOKEN ]
+  deps: [INIT_TS_CONFIG_TOKEN]
 };
