@@ -1,36 +1,14 @@
-import * as ng from '@angular/compiler-cli';
-// XX: has or is using name 'ParsedConfiguration' ... but cannot be named
-import { ParsedConfiguration } from '@angular/compiler-cli';
 import { InjectionToken, FactoryProvider } from 'injection-js';
-import * as path from 'path';
 import * as ts from 'typescript';
+import * as path from 'path';
+import { TsConfig, DEFAULT_TS_CONFIG_TOKEN } from './default-tsconfig';
 import { BuildStep } from '../deprecations';
 
 /**
- * TypeScript configuration used internally (marker typer).
+ * Initializes TypeScript Compiler options and Angular Compiler options by overriding the
+ * default config with entry point-specific values.
  */
-export type TsConfig = ng.ParsedConfiguration;
-
-/**
- * Reads the default TypeScript configuration.
- */
-export function defaultTsConfigFactory() {
-  return ng.readConfiguration(path.resolve(__dirname, '..', 'conf', 'tsconfig.ngc.json'));
-}
-
-export const DEFAULT_TS_CONFIG_TOKEN = new InjectionToken<TsConfig>('ng.v5.defaultTsConfig');
-
-export const DEFAULT_TS_CONFIG_PROVIDER: FactoryProvider = {
-  provide: DEFAULT_TS_CONFIG_TOKEN,
-  useFactory: defaultTsConfigFactory,
-  deps: []
-};
-
-/**
- * Prepares TypeScript Compiler and Angular Compiler options by overriding the default config
- * with entry point-specific values.
- */
-export const prepareTsConfigFactory: (def: TsConfig) => BuildStep = defaultTsConfig => ({
+export const initTsConfigFactory: (def: TsConfig) => BuildStep = defaultTsConfig => ({
   artefacts,
   entryPoint,
   pkg
@@ -71,10 +49,10 @@ export const prepareTsConfigFactory: (def: TsConfig) => BuildStep = defaultTsCon
   artefacts.tsConfig = tsConfig;
 };
 
-export const PREPARE_TS_CONFIG_TOKEN = new InjectionToken<BuildStep>('ng.v5.prepareTsConfig');
+export const INIT_TS_CONFIG_TOKEN = new InjectionToken<BuildStep>('ng.v5.prepareTsConfig');
 
-export const PREPARE_TS_CONFIG_PROVIDER: FactoryProvider = {
-  provide: PREPARE_TS_CONFIG_TOKEN,
-  useFactory: prepareTsConfigFactory,
+export const INIT_TS_CONFIG_PROVIDER: FactoryProvider = {
+  provide: INIT_TS_CONFIG_TOKEN,
+  useFactory: initTsConfigFactory,
   deps: [DEFAULT_TS_CONFIG_TOKEN]
 };

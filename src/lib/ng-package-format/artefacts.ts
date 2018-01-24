@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as ts from 'typescript';
-import { TsConfig } from '../steps/ngc-tsconfig';
+import { TsConfig } from '../ts/default-tsconfig';
 import { NgEntryPoint } from './entry-point';
 import { NgPackage } from './package';
 
@@ -11,7 +11,6 @@ import { NgPackage } from './package';
  * intermediate build output.
  */
 export class NgArtefacts {
-
   /** Directory for temporary files */
   public readonly stageDir: string;
 
@@ -20,17 +19,14 @@ export class NgArtefacts {
 
   private _extras: Map<string, any> = new Map();
 
-  constructor(
-    entryPoint: NgEntryPoint,
-    pkg: NgPackage
-  ) {
+  constructor(entryPoint: NgEntryPoint, pkg: NgPackage) {
     this.stageDir = path.resolve(pkg.workingDirectory, entryPoint.flatModuleFile, 'stage');
     this.outDir = path.resolve(pkg.workingDirectory, entryPoint.flatModuleFile, 'out');
   }
 
-  public extras<T> (key: string): T;
-  public extras<T> (key: string, value: T);
-  public extras<T> (key: string, value?: T): T | undefined {
+  public extras<T>(key: string): T;
+  public extras<T>(key: string, value: T);
+  public extras<T>(key: string, value?: T): T | undefined {
     if (value !== undefined) {
       // write
       this._extras.set(key, value);
@@ -70,8 +66,8 @@ export class NgArtefacts {
 
   public templates(): string[] {
     return Array.from(this._extras.keys())
-      .filter((key) => key.startsWith('template:'))
-      .map((key) => key.substring('template:'.length));
+      .filter(key => key.startsWith('template:'))
+      .map(key => key.substring('template:'.length));
   }
 
   public stylesheet(file: string): string;
@@ -88,8 +84,8 @@ export class NgArtefacts {
 
   public stylesheets(): string[] {
     return Array.from(this._extras.keys())
-      .filter((key) => key.startsWith('stylesheet:'))
-      .map((key) => key.substring('stylesheet:'.length));
+      .filter(key => key.startsWith('stylesheet:'))
+      .map(key => key.substring('stylesheet:'.length));
   }
 
   public get es2015EntryFile(): string {
@@ -139,5 +135,4 @@ export class NgArtefacts {
   public set aotBundleFile(filePath: string) {
     this.extras('aot:bundleFile', filePath);
   }
-
 }
