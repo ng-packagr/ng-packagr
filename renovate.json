@@ -18,6 +18,11 @@
       "pinVersions": false
     },
     {
+      "packagePatterns": ["^@angular-devkit\/.*"],
+      "groupName": "angular-devkit",
+      "pinVersions": false
+    },
+    {
       "packagePatterns": ["^@commitlint\/.*"],
       "groupName": "commitlint",
       "pinVersions": false
