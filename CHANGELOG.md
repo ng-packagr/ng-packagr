@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.12"></a>
+
+# [2.0.0-rc.12](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.11...v2.0.0-rc.12) (2018-01-25)
+
+### Bug Fixes
+
+* dispose the previous TransformationResult after inlining ([#533](https://github.com/dherges/ng-packagr/issues/533)) ([b4c7e89](https://github.com/dherges/ng-packagr/commit/b4c7e89))
+* strip comments from processed styles ([#512](https://github.com/dherges/ng-packagr/issues/512)) ([542aed2](https://github.com/dherges/ng-packagr/commit/542aed2)), closes [#503](https://github.com/dherges/ng-packagr/issues/503)
+
+### Features
+
+* enable tsconfig customization thru the programmatic API ([#517](https://github.com/dherges/ng-packagr/issues/517)) ([8b04d44](https://github.com/dherges/ng-packagr/commit/8b04d44)), closes [#256](https://github.com/dherges/ng-packagr/issues/256)
+
 <a name="2.0.0-rc.11"></a>
 
 # [2.0.0-rc.11](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.10...v2.0.0-rc.11) (2018-01-17)
