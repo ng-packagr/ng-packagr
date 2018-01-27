@@ -1,11 +1,23 @@
+import { ParsedConfiguration } from '@angular/compiler-cli';
 import { InjectionToken, Provider, ReflectiveInjector, ValueProvider } from 'injection-js';
 import { BUILD_NG_PACKAGE_TOKEN, BUILD_NG_PACKAGE_PROVIDER, BuildCallSignature } from '../steps/build-ng-package';
-import { TsConfig, DEFAULT_TS_CONFIG_PROVIDER, DEFAULT_TS_CONFIG_TOKEN } from '../ts/default-tsconfig';
+import {
+  defaultTsConfigFactory,
+  TsConfig,
+  DEFAULT_TS_CONFIG_PROVIDER,
+  DEFAULT_TS_CONFIG_TOKEN
+} from '../ts/default-tsconfig';
 import { INIT_TS_CONFIG_PROVIDER } from '../ts/init-tsconfig';
 import { ENTRY_POINT_TRANSFORMS_PROVIDER } from '../steps/entry-point-transforms';
 
 export class NgPackagr {
   constructor(private providers: Provider[]) {}
+
+  public forProject(project: string): NgPackagr {
+    this.providers.push(provideProject(project));
+
+    return this;
+  }
 
   public withProviders(providers: Provider[]): NgPackagr {
     this.providers = [...this.providers, ...providers];
@@ -14,11 +26,8 @@ export class NgPackagr {
   }
 
   /** Overwrites the default TypeScript configuration. */
-  public withTsConfig(defaultValues: TsConfig): NgPackagr {
-    this.providers.push({
-      provide: DEFAULT_TS_CONFIG_TOKEN,
-      useValue: defaultValues
-    });
+  public withTsConfig(defaultValues: TsConfig | string): NgPackagr {
+    this.providers.push(provideTsConfig(defaultValues));
 
     return this;
   }
@@ -48,3 +57,12 @@ export const provideProject = (project: string): ValueProvider => ({
   provide: PROJECT_TOKEN,
   useValue: project
 });
+
+export const provideTsConfig = (values: TsConfig | string): ValueProvider => {
+  const tsConfig: TsConfig = typeof values === 'string' ? defaultTsConfigFactory(values) : values;
+
+  return {
+    provide: DEFAULT_TS_CONFIG_TOKEN,
+    useValue: tsConfig
+  };
+};
