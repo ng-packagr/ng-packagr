@@ -1,4 +1,4 @@
-import { outputJson } from 'fs-extra';
+import { outputJson, readJsonSync } from 'fs-extra';
 import * as path from 'path';
 import * as log from '../util/log';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
@@ -19,12 +19,23 @@ import { NgEntryPoint } from '../ng-package-format/entry-point';
  * @param binaries Binary artefacts (bundle files) to merge into `package.json`
  */
 export async function writePackage(entryPoint: NgEntryPoint, binaries: { [key: string]: string }): Promise<void> {
-
   log.debug('writePackage');
   const packageJson: any = entryPoint.packageJson;
   // set additional properties
   for (const fieldName in binaries) {
     packageJson[fieldName] = binaries[fieldName];
+  }
+
+  // read tslib version from our peerDependencies
+  if (!(packageJson.dependencies && packageJson.dependencies.tslib)) {
+    const tslibVersion = readJsonSync(path.resolve('./package.json')).peerDependencies.tslib;
+
+    if (tslibVersion) {
+      packageJson.dependencies = {
+        ...packageJson.dependencies,
+        tslib: tslibVersion
+      };
+    }
   }
 
   packageJson.name = entryPoint.moduleId;
@@ -35,9 +46,5 @@ export async function writePackage(entryPoint: NgEntryPoint, binaries: { [key: s
 
   // `outputJson()` creates intermediate directories, if they do not exist
   // -- https://github.com/jprichardson/node-fs-extra/blob/master/docs/outputJson.md
-  await outputJson(
-    path.resolve(entryPoint.destinationPath, 'package.json'),
-    packageJson,
-    { spaces: 2 }
-  );
+  await outputJson(path.resolve(entryPoint.destinationPath, 'package.json'), packageJson, { spaces: 2 });
 }

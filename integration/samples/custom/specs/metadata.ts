@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`sample-custom`, () => {
-
   describe(`sample-custom.metadata.json`, () => {
     let METADATA;
     before(() => {
@@ -44,14 +43,16 @@ describe(`sample-custom`, () => {
 
       it(`should be exported`, () => {
         expect(baz).to.be.ok;
-      })
+      });
 
       it(`should have the <h1> template inlined`, () => {
         expect(baz.template).to.satisfy(str => str.startsWith(`<h1 class="supersized">Baz!</h1>`));
       });
 
       it(`should have a styles array with two stylesheets`, () => {
-        expect(baz.styles).to.be.an('array').that.has.length(2);
+        expect(baz.styles)
+          .to.be.an('array')
+          .that.has.length(2);
       });
     });
 
@@ -96,8 +97,6 @@ describe(`sample-custom`, () => {
         expect(fooBar.styles[0]).to.not.contain(`background-color:url(./assets/test.png);`);
       });
     });
-
-
 
     it(`should re-export 'InternalService' with an auto-generated symbol`, () => {
       expect(METADATA['metadata']['ɵa']).to.be.ok;

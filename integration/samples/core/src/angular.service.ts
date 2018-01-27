@@ -6,15 +6,21 @@ import { Subject } from 'rxjs/Subject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { map } from 'rxjs/operator/map';
 
-@Injectable()
-export class AngularService {
+export abstract class AngularBaseService {
+  fooBar: boolean;
+}
 
-  private _subject: Subject<any> = new ReplaySubject<any>(1);
+@Injectable()
+export class AngularService extends AngularBaseService {
+
+  private _subject: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(
     private http: Http,
     private httpClient: HttpClient
-  ) {}
+  ) {
+    super();
+   }
 
   public foo(): Observable<string> {
     return map.call(

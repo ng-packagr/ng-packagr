@@ -7,8 +7,7 @@ describe(`@sample/core`, () => {
   describe(`sample-core.umd.js`, () => {
     let BUNDLE;
     before(() => {
-      BUNDLE = fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'bundles', 'sample-core.umd.js'), 'utf-8');
+      BUNDLE = fs.readFileSync(path.resolve(__dirname, '../dist/bundles/sample-core.umd.js'), 'utf-8');
     });
 
     it(`should exist`, () => {
@@ -17,6 +16,10 @@ describe(`@sample/core`, () => {
 
     it(`should export the module with module name 'sample.core'`, () => {
       expect(BUNDLE).to.contain(`global.sample.core = {}`);
+    });
+
+    it(`should not import TS helpers from 'tslib'`, () => {
+      expect(BUNDLE).not.to.contain('tslib');
     });
   });
 

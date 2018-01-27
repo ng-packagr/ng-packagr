@@ -120,6 +120,14 @@ export class NgArtefacts {
     this.extras('fesm5:bundleFile', filePath);
   }
 
+  public get fesm5DownlevelFile(): string {
+    return this.extras('fesm5:downlevelFile');
+  }
+
+  public set fesm5DownlevelFile(filePath: string) {
+    this.extras('fesm5:downlevelFile', filePath);
+  }
+
   public get umdBundleFile(): string {
     return this.extras('umd:bundleFile');
   }
