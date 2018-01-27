@@ -1,27 +1,24 @@
-import { tags } from '@angular-devkit/core';
 import { expect } from 'chai';
 import * as ts from 'typescript';
+import { createSourceFile } from '../../testing/typescript.testing';
 import { isComponentDecorator, isTemplateUrl, isStyleUrls } from './ng-type-guards';
 
-const createSourceFile = (sourceText: string, sourceName: string = 'foo.ts') =>
-  ts.createSourceFile(sourceName, sourceText, ts.ScriptTarget.ES5, true, ts.ScriptKind.TS);
-
 describe(`ng-type-guards`, () => {
-  const sourceFileOne = createSourceFile(tags.stripIndent`
+  const sourceFileOne = createSourceFile`
     import {Component} from '@angular/core';
 
     @Component({})
     @Other
     class MyComponent {}
-  `);
+  `;
 
-  const sourceFileTwo = createSourceFile(tags.stripIndent`
+  const sourceFileTwo = createSourceFile`
     @Component({
       templateUrl: './my.component.html',
       styleUrls: ['./my.component.css']
     })
     class MyComponent {}
-  `);
+  `;
   const sourceTwo_syntaxList = sourceFileTwo
     .getChildAt(0)
     .getChildAt(0)
