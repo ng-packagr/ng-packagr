@@ -32,8 +32,8 @@ describe(`sample-custom`, () => {
       expect(foo).to.be.ok;
       expect(foo.selector).to.equal('custom-foo');
       expect(foo.template).to.contain('<h1>Foo!</h1>');
-      expect(foo.styles[0]).to.contain('h1 {');
-      expect(foo.styles[0]).to.contain('color: #ff0000; }');
+      expect(foo.styles[0]).to.contain('h1{');
+      expect(foo.styles[0]).to.contain('color:#ff0000; }');
     });
 
     describe(`BazComponent`, () => {
@@ -59,16 +59,16 @@ describe(`sample-custom`, () => {
       const foo = METADATA['metadata']['FooComponent']['decorators'][0]['arguments'][0];
 
       expect(foo).to.be.ok;
-      expect(foo.styles[0]).to.contain(`color: #ff0000`);
-      expect(foo.styles[0]).to.not.contain(`$color: #ff0000`);
+      expect(foo.styles[0]).to.contain(`color:#ff0000`);
+      expect(foo.styles[0]).to.not.contain(`$color:#ff0000`);
     });
 
     it(`should contain less-rendered styles`, () => {
       const baz = METADATA['metadata']['BazComponent']['decorators'][0]['arguments'][0];
 
       expect(baz).to.be.ok;
-      expect(baz.styles[0]).to.contain(`color: #ff0000`);
-      expect(baz.styles[0]).to.not.contain(`@red: #ff0000`);
+      expect(baz.styles[0]).to.contain(`color:#ff0000`);
+      expect(baz.styles[0]).to.not.contain(`@red:#ff0000`);
     });
 
     describe(`stylus styles`, () => {
@@ -76,24 +76,24 @@ describe(`sample-custom`, () => {
         const fooBar = METADATA['metadata']['FooBarComponent']['decorators'][0]['arguments'][0];
 
         expect(fooBar).to.be.ok;
-        expect(fooBar.styles[0]).to.contain(`color: #f00;`);
-        expect(fooBar.styles[0]).to.not.contain(`color: $color`);
+        expect(fooBar.styles[0]).to.contain(`color:#f00;`);
+        expect(fooBar.styles[0]).to.not.contain(`color:$color`);
       });
 
       it(`should contain imported styles`, () => {
         const fooBar = METADATA['metadata']['FooBarComponent']['decorators'][0]['arguments'][0];
 
         expect(fooBar).to.be.ok;
-        expect(fooBar.styles[0]).to.contain(`background-color: #008000;`);
-        expect(fooBar.styles[0]).to.not.contain(`background-color: $color-green;`);
+        expect(fooBar.styles[0]).to.contain(`background-color:#008000;`);
+        expect(fooBar.styles[0]).to.not.contain(`background-color:$color-green;`);
       });
 
       it(`should contain imported image path`, () => {
         const fooBar = METADATA['metadata']['FooBarComponent']['decorators'][0]['arguments'][0];
 
         expect(fooBar).to.be.ok;
-        expect(fooBar.styles[0]).to.contain(`background-image: url("../styles/assets/test.png");`);
-        expect(fooBar.styles[0]).to.not.contain(`background-color: url(./assets/test.png);`);
+        expect(fooBar.styles[0]).to.contain(`background-image:url("../styles/assets/test.png");`);
+        expect(fooBar.styles[0]).to.not.contain(`background-color:url(./assets/test.png);`);
       });
     });
 
