@@ -18,8 +18,8 @@ describe(`@sample/scss-paths`, () => {
 
     it(`should resolve the styles from the theme`, () => {
       const styles = METADATA['metadata']['BazComponent']['decorators'][0]['arguments'][0]['styles'][0];
-      expect(styles).to.contain(`color: "red"`);
-      expect(styles).to.contain(`background-color: "yellow"`);
+      expect(styles).to.contain(`color:"red"`);
+      expect(styles).to.contain(`background-color:"yellow"`);
     });
   });
 
@@ -39,12 +39,12 @@ describe(`@sample/scss-paths`, () => {
 
     it(`should resolve the styles from the parent theme`, () => {
       const styles = METADATA['metadata']['BarComponent']['decorators'][0]['arguments'][0]['styles'][0];
-      expect(styles).to.contain(`background-color: "yellow"`);
+      expect(styles).to.contain(`background-color:"yellow"`);
     });
 
     it(`should resolve the styles from the sub-module common utilities`, () => {
       const styles = METADATA['metadata']['BarComponent']['decorators'][0]['arguments'][0]['styles'][0];
-      expect(styles).to.contain(`border: 10px solid "yellow"`);
+      expect(styles).to.contain(`border:10px solid "yellow"`);
     });
   });
 });
