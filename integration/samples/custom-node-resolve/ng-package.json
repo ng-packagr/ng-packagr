@@ -6,7 +6,8 @@
   "rollup": {
     "nodeResolve": {
       "browser": true,
-      "modulesOnly": true
+      "modulesOnly": true,
+      "preferBuiltins": false
     }
   }
 }
