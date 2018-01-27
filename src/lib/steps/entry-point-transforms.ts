@@ -1,27 +1,27 @@
 import * as path from 'path';
+import { InjectionToken, FactoryProvider } from 'injection-js';
 import { NgArtefacts } from '../ng-package-format/artefacts';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
 import { NgPackage } from '../ng-package-format/package';
 import { BuildStep } from '../deprecations';
 import { writePackage } from '../steps/package';
 import { processAssets } from '../steps/assets';
-import { ngc, prepareTsConfig, collectTemplateAndStylesheetFiles, inlineTemplatesAndStyles } from '../steps/ngc';
-import { minifyJsFile } from '../steps/uglify';
-import { remapSourceMap, relocateSourceMapSources } from '../steps/sorcery';
-import { flattenToFesm5, flattenToFesm15, flattenToUmd } from '../steps/rollup';
-import { downlevelWithTsc } from '../steps/tsc';
+import { ngc, extractTemplateAndStylesheetFiles, inlineTemplatesAndStyles } from '../steps/ngc';
+import { FlattenOpts, writeFlatBundleFiles } from '../flatten/flatten';
+import { relocateSourceMaps } from '../sourcemaps/relocate';
 import { copySourceFilesToDestination } from '../steps/transfer';
 import * as log from '../util/log';
 import { ensureUnixPath } from '../util/path';
 import { rimraf } from '../util/rimraf';
+import { INIT_TS_CONFIG_TOKEN } from '../ts/init-tsconfig';
 
 /**
  * Transforms TypeScript source files to Angular Package Format.
  *
  * @param entryPoint The entry point that will be transpiled to a set of artefacts.
  */
-export const transformSources: BuildStep =
-  async (args): Promise<void> => {
+export function transformSourcesFactory(prepareTsConfig: BuildStep) {
+  return async (args): Promise<void> => {
     const { artefacts, entryPoint, pkg } = args;
     log.info(`Building from sources for entry point '${entryPoint.moduleId}'`);
 
@@ -35,7 +35,7 @@ export const transformSources: BuildStep =
 
     // First pass: collect templateUrl and styleUrls referencing source files.
     log.info('Extracting templateUrl and styleUrls');
-    collectTemplateAndStylesheetFiles(args);
+    extractTemplateAndStylesheetFiles(args);
 
     // Then, process assets keeping transformed contents in memory.
     log.info('Processing assets');
@@ -52,41 +52,37 @@ export const transformSources: BuildStep =
     artefacts.typingsEntryFile = tsOutput.typings;
     artefacts.aotBundleFile = tsOutput.metadata;
 
-    // 3. FESM15: ROLLUP
-    log.info('Bundling to FESM15');
-    await flattenToFesm15(args);
-    await remapSourceMap(artefacts.fesm15BundleFile);
+    // 3. FESM15, FESM5, UMD, Minified UMD
+    log.info('Writing flat bundle files');
+    await writeFlatBundleFiles({
+      entryFile: artefacts.es2015EntryFile,
+      outDir: artefacts.stageDir,
+      flatModuleFile: entryPoint.flatModuleFile,
+      esmModuleId: entryPoint.moduleId,
+      umdModuleId: entryPoint.umdModuleId,
+      embedded: entryPoint.embedded,
+      umdModuleIds: entryPoint.umdModuleIds
+    });
 
-    // 4. FESM5: TSC
-    log.info('Bundling to FESM5');
-    artefacts.fesm5DownlevelFile = path.resolve(artefacts.stageDir, 'esm5-downlevel', entryPoint.flatModuleFile + '.js');
-    await downlevelWithTsc(artefacts.fesm15BundleFile, artefacts.fesm5DownlevelFile);
-    await remapSourceMap(artefacts.fesm5DownlevelFile);
-    await flattenToFesm5(args);
-    await remapSourceMap(artefacts.fesm5BundleFile);
-
-    // 5. UMD: ROLLUP
-    log.info('Bundling to UMD');
-    await flattenToUmd(args);
-    await remapSourceMap(artefacts.umdBundleFile);
-
-    // 6. UMD: Minify
-    log.info('Minifying UMD bundle');
-    const minUmdFile: string = await minifyJsFile(artefacts.umdBundleFile);
-    await remapSourceMap(minUmdFile);
-
-    // 7. SOURCEMAPS: RELOCATE ROOT PATHS
+    // 4. SOURCEMAPS: RELOCATE ROOT PATHS
     log.info('Remapping source maps');
-    await relocateSourceMapSources({ artefacts, entryPoint });
+    await relocateSourceMaps(`${artefacts.stageDir}/+(bundles|esm2015|esm5)/**/*.js.map`, path => {
+      let trimmedPath = path;
+      // Trim leading '../' path separators
+      while (trimmedPath.startsWith('../')) {
+        trimmedPath = trimmedPath.substring(3);
+      }
 
-    // 8. COPY SOURCE FILES TO DESTINATION
+      return `ng://${entryPoint.moduleId}/${trimmedPath}`;
+    });
+
+    // 5. COPY SOURCE FILES TO DESTINATION
     log.info('Copying staged files');
     // TODO: doesn't work any more
     await copySourceFilesToDestination({ artefacts, entryPoint, pkg });
 
-    // 9. WRITE PACKAGE.JSON
+    // 6. WRITE PACKAGE.JSON
     log.info('Writing package metadata');
-    // TODO: doesn't work any more .... path.relative(secondary.basePath, primary.basePath);
     const relativeDestPath: string = path.relative(entryPoint.destinationPath, pkg.primary.destinationPath);
     await writePackage(entryPoint, {
       main: ensureUnixPath(path.join(relativeDestPath, 'bundles', entryPoint.flatModuleFile + '.umd.js')),
@@ -98,4 +94,13 @@ export const transformSources: BuildStep =
     });
 
     log.success(`Built ${entryPoint.moduleId}`);
-  }
+  };
+}
+
+export const ENTRY_POINT_TRANSFORMS_TOKEN = new InjectionToken<BuildStep>('ng.v5.entryPointTransforms');
+
+export const ENTRY_POINT_TRANSFORMS_PROVIDER: FactoryProvider = {
+  provide: ENTRY_POINT_TRANSFORMS_TOKEN,
+  useFactory: transformSourcesFactory,
+  deps: [INIT_TS_CONFIG_TOKEN]
+};

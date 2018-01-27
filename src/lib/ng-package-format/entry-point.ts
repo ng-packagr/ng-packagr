@@ -33,7 +33,6 @@ import { DirectoryPath, SourceFilePath } from './shared';
  * The parent package of an entry point is reflected by `NgPackage`.
  */
 export class NgEntryPoint {
-
   constructor(
     public readonly packageJson: any,
     public readonly ngPackageJson: NgPackageConfig,
@@ -84,6 +83,17 @@ export class NgEntryPoint {
     return this.$get('lib.flatModuleFile') || this.flattenModuleId('-');
   }
 
+  public get sassIncludePaths(): string[] {
+    const includePaths = this.$get('lib.sassIncludePaths') || [];
+    return includePaths.map(
+      includePath => (path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath))
+    );
+  }
+
+  public get languageLevel(): string[] {
+    return this.$get('lib.languageLevel');
+  }
+
   /**
    * The module ID is an "identifier of a module used in the import statements, e.g.
    * '@angular/core'. The ID often maps directly to a path on the filesystem, but this
@@ -108,12 +118,14 @@ export class NgEntryPoint {
 
   private flattenModuleId(separator: string = '.') {
     if (this.moduleId.startsWith('@')) {
-      return this.moduleId.substring(1).split('/').join(separator);
+      return this.moduleId
+        .substring(1)
+        .split('/')
+        .join(separator);
     } else {
       return this.moduleId.split('/').join(separator);
     }
   }
-
 }
 
 export enum CssUrl {

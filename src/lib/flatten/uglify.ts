@@ -19,7 +19,7 @@ export async function minifyJsFile(inputPath: string): Promise<string> {
       url: basename(sourcemapOut)
     },
     parse: {
-      bare_returns: true,
+      bare_returns: true
     },
     ie8: true,
     warnings: true,
@@ -38,9 +38,6 @@ export async function minifyJsFile(inputPath: string): Promise<string> {
     throw result.error;
   }
 
-  await Promise.all([
-    writeFile(outputPath, result.code),
-    writeFile(sourcemapOut, result.map)
-  ]);
+  await Promise.all([writeFile(outputPath, result.code), writeFile(sourcemapOut, result.map)]);
   return outputPath;
 }

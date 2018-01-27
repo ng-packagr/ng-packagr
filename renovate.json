@@ -7,23 +7,25 @@
   "dependencies": {
     "semanticPrefix": "fix:"
   },
-  "packageFiles": [
-    "package.json",
-    "integration/consumers/ng-cli/package.json"
-  ],
+  "packageFiles": ["package.json", "integration/consumers/ng-cli/package.json"],
   "packageRules": [
     {
-      "packagePatterns": ["^@angular\/.*"],
+      "packagePatterns": ["^@angular/.*"],
       "groupName": "angular",
       "pinVersions": false
     },
     {
-      "packagePatterns": ["^@commitlint\/.*"],
+      "packagePatterns": ["^@angular-devkit/.*"],
+      "groupName": "angular-devkit",
+      "pinVersions": false
+    },
+    {
+      "packagePatterns": ["^@commitlint/.*"],
       "groupName": "commitlint",
       "pinVersions": false
     },
     {
-      "packagePatterns": ["^@types\/.*"],
+      "packagePatterns": ["^@types/.*"],
       "groupName": "type definitions",
       "pinVersions": false
     },

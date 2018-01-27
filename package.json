@@ -1,6 +1,6 @@
 {
   "name": "ng-packagr",
-  "version": "2.0.0-rc.10",
+  "version": "2.0.0-rc.12",
   "description": "Compile and package a TypeScript library to Angular Package Format",
   "keywords": [
     "angular",
@@ -39,6 +39,7 @@
     "node-sass": "^4.5.3",
     "node-sass-tilde-importer": "^1.0.0",
     "postcss": "^6.0.2",
+    "postcss-discard-comments": "^2.0.4",
     "postcss-url": "^7.3.0",
     "rimraf": "^2.6.1",
     "rollup": "^0.53.0",
@@ -57,8 +58,8 @@
     "typescript": ">=2.4.2"
   },
   "devDependencies": {
-    "@angular-devkit/core": "^0.0.24",
-    "@angular/cdk": "~5.0.0",
+    "@angular-devkit/core": "^0.0.29",
+    "@angular/cdk": "~5.1.0",
     "@angular/common": "~5.2.0",
     "@angular/compiler": "~5.2.0",
     "@angular/compiler-cli": "~5.2.0",
@@ -67,7 +68,7 @@
     "@angular/language-service": "~5.2.0",
     "@angular/platform-browser": "~5.2.0",
     "@commitlint/cli": "^6.0.0",
-    "@commitlint/config-angular": "^5.0.0",
+    "@commitlint/config-angular": "^6.0.2",
     "@types/chai": "^4.0.0",
     "@types/cpx": "^1.5.0",
     "@types/fs-extra": "^5.0.0",
@@ -87,7 +88,9 @@
     "husky": "^0.14.3",
     "jasmine": "^2.6.0",
     "json-schema-to-typescript": "^5.0.0",
-    "mocha": "^4.0.0",
+    "mocha": "^5.0.0",
+    "prettier": "^1.10.2",
+    "pretty-quick": "^1.2.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "sinon": "^4.0.0",
@@ -110,12 +113,15 @@
     "publish:ci": "yarn prerelease && yarn postrelease",
     "integration:samples": "integration/samples.sh",
     "integration:samples:dev": "ts-node --project src/tsconfig.packagr.json ./integration/samples.dev.ts",
-    "integration:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --require ts-node/register integration/samples/*/specs/**/*.ts",
+    "integration:specs":
+      "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --require ts-node/register integration/samples/*/specs/**/*.ts",
     "integration:consumers": "integration/consumers.sh",
     "integration:consumers:ngc": "ngc -p integration/consumers/tsc/tsconfig.json",
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json mocha --require ts-node/register src/**/*.spec.ts",
-    "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:consumers",
+    "test":
+      "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:consumers",
     "commitmsg": "commitlint -e",
+    "precommit": "pretty-quick --staged",
     "gh-pages": "gh-pages -d docs/ghpages"
   }
 }

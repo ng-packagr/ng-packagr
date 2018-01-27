@@ -3,14 +3,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`@sample/core`, () => {
-
   describe(`esm5/sample-core.js`, () => {
     let API;
     let BUNDLE;
     before(() => {
       API = require('../dist/esm5/sample-core.js');
       BUNDLE = fs.readFileSync(path.resolve(__dirname, '../dist/esm5/sample-core.js'), 'utf-8');
-    })
+    });
 
     it(`should exist`, () => {
       expect(API).to.be.ok;
@@ -37,15 +36,16 @@ describe(`@sample/core`, () => {
     });
 
     it(`should import TS helpers from 'tslib'`, () => {
-      expect(BUNDLE).to.contain(`from 'tslib'`);
+      expect(BUNDLE).to.contain(`from "tslib"`);
     });
 
-    it (`should downlevel iteration`, () => {
-      const iterable = function*() { yield* [1, 2, 3]; };
+    it(`should downlevel iteration`, () => {
+      const iterable = function*() {
+        yield* [1, 2, 3];
+      };
       const values = API.AngularService.iterableToArray(iterable());
 
       expect(values).to.deep.equal([1, 2, 3]);
     });
-
   });
 });
