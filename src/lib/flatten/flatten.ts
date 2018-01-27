@@ -17,6 +17,9 @@ export interface FlattenOpts {
 
   /** Map of external UMD module ids that  */
   umdModuleIds?: { [key: string]: string };
+
+  /** External rollup options **/
+  rollupOpts?: { nodeResolve: any };
 }
 
 export async function writeFlatBundleFiles(opts: FlattenOpts) {
@@ -45,7 +48,8 @@ export async function flattenToFesm15(opts: FlattenOpts): Promise<string> {
     entry: opts.entryFile,
     format: 'es',
     dest: destFile,
-    embedded: opts.embedded
+    embedded: opts.embedded,
+    externalOpts: opts.rollupOpts
   });
 
   return destFile;

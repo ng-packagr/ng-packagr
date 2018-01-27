@@ -16,18 +16,23 @@ export interface RollupOptions {
   dest: string;
   umdModuleIds?: { [key: string]: string };
   embedded?: string[];
+  externalOpts?: any;
 }
 
 /** Runs rollup over the given entry file, writes a bundle file. */
 export async function rollup(opts: RollupOptions): Promise<void> {
   log.debug(`rollup (v${__rollup.VERSION}) ${opts.entry} to ${opts.dest} (${opts.format})`);
 
+  const nodeResolveOpts =
+    opts.externalOpts && opts.externalOpts.nodeResolve ? opts.externalOpts.nodeResolve : { jsnext: true, module: true };
+  log.debug(`rollup-plugin-node-resolve ${nodeResolveOpts}`);
+
   // Create the bundle
   const bundle: __rollup.Bundle = await __rollup.rollup({
     context: 'this',
     external: moduleId => externalModuleIdStrategy(moduleId, opts.embedded || []),
     input: opts.entry,
-    plugins: [nodeResolve({ jsnext: true, module: true }), commonJs()],
+    plugins: [nodeResolve(nodeResolveOpts), commonJs()],
     onwarn: warning => {
       if (warning.code === 'THIS_IS_UNDEFINED') {
         return;
