@@ -82,15 +82,17 @@ const processStylesheet =
       const browsers = browserslist(undefined, { stylesheetFilePath });
 
       log.debug(`postcss with autoprefixer for ${stylesheetFilePath}`);
-      const postCssPlugins = [
-        autoprefixer({ browsers }),
-        postcssComments({ removeAll: true })
-      ];
+      const postCssPlugins = [];
 
       if (cssUrl !== CssUrl.none) {
         log.debug(`postcssUrl: ${cssUrl}`);
         postCssPlugins.push(postcssUrl({ url: cssUrl }));
       }
+
+      postCssPlugins.push(
+        autoprefixer({ browsers }),
+        postcssComments({ removeAll: true })
+      );
 
       const result: postcss.Result = await postcss(postCssPlugins)
         .process(cssStyles, {
