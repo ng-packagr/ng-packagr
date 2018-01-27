@@ -1,6 +1,7 @@
 import { tags } from '@angular-devkit/core';
 import { expect } from 'chai';
 import * as ts from 'typescript';
+import { createSourceFile } from '../../testing/typescript.testing';
 import {
   SynthesizedSourceFile,
   isSynthesizedSourceFile,
@@ -9,21 +10,18 @@ import {
   writeSourceText
 } from './synthesized-source-file';
 
-const createSourceFile = (sourceText: string, sourceName: string = 'foo.ts') =>
-  ts.createSourceFile(sourceName, sourceText, ts.ScriptTarget.ES5, true, ts.ScriptKind.TS);
-
 describe('SynthesizedSourceFile', () => {
   let mockSourceFile: ts.SourceFile;
   let mockNode: ts.Node;
 
   beforeEach(() => {
-    mockSourceFile = createSourceFile(tags.stripIndent`
+    mockSourceFile = createSourceFile`
       import {Component} from '@angular/core';
 
       @Component({})
       @Other
       class MyComponent {}
-    `);
+    `;
 
     mockNode = mockSourceFile
       .getChildAt(0)
