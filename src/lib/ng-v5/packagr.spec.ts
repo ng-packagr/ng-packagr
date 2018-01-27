@@ -18,16 +18,16 @@ describe(`ngPackagr()`, () => {
   describe(`withTsConfig()`, () => {
     it(`should return self instance for chaining`, () => {
       const toBeTested = ngPackagr();
-      const mockConfig = ('foo' as any) as ng.ParsedConfiguration;
+      const mockConfig = ({ project: 'foo' } as any) as ng.ParsedConfiguration;
       expect(toBeTested.withTsConfig(mockConfig)).to.equal(toBeTested);
     });
     it(`should override the default tsconfig provider`, () => {
-      const mockConfig = ('foo' as any) as ng.ParsedConfiguration;
+      const mockConfig = ({ project: 'foo' } as any) as ng.ParsedConfiguration;
       const toBeTested = ngPackagr().withTsConfig(mockConfig);
       const tsConfigProviders = toBeTested['providers'].filter(p => (p as any).provide === DEFAULT_TS_CONFIG_TOKEN);
 
       expect(tsConfigProviders).to.have.length(2);
-      expect((tsConfigProviders[1] as any).useValue).to.equal('foo');
+      expect((tsConfigProviders[1] as any).useValue).to.be.satisfy(val => val.project === 'foo');
     });
   });
 });

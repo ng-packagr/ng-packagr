@@ -14,8 +14,12 @@ export type TsConfig = ng.ParsedConfiguration;
 /**
  * Reads the default TypeScript configuration.
  */
-export function defaultTsConfigFactory() {
-  return ng.readConfiguration(path.resolve(__dirname, 'conf', 'tsconfig.ngc.json'));
+export function defaultTsConfigFactory(fileName?: string) {
+  if (!fileName) {
+    fileName = path.resolve(__dirname, 'conf', 'tsconfig.ngc.json');
+  }
+
+  return ng.readConfiguration(fileName);
 }
 
 export const DEFAULT_TS_CONFIG_TOKEN = new InjectionToken<TsConfig>('ng.v5.defaultTsConfig');
