@@ -86,6 +86,7 @@ const processStylesheet = async (
       log.debug(`postcssUrl: ${cssUrl}`);
       postCssPlugins.push(postcssUrl({ url: cssUrl }));
     }
+
     const result: postcss.Result = await postcss(postCssPlugins).process(cssStyles, {
       from: stylesheetFilePath,
       to: stylesheetFilePath.replace(path.extname(stylesheetFilePath), '.css')
