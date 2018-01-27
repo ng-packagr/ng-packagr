@@ -6,6 +6,7 @@ import * as log from '../util/log';
 import { BuildStep } from '../deprecations';
 import { externalModuleIdStrategy } from './external-module-id-strategy';
 import { umdModuleIdStrategy } from './umd-module-id-strategy';
+import { inspect } from 'util';
 
 export type BundleFormat = __rollup.Format;
 
@@ -22,10 +23,10 @@ export interface RollupOptions {
 /** Runs rollup over the given entry file, writes a bundle file. */
 export async function rollup(opts: RollupOptions): Promise<void> {
   log.debug(`rollup (v${__rollup.VERSION}) ${opts.entry} to ${opts.dest} (${opts.format})`);
+  log.debug(`rollup custom options ${inspect(opts.externalOpts)}`);
 
   const nodeResolveOpts =
     opts.externalOpts && opts.externalOpts.nodeResolve ? opts.externalOpts.nodeResolve : { jsnext: true, module: true };
-  log.debug(`rollup-plugin-node-resolve ${nodeResolveOpts}`);
 
   // Create the bundle
   const bundle: __rollup.Bundle = await __rollup.rollup({

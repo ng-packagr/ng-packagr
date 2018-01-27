@@ -62,7 +62,7 @@ export function transformSourcesFactory(prepareTsConfig: BuildStep) {
       umdModuleId: entryPoint.umdModuleId,
       embedded: entryPoint.embedded,
       umdModuleIds: entryPoint.umdModuleIds,
-      rollupOpts: pkg.rollup
+      rollupOpts: entryPoint.ngPackageJson.rollup
     });
 
     // 4. SOURCEMAPS: RELOCATE ROOT PATHS
