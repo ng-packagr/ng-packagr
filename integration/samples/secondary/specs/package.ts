@@ -3,7 +3,6 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 describe(`@sample/secondary`, () => {
-
   describe(`secondary/package.json`, () => {
     let PACKAGE;
     before(() => {
@@ -75,12 +74,10 @@ describe(`@sample/secondary`, () => {
   });
 
   describe(`should-be-ignored/package.json`, () => {
-
     it(`should not exist`, () => {
-      expect(() => fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'should-be-ignored', 'package.json'), 'utf-8')
+      expect(() =>
+        fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'should-be-ignored', 'package.json'), 'utf-8')
       ).throw();
     });
   });
-
 });

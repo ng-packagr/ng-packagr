@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 describe(`@sample/same-name`, () => {
-
   describe(`package.json`, () => {
     let PACKAGE;
     before(() => {
@@ -31,7 +30,6 @@ describe(`@sample/same-name`, () => {
     it(`should reference "typings" files`, () => {
       expect(PACKAGE['typings']).to.equal('sample-testing.d.ts');
     });
-
   });
 
   describe(`testing/package.json`, () => {
@@ -63,6 +61,5 @@ describe(`@sample/same-name`, () => {
     it(`should reference "typings" files`, () => {
       expect(PACKAGE['typings']).to.equal('sample-testing-testing.d.ts');
     });
-
   });
 });

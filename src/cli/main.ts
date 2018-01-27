@@ -14,22 +14,19 @@ function parseProjectPath(parsed: string): string {
 
 program
   .name('ng-packagr')
-  .option(
-    '-V, --version',
-    'Prints version info')
+  .option('-V, --version', 'Prints version info')
   .option(
     '-p, --project [path]',
-    'Path to the \'ng-package.json\' or \'package.json\' file.',
+    "Path to the 'ng-package.json' or 'package.json' file.",
     parseProjectPath,
-    DEFAULT_PROJECT_PATH)
+    DEFAULT_PROJECT_PATH
+  );
 
 program.on('option:version', () => {
   version();
   process.exit(0);
 });
 
-program
-  .parse(process.argv);
+program.parse(process.argv);
 
-execute(build, { project: program.opts().project })
-  .catch((err) => process.exit(111));
+execute(build, { project: program.opts().project }).catch(err => process.exit(111));

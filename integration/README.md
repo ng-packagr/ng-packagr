@@ -1,10 +1,6 @@
-Integration Testing for `ng-packagr`
-====================================
-
-
+# Integration Testing for `ng-packagr`
 
 ### Steps to reproduce
-
 
 ##### Sample Libraries
 
@@ -33,7 +29,6 @@ $ yarn build:prod:aot
 ```
 
 Note: `ng` (and `webpack` under the hood) will resolve dependencies through symlinks in the local `node_modules` folder.
-
 
 ##### TypeScript Consumer
 

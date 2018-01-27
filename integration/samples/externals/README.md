@@ -1,6 +1,4 @@
-Sample library: external dependencies
-=====================================
-
+# Sample library: external dependencies
 
 ## RxJS
 

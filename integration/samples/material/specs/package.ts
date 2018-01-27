@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 describe(`@sample/material`, () => {
-
   describe(`package.json`, () => {
     let PACKAGE;
     before(() => {

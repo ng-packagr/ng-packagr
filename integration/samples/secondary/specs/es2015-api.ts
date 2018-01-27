@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`@sample/secondary`, () => {
-
   describe(`es2015: sample-secondary.js`, () => {
     let API;
     before(() => {
@@ -17,12 +16,10 @@ describe(`@sample/secondary`, () => {
     it(`should export BazComponent`, () => {
       expect(API.BazComponent).to.be.ok;
     });
-
   });
 });
 
 describe(`@sample/secondary/sub-module`, () => {
-
   describe(`es2015: sample-secondary-sub-module.js`, () => {
     let SECONDARY;
     before(() => {
@@ -36,6 +33,5 @@ describe(`@sample/secondary/sub-module`, () => {
     it(`should export BarComponent`, () => {
       expect(SECONDARY.BarComponent).to.be.ok;
     });
-
   });
 });

@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`@sample/core`, () => {
-
   describe(`core.metadata.json`, () => {
     let METADATA;
     before(() => {

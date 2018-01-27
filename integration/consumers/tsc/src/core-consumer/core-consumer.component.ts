@@ -11,8 +11,5 @@ import { AngularService } from '@sample/core';
 `
 })
 export class CoreConsumerComponent {
-
-  constructor(
-    private service: AngularService
-  ) {}
+  constructor(private service: AngularService) {}
 }

@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 describe(`@sample/scss-paths`, () => {
-
   describe(`sample-scss-paths.metadata.json`, () => {
     let METADATA;
     before(() => {

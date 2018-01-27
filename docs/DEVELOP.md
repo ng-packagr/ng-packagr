@@ -1,6 +1,4 @@
-Develop Guideline
-=================
-
+# Develop Guideline
 
 ## Release & Publish Workflow
 

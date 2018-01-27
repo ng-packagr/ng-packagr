@@ -3,12 +3,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`@sample/same-name`, () => {
-
   describe(`esm5/sample-testing.js`, () => {
     let API;
     before(() => {
       API = require('../dist/esm5/sample-testing.js');
-    })
+    });
 
     it(`should exist`, () => {
       expect(API).to.be.ok;
@@ -17,7 +16,6 @@ describe(`@sample/same-name`, () => {
     it(`should export AngularComponent`, () => {
       expect(API.AngularComponent).to.be.ok;
     });
-
   });
 
   describe(`esm5/sample-testing-testing.js`, () => {
@@ -33,6 +31,5 @@ describe(`@sample/same-name`, () => {
     it(`should export AngularComponent`, () => {
       expect(APITesting.AngularComponent).to.be.ok;
     });
-
   });
 });

@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`@sample/jsx`, () => {
-
   describe(`jsx.es5.js`, () => {
     let API;
     before(() => {
@@ -25,6 +24,5 @@ describe(`@sample/jsx`, () => {
     // TODO: verify import statements in es5.js file ...
     // ... read js file thru TypeScript compiler API
     // ... and verify on the AST
-
   });
 });

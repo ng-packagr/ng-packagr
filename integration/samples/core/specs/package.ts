@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 describe(`@sample/core`, () => {
-
   describe(`package.json`, () => {
     let PACKAGE;
     before(() => {
@@ -31,6 +30,5 @@ describe(`@sample/core`, () => {
     it(`should reference "typings" files`, () => {
       expect(PACKAGE['typings']).to.equal('sample-core.d.ts');
     });
-
   });
 });
