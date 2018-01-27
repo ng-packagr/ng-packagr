@@ -34,15 +34,12 @@ import { DirectoryPath, SourceFilePath } from './shared';
  * @link https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/edit#
  */
 export class NgPackage {
-
   constructor(
     private readonly basePath: string,
-
     /**
      * A reference to the primary entry point.
      */
     public readonly primary: NgEntryPoint,
-
     /**
      * An array of seconary entry points.
      */
@@ -69,8 +66,6 @@ export class NgPackage {
   }
 
   public entryPoint(moduleId: string): NgEntryPoint {
-    return [ this.primary, ...this.secondaries]
-      .find((entryPoint) => entryPoint.moduleId === moduleId);
+    return [this.primary, ...this.secondaries].find(entryPoint => entryPoint.moduleId === moduleId);
   }
-
 }

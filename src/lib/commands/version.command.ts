@@ -16,7 +16,7 @@ function tryReadVersion(paths: string[] = []) {
     if (PKG.name === 'ng-packagr') {
       NG_PACKAGR_VERSION = PKG.version;
     } else {
-      tryReadVersion(paths)
+      tryReadVersion(paths);
     }
   } catch (e) {
     tryReadVersion(paths);
@@ -24,14 +24,13 @@ function tryReadVersion(paths: string[] = []) {
 }
 
 /** @stable */
-export const version: Command<undefined, void> =
-  () => {
-    tryReadVersion(['../../package.json', '../../../package.json']);
+export const version: Command<undefined, void> = () => {
+  tryReadVersion(['../../package.json', '../../../package.json']);
 
-    console.log(`ng-packagr:            ` + NG_PACKAGR_VERSION);
-    console.log(`@angular/compiler:     ` + COMPILER_VERSION.full);
-    console.log(`@angular/compiler-cli: ` + COMPILER_CLI_VERSION.full);
-    console.log(`rollup:                ` + ROLLUP_VERSION);
-    console.log(`tsickle:               ` + TSICKLE_VERSION);
-    console.log(`typescript:            ` + TS_VERSION);
-  };
+  console.log(`ng-packagr:            ` + NG_PACKAGR_VERSION);
+  console.log(`@angular/compiler:     ` + COMPILER_VERSION.full);
+  console.log(`@angular/compiler-cli: ` + COMPILER_CLI_VERSION.full);
+  console.log(`rollup:                ` + ROLLUP_VERSION);
+  console.log(`tsickle:               ` + TSICKLE_VERSION);
+  console.log(`typescript:            ` + TS_VERSION);
+};

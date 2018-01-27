@@ -12,7 +12,6 @@ import { ENTRY_POINT_TRANSFORMS_TOKEN } from './entry-point-transforms';
 
 // XX: should eventually become a BuildStep
 export function buildNgPackageFactory(entryPointTransforms: BuildStep) {
-
   return async function buildNgPackage(opts: CliArguments): Promise<void> {
     log.info(`Building Angular Package`);
 
@@ -25,7 +24,7 @@ export function buildNgPackageFactory(entryPointTransforms: BuildStep) {
       await rimraf(ngPackage.dest);
 
       // Sequentially build entry points
-      const entryPoints = [ ngPackage.primary, ...ngPackage.secondaries ];
+      const entryPoints = [ngPackage.primary, ...ngPackage.secondaries];
       for (const entryPoint of entryPoints) {
         // Prepare artefacts. Will be populated by the entry point transformations
         const artefacts = new NgArtefacts(ngPackage.primary, ngPackage);
@@ -45,7 +44,9 @@ export function buildNgPackageFactory(entryPointTransforms: BuildStep) {
       // Report error messages and throw the error further up
       log.error(error);
       if (ngPackage) {
-        log.info(`Build failed. The working directory was not pruned. Files are stored at ${ngPackage.workingDirectory}.`);
+        log.info(
+          `Build failed. The working directory was not pruned. Files are stored at ${ngPackage.workingDirectory}.`
+        );
       }
 
       throw error;
@@ -60,5 +61,5 @@ export const BUILD_NG_PACKAGE_TOKEN = new InjectionToken<BuildCallSignature>('ng
 export const BUILD_NG_PACKAGE_PROVIDER: FactoryProvider = {
   provide: BUILD_NG_PACKAGE_TOKEN,
   useFactory: buildNgPackageFactory,
-  deps: [ ENTRY_POINT_TRANSFORMS_TOKEN ]
+  deps: [ENTRY_POINT_TRANSFORMS_TOKEN]
 };

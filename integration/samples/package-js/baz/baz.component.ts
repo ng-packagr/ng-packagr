@@ -4,5 +4,4 @@ import { Component } from '@angular/core';
   selector: 'baz-component',
   template: '<h1>hello world</h1>'
 })
-export class BazComponent {
-}
+export class BazComponent {}

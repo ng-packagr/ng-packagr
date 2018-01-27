@@ -12,15 +12,8 @@
     "experimentalDecorators": true,
     "noEmitOnError": true,
     "noImplicitAny": false,
-    "types": [
-      "node"
-    ]
+    "types": ["node"]
   },
-  "files": [
-    "cli/main.ts",
-    "public_api.ts"
-  ],
-  "exclude": [
-    "**/*.spec.ts"
-  ]
+  "files": ["cli/main.ts", "public_api.ts"],
+  "exclude": ["**/*.spec.ts"]
 }

@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import * as path from 'path';
 
 describe(`@sample/secondary`, () => {
-
   describe(`sample-secondary.umd.js`, () => {
     let GENERATED;
     before(done => {
@@ -66,5 +65,4 @@ describe(`@sample/secondary`, () => {
       expect(GENERATED.BarComponent).to.be.ok;
     });
   });
-
 });

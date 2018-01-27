@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`@sample/package-js`, () => {
-
   describe(`package.json`, () => {
     let PACKAGE;
     before(() => {
@@ -25,5 +24,4 @@ describe(`@sample/package-js`, () => {
       expect(PACKAGE).to.be.ok;
     });
   });
-
 });
