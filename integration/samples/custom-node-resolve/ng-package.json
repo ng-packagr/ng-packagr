@@ -1,0 +1,13 @@
+{
+  "$schema": "../../../src/ng-package.schema.json",
+  "lib": {
+    "entryFile": "src/public_api.ts"
+  },
+  "rollup": {
+    "nodeResolve": {
+      "browser": true,
+      "modulesOnly": true,
+      "preferBuiltins": false
+    }
+  }
+}

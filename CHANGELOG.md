@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.13"></a>
+
+# [2.0.0-rc.13](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.12...v2.0.0-rc-13) (2018-01-27)
+
+### Bug Fixes
+
+* add `postcss-discard-comments` as a dependency ([#544](https://github.com/dherges/ng-packagr/issues/544)) ([bce5705](https://github.com/dherges/ng-packagr/commit/bce5705)), closes [#543](https://github.com/dherges/ng-packagr/issues/543)
+
+### Features
+
+* added custom rollup-plugin-node-resolve feature ([7b3a64d](https://github.com/dherges/ng-packagr/commit/7b3a64d))
+* added custom rollup-plugin-node-resolve feature ([2c208cd](https://github.com/dherges/ng-packagr/commit/2c208cd))
+
 <a name="2.0.0-rc.12"></a>
 
 # [2.0.0-rc.12](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.11...v2.0.0-rc.12) (2018-01-25)
