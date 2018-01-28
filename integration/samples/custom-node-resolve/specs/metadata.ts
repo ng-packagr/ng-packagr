@@ -31,8 +31,8 @@ describe(`sample-custom-node-resolve`, () => {
       expect(foo).to.be.ok;
       expect(foo.selector).to.equal('custom-foo');
       expect(foo.template).to.contain('<h1>Foo!</h1>');
-      expect(foo.styles[0]).to.contain('h1 {');
-      expect(foo.styles[0]).to.contain('color: #ff0000; }');
+      expect(foo.styles[0]).to.containIgnoreSpaces('h1 {');
+      expect(foo.styles[0]).to.containIgnoreSpaces('color: #ff0000; }');
     });
 
     describe(`BazComponent`, () => {
@@ -60,7 +60,7 @@ describe(`sample-custom-node-resolve`, () => {
       const foo = METADATA['metadata']['FooComponent']['decorators'][0]['arguments'][0];
 
       expect(foo).to.be.ok;
-      expect(foo.styles[0]).to.contain(`color: #ff0000`);
+      expect(foo.styles[0]).to.containIgnoreSpaces(`color: #ff0000`);
       expect(foo.styles[0]).to.not.contain(`$color: #ff0000`);
     });
 
@@ -68,7 +68,7 @@ describe(`sample-custom-node-resolve`, () => {
       const baz = METADATA['metadata']['BazComponent']['decorators'][0]['arguments'][0];
 
       expect(baz).to.be.ok;
-      expect(baz.styles[0]).to.contain(`color: #ff0000`);
+      expect(baz.styles[0]).to.containIgnoreSpaces(`color: #ff0000`);
       expect(baz.styles[0]).to.not.contain(`@red: #ff0000`);
     });
 
@@ -77,7 +77,7 @@ describe(`sample-custom-node-resolve`, () => {
         const fooBar = METADATA['metadata']['FooBarComponent']['decorators'][0]['arguments'][0];
 
         expect(fooBar).to.be.ok;
-        expect(fooBar.styles[0]).to.contain(`color: #f00;`);
+        expect(fooBar.styles[0]).to.containIgnoreSpaces(`color: #f00;`);
         expect(fooBar.styles[0]).to.not.contain(`color: $color`);
       });
 
@@ -85,7 +85,7 @@ describe(`sample-custom-node-resolve`, () => {
         const fooBar = METADATA['metadata']['FooBarComponent']['decorators'][0]['arguments'][0];
 
         expect(fooBar).to.be.ok;
-        expect(fooBar.styles[0]).to.contain(`background-color: #008000;`);
+        expect(fooBar.styles[0]).to.containIgnoreSpaces(`background-color: #008000;`);
         expect(fooBar.styles[0]).to.not.contain(`background-color: $color-green;`);
       });
 
@@ -93,7 +93,7 @@ describe(`sample-custom-node-resolve`, () => {
         const fooBar = METADATA['metadata']['FooBarComponent']['decorators'][0]['arguments'][0];
 
         expect(fooBar).to.be.ok;
-        expect(fooBar.styles[0]).to.contain(`background-image: url("../styles/assets/test.png");`);
+        expect(fooBar.styles[0]).to.containIgnoreSpaces(`background-image: url("../styles/assets/test.png");`);
         expect(fooBar.styles[0]).to.not.contain(`background-color: url(./assets/test.png);`);
       });
     });
