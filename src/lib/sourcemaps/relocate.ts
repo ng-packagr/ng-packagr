@@ -1,5 +1,4 @@
 import * as sorcery from 'sorcery';
-import { NgArtefacts } from '../ng-package-format/artefacts';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
 import { modifyJsonFiles } from '../util/json';
 

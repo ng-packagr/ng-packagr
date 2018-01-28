@@ -19,16 +19,7 @@
       "env": {
         "TS_NODE_PROJECT": "src/tsconfig.specs.json"
       },
-      "args": [
-        "--ui",
-        "tdd",
-        "--timeout",
-        "4000",
-        "--colors",
-        "--require",
-        "ts-node/register",
-        "${relativeFile}"
-      ],
+      "args": ["--ui", "tdd", "--timeout", "4000", "--colors", "--require", "ts-node/register", "${relativeFile}"],
       "cwd": "${workspaceRoot}",
       "internalConsoleOptions": "openOnSessionStart"
     },
@@ -83,28 +74,35 @@
       "request": "launch",
       "name": "Sample: core",
       "program": "${workspaceRoot}/integration/samples.dev.js",
-      "args": [ "core" ]
+      "args": ["core"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: custom",
       "program": "${workspaceRoot}/integration/samples.dev.js",
-      "args": [ "custom" ]
+      "args": ["custom"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Sample: embed-assets",
+      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "args": ["embed-assets"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: externals",
       "program": "${workspaceRoot}/integration/samples.dev.js",
-      "args": [ "externals" ]
+      "args": ["externals"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: material",
       "program": "${workspaceRoot}/integration/samples.dev.js",
-      "args": [ "material" ]
+      "args": ["material"]
     },
     {
       "type": "node",
@@ -117,21 +115,21 @@
       "request": "launch",
       "name": "Sample: same-name",
       "program": "${workspaceRoot}/integration/samples.dev.js",
-      "args": [ "same-name" ]
+      "args": ["same-name"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: secondary",
       "program": "${workspaceRoot}/integration/samples.dev.js",
-      "args": [ "secondary" ]
+      "args": ["secondary"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: typings",
       "program": "${workspaceRoot}/integration/samples.dev.js",
-      "args": [ "typings" ]
+      "args": ["typings"]
     }
   ],
   "compounds": []

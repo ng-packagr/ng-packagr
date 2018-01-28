@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as ts from 'typescript';
-import { TsConfig } from '../ts/default-tsconfig';
+import { TsConfig } from '../ts/tsconfig';
 import { NgEntryPoint } from './entry-point';
 import { NgPackage } from './package';
 
@@ -9,6 +9,8 @@ import { NgPackage } from './package';
  *
  * The artefacts include distribution-ready 'binaries' as well as temporary files and
  * intermediate build output.
+ *
+ * @deprecated
  */
 export class NgArtefacts {
   /** Directory for temporary files */
