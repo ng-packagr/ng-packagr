@@ -1,6 +1,9 @@
-import { expect } from 'chai';
+import { expect, use } from 'chai';
+import * as chaiString from 'chai-string';
 import * as fs from 'fs';
 import * as path from 'path';
+
+use(chaiString);
 
 describe(`sample-custom-node-resolve`, () => {
   describe(`sample-custom-node-resolve.metadata.json`, () => {
