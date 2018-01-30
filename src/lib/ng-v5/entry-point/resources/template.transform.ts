@@ -1,6 +1,7 @@
 import { readFile } from 'fs-extra';
 import { map } from 'rxjs/operators';
 import { pipe } from 'rxjs/util/pipe';
+import stripBom = require('strip-bom');
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import * as log from '../../../util/log';
 import { byEntryPoint, isInProgress } from '../../entry-point.node';
@@ -35,5 +36,7 @@ export const templateTransform: Transform = transformFromPromise(async graph => 
  * @return Resolved content of HTML template file
  */
 async function processTemplate(templateFilePath: string): Promise<string> {
-  return (await readFile(templateFilePath)).toString();
+  const buffer = await readFile(templateFilePath);
+
+  return stripBom(buffer.toString());
 }

@@ -1,5 +1,6 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import stripBom = require('strip-bom');
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { NgEntryPoint, CssUrl } from '../../../ng-package-format/entry-point';
 import * as log from '../../../util/log';
@@ -103,7 +104,7 @@ async function renderPreProcessor(filePath: string, basePath: string, entryPoint
     case '.css':
     default:
       log.debug(`reading css from ${filePath}`);
-      return fs.readFile(filePath).then(buffer => buffer.toString());
+      return fs.readFile(filePath).then(buffer => stripBom(buffer.toString()));
   }
 }
 
@@ -122,7 +123,7 @@ const renderSass = (sassOpts: any): Promise<string> => {
 const renderLess = (lessOpts: any): Promise<string> => {
   return fs
     .readFile(lessOpts.filename)
-    .then(buffer => buffer.toString())
+    .then(buffer => stripBom(buffer.toString()))
     .then(
       (lessData: string) =>
         new Promise<string>((resolve, reject) => {
@@ -144,7 +145,7 @@ const renderLess = (lessOpts: any): Promise<string> => {
 const renderStylus = ({ filename, root }): Promise<string> => {
   return fs
     .readFile(filename)
-    .then(buffer => buffer.toString())
+    .then(buffer => stripBom(buffer.toString()))
     .then(
       (stylusData: string) =>
         new Promise<string>((resolve, reject) => {
