@@ -60,6 +60,21 @@ export async function writePackageJson(entryPoint: NgEntryPoint, binaries: { [ke
     packageJson[fieldName] = binaries[fieldName];
   }
 
+  // read tslib version from `@angular/compiler` so that our tslib
+  // version at least matches that of angular if we use require('tslib').version
+  // it will get what installed and not the minimum version nor if it is a `~` or `^`
+  if (!(packageJson.dependencies && packageJson.dependencies.tslib)) {
+    const { dependencies: angularDependencies = {} } = require('@angular/compiler/package.json');
+    const TSLIB_VERSION = angularDependencies.tslib;
+
+    if (TSLIB_VERSION) {
+      packageJson.dependencies = {
+        ...packageJson.dependencies,
+        tslib: TSLIB_VERSION
+      };
+    }
+  }
+
   packageJson.name = entryPoint.moduleId;
 
   // keep the dist package.json clean

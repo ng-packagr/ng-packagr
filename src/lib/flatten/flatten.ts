@@ -61,6 +61,7 @@ export async function flattenToFesm5(opts: FlattenOpts): Promise<string> {
 
 export async function flattenToUmd(opts: FlattenOpts): Promise<string> {
   const destFile = path.resolve(opts.outDir, 'bundles', opts.flatModuleFile + '.umd.js');
+  const { embedded = [] } = opts;
 
   await rollup({
     moduleName: opts.umdModuleId,
@@ -70,7 +71,7 @@ export async function flattenToUmd(opts: FlattenOpts): Promise<string> {
     umdModuleIds: {
       ...opts.umdModuleIds
     },
-    embedded: opts.embedded
+    embedded: ['tslib', ...embedded]
   });
 
   return destFile;

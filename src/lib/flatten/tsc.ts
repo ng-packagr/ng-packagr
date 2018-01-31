@@ -18,6 +18,7 @@ export async function downlevelWithTsc(inputFile: string, outputFile: string): P
     module: ModuleKind.ES2015,
     allowJs: true,
     sourceMap: true,
+    importHelpers: true,
     downlevelIteration: true,
     mapRoot: path.dirname(inputFile)
   };
