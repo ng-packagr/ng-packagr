@@ -3,7 +3,6 @@ import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as commonJs from 'rollup-plugin-commonjs';
 import * as path from 'path';
 import * as log from '../util/log';
-import { BuildStep } from '../deprecations';
 import { externalModuleIdStrategy } from './external-module-id-strategy';
 import { umdModuleIdStrategy } from './umd-module-id-strategy';
 
