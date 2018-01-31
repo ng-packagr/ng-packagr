@@ -33,7 +33,6 @@ import { DirectoryPath, SourceFilePath } from './shared';
  * The parent package of an entry point is reflected by `NgPackage`.
  */
 export class NgEntryPoint {
-
   constructor(
     public readonly packageJson: any,
     public readonly ngPackageJson: NgPackageConfig,
@@ -76,6 +75,18 @@ export class NgEntryPoint {
     return this.$get('lib.embedded');
   }
 
+  public get comments(): string {
+    return this.$get('lib.comments');
+  }
+
+  public get licensePath(): string {
+    if (this.$get('lib.licensePath')) {
+      return path.resolve(this.basePath, this.$get('lib.licensePath'));
+    } else {
+      return this.$get('lib.licensePath');
+    }
+  }
+
   public get jsxConfig(): string {
     return this.$get('lib.jsx');
   }
@@ -86,8 +97,9 @@ export class NgEntryPoint {
 
   public get sassIncludePaths(): string[] {
     const includePaths = this.$get('lib.sassIncludePaths') || [];
-    return includePaths.map(includePath =>
-      path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath));
+    return includePaths.map(
+      includePath => (path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath))
+    );
   }
 
   public get languageLevel(): string[] {
@@ -118,12 +130,14 @@ export class NgEntryPoint {
 
   private flattenModuleId(separator: string = '.') {
     if (this.moduleId.startsWith('@')) {
-      return this.moduleId.substring(1).split('/').join(separator);
+      return this.moduleId
+        .substring(1)
+        .split('/')
+        .join(separator);
     } else {
       return this.moduleId.split('/').join(separator);
     }
   }
-
 }
 
 export enum CssUrl {
