@@ -21,7 +21,9 @@ export const writeBundlesTransform: Transform = pipe(
       esmModuleId: ngEntryPoint.moduleId,
       umdModuleId: ngEntryPoint.umdModuleId,
       umdModuleIds: ngEntryPoint.umdModuleIds,
-      embedded: ngEntryPoint.embedded
+      embedded: ngEntryPoint.embedded,
+      comments: ngEntryPoint.comments,
+      licensePath: ngEntryPoint.licensePath
     };
 
     return fromPromise(writeFlatBundleFiles(opts)).pipe(map(() => graph));
