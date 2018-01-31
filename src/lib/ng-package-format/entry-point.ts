@@ -33,6 +33,7 @@ import { DirectoryPath, SourceFilePath } from './shared';
  * The parent package of an entry point is reflected by `NgPackage`.
  */
 export class NgEntryPoint {
+
   constructor(
     public readonly packageJson: any,
     public readonly ngPackageJson: NgPackageConfig,
