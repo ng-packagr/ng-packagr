@@ -6,24 +6,23 @@ describe(`sample-typings`, () => {
   describe(`validator.d.ts`, () => {
     let VALIDATOR_DTS;
     before(() => {
-      VALIDATOR_DTS = fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'validator.d.ts'), 'utf-8');
+      VALIDATOR_DTS = fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'validator.d.ts'), 'utf-8');
     });
 
-    it(`should triple-slash reference to 'src/chalk.d.ts'`, () => {
-      /// <reference path="src/chalk.d.ts" />
-      expect(VALIDATOR_DTS).to.contain('src/chalk.d.ts');
+    it(`should triple-slash reference 'chalk.d.ts'`, () => {
+      /// <reference path="chalk.d.ts" />
+      expect(VALIDATOR_DTS).to.contain('chalk.d.ts');
       expect(VALIDATOR_DTS).to.satisfy(
-        (value: string) => value.startsWith(`/// <reference path="src/chalk.d.ts" />`),
-        'Expected validator.d.ts to contain a triple-slash reference');
+        (value: string) => value.startsWith(`/// <reference path="chalk.d.ts" />`),
+        'Expected validator.d.ts to contain a triple-slash reference'
+      );
     });
   });
 
   describe(`src/chalk.d.ts`, () => {
     let CHALK_DTS;
     before(() => {
-      CHALK_DTS = fs.readFileSync(
-        path.resolve(__dirname, '..', 'dist', 'src', 'chalk.d.ts'), 'utf-8');
+      CHALK_DTS = fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'chalk.d.ts'), 'utf-8');
     });
 
     it(`should exist in 'dist' folder`, () => {

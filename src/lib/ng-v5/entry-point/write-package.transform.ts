@@ -17,6 +17,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
 
   // 5. COPY SOURCE FILES TO DESTINATION
   log.info('Copying staged files');
+  copyFiles(`${path.dirname(ngEntryPoint.entryFilePath)}/**/*.d.ts`, entryPoint.data.outDir);
   await copyJavaScriptBundles(entryPoint.data.stageDir, ngPackage.dest);
   await copyTypingsAndMetadata(entryPoint.data.outDir, ngEntryPoint.destinationPath);
 

@@ -33,12 +33,11 @@ import { DirectoryPath, SourceFilePath } from './shared';
  * The parent package of an entry point is reflected by `NgPackage`.
  */
 export class NgEntryPoint {
-
   constructor(
     public readonly packageJson: any,
     public readonly ngPackageJson: NgPackageConfig,
     private readonly $schema: SchemaClass<NgPackageConfig>,
-    private basePath: string,
+    private readonly basePath: string,
     private readonly secondaryData?: { [key: string]: any }
   ) {}
 
@@ -86,8 +85,9 @@ export class NgEntryPoint {
 
   public get sassIncludePaths(): string[] {
     const includePaths = this.$get('lib.sassIncludePaths') || [];
-    return includePaths.map(includePath =>
-      path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath));
+    return includePaths.map(
+      includePath => (path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath))
+    );
   }
 
   public get languageLevel(): string[] {
@@ -118,12 +118,14 @@ export class NgEntryPoint {
 
   private flattenModuleId(separator: string = '.') {
     if (this.moduleId.startsWith('@')) {
-      return this.moduleId.substring(1).split('/').join(separator);
+      return this.moduleId
+        .substring(1)
+        .split('/')
+        .join(separator);
     } else {
       return this.moduleId.split('/').join(separator);
     }
   }
-
 }
 
 export enum CssUrl {
