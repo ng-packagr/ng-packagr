@@ -9,7 +9,11 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
 
   // Compile TypeScript sources
   const previousTransform = entryPoint.data.tsSources;
-  const compilationResult = await compileSourceFiles(entryPoint.data.tsSources.transformed, entryPoint.data.tsConfig);
+  const compilationResult = await compileSourceFiles(
+    entryPoint.data.tsSources.transformed,
+    entryPoint.data.tsConfig,
+    entryPoint.data.outDir
+  );
   previousTransform.dispose();
 
   // Store compilation result on the graph for further processing (`writeFlatBundles`)
