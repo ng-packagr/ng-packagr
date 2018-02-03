@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0-rc.13"></a>
+
+# [2.0.0-rc.13](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.12...v2.0.0-rc.13) (2018-02-03)
+
+### Bug Fixes
+
+* add `postcss-discard-comments` as a dependency ([#544](https://github.com/dherges/ng-packagr/issues/544)) ([bce5705](https://github.com/dherges/ng-packagr/commit/bce5705)), closes [#543](https://github.com/dherges/ng-packagr/issues/543)
+* css comments should be discarded irrespective of `cssUrl` ([#562](https://github.com/dherges/ng-packagr/issues/562)) ([d6eb971](https://github.com/dherges/ng-packagr/commit/d6eb971))
+* embed `tslib` helpers in UMD bundles only ([#573](https://github.com/dherges/ng-packagr/issues/573)) ([7a996ef](https://github.com/dherges/ng-packagr/commit/7a996ef)), closes [#371](https://github.com/dherges/ng-packagr/issues/371)
+* map `rxjs/util/*` to its UMD module ID by default ([#580](https://github.com/dherges/ng-packagr/issues/580)) ([7c452fb](https://github.com/dherges/ng-packagr/commit/7c452fb)), closes [#579](https://github.com/dherges/ng-packagr/issues/579)
+* pin rollup dependency to 0.53.0 ([13a79d4](https://github.com/dherges/ng-packagr/commit/13a79d4))
+* report build errors ([d136422](https://github.com/dherges/ng-packagr/commit/d136422))
+* strip bom from templates and stylesheet files ([#571](https://github.com/dherges/ng-packagr/issues/571)) ([5830e6a](https://github.com/dherges/ng-packagr/commit/5830e6a)), closes [#487](https://github.com/dherges/ng-packagr/issues/487)
+* update rollup to version `^0.55.0` ([#534](https://github.com/dherges/ng-packagr/issues/534)) ([0cb0cce](https://github.com/dherges/ng-packagr/commit/0cb0cce)), closes [#488](https://github.com/dherges/ng-packagr/issues/488) [#523](https://github.com/dherges/ng-packagr/issues/523)
+* write type definition files (via triple-slash reference) to npm package ([#443](https://github.com/dherges/ng-packagr/issues/443)) ([9dad573](https://github.com/dherges/ng-packagr/commit/9dad573))
+
+### Features
+
+* expand api to `.withTsConfig(string|TsConfig)`, `.forProject()` ([#561](https://github.com/dherges/ng-packagr/issues/561)) ([48f3569](https://github.com/dherges/ng-packagr/commit/48f3569)), closes [#557](https://github.com/dherges/ng-packagr/issues/557)
+* le jardin, a broccoli-inspired rewrite ([#572](https://github.com/dherges/ng-packagr/issues/572)) ([6efc2d2](https://github.com/dherges/ng-packagr/commit/6efc2d2))
+
+### Performance Improvements
+
+* don't await and return ([#577](https://github.com/dherges/ng-packagr/issues/577)) ([f479e81](https://github.com/dherges/ng-packagr/commit/f479e81))
+
 <a name="2.0.0-rc.12"></a>
 
 # [2.0.0-rc.12](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.11...v2.0.0-rc.12) (2018-01-25)
