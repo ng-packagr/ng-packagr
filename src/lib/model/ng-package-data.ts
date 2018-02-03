@@ -16,6 +16,7 @@ export class NgPackageData {
   public readonly buildDirectory: string;
   public readonly libExternals: any;
   public readonly jsxConfig?: string;
+  public readonly languageLevel: string[];
 
   constructor(
     /**
@@ -55,6 +56,7 @@ export class NgPackageData {
       this.flatModuleFileName = ngPackageConfig.lib.flatModuleFile;
       this.entryFile = ngPackageConfig.lib.entryFile;
       this.jsxConfig = ngPackageConfig.lib.jsx;
+      this.languageLevel = ngPackageConfig.lib.languageLevel;
     }
 
     if (!this.libExternals) {
@@ -65,6 +67,9 @@ export class NgPackageData {
     }
     if (!this.entryFile) {
       this.entryFile = 'public_api.ts';
+    }
+    if (!this.languageLevel) {
+      this.languageLevel = ['dom', 'es2015'];
     }
 
     // Each entry point gets it's own unique build directory based upon the package name.

@@ -154,6 +154,21 @@ For example, the following would use `index.ts` as the secondary entry point:
 }
 ```
 
+##### How do I use es2016 or es2017 features in my TypeScript library?
+
+You can change the TypeScript language level support in tsconfig by also using the `ngPackage` configuration field in your secondary package.json` and setting the `languageLevel` property in `lib`:
+For example,:
+
+```json
+{
+  "ngPackage": {
+    "lib": {
+      "languageLevel": [ "dom", "es2017" ]
+    }
+  }
+}
+```
+
 ##### What if I want to use React Components?
 
 If you have React Components that you're using in your library, and want to use proper JSX/TSX syntax in order to

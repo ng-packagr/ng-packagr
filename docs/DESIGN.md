@@ -153,6 +153,8 @@ If auto-generating a tsconfig, `ng-packagr` would need to read its default value
 The most important setting here is the `"files": []` property, which must contain exactly one file since `"flatModuleId"` and `"flatModuleOutFile"` options will also be used for flattended library indexes.
 The value for `"flatModuleId"` could be inferred by the library's name as given in `package.json`, `"flatModuleOutFile"` could be statically set to `"index"`.
 
+The `"lib"` property that denotes TypeScript language level support can be overriden through a `lib.languageLevel` property in `ng-package.json`.
+
 Other configuration properties like `"target"` or `"module"` cannot be set by users since the order of transformations relies on certain settings.
 For example, `ngc` will need to compile to `"target": "es2015"` and `"module": "es2015"` in order to allow subsequent steps to happen.
 

@@ -22,6 +22,10 @@ async function prepareTsConfig(ngPkg: NgPackageData, outFile: string): Promise<v
     tsConfig['compilerOptions']['jsx'] = ngPkg.jsxConfig;
   }
 
+  if (ngPkg.languageLevel) {
+    tsConfig.compilerOptions.lib = ngPkg.languageLevel;
+  }
+
   await writeJson(outFile, tsConfig);
 }
 
