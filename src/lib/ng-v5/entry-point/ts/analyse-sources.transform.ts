@@ -13,7 +13,7 @@ import { byEntryPoint, isInProgress } from '../../entry-point.node';
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {
     const entryPoint = graph.find(byEntryPoint().and(isInProgress));
-    log.debug(`Analyzing sources for ${entryPoint.data.entryPoint.moduleId}`);
+    log.debug(`Analysing sources for ${entryPoint.data.entryPoint.moduleId}`);
 
     const tsConfig = entryPoint.data.tsConfig;
 

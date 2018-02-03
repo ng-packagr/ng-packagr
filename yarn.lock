@@ -178,7 +178,7 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"
 
-"@types/acorn@*":
+"@types/acorn@^4.0.3":
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/@types/acorn/-/acorn-4.0.3.tgz#d1f3e738dde52536f9aad3d3380d14e448820afd"
   dependencies:
@@ -264,13 +264,6 @@
   version "16.0.28"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.28.tgz#eb0b31272528da8f20477ec27569c4f767315b33"
 
-"@types/rollup@^0.51.2":
-  version "0.51.2"
-  resolved "https://registry.yarnpkg.com/@types/rollup/-/rollup-0.51.2.tgz#1b1b868e6f79be444916a7611914c0049914d547"
-  dependencies:
-    "@types/acorn" "*"
-    "@types/source-map" "*"
-
 "@types/sinon@^4.0.0":
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-4.1.0.tgz#cdfb934d656b2c888e51f53e95900c7bbca11c08"
@@ -280,10 +273,6 @@
   resolved "https://registry.yarnpkg.com/@types/source-map-support/-/source-map-support-0.4.0.tgz#a62a1866614af68c888173c001481f242aaf148b"
   dependencies:
     "@types/node" "*"
-
-"@types/source-map@*":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@types/source-map/-/source-map-0.5.2.tgz#973459e744cc7445c85b97f770275b479b138e08"
 
 "@types/strip-bom@^3.0.0":
   version "3.0.0"
@@ -2969,9 +2958,9 @@ rollup-pluginutils@^2.0.1:
     estree-walker "^0.3.0"
     micromatch "^2.3.11"
 
-rollup@0.53.0:
-  version "0.53.0"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.53.0.tgz#7a3d5a04ba2b0a8f2405899fa6a0ac48da480ed1"
+rollup@^0.55.0:
+  version "0.55.3"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.55.3.tgz#0af082a766d51c3058430c8372442ff5207d8736"
 
 rxjs@^5.5.0, rxjs@^5.5.6:
   version "5.5.6"
