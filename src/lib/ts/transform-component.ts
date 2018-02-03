@@ -9,7 +9,7 @@ export type ComponentTransformer = {
   templateUrl: ts.Transformer<ts.PropertyAssignment>;
 
   /** TypeScript transformer to update the property assignment for `styleUrls: []`. */
-  stylesheetUrl: ts.Transformer<ts.PropertyAssignment>;
+  styleUrls: ts.Transformer<ts.PropertyAssignment>;
 
   /** TypeScript transformer to update the source file. */
   file?: ts.Transformer<ts.SourceFile>;
@@ -27,7 +27,7 @@ export const transformComponent = (transformer: ComponentTransformer) => (contex
     if (isTemplateUrl(node)) {
       return transformer.templateUrl(node);
     } else if (isStyleUrls(node)) {
-      return transformer.stylesheetUrl(node);
+      return transformer.styleUrls(node);
     }
 
     return ts.visitEachChild(node, visitComponentMetadata, context);

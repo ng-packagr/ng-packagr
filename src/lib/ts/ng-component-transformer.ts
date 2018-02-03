@@ -55,7 +55,7 @@ export interface ComponentTransformer {
   ): ts.TransformerFactory<ts.SourceFile>;
 }
 
-export const componentTransformer: ComponentTransformer = ({ template, stylesheet }) =>
+export const transformComponentSourceFiles: ComponentTransformer = ({ template, stylesheet }) =>
   transformComponent({
     templateUrl: node => {
       const sourceFile = node.getSourceFile();
@@ -83,7 +83,7 @@ export const componentTransformer: ComponentTransformer = ({ template, styleshee
         return node;
       }
     },
-    stylesheetUrl: node => {
+    styleUrls: node => {
       const sourceFile = node.getSourceFile();
       const sourceFilePath = node.getSourceFile().fileName;
 
