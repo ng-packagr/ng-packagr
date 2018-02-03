@@ -42,7 +42,7 @@
     "postcss-discard-comments": "^2.0.4",
     "postcss-url": "^7.3.0",
     "rimraf": "^2.6.1",
-    "rollup": "0.53.0",
+    "rollup": "^0.55.0",
     "rollup-plugin-commonjs": "^8.2.1",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rxjs": "^5.5.0",
@@ -54,8 +54,8 @@
   "peerDependencies": {
     "@angular/compiler": "^5.0.0",
     "@angular/compiler-cli": "^5.0.0",
-    "tslib": "^1.7.1",
     "tsickle": ">=0.25.5",
+    "tslib": "^1.7.1",
     "typescript": ">=2.4.2"
   },
   "devDependencies": {
@@ -70,6 +70,7 @@
     "@angular/platform-browser": "~5.2.0",
     "@commitlint/cli": "^6.0.0",
     "@commitlint/config-angular": "^6.0.2",
+    "@types/acorn": "^4.0.3",
     "@types/chai": "^4.0.0",
     "@types/cpx": "^1.5.0",
     "@types/fs-extra": "^5.0.0",
@@ -80,7 +81,6 @@
     "@types/node": "^9.3.0",
     "@types/react": "^16.0.19",
     "@types/react-dom": "^16.0.2",
-    "@types/rollup": "^0.51.2",
     "@types/sinon": "^4.0.0",
     "@types/strip-bom": "^3.0.0",
     "chai": "^4.0.1",
@@ -98,8 +98,8 @@
     "sinon": "^4.0.0",
     "standard-version": "^4.0.0",
     "ts-node": "^4.0.0",
-    "tslib": "^1.7.1",
     "tsickle": "^0.26.0",
+    "tslib": "^1.7.1",
     "typescript": "~2.6.1",
     "zone.js": "^0.8.10"
   },
