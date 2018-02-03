@@ -11,9 +11,8 @@ import { debug } from './log';
  *                  that will be JSON-stringified
  */
 export async function modifyJsonFiles(globPattern: string, modifyFn: (jsonObj: any) => any): Promise<void> {
-
   debug('modifyJsonFiles');
-  const fileNames: string[] = await promisify<string[]>((resolveOrReject) => {
+  const fileNames: string[] = await promisify<string[]>(resolveOrReject => {
     glob(globPattern, resolveOrReject);
   });
 
@@ -22,8 +21,8 @@ export async function modifyJsonFiles(globPattern: string, modifyFn: (jsonObj: a
       const fileContent: any = await tryReadJson(fileName);
       const modified = modifyFn(fileContent);
       await writeJson(fileName, modified, { spaces: 2 });
-    }
-  ));
+    })
+  );
 }
 
 /**
@@ -33,9 +32,9 @@ export async function modifyJsonFiles(globPattern: string, modifyFn: (jsonObj: a
  */
 export async function tryReadJson(filePath: string): Promise<any> {
   try {
-    return await readJson(filePath);
+    return readJson(filePath);
   } catch (e) {
     // this means the file was empty or not json, which is fine
-    return await Promise.resolve({});
+    return Promise.resolve({});
   }
 }
