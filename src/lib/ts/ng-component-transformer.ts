@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import * as path from 'path';
-import { isComponentDecorator, isTemplateUrl, isStyleUrls } from './ng-type-guards';
+import { isComponentDecorator, isTemplateUrl, isStyleUrls } from './ng-ts-ast';
 import { transformComponent } from './transform-component';
 import { isSynthesizedSourceFile, replaceWithSynthesizedSourceText, writeSourceFile } from './synthesized-source-file';
 
@@ -44,7 +44,7 @@ export interface StylesheetTransformer {
   ): string | undefined | void;
 }
 
-export interface ComponentTransformer {
+export interface ComponentSourceFileTransformer {
   (
     {
 
@@ -55,7 +55,7 @@ export interface ComponentTransformer {
   ): ts.TransformerFactory<ts.SourceFile>;
 }
 
-export const componentTransformer: ComponentTransformer = ({ template, stylesheet }) =>
+export const transformComponentSourceFiles: ComponentSourceFileTransformer = ({ template, stylesheet }) =>
   transformComponent({
     templateUrl: node => {
       const sourceFile = node.getSourceFile();
@@ -83,7 +83,7 @@ export const componentTransformer: ComponentTransformer = ({ template, styleshee
         return node;
       }
     },
-    stylesheetUrl: node => {
+    styleUrls: node => {
       const sourceFile = node.getSourceFile();
       const sourceFilePath = node.getSourceFile().fileName;
 

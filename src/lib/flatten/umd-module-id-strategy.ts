@@ -37,5 +37,9 @@ export const umdModuleIdStrategy = (moduleId: string, umdModuleIds: { [key: stri
     return 'Rx';
   }
 
+  if ((regMatch = /^rxjs\/util\/(\/?.*)/.exec(moduleId))) {
+    return `Rx.${regMatch[1]}`;
+  }
+
   return ''; // leave it up to rollup to guess the global name
 };

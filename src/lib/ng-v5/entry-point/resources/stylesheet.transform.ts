@@ -86,7 +86,7 @@ async function renderPreProcessor(filePath: string, basePath: string, entryPoint
     case '.scss':
     case '.sass':
       log.debug(`rendering sass from ${filePath}`);
-      return await renderSass({
+      return renderSass({
         file: filePath,
         importer: nodeSassTildeImporter,
         includePaths: entryPoint.sassIncludePaths
@@ -94,12 +94,12 @@ async function renderPreProcessor(filePath: string, basePath: string, entryPoint
 
     case '.less':
       log.debug(`rendering less from ${filePath}`);
-      return await renderLess({ filename: filePath });
+      return renderLess({ filename: filePath });
 
     case '.styl':
     case '.stylus':
       log.debug(`rendering styl from ${filePath}`);
-      return await renderStylus({ filename: filePath, root: basePath });
+      return renderStylus({ filename: filePath, root: basePath });
 
     case '.css':
     default:

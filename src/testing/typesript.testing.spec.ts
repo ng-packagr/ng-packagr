@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as ts from 'typescript';
 import { createSourceFile } from './typescript.testing';
 
-describe(`testing: typescript`, () => {
+describe(`Testing: typescript utilities`, () => {
   describe(`createSourceFile()`, () => {
     let sourceFile: ts.SourceFile;
     beforeEach(() => {

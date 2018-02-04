@@ -4,7 +4,7 @@ import * as ts from 'typescript';
 import { Transform } from '../../../brocc/transform';
 import * as log from '../../../util/log';
 import { transformSourceFiles } from '../../../ngc/transform-source-files';
-import { componentTransformer } from '../../../ts/ng-component-transformer';
+import { transformComponentSourceFiles } from '../../../ts/ng-component-transformer';
 import { byEntryPoint, isInProgress } from '../../entry-point.node';
 
 export const transformSourcesTransform: Transform = pipe(
@@ -13,7 +13,7 @@ export const transformSourcesTransform: Transform = pipe(
     log.debug(`Transforming TypeScript sources for ${entryPoint.data.entryPoint.moduleId}`);
 
     // Transformer that inlines template and style data
-    const inlineResources = componentTransformer({
+    const inlineResources = transformComponentSourceFiles({
       template: ({ templateFilePath }) => {
         return graph.find(node => node.url === `file://${templateFilePath}`).data.content;
       },

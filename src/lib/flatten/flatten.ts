@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { remapSourceMap } from '../sourcemaps/remap';
 import * as log from '../util/log';
-import { rollup } from './rollup';
+import { rollupBundleFile } from './rollup';
 import { downlevelWithTsc } from './tsc';
 import { minifyJsFile } from './uglify';
 
@@ -42,7 +42,7 @@ export async function writeFlatBundleFiles(opts: FlattenOpts) {
 export async function flattenToFesm15(opts: FlattenOpts): Promise<string> {
   const destFile = path.resolve(opts.outDir, 'esm2015', opts.flatModuleFile + '.js');
 
-  await rollup({
+  await rollupBundleFile({
     moduleName: opts.esmModuleId,
     entry: opts.entryFile,
     format: 'es',
@@ -67,7 +67,7 @@ export async function flattenToUmd(opts: FlattenOpts): Promise<string> {
   const destFile = path.resolve(opts.outDir, 'bundles', opts.flatModuleFile + '.umd.js');
   const { embedded = [] } = opts;
 
-  await rollup({
+  await rollupBundleFile({
     moduleName: opts.umdModuleId,
     entry: opts.entryFile,
     format: 'umd',

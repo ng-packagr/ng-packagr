@@ -6,19 +6,19 @@ import * as log from '../../../util/log';
 import { Node } from '../../../brocc/node';
 import { Transform } from '../../../brocc/transform';
 import { transformSourceFiles } from '../../../ngc/transform-source-files';
-import { componentTransformer } from '../../../ts/ng-component-transformer';
+import { transformComponentSourceFiles } from '../../../ts/ng-component-transformer';
 import { TsConfig } from '../../../ts/tsconfig';
 import { byEntryPoint, isInProgress } from '../../entry-point.node';
 
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {
     const entryPoint = graph.find(byEntryPoint().and(isInProgress));
-    log.debug(`Analyzing sources for ${entryPoint.data.entryPoint.moduleId}`);
+    log.debug(`Analysing sources for ${entryPoint.data.entryPoint.moduleId}`);
 
     const tsConfig = entryPoint.data.tsConfig;
 
     /** Extracts templateUrl and styleUrls from `@Component({..})` decorators. */
-    const extractResources = componentTransformer({
+    const extractResources = transformComponentSourceFiles({
       template: ({ templateFilePath }) => {
         // TODO: HtmlNode / TemplateNode
         const node = new Node('file://' + templateFilePath);

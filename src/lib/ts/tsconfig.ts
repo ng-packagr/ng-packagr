@@ -38,7 +38,7 @@ export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoint: NgEntr
   tsConfig.options.basePath = basePath;
   tsConfig.options.baseUrl = basePath;
   tsConfig.options.rootDir = basePath;
-  tsConfig.options.outDir = outDir;
+  tsConfig.options.outDir = basePath;
   tsConfig.options.genDir = outDir;
 
   if (entryPoint.languageLevel) {

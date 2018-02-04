@@ -51,6 +51,10 @@ describe(`rollup`, () => {
       expect(umdModuleIdStrategy('rxjs/scheduler/queue')).to.equal('Rx.Scheduler');
     });
 
+    it(`should map 'rxjs/util/TimeoutError' to 'Rx.TimeoutError'`, () => {
+      expect(umdModuleIdStrategy('rxjs/util/TimeoutError')).to.equal('Rx.TimeoutError');
+    });
+
     it(`should map '@angular/core' to 'ng.core'`, () => {
       expect(umdModuleIdStrategy('@angular/core')).to.equal('ng.core');
     });
