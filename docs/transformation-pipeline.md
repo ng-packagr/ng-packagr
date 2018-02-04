@@ -112,14 +112,22 @@ Wiring up the DI for transforms may in the future be solved through a decorator.
 Example could look like – this needs to be explored further before implementing:
 
 ```ts
+@Transform()
 export const myTransform: Transform = pipe(/* .. */);
 
+@Transform({
+  type: 'promise'
+})
 export async function myTransform(graph: BuildGraph): Promise<BuildGraph> {
   await doAsync();
   return graph;
 }
 
-export async function myComposedTransform(firstTransform, secondTransform) {
+@Transform({
+  type: 'factory',
+  deps: [ firstTransformToken, secondTransformToken ]
+})
+export function myComposedTransform(firstTransform, secondTransform) {
   return pipe(firstTransform, tap(() => console.log('Adding my custom processing in-between')), secondTransform);
 }
 ```
