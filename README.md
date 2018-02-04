@@ -142,13 +142,13 @@ Note: referencing the `$schema` enables JSON editing support (auto-completion fo
 #### Secondary Entry Points
 
 Besides the primary entry point, a package can contain one or more secondary entry points (e.g. `@angular/core/testing`, `@angular/cdk/a11y`, …).
-These contain symbols that we don't want to group together with the symbols in the main entry.
+These contain symbols that we don't want to group together with the symbols in the main entry point.
 The module id of a secondary entry directs the module loader to a sub-directory by the secondary's name.
-For instance, `@angular/core/testing` resolves to a directory under `node_modules/@angular/core/testing` containing a `package.json` file that directs the loader to the correct location for what it's looking for.
+For instance, `@angular/core/testing` resolves to a directory under `node_modules/@angular/core/testing` containing a `package.json` file that references the correct bundle files for what an application's build system is looking for.
 
 For library developers, secondary entry points are dynamically discovered by searching for `package.json` files within subdirectories of the main `package.json` file's folder!
 
-##### So how do I use secondary entry points (sub-packages)?
+##### Tell me now, how do I use secondary entry points (a.k.a. sub-packages)?
 
 All you have to do is create a `package.json` file and put it where you want a secondary entry point to be created.
 One way this can be done is by mimicking the folder structure of the following example which has a testing entry point in addition to its main entry point.
@@ -167,7 +167,7 @@ my_package
     └── package.json
 ```
 
-The contents of the secondary `package.json` can be as simple as:
+The contents of `my_package/testing/package.json` can be as simple as:
 ```json
 {
   "ngPackage": {}
@@ -176,12 +176,12 @@ The contents of the secondary `package.json` can be as simple as:
 
 No, that is not a typo. No name is required. No version is required.
 It's all handled for you by ng-packagr!
-When built, the primary entry is imported with `@my/library` and the secondary entry with `@my/library/testing`.
+When built, the primary entry point is imported by `import {..} from '@my/library'` and the secondary entry point with `import {..} from '@my/library/testing'`.
 
-##### What if I don't like `public_api.ts`?
+#### Changing the entry file: What if I don't like `public_api.ts`?
 
-You can change the entry point file by using the `ngPackage` configuration field in your secondary `package.json`.
-For example, the following would use `index.ts` as the secondary entry point:
+You can change the entry point file by using the `ngPackage` configuration field in `package.json` (or `ng-package.json`).
+For example, the following would use `index.ts` as the entry point:
 
 ```json
 {
@@ -193,10 +193,10 @@ For example, the following would use `index.ts` as the secondary entry point:
 }
 ```
 
-##### How do I use es2016 or es2017 features in my TypeScript library?
+#### Language Level: How do I use es2016 or es2017 features in my TypeScript library?
 
-You can change the TypeScript language level support in tsconfig by also using the `ngPackage` configuration field in your secondary `package.json` and setting the `languageLevel` property in `lib`:
-For example,:
+You can change the TypeScript language level support in tsconfig by setting `lib.languageLevel` property in the `ngPackage` section:
+For example:
 
 ```json
 {
@@ -210,7 +210,8 @@ For example,:
 
 #### How to embed assets in CSS?
 
-You can embed assets such as font and images inside the outputted css. More information [in the CSS tricks website](https://css-tricks.com/data-uris)
+You can embed assets such as font and images inside the outputted css.
+More information [in the CSS tricks website](https://css-tricks.com/data-uris)
 
 Valid values: `none` or `inline`.
 
@@ -246,7 +247,7 @@ In most cases, you should expect that third-party dependencies will be part of t
 
 However, if you want to embed a dependency into the distributable bundle you are able to do so by adding the dependency in the `embedded` section like so:
 
-***HEADS UP***: embedding a dependency will result in you shipping the dependency's source code to your users!
+***HEADS UP***: embedding a dependency will result in you shipping the dependency's source code to your consumers!
 
 ```json
 {
