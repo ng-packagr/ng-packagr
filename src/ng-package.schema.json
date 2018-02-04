@@ -44,6 +44,16 @@
           "type": "object",
           "additionalProperties": true
         },
+        "comments": {
+          "description": "Use \"all\" to keep all, or \"none\" to remove all the comments or or regexes",
+          "type": "string",
+          "default": "all"
+        },
+        "licensePath": {
+          "description": "Licesnse file path to repend to the bundles",
+          "type": "string",
+          "default": ""
+        },
         "jsx": {
           "description": "A property to indicate whether your library is going to be bundling jsx/tsx files. This passes through to tsconfig - see https://www.typescriptlang.org/docs/handbook/jsx.html",
           "type": "string",

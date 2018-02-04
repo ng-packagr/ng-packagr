@@ -11,6 +11,8 @@ export interface FlattenOpts {
   flatModuleFile: string;
   esmModuleId: string;
   umdModuleId: string;
+  comments: string;
+  licensePath: string;
 
   /** List of module ids that should be embedded to the bundle. */
   embedded?: string[];
@@ -45,7 +47,9 @@ export async function flattenToFesm15(opts: FlattenOpts): Promise<string> {
     entry: opts.entryFile,
     format: 'es',
     dest: destFile,
-    embedded: opts.embedded
+    embedded: opts.embedded,
+    comments: opts.comments,
+    licensePath: opts.licensePath
   });
 
   return destFile;
@@ -71,7 +75,9 @@ export async function flattenToUmd(opts: FlattenOpts): Promise<string> {
     umdModuleIds: {
       ...opts.umdModuleIds
     },
-    embedded: ['tslib', ...embedded]
+    embedded: ['tslib', ...embedded],
+    comments: opts.comments,
+    licensePath: opts.licensePath
   });
 
   return destFile;

@@ -75,6 +75,18 @@ export class NgEntryPoint {
     return this.$get('lib.embedded');
   }
 
+  public get comments(): string {
+    return this.$get('lib.comments');
+  }
+
+  public get licensePath(): string {
+    if (this.$get('lib.licensePath')) {
+      return path.resolve(this.basePath, this.$get('lib.licensePath'));
+    } else {
+      return this.$get('lib.licensePath');
+    }
+  }
+
   public get jsxConfig(): string {
     return this.$get('lib.jsx');
   }

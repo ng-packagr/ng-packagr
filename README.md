@@ -300,6 +300,37 @@ The `jsx` flag will accept what the corresponding `tsconfig` accepts, more infor
 
 Note: Don't forget to include `react` and `react-dom` in `umdModuleIds` so that you're shipping a correct UMD bundle!
 
+#### Comments cleaning
+
+To remove comments from the final bundles:
+
+```
+{
+  "$schema": "../../../src/ng-package.schema.json",
+  "lib": {
+    "entryFile": "public_api.ts",
+    "comments" : "none"
+  }
+}
+```
+
+The comments property can accept also a regex to selectively remove comments.
+
+#### License header
+
+To prepend a license header on your budles:
+
+```
+{
+  "$schema": "../../../src/ng-package.schema.json",
+  "lib": {
+    "entryFile": "public_api.ts",
+    "licensePath": "LICENSE"
+  }
+}
+```
+
+The licensePath property in the example above will read the LICENSE file next to your ng-package.json file
 
 ## Further documentation
 
