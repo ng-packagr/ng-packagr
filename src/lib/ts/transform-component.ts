@@ -15,9 +15,9 @@ export type ComponentTransformer = {
   file?: ts.Transformer<ts.SourceFile>;
 };
 
-export const transformComponent = (transformer: ComponentTransformer) => (context: ts.TransformationContext) => (
-  sourceFile: ts.SourceFile
-): ts.SourceFile => {
+export const transformComponent: (
+  transformer: ComponentTransformer
+) => ts.TransformerFactory<ts.SourceFile> = transformer => context => sourceFile => {
   // skip source files from 'node_modules' directory (third-party source)
   if (sourceFile.fileName.includes('node_modules')) {
     return sourceFile;
@@ -39,7 +39,7 @@ export const transformComponent = (transformer: ComponentTransformer) => (contex
       : ts.visitEachChild(node, visitDecorators, context);
 
   // Either custom file transformer or identity transform
-  const transformFile = transformer.file ? transformer.file : file => file;
+  const transformFile: ts.Transformer<ts.SourceFile> = transformer.file ? transformer.file : file => file;
 
   return transformFile(ts.visitNode(sourceFile, visitDecorators));
 };

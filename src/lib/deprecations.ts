@@ -5,24 +5,28 @@ import { build, CliArguments } from './commands/build.command';
 import { execute } from './commands/command';
 import * as log from './util/log';
 
+/** @deprecated */
 export async function createNgPackage(opts: CliArguments): Promise<void> {
-  log.warn(`DEPRECATED: createNgPackage() is becoming deprecated. Invoke the 'build: Command' instead.`);
+  log.warn(
+    `DEPRECATED: createNgPackage() is deprecated and will be removed in v3. Invoke the Command 'build()' instead.`
+  );
   return execute(build, opts);
 }
 
 /**
- * XX: to be renamed to `BuildTask`, `BuildStep`, `Task`, ... ??!??
+ * `BuildStep` is deprecated.
+ * See the architectural re-write for a [transformation pipeline](./docs/transformation-pipeline.md).
  *
- * Call signature for a build step.
- *
- * @experimental Might change in the future!
+ * @deprecated Will be removed in v3.
  */
 export interface BuildStep {
+  (
+    {
 
-  ({}: {
-    artefacts: NgArtefacts,
-    entryPoint: NgEntryPoint,
-    pkg: NgPackage
-  }): void | any | Promise<void | any>;
-
+    }: {
+      artefacts: NgArtefacts;
+      entryPoint: NgEntryPoint;
+      pkg: NgPackage;
+    }
+  ): void | any | Promise<void | any>;
 }
