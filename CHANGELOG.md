@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.7.0"></a>
+# [1.7.0](https://github.com/dherges/ng-packagr/compare/v1.6.0...v1.7.0) (2018-02-04)
+
+
+### Features
+
+* back-port language level support for library authors in v1 ([#581](https://github.com/dherges/ng-packagr/issues/581)) ([800f615](https://github.com/dherges/ng-packagr/commit/800f615))
+
+
+
 <a name="1.6.0"></a>
 # [1.6.0](https://github.com/dherges/ng-packagr/compare/v1.5.2...v1.6.0) (2017-11-14)
 
