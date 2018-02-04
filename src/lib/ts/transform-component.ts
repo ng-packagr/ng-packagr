@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import { isComponentDecorator, isTemplateUrl, isStyleUrls } from './ng-type-guards';
+import { isComponentDecorator, isTemplateUrl, isStyleUrls } from './ng-ts-ast';
 
 /**
  * A transformer that updates the metadata for Angular `@Component({})` decorators.

@@ -7,9 +7,9 @@ import {
   isStyleUrls,
   resolveImportSymbolsFromModule,
   isImportFromModule
-} from './ng-type-guards';
+} from './ng-ts-ast';
 
-describe(`ng-type-guards`, () => {
+describe(`Angular TypeScript AST (ng-ts-ast)`, () => {
   describe(`isComponentDecorator()`, () => {
     const sourceFileNamedImport = createSourceFile`
       import { Component } from '@angular/core';

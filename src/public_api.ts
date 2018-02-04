@@ -21,7 +21,7 @@ export {
   ComponentSourceFileTransformer,
   transformComponentSourceFiles
 } from './lib/ts/ng-component-transformer';
-export { isComponentDecorator, isStyleUrls, isTemplateUrl } from './lib/ts/ng-type-guards';
+export { isComponentDecorator, isStyleUrls, isTemplateUrl } from './lib/ts/ng-ts-ast';
 export { ComponentTransformer, transformComponent } from './lib/ts/transform-component';
 
 /**
