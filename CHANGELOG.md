@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.0"></a>
+
+# [2.0.0](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.13...v2.0.0) (2018-02-05)
+
+Version 2 of ng-packagr is targeting Angular 5 (and beyond).
+Update your projects by:
+
+```bash
+$ yarn add --dev ng-packagr@^2.0.0 @angular/compiler@^5.0.0 @angular/compiler-cli@^5.0.0 tsickle
+```
+
+### Migrating from v1 (Breaking changes from v1.6.0 to v2.0.0)
+
+* Users now need to install `@angular/compiler`, `@angular/compiler-cli`, `typescript`, and `tsickle` to the `devDependency` section of their project (if not already installed). ng-packagr uses both the TypeScript and the Angular compiler version provided by the user workspace.
+* The setting for external dependencies (`lib.externals`) has been removed in favour of `lib.umdModuleIds` which is now just used to provide the UMD module identifiers of external dependencies.
+  By default, all dependencies are now treated as externals and thus are not embedded in the final bundle.
+  If a dependency should be embedded in the distributables, it needs to be explicity added to `lib.embedded`.
+  Please consult the updated README on migrating your package confguration from `lib.externals` to `lib.umdModuleIds` and `lib.embedded`.
+* Discovery of primary and secondary entry points is changed to read from the following file sources. File locations are tried in this order:
+  * `package.json` with `ngPackage` property
+  * `ng-package.json` (requires a `package.json` as sibling)
+  * `ng-package.js` (with a default export, requires a `package.json` as sibling)
+* Setting `ngPackage.src` has no effect any more. The source directory (base path) is equivalent to the location of the (primary) `ng-package.json`, `package.json`, or `ng-package.js`.
+* UMD Module IDs of packages have been changed: when you published a scoped npm package, e.g. `@sample/core`, the UMD module ID used to be `core` including only the second part of the npm package name. With this change, the UMD module ID is now `sample.core`. For secondary entrypoints, e.g. `@sample/core/testing`, the UMD module ID now also includes every part of the npm package name, e.g. `sample.core.testing`. Publishing your npm packages built with this version of ng-packagr causes a new UMD module ID to be generated. Users of your library need to update their configuration, e.g. when using SystemJS!
+
+An excerpt of each bug fix and feature is listed below for the respective release candidate version!
+
+### Bug Fixes
+
+* recognize aliased and namespace decorator imports ([#585](https://github.com/dherges/ng-packagr/issues/585)) ([8f88c5a](https://github.com/dherges/ng-packagr/commit/8f88c5a))
+
+### Features
+
+* comments cleanup and license header file ([#574](https://github.com/dherges/ng-packagr/issues/574)) ([0237f24](https://github.com/dherges/ng-packagr/commit/0237f24)), closes [#362](https://github.com/dherges/ng-packagr/issues/362)
+* export and test public api surface ([#584](https://github.com/dherges/ng-packagr/issues/584)) ([6858e2e](https://github.com/dherges/ng-packagr/commit/6858e2e))
+
 <a name="2.0.0-rc.13"></a>
 
 # [2.0.0-rc.13](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.12...v2.0.0-rc.13) (2018-02-03)
