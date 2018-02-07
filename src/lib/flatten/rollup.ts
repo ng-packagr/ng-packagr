@@ -7,6 +7,7 @@ import * as path from 'path';
 import * as log from '../util/log';
 import { externalModuleIdStrategy } from './external-module-id-strategy';
 import { umdModuleIdStrategy } from './umd-module-id-strategy';
+import { TransformHook } from 'rollup';
 
 /**
  * Options used in `ng-packagr` for writing flat bundle files.
@@ -22,6 +23,7 @@ export interface RollupOptions {
   embedded?: string[];
   comments?: string;
   licensePath?: string;
+  transform?: TransformHook;
 }
 
 /** Runs rollup over the given entry file, writes a bundle file. */
@@ -33,7 +35,8 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
     commonJs(),
     cleanup({
       comments: opts.comments
-    })
+    }),
+    { transform: opts.transform }
   ];
 
   if (opts.licensePath) {

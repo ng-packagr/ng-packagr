@@ -1,18 +1,14 @@
 import * as path from 'path';
+import { SourceDescription } from 'rollup';
 import { ScriptTarget, ModuleKind, TranspileOutput, transpileModule, CompilerOptions } from 'typescript';
-import { readFile, outputJson, outputFile as fsOutputFile } from 'fs-extra';
 import { debug } from '../util/log';
 
 /**
  * Downlevels a .js file from ES2015 to ES5. Internally, uses `tsc`.
  *
- * @param inputFile
- * @param outputFile
  */
-export async function downlevelWithTsc(inputFile: string, outputFile: string): Promise<void> {
-  debug(`tsc ${inputFile} to ${outputFile}`);
-  const inputBuffer: Buffer = await readFile(inputFile);
-  const input: string = inputBuffer.toString();
+export async function downlevelWithTsc(code: string, filePath: string): Promise<SourceDescription> {
+  debug(`tsc ${filePath}`);
   const compilerOptions: CompilerOptions = {
     target: ScriptTarget.ES5,
     module: ModuleKind.ES2015,
@@ -20,29 +16,14 @@ export async function downlevelWithTsc(inputFile: string, outputFile: string): P
     sourceMap: true,
     importHelpers: true,
     downlevelIteration: true,
-    mapRoot: path.dirname(inputFile)
+    mapRoot: path.dirname(filePath)
   };
-  const transpiled: TranspileOutput = transpileModule(trimSourceMap(input.toString()), {
-    fileName: path.basename(outputFile),
-    moduleName: path.basename(outputFile, '.js'),
+  const transpiled: TranspileOutput = transpileModule(code, {
     compilerOptions
   });
 
-  const sourceMap = JSON.parse(transpiled.sourceMapText);
-  sourceMap['file'] = path.basename(outputFile);
-  sourceMap['sources'] = [path.basename(inputFile)];
-
-  await Promise.all([
-    fsOutputFile(outputFile, transpiled.outputText),
-    outputJson(`${outputFile}.map`, sourceMap, { spaces: 2 })
-  ]);
+  return {
+    code: transpiled.outputText,
+    map: transpiled.sourceMapText
+  };
 }
-
-const REGEXP = /\/\/# sourceMappingURL=.*\.js\.map/;
-const trimSourceMap = (fileContent: string): string => {
-  if (fileContent.match(REGEXP)) {
-    return fileContent.replace(/\/\/# sourceMappingURL=.*\.js\.map/, '');
-  } else {
-    return fileContent;
-  }
-};
