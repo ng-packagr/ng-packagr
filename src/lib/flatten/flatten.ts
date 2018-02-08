@@ -58,7 +58,14 @@ export async function flattenToFesm15(opts: FlattenOpts): Promise<string> {
 export async function flattenToFesm5(opts: FlattenOpts): Promise<string> {
   const destFile = path.resolve(opts.outDir, 'esm5', opts.flatModuleFile + '.js');
 
-  await downlevelWithTsc(opts.entryFile, destFile);
+  await rollupBundleFile({
+    moduleName: opts.esmModuleId,
+    entry: opts.entryFile,
+    format: 'es',
+    dest: destFile,
+    embedded: opts.embedded,
+    transform: downlevelWithTsc
+  });
 
   return destFile;
 }
