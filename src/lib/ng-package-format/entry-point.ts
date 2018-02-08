@@ -95,8 +95,9 @@ export class NgEntryPoint {
     return this.$get('lib.flatModuleFile') || this.flattenModuleId('-');
   }
 
-  public get sassIncludePaths(): string[] {
-    const includePaths = this.$get('lib.sassIncludePaths') || [];
+  public get styleIncludePaths(): string[] {
+    // lib.sassIncludePaths retained for backwards compatability
+    const includePaths = this.$get('lib.styleIncludePaths') || this.$get('lib.sassIncludePaths') || [];
     return includePaths.map(
       includePath => (path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath))
     );

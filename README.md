@@ -16,7 +16,6 @@
 [![npm Downloads](https://img.shields.io/npm/dw/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg?style=flat-square)](https://renovateapp.com/)
 
-
 ## Usage Example
 
 Let's talk us through a _getting started_ that'll build an Angular library from TypeScript sources and create a distribution-ready npm package:
@@ -62,24 +61,22 @@ Do you like to publish more libraries?
 Is your code living in a monorepo?
 Create one `package.json` per npm package, run _ng-packagr_ for each!
 
-
 ## Features
 
- - :gift: Implements [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview)
-   - :checkered_flag: Bundles your library in FESM2015, FESM5, and UMD formats
-   - :school_satchel: npm package can be consumed by [Angular CLI](https://github.com/angular/angular-cli), [Webpack](https://github.com/webpack/webpack), or [SystemJS](https://github.com/systemjs/systemjs)
-   - :dancer: Creates type definitions (`.d.ts`)
-   - :runner: Generates [Ahead-of-Time](https://angular.io/guide/aot-compiler#why-do-aot-compilation) metadata (`.metadata.json`)
-   - :trophy: Auto-discovers and bundles secondary entry points such as `@my/foo`, `@my/foo/testing`, `@my/foo/bar`
- - :mag_right: Creates [scoped and non-scoped packages](https://docs.npmjs.com/misc/scope) for publishing to npm registry
- - :surfer: Inlines Templates and Stylesheets
- - :sparkles: CSS Features
-   - :camel: Runs [SCSS](http://sass-lang.com/guide) preprocessor, supporting the [relative `~` import syntax](https://github.com/webpack-contrib/sass-loader#imports) and custom include paths
-   - :elephant: Runs [less](http://lesscss.org/#getting-started) preprocessor
-   - :snake: Runs [Stylus](http://stylus-lang.com) preprocessor, resolves relative paths relative to ng-package.json
-   - :monkey: Adds vendor-specific prefixes w/ [autoprefixer](https://github.com/postcss/autoprefixer#autoprefixer-) and [browserslist](https://github.com/ai/browserslist#queries) &mdash; just tell your desired `.browserslistrc`
-   - :tiger: Embed assets data w/ [postcss-url](https://github.com/postcss/postcss-url#inline)
-
+* :gift: Implements [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview)
+  * :checkered_flag: Bundles your library in FESM2015, FESM5, and UMD formats
+  * :school_satchel: npm package can be consumed by [Angular CLI](https://github.com/angular/angular-cli), [Webpack](https://github.com/webpack/webpack), or [SystemJS](https://github.com/systemjs/systemjs)
+  * :dancer: Creates type definitions (`.d.ts`)
+  * :runner: Generates [Ahead-of-Time](https://angular.io/guide/aot-compiler#why-do-aot-compilation) metadata (`.metadata.json`)
+  * :trophy: Auto-discovers and bundles secondary entry points such as `@my/foo`, `@my/foo/testing`, `@my/foo/bar`
+* :mag_right: Creates [scoped and non-scoped packages](https://docs.npmjs.com/misc/scope) for publishing to npm registry
+* :surfer: Inlines Templates and Stylesheets
+* :sparkles: CSS Features
+  * :camel: Runs [SCSS](http://sass-lang.com/guide) preprocessor, supporting the [relative `~` import syntax](https://github.com/webpack-contrib/sass-loader#imports) and custom include paths
+  * :elephant: Runs [less](http://lesscss.org/#getting-started) preprocessor
+  * :snake: Runs [Stylus](http://stylus-lang.com) preprocessor, resolves relative paths relative to ng-package.json
+  * :monkey: Adds vendor-specific prefixes w/ [autoprefixer](https://github.com/postcss/autoprefixer#autoprefixer-) and [browserslist](https://github.com/ai/browserslist#queries) &mdash; just tell your desired `.browserslistrc`
+  * :tiger: Embed assets data w/ [postcss-url](https://github.com/postcss/postcss-url#inline)
 
 ## Advanced Use Cases
 
@@ -93,11 +90,10 @@ Here is a [demo repository showing ng-packagr and Angular CLI](https://github.co
 
 What about [ng-packagr alongside Nx Workspace](https://github.com/dherges/nx-packaged)? Well, they work well together!
 
-
 #### Configuration Locations
 
 Configuration is picked up from the project file given by the `-p` CLI option.
-The `-p `option may refer to a `package.json` (with custom `ngPackage` property), an `ng-package.json`, or an `ng-package.js` file.
+The `-p`option may refer to a `package.json` (with custom `ngPackage` property), an `ng-package.json`, or an `ng-package.js` file.
 When the `-p` option refers to a directory, the configuration is picked up from the first matching source;
 locations are tried in the above-mentioned order.
 
@@ -168,6 +164,7 @@ my_package
 ```
 
 The contents of `my_package/testing/package.json` can be as simple as:
+
 ```json
 {
   "ngPackage": {}
@@ -202,7 +199,7 @@ For example:
 {
   "ngPackage": {
     "lib": {
-      "languageLevel": [ "dom", "es2017" ]
+      "languageLevel": ["dom", "es2017"]
     }
   }
 }
@@ -225,16 +222,16 @@ Valid values: `none` or `inline`.
 }
 ```
 
-#### What if I have multiple SASS/SCSS include paths?
+#### What if I have multiple SASS/SCSS/Less/Stylus include paths?
 
 In case you have multiple include paths for `@import` statements (e.g., when setting the `stylePreprocessorOptions` in `.angular-cli.json`),
-the additional paths may be configured through the `sassIncludePaths` option.
+the additional paths may be configured through the `styleIncludePaths` option.
 
 ```json
 {
   "ngPackage": {
     "lib": {
-      "sassIncludePaths": ["./src/assets/styles"]
+      "styleIncludePaths": ["./src/assets/styles"]
     }
   }
 }
@@ -247,16 +244,13 @@ In most cases, you should expect that third-party dependencies will be part of t
 
 However, if you want to embed a dependency into the distributable bundle you are able to do so by adding the dependency in the `embedded` section like so:
 
-***HEADS UP***: embedding a dependency will result in you shipping the dependency's source code to your consumers!
+**_HEADS UP_**: embedding a dependency will result in you shipping the dependency's source code to your consumers!
 
 ```json
 {
   "$schema": "../../../src/ng-package.schema.json",
   "lib": {
-    "embedded": [
-      "lodash",
-      "date-fns"
-    ]
+    "embedded": ["lodash", "date-fns"]
   }
 }
 ```
@@ -271,8 +265,8 @@ In case ng-packagr doesn't provide a default and rollup is unable to guess the c
   "$schema": "../../../src/ng-package.schema.json",
   "lib": {
     "umdModuleIds": {
-      "lodash" : "_",
-      "date-fns" : "DateFns",
+      "lodash": "_",
+      "date-fns": "DateFns"
     }
   }
 }
@@ -340,17 +334,13 @@ The licensePath property in the example above will read the LICENSE file next to
 We keep track of user questions in GitHub's issue tracker and try to build a documentation from it.
 [Explore issues w/ label documentation](https://github.com/dherges/ng-packagr/issues?q=label%3Adocumentation%20).
 
-
-
 ## Knowledge
 
 [Angular Package Format v5.0](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview), design document at Google Docs
 
-
 Packaging Angular - Jason Aden at ng-conf 2017 ([28min talk](https://youtu.be/unICbsPGFIA))
 
 [![Packaging Angular - Jason Aden](https://img.youtube.com/vi/unICbsPGFIA/0.jpg)](https://youtu.be/unICbsPGFIA)
-
 
 Create and publish Angular libs like a Pro - Juri Strumpflohner at NG-BE ([Dec 2017, 30min talk](https://youtu.be/K4YMmwxGKjY))
 

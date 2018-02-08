@@ -89,17 +89,24 @@ async function renderPreProcessor(filePath: string, basePath: string, entryPoint
       return renderSass({
         file: filePath,
         importer: nodeSassTildeImporter,
-        includePaths: entryPoint.sassIncludePaths
+        includePaths: entryPoint.styleIncludePaths
       });
 
     case '.less':
       log.debug(`rendering less from ${filePath}`);
-      return renderLess({ filename: filePath });
+      return renderLess({
+        filename: filePath,
+        paths: entryPoint.styleIncludePaths
+      });
 
     case '.styl':
     case '.stylus':
       log.debug(`rendering styl from ${filePath}`);
-      return renderStylus({ filename: filePath, root: basePath });
+      return renderStylus({
+        filename: filePath,
+        root: basePath,
+        paths: entryPoint.styleIncludePaths
+      });
 
     case '.css':
     default:
@@ -142,7 +149,7 @@ const renderLess = (lessOpts: any): Promise<string> => {
  * filename - absolute path to file
  * root - root folder of project (where ng-package.json is located)
  */
-const renderStylus = ({ filename, root }): Promise<string> => {
+const renderStylus = ({ filename, root, paths }): Promise<string> => {
   return fs
     .readFile(filename)
     .then(buffer => stripBom(buffer.toString()))
@@ -151,10 +158,8 @@ const renderStylus = ({ filename, root }): Promise<string> => {
         new Promise<string>((resolve, reject) => {
           stylus(stylusData)
             // add paths for resolve
-            .include(root)
-            .include('.')
+            .set('paths', [root, '.', ...paths, 'node_modules'])
             // add support for resolving plugins from node_modules
-            .include('node_modules')
             .set('filename', filename)
             // turn on url resolver in stylus, same as flag --resolve-url
             .set('resolve url', true)
