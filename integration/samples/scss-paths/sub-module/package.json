@@ -1,6 +1,6 @@
 {
   "$schema": "../../../../src/package.schema.json",
-  "name": "@sample/secondary/sub-module",
+  "name": "@sample/scss-paths/sub-module",
   "description": "A sub module library",
   "version": "1.0.0-pre.0",
   "private": true,
@@ -12,7 +12,7 @@
   "ngPackage": {
     "lib": {
       "entryFile": "index.ts",
-      "sassIncludePaths": ["../assets","./assets"]
+      "sassIncludePaths": ["../assets", "./assets"]
     }
   }
 }
