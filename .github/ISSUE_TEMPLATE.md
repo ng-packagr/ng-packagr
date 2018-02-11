@@ -7,14 +7,14 @@
 
 ## Description
 
-_for bugs: please describe the error that you encountered_
+_A bug: please describe the error that you encountered_
 
-_for features: please describe your use case_
+_A feature: please describe your use case and motivation_
 
 
 #### How To Reproduce
 
-_for bugs: please include instructions how to reproduce_
+_A bug: please include instructions how to reproduce. Issues without reproduction are likely to receive no feedback._
 
 _Can you reproduce the error in the integration tests in ng-packagr?_
 _If possible, take a look at the [`integration/samples`](./integration/samples) and try to break one of these builds!_
@@ -25,14 +25,15 @@ _Try to break the Angular CLI app in [`integration/consumers/ng-cli`](./integra
 
 #### Expected Behaviour
 
-_for bugs: please describe what behaviour or result you expected_
+_A bug: please describe what behaviour or result you expected_
 
-_for features: do you have a first draft or an idea how to implement?_
+_A feature: do you have a first draft or an idea how to implement?_
 
 
 #### Version Information
 
 ```
+$ node_modules/.bin/ng-packagr --version
 ng-packagr: x.y.z
 @angular/*: x.y.z
 typescript: x.y.z
@@ -41,4 +42,4 @@ node: x.y.z
 npm/yarn: x.y.z
 ```
 
-_please include any version information that might be relevant, e.g. other third-party libraries_
+_Please include all version numbers that might be relevant, e.g. third-party libraries_
