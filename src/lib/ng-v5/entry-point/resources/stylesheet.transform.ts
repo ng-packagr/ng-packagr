@@ -15,7 +15,7 @@ import * as nodeSassTildeImporter from 'node-sass-tilde-importer';
 import * as less from 'less';
 import * as stylus from 'stylus';
 import * as postcssUrl from 'postcss-url';
-import * as postcssComments from 'postcss-discard-comments';
+import * as postCssClean from 'postcss-clean';
 
 export const stylesheetTransform: Transform = transformFromPromise(async graph => {
   log.info(`Rendering Stylesheets`);
@@ -57,12 +57,24 @@ async function renderPostCss(filePath: string, cssStyles: string, cssUrl: CssUrl
   log.debug(`determine browserslist for ${filePath}`);
   const browsers = browserslist(undefined, { filePath });
 
-  const postCssPlugins = [autoprefixer({ browsers }), postcssComments({ removeAll: true })];
+  const postCssPlugins = [];
 
   if (cssUrl !== CssUrl.none) {
     log.debug(`postcssUrl: ${cssUrl}`);
     postCssPlugins.push(postcssUrl({ url: cssUrl }));
   }
+
+  // this is important to be executed post running `postcssUrl`
+  postCssPlugins.push(
+    autoprefixer({ browsers }),
+    postCssClean({
+      level: {
+        2: {
+          specialComments: false
+        }
+      }
+    })
+  );
 
   const result: postcss.Result = await postcss(postCssPlugins).process(cssStyles, {
     from: filePath,

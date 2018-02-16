@@ -38,5 +38,6 @@ export const templateTransform: Transform = transformFromPromise(async graph => 
 async function processTemplate(templateFilePath: string): Promise<string> {
   const buffer = await readFile(templateFilePath);
 
-  return stripBom(buffer.toString());
+  // drop line-breaks of the content
+  return stripBom(buffer.toString().replace(/([\n\r]\s*)+/gm, ' '));
 }
