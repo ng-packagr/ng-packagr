@@ -66,12 +66,12 @@ export async function writePackageJson(entryPoint: NgEntryPoint, binaries: { [ke
   // it will get what installed and not the minimum version nor if it is a `~` or `^`
   if (!(packageJson.dependencies && packageJson.dependencies.tslib)) {
     const { dependencies: angularDependencies = {} } = require('@angular/compiler/package.json');
-    const TSLIB_VERSION = angularDependencies.tslib;
+    const tsLibVersion = angularDependencies.tslib;
 
-    if (TSLIB_VERSION) {
+    if (tsLibVersion) {
       packageJson.dependencies = {
         ...packageJson.dependencies,
-        tslib: TSLIB_VERSION
+        tslib: tsLibVersion
       };
     }
   }
