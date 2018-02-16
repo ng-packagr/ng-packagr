@@ -13,7 +13,7 @@ export function createCompilerHostForSynthesizedSourceFiles(
   sourceFiles: ts.SourceFile[],
   compilerOptions: ts.CompilerOptions
 ): ts.CompilerHost {
-  const wrapped = ts.createCompilerHost(compilerOptions);
+  const wrapped = ts.createCompilerHost(compilerOptions, /* setParentNodes */ true);
 
   return {
     ...wrapped,
