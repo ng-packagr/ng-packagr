@@ -2,7 +2,7 @@ import * as path from 'path';
 import { remapSourceMap } from '../sourcemaps/remap';
 import * as log from '../util/log';
 import { rollupBundleFile } from './rollup';
-import { downlevelWithTsc } from './tsc';
+import { downlevelWithTsc } from './rollup-tsc';
 import { minifyJsFile } from './uglify';
 
 export interface FlattenOpts {
