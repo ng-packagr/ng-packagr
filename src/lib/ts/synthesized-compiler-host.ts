@@ -19,15 +19,23 @@ export function createCompilerHostForSynthesizedSourceFiles(
   return {
     ...wrapped,
     getSourceFile: (fileName, version) => {
-      const sourceFile = sourceFiles.find(file => file.fileName === fileName);
+      let sourceFile = sourceFiles.find(file => file.fileName === fileName);
 
       if (sourceFile) {
-        // FIX @link https://github.com/Microsoft/TypeScript/issues/19950
+        // FIX(#473): typescript has internal notion of "redirect source files"
+        // Do not return the redirected file, but rather the target of the redirect.
+        if (sourceFile['redirectInfo']) {
+          sourceFile = sourceFile['redirectInfo'].redirectTarget;
+        }
+
+        // FIX: https://github.com/Microsoft/TypeScript/issues/19950
+        // After typescript transformation, `ambientModuleNames` may become undefined. Copy it.
         if (!sourceFile['ambientModuleNames'] && sourceFile['original']) {
           sourceFile['ambientModuleNames'] = sourceFile['original']['ambientModuleNames'];
         }
 
-        // FIX synthesized source files cause ngc/tsc/tsickle to chock
+        // FIX: `ts.SourceFile` with the synthetic flag cause one of ngc/tsc/tsickle to choke
+        // Workaround the issue by creating a fresh source file and copying/replacing the source text
         const hasSyntheticFlag = (sourceFile.flags & 8) !== 0;
         if (hasSyntheticFlag || isSynthesizedSourceFile(sourceFile)) {
           return writeSourceFile(sourceFile);
