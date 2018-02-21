@@ -13,6 +13,7 @@ export function createCompilerHostForSynthesizedSourceFiles(
   sourceFiles: ts.SourceFile[],
   compilerOptions: ts.CompilerOptions
 ): ts.CompilerHost {
+  // FIX(#625): pass `setParentNodes` to the "synthesized" compiler host
   const wrapped = ts.createCompilerHost(compilerOptions, /* setParentNodes */ true);
 
   return {
