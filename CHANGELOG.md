@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.1.0"></a>
+
+# [2.1.0](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.13...v2.1.0) (2018-02-21)
+
+### Bug Fixes
+
+* pass 'setParentNodes' when calling 'createCompilerHost' ([#625](https://github.com/dherges/ng-packagr/issues/625)) ([9baa0bc](https://github.com/dherges/ng-packagr/commit/9baa0bc))
+* prune multiple import statements for `tslib` ([#588](https://github.com/dherges/ng-packagr/issues/588)) ([2b6dac4](https://github.com/dherges/ng-packagr/commit/2b6dac4)), closes [#587](https://github.com/dherges/ng-packagr/issues/587)
+* recognize aliased and namespace decorator imports ([#585](https://github.com/dherges/ng-packagr/issues/585)) ([8f88c5a](https://github.com/dherges/ng-packagr/commit/8f88c5a))
+* return redirect target of typescript source file ([#637](https://github.com/dherges/ng-packagr/issues/637)) ([c1fced0](https://github.com/dherges/ng-packagr/commit/c1fced0)), closes [#473](https://github.com/dherges/ng-packagr/issues/473)
+
+### Features
+
+* `styleIncludePaths` for feature parity with Angular CLI ([#603](https://github.com/dherges/ng-packagr/issues/603)) ([ab973f4](https://github.com/dherges/ng-packagr/commit/ab973f4)), closes [#282](https://github.com/dherges/ng-packagr/issues/282)
+* comments cleanup and license header file ([#574](https://github.com/dherges/ng-packagr/issues/574)) ([0237f24](https://github.com/dherges/ng-packagr/commit/0237f24)), closes [#362](https://github.com/dherges/ng-packagr/issues/362)
+* export and test public api surface ([#584](https://github.com/dherges/ng-packagr/issues/584)) ([6858e2e](https://github.com/dherges/ng-packagr/commit/6858e2e))
+
 <a name="2.0.0"></a>
 
 # [2.0.0](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.13...v2.0.0) (2018-02-05)
