@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`sample-custom`, () => {
-
   describe(`sample-custom.metadata.json`, () => {
     let METADATA;
     before(() => {
@@ -33,7 +32,7 @@ describe(`sample-custom`, () => {
       expect(foo.selector).to.equal('custom-foo');
       expect(foo.template).to.contain('<h1>Foo!</h1>');
       expect(foo.styles[0]).to.contain('h1{');
-      expect(foo.styles[0]).to.contain('color:#ff0000; }');
+      expect(foo.styles[0]).to.contain('color:red}');
     });
 
     describe(`BazComponent`, () => {
@@ -44,14 +43,16 @@ describe(`sample-custom`, () => {
 
       it(`should be exported`, () => {
         expect(baz).to.be.ok;
-      })
+      });
 
       it(`should have the <h1> template inlined`, () => {
         expect(baz.template).to.satisfy(str => str.startsWith(`<h1 class="supersized">Baz!</h1>`));
       });
 
       it(`should have a styles array with two stylesheets`, () => {
-        expect(baz.styles).to.be.an('array').that.has.length(2);
+        expect(baz.styles)
+          .to.be.an('array')
+          .that.has.length(2);
       });
     });
 
@@ -59,7 +60,7 @@ describe(`sample-custom`, () => {
       const foo = METADATA['metadata']['FooComponent']['decorators'][0]['arguments'][0];
 
       expect(foo).to.be.ok;
-      expect(foo.styles[0]).to.contain(`color:#ff0000`);
+      expect(foo.styles[0]).to.contain(`color:red`);
       expect(foo.styles[0]).to.not.contain(`$color:#ff0000`);
     });
 
@@ -67,7 +68,7 @@ describe(`sample-custom`, () => {
       const baz = METADATA['metadata']['BazComponent']['decorators'][0]['arguments'][0];
 
       expect(baz).to.be.ok;
-      expect(baz.styles[0]).to.contain(`color:#ff0000`);
+      expect(baz.styles[0]).to.contain(`color:red`);
       expect(baz.styles[0]).to.not.contain(`@red:#ff0000`);
     });
 
@@ -76,15 +77,15 @@ describe(`sample-custom`, () => {
         const fooBar = METADATA['metadata']['FooBarComponent']['decorators'][0]['arguments'][0];
 
         expect(fooBar).to.be.ok;
-        expect(fooBar.styles[0]).to.contain(`color:#f00;`);
-        expect(fooBar.styles[0]).to.not.contain(`color:$color`);
+        expect(fooBar.styles[0]).to.contain(`color:red`);
+        expect(fooBar.styles[0]).to.not.contain(`$color`);
       });
 
       it(`should contain imported styles`, () => {
         const fooBar = METADATA['metadata']['FooBarComponent']['decorators'][0]['arguments'][0];
 
         expect(fooBar).to.be.ok;
-        expect(fooBar.styles[0]).to.contain(`background-color:#008000;`);
+        expect(fooBar.styles[0]).to.contain(`background-color:green;`);
         expect(fooBar.styles[0]).to.not.contain(`background-color:$color-green;`);
       });
 
@@ -92,12 +93,10 @@ describe(`sample-custom`, () => {
         const fooBar = METADATA['metadata']['FooBarComponent']['decorators'][0]['arguments'][0];
 
         expect(fooBar).to.be.ok;
-        expect(fooBar.styles[0]).to.contain(`background-image:url("../styles/assets/test.png");`);
-        expect(fooBar.styles[0]).to.not.contain(`background-color:url(./assets/test.png);`);
+        expect(fooBar.styles[0]).to.contain(`background-image:url(../styles/assets/test.png)`);
+        expect(fooBar.styles[0]).to.not.contain(`background-color:url(./assets/test.png)`);
       });
     });
-
-
 
     it(`should re-export 'InternalService' with an auto-generated symbol`, () => {
       expect(METADATA['metadata']['ɵa']).to.be.ok;
