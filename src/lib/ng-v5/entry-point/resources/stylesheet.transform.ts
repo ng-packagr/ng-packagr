@@ -20,45 +20,43 @@ import * as stylus from 'stylus';
 export const stylesheetTransform: Transform = transformFromPromise(async graph => {
   log.info(`Rendering Stylesheets`);
 
-  // fetch current entry point from graph
+  // Fetch current entry point from graph
   const entryPoint = graph.find(isEntryPointInProgress());
 
-  // fetch stylesheet nodes from the graph
+  // Fetch stylesheet nodes from the graph
   const stylesheetNodes = graph.from(entryPoint).filter(node => node.type === TYPE_STYLESHEET && node.state !== 'done');
 
-  // determine base path from NgPackage
+  // Determine base path from NgPackage
   const ngPkg = graph.find(isPackage);
 
   const postCssProcessor = createPostCssProcessor(ngPkg.data.basePath, entryPoint.data.entryPoint.cssUrl);
 
-  await Promise.all(
-    stylesheetNodes.map(async stylesheetNode => {
-      const filePath: string = fileUrlPath(stylesheetNode.url);
+  for (let stylesheetNode of stylesheetNodes) {
+    const filePath: string = fileUrlPath(stylesheetNode.url);
 
-      // Render pre-processor language (sass, styl, less)
-      const renderedCss: string = await renderPreProcessor(filePath, ngPkg.data.basePath, entryPoint.data.entryPoint);
+    // Render pre-processor language (sass, styl, less)
+    const renderedCss: string = await renderPreProcessor(filePath, ngPkg.data.basePath, entryPoint.data.entryPoint);
 
-      // Render postcss (autoprefixing and friends)
-      const result = await postCssProcessor.process(renderedCss, {
-        from: filePath,
-        to: filePath.replace(path.extname(filePath), '.css')
-      });
+    // Render postcss (autoprefixing and friends)
+    const result = await postCssProcessor.process(renderedCss, {
+      from: filePath,
+      to: filePath.replace(path.extname(filePath), '.css')
+    });
 
-      // Escape existing backslashes for the final output into a string literal, which would otherwise escape the character after it
-      const resultCss = result.css.replace(/\\/g, '\\\\');
+    // Escape existing backslashes for the final output into a string literal, which would otherwise escape the character after it
+    const resultCss = result.css.replace(/\\/g, '\\\\');
 
-      // Log warnings from postcss
-      result.warnings().forEach(msg => {
-        log.warn(msg.toString());
-      });
+    // Log warnings from postcss
+    result.warnings().forEach(msg => {
+      log.warn(msg.toString());
+    });
 
-      // update nodes in the graph
-      stylesheetNode.data = {
-        ...stylesheetNode.data,
-        content: resultCss
-      };
-    })
-  );
+    // Update node in the graph
+    stylesheetNode.data = {
+      ...stylesheetNode.data,
+      content: resultCss
+    };
+  }
 
   return graph;
 });
