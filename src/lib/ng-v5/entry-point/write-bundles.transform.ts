@@ -6,12 +6,12 @@ import { BuildGraph } from '../../brocc/build-graph';
 import { Node } from '../../brocc/node';
 import { Transform } from '../../brocc/transform';
 import { writeFlatBundleFiles, FlattenOpts } from '../../flatten/flatten';
-import { byEntryPoint, isInProgress } from '../entry-point.node';
 import { NgEntryPoint } from '../../ng-package-format/entry-point';
+import { isEntryPointInProgress } from '../nodes';
 
 export const writeBundlesTransform: Transform = pipe(
   switchMap(graph => {
-    const entryPoint = graph.find(byEntryPoint().and(isInProgress));
+    const entryPoint = graph.find(isEntryPointInProgress());
     const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
 
     const opts: FlattenOpts = {

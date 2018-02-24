@@ -8,10 +8,10 @@ import { relocateSourceMaps } from '../../sourcemaps/relocate';
 import { ensureUnixPath } from '../../util/path';
 import { copyFiles } from '../../util/copy';
 import * as log from '../../util/log';
-import { byEntryPoint, isInProgress } from '../entry-point.node';
+import { isEntryPointInProgress } from '../nodes';
 
 export const writePackageTransform: Transform = transformFromPromise(async graph => {
-  const entryPoint = graph.find(byEntryPoint().and(isInProgress));
+  const entryPoint = graph.find(isEntryPointInProgress());
   const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
   const ngPackage: NgPackage = graph.find(node => node.type === 'application/ng-package').data;
 

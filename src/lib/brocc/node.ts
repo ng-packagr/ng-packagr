@@ -2,6 +2,11 @@ let NODE_COUNT = 0;
 
 export type NodeState = '' | 'dirty' | 'in-progress' | 'pending' | 'done';
 
+export const STATE_DIRTY: NodeState = 'dirty';
+export const STATE_IN_PROGESS: NodeState = 'in-progress';
+export const STATE_PENDING: NodeState = 'pending';
+export const STATE_DONE: NodeState = 'done';
+
 /**
  * A Node in the {@link BuildGraph}.
  */
@@ -34,7 +39,7 @@ export class Node {
   private _dependees: Node[] = [];
 
   /** @experimental DO NOT USE. For time being, dirty checking is for `type=entryPoint && state !== 'done'` (full rebuild of entry point). */
-  public addDependent(dependent: Node | Node[]) {
+  public dependsOn(dependent: Node | Node[]) {
     const newDeps = dependent instanceof Array ? dependent : [dependent];
 
     newDeps.forEach(dep => {

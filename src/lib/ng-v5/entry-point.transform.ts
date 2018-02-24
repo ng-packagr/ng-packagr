@@ -5,10 +5,12 @@ import { fromPromise } from 'rxjs/observable/fromPromise';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { pipe } from 'rxjs/util/pipe';
 import { BuildGraph } from '../brocc/build-graph';
-import { Node } from '../brocc/node';
+import { Node, STATE_IN_PROGESS, STATE_DONE } from '../brocc/node';
+import { isDirty, isInProgress } from '../brocc/select';
 import { Transform, transformFromPromise } from '../brocc/transform';
 import * as log from '../util/log';
 import { rimraf } from '../util/rimraf';
+import { byEntryPoint } from './nodes';
 
 /**
  * A re-write of the `transformSources()` script that transforms an entry point from sources to distributable format.
@@ -64,10 +66,10 @@ export const entryPointTransformFactory = (
 
     transformFromPromise(async graph => {
       // Peek the first entry point from the graph
-      const entryPoint = graph.find(node => node.type === 'application/ng-entry-point' && node.state === 'dirty');
+      const entryPoint = graph.find(byEntryPoint().and(isDirty));
 
       // Mark the entry point as 'in-progress'
-      entryPoint.state = 'in-progress';
+      entryPoint.state = STATE_IN_PROGESS;
       log.info(`Building entry point '${entryPoint.data.entryPoint.moduleId}'`);
 
       // Clean build directory
@@ -84,8 +86,8 @@ export const entryPointTransformFactory = (
     pipe(writeBundles, relocateSourceMaps, writePackage),
 
     transformFromPromise(async graph => {
-      const entryPoint = graph.find(node => node.type === 'application/ng-entry-point' && node.state === 'in-progress');
-      entryPoint.state = 'done';
+      const entryPoint = graph.find(byEntryPoint().and(isInProgress));
+      entryPoint.state = STATE_DONE;
     })
 
     //tap(() => log.info(`Built.`))

@@ -1,16 +1,17 @@
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { compileSourceFiles } from '../../../ngc/compile-source-files';
 import * as log from '../../../util/log';
-import { byEntryPoint, isInProgress } from '../../entry-point.node';
+import { isEntryPointInProgress, isTypeScriptSources, TypeScriptSourceNode } from '../../nodes';
 
 export const compileNgcTransform: Transform = transformFromPromise(async graph => {
   log.info(`Compiling TypeScript sources through ngc`);
-  const entryPoint = graph.find(byEntryPoint().and(isInProgress));
+  const entryPoint = graph.find(isEntryPointInProgress());
+  const tsSources: TypeScriptSourceNode = entryPoint.find(isTypeScriptSources) as TypeScriptSourceNode;
 
   // Compile TypeScript sources
-  const previousTransform = entryPoint.data.tsSources;
+  const previousTransform = tsSources.data;
   const compilationResult = await compileSourceFiles(
-    entryPoint.data.tsSources.transformed,
+    tsSources.data.transformed,
     entryPoint.data.tsConfig,
     entryPoint.data.outDir
   );
