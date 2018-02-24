@@ -8,11 +8,18 @@ import { Transform } from '../../../brocc/transform';
 import { transformSourceFiles } from '../../../ngc/transform-source-files';
 import { transformComponentSourceFiles } from '../../../ts/ng-component-transformer';
 import { TsConfig } from '../../../ts/tsconfig';
-import { byEntryPoint, isInProgress } from '../../entry-point.node';
+import {
+  isEntryPointInProgress,
+  TemplateNode,
+  StylesheetNode,
+  TypeScriptSourceNode,
+  fileUrl,
+  tsUrl
+} from '../../nodes';
 
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {
-    const entryPoint = graph.find(byEntryPoint().and(isInProgress));
+    const entryPoint = graph.find(isEntryPointInProgress());
     log.debug(`Analysing sources for ${entryPoint.data.entryPoint.moduleId}`);
 
     const tsConfig = entryPoint.data.tsConfig;
@@ -21,33 +28,27 @@ export const analyseSourcesTransform: Transform = pipe(
     const extractResources = transformComponentSourceFiles({
       template: ({ templateFilePath }) => {
         // TODO: HtmlNode / TemplateNode
-        const node = new Node('file://' + templateFilePath);
-        node.type = 'text/html';
-        graph.put(node);
+        const templateNode = new TemplateNode(fileUrl(templateFilePath));
+        graph.put(templateNode);
 
-        // TODO: mark entryPoint dependsOn node
-        entryPoint.addDependent(node);
+        // mark that entryPoint depends on node
+        entryPoint.dependsOn(templateNode);
       },
       stylesheet: ({ styleFilePath }) => {
         // TODO: CssNode / StylesheetNode
-        const node = new Node('file://' + styleFilePath);
-        node.type = 'text/css';
-        graph.put(node);
+        const stylesheetNode = new StylesheetNode(fileUrl(styleFilePath));
+        graph.put(stylesheetNode);
 
-        // TODO: mark entryPoint dependsOn node
-        entryPoint.addDependent(node);
+        // mark that entryPoint depends on node
+        entryPoint.dependsOn(stylesheetNode);
       }
     });
 
-    // XX: ideally, the TypeScript sources are added as individual nodes on the graph
-    entryPoint.data.tsSources = transformSourceFiles(tsConfig, [extractResources]);
-
-    // TODO: typescript sources may also be added as individual nodes on the graph
-    const tsSourcesNode = new Node('ts://' + entryPoint.data.entryPoint.moduleId);
-    tsSourcesNode.type = 'application/ts';
-    tsSourcesNode.data = entryPoint.data.tsSources;
+    // TODO: a typescript `SourceFile` may also be added as individual nod to the graph
+    const tsSourcesNode = new TypeScriptSourceNode(tsUrl(entryPoint.data.entryPoint.moduleId));
+    tsSourcesNode.data = transformSourceFiles(tsConfig, [extractResources]);
     graph.put(tsSourcesNode);
-    // TODO: mark entryPoint dependsOn tsSourcesNode
+    entryPoint.dependsOn(tsSourcesNode);
 
     return graph;
   })

@@ -4,17 +4,17 @@ import { pipe } from 'rxjs/util/pipe';
 import stripBom = require('strip-bom');
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import * as log from '../../../util/log';
-import { byEntryPoint, isInProgress } from '../../entry-point.node';
+import { isEntryPointInProgress, URL_PROTOCOL_FILE } from '../../nodes';
 
 export const templateTransform: Transform = transformFromPromise(async graph => {
   log.info(`Rendering Templates`);
 
-  const entryPoint = graph.find(byEntryPoint().and(isInProgress));
+  const entryPoint = graph.find(isEntryPointInProgress());
   const templateNodes = graph.from(entryPoint).filter(node => node.type === 'text/html' && node.state !== 'done');
 
   // TOTO [].forEach(async fn)
   const promises = templateNodes.map(templateNode => {
-    const templateFilePath = templateNode.url.substring('file://'.length);
+    const templateFilePath = templateNode.url.substring(URL_PROTOCOL_FILE.length);
 
     return processTemplate(templateFilePath).then(val => {
       templateNode.data = {

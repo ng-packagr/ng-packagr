@@ -4,7 +4,7 @@ import stripBom = require('strip-bom');
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { NgEntryPoint, CssUrl } from '../../../ng-package-format/entry-point';
 import * as log from '../../../util/log';
-import { byEntryPoint, isInProgress } from '../../entry-point.node';
+import { isEntryPointInProgress, fileUrlPath } from '../../nodes';
 
 // CSS Tools
 import * as autoprefixer from 'autoprefixer';
@@ -21,7 +21,7 @@ export const stylesheetTransform: Transform = transformFromPromise(async graph =
   log.info(`Rendering Stylesheets`);
 
   // TODO: fetch current entry point from graph
-  const entryPoint = graph.find(byEntryPoint().and(isInProgress));
+  const entryPoint = graph.find(isEntryPointInProgress());
 
   // TODO: fetch nodes from the graph
   const stylesheetNodes = graph.from(entryPoint).filter(node => node.type === 'text/css' && node.state !== 'done');
@@ -32,7 +32,7 @@ export const stylesheetTransform: Transform = transformFromPromise(async graph =
 
   await Promise.all(
     stylesheetNodes.map(async stylesheetNode => {
-      const filePath: string = stylesheetNode.url.substring('file://'.length);
+      const filePath: string = fileUrlPath(stylesheetNode.url);
 
       // preprocessor (render)
       const renderedCss: string = await renderPreProcessor(filePath, basePath, entryPoint.data.entryPoint);

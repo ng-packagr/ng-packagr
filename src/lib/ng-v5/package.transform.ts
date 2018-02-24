@@ -11,12 +11,13 @@ import { Transform } from '../brocc/transform';
 import * as log from '../util/log';
 import { copyFiles } from '../util/copy';
 import { rimraf } from '../util/rimraf';
+import { PackageNode, EntryPointNode, ngUrl, isEntryPoint } from './nodes';
 import { discoverPackages } from './discover-packages';
 
 export const packageTransformFactory = (project: string, entryPointTransform: Transform) => (
   source$: Observable<BuildGraph>
 ): Observable<BuildGraph> => {
-  const pkgUri = `ng://${project}`;
+  const pkgUri = ngUrl(project);
 
   return source$.pipe(
     tap(() => {
@@ -28,8 +29,7 @@ export const packageTransformFactory = (project: string, entryPointTransform: Tr
 
       return fromPromise(pkg).pipe(
         map(value => {
-          const ngPkg = new Node(pkgUri);
-          ngPkg.type = 'application/ng-package';
+          const ngPkg = new PackageNode(pkgUri);
           ngPkg.data = value;
 
           return graph.put(ngPkg);
@@ -48,11 +48,10 @@ export const packageTransformFactory = (project: string, entryPointTransform: Tr
         const stageDir = path.resolve(ngPkg.data.workingDirectory, entryPoint.flatModuleFile, 'stage');
         const outDir = path.resolve(ngPkg.data.workingDirectory, entryPoint.flatModuleFile, 'out');
 
-        const node = new Node(`ng://${entryPoint.moduleId}`);
-        node.type = 'application/ng-entry-point';
+        const node = new EntryPointNode(ngUrl(entryPoint.moduleId));
         node.data = { entryPoint, outDir, stageDir };
         node.state = 'dirty';
-        node.addDependent(ngPkg);
+        ngPkg.dependsOn(node);
 
         return node;
       });
@@ -61,9 +60,7 @@ export const packageTransformFactory = (project: string, entryPointTransform: Tr
     }),
     // Next, run through the entry point transformation
     switchMap(graph => {
-      const eachEntryPoint$ = graph
-        .filter(node => node.type === 'application/ng-entry-point')
-        .map(() => observableOf(graph).pipe(entryPointTransform));
+      const eachEntryPoint$ = graph.filter(isEntryPoint).map(() => observableOf(graph).pipe(entryPointTransform));
 
       return concatStatic(...eachEntryPoint$).pipe(takeLast(1));
     }),

@@ -8,10 +8,10 @@ import { Transform, transformFromPromise } from '../../brocc/transform';
 import { writeFlatBundleFiles, FlattenOpts } from '../../flatten/flatten';
 import { relocateSourceMaps } from '../../sourcemaps/relocate';
 import * as log from '../../util/log';
-import { byEntryPoint, isInProgress } from '../entry-point.node';
+import { isEntryPointInProgress } from '../nodes';
 
 export const relocateSourceMapsTransform: Transform = transformFromPromise(async graph => {
-  const entryPoint = graph.find(byEntryPoint().and(isInProgress));
+  const entryPoint = graph.find(isEntryPointInProgress());
   const stageDir = entryPoint.data.stageDir;
   const moduleId = entryPoint.data.entryPoint.moduleId;
 
