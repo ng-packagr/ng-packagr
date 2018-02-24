@@ -4,58 +4,68 @@ import stripBom = require('strip-bom');
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { NgEntryPoint, CssUrl } from '../../../ng-package-format/entry-point';
 import * as log from '../../../util/log';
-import { isEntryPointInProgress, fileUrlPath } from '../../nodes';
+import { isEntryPointInProgress, fileUrlPath, isPackage, TYPE_STYLESHEET } from '../../nodes';
 
 // CSS Tools
 import * as autoprefixer from 'autoprefixer';
 import * as browserslist from 'browserslist';
-import * as postcss from 'postcss';
 import * as sass from 'node-sass';
 import * as nodeSassTildeImporter from 'node-sass-tilde-importer';
+import * as postcss from 'postcss';
+import * as postcssUrl from 'postcss-url';
+import * as postcssClean from 'postcss-clean';
 import * as less from 'less';
 import * as stylus from 'stylus';
-import * as postcssUrl from 'postcss-url';
-import * as postCssClean from 'postcss-clean';
 
 export const stylesheetTransform: Transform = transformFromPromise(async graph => {
   log.info(`Rendering Stylesheets`);
 
-  // TODO: fetch current entry point from graph
+  // fetch current entry point from graph
   const entryPoint = graph.find(isEntryPointInProgress());
 
-  // TODO: fetch nodes from the graph
-  const stylesheetNodes = graph.from(entryPoint).filter(node => node.type === 'text/css' && node.state !== 'done');
+  // fetch stylesheet nodes from the graph
+  const stylesheetNodes = graph.from(entryPoint).filter(node => node.type === TYPE_STYLESHEET && node.state !== 'done');
 
-  // TODO: detemrine base path from NgPackage
-  const ngPkg = graph.find(node => node.type === 'application/ng-package');
-  const basePath: string = ngPkg.data.basePath;
+  // determine base path from NgPackage
+  const ngPkg = graph.find(isPackage);
+
+  const postCssProcessor = createPostCssProcessor(ngPkg.data.basePath, entryPoint.data.entryPoint.cssUrl);
 
   await Promise.all(
     stylesheetNodes.map(async stylesheetNode => {
       const filePath: string = fileUrlPath(stylesheetNode.url);
 
-      // preprocessor (render)
-      const renderedCss: string = await renderPreProcessor(filePath, basePath, entryPoint.data.entryPoint);
+      // Render pre-processor language (sass, styl, less)
+      const renderedCss: string = await renderPreProcessor(filePath, ngPkg.data.basePath, entryPoint.data.entryPoint);
 
-      // postcss (autoprefixing, et al)
-      const result: string = await renderPostCss(filePath, renderedCss, entryPoint.data.entryPoint.cssUrl);
+      // Render postcss (autoprefixing and friends)
+      const result = await postCssProcessor.process(renderedCss, {
+        from: filePath,
+        to: filePath.replace(path.extname(filePath), '.css')
+      });
 
-      // TODO: update nodes in the graph
+      // Escape existing backslashes for the final output into a string literal, which would otherwise escape the character after it
+      const resultCss = result.css.replace(/\\/g, '\\\\');
+
+      // Log warnings from postcss
+      result.warnings().forEach(msg => {
+        log.warn(msg.toString());
+      });
+
+      // update nodes in the graph
       stylesheetNode.data = {
         ...stylesheetNode.data,
-        content: result
+        content: resultCss
       };
     })
   );
 
-  // TODO: await forEach() ?!?
-
   return graph;
 });
 
-async function renderPostCss(filePath: string, cssStyles: string, cssUrl: CssUrl): Promise<string> {
-  log.debug(`determine browserslist for ${filePath}`);
-  const browsers = browserslist(undefined, { filePath });
+function createPostCssProcessor(basePath: string, cssUrl: CssUrl): postcss.Processor {
+  log.debug(`determine browserslist for ${basePath}`);
+  const browsers = browserslist(undefined, { filePath: basePath });
 
   const postCssPlugins = [];
 
@@ -67,7 +77,7 @@ async function renderPostCss(filePath: string, cssStyles: string, cssUrl: CssUrl
   // this is important to be executed post running `postcssUrl`
   postCssPlugins.push(
     autoprefixer({ browsers }),
-    postCssClean({
+    postcssClean({
       level: {
         2: {
           specialComments: false
@@ -76,20 +86,7 @@ async function renderPostCss(filePath: string, cssStyles: string, cssUrl: CssUrl
     })
   );
 
-  const result: postcss.Result = await postcss(postCssPlugins).process(cssStyles, {
-    from: filePath,
-    to: filePath.replace(path.extname(filePath), '.css')
-  });
-
-  // Escape existing backslashes for the final output into a string literal, which would otherwise escape the character after it
-  result.css = result.css.replace(/\\/g, '\\\\');
-
-  // Log warnings from postcss
-  result.warnings().forEach(msg => {
-    log.warn(msg.toString());
-  });
-
-  return result.css;
+  return postcss(postCssPlugins);
 }
 
 async function renderPreProcessor(filePath: string, basePath: string, entryPoint: NgEntryPoint): Promise<string> {
