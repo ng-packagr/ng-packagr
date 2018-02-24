@@ -23,6 +23,21 @@ export function readDefaultTsConfig(fileName?: string): TsConfig {
 }
 
 /**
+ * Creates a parsed TypeScript configuration object.
+ *
+ * @param values File path or parsed configuration.
+ */
+export function createDefaultTsConfig(values?: TsConfig | string): TsConfig {
+  if (!values) {
+    return readDefaultTsConfig();
+  } else if (typeof values === 'string') {
+    return readDefaultTsConfig(values);
+  } else {
+    return values;
+  }
+}
+
+/**
  * Initializes TypeScript Compiler options and Angular Compiler options by overriding the
  * default config with entry point-specific values.
  */

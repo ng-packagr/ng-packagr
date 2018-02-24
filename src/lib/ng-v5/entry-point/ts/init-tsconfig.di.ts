@@ -3,21 +3,13 @@ import { InjectionToken, Provider, ValueProvider } from 'injection-js';
 import { Transform } from '../../../brocc/transform';
 import { TransformProvider, provideTransform } from '../../../brocc/transform.di';
 import { initTsConfigTransformFactory } from './init-tsconfig.transform';
-import { readDefaultTsConfig, TsConfig } from '../../../ts/tsconfig';
+import { createDefaultTsConfig, TsConfig } from '../../../ts/tsconfig';
 
 export const provideTsConfig = (values?: TsConfig | string): Provider => {
-  const tsConfig: TsConfig = typeof values === 'string' ? readDefaultTsConfig(values) : values;
-
   return {
     provide: DEFAULT_TS_CONFIG_TOKEN,
     useFactory: () => {
-      if (!values) {
-        return readDefaultTsConfig();
-      } else if (typeof values === 'string') {
-        return readDefaultTsConfig(values);
-      } else {
-        return values;
-      }
+      return createDefaultTsConfig(values);
     },
     deps: []
   };
