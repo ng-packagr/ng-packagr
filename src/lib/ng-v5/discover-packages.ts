@@ -9,8 +9,10 @@ import { NgEntryPoint } from '../ng-package-format/entry-point';
 import { NgPackage } from '../ng-package-format/package';
 import { debug } from '../util/log';
 
+const ngPackageSchemaJson = require('../../ng-package.schema.json');
+
 /** Creates a SchemaClass for `NgPackageConfig` */
-const NgPackageSchemaClass = SchemaClassFactory<NgPackageConfig>(require('../../ng-package.schema.json'));
+const NgPackageSchemaClass = SchemaClassFactory<NgPackageConfig>(ngPackageSchemaJson);
 
 /** Instantiates a concrete schema from `NgPackageConfig` */
 const instantiateSchemaClass = (ngPackageJson: NgPackageConfig) => new NgPackageSchemaClass(ngPackageJson);
