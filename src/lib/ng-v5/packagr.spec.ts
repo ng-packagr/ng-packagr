@@ -2,7 +2,7 @@ import * as ng from '@angular/compiler-cli';
 import { expect } from 'chai';
 import { ngPackagr, NgPackagr } from './packagr';
 import { provideProject, PROJECT_TOKEN } from './project.di';
-import { DEFAULT_TS_CONFIG_TOKEN } from './entry-point/ts/init-tsconfig.di';
+import { DEFAULT_TS_CONFIG_TOKEN } from './init/init-tsconfig.di';
 
 describe(`ngPackagr()`, () => {
   let packager: NgPackagr;

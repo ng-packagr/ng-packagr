@@ -44,8 +44,8 @@ export function createDefaultTsConfig(values?: TsConfig | string): TsConfig {
 export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoint: NgEntryPoint, outDir: string): TsConfig => {
   const basePath = path.dirname(entryPoint.entryFilePath);
 
-  // Resolve defaults from DI token
-  const tsConfig = { ...defaultTsConfig };
+  // Resolve defaults from DI token and create a deep copy of the defaults
+  const tsConfig = JSON.parse(JSON.stringify(defaultTsConfig));
 
   tsConfig.rootNames = [entryPoint.entryFilePath];
   tsConfig.options.flatModuleId = entryPoint.moduleId;

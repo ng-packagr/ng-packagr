@@ -14,9 +14,27 @@ import { rimraf } from '../util/rimraf';
 import { PackageNode, EntryPointNode, ngUrl, isEntryPoint } from './nodes';
 import { discoverPackages } from './discover-packages';
 
-export const packageTransformFactory = (project: string, entryPointTransform: Transform) => (
-  source$: Observable<BuildGraph>
-): Observable<BuildGraph> => {
+/**
+ * A transformation for building an npm package:
+ *
+ *  - discoverPackages
+ *  - initTsConfig
+ *  - analyzeTsSources (thereby extracting template and stylesheet files)
+ *  - for each entry point
+ *    - run the entryPontTransform
+ *  - writeNpmPackage
+ *
+ * @param project Project token, reference to `ng-package.json`
+ * @param initTsConfigTransform Transformation initializing the tsconfig of each entry point.
+ * @param analyseSourcesTransform Transformation analyzing the typescript source files of each entry point.
+ * @param entryPointTransform Transformation for asset rendering and compilation of a single entry point.
+ */
+export const packageTransformFactory = (
+  project: string,
+  initTsConfigTransform: Transform,
+  analyseSourcesTransform: Transform,
+  entryPointTransform: Transform
+) => (source$: Observable<BuildGraph>): Observable<BuildGraph> => {
   const pkgUri = ngUrl(project);
 
   return source$.pipe(
@@ -58,7 +76,11 @@ export const packageTransformFactory = (project: string, entryPointTransform: Tr
 
       return graph.put(entryPoints);
     }),
-    // Next, run through the entry point transformation
+    // Initialize the tsconfig for each entry point
+    initTsConfigTransform,
+    // Analyse dependencies and external resources for each entry point
+    analyseSourcesTransform,
+    // Next, run through the entry point transformation (assets rendering, code compilation)
     switchMap(graph => {
       const eachEntryPoint$ = graph.filter(isEntryPoint).map(() => observableOf(graph).pipe(entryPointTransform));
 

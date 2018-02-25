@@ -21,8 +21,6 @@ import { byEntryPoint } from './nodes';
  * The current transformation pipeline can be thought of as:
  *
  *  - clean
- *  - initTsConfig
- *  - analyzeTsSources (thereby extracting template and stylesheet files)
  *  - renderTemplates
  *  - renderStylesheets
  *  - transformTsSources (thereby inlining template and stylesheet data)
@@ -40,8 +38,6 @@ import { byEntryPoint } from './nodes';
  * The transformation pipeline is pluggable through the dependency injection system.
  * Sub-transformations are passed to this factory function as arguments.
  *
- * @param initTsConfig Transformation initializing the tsconfig of the entry point.
- * @param analyzeTsSources Transformation analyzing the typescript source files of the entry point.
  * @param renderTemplates Transformation rendering HTML templates.
  * @param renderStylesheets Transformation rendering xCSS stylesheets.
  * @param transformTsSources Transformation manipulating the typescript source files (thus inlining template and stylesheet data).
@@ -51,8 +47,6 @@ import { byEntryPoint } from './nodes';
  * @param writePackage Transformation writing a distribution-ready `package.json` (for publishing to npm registry).
  */
 export const entryPointTransformFactory = (
-  initTsConfig: Transform,
-  analyzeTsSources: Transform,
   renderStylesheets: Transform,
   renderTemplates: Transform,
   transformTsSources: Transform,
@@ -75,15 +69,17 @@ export const entryPointTransformFactory = (
       // Clean build directory
       await clean(entryPoint.data.stageDir, entryPoint.data.outDir);
     }),
-    // TypeScript sources compilation
-    initTsConfig,
-    analyzeTsSources,
+    // Stylesheet and template rendering
     renderStylesheets,
     renderTemplates,
+    // Inlining of stylesheets and templates
     transformTsSources,
+    // TypeScript sources compilation
     compileTs,
     // After TypeScript: bundling and write package
-    pipe(writeBundles, relocateSourceMaps, writePackage),
+    writeBundles,
+    relocateSourceMaps,
+    writePackage,
 
     transformFromPromise(async graph => {
       const entryPoint = graph.find(byEntryPoint().and(isInProgress));

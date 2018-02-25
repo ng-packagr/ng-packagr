@@ -7,11 +7,10 @@ import { Node } from '../brocc/node';
 import { Transform } from '../brocc/transform';
 import { TsConfig } from '../ts/tsconfig';
 import * as log from '../util/log';
-import { DEFAULT_TS_CONFIG_TOKEN } from './entry-point/ts/init-tsconfig.di';
+import { provideTsConfig, DEFAULT_TS_CONFIG_TOKEN } from './init/init-tsconfig.di';
 import { ENTRY_POINT_TRANSFORM, ENTRY_POINT_PROVIDERS } from './entry-point.di';
-import { PACKAGE_TRANSFORM } from './package.di';
+import { PACKAGE_TRANSFORM, PACKAGE_PROVIDERS } from './package.di';
 import { provideProject } from './project.di';
-import { provideTsConfig } from './entry-point/ts/init-tsconfig.di';
 
 /**
  * The original ng-packagr implemented on top of a rxjs-ified and di-jectable transformation pipeline.
@@ -101,6 +100,6 @@ export class NgPackagr {
 export const ngPackagr = (): NgPackagr =>
   new NgPackagr([
     // Add default providers to this list.
-    PACKAGE_TRANSFORM,
+    ...PACKAGE_PROVIDERS,
     ...ENTRY_POINT_PROVIDERS
   ]);

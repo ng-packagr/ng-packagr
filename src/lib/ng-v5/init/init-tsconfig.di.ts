@@ -1,9 +1,9 @@
 import { ParsedConfiguration } from '@angular/compiler-cli';
 import { InjectionToken, Provider, ValueProvider } from 'injection-js';
-import { Transform } from '../../../brocc/transform';
-import { TransformProvider, provideTransform } from '../../../brocc/transform.di';
+import { Transform } from '../../brocc/transform';
+import { TransformProvider, provideTransform } from '../../brocc/transform.di';
+import { createDefaultTsConfig, TsConfig } from '../../ts/tsconfig';
 import { initTsConfigTransformFactory } from './init-tsconfig.transform';
-import { createDefaultTsConfig, TsConfig } from '../../../ts/tsconfig';
 
 export const provideTsConfig = (values?: TsConfig | string): Provider => {
   return {
