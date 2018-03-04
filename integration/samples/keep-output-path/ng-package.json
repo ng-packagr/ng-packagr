@@ -1,0 +1,9 @@
+{
+  "$schema": "../../../src/ng-package.schema.json",
+  "deleteDestPath": false,
+  "dest": "dest",
+  "lib": {
+    "entryFile": "src/public_api.ts",
+    "embedded": ["chalk"]
+  }
+}

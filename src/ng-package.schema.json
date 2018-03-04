@@ -8,6 +8,11 @@
     "$schema": {
       "type": "string"
     },
+    "deleteDestPath": {
+      "description": "Delete output path before build.",
+      "type": "boolean",
+      "default": true
+    },
     "dest": {
       "description":
         "Destination folder where distributable binaries of the Angular library are written (default: `dist`).",
