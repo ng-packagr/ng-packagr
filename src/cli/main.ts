@@ -2,6 +2,8 @@
 
 import * as program from 'commander';
 import * as path from 'path';
+import * as updateNotifier from 'update-notifier';
+import * as readPkgUp from 'read-pkg-up';
 import { execute, build, version } from '../public_api';
 
 const DEFAULT_PROJECT_PATH = path.resolve(process.cwd(), 'ng-package.json');
@@ -20,8 +22,12 @@ program
     DEFAULT_PROJECT_PATH
   );
 
+const dir = path.dirname(module.filename);
+const pkg = readPkgUp.sync({ cwd: dir }).pkg;
+updateNotifier({ pkg }).notify();
+
 program.on('option:version', () => {
-  version();
+  version(pkg);
   process.exit(0);
 });
 

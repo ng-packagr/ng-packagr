@@ -6,30 +6,13 @@ import { Command } from './command';
 
 const TSICKLE_VERSION = require('tsickle/package.json').version;
 
-let NG_PACKAGR_VERSION: string = 'unknown';
-function tryReadVersion(paths: string[] = []) {
-  if (paths.length === 0) {
-    return;
-  }
-  try {
-    const PKG = require(paths.shift());
-    if (PKG.name === 'ng-packagr') {
-      NG_PACKAGR_VERSION = PKG.version;
-    } else {
-      tryReadVersion(paths);
-    }
-  } catch (e) {
-    tryReadVersion(paths);
-  }
-}
-
 /**
  * Prints version information.
  *
  * @stable
  */
-export const version: Command<undefined, void> = () => {
-  tryReadVersion(['../../package.json', '../../../package.json']);
+export const version: Command<any, void> = (pkg: any) => {
+  const NG_PACKAGR_VERSION = pkg ? pkg.version : 'unknown';
 
   console.log(`ng-packagr:            ` + NG_PACKAGR_VERSION);
   console.log(`@angular/compiler:     ` + COMPILER_VERSION.full);
