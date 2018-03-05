@@ -1,8 +1,12 @@
 import * as ng from '@angular/compiler-cli';
 import { expect } from 'chai';
+import { InjectionToken } from 'injection-js';
+import { pipe } from 'rxjs/util/pipe';
 import { ngPackagr, NgPackagr } from './packagr';
 import { provideProject, PROJECT_TOKEN } from './project.di';
-import { DEFAULT_TS_CONFIG_TOKEN } from './init/init-tsconfig.di';
+import { DEFAULT_TS_CONFIG_TOKEN, INIT_TS_CONFIG_TOKEN } from './init/init-tsconfig.di';
+import { Transform, transformFromPromise } from '../brocc/transform';
+import { provideTransform } from '../brocc/transform.di';
 
 describe(`ngPackagr()`, () => {
   let packager: NgPackagr;
@@ -46,6 +50,41 @@ describe(`ngPackagr()`, () => {
       expect(providers).to.have.length(2);
       expect((providers[1] as any).useFactory).to.be.a('function');
       expect((providers[1] as any).useFactory()).to.satisfy(val => val.project === 'foo');
+    });
+  });
+
+  describe(`withTsConfigTransform()`, () => {
+    let wasCalled: boolean;
+    let mockTransform: Transform;
+    beforeEach(() => {
+      wasCalled = false;
+      mockTransform = transformFromPromise(async () => {
+        wasCalled = true;
+      });
+    });
+
+    it(`should call the transform during build`, done => {
+      const MOCK_BUILD = new InjectionToken<Transform>('mock');
+
+      packager
+        .withTsConfigTransform(mockTransform)
+        /*
+        .withProviders([provideTransform({
+          provide: MOCK_BUILD,
+          useFactory: (initTsConfig) => pipe(initTsConfig),
+          deps: [INIT_TS_CONFIG_TOKEN]
+        })])
+        */
+        .build(INIT_TS_CONFIG_TOKEN)
+        .then(() => {
+          expect(wasCalled).to.be.true;
+
+          done();
+        });
+    });
+
+    it(`should return self instance for chaining`, () => {
+      expect(packager.withTsConfigTransform(mockTransform)).to.equal(packager);
     });
   });
 });

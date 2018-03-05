@@ -1,6 +1,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import stripBom = require('strip-bom');
+import { BuildGraph } from '../../../brocc/build-graph';
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { NgEntryPoint, CssUrl } from '../../../ng-package-format/entry-point';
 import * as log from '../../../util/log';
@@ -181,3 +182,37 @@ const renderStylus = ({ filename, root, paths }): Promise<string> => {
         })
     );
 };
+
+export interface ForEachStylesheetFn {
+  (css: string, filePath: string, entryPoint: NgEntryPoint): string | Promise<string>;
+}
+
+export function forEachStylesheet(fn: ForEachStylesheetFn): Transform {
+  return transformFromPromise(async (graph: BuildGraph) => {
+    log.info(`Rendering Stylesheets`);
+
+    // Fetch current entry point from graph
+    const entryPoint = graph.find(isEntryPointInProgress());
+    const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
+
+    // Fetch stylesheet nodes from the graph
+    const stylesheetNodes = graph
+      .from(entryPoint)
+      .filter(node => node.type === TYPE_STYLESHEET && node.state !== 'done');
+    for (let stylesheetNode of stylesheetNodes) {
+      const filePath: string = fileUrlPath(stylesheetNode.url);
+
+      await fs
+        .readFile(filePath, { encoding: 'utf-8' })
+        .then(value => fn(value, filePath, ngEntryPoint))
+        .then(renderedCss => {
+          stylesheetNode.data = {
+            ...stylesheetNode.data,
+            content: renderedCss
+          };
+        });
+    }
+
+    return graph;
+  });
+}

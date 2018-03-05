@@ -5,12 +5,15 @@ import { take, map, catchError } from 'rxjs/operators';
 import { BuildGraph } from '../brocc/build-graph';
 import { Node } from '../brocc/node';
 import { Transform } from '../brocc/transform';
+import { provideTransform, TransformProvider } from '../brocc/transform.di';
 import { TsConfig } from '../ts/tsconfig';
 import * as log from '../util/log';
-import { provideTsConfig, DEFAULT_TS_CONFIG_TOKEN } from './init/init-tsconfig.di';
+import { provideTsConfig, DEFAULT_TS_CONFIG_TOKEN, INIT_TS_CONFIG_TOKEN } from './init/init-tsconfig.di';
 import { ENTRY_POINT_TRANSFORM, ENTRY_POINT_PROVIDERS } from './entry-point.di';
-import { PACKAGE_TRANSFORM, PACKAGE_PROVIDERS } from './package.di';
+import { PACKAGE_TRANSFORM, PACKAGE_PROVIDERS, PACKAGE_TRANSFORM_TOKEN } from './package.di';
 import { provideProject } from './project.di';
+import { STYLESHEET_TRANSFORM_TOKEN } from './entry-point/resources/stylesheet.di';
+import { TEMPLATE_TRANSFORM_TOKEN } from './entry-point/resources/template.di';
 
 /**
  * The original ng-packagr implemented on top of a rxjs-ified and di-jectable transformation pipeline.
@@ -20,7 +23,7 @@ import { provideProject } from './project.di';
  * @link https://github.com/dherges/ng-packagr/pull/572
  */
 export class NgPackagr {
-  private buildTransform: InjectionToken<Transform> = PACKAGE_TRANSFORM.provide;
+  private intialTransform: InjectionToken<Transform> = PACKAGE_TRANSFORM.provide;
 
   constructor(private providers: Provider[]) {}
 
@@ -61,14 +64,49 @@ export class NgPackagr {
     return this;
   }
 
+  public withTsConfigTransform(transform: Transform): NgPackagr {
+    this.providers.push(
+      provideTransform({
+        provide: INIT_TS_CONFIG_TOKEN,
+        useFactory: () => transform
+      })
+    );
+
+    return this;
+  }
+
+  public withStylesheetTransform(transform: Transform): NgPackagr {
+    this.providers.push(
+      provideTransform({
+        provide: STYLESHEET_TRANSFORM_TOKEN,
+        useFactory: () => transform
+      })
+    );
+
+    return this;
+  }
+
+  public withTemplateTransform(transform: Transform): NgPackagr {
+    this.providers.push(
+      provideTransform({
+        provide: TEMPLATE_TRANSFORM_TOKEN,
+        useFactory: () => transform
+      })
+    );
+
+    return this;
+  }
+
   /**
    * Overwrites the 'build' transform.
    *
+   * @deprecated Use `build(initialTransform: InjectionToken<Transform>)` instead!
    * @param transform
    * @return Self intance for fluent API
    */
-  public withBuildTransform(transform: InjectionToken<Transform>): NgPackagr {
-    this.buildTransform = transform;
+  withBuildTransform(transform: InjectionToken<Transform>): NgPackagr {
+    log.warn('DEPRECATION: Please use `.build(initialTransform?: InjectionToken<Transform>)` instead!');
+    this.intialTransform = transform;
 
     return this;
   }
@@ -78,9 +116,15 @@ export class NgPackagr {
    *
    * @return A promisified result of the transformation pipeline.
    */
-  public build(): Promise<void> {
+  public build(initialTransform?: InjectionToken<Transform>): Promise<void> {
     const injector = ReflectiveInjector.resolveAndCreate(this.providers);
-    const buildTransformOperator = injector.get(this.buildTransform);
+
+    let buildTransformOperator: Transform;
+    if (initialTransform) {
+      buildTransformOperator = injector.get(initialTransform);
+    } else {
+      buildTransformOperator = injector.get(this.intialTransform);
+    }
 
     return observableOf(new BuildGraph())
       .pipe(

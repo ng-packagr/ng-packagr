@@ -1,12 +1,18 @@
 import { expect } from 'chai';
 // Public API imports the way of user's: 'import {..} from 'ng-packagr'';
-import { ngPackagr, NgPackagr, build, version, execute, Command } from './public_api';
+import { ngPackagr, NgPackagr, build, version, execute, Command, transformFromPromise } from './public_api';
 
 describe("Public API Surface: import {..} from 'ng-packagr';", () => {
   describe('NgPackagr', () => {
     it('should export `ngPackagr()` fluent API', () => {
       expect(ngPackagr).to.be.a('function');
       expect(ngPackagr()).to.be.and.instanceof(NgPackagr);
+    });
+  });
+
+  describe(`transformFromPromise`, () => {
+    it(`should be exported`, () => {
+      expect(transformFromPromise).to.be.a('function');
     });
   });
 
