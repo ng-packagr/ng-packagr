@@ -55,7 +55,10 @@ export const packageTransformFactory = (
       );
     }),
     // Clean the primary dest folder (should clean all secondary sub-directory, as well)
-    switchMap(graph => fromPromise(rimraf(graph.get(pkgUri).data.dest)), (graph, _) => graph),
+    switchMap(graph => {
+      const { dest, deleteDestPath } = graph.get(pkgUri).data;
+      return fromPromise(deleteDestPath ? rimraf(dest) : Promise.resolve());
+    }, (graph, _) => graph),
     // Add entry points to graph
     map(graph => {
       const ngPkg = graph.get(pkgUri);

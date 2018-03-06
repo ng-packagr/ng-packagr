@@ -34,15 +34,12 @@ import { DirectoryPath, SourceFilePath } from './shared';
  * @link https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/edit#
  */
 export class NgPackage {
-
   constructor(
     private readonly basePath: string,
-
     /**
      * A reference to the primary entry point.
      */
     public readonly primary: NgEntryPoint,
-
     /**
      * An array of seconary entry points.
      */
@@ -52,6 +49,11 @@ export class NgPackage {
   /** Absolute path of the package's source folder, derived from the user's (primary) package location. */
   public get src(): DirectoryPath {
     return this.basePath;
+  }
+
+  /** Delete output path before build */
+  public get deleteDestPath(): boolean {
+    return this.primary.$get('deleteDestPath');
   }
 
   /** Absolute path of the package's destination directory. */
@@ -69,8 +71,6 @@ export class NgPackage {
   }
 
   public entryPoint(moduleId: string): NgEntryPoint {
-    return [ this.primary, ...this.secondaries]
-      .find((entryPoint) => entryPoint.moduleId === moduleId);
+    return [this.primary, ...this.secondaries].find(entryPoint => entryPoint.moduleId === moduleId);
   }
-
 }
