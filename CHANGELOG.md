@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/dherges/ng-packagr/compare/v2.1.0...v2.2.0) (2018-03-06)
+
+
+### Bug Fixes
+
+* add `chalk` to dependencies ([#647](https://github.com/dherges/ng-packagr/issues/647)) ([e8aa93f](https://github.com/dherges/ng-packagr/commit/e8aa93f))
+* lock rollup-plugin-commonjs dependency at 8.3.0 ([#658](https://github.com/dherges/ng-packagr/issues/658)) ([59d0c3b](https://github.com/dherges/ng-packagr/commit/59d0c3b)), closes [#657](https://github.com/dherges/ng-packagr/issues/657)
+* update rollup-plugin-license to version ^0.6.0 ([#664](https://github.com/dherges/ng-packagr/issues/664)) ([2a21d7e](https://github.com/dherges/ng-packagr/commit/2a21d7e))
+
+
+### Features
+
+* add `deleteDestPath` option ([#655](https://github.com/dherges/ng-packagr/issues/655)) ([61922c1](https://github.com/dherges/ng-packagr/commit/61922c1)), closes [#632](https://github.com/dherges/ng-packagr/issues/632)
+* add Graph and Node API for angular transforms ([#644](https://github.com/dherges/ng-packagr/issues/644)) ([92e6082](https://github.com/dherges/ng-packagr/commit/92e6082))
+* add update notifier to cli ([#649](https://github.com/dherges/ng-packagr/issues/649)) ([f5c4afc](https://github.com/dherges/ng-packagr/commit/f5c4afc))
+* analyse typescript dependencies of an entry point ([#648](https://github.com/dherges/ng-packagr/issues/648)) ([749d48b](https://github.com/dherges/ng-packagr/commit/749d48b))
+* reduce library bundle size by clean-css ([#563](https://github.com/dherges/ng-packagr/issues/563)) ([65386c2](https://github.com/dherges/ng-packagr/commit/65386c2)), closes [#614](https://github.com/dherges/ng-packagr/issues/614)
+
+
+### Performance Improvements
+
+* re-use postcss processor instance per entry point ([#645](https://github.com/dherges/ng-packagr/issues/645)) ([f70985b](https://github.com/dherges/ng-packagr/commit/f70985b))
+
+
+
 <a name="2.1.0"></a>
 
 # [2.1.0](https://github.com/dherges/ng-packagr/compare/v2.0.0-rc.13...v2.1.0) (2018-02-21)
