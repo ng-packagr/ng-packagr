@@ -13,7 +13,7 @@ export const analyseDependencies = (analyser: DependencyAnalyser) => (context: t
   }
 
   const findModuleIdFromImport = (node: ts.ImportDeclaration) => {
-    const text = node.moduleSpecifier.getText();
+    const text = node.moduleSpecifier.getText(sourceFile);
 
     return text.substring(1, text.length - 1);
   };
