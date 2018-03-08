@@ -137,18 +137,21 @@ describe(`Angular TypeScript AST (ng-ts-ast)`, () => {
       import * as ng from '@angular/core';
       `;
     const ALIAS_IMPORT = IMPORTS.getChildAt(0).getChildAt(0);
-    const NAMED_IMPORT = IMPORTS.getChildAt(0).getChildAt(0);
-    const NAMESPACED_IMPORT = IMPORTS.getChildAt(0).getChildAt(0);
+    const NAMED_IMPORT = IMPORTS.getChildAt(0).getChildAt(1);
+    const NAMESPACED_IMPORT = IMPORTS.getChildAt(0).getChildAt(2);
 
-    it(`should return true when module identifier is equivalent`, () => {
+    it("should detect named imports: `import { foo as bar } from 'foo'`", () => {
       expect(isImportFromModule(ALIAS_IMPORT, '@angular/core')).to.be.true;
-      expect(isImportFromModule(NAMED_IMPORT, '@angular/core')).to.be.true;
-      expect(isImportFromModule(NAMESPACED_IMPORT, '@angular/core')).to.be.true;
+      expect(isImportFromModule(ALIAS_IMPORT, 'foo-bar')).to.be.false;
     });
 
-    it(`should return false when module identifier is in-equal`, () => {
-      expect(isImportFromModule(ALIAS_IMPORT, 'foo-bar')).to.be.false;
+    it("should detect named imports: `import { foo } from 'foo'`", () => {
+      expect(isImportFromModule(NAMED_IMPORT, '@angular/core')).to.be.true;
       expect(isImportFromModule(NAMED_IMPORT, 'foo-bar')).to.be.false;
+    });
+
+    it("should detect namespace imports: `import * as foo from 'foo'`", () => {
+      expect(isImportFromModule(NAMESPACED_IMPORT, '@angular/core')).to.be.true;
       expect(isImportFromModule(NAMESPACED_IMPORT, 'foo-bar')).to.be.false;
     });
 
