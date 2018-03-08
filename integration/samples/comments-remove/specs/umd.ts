@@ -15,6 +15,10 @@ describe(`@sample/sample-comments-remove`, () => {
     it(`should not contain all the comments by default`, () => {
       expect(BUNDLE).not.to.contain(`Copyright  Example Software.`);
     });
+
+    it(`should use lib name as amd id`, () => {
+      expect(BUNDLE).to.contain(`define('@sample/comments-remove', ['exports'`);
+    });
   });
 
   describe(`sample-comments-remove.umd.min.js`, () => {

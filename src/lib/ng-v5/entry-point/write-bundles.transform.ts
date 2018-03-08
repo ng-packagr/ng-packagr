@@ -23,7 +23,8 @@ export const writeBundlesTransform: Transform = pipe(
       umdModuleIds: ngEntryPoint.umdModuleIds,
       embedded: ngEntryPoint.embedded,
       comments: ngEntryPoint.comments,
-      licensePath: ngEntryPoint.licensePath
+      licensePath: ngEntryPoint.licensePath,
+      amdId: ngEntryPoint.amdId
     };
 
     return fromPromise(writeFlatBundleFiles(opts)).pipe(map(() => graph));

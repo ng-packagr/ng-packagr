@@ -17,6 +17,8 @@ export interface FlattenOpts {
   /** List of module ids that should be embedded to the bundle. */
   embedded?: string[];
 
+  amdId?: string;
+
   /** Map of external UMD module ids that  */
   umdModuleIds?: { [key: string]: string };
 }
@@ -79,6 +81,7 @@ export async function flattenToUmd(opts: FlattenOpts): Promise<string> {
     entry: opts.entryFile,
     format: 'umd',
     dest: destFile,
+    amd: { id: opts.amdId },
     umdModuleIds: {
       ...opts.umdModuleIds
     },
