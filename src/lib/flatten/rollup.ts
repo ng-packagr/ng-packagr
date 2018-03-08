@@ -74,6 +74,7 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
   // Output the bundle to disk
   await bundle.write({
     name: `${opts.moduleName}`,
+    amd: { id: opts.moduleName },
     file: opts.dest,
     format: opts.format,
     banner: '',
