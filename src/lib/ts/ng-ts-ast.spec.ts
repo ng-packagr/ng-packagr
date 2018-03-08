@@ -12,11 +12,21 @@ import {
 describe(`Angular TypeScript AST (ng-ts-ast)`, () => {
   describe(`isComponentDecorator()`, () => {
     const sourceFileNamedImport = createSourceFile`
-      import { Component } from '@angular/core';
+      import { Component, OnInit } from '@angular/core';
 
-      @Component({})
-      @Other
-      class MyComponent {}
+      @Component({
+        selector: 'my-header',
+        templateUrl: './header.component.html',
+        styleUrls: ['./header.component.css']
+      })
+      @Other({})
+      export class HeaderComponent implements OnInit {
+
+        constructor() { }
+
+        ngOnInit() {
+        }
+      }
     `;
 
     it(`should return false for other decorator`, () => {
