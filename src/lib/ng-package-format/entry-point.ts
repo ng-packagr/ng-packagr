@@ -87,6 +87,11 @@ export class NgEntryPoint {
     }
   }
 
+  /** Remove scripts from package.json after build */
+  public get ignoreScripts(): boolean {
+    return this.$get('lib.ignoreScripts');
+  }
+
   public get jsxConfig(): string {
     return this.$get('lib.jsx');
   }

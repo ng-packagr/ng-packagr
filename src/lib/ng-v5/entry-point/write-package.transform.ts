@@ -82,6 +82,12 @@ export async function writePackageJson(entryPoint: NgEntryPoint, binaries: { [ke
   // this will not throw if ngPackage field does not exist
   delete packageJson.ngPackage;
 
+  // removes scripts from package.json after build
+  if (entryPoint.ignoreScripts) {
+    log.info('Ignoring package.json scripts');
+    delete packageJson.scripts;
+  }
+
   // `outputJson()` creates intermediate directories, if they do not exist
   // -- https://github.com/jprichardson/node-fs-extra/blob/master/docs/outputJson.md
   await fs.outputJson(path.resolve(entryPoint.destinationPath, 'package.json'), packageJson, { spaces: 2 });
