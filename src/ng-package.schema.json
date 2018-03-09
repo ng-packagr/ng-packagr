@@ -98,6 +98,11 @@
             "type": "string"
           },
           "default": ["dom", "es2015"]
+        },
+        "ignoreScripts": {
+          "description": "Remove scripts from package.json after build",
+          "type": "boolean",
+          "default": false
         }
       }
     }
