@@ -16,6 +16,10 @@ describe(`@sample/comments`, () => {
     it(`should give the umd an amd id`, () => {
       expect(BUNDLE).to.contain(`define('@mylib/test', ['exports'`);
     });
+
+    it(`should give the global-scope export an umd id`, () => {
+      expect(BUNDLE).to.contain(`factory((global.mylib = global.mylib || {}, global.mylib.test = {})`);
+    });
   });
 
   describe(`sample-comments.umd.min.js`, () => {

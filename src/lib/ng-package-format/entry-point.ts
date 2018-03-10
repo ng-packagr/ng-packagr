@@ -91,10 +91,6 @@ export class NgEntryPoint {
     return this.$get('lib.jsx');
   }
 
-  public get amdId(): string {
-    return this.$get('lib.amdId') || this.moduleId;
-  }
-
   public get flatModuleFile(): string {
     return this.$get('lib.flatModuleFile') || this.flattenModuleId('-');
   }
@@ -125,12 +121,20 @@ export class NgEntryPoint {
   }
 
   /**
-   * The UMD module ID is a string value used for registering the module on the old-fashioned
-   * JavaScript global scope.
+   * The UMD module ID registers a module on the old-fashioned JavaScript global scope.
+   * Used by UMD bundles only.
    * Example: `@my/foo/bar` registers as `global['my']['foo']['bar']`.
    */
-  public get umdModuleId(): string {
-    return this.flattenModuleId();
+  public get umdId(): string {
+    return this.$get('lib.umdId') || this.flattenModuleId();
+  }
+
+  /**
+   * The AMD ID reflects a named module that is distributed in the UMD bundles.
+   * @link http://requirejs.org/docs/whyamd.html#namedmodules
+   */
+  public get amdId(): string {
+    return this.$get('lib.amdId') || this.moduleId;
   }
 
   private flattenModuleId(separator: string = '.') {
