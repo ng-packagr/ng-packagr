@@ -98,6 +98,10 @@
             "type": "string"
           },
           "default": ["dom", "es2015"]
+        },
+        "amdId": {
+          "description": "ID for AMD module",
+          "type": "string"
         }
       }
     }

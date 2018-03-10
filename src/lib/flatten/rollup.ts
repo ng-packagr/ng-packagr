@@ -24,6 +24,7 @@ export interface RollupOptions {
   comments?: string;
   licensePath?: string;
   transform?: TransformHook;
+  amd?: { id: string };
 }
 
 /** Runs rollup over the given entry file, writes a bundle file. */
@@ -76,6 +77,7 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
     name: `${opts.moduleName}`,
     file: opts.dest,
     format: opts.format,
+    amd: opts.amd,
     banner: '',
     globals: moduleId => umdModuleIdStrategy(moduleId, opts.umdModuleIds || {}),
     sourcemap: true

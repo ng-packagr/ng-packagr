@@ -12,6 +12,10 @@ describe(`@sample/comments`, () => {
     it(`should contain all the comments by default`, () => {
       expect(BUNDLE).to.contain(`Copyright  Example Software.`);
     });
+
+    it(`should give the umd an amd id`, () => {
+      expect(BUNDLE).to.contain(`define('@mylib/test', ['exports'`);
+    });
   });
 
   describe(`sample-comments.umd.min.js`, () => {

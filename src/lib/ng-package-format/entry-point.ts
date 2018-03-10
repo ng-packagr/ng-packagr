@@ -91,6 +91,10 @@ export class NgEntryPoint {
     return this.$get('lib.jsx');
   }
 
+  public get amdId(): string {
+    return this.$get('lib.amdId') || this.moduleId;
+  }
+
   public get flatModuleFile(): string {
     return this.$get('lib.flatModuleFile') || this.flattenModuleId('-');
   }
