@@ -81,52 +81,55 @@ describe(`Angular TypeScript AST (ng-ts-ast)`, () => {
     });
   });
 
-  const sourceFileComponentTemplateUrlAndStyleUrl = createSourceFile`
-    @Component({
-      templateUrl: './my.component.html',
-      styleUrls: ['./my.component.css']
-    })
-    class MyComponent {}
-  `;
-  const sourceTwo_syntaxList = sourceFileComponentTemplateUrlAndStyleUrl
-    .getChildAt(0)
-    .getChildAt(0)
-    .getChildAt(0)
-    .getChildAt(0)
-    .getChildAt(1)
-    .getChildAt(2)
-    .getChildAt(0)
-    .getChildAt(1);
-  const sourceTwo_templateUrlNode = sourceTwo_syntaxList.getChildAt(0);
-  const sourceTwo_styleUrlsNode = sourceTwo_syntaxList.getChildAt(2);
-
   describe(`isTemplateUrl()`, () => {
+    let mock: {
+      sourceFile: ts.SourceFile;
+      templateUrlNode: ts.Node;
+      styleUrlsNode: ts.Node;
+      decoratorSyntaxList: ts.Node;
+    };
+
+    beforeEach(() => {
+      mock = createComponentSourceFile();
+    });
+
     it(`it should return 'true' for 'templateUrl:'`, () => {
-      expect(isTemplateUrl(sourceTwo_templateUrlNode)).to.be.true;
+      expect(isTemplateUrl(mock.templateUrlNode)).to.be.true;
     });
 
     it(`it should return 'false' for other property assignment`, () => {
-      expect(isTemplateUrl(sourceTwo_styleUrlsNode)).to.be.false;
+      expect(isTemplateUrl(mock.styleUrlsNode)).to.be.false;
     });
 
     it(`it should return 'false' for other nodes`, () => {
-      expect(isTemplateUrl(sourceFileComponentTemplateUrlAndStyleUrl)).to.be.false;
-      expect(isTemplateUrl(sourceTwo_syntaxList)).to.be.false;
+      expect(isTemplateUrl(mock.sourceFile)).to.be.false;
+      expect(isTemplateUrl(mock.decoratorSyntaxList)).to.be.false;
     });
   });
 
   describe(`isStyleUrls()`, () => {
+    let mock: {
+      sourceFile: ts.SourceFile;
+      templateUrlNode: ts.Node;
+      styleUrlsNode: ts.Node;
+      decoratorSyntaxList: ts.Node;
+    };
+
+    beforeEach(() => {
+      mock = createComponentSourceFile();
+    });
+
     it(`it should return 'true' for 'stylesUrls:'`, () => {
-      expect(isStyleUrls(sourceTwo_styleUrlsNode)).to.be.true;
+      expect(isStyleUrls(mock.styleUrlsNode)).to.be.true;
     });
 
     it(`it should return 'false' for other property assignment`, () => {
-      expect(isStyleUrls(sourceTwo_templateUrlNode)).to.be.false;
+      expect(isStyleUrls(mock.templateUrlNode)).to.be.false;
     });
 
     it(`it should return 'false' for other nodes`, () => {
-      expect(isStyleUrls(sourceFileComponentTemplateUrlAndStyleUrl)).to.be.false;
-      expect(isStyleUrls(sourceTwo_syntaxList)).to.be.false;
+      expect(isStyleUrls(mock.sourceFile)).to.be.false;
+      expect(isStyleUrls(mock.decoratorSyntaxList)).to.be.false;
     });
   });
 
@@ -200,3 +203,34 @@ describe(`Angular TypeScript AST (ng-ts-ast)`, () => {
     });
   });
 });
+
+function createComponentSourceFile() {
+  const sourceFile = createSourceFile`
+    import { Component, OnInit } from '@angular/core';
+
+    @Component({
+      selector: 'custom-header',
+      templateUrl: './header.component.html',
+      styleUrls: ['./header.component.css']
+    })
+    export class HeaderComponent implements OnInit {
+
+      constructor() { }
+
+      ngOnInit() {
+      }
+    }`;
+  const decoratorSyntaxList = sourceFile
+    .getChildAt(0)
+    .getChildAt(1)
+    .getChildAt(0)
+    .getChildAt(0)
+    .getChildAt(1)
+    .getChildAt(2)
+    .getChildAt(0)
+    .getChildAt(1);
+  const templateUrlNode = decoratorSyntaxList.getChildAt(2);
+  const styleUrlsNode = decoratorSyntaxList.getChildAt(4);
+
+  return { sourceFile, decoratorSyntaxList, templateUrlNode, styleUrlsNode };
+}
