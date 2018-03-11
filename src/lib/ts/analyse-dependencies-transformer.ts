@@ -1,7 +1,7 @@
 import * as ts from 'typescript';
 
 export interface DependencyAnalyser {
-  (node: ts.Node, moduleId: string): void;
+  (sourceFile: ts.SourceFile, moduleId: string): void;
 }
 
 export const analyseDependencies = (analyser: DependencyAnalyser) => (context: ts.TransformationContext) => (
@@ -23,7 +23,7 @@ export const analyseDependencies = (analyser: DependencyAnalyser) => (context: t
       // Found an 'import ...' declaration
       const importedModuleId: string = findModuleIdFromImport(node);
 
-      analyser(node, importedModuleId);
+      analyser(node.getSourceFile(), importedModuleId);
     } else {
       return ts.visitEachChild(node, visitImports, context);
     }

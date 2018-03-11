@@ -1,5 +1,5 @@
 @import '~node-sass/test/fixtures/include-files/file-not-processed-by-loader';
 
 .baz {
-    color: $variable-defined-by-file-not-processed-by-loader;
+  color: $variable-defined-by-file-not-processed-by-loader;
 }
