@@ -99,6 +99,11 @@
           },
           "default": ["dom", "es2015"]
         },
+        "keepLifecycleScripts": {
+          "description": "Remove scripts from package.json after build",
+          "type": "boolean",
+          "default": true
+        },
         "amdId": {
           "description":
             "ID for AMD module. By default, uses a value derived from the entry point's module ID (i.e., name property in package.json)",
