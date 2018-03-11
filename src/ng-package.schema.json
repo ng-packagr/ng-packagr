@@ -31,6 +31,15 @@
       "type": "string",
       "default": ".ng_pkg_build"
     },
+    "whitelistedNonPeerDependencies": {
+      "description":
+        "A list of dependencies that are allowed in the 'dependendencies' and 'devDependencies' section of package.json. Values in the list are regular expressions matched against npm package names.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": ["tslib"]
+    },
     "lib": {
       "description": "Description of the library's entry point.",
       "type": "object",
@@ -83,7 +92,7 @@
           "default": "none"
         },
         "sassIncludePaths": {
-          "description": "DEPRECATED: Please use styleIncludePaths",
+          "description": "DEPRECATED: Please use styleIncludePaths. sassIncludePaths will be removed in v3!",
           "type": "array",
           "items": {
             "type": "string"

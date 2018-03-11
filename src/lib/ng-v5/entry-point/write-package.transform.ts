@@ -80,11 +80,11 @@ export async function writePackageJson(
     }
   }
 
-  packageJson.name = entryPoint.moduleId;
-
-  // keep the dist package.json clean
-  // this will not throw if ngPackage field does not exist
-  delete packageJson.ngPackage;
+  // Verify non-peerDependencies as they can easily lead to duplicated installs or version conflicts
+  // in the node_modules folder of an application
+  const whitelist = pkg.whitelistedNonPeerDependencies.map(value => new RegExp(value));
+  checkNonPeerDependencies(packageJson, 'dependencies', whitelist);
+  checkNonPeerDependencies(packageJson, 'devDependencies', whitelist);
 
   // Removes scripts from package.json after build
   if (pkg.keepLifecycleScripts !== true) {
@@ -95,6 +95,11 @@ export async function writePackageJson(
       `You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`
     );
   }
+
+  // keep the dist package.json clean
+  // this will not throw if ngPackage field does not exist
+  delete packageJson.ngPackage;
+  packageJson.name = entryPoint.moduleId;
 
   // `outputJson()` creates intermediate directories, if they do not exist
   // -- https://github.com/jprichardson/node-fs-extra/blob/master/docs/outputJson.md
@@ -112,4 +117,19 @@ export async function copyJavaScriptBundles(stageDir: string, destDir: string): 
 
 export async function copyTypingsAndMetadata(from: string, to: string): Promise<void> {
   await copyFiles(`${from}/**/*.{d.ts,metadata.json}`, to);
+}
+
+function checkNonPeerDependencies(packageJson: { [key: string]: any }, property: string, whitelist: RegExp[]) {
+  if (packageJson[property]) {
+    Object.keys(packageJson[property]).forEach(dep => {
+      if (whitelist.find(regex => regex.test(dep))) {
+        log.debug(`Dependency ${dep} is whitelisted in '${property}'`);
+      } else {
+        log.warn(
+          `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep} to 'peerDepenencies' or remove it from '${property}'.`
+        );
+        throw new Error(`Dependency ${dep} must be explicitly whitelisted.`);
+      }
+    });
+  }
 }
