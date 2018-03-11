@@ -19,7 +19,7 @@ export const writeBundlesTransform: Transform = pipe(
       outDir: entryPoint.data.stageDir,
       flatModuleFile: ngEntryPoint.flatModuleFile,
       esmModuleId: ngEntryPoint.moduleId,
-      umdModuleId: ngEntryPoint.umdModuleId,
+      umdModuleId: ngEntryPoint.umdId,
       umdModuleIds: ngEntryPoint.umdModuleIds,
       embedded: ngEntryPoint.embedded,
       comments: ngEntryPoint.comments,

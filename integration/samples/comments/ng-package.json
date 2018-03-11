@@ -2,6 +2,7 @@
   "$schema": "../../../src/ng-package.schema.json",
   "lib": {
     "entryFile": "public_api.ts",
-    "amdId": "@mylib/test"
+    "amdId": "@mylib/test",
+    "umdId": "mylib.test"
   }
 }

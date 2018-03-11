@@ -19,6 +19,10 @@ describe(`@sample/sample-comments-remove`, () => {
     it(`should use lib name as amd id`, () => {
       expect(BUNDLE).to.contain(`define('@sample/comments-remove', ['exports'`);
     });
+
+    it(`should give the global-scope export an umd id`, () => {
+      expect(BUNDLE).to.contain(`factory((global.sample = global.sample || {}, global.sample['comments-remove'] = {})`);
+    });
   });
 
   describe(`sample-comments-remove.umd.min.js`, () => {

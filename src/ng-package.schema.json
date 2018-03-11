@@ -100,7 +100,13 @@
           "default": ["dom", "es2015"]
         },
         "amdId": {
-          "description": "ID for AMD module",
+          "description":
+            "ID for AMD module. By default, uses a value derived from the entry point's module ID (i.e., name property in package.json)",
+          "type": "string"
+        },
+        "umdId": {
+          "description":
+            "ID for the UMD bundle. By default, uses a value derived from the entry point's module ID (i.e., name property in package.json)",
           "type": "string"
         }
       }
