@@ -20,7 +20,6 @@ export const analyseSourcesTransform: Transform = pipe(
       // Extracts templateUrl and styleUrls from `@Component({..})` decorators.
       const extractResources = transformComponentSourceFiles({
         template: ({ templateFilePath }) => {
-          // TODO: HtmlNode / TemplateNode
           const templateNode = new TemplateNode(fileUrl(templateFilePath));
           graph.put(templateNode);
 
@@ -28,7 +27,6 @@ export const analyseSourcesTransform: Transform = pipe(
           entryPoint.dependsOn(templateNode);
         },
         stylesheet: ({ styleFilePath }) => {
-          // TODO: CssNode / StylesheetNode
           const stylesheetNode = new StylesheetNode(fileUrl(styleFilePath));
           graph.put(stylesheetNode);
 
@@ -42,7 +40,9 @@ export const analyseSourcesTransform: Transform = pipe(
         log.debug(`Found dependency in ${sourceFile.fileName}: ${moduleId}`);
         const dep = entryPoints.find(ep => ep.data.entryPoint.moduleId === moduleId);
         if (dep) {
-          log.debug(`Found dependency on another entry point: ${dep.data.entryPoint.moduleId}`);
+          log.debug(
+            `Found entry point dependency: ${entryPoint.data.entryPoint.moduleId} -> ${dep.data.entryPoint.moduleId}`
+          );
           entryPoint.dependsOn(dep);
         }
       });
