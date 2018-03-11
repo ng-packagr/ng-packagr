@@ -100,9 +100,9 @@
           "default": ["dom", "es2015"]
         },
         "keepLifecycleScripts": {
-          "description": "Remove scripts from package.json after build",
+          "description": "Enable this to keep the 'scripts' section in package.json. Read the NPM Blog on 'Package install scripts vulnerability' – http://blog.npmjs.org/post/141702881055/package-install-scripts-vulnerability",
           "type": "boolean",
-          "default": true
+          "default": false
         },
         "amdId": {
           "description":

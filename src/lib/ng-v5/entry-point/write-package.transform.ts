@@ -83,9 +83,11 @@ export async function writePackageJson(entryPoint: NgEntryPoint, binaries: { [ke
   delete packageJson.ngPackage;
 
   // removes scripts from package.json after build
-  if (entryPoint.keepLifecycleScripts) {
-    log.info('Ignoring package.json scripts');
+  if (entryPoint.keepLifecycleScripts !== true) {
+    log.info(`Removing scripts section in package.json as it's considered a potential security vulnerability.`);
     delete packageJson.scripts;
+  } else {
+    log.warn(`You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`);
   }
 
   // `outputJson()` creates intermediate directories, if they do not exist
