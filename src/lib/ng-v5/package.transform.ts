@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { concat as concatStatic } from 'rxjs/observable/concat';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of as observableOf } from 'rxjs/observable/of';
-import { map, retry, switchMap, takeLast, tap } from 'rxjs/operators';
+import { concatMap, map, retry, switchMap, takeLast, tap } from 'rxjs/operators';
 import { pipe } from 'rxjs/util/pipe';
 import { BuildGraph } from '../brocc/build-graph';
 import { Node } from '../brocc/node';
@@ -84,11 +84,7 @@ export const packageTransformFactory = (
     // Analyse dependencies and external resources for each entry point
     analyseSourcesTransform,
     // Next, run through the entry point transformation (assets rendering, code compilation)
-    switchMap(graph => {
-      const eachEntryPoint$ = graph.filter(isEntryPoint).map(() => observableOf(graph).pipe(entryPointTransform));
-
-      return concatStatic(...eachEntryPoint$).pipe(takeLast(1));
-    }),
+    scheduleEntryPoints(entryPointTransform),
     // Write npm package to dest folder
     writeNpmPackage(pkgUri),
     tap(graph => {
@@ -112,5 +108,18 @@ const writeNpmPackage = (pkgUri: string): Transform =>
           rimraf(ngPkg.data.workingDirectory)
         ])
       ).pipe(map(() => graph));
+    })
+  );
+
+const scheduleEntryPoints = (epTransform: Transform): Transform =>
+  pipe(
+    concatMap(graph => {
+      const entryPoints = graph.filter(isEntryPoint);
+
+      // TODO: build dependency tree and detemrine build order
+
+      const eachEntryPoint$ = graph.filter(isEntryPoint).map(() => observableOf(graph).pipe(epTransform));
+
+      return concatStatic(...eachEntryPoint$).pipe(takeLast(1));
     })
   );
