@@ -99,6 +99,11 @@
           },
           "default": ["dom", "es2015"]
         },
+        "keepLifecycleScripts": {
+          "description": "Enable this to keep the 'scripts' section in package.json. Read the NPM Blog on 'Package install scripts vulnerability' – http://blog.npmjs.org/post/141702881055/package-install-scripts-vulnerability",
+          "type": "boolean",
+          "default": false
+        },
         "amdId": {
           "description":
             "ID for AMD module. By default, uses a value derived from the entry point's module ID (i.e., name property in package.json)",
