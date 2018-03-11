@@ -24,6 +24,11 @@ describe(`DepthBuilder`, () => {
     expect(groups[2][0]).to.equal('a');
   });
 
+  /*
+   * This scenario is also visually documented:
+   *  - [Dependencies](docs/graph/depth-graph.png)
+   *  - [Build Groups](docs/graph/depth-groups.png)
+   */
   it(`should group a complex scenario`, () => {
     const builder = new DepthBuilder();
     builder.add('a', ['b', 'c', 'f']);
