@@ -23,7 +23,10 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
       if (!tsConfig.options.paths[depModuleId]) {
         tsConfig.options.paths[depModuleId] = [];
       }
-      tsConfig.options.paths[depModuleId].push(dep.data.es2015EntryFile);
+      tsConfig.options.paths[depModuleId].push(path.resolve(
+        path.dirname(dep.data.es2015EntryFile),
+        path.basename(dep.data.es2015EntryFile, '.js')
+      ));
     }
   }
 
