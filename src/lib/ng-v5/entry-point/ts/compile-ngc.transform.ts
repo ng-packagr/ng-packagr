@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { compileSourceFiles } from '../../../ngc/compile-source-files';
 import { TsConfig } from '../../../ts/tsconfig';
