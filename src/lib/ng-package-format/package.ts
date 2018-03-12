@@ -66,6 +66,10 @@ export class NgPackage {
     return this.absolutePathFromPrimary('workingDirectory');
   }
 
+  public get keepLifecycleScripts(): boolean {
+    return this.primary.$get('keepLifecycleScripts') === true;
+  }
+
   private absolutePathFromPrimary(key: string) {
     return path.resolve(this.basePath, this.primary.$get(key));
   }

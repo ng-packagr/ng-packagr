@@ -87,10 +87,6 @@ export class NgEntryPoint {
     }
   }
 
-  public get keepLifecycleScripts(): boolean {
-    return this.$get('lib.keepLifecycleScripts');
-  }
-
   public get jsxConfig(): string {
     return this.$get('lib.jsx');
   }

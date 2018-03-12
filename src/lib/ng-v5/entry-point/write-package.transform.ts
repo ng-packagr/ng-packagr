@@ -24,7 +24,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
   // 6. WRITE PACKAGE.JSON
   log.info('Writing package metadata');
   const relativeDestPath: string = path.relative(ngEntryPoint.destinationPath, ngPackage.primary.destinationPath);
-  await writePackageJson(ngEntryPoint, {
+  await writePackageJson(ngEntryPoint, ngPackage, {
     main: ensureUnixPath(path.join(relativeDestPath, 'bundles', ngEntryPoint.flatModuleFile + '.umd.js')),
     module: ensureUnixPath(path.join(relativeDestPath, 'esm5', ngEntryPoint.flatModuleFile + '.js')),
     es2015: ensureUnixPath(path.join(relativeDestPath, 'esm2015', ngEntryPoint.flatModuleFile + '.js')),
@@ -53,7 +53,11 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
  * @param entryPoint An entry point of an Angular package / library
  * @param binaries Binary artefacts (bundle files) to merge into `package.json`
  */
-export async function writePackageJson(entryPoint: NgEntryPoint, binaries: { [key: string]: string }): Promise<void> {
+export async function writePackageJson(
+  entryPoint: NgEntryPoint,
+  pkg: NgPackage,
+  binaries: { [key: string]: string }
+): Promise<void> {
   log.debug('Writing package.json');
   const packageJson: any = entryPoint.packageJson;
   // set additional properties
@@ -82,12 +86,14 @@ export async function writePackageJson(entryPoint: NgEntryPoint, binaries: { [ke
   // this will not throw if ngPackage field does not exist
   delete packageJson.ngPackage;
 
-  // removes scripts from package.json after build
-  if (entryPoint.keepLifecycleScripts !== true) {
+  // Removes scripts from package.json after build
+  if (pkg.keepLifecycleScripts !== true) {
     log.info(`Removing scripts section in package.json as it's considered a potential security vulnerability.`);
     delete packageJson.scripts;
   } else {
-    log.warn(`You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`);
+    log.warn(
+      `You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`
+    );
   }
 
   // `outputJson()` creates intermediate directories, if they do not exist
