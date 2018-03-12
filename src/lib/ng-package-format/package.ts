@@ -73,8 +73,10 @@ export class NgPackage {
   public get whitelistedNonPeerDependencies(): string[] {
     // XX: default array values from JSON schema not recognized
     const defValue = ['tslib'];
+    const value = (this.primary.$get('whitelistedNonPeerDependencies') as string[]) || defValue;
 
-    return this.primary.$get('whitelistedNonPeerDependencies') || defValue;
+    // Always append 'tslib' and dedupe
+    return value.concat('tslib').filter((value, index, self) => self.indexOf(value) === index);
   }
 
   private absolutePathFromPrimary(key: string) {
