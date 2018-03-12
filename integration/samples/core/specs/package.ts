@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 describe(`@sample/core`, () => {
-
   describe(`package.json`, () => {
     let PACKAGE;
     before(() => {
@@ -32,5 +31,8 @@ describe(`@sample/core`, () => {
       expect(PACKAGE['typings']).to.equal('sample-core.d.ts');
     });
 
+    it(`should have 'scripts' section removed`, () => {
+      expect(PACKAGE['scripts']).to.be.undefined;
+    });
   });
 });

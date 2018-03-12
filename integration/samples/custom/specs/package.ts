@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 describe(`sample-custom`, () => {
-
   describe(`package.json`, () => {
     let PACKAGE;
     before(() => {
@@ -36,6 +35,10 @@ describe(`sample-custom`, () => {
 
     it(`should reference "typings" files`, () => {
       expect(PACKAGE['typings']).to.equal('sample-custom.d.ts');
+    });
+
+    it(`should keep 'scripts' section intact`, () => {
+      expect(PACKAGE['scripts']).to.be.ok;
     });
   });
 });
