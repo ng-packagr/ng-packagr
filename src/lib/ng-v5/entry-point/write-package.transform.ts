@@ -7,6 +7,7 @@ import { NgPackage } from '../../ng-package-format/package';
 import { relocateSourceMaps } from '../../sourcemaps/relocate';
 import { ensureUnixPath } from '../../util/path';
 import { copyFiles } from '../../util/copy';
+import { rimraf } from '../../util/rimraf';
 import * as log from '../../util/log';
 import { isEntryPointInProgress } from '../nodes';
 
@@ -83,8 +84,13 @@ export async function writePackageJson(
   // Verify non-peerDependencies as they can easily lead to duplicated installs or version conflicts
   // in the node_modules folder of an application
   const whitelist = pkg.whitelistedNonPeerDependencies.map(value => new RegExp(value));
-  checkNonPeerDependencies(packageJson, 'dependencies', whitelist);
-  checkNonPeerDependencies(packageJson, 'devDependencies', whitelist);
+  try {
+    checkNonPeerDependencies(packageJson, 'dependencies', whitelist);
+    checkNonPeerDependencies(packageJson, 'devDependencies', whitelist);
+  } catch (e) {
+    await rimraf(entryPoint.destinationPath);
+    throw e;
+  }
 
   // Removes scripts from package.json after build
   if (pkg.keepLifecycleScripts !== true) {

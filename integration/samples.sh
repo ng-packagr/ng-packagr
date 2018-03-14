@@ -13,9 +13,13 @@ do
     elif [ -f $P_JSON ]; then
         echo "Building sample ${P_JSON}..."
         node dist/cli/main.js -p ${P_JSON}
-    else
+    elif [ -f $P ]; then
         echo "Building sample ${P}..."
-        node dist/cli/main.js -p ${P}
+        if [ $P='failures' ]; then
+            node dist/cli/main.js -p ${P} || true
+        else
+            node dist/cli/main.js -p ${P}
+        fi
     fi
     echo "Built."
 done
