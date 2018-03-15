@@ -3,15 +3,16 @@ import { Observable } from 'rxjs/Observable';
 import { concat as concatStatic } from 'rxjs/observable/concat';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of as observableOf } from 'rxjs/observable/of';
-import { map, retry, switchMap, takeLast, tap } from 'rxjs/operators';
+import { concatMap, map, retry, switchMap, takeLast, tap } from 'rxjs/operators';
 import { pipe } from 'rxjs/util/pipe';
 import { BuildGraph } from '../brocc/build-graph';
-import { Node } from '../brocc/node';
+import { DepthBuilder, Groups } from '../brocc/depth';
+import { Node, STATE_IN_PROGESS } from '../brocc/node';
 import { Transform } from '../brocc/transform';
 import * as log from '../util/log';
 import { copyFiles } from '../util/copy';
 import { rimraf } from '../util/rimraf';
-import { PackageNode, EntryPointNode, ngUrl, isEntryPoint } from './nodes';
+import { PackageNode, EntryPointNode, ngUrl, isEntryPoint, byEntryPoint } from './nodes';
 import { discoverPackages } from './discover-packages';
 
 /**
@@ -84,11 +85,7 @@ export const packageTransformFactory = (
     // Analyse dependencies and external resources for each entry point
     analyseSourcesTransform,
     // Next, run through the entry point transformation (assets rendering, code compilation)
-    switchMap(graph => {
-      const eachEntryPoint$ = graph.filter(isEntryPoint).map(() => observableOf(graph).pipe(entryPointTransform));
-
-      return concatStatic(...eachEntryPoint$).pipe(takeLast(1));
-    }),
+    scheduleEntryPoints(entryPointTransform),
     // Write npm package to dest folder
     writeNpmPackage(pkgUri),
     tap(graph => {
@@ -112,5 +109,44 @@ const writeNpmPackage = (pkgUri: string): Transform =>
           rimraf(ngPkg.data.workingDirectory)
         ])
       ).pipe(map(() => graph));
+    })
+  );
+
+const scheduleEntryPoints = (epTransform: Transform): Transform =>
+  pipe(
+    concatMap(graph => {
+      // Calculate node/dependency depth and determine build order
+      const depthBuilder = new DepthBuilder();
+      const entryPoints = graph.filter(isEntryPoint);
+      entryPoints.forEach(entryPoint => {
+        const deps = entryPoint.filter(isEntryPoint).map(ep => ep.url);
+        depthBuilder.add(entryPoint.url, deps);
+      });
+
+      // The array index is the depth.
+      const groups = depthBuilder.build();
+      const flattenedGroups = groups.reduce((prev, current) => prev.concat(current), []);
+      let currentIndex = 0;
+
+      // Build entry points with lower depth values first.
+      const eps$ = flattenedGroups.map(() =>
+        observableOf(graph).pipe(
+          tap(() => {
+            // Find current entry point in progress
+            const epUrl = flattenedGroups[currentIndex];
+            const entryPoint = graph.find(byEntryPoint().and(ep => ep.url === epUrl));
+
+            // Mark the entry point as 'in-progress'
+            entryPoint.state = STATE_IN_PROGESS;
+          }),
+          epTransform,
+          tap(() => {
+            currentIndex += 1;
+          })
+        )
+      );
+
+      // Build all entry points, then continue
+      return concatStatic(...eps$).pipe(takeLast(1));
     })
   );

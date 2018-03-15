@@ -10,11 +10,12 @@
     "@angular/common": "^4.1.2"
   },
   "scripts": {
-    "test": "../../../node_modules/.bin/cross-env TS_NODE_PROJECT=../../../integration/tsconfig.specs.json ../../../node_modules/.bin/mocha --compilers ts:ts-node/register specs/**/*.ts"
+    "test":
+      "../../../node_modules/.bin/cross-env TS_NODE_PROJECT=../../../integration/tsconfig.specs.json ../../../node_modules/.bin/mocha --compilers ts:ts-node/register specs/**/*.ts"
   },
   "ngPackage": {
     "lib": {
-      "entryFile": "public_api.ts"
+      "entryFile": "primary/public_api.ts"
     }
   }
 }

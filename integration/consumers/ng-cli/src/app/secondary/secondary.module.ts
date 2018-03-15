@@ -1,15 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UiLibModule } from '@sample/secondary';
-// XX: why not working?!
-// import { UiLibModule as SubModule } from '@sample/secondary/sub-module';
+import { UiLibModule as SubModule } from '@sample/secondary/sub-module';
+import { SecondaryComponent } from './secondary.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    UiLibModule,
-//    SubModule
-  ],
-  declarations: []
+  imports: [CommonModule, UiLibModule, SubModule],
+  declarations: [SecondaryComponent],
+  exports: [SecondaryComponent]
 })
-export class SecondaryModule { }
+export class SecondaryModule {}

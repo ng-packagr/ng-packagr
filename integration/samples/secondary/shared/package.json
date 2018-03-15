@@ -1,0 +1,11 @@
+{
+  "$schema": "../../../../src/package.schema.json",
+  "description": "A secondary entry point with shared feature",
+  "private": true,
+  "repository": "https://github.com/dherges/ng-packagr.git",
+  "ngPackage": {
+    "lib": {
+      "entryFile": "shared.ts"
+    }
+  }
+}

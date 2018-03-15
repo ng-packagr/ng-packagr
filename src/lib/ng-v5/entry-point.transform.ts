@@ -60,10 +60,7 @@ export const entryPointTransformFactory = (
 
     transformFromPromise(async graph => {
       // Peek the first entry point from the graph
-      const entryPoint = graph.find(byEntryPoint().and(isDirty));
-
-      // Mark the entry point as 'in-progress'
-      entryPoint.state = STATE_IN_PROGESS;
+      const entryPoint = graph.find(byEntryPoint().and(isInProgress));
       log.info(`Building entry point '${entryPoint.data.entryPoint.moduleId}'`);
 
       // Clean build directory

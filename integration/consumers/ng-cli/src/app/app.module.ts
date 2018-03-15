@@ -8,11 +8,10 @@ import { UiLibModule } from '@sample/material';
 
 import { AppComponent } from './app.component';
 import { CdkModule } from './cdk/cdk.module';
+import { SecondaryModule } from './secondary/secondary.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -23,9 +22,10 @@ import { CdkModule } from './cdk/cdk.module';
     UiLibModule,
 
     // app
-    CdkModule
+    CdkModule,
+    SecondaryModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
