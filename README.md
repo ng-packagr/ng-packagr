@@ -315,7 +315,7 @@ The comments property can accept also a regex to selectively remove comments.
 
 #### License header
 
-To prepend a license header on your budles:
+To prepend a license header in your bundled files:
 
 ```
 {
