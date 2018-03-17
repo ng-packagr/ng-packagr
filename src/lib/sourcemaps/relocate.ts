@@ -1,5 +1,3 @@
-import * as sorcery from 'sorcery';
-import { NgEntryPoint } from '../ng-package-format/entry-point';
 import { modifyJsonFiles } from '../util/json';
 
 /**

@@ -1,6 +1,6 @@
-import { InjectionToken, FactoryProvider, Provider } from 'injection-js';
+import { InjectionToken, Provider } from 'injection-js';
 import { Transform } from '../brocc/transform';
-import { TransformProvider, provideTransform } from '../brocc/transform.di';
+import { provideTransform, TransformProvider } from '../brocc/transform.di';
 import { PROJECT_TOKEN } from './project.di';
 import { ENTRY_POINT_TRANSFORM_TOKEN } from './entry-point.di';
 import { packageTransformFactory } from './package.transform';

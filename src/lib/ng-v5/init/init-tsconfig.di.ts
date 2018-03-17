@@ -1,5 +1,7 @@
+// XX: has or is using name 'ParsedConfiguration' ... but cannot be named
 import { ParsedConfiguration } from '@angular/compiler-cli';
-import { InjectionToken, Provider, ValueProvider } from 'injection-js';
+
+import { InjectionToken, Provider } from 'injection-js';
 import { Transform } from '../../brocc/transform';
 import { TransformProvider, provideTransform } from '../../brocc/transform.di';
 import { createDefaultTsConfig, TsConfig } from '../../ts/tsconfig';

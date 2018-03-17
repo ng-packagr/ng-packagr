@@ -1,10 +1,9 @@
 import { ParsedConfiguration } from '@angular/compiler-cli';
-import { BuildGraph } from '../../brocc/build-graph';
-import { Node } from '../../brocc/node';
+
 import { Transform, transformFromPromise } from '../../brocc/transform';
 import { TsConfig, initializeTsConfig } from '../../ts/tsconfig';
 import * as log from '../../util/log';
-import { isEntryPointInProgress, isEntryPoint } from '../nodes';
+import { isEntryPoint } from '../nodes';
 
 export const initTsConfigTransformFactory = (defaultTsConfig: TsConfig): Transform =>
   transformFromPromise(async graph => {

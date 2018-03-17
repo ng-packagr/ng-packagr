@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as ts from 'typescript';
-import { transformComponent, ComponentTransformer } from './transform-component';
+import { transformComponent } from './transform-component';
 import { createSourceFile } from '../../testing/typescript.testing';
 
 describe(`transformComponent()`, () => {

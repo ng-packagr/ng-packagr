@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import { Node } from '../brocc/node';
-import { and, by, isInProgress } from '../brocc/select';
+import { by, isInProgress } from '../brocc/select';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
 import { NgPackage } from '../ng-package-format/package';
 import { TsConfig } from '../ts/tsconfig';

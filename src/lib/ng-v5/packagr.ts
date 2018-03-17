@@ -1,14 +1,13 @@
 import { ParsedConfiguration } from '@angular/compiler-cli';
-import { InjectionToken, Provider, ReflectiveInjector, ValueProvider } from 'injection-js';
+import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
 import { of as observableOf } from 'rxjs/observable/of';
 import { take, map, catchError } from 'rxjs/operators';
 import { BuildGraph } from '../brocc/build-graph';
-import { Node } from '../brocc/node';
 import { Transform } from '../brocc/transform';
 import { TsConfig } from '../ts/tsconfig';
 import * as log from '../util/log';
-import { provideTsConfig, DEFAULT_TS_CONFIG_TOKEN } from './init/init-tsconfig.di';
-import { ENTRY_POINT_TRANSFORM, ENTRY_POINT_PROVIDERS } from './entry-point.di';
+import { provideTsConfig } from './init/init-tsconfig.di';
+import { ENTRY_POINT_PROVIDERS } from './entry-point.di';
 import { PACKAGE_TRANSFORM, PACKAGE_PROVIDERS } from './package.di';
 import { provideProject } from './project.di';
 

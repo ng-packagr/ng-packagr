@@ -1,7 +1,6 @@
-import { InjectionToken, Provider, ValueProvider } from 'injection-js';
+import { InjectionToken, Provider } from 'injection-js';
 import { Transform } from '../brocc/transform';
 import { TransformProvider, provideTransform } from '../brocc/transform.di';
-import { TsConfig } from '../ts/tsconfig';
 import { STYLESHEET_TRANSFORM, STYLESHEET_TRANSFORM_TOKEN } from './entry-point/resources/stylesheet.di';
 import { TEMPLATE_TRANSFORM, TEMPLATE_TRANSFORM_TOKEN } from './entry-point/resources/template.di';
 import { COMPILE_NGC_TOKEN, COMPILE_NGC_TRANSFORM } from './entry-point/ts/compile-ngc.di';

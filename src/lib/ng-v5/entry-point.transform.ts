@@ -1,12 +1,6 @@
-import { InjectionToken, FactoryProvider, ValueProvider } from 'injection-js';
-import { Observable } from 'rxjs/Observable';
-import { of as observableOf } from 'rxjs/observable/of';
-import { fromPromise } from 'rxjs/observable/fromPromise';
-import { map, switchMap, tap } from 'rxjs/operators';
 import { pipe } from 'rxjs/util/pipe';
-import { BuildGraph } from '../brocc/build-graph';
-import { Node, STATE_IN_PROGESS, STATE_DONE } from '../brocc/node';
-import { isDirty, isInProgress } from '../brocc/select';
+import { STATE_DONE } from '../brocc/node';
+import { isInProgress } from '../brocc/select';
 import { Transform, transformFromPromise } from '../brocc/transform';
 import * as log from '../util/log';
 import { rimraf } from '../util/rimraf';
