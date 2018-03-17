@@ -7,7 +7,6 @@ import { ensureUnixPath } from '../util/path';
 import { NgPackageConfig } from '../../ng-package.schema';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
 import { NgPackage } from '../ng-package-format/package';
-import { debug } from '../util/log';
 
 const ngPackageSchemaJson = require('../../ng-package.schema.json');
 

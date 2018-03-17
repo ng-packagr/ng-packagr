@@ -1,10 +1,8 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { Transform, transformFromPromise } from '../../brocc/transform';
-import { writeFlatBundleFiles, FlattenOpts } from '../../flatten/flatten';
 import { NgEntryPoint } from '../../ng-package-format/entry-point';
 import { NgPackage } from '../../ng-package-format/package';
-import { relocateSourceMaps } from '../../sourcemaps/relocate';
 import { ensureUnixPath } from '../../util/path';
 import { copyFiles } from '../../util/copy';
 import * as log from '../../util/log';

@@ -1,7 +1,6 @@
 import * as ng from '@angular/compiler-cli';
 // XX: has or is using name 'ParsedConfiguration' ... but cannot be named
 import { ParsedConfiguration } from '@angular/compiler-cli';
-import { InjectionToken, FactoryProvider } from 'injection-js';
 import * as path from 'path';
 import * as ts from 'typescript';
 import { NgEntryPoint } from '../ng-package-format/entry-point';

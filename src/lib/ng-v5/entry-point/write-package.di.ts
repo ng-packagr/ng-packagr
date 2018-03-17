@@ -1,4 +1,4 @@
-import { InjectionToken, ValueProvider } from 'injection-js';
+import { InjectionToken } from 'injection-js';
 import { Transform } from '../../brocc/transform';
 import { TransformProvider, provideTransform } from '../../brocc/transform.di';
 import { writePackageTransform } from './write-package.transform';

@@ -1,6 +1,5 @@
 import { map } from 'rxjs/operators';
 import { pipe } from 'rxjs/util/pipe';
-import * as ts from 'typescript';
 import { Transform } from '../../../brocc/transform';
 import * as log from '../../../util/log';
 import { transformSourceFiles } from '../../../ngc/transform-source-files';

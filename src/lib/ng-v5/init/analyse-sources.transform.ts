@@ -1,14 +1,10 @@
 import { map } from 'rxjs/operators';
 import { pipe } from 'rxjs/util/pipe';
-import * as ng from '@angular/compiler-cli';
-import * as ts from 'typescript';
 import * as log from '../../util/log';
-import { Node } from '../../brocc/node';
 import { Transform } from '../../brocc/transform';
 import { transformSourceFiles } from '../../ngc/transform-source-files';
 import { analyseDependencies } from '../../ts/analyse-dependencies-transformer';
 import { transformComponentSourceFiles } from '../../ts/ng-component-transformer';
-import { TsConfig } from '../../ts/tsconfig';
 import { isEntryPoint, TemplateNode, StylesheetNode, TypeScriptSourceNode, fileUrl, tsUrl } from '../nodes';
 
 export const analyseSourcesTransform: Transform = pipe(

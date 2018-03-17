@@ -1,9 +1,6 @@
 import { map, switchMap } from 'rxjs/operators';
-import { of as observableOf } from 'rxjs/observable/of';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { pipe } from 'rxjs/util/pipe';
-import { BuildGraph } from '../../brocc/build-graph';
-import { Node } from '../../brocc/node';
 import { Transform } from '../../brocc/transform';
 import { writeFlatBundleFiles, FlattenOpts } from '../../flatten/flatten';
 import { NgEntryPoint } from '../../ng-package-format/entry-point';

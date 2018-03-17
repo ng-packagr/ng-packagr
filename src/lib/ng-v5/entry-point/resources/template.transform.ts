@@ -1,6 +1,4 @@
 import { readFile } from 'fs-extra';
-import { map } from 'rxjs/operators';
-import { pipe } from 'rxjs/util/pipe';
 import stripBom = require('strip-bom');
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import * as log from '../../../util/log';

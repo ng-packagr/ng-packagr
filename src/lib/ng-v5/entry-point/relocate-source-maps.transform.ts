@@ -5,7 +5,6 @@ import { pipe } from 'rxjs/util/pipe';
 import { BuildGraph } from '../../brocc/build-graph';
 import { Node } from '../../brocc/node';
 import { Transform, transformFromPromise } from '../../brocc/transform';
-import { writeFlatBundleFiles, FlattenOpts } from '../../flatten/flatten';
 import { relocateSourceMaps } from '../../sourcemaps/relocate';
 import * as log from '../../util/log';
 import { isEntryPointInProgress } from '../nodes';

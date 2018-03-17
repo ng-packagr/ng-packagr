@@ -1,6 +1,5 @@
 import * as ts from 'typescript';
 import * as path from 'path';
-import { isComponentDecorator, isTemplateUrl, isStyleUrls } from './ng-ts-ast';
 import { transformComponent } from './transform-component';
 import { isSynthesizedSourceFile, replaceWithSynthesizedSourceText, writeSourceFile } from './synthesized-source-file';
 
