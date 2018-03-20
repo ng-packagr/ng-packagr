@@ -22,7 +22,6 @@ export const analyseDependencies = (analyser: DependencyAnalyser) => (context: t
     if (ts.isImportDeclaration(node)) {
       // Found an 'import ...' declaration
       const importedModuleId: string = findModuleIdFromImport(node);
-
       analyser(node.getSourceFile(), importedModuleId);
     } else {
       return ts.visitEachChild(node, visitImports, context);
