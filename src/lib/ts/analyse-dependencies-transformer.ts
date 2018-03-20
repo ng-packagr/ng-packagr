@@ -8,12 +8,13 @@ export const analyseDependencies = (analyser: DependencyAnalyser) => (context: t
   sourceFile: ts.SourceFile
 ): ts.SourceFile => {
   // skip source files from 'node_modules' directory (third-party source)
-  if (sourceFile.fileName.includes('node_modules')) {
+  // 'ngfactory' and 'ngstyles' should also be skipped
+  if (/node_modules|\.ngfactory|\.ngstyle/.test(sourceFile.fileName)) {
     return sourceFile;
   }
 
   const findModuleIdFromImport = (node: ts.ImportDeclaration) => {
-    const text = node.moduleSpecifier.getText(sourceFile);
+    const text = node.moduleSpecifier.getText();
 
     return text.substring(1, text.length - 1);
   };
