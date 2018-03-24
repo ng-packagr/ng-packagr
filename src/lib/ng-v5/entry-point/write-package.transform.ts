@@ -1,5 +1,6 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import * as tar from 'tar';
 import { Transform, transformFromPromise } from '../../brocc/transform';
 import { NgEntryPoint } from '../../ng-package-format/entry-point';
 import { NgPackage } from '../../ng-package-format/package';
@@ -30,6 +31,10 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     // XX 'metadata' property in 'package.json' is non-standard. Keep it anyway?
     metadata: ensureUnixPath(`${ngEntryPoint.flatModuleFile}.metadata.json`)
   });
+
+  // 7. CREATE PACKAGE .TGZ
+  log.info('Creating package .tgz');
+  _tar(`${ngEntryPoint.destinationPath}.tgz`, ngEntryPoint.destinationPath);
 
   log.success(`Built ${ngEntryPoint.moduleId}`);
 
@@ -110,4 +115,21 @@ export async function copyJavaScriptBundles(stageDir: string, destDir: string): 
 
 export async function copyTypingsAndMetadata(from: string, to: string): Promise<void> {
   await copyFiles(`${from}/**/*.{d.ts,metadata.json}`, to);
+}
+
+/**
+ * Creates a tgz file with the directory contents.
+ */
+function _tar(file: string, dir: string) {
+  return tar.create(
+    {
+      gzip: true,
+      strict: true,
+      portable: true,
+      cwd: dir,
+      file: file,
+      sync: true
+    },
+    ['.']
+  );
 }

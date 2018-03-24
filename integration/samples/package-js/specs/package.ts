@@ -3,7 +3,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`@sample/package-js`, () => {
-
   describe(`package.json`, () => {
     let PACKAGE;
     before(() => {
@@ -26,4 +25,14 @@ describe(`@sample/package-js`, () => {
     });
   });
 
+  describe(`dist.tgz`, () => {
+    let TGZ;
+    before(() => {
+      TGZ = fs.existsSync(path.resolve(__dirname, '../dist.tgz'));
+    });
+
+    it(`should exist`, () => {
+      expect(TGZ).to.be.ok;
+    });
+  });
 });
