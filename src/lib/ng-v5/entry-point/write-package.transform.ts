@@ -89,7 +89,6 @@ export async function writePackageJson(
   const whitelist = pkg.whitelistedNonPeerDependencies.map(value => new RegExp(value));
   try {
     checkNonPeerDependencies(packageJson, 'dependencies', whitelist);
-    checkNonPeerDependencies(packageJson, 'devDependencies', whitelist);
   } catch (e) {
     await rimraf(entryPoint.destinationPath);
     throw e;
