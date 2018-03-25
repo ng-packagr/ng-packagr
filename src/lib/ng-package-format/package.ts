@@ -70,6 +70,15 @@ export class NgPackage {
     return this.primary.$get('keepLifecycleScripts') === true;
   }
 
+  public get whitelistedNonPeerDependencies(): string[] {
+    // XX: default array values from JSON schema not recognized
+    const defValue = ['tslib'];
+    const value = (this.primary.$get('whitelistedNonPeerDependencies') as string[]) || defValue;
+
+    // Always append 'tslib' and dedupe
+    return value.concat('tslib').filter((value, index, self) => self.indexOf(value) === index);
+  }
+
   private absolutePathFromPrimary(key: string) {
     return path.resolve(this.basePath, this.primary.$get(key));
   }
