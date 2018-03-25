@@ -5,9 +5,13 @@ for D in `find ./integration/samples/* -maxdepth 0 -type d`
 do
     P_JS=${D}/ng-package.js
     P_JSON=${D}/ng-package.json
+    P_API=${D}/ng-packagr-api.js
     P=${D}/package.json
 
-    if [ -f $P_JS ]; then
+    if [ -f $P_API ]; then
+        echo "Building sample ${P_API}..."
+        node ${P_API}
+    elif [ -f $P_JS ]; then
         echo "Building sample ${P_JS}..."
         node dist/cli/main.js -p ${P_JS}
     elif [ -f $P_JSON ]; then
