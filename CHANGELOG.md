@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.4.0"></a>
+# [2.4.0](https://github.com/dherges/ng-packagr/compare/v2.3.0...v2.4.0) (2018-03-25)
+
+
+### Features
+
+* create a tarball (dist.tgz) for the npm package ([#715](https://github.com/dherges/ng-packagr/issues/715)) ([94bc915](https://github.com/dherges/ng-packagr/commit/94bc915))
+
+
+### Performance Improvements
+
+* read content and map `async` in `minifyJsFile` ([#717](https://github.com/dherges/ng-packagr/issues/717)) ([4da0052](https://github.com/dherges/ng-packagr/commit/4da0052))
+
+
+
 <a name="2.3.0"></a>
 # [2.3.0](https://github.com/dherges/ng-packagr/compare/v2.2.0...v2.3.0) (2018-03-25)
 
