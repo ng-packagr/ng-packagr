@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.4.1"></a>
+## [2.4.1](https://github.com/dherges/ng-packagr/compare/v2.4.0...v2.4.1) (2018-03-25)
+
+
+### Bug Fixes
+
+* don't verify devDependencies in dist-ready package.json ([#721](https://github.com/dherges/ng-packagr/issues/721)) ([3535e86](https://github.com/dherges/ng-packagr/commit/3535e86))
+
+
+
 <a name="2.4.0"></a>
 # [2.4.0](https://github.com/dherges/ng-packagr/compare/v2.3.0...v2.4.0) (2018-03-25)
 
