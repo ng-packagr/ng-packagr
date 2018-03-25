@@ -53,7 +53,7 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
   }
 
   // Create the bundle
-  const bundle: rollup.OutputChunk = await rollup.rollup({
+  const bundle: rollup.OutputChunk | rollup.OutputChunkSet = await rollup.rollup({
     context: 'this',
     external: moduleId => externalModuleIdStrategy(moduleId, opts.embedded || []),
     input: opts.entry,
