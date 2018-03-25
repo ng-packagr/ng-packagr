@@ -11,11 +11,14 @@ export async function minifyJsFile(inputPath: string): Promise<string> {
 
   const outputPath: string = `${pathWithNoExtension}.min${fileExtension}`;
   const sourcemapOut: string = `${outputPath}.map`;
-  const inputFileBuffer: Buffer = await readFile(inputPath);
-  const inputSourceMapBuffer: Buffer = await readFile(`${inputPath}.map`);
+  const [inputFileBuffer, inputSourceMapBuffer]: Buffer[] = await Promise.all([
+    readFile(inputPath),
+    readFile(`${inputPath}.map`)
+  ]);
+
   const result = minify(inputFileBuffer.toString(), {
     sourceMap: {
-      content: inputSourceMapBuffer.toString(),
+      content: JSON.parse(inputSourceMapBuffer.toString()),
       url: basename(sourcemapOut)
     },
     parse: {
