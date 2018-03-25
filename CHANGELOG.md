@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.3.0"></a>
+# [2.3.0](https://github.com/dherges/ng-packagr/compare/v2.2.0...v2.3.0) (2018-03-25)
+
+
+### Bug Fixes
+
+* cannot read property 'text' of undefined ([#669](https://github.com/dherges/ng-packagr/issues/669)) ([b91eb66](https://github.com/dherges/ng-packagr/commit/b91eb66)), closes [#668](https://github.com/dherges/ng-packagr/issues/668)
+* move `keepLifecycleScripts` to ngPackage conf ([#688](https://github.com/dherges/ng-packagr/issues/688)) ([8eb6667](https://github.com/dherges/ng-packagr/commit/8eb6667))
+* validate non-peerDependencies at build time ([#687](https://github.com/dherges/ng-packagr/issues/687)) ([ec9779c](https://github.com/dherges/ng-packagr/commit/ec9779c))
+
+
+### Features
+
+* add support for AMD module id in umd bundles ([#675](https://github.com/dherges/ng-packagr/issues/675)) ([59713b8](https://github.com/dherges/ng-packagr/commit/59713b8))
+* allow Angular 6 as a peer dependency ([#714](https://github.com/dherges/ng-packagr/issues/714)) ([530d54e](https://github.com/dherges/ng-packagr/commit/530d54e))
+* allow to override umd module identifier ([#683](https://github.com/dherges/ng-packagr/issues/683)) ([b6e099f](https://github.com/dherges/ng-packagr/commit/b6e099f))
+* remove scripts section in dist-ready package.json ([#686](https://github.com/dherges/ng-packagr/issues/686)) ([810e58a](https://github.com/dherges/ng-packagr/commit/810e58a))
+* support intra-package dependencies (re. entry points, experimental) ([#685](https://github.com/dherges/ng-packagr/issues/685)) ([988968e](https://github.com/dherges/ng-packagr/commit/988968e))
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/dherges/ng-packagr/compare/v2.1.0...v2.2.0) (2018-03-06)
 
