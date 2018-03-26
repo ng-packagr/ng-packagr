@@ -151,7 +151,7 @@ function checkNonPeerDependencies(packageJson: { [key: string]: any }, property:
         log.debug(`Dependency ${dep} is whitelisted in '${property}'`);
       } else {
         log.warn(
-          `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep} to 'peerDepenencies' or remove it from '${property}'.`
+          `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep} to 'peerDependencies' or remove it from '${property}'.`
         );
         throw new Error(`Dependency ${dep} must be explicitly whitelisted.`);
       }
