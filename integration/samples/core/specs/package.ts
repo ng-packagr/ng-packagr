@@ -19,12 +19,12 @@ describe(`@sample/core`, () => {
       expect(PACKAGE['main']).to.equal('bundles/sample-core.umd.js');
     });
 
-    it(`should reference "module" bundle (FESM5, also FESM2014)`, () => {
-      expect(PACKAGE['module']).to.equal('esm5/sample-core.js');
+    it(`should reference "module" bundle (FESM5)`, () => {
+      expect(PACKAGE['module']).to.equal('fesm5/sample-core.js');
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('esm2015/sample-core.js');
+      expect(PACKAGE['es2015']).to.equal('fesm2015/sample-core.js');
     });
 
     it(`should reference "typings" files`, () => {

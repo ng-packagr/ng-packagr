@@ -3,12 +3,11 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 describe(`@sample/core`, () => {
-
   describe(`esm5/sample-core.js.map`, () => {
     let sourceMap;
     before(() => {
-      sourceMap = fs.readJsonSync(path.resolve(__dirname, '../dist/esm5/sample-core.js.map'));
-    })
+      sourceMap = fs.readJsonSync(path.resolve(__dirname, '../dist/fesm5/sample-core.js.map'));
+    });
 
     it(`should exist`, () => {
       expect(sourceMap).to.be.ok;
@@ -21,11 +20,9 @@ describe(`@sample/core`, () => {
     });
 
     it(`should reference each 'sources' path with a common prefix`, () => {
-      const everyUeveryMe = (sourceMap.sources as string[])
-        .every(fileName => fileName.startsWith(`ng://@sample/core`));
+      const everyUeveryMe = (sourceMap.sources as string[]).every(fileName => fileName.startsWith(`ng://@sample/core`));
 
       expect(everyUeveryMe).to.be.true;
     });
-
   });
 });

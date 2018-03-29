@@ -10,8 +10,8 @@ describe(`@sample/secondary/shared`, () => {
     UMD_BUNDLE_CONTENTS = fs.readFileSync(path.resolve(DIST, 'bundles', 'sample-secondary-shared.umd.js'), {
       encoding: 'utf-8'
     });
-    ESM5_CONTENTS = fs.readFileSync(path.resolve(DIST, 'esm5', 'sample-secondary-shared.js'), { encoding: 'utf-8' });
-    ESM2015_CONTENTS = fs.readFileSync(path.resolve(DIST, 'esm2015', 'sample-secondary-shared.js'), {
+    ESM5_CONTENTS = fs.readFileSync(path.resolve(DIST, 'fesm5', 'sample-secondary-shared.js'), { encoding: 'utf-8' });
+    ESM2015_CONTENTS = fs.readFileSync(path.resolve(DIST, 'fesm2015', 'sample-secondary-shared.js'), {
       encoding: 'utf-8'
     });
   });
