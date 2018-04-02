@@ -1,24 +1,29 @@
 import * as sorcery from 'sorcery';
 import * as log from '../util/log';
+import { globFiles } from '../util/glob';
 
 /**
- * Re-maps the source `.map` file for the given `sourceFile`. This keeps source maps intact over
+ * Re-maps the source `.map` file for the given `sourceFile` or `Glob Pattern`. This keeps source maps intact over
  * a series of transpilations!
  *
- * @param sourceFile Source file
+ * @param globPattern Source file or Glob pattern
  */
-export async function remapSourceMap(sourceFile: string): Promise<void> {
-  log.debug(`re-mapping sources for ${sourceFile}`);
-  const opts: any = {
+export async function remapSourceMap(globPattern: string | string[]): Promise<any> {
+  // read and create chains
+  const filesPath = await globFiles(globPattern);
+
+  const chains = await Promise.all(
+    filesPath.map(sourceFile => {
+      log.debug(`re-mapping sources for ${sourceFile}`);
+      return sorcery.load(sourceFile);
+    })
+  );
+
+  // write re-mapped sourcemaps
+  const opts = {
     inline: false,
     includeContent: true
   };
 
-  // Once sorcery loads the chain of sourcemaps, the new sourcemap will be written asynchronously.
-  const chain = await sorcery.load(sourceFile);
-  if (!chain) {
-    throw new Error('Failed to load sourceMap chain for ' + sourceFile);
-  }
-
-  await chain.write(opts);
+  return Promise.all(chains.map(x => x.write(opts)));
 }

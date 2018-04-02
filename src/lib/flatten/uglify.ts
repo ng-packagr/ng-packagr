@@ -1,16 +1,12 @@
 import { minify } from 'uglify-js';
 import { writeFile, readFile } from 'fs-extra';
-import { extname, basename } from 'path';
+import { basename } from 'path';
 import { debug, warn } from './../util/log';
 
-export async function minifyJsFile(inputPath: string): Promise<string> {
+export async function minifyJsFile(inputPath: string, outputPath?: string): Promise<string> {
   debug(`minifyJsFile: ${inputPath}`);
 
-  const fileExtension: string = extname(inputPath);
-  const pathWithNoExtension: string = inputPath.substring(0, inputPath.length - fileExtension.length);
-
-  const outputPath: string = `${pathWithNoExtension}.min${fileExtension}`;
-  const sourcemapOut: string = `${outputPath}.map`;
+  const sourcemapOut = `${outputPath}.map`;
   const [inputFileBuffer, inputSourceMapBuffer]: Buffer[] = await Promise.all([
     readFile(inputPath),
     readFile(`${inputPath}.map`)

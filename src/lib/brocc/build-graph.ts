@@ -3,6 +3,7 @@ import { Node } from './node';
 export interface Traversable<T> {
   filter(by: (value: T, index: number) => boolean): T[];
   find(by: (value: T, index: number) => boolean): T | undefined;
+  some(by: (value: T, index: number) => boolean): boolean;
 }
 
 /**
@@ -44,6 +45,10 @@ export class BuildGraph implements Traversable<Node> {
     const values = this.store.values();
 
     return Array.from(values);
+  }
+
+  public some(by: (value: Node, index: number) => boolean): boolean {
+    return this.entries().some(by);
   }
 
   public filter(by: (value: Node, index: number) => boolean): Node[] {

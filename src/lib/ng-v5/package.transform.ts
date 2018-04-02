@@ -64,14 +64,11 @@ export const packageTransformFactory = (
     map(graph => {
       const ngPkg = graph.get(pkgUri);
 
+      const generateOutDirPath = (folder: string) => path.join(ngPkg.data.dest, folder);
       const entryPoints = [ngPkg.data.primary, ...ngPkg.data.secondaries].map(entryPoint => {
-        // TODO: use `os-tmpdir` instead -> https://www.npmjs.com/package/os-tmpdir
-        // import * as tmpdir from 'os-tempdir'; tmpdir();
-        const stageDir = path.resolve(ngPkg.data.workingDirectory, entryPoint.flatModuleFile, 'stage');
-        const outDir = path.resolve(ngPkg.data.workingDirectory, entryPoint.flatModuleFile, 'out');
-
-        const node = new EntryPointNode(ngUrl(entryPoint.moduleId));
-        node.data = { entryPoint, outDir, stageDir };
+        const { destinationFiles, moduleId } = entryPoint;
+        const node = new EntryPointNode(ngUrl(moduleId));
+        node.data = { entryPoint, destinationFiles };
         node.state = 'dirty';
         ngPkg.dependsOn(node);
 
@@ -102,13 +99,9 @@ const writeNpmPackage = (pkgUri: string): Transform =>
     switchMap(graph => {
       const ngPkg = graph.get(pkgUri);
 
-      return fromPromise(
-        Promise.all([
-          copyFiles(`${ngPkg.data.src}/README.md`, ngPkg.data.dest),
-          copyFiles(`${ngPkg.data.src}/LICENSE`, ngPkg.data.dest),
-          rimraf(ngPkg.data.workingDirectory)
-        ])
-      ).pipe(map(() => graph));
+      return fromPromise(copyFiles([`${ngPkg.data.src}/LICENSE`, `${ngPkg.data.src}/README.md`], ngPkg.data.dest)).pipe(
+        map(() => graph)
+      );
     })
   );
 

@@ -3,43 +3,45 @@ import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { compileSourceFiles } from '../../../ngc/compile-source-files';
 import { TsConfig } from '../../../ts/tsconfig';
 import * as log from '../../../util/log';
-import { isEntryPointInProgress, isTypeScriptSources, TypeScriptSourceNode, isEntryPoint } from '../../nodes';
+import {
+  isEntryPointInProgress,
+  isTypeScriptSources,
+  TypeScriptSourceNode,
+  isEntryPoint,
+  EntryPointNode
+} from '../../nodes';
 
 export const compileNgcTransform: Transform = transformFromPromise(async graph => {
   log.info(`Compiling TypeScript sources through ngc`);
-  const entryPoint = graph.find(isEntryPointInProgress());
-  const tsSources: TypeScriptSourceNode = entryPoint.find(isTypeScriptSources) as TypeScriptSourceNode;
+  const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
+  const tsSources = entryPoint.find(isTypeScriptSources) as TypeScriptSourceNode;
   const tsConfig: TsConfig = entryPoint.data.tsConfig;
 
   // Add paths mappings for dependencies
-  const entryPointDeps = entryPoint.filter(isEntryPoint);
+  const entryPointDeps = entryPoint.filter(isEntryPoint) as EntryPointNode[];
   if (entryPointDeps.length > 0) {
     if (!tsConfig.options.paths) {
       tsConfig.options.paths = {};
     }
 
     for (let dep of entryPointDeps) {
-      const depModuleId = dep.data.entryPoint.moduleId;
+      const { entryPoint, destinationFiles } = dep.data;
+      const depModuleId = entryPoint.moduleId;
+      const mappedPath = [destinationFiles.declarations];
 
       if (!tsConfig.options.paths[depModuleId]) {
-        tsConfig.options.paths[depModuleId] = [];
+        tsConfig.options.paths[depModuleId] = mappedPath;
+      } else {
+        tsConfig.options.paths[depModuleId].concat(mappedPath);
       }
-      tsConfig.options.paths[depModuleId].push(path.resolve(
-        path.dirname(dep.data.es2015EntryFile),
-        path.basename(dep.data.es2015EntryFile, '.js')
-      ));
     }
   }
 
   // Compile TypeScript sources
+  const { esm2015, declarations } = entryPoint.data.destinationFiles;
   const previousTransform = tsSources.data;
-  const compilationResult = await compileSourceFiles(tsSources.data.transformed, tsConfig, entryPoint.data.outDir);
+  await compileSourceFiles(tsSources.data.transformed, tsConfig, path.dirname(esm2015), path.dirname(declarations));
   previousTransform.dispose();
-
-  // Store compilation result on the graph for further processing (`writeFlatBundles`)
-  entryPoint.data.es2015EntryFile = compilationResult.js;
-  entryPoint.data.typings = compilationResult.typings;
-  entryPoint.data.metadata = compilationResult.metadata;
 
   return graph;
 });

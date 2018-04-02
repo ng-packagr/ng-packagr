@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { NgEntryPoint } from './entry-point';
-import { DirectoryPath, SourceFilePath } from './shared';
+import { DirectoryPath } from './shared';
 
 /**
  * A package being built. Quoting Angular Package Format, a package is:
@@ -61,7 +61,9 @@ export class NgPackage {
     return this.absolutePathFromPrimary('dest');
   }
 
-  /** Absolute path of the package's working directory (used for intermediate file storage). */
+  /** Absolute path of the package's working directory (used for intermediate file storage).
+   * @deprecated This is unused and will be removed in the next major version
+   */
   public get workingDirectory(): DirectoryPath {
     return this.absolutePathFromPrimary('workingDirectory');
   }

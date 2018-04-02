@@ -11,7 +11,7 @@ export const initTsConfigTransformFactory = (defaultTsConfig: TsConfig): Transfo
     const entryPoints = graph.filter(isEntryPoint);
     for (let entryPoint of entryPoints) {
       log.debug(`Initializing tsconfig for ${entryPoint.data.entryPoint.moduleId}`);
-      const tsConfig = initializeTsConfig(defaultTsConfig, entryPoint.data.entryPoint, entryPoint.data.outDir);
+      const tsConfig = initializeTsConfig(defaultTsConfig, entryPoint.data.entryPoint);
       entryPoint.data.tsConfig = tsConfig;
     }
 

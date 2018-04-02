@@ -11,11 +11,7 @@ export const STATE_DONE: NodeState = 'done';
  * A Node in the {@link BuildGraph}.
  */
 export class Node {
-  private readonly count: number;
-
-  constructor(public readonly url: string) {
-    this.count = NODE_COUNT++;
-  }
+  constructor(public readonly url: string) {}
 
   public type: string;
 
@@ -29,6 +25,10 @@ export class Node {
 
   public find(by: (value: Node, index: number) => boolean): Node | undefined {
     return this._dependents.find(by);
+  }
+
+  public some(by: (value: Node, index: number) => boolean): boolean {
+    return this._dependents.some(by);
   }
 
   public get dependents(): Node[] {

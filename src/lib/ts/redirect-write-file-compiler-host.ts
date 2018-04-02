@@ -3,16 +3,16 @@ import * as ts from 'typescript';
 import * as path from 'path';
 
 /**
- * Returns a TypeScript compiler host that redirects `writeFile` output to the given `outDir`.
+ * Returns a TypeScript compiler host that redirects `writeFile` output to the given `declarationDir`.
  *
  * @param compilerHost Original compiler host
  * @param baseDir Project base directory
- * @param outDir Target directory
+ * @param declarationDir Declarations target directory
  */
 export function redirectWriteFileCompilerHost(
   compilerHost: ts.CompilerHost,
   baseDir: string,
-  outDir: string
+  declarationDir: string
 ): ts.CompilerHost {
   return {
     ...compilerHost,
@@ -23,8 +23,11 @@ export function redirectWriteFileCompilerHost(
       onError?: (message: string) => void,
       sourceFiles?: ReadonlyArray<ts.SourceFile>
     ) => {
-      const projectRelativePath = path.relative(baseDir, fileName);
-      const filePath = path.resolve(outDir, projectRelativePath);
+      let filePath = fileName;
+      if (fileName.endsWith('.d.ts')) {
+        const projectRelativePath = path.relative(baseDir, fileName);
+        filePath = path.resolve(declarationDir, projectRelativePath);
+      }
       fs.outputFileSync(filePath, data);
     }
   };

@@ -20,6 +20,7 @@ export function transformSourceFiles(
     const compilerHost: ng.CompilerHost = ng.createCompilerHost({
       options: tsConfig.options
     });
+
     const program: ng.Program = ng.createProgram({
       rootNames: [...tsConfig.rootNames],
       options: tsConfig.options,
@@ -29,7 +30,7 @@ export function transformSourceFiles(
     const sourceFiles = program.getTsProgram().getSourceFiles();
     const transformationResult: ts.TransformationResult<ts.SourceFile> = ts.transform(
       // XX: circumvent tsc compile error in 2.6
-      Array.from((sourceFiles as any) as ts.SourceFile[]),
+      Array.from(sourceFiles),
       transformers,
       tsConfig.options
     );

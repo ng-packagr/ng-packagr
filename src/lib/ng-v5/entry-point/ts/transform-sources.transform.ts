@@ -4,11 +4,17 @@ import { Transform } from '../../../brocc/transform';
 import * as log from '../../../util/log';
 import { transformSourceFiles } from '../../../ngc/transform-source-files';
 import { transformComponentSourceFiles } from '../../../ts/ng-component-transformer';
-import { isEntryPointInProgress, fileUrl, isTypeScriptSources, TypeScriptSourceNode } from '../../nodes';
+import {
+  isEntryPointInProgress,
+  fileUrl,
+  isTypeScriptSources,
+  TypeScriptSourceNode,
+  EntryPointNode
+} from '../../nodes';
 
 export const transformSourcesTransform: Transform = pipe(
   map(graph => {
-    const entryPoint = graph.find(isEntryPointInProgress());
+    const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
     log.debug(`Transforming TypeScript sources for ${entryPoint.data.entryPoint.moduleId}`);
 
     // Transformer that inlines template and style data
