@@ -16,9 +16,6 @@ export interface FlattenOpts {
   /** AMD ID defined in the UMD bundle. */
   amdId?: string;
 
-  /** List of module IDs that should be embedded to the bundle (embedded dependencies). */
-  embedded?: string[];
-
   /** Map of external UMD module IDs (dependencies).  */
   umdModuleIds?: { [key: string]: string };
 }
@@ -33,8 +30,6 @@ export async function flattenToFesm(opts: FlattenOpts): Promise<void> {
 }
 
 export async function flattenToUmd(opts: FlattenOpts): Promise<void> {
-  const { embedded = [] } = opts;
-
   return rollupBundleFile({
     transform: downlevelCodeWithTsc,
     moduleName: opts.umdModuleId,
@@ -44,8 +39,7 @@ export async function flattenToUmd(opts: FlattenOpts): Promise<void> {
     amd: { id: opts.amdId },
     umdModuleIds: {
       ...opts.umdModuleIds
-    },
-    embedded: ['tslib', ...embedded]
+    }
   });
 }
 

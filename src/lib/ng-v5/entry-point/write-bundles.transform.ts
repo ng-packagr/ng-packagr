@@ -33,8 +33,7 @@ export const writeBundlesTransform: Transform = pipe(
       umdModuleIds: {
         ...ngEntryPoint.umdModuleIds,
         ...dependencyUmdIds
-      },
-      embedded: ngEntryPoint.embedded
+      }
     };
 
     const { destinationFiles } = entryPoint.data;

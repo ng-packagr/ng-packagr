@@ -1,6 +1,5 @@
 import * as rollup from 'rollup';
 import * as nodeResolve from 'rollup-plugin-node-resolve';
-import * as commonJs from 'rollup-plugin-commonjs';
 import * as log from '../util/log';
 import { externalModuleIdStrategy } from './external-module-id-strategy';
 import { umdModuleIdStrategy } from './umd-module-id-strategy';
@@ -17,7 +16,6 @@ export interface RollupOptions {
   format: rollup.ModuleFormat;
   dest: string;
   umdModuleIds?: { [key: string]: string };
-  embedded?: string[];
   amd?: { id: string };
   transform?: TransformHook;
 }
@@ -29,9 +27,9 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
   // Create the bundle
   const bundle: rollup.OutputChunk = await rollup.rollup({
     context: 'this',
-    external: moduleId => externalModuleIdStrategy(moduleId, opts.embedded || []),
+    external: moduleId => externalModuleIdStrategy(moduleId),
     input: opts.entry,
-    plugins: [nodeResolve(), commonJs(), { transform: opts.transform }],
+    plugins: [nodeResolve(), { transform: opts.transform }],
     onwarn: warning => {
       if (typeof warning === 'string') {
         log.warn(warning);

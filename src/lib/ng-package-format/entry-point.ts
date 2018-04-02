@@ -95,10 +95,6 @@ export class NgEntryPoint {
     return this.$get('lib.umdModuleIds');
   }
 
-  public get embedded(): string[] {
-    return this.$get('lib.embedded');
-  }
-
   public get jsxConfig(): string {
     return this.$get('lib.jsx');
   }

@@ -41,5 +41,9 @@ export const umdModuleIdStrategy = (moduleId: string, umdModuleIds: { [key: stri
     return `Rx.${regMatch[1]}`;
   }
 
+  if (moduleId === 'tslib') {
+    return 'tslib';
+  }
+
   return ''; // leave it up to rollup to guess the global name
 };
