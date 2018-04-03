@@ -27,12 +27,12 @@
     "@ngtools/json-schema" "^1.1.0"
     rxjs "^5.5.6"
 
-"@angular-devkit/schematics@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.4.0.tgz#a16a1296705d87d6da62990c3392aeba8cf3d650"
+"@angular-devkit/schematics@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.5.0.tgz#bbb53d6fafe61c4d5662fd731a092d4c9627ba9b"
   dependencies:
     "@ngtools/json-schema" "^1.1.0"
-    rxjs "^5.5.6"
+    rxjs "^6.0.0-beta.3"
 
 "@angular/cdk@^5.0.2":
   version "5.0.2"
@@ -5525,6 +5525,12 @@ rxjs@^5.5.6:
   dependencies:
     symbol-observable "1.0.1"
 
+rxjs@^6.0.0-beta.3:
+  version "6.0.0-smoosh.2"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.0.0-smoosh.2.tgz#2fbec8bce211ac6cdb21e630f17df2358562b6cc"
+  dependencies:
+    tslib "^1.9.0"
+
 rxjs@~5.5.2:
   version "5.5.5"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.5.tgz#e164f11d38eaf29f56f08c3447f74ff02dd84e97"
@@ -6423,6 +6429,10 @@ tsickle@^0.26.0:
 tslib@^1.7.1, tslib@^1.8.0:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.8.1.tgz#6946af2d1d651a7b1863b531d6e5afa41aa44eac"
+
+tslib@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.0.tgz#e37a86fda8cbbaf23a057f473c9f4dc64e5fc2e8"
 
 tslint@~5.9.0:
   version "5.9.0"
