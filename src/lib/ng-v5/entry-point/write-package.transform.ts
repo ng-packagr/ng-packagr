@@ -1,6 +1,5 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import * as tar from 'tar';
 import { Transform, transformFromPromise } from '../../brocc/transform';
 import { NgEntryPoint } from '../../ng-package-format/entry-point';
 import { NgPackage } from '../../ng-package-format/package';
@@ -15,7 +14,6 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
   const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
   const ngPackage: NgPackage = graph.find(node => node.type === 'application/ng-package').data;
   const { destinationFiles } = entryPoint.data;
-  const isLastInProgress = !graph.some(isEntryPointDirty());
 
   // 5. COPY SOURCE FILES TO DESTINATION
   log.info('Copying declaration files');
@@ -38,14 +36,6 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     // XX 'metadata' property in 'package.json' is non-standard. Keep it anyway?
     metadata: relativeUnixFromDestPath(destinationFiles.metadata)
   });
-
-  // 7. CREATE PACKAGE .TGZ
-  // we only want to create the 'tgz' file for the when it's the last one in progress
-  // as when having multiple entry points this will cause invalid tgz files.
-  if (isLastInProgress) {
-    log.info('Creating package .tgz');
-    _tar(`${ngPackage.primary.basePath}/dist.tgz`, ngPackage.primary.destinationPath);
-  }
 
   log.success(`Built ${ngEntryPoint.moduleId}`);
 
@@ -122,23 +112,6 @@ export async function writePackageJson(
   // `outputJson()` creates intermediate directories, if they do not exist
   // -- https://github.com/jprichardson/node-fs-extra/blob/master/docs/outputJson.md
   await fs.outputJson(path.join(entryPoint.destinationPath, 'package.json'), packageJson, { spaces: 2 });
-}
-
-/**
- * Creates a tgz file with the directory contents.
- */
-function _tar(file: string, dir: string) {
-  return tar.create(
-    {
-      gzip: true,
-      strict: true,
-      portable: true,
-      cwd: dir,
-      file: file,
-      sync: true
-    },
-    ['.']
-  );
 }
 
 function checkNonPeerDependencies(packageJson: { [key: string]: any }, property: string, whitelist: RegExp[]) {

@@ -9,13 +9,6 @@ describe(`@sample/apf`, () => {
     DIST = path.resolve(__dirname, '../dist');
   });
 
-  describe(`dist.tgz`, () => {
-    it(`should exist`, () => {
-      const tgz = fs.existsSync(path.resolve(__dirname, '../dist.tgz'));
-      expect(tgz).to.be.true;
-    });
-  });
-
   describe(`FESM2015`, () => {
     it(`should contain 2 '.js.map' files`, () => {
       expect(glob.sync(`${DIST}/fesm2015/**/*.js.map`).length).equal(2);
@@ -88,29 +81,29 @@ describe(`@sample/apf`, () => {
 
   describe(`sample-apf.metadata.json`, () => {
     it(`should exist`, () => {
-      const tgz = fs.existsSync(path.join(DIST, 'sample-apf.metadata.json'));
-      expect(tgz).to.be.true;
+      const file = fs.existsSync(path.join(DIST, 'sample-apf.metadata.json'));
+      expect(file).to.be.true;
     });
   });
 
   describe(`sample-apf-secondary.metadata.json`, () => {
     it(`should exist`, () => {
-      const tgz = fs.existsSync(path.join(DIST, 'secondary', 'sample-apf-secondary.metadata.json'));
-      expect(tgz).to.be.true;
+      const file = fs.existsSync(path.join(DIST, 'secondary', 'sample-apf-secondary.metadata.json'));
+      expect(file).to.be.true;
     });
   });
 
   describe(`sample-apf.d.ts`, () => {
     it(`should exist`, () => {
-      const tgz = fs.existsSync(path.join(DIST, 'sample-apf.d.ts'));
-      expect(tgz).to.be.true;
+      const file = fs.existsSync(path.join(DIST, 'sample-apf.d.ts'));
+      expect(file).to.be.true;
     });
   });
 
   describe(`sample-apf-secondary.d.ts`, () => {
     it(`should exist`, () => {
-      const tgz = fs.existsSync(path.join(DIST, 'secondary', 'sample-apf-secondary.d.ts'));
-      expect(tgz).to.be.true;
+      const file = fs.existsSync(path.join(DIST, 'secondary', 'sample-apf-secondary.d.ts'));
+      expect(file).to.be.true;
     });
   });
 });

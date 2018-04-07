@@ -24,15 +24,4 @@ describe(`@sample/package-js`, () => {
       expect(PACKAGE).to.be.ok;
     });
   });
-
-  describe(`dist.tgz`, () => {
-    let TGZ;
-    before(() => {
-      TGZ = fs.existsSync(path.resolve(__dirname, '../dist.tgz'));
-    });
-
-    it(`should exist`, () => {
-      expect(TGZ).to.be.ok;
-    });
-  });
 });
