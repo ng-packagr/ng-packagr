@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.4.2"></a>
+## [2.4.2](https://github.com/dherges/ng-packagr/compare/v2.4.1...v2.4.2) (2018-04-08)
+
+
+### Bug Fixes
+
+* update uglify-js version ([#754](https://github.com/dherges/ng-packagr/issues/754)) ([ff176b7](https://github.com/dherges/ng-packagr/commit/ff176b7)), closes [#752](https://github.com/dherges/ng-packagr/issues/752)
+
+
+
 <a name="2.4.1"></a>
 ## [2.4.1](https://github.com/dherges/ng-packagr/compare/v2.4.0...v2.4.1) (2018-03-25)
 
