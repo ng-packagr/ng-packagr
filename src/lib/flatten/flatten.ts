@@ -1,6 +1,7 @@
 import { rollupBundleFile } from './rollup';
 import { minifyJsFile } from './uglify';
 import { downlevelCodeWithTsc } from '../ts/downlevel-transformer';
+import { DependencyList } from './external-module-id-strategy';
 
 export interface FlattenOpts {
   entryFile: string;
@@ -18,6 +19,12 @@ export interface FlattenOpts {
 
   /** Map of external UMD module IDs (dependencies).  */
   umdModuleIds?: { [key: string]: string };
+
+  /** A list of external dependencies that will not be embedded in the bundle. */
+  externals?: string[] | RegExp;
+
+  /** List of dependency which are found in package.json */
+  dependencyList: DependencyList;
 }
 
 export async function flattenToFesm(opts: FlattenOpts): Promise<void> {
@@ -25,7 +32,8 @@ export async function flattenToFesm(opts: FlattenOpts): Promise<void> {
     moduleName: opts.esmModuleId,
     entry: opts.entryFile,
     format: 'es',
-    dest: opts.destFile
+    dest: opts.destFile,
+    dependencyList: opts.dependencyList
   });
 }
 
@@ -39,7 +47,8 @@ export async function flattenToUmd(opts: FlattenOpts): Promise<void> {
     amd: { id: opts.amdId },
     umdModuleIds: {
       ...opts.umdModuleIds
-    }
+    },
+    dependencyList: opts.dependencyList
   });
 }
 

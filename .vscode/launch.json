@@ -72,6 +72,13 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Sample: APF",
+      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "args": ["apf"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Sample: core",
       "program": "${workspaceRoot}/integration/samples.dev.js",
       "args": ["core"]

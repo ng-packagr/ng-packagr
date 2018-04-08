@@ -7,6 +7,9 @@ import { NgEntryPoint } from '../../ng-package-format/entry-point';
 import { isEntryPoint, isEntryPointInProgress, EntryPointNode } from '../nodes';
 import * as log from '../../util/log';
 import { DestinationFiles } from '../../ng-package-format/shared';
+import { BuildGraph } from '../../brocc/build-graph';
+import { DependencyList } from '../../flatten/external-module-id-strategy';
+import { unique } from '../../util/array';
 
 export const writeBundlesTransform: Transform = pipe(
   switchMap(graph => {
@@ -23,6 +26,8 @@ export const writeBundlesTransform: Transform = pipe(
         return prev;
       }, {});
 
+    const { bundledDependencies, dependencies = {}, peerDependencies = {} } = entryPoint.data.entryPoint.packageJson;
+
     const opts: FlattenOpts = {
       destFile: '',
       entryFile: '',
@@ -33,7 +38,8 @@ export const writeBundlesTransform: Transform = pipe(
       umdModuleIds: {
         ...ngEntryPoint.umdModuleIds,
         ...dependencyUmdIds
-      }
+      },
+      dependencyList: getDepenencyListForGraph(graph)
     };
 
     const { destinationFiles } = entryPoint.data;
@@ -62,9 +68,37 @@ async function writeFlatBundleFiles(destinationFiles: DestinationFiles, opts: Fl
   await flattenToUmd({
     ...opts,
     entryFile: fesm5,
-    destFile: umd
+    destFile: umd,
+    dependencyList: opts.dependencyList
   });
 
   log.info('Minifying UMD bundle');
   await flattenToUmdMin(umd, umdMinified);
+}
+
+/** Get all list of depencies for the entire 'BuildGraph' */
+function getDepenencyListForGraph(graph: BuildGraph): DependencyList {
+  // We need to do this because if A dependecy on bundled B
+  // And A has a secondary entry point A/1 we want only to bundle B if it's used.
+  // Also if A/1 depends on A we don't want to bundle A thus we mark this a dependency.
+
+  const dependencyList: DependencyList = {
+    dependencies: [],
+    bundledDependencies: []
+  };
+
+  for (const entry of graph.filter(isEntryPoint)) {
+    const { bundledDependencies = [], dependencies = {}, peerDependencies = {} } = entry.data.entryPoint.packageJson;
+
+    dependencyList.bundledDependencies = unique(dependencyList.bundledDependencies.concat(bundledDependencies));
+    dependencyList.dependencies = unique(
+      dependencyList.dependencies.concat(
+        Object.keys(dependencies),
+        Object.keys(peerDependencies),
+        entry.data.entryPoint.moduleId
+      )
+    );
+  }
+
+  return dependencyList;
 }
