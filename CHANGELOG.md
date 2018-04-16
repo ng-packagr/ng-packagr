@@ -13,11 +13,9 @@ All notable changes to this project will be documented in this file. See [standa
 * update less to version ^3.0.0 ([#611](https://github.com/dherges/ng-packagr/issues/611)) ([f45d89d](https://github.com/dherges/ng-packagr/commit/f45d89d))
 
 
-*  feat: build libaries in Angular Package Format (APF) v6.0 (#738) ([4e6c4f4](https://github.com/dherges/ng-packagr/commit/4e6c4f4)), closes [#738](https://github.com/dherges/ng-packagr/issues/738) [#705](https://github.com/dherges/ng-packagr/issues/705)
-
-
 ### Features
 
+*  build libaries in Angular Package Format (APF) v6.0 (#738) ([4e6c4f4](https://github.com/dherges/ng-packagr/commit/4e6c4f4)), closes [#738](https://github.com/dherges/ng-packagr/issues/738) [#705](https://github.com/dherges/ng-packagr/issues/705)
 * drop support for node v6 and v7 (no longer supported by devkit) ([ee7e65d](https://github.com/dherges/ng-packagr/commit/ee7e65d))
 * remove deprecated code ([#773](https://github.com/dherges/ng-packagr/issues/773)) ([866a4b5](https://github.com/dherges/ng-packagr/commit/866a4b5))
 * update tsickle to =>0.27.3, rollup to ^0.57.1 ([#769](https://github.com/dherges/ng-packagr/issues/769)) ([3bcf233](https://github.com/dherges/ng-packagr/commit/3bcf233)), closes [#679](https://github.com/dherges/ng-packagr/issues/679)
