@@ -122,12 +122,12 @@ describe(`rollup`, () => {
           expect(externalModuleIdStrategy.isExternalDependency(__filename)).to.be.false;
         });
 
-        it(`should return 'true' for external modules like '@angular/core'`, () => {
+        it(`should return 'true' for a bundled dependency like '@angular/core'`, () => {
           expect(externalModuleIdStrategy.isExternalDependency('@angular/core')).to.be.true;
         });
 
-        it(`should return 'true' for external modules like '@angular/core/testing'`, () => {
-          expect(externalModuleIdStrategy.isExternalDependency('@angular/core')).to.be.true;
+        it(`should return 'true' for a bundled dependency like '@angular/core/testing'`, () => {
+          expect(externalModuleIdStrategy.isExternalDependency('@angular/core/testing')).to.be.true;
         });
 
         it(`should return 'true' for modules with '.' like 'ui.core'`, () => {
