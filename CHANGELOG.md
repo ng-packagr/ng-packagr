@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0-rc.0"></a>
+# [3.0.0-rc.0](https://github.com/dherges/ng-packagr/compare/v2.4.2...v3.0.0-rc.0) (2018-04-16)
+
+
+### Bug Fixes
+
+* update autoprefixer to version ^8.0.0 ([#615](https://github.com/dherges/ng-packagr/issues/615)) ([a60bd88](https://github.com/dherges/ng-packagr/commit/a60bd88))
+* update browserslist to version ^3.0.0 ([#610](https://github.com/dherges/ng-packagr/issues/610)) ([2f50354](https://github.com/dherges/ng-packagr/commit/2f50354))
+* update less to version ^3.0.0 ([#611](https://github.com/dherges/ng-packagr/issues/611)) ([f45d89d](https://github.com/dherges/ng-packagr/commit/f45d89d))
+
+
+*  feat: build libaries in Angular Package Format (APF) v6.0 (#738) ([4e6c4f4](https://github.com/dherges/ng-packagr/commit/4e6c4f4)), closes [#738](https://github.com/dherges/ng-packagr/issues/738) [#705](https://github.com/dherges/ng-packagr/issues/705)
+
+
+### Features
+
+* drop support for node v6 and v7 (no longer supported by devkit) ([ee7e65d](https://github.com/dherges/ng-packagr/commit/ee7e65d))
+* remove deprecated code ([#773](https://github.com/dherges/ng-packagr/issues/773)) ([866a4b5](https://github.com/dherges/ng-packagr/commit/866a4b5))
+* update tsickle to =>0.27.3, rollup to ^0.57.1 ([#769](https://github.com/dherges/ng-packagr/issues/769)) ([3bcf233](https://github.com/dherges/ng-packagr/commit/3bcf233)), closes [#679](https://github.com/dherges/ng-packagr/issues/679)
+
+
+### BREAKING CHANGES
+
+* Removes several deprecated code items.
+
+- option `sassIncludePaths` is removed, please use `styleIncludePaths` instead
+- option `workingDirectory` is removed, removed corresponding getter from `NgPackage` class
+- method `createNgPackage` removed from programmatic API
+- removed `NgArtefacts` class from API
+- removed `BuildStep` interface from API
+* There were some important changes, mainly related to `rollup`, most of the options and functionality provided by `rollup` plugins (comments & license) have been removed, due to the fact this is not inline with APF V6 as one will end up with different outputs in different modules.
+
+- **`comments` option has been removed** 
+- **`licensePath` option has been removed** 
+
+In APF V6, it is recommanded to not embed dependencies due to the fact that it will end up having multiple copies of the same library in a single application.
+
+- **`embedded` option has been removed and the original functionality was dropped** as it increased the chance of having 2 copies of the same library. The recommended migration is to switch to `bundledDependencies`
+
+More info in the APF v6 spec: https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview
+
+Documentation on npm bundled dependencies: http://npm.github.io/using-pkgs-docs/package-json/types/bundleddependencies.html 
+
+
+
 <a name="2.4.2"></a>
 ## [2.4.2](https://github.com/dherges/ng-packagr/compare/v2.4.1...v2.4.2) (2018-04-08)
 
