@@ -25,21 +25,20 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### BREAKING CHANGES
 
-* Removes several deprecated code items.
+Removes several deprecated code items.
+  - option `sassIncludePaths` is removed, please use `styleIncludePaths` instead
+  - option `workingDirectory` is removed, removed corresponding getter from `NgPackage` class
+  - method `createNgPackage` removed from programmatic API
+  - removed `NgArtefacts` class from API
+  - removed `BuildStep` interface from API
 
-- option `sassIncludePaths` is removed, please use `styleIncludePaths` instead
-- option `workingDirectory` is removed, removed corresponding getter from `NgPackage` class
-- method `createNgPackage` removed from programmatic API
-- removed `NgArtefacts` class from API
-- removed `BuildStep` interface from API
-* There were some important changes, mainly related to `rollup`, most of the options and functionality provided by `rollup` plugins (comments & license) have been removed, due to the fact this is not inline with APF V6 as one will end up with different outputs in different modules.
-
-- **`comments` option has been removed** 
-- **`licensePath` option has been removed** 
+There were some important changes, mainly related to `rollup`, most of the options and functionality provided by `rollup` plugins (comments & license) have been removed, due to the fact this is not inline with APF V6 as one will end up with different outputs in different modules.
+  - **`comments` option has been removed** 
+  - **`licensePath` option has been removed** 
 
 In APF V6, it is recommanded to not embed dependencies due to the fact that it will end up having multiple copies of the same library in a single application.
 
-- **`embedded` option has been removed and the original functionality was dropped** as it increased the chance of having 2 copies of the same library. The recommended migration is to switch to `bundledDependencies`
+  - **`embedded` option has been removed and the original functionality was dropped** as it increased the chance of having 2 copies of the same library. The recommended migration is to switch to `bundledDependencies`
 
 More info in the APF v6 spec: https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview
 
