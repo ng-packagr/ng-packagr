@@ -13,8 +13,6 @@
 // @link https://github.com/angular/angular/blob/24bf3e2a251634811096b939e61d63297934579e/packages/compiler-cli/src/transformers/util.ts#L14
 const GENERATED_FILES = /(.*?)\.(ngfactory|shim\.ngstyle|ngstyle|ngsummary)\.(js|d\.ts|ts)$/;
 
-import * as ts from 'typescript';
-import * as fs from 'fs';
 import * as path from 'path';
 import * as tsickle from 'tsickle';
 import * as api from '@angular/compiler-cli';

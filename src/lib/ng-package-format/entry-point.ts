@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { SchemaClass } from '@ngtools/json-schema';
 import { NgPackageConfig } from '../../ng-package.schema';
-import { DirectoryPath, SourceFilePath } from './shared';
+import { DirectoryPath, SourceFilePath, CssUrl, DestinationFiles } from './shared';
 
 /**
  * An entry point - quoting Angular Package Format - is:
@@ -37,7 +37,7 @@ export class NgEntryPoint {
     public readonly packageJson: any,
     public readonly ngPackageJson: NgPackageConfig,
     private readonly $schema: SchemaClass<NgPackageConfig>,
-    private readonly basePath: string,
+    public readonly basePath: string,
     private readonly secondaryData?: { [key: string]: any }
   ) {}
 
@@ -46,13 +46,37 @@ export class NgEntryPoint {
     return path.resolve(this.basePath, this.entryFile);
   }
 
-  /** Absolute directory path of the entry point's 'package.json'. */
+  /** Absolute directory path of this entry point's 'package.json'. */
   public get destinationPath(): DirectoryPath {
     if (this.secondaryData) {
       return this.secondaryData.destinationPath;
     } else {
       return path.resolve(this.basePath, this.$get('dest'));
     }
+  }
+
+  public get destinationFiles(): DestinationFiles {
+    let primaryDestPath = this.destinationPath;
+    let secondaryDir = '';
+
+    if (this.secondaryData) {
+      primaryDestPath = this.secondaryData.primaryDestinationPath;
+      secondaryDir = path.basename(this.secondaryData.destinationPath);
+    }
+
+    const flatModuleFile = this.flatModuleFile;
+    const pathJoinWithDest = (...paths: string[]) => path.join(primaryDestPath, ...paths);
+
+    return {
+      metadata: pathJoinWithDest(secondaryDir, `${flatModuleFile}.metadata.json`),
+      declarations: pathJoinWithDest(secondaryDir, `${flatModuleFile}.d.ts`),
+      esm2015: pathJoinWithDest('esm2015', secondaryDir, `${flatModuleFile}.js`),
+      esm5: pathJoinWithDest('esm5', secondaryDir, `${flatModuleFile}.js`),
+      fesm2015: pathJoinWithDest('fesm2015', `${flatModuleFile}.js`),
+      fesm5: pathJoinWithDest('fesm5', `${flatModuleFile}.js`),
+      umd: pathJoinWithDest('bundles', `${flatModuleFile}.umd.js`),
+      umdMinified: pathJoinWithDest('bundles', `${flatModuleFile}.umd.min.js`)
+    };
   }
 
   public $get(key: string): any {
@@ -69,22 +93,6 @@ export class NgEntryPoint {
 
   public get umdModuleIds(): { [key: string]: string } {
     return this.$get('lib.umdModuleIds');
-  }
-
-  public get embedded(): string[] {
-    return this.$get('lib.embedded');
-  }
-
-  public get comments(): string {
-    return this.$get('lib.comments');
-  }
-
-  public get licensePath(): string {
-    if (this.$get('lib.licensePath')) {
-      return path.resolve(this.basePath, this.$get('lib.licensePath'));
-    } else {
-      return this.$get('lib.licensePath');
-    }
   }
 
   public get jsxConfig(): string {
@@ -147,9 +155,4 @@ export class NgEntryPoint {
       return this.moduleId.split('/').join(separator);
     }
   }
-}
-
-export enum CssUrl {
-  inline = 'inline',
-  none = 'none'
 }

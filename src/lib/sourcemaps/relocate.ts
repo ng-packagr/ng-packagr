@@ -11,10 +11,12 @@ import { modifyJsonFiles } from '../util/json';
  * @param flobPattern A glob pattern matching `.js.map` files
  * @param mapFn A mapping function to relocate/modify source map paths
  */
-export async function relocateSourceMaps(globPattern: string, mapFn: (path: string) => string): Promise<void> {
-  await modifyJsonFiles(globPattern, (sourceMap: any): any => {
+export async function relocateSourceMaps(
+  globPattern: string | string[],
+  mapFn: (path: string) => string
+): Promise<void> {
+  return modifyJsonFiles(globPattern, (sourceMap: any): any => {
     sourceMap.sources = (sourceMap.sources as string[]).map(mapFn);
-
     return sourceMap;
   });
 }

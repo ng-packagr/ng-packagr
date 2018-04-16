@@ -1,9 +1,10 @@
 import * as ts from 'typescript';
 import { Node } from '../brocc/node';
-import { by, isInProgress } from '../brocc/select';
+import { by, isInProgress, isDirty } from '../brocc/select';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
 import { NgPackage } from '../ng-package-format/package';
 import { TsConfig } from '../ts/tsconfig';
+import { DestinationFiles } from '../ng-package-format/shared';
 
 export const TYPE_NG_PACKAGE = 'application/ng-package';
 export const TYPE_NG_ENTRY_POINT = 'application/ng-entry-point';
@@ -48,6 +49,10 @@ export function isEntryPointInProgress() {
   return by(isEntryPoint).and(isInProgress);
 }
 
+export function isEntryPointDirty() {
+  return by(isEntryPoint).and(isDirty);
+}
+
 export function isFileUrl(value: string): boolean {
   return value.startsWith(URL_PROTOCOL_FILE);
 }
@@ -77,7 +82,11 @@ export function tsUrl(path: string): string {
 export class EntryPointNode extends Node {
   public readonly type = TYPE_NG_ENTRY_POINT;
 
-  data: { entryPoint: NgEntryPoint; outDir: string; stageDir: string; tsConfig?: TsConfig };
+  data: {
+    destinationFiles: DestinationFiles;
+    entryPoint: NgEntryPoint;
+    tsConfig?: TsConfig;
+  };
 }
 
 export class PackageNode extends Node {

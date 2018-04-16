@@ -237,24 +237,6 @@ the additional paths may be configured through the `styleIncludePaths` option.
 }
 ```
 
-#### Third-party dependencies: external and embedded dependencies
-
-By default, dependencies of a library are treated as external dependencies and thus are not embedded in the final bundle.
-In most cases, you should expect that third-party dependencies will be part of the [`peerDependencies` of your distributables](https://nodejs.org/uk/blog/npm/peer-dependencies/).
-
-However, if you want to embed a dependency into the distributable bundle you are able to do so by adding the dependency in the `embedded` section like so:
-
-**_HEADS UP_**: embedding a dependency will result in you shipping the dependency's source code to your consumers!
-
-```json
-{
-  "$schema": "../../../src/ng-package.schema.json",
-  "lib": {
-    "embedded": ["lodash", "date-fns"]
-  }
-}
-```
-
 By default, ng-packagr will treat dependencies as external dependencies.
 When writing the [UMD bundle](https://github.com/umdjs/umd), ng-packagr does its best to provide common default values for the UMD module identifiers and `rollup` will also do its best to guess the module ID of an external dependency.
 Even then, you should make sure that the UMD module identifiers of the external dependencies are correct.
@@ -297,38 +279,6 @@ The `jsx` flag will accept what the corresponding `tsconfig` accepts, more infor
 
 Note: Don't forget to include `react` and `react-dom` in `umdModuleIds` so that you're shipping a correct UMD bundle!
 
-#### Comments cleaning
-
-To remove comments from the final bundles:
-
-```
-{
-  "$schema": "../../../src/ng-package.schema.json",
-  "lib": {
-    "entryFile": "public_api.ts",
-    "comments" : "none"
-  }
-}
-```
-
-The comments property can accept also a regex to selectively remove comments.
-
-#### License header
-
-To prepend a license header in your bundled files:
-
-```
-{
-  "$schema": "../../../src/ng-package.schema.json",
-  "lib": {
-    "entryFile": "public_api.ts",
-    "licensePath": "LICENSE"
-  }
-}
-```
-
-The licensePath property in the example above will read the LICENSE file next to your ng-package.json file
-
 ## Further documentation
 
 We keep track of user questions in GitHub's issue tracker and try to build a documentation from it.
@@ -336,7 +286,7 @@ We keep track of user questions in GitHub's issue tracker and try to build a doc
 
 ## Knowledge
 
-[Angular Package Format v5.0](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview), design document at Google Docs
+[Angular Package Format v6.0](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview), design document at Google Docs
 
 Packaging Angular Libraries - Jason Aden at Angular Mountain View Meetup ([Jan 2018, 45min talk](https://www.youtube.com/watch?v=QfvwQEJVOig&t=3612s))
 

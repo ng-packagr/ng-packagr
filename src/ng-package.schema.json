@@ -55,28 +55,11 @@
           "type": "string",
           "default": ""
         },
-        "embedded": {
-          "description": "An array of external dependencies that will be embedded in the final bundle.",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
         "umdModuleIds": {
           "description":
             "A map of external dependencies and their correspondent UMD module identifiers. Map keys are TypeScript / EcmaScript module identifiers. Map values are UMD module ids. The purpose of this map is to correctly bundle an UMD module file (with `rollup`). By default, `rxjs`, `tslib` and `@angular/*` dependency symbols are supported.",
           "type": "object",
           "additionalProperties": true
-        },
-        "comments": {
-          "description": "Use \"all\" to keep all, \"none\" to remove all the comments or regexes",
-          "type": "string",
-          "default": "all"
-        },
-        "licensePath": {
-          "description": "Licesnse file path to prepend to the bundles",
-          "type": "string",
-          "default": ""
         },
         "jsx": {
           "description":

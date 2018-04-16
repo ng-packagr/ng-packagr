@@ -1,0 +1,9 @@
+{
+  "name": "@sample/externals/testing",
+  "private": true,
+  "repository": "https://github.com/dherges/ng-packagr.git",
+  "scripts": {
+    "test":
+      "../../../node_modules/.bin/cross-env TS_NODE_PROJECT=../../../integration/tsconfig.specs.json ../../../node_modules/.bin/mocha --compilers ts:ts-node/register specs/**/*.ts"
+  }
+}

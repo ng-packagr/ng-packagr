@@ -1,7 +1,6 @@
-import * as glob from 'glob';
 import { readJson, writeJson } from 'fs-extra';
-import { promisify } from './promisify';
 import { debug } from './log';
+import { globFiles } from './glob';
 
 /**
  * Modifies a set of JSON files by invoking `modifyFn`
@@ -10,11 +9,9 @@ import { debug } from './log';
  * @param modifyFn A callback function that takes a JSON-parsed input and should return an output
  *                  that will be JSON-stringified
  */
-export async function modifyJsonFiles(globPattern: string, modifyFn: (jsonObj: any) => any): Promise<void> {
+export async function modifyJsonFiles(globPattern: string | string[], modifyFn: (jsonObj: any) => any): Promise<void> {
   debug('modifyJsonFiles');
-  const fileNames: string[] = await promisify<string[]>(resolveOrReject => {
-    glob(globPattern, resolveOrReject);
-  });
+  const fileNames: string[] = await globFiles(globPattern);
 
   await Promise.all(
     fileNames.map(async (fileName: string): Promise<void> => {

@@ -1,10 +1,8 @@
 import * as rollup from 'rollup';
 import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as commonJs from 'rollup-plugin-commonjs';
-import * as cleanup from 'rollup-plugin-cleanup';
-import * as license from 'rollup-plugin-license';
 import * as log from '../util/log';
-import { externalModuleIdStrategy } from './external-module-id-strategy';
+import { ExternalModuleIdStrategy, DependencyList } from './external-module-id-strategy';
 import { umdModuleIdStrategy } from './umd-module-id-strategy';
 import { TransformHook } from 'rollup';
 
@@ -19,44 +17,23 @@ export interface RollupOptions {
   format: rollup.ModuleFormat;
   dest: string;
   umdModuleIds?: { [key: string]: string };
-  embedded?: string[];
-  comments?: string;
-  licensePath?: string;
-  transform?: TransformHook;
   amd?: { id: string };
+  transform?: TransformHook;
+  dependencyList?: DependencyList;
 }
 
 /** Runs rollup over the given entry file, writes a bundle file. */
 export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
   log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dest} (${opts.format})`);
 
-  const rollupPlugins = [
-    nodeResolve({ jsnext: true, module: true }),
-    commonJs(),
-    cleanup({
-      comments: opts.comments
-    }),
-    { transform: opts.transform }
-  ];
-
-  if (opts.licensePath) {
-    rollupPlugins.push(
-      license({
-        sourceMap: true,
-        banner: {
-          file: opts.licensePath,
-          encoding: 'utf-8'
-        }
-      })
-    );
-  }
+  const externalModuleIdStrategy = new ExternalModuleIdStrategy(opts.format, opts.dependencyList);
 
   // Create the bundle
   const bundle: rollup.OutputChunk = await rollup.rollup({
     context: 'this',
-    external: moduleId => externalModuleIdStrategy(moduleId, opts.embedded || []),
+    external: moduleId => externalModuleIdStrategy.isExternalDependency(moduleId),
     input: opts.entry,
-    plugins: rollupPlugins,
+    plugins: [nodeResolve(), commonJs(), { transform: opts.transform }],
     onwarn: warning => {
       if (typeof warning === 'string') {
         log.warn(warning);

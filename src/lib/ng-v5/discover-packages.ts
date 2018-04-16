@@ -1,12 +1,12 @@
 import { SchemaClassFactory } from '@ngtools/json-schema';
 import { pathExists, readJson, lstat } from 'fs-extra';
-import * as glob from 'glob';
 import * as path from 'path';
 import * as log from '../util/log';
 import { ensureUnixPath } from '../util/path';
 import { NgPackageConfig } from '../../ng-package.schema';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
 import { NgPackage } from '../ng-package-format/package';
+import { globFiles } from '../util/glob';
 
 const ngPackageSchemaJson = require('../../ng-package.schema.json');
 
@@ -90,35 +90,19 @@ const primaryEntryPoint = ({ packageJson, ngPackageJson, basePath }: UserPackage
  * @param excludeFolder A sub-folder of `directoryPath` that is excluded from search results.
  */
 const findSecondaryPackagesPaths = async (directoryPath: string, excludeFolder: string): Promise<string[]> => {
-  let excludedFolders = [
-    'node_modules',
-    'dist',
-    '.ng_build',
-    '.ng_pkg_build',
-    path.resolve(directoryPath, excludeFolder)
-  ];
+  const excludedFolders = ['node_modules', 'dist', path.resolve(directoryPath, excludeFolder)];
 
   const EXCLUDE_FOLDERS = [];
   for (let folder of excludedFolders) {
-    EXCLUDE_FOLDERS.push(`**/${folder}/**/package.json`);
-    EXCLUDE_FOLDERS.push(`**/${folder}/**/ng-package.json`);
+    EXCLUDE_FOLDERS.push(`**/${folder}/**/package.json`, `**/${folder}/**/ng-package.json`);
   }
-  EXCLUDE_FOLDERS.push(directoryPath + '/package.json');
-  EXCLUDE_FOLDERS.push(directoryPath + '/ng-package.json');
+  EXCLUDE_FOLDERS.push(`${directoryPath}/package.json`, `${directoryPath}/ng-package.json`);
 
-  return new Promise<string[]>((resolve, reject) => {
-    glob(`${directoryPath}/**/*package.json`, { ignore: EXCLUDE_FOLDERS, cwd: directoryPath }, (err, files) => {
-      if (err) {
-        reject(err);
-      }
-
-      resolve(files);
-    });
-  }).then(filePaths =>
-    Promise.all(
-      filePaths.map(filePath => path.dirname(filePath)).filter((value, index, array) => array.indexOf(value) === index)
-    )
-  );
+  const filePaths = await globFiles(`${directoryPath}/**/package.json`, {
+    ignore: EXCLUDE_FOLDERS,
+    cwd: directoryPath
+  });
+  return filePaths.map(path.dirname).filter((value, index, array) => array.indexOf(value) === index);
 };
 
 /**
@@ -142,7 +126,8 @@ const secondaryEntryPoint = (
 
   return new NgEntryPoint(packageJson, ngPackageJson, instantiateSchemaClass(ngPackageJson), basePath, {
     moduleId: secondaryModuleId,
-    destinationPath: path.resolve(primary.destinationPath, relativeSourcePath)
+    primaryDestinationPath: primary.destinationPath,
+    destinationPath: path.join(primary.destinationPath, relativeSourcePath)
   });
 };
 

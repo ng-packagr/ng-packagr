@@ -2,7 +2,7 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import stripBom = require('strip-bom');
 import { Transform, transformFromPromise } from '../../../brocc/transform';
-import { NgEntryPoint, CssUrl } from '../../../ng-package-format/entry-point';
+import { NgEntryPoint } from '../../../ng-package-format/entry-point';
 import * as log from '../../../util/log';
 import { isEntryPointInProgress, fileUrlPath, isPackage, TYPE_STYLESHEET } from '../../nodes';
 
@@ -16,6 +16,7 @@ import * as postcssUrl from 'postcss-url';
 import * as postcssClean from 'postcss-clean';
 import * as less from 'less';
 import * as stylus from 'stylus';
+import { CssUrl } from '../../../ng-package-format/shared';
 
 export const stylesheetTransform: Transform = transformFromPromise(async graph => {
   log.info(`Rendering Stylesheets`);

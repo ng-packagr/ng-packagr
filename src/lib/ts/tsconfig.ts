@@ -40,7 +40,7 @@ export function createDefaultTsConfig(values?: TsConfig | string): TsConfig {
  * Initializes TypeScript Compiler options and Angular Compiler options by overriding the
  * default config with entry point-specific values.
  */
-export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoint: NgEntryPoint, outDir: string): TsConfig => {
+export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoint: NgEntryPoint): TsConfig => {
   const basePath = path.dirname(entryPoint.entryFilePath);
 
   // Resolve defaults from DI token and create a deep copy of the defaults
@@ -52,8 +52,9 @@ export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoint: NgEntr
   tsConfig.options.basePath = basePath;
   tsConfig.options.baseUrl = basePath;
   tsConfig.options.rootDir = basePath;
-  tsConfig.options.outDir = basePath;
-  tsConfig.options.genDir = outDir;
+  tsConfig.options.outDir = '';
+  // setting this as basedir will rewire triple-slash references
+  tsConfig.options.declarationDir = basePath;
 
   if (entryPoint.languageLevel) {
     // ng.readConfiguration implicitly converts "es6" to "lib.es6.d.ts", etc.

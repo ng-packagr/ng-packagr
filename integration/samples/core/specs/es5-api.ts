@@ -7,8 +7,8 @@ describe(`@sample/core`, () => {
     let API;
     let BUNDLE;
     before(() => {
-      API = require('../dist/esm5/sample-core.js');
-      BUNDLE = fs.readFileSync(path.resolve(__dirname, '../dist/esm5/sample-core.js'), 'utf-8');
+      API = require('../dist/fesm5/sample-core.js');
+      BUNDLE = fs.readFileSync(path.resolve(__dirname, '../dist/fesm5/sample-core.js'), 'utf-8');
     });
 
     it(`should exist`, () => {

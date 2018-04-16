@@ -5,9 +5,17 @@
   "private": true,
   "repository": "https://github.com/dherges/ng-packagr.git",
   "peerDependencies": {
-    "rxjs": "^5.4.2"
+    "rxjs": "^5.4.2",
+    "@angular/core": "^4.1.2",
+    "@angular/common": "^4.1.2",
+    "@angular/cdk": "5.2.4"
+  },
+  "bundledDependencies": ["lodash.template"],
+  "dependencies": {
+    "lodash.template": "*"
   },
   "scripts": {
-    "test": "../../../node_modules/.bin/cross-env TS_NODE_PROJECT=../../../integration/tsconfig.specs.json ../../../node_modules/.bin/mocha --compilers ts:ts-node/register specs/*.ts"
+    "test":
+      "../../../node_modules/.bin/cross-env TS_NODE_PROJECT=../../../integration/tsconfig.specs.json ../../../node_modules/.bin/mocha --compilers ts:ts-node/register specs/*.ts"
   }
 }

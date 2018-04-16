@@ -75,6 +75,10 @@ describe(`rollup`, () => {
       expect(umdModuleIdStrategy('@angular/platform-browser-dynamic')).to.equal('ng.platformBrowserDynamic');
     });
 
+    it(`should map 'tslib' to 'tslib'`, () => {
+      expect(umdModuleIdStrategy('tslib')).to.equal('tslib');
+    });
+
     const FOO_MODULE = 'FooModule';
     it(`should map 'foo' to '${FOO_MODULE}' when 'umdModuleIds' is provided`, () => {
       expect(umdModuleIdStrategy('foo', { foo: FOO_MODULE })).to.equal(FOO_MODULE);
