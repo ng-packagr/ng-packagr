@@ -56,18 +56,18 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
  * flattened JavaScript bundles, type definitions, (...).
  *
  * @param entryPoint An entry point of an Angular package / library
- * @param binaries Binary artefacts (bundle files) to merge into `package.json`
+ * @param additionalProperties Additional properties, e.g. binary artefacts (bundle files), to merge into `package.json`
  */
 export async function writePackageJson(
   entryPoint: NgEntryPoint,
   pkg: NgPackage,
-  binaries: { [key: string]: string }
+  additionalProperties: { [key: string]: string }
 ): Promise<void> {
   log.debug('Writing package.json');
   const packageJson: any = entryPoint.packageJson;
   // set additional properties
-  for (const fieldName in binaries) {
-    packageJson[fieldName] = binaries[fieldName];
+  for (const fieldName in additionalProperties) {
+    packageJson[fieldName] = additionalProperties[fieldName];
   }
 
   // read tslib version from `@angular/compiler` so that our tslib
