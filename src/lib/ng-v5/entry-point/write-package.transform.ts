@@ -34,7 +34,8 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
     typings: relativeUnixFromDestPath(destinationFiles.declarations),
     // XX 'metadata' property in 'package.json' is non-standard. Keep it anyway?
-    metadata: relativeUnixFromDestPath(destinationFiles.metadata)
+    metadata: relativeUnixFromDestPath(destinationFiles.metadata),
+    "side-effects": false
   });
 
   log.success(`Built ${ngEntryPoint.moduleId}`);
