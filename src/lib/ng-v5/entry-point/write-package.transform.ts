@@ -61,7 +61,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
 export async function writePackageJson(
   entryPoint: NgEntryPoint,
   pkg: NgPackage,
-  additionalProperties: { [key: string]: string }
+  additionalProperties: { [key: string]: string | boolean }
 ): Promise<void> {
   log.debug('Writing package.json');
   const packageJson: any = entryPoint.packageJson;
