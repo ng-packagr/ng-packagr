@@ -29,7 +29,7 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
   const externalModuleIdStrategy = new ExternalModuleIdStrategy(opts.format, opts.dependencyList);
 
   // Create the bundle
-  const bundle: rollup.OutputChunk = await rollup.rollup({
+  const bundle = await rollup.rollup({
     context: 'this',
     external: moduleId => externalModuleIdStrategy.isExternalDependency(moduleId),
     input: opts.entry,

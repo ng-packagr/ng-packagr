@@ -7,6 +7,7 @@ import {
   formatDiagnostics,
   transpileModule
 } from 'typescript';
+import { RawSourceMap } from 'source-map';
 import * as path from 'path';
 
 import * as log from '../util/log';
@@ -50,7 +51,7 @@ export function downlevelEmitWithTsc(entryPoint: string, outDir: string): Promis
  *
  * Required for some external as they contains `ES2015` syntax such as `const` and `let`
  */
-export function downlevelCodeWithTsc(code: string, filePath: string): Promise<{ code: string; map: string }> {
+export function downlevelCodeWithTsc(code: string, filePath: string): Promise<{ code: string; map: RawSourceMap }> {
   log.debug(`tsc ${filePath}`);
 
   const compilerOptions: CompilerOptions = {
@@ -64,6 +65,6 @@ export function downlevelCodeWithTsc(code: string, filePath: string): Promise<{ 
 
   return Promise.resolve({
     code: outputText,
-    map: sourceMapText
+    map: JSON.parse(sourceMapText)
   });
 }
