@@ -61,13 +61,6 @@ export class NgPackage {
     return this.absolutePathFromPrimary('dest');
   }
 
-  /** Absolute path of the package's working directory (used for intermediate file storage).
-   * @deprecated This is unused and will be removed in the next major version
-   */
-  public get workingDirectory(): DirectoryPath {
-    return this.absolutePathFromPrimary('workingDirectory');
-  }
-
   public get keepLifecycleScripts(): boolean {
     return this.primary.$get('keepLifecycleScripts') === true;
   }

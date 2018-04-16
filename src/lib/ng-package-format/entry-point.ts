@@ -104,8 +104,7 @@ export class NgEntryPoint {
   }
 
   public get styleIncludePaths(): string[] {
-    // lib.sassIncludePaths retained for backwards compatability
-    const includePaths = this.$get('lib.styleIncludePaths') || this.$get('lib.sassIncludePaths') || [];
+    const includePaths = this.$get('lib.styleIncludePaths') || [];
     return includePaths.map(
       includePath => (path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath))
     );

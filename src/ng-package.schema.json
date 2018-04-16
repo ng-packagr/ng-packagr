@@ -74,13 +74,6 @@
           "enum": ["none", "inline"],
           "default": "none"
         },
-        "sassIncludePaths": {
-          "description": "DEPRECATED: Please use styleIncludePaths. sassIncludePaths will be removed in v3!",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
         "styleIncludePaths": {
           "description": "Any additional paths that should be used to resolve style imports",
           "type": "array",
