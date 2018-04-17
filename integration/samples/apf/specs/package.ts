@@ -58,7 +58,7 @@ describe(`@sample/apf`, () => {
     });
 
     it(`should apply the 'sideEffects: false' flag by default`, () => {
-      expect(PACKAGE['sideEffects'].to.be.false);
+      expect(PACKAGE['sideEffects']).to.be.false;
     });
   });
 
@@ -117,7 +117,7 @@ describe(`@sample/apf`, () => {
     });
 
     it(`should apply the 'sideEffects: false' flag by default`, () => {
-      expect(PACKAGE['sideEffects'].to.be.false);
+      expect(PACKAGE['sideEffects']).to.be.false;
     });
   });
 });
