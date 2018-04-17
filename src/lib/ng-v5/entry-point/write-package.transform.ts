@@ -35,7 +35,8 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     typings: relativeUnixFromDestPath(destinationFiles.declarations),
     // XX 'metadata' property in 'package.json' is non-standard. Keep it anyway?
     metadata: relativeUnixFromDestPath(destinationFiles.metadata),
-    "side-effects": false
+    // webpack v4+ specific flag to enable advanced optimizations and code splitting
+    sideEffects: ngEntryPoint.hasSideEffects
   });
 
   log.success(`Built ${ngEntryPoint.moduleId}`);

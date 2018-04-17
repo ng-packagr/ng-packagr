@@ -34,5 +34,9 @@ describe(`@sample/core`, () => {
     it(`should have 'scripts' section removed`, () => {
       expect(PACKAGE['scripts']).to.be.undefined;
     });
+
+    it(`should keep the 'sideEffects: true' flag`, () => {
+      expect(PACKAGE['sideEffects']).to.be.true;
+    });
   });
 });
