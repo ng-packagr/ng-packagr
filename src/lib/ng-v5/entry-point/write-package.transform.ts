@@ -34,7 +34,9 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
     typings: relativeUnixFromDestPath(destinationFiles.declarations),
     // XX 'metadata' property in 'package.json' is non-standard. Keep it anyway?
-    metadata: relativeUnixFromDestPath(destinationFiles.metadata)
+    metadata: relativeUnixFromDestPath(destinationFiles.metadata),
+    // webpack v4+ specific flag to enable advanced optimizations and code splitting
+    sideEffects: ngEntryPoint.hasSideEffects
   });
 
   log.success(`Built ${ngEntryPoint.moduleId}`);
@@ -55,18 +57,18 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
  * flattened JavaScript bundles, type definitions, (...).
  *
  * @param entryPoint An entry point of an Angular package / library
- * @param binaries Binary artefacts (bundle files) to merge into `package.json`
+ * @param additionalProperties Additional properties, e.g. binary artefacts (bundle files), to merge into `package.json`
  */
 export async function writePackageJson(
   entryPoint: NgEntryPoint,
   pkg: NgPackage,
-  binaries: { [key: string]: string }
+  additionalProperties: { [key: string]: string | boolean }
 ): Promise<void> {
   log.debug('Writing package.json');
   const packageJson: any = entryPoint.packageJson;
   // set additional properties
-  for (const fieldName in binaries) {
-    packageJson[fieldName] = binaries[fieldName];
+  for (const fieldName in additionalProperties) {
+    packageJson[fieldName] = additionalProperties[fieldName];
   }
 
   // read tslib version from `@angular/compiler` so that our tslib

@@ -34,10 +34,15 @@ import { DirectoryPath, SourceFilePath, CssUrl, DestinationFiles } from './share
  */
 export class NgEntryPoint {
   constructor(
+    /** Values from the `package.json` file of this entry point. */
     public readonly packageJson: any,
+    /** Values from either the `ngPackage` option (from `package.json`) or values from `ng-package.json`. */
     public readonly ngPackageJson: NgPackageConfig,
+    /** Corresponding JSON schema class instantiated from `ngPackageJson` values. */
     private readonly $schema: SchemaClass<NgPackageConfig>,
+    /** Absolute directory path of this entry point's `package.json` location. */
     public readonly basePath: string,
+    /** XX: additional auto-configured data passed for scondary entry point's. Needs better docs. */
     private readonly secondaryData?: { [key: string]: any }
   ) {}
 
@@ -153,5 +158,16 @@ export class NgEntryPoint {
     } else {
       return this.moduleId.split('/').join(separator);
     }
+  }
+
+  /**
+   * Enables the `"sideEffects": false` flag in `package.json`.
+   * The flag is enabled and set to `false` by default which results in more aggressive optimizations applied by webpack v4 builds consuming the library.
+   * To override the default behaviour, you need to set `"sideEffects": true` explicitly in your `package.json`.
+   *
+   * @link https://github.com/webpack/webpack/tree/master/examples/side-effects
+   */
+  public get hasSideEffects(): boolean {
+    return this.packageJson['sideEffects'] === true;
   }
 }

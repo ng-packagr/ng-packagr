@@ -56,6 +56,10 @@ describe(`@sample/apf`, () => {
     it(`should reference "metadata" file`, () => {
       expect(PACKAGE['metadata']).to.equal('sample-apf.metadata.json');
     });
+
+    it(`should apply the 'sideEffects: false' flag by default`, () => {
+      expect(PACKAGE['sideEffects']).to.be.false;
+    });
   });
 
   describe(`secondary/package.json`, () => {
@@ -110,6 +114,10 @@ describe(`@sample/apf`, () => {
 
     it(`should reference "metadata" file`, () => {
       expect(PACKAGE['metadata']).to.equal('sample-apf-secondary.metadata.json');
+    });
+
+    it(`should apply the 'sideEffects: false' flag by default`, () => {
+      expect(PACKAGE['sideEffects']).to.be.false;
     });
   });
 });
