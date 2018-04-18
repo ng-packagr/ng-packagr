@@ -65,11 +65,9 @@ export async function writePackageJson(
   additionalProperties: { [key: string]: string | boolean }
 ): Promise<void> {
   log.debug('Writing package.json');
-  const packageJson: any = entryPoint.packageJson;
+
   // set additional properties
-  for (const fieldName in additionalProperties) {
-    packageJson[fieldName] = additionalProperties[fieldName];
-  }
+  const packageJson = { ...entryPoint.packageJson, ...additionalProperties };
 
   // read tslib version from `@angular/compiler` so that our tslib
   // version at least matches that of angular if we use require('tslib').version
