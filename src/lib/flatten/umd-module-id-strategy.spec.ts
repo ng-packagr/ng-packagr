@@ -63,6 +63,10 @@ describe(`rollup`, () => {
       expect(umdModuleIdStrategy('@angular/common/http')).to.equal('ng.common.http');
     });
 
+    it(`should map '@angular/common/http/testing' to 'ng.common.http.testing'`, () => {
+      expect(umdModuleIdStrategy('@angular/common/http/testing')).to.equal('ng.common.http.testing');
+    });
+
     it(`should map '@angular/platform-browser' to 'ng.platformBrowser'`, () => {
       expect(umdModuleIdStrategy('@angular/platform-browser')).to.equal('ng.platformBrowser');
     });
