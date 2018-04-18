@@ -6,15 +6,15 @@ export const umdModuleIdStrategy = (moduleId: string, umdModuleIds: { [key: stri
 
   let regMatch;
   if ((regMatch = /^\@angular\/platform-browser-dynamic(\/?.*)/.exec(moduleId))) {
-    return `ng.platformBrowserDynamic${regMatch[1]}`.replace('/', '.');
+    return `ng.platformBrowserDynamic${regMatch[1]}`.replace(/\//g, '.');
   }
 
   if ((regMatch = /^\@angular\/platform-browser(\/?.*)/.exec(moduleId))) {
-    return `ng.platformBrowser${regMatch[1]}`.replace('/', '.');
+    return `ng.platformBrowser${regMatch[1]}`.replace(/\//g, '.');
   }
 
   if ((regMatch = /^\@angular\/(.+)/.exec(moduleId))) {
-    return `ng.${regMatch[1]}`.replace('/', '.');
+    return `ng.${regMatch[1]}`.replace(/\//g, '.');
   }
 
   if (/^rxjs\/(add\/)?observable/.test(moduleId)) {
