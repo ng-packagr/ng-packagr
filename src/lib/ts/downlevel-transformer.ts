@@ -5,7 +5,8 @@ import {
   CompilerOptions,
   createProgram,
   formatDiagnostics,
-  transpileModule
+  transpileModule,
+  ModuleResolutionKind
 } from 'typescript';
 import { RawSourceMap } from 'source-map';
 import * as path from 'path';
@@ -21,7 +22,8 @@ const COMPILER_OPTIONS: CompilerOptions = {
   allowJs: true,
   sourceMap: true,
   importHelpers: true,
-  downlevelIteration: true
+  downlevelIteration: true,
+  moduleResolution: ModuleResolutionKind.NodeJs
 };
 
 /**
