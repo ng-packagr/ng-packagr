@@ -44,22 +44,39 @@ export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoint: NgEntr
   const basePath = path.dirname(entryPoint.entryFilePath);
 
   // Resolve defaults from DI token and create a deep copy of the defaults
-  const tsConfig = JSON.parse(JSON.stringify(defaultTsConfig));
+  let tsConfig: TsConfig = JSON.parse(JSON.stringify(defaultTsConfig));
 
-  tsConfig.rootNames = [entryPoint.entryFilePath];
-  tsConfig.options.flatModuleId = entryPoint.moduleId;
-  tsConfig.options.flatModuleOutFile = `${entryPoint.flatModuleFile}.js`;
-  tsConfig.options.basePath = basePath;
-  tsConfig.options.baseUrl = basePath;
-  tsConfig.options.rootDir = basePath;
-  tsConfig.options.outDir = '';
-  // setting this as basedir will rewire triple-slash references
-  tsConfig.options.declarationDir = basePath;
+  // minimal compilerOptions needed in order to avoid errors, with their associated default values
+  // some are not overrided in order to keep the default associated TS errors if the user choose to set incorrect values
+  const requiredOptions: Partial<ng.CompilerOptions> = {
+    emitDecoratorMetadata: true,
+    experimentalDecorators: true,
+    // required by inlineSources
+    sourceMap: true,
+    moduleResolution: ts.ModuleResolutionKind.NodeJs,
+    target: ts.ScriptTarget.ES2015,
+    lib: ['dom', 'es2015']
+  };
 
-  if (entryPoint.languageLevel) {
-    // ng.readConfiguration implicitly converts "es6" to "lib.es6.d.ts", etc.
-    tsConfig.options.lib = entryPoint.languageLevel.map(lib => `lib.${lib}.d.ts`);
-  }
+  const overrideConfig: Partial<TsConfig> = {
+    rootNames: [entryPoint.entryFilePath],
+    options: {
+      flatModuleId: entryPoint.moduleId,
+      flatModuleOutFile: `${entryPoint.flatModuleFile}.js`,
+      basePath: basePath,
+      baseUrl: basePath,
+      rootDir: basePath,
+      outDir: '',
+      lib: entryPoint.languageLevel ? entryPoint.languageLevel.map(lib => `lib.${lib}.d.ts`) : tsConfig.options.lib,
+      // setting this as basedir will rewire triple-slash references
+      declarationDir: basePath,
+      // required in order to avoid "ENOENT: no such file or directory, .../.ng_pkg_build/..." errors when using the programmatic API
+      inlineSources: true
+    }
+  };
+
+  tsConfig.rootNames = overrideConfig.rootNames;
+  tsConfig.options = Object.assign({}, requiredOptions, tsConfig.options, overrideConfig.options);
 
   switch (entryPoint.jsxConfig) {
     case 'preserve':
