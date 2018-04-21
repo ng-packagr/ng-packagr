@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0-rc.2"></a>
+# [3.0.0-rc.2](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.1...v3.0.0-rc.2) (2018-04-21)
+
+
+### Bug Fixes
+
+* add moduleResolution to downleveling options ([#787](https://github.com/dherges/ng-packagr/issues/787)) ([d7b4094](https://github.com/dherges/ng-packagr/commit/d7b4094)), closes [#784](https://github.com/dherges/ng-packagr/issues/784)
+* generate correct UMD module id for `[@angular](https://github.com/angular)/common/http/testing` ([#782](https://github.com/dherges/ng-packagr/issues/782)) ([a0451d8](https://github.com/dherges/ng-packagr/commit/a0451d8))
+* missing options when setting custom tsconfig ([#786](https://github.com/dherges/ng-packagr/issues/786)) ([d687853](https://github.com/dherges/ng-packagr/commit/d687853))
+* update rollup-plugin-commonjs to version 9.1.0 ([#659](https://github.com/dherges/ng-packagr/issues/659)) ([5204b0c](https://github.com/dherges/ng-packagr/commit/5204b0c))
+
+
+
 <a name="3.0.0-rc.1"></a>
 # [3.0.0-rc.1](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.0...v3.0.0-rc.1) (2018-04-17)
 
