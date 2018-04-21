@@ -354,7 +354,7 @@ acorn-dynamic-import@^3.0.0:
   dependencies:
     acorn "^5.0.0"
 
-acorn@^5.0.0, acorn@^5.2.1, acorn@^5.5.3:
+acorn@^5.0.0, acorn@^5.5.3:
   version "5.5.3"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.5.3.tgz#f473dd47e0277a08e28e9bec5aeeb04751f0b8c9"
 
@@ -1332,7 +1332,7 @@ estree-walker@^0.3.0:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.3.1.tgz#e6b1a51cf7292524e7237c312e5fe6660c1ce1aa"
 
-estree-walker@^0.5.0:
+estree-walker@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.5.1.tgz#64fc375053abc6f57d73e9bd2f004644ad3c5854"
 
@@ -3382,7 +3382,7 @@ resolve-global@^0.1.0:
   dependencies:
     global-dirs "^0.1.0"
 
-resolve@^1.1.6, resolve@^1.1.7, resolve@^1.4.0:
+resolve@^1.1.6, resolve@^1.1.7, resolve@^1.5.0:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.7.1.tgz#aadd656374fd298aee895bc026b8297418677fd3"
   dependencies:
@@ -3400,14 +3400,13 @@ rimraf@2, rimraf@^2.5.1, rimraf@^2.5.2, rimraf@^2.6.1, rimraf@^2.6.2:
   dependencies:
     glob "^7.0.5"
 
-rollup-plugin-commonjs@8.3.0:
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-commonjs/-/rollup-plugin-commonjs-8.3.0.tgz#91b4ba18f340951e39ed7b1901f377a80ab3f9c3"
+rollup-plugin-commonjs@9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-commonjs/-/rollup-plugin-commonjs-9.1.0.tgz#468341aab32499123ee9a04b22f51d9bf26fdd94"
   dependencies:
-    acorn "^5.2.1"
-    estree-walker "^0.5.0"
+    estree-walker "^0.5.1"
     magic-string "^0.22.4"
-    resolve "^1.4.0"
+    resolve "^1.5.0"
     rollup-pluginutils "^2.0.1"
 
 rollup-plugin-node-resolve@^3.0.0:
