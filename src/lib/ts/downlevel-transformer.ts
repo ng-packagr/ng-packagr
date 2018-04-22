@@ -8,7 +8,7 @@ import {
   transpileModule,
   ModuleResolutionKind
 } from 'typescript';
-import { RawSourceMap } from 'source-map';
+import { RawSourceMap } from 'rollup';
 import * as path from 'path';
 
 import * as log from '../util/log';
