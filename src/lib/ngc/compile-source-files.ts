@@ -33,21 +33,12 @@ export async function compileSourceFiles(
     tsHost: tsCompilerHost
   });
 
-  // ng.Program
-  const ngProgram = ng.createProgram({
-    rootNames: tsConfig.rootNames,
-    options: tsConfigOptions,
-    host: ngCompilerHost
-  });
-
   // ngc
   const result = ng.performCompilation({
     rootNames: tsConfig.rootNames,
     options: tsConfigOptions,
-    emitFlags: tsConfig.emitFlags,
     emitCallback: createEmitCallback(tsConfigOptions),
-    host: ngCompilerHost,
-    oldProgram: ngProgram
+    host: ngCompilerHost
   });
 
   const flatModuleFile = tsConfigOptions.flatModuleOutFile;
