@@ -52,6 +52,7 @@ Removes several deprecated code items.
   - method `createNgPackage` removed from programmatic API
   - removed `NgArtefacts` class from API
   - removed `BuildStep` interface from API
+  - removed tarball generation ([#721](https://github.com/dherges/ng-packagr/issues/721))
 
 There were some important changes, mainly related to `rollup`, most of the options and functionality provided by `rollup` plugins (comments & license) have been removed, due to the fact this is not inline with APF V6 as one will end up with different outputs in different modules.
   - **`comments` option has been removed** 
@@ -65,6 +66,9 @@ More info in the APF v6 spec: https://docs.google.com/document/d/1CZC2rcpxffTDfR
 
 Documentation on npm bundled dependencies: http://npm.github.io/using-pkgs-docs/package-json/types/bundleddependencies.html 
 
+#### tarball generation
+
+As we don't generate a tarball by default anymore, you should manually, after the build, create it by running [`npm pack`](https://docs.npmjs.com/cli/pack) in the `dist` folder of your library. See [#802](https://github.com/dherges/ng-packagr/issues/802) and [#738 (comment)](https://github.com/dherges/ng-packagr/pull/738#issuecomment-379457152) for more informations.
 
 
 <a name="2.4.2"></a>
