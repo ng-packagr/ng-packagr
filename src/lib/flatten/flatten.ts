@@ -1,6 +1,6 @@
 import { rollupBundleFile } from './rollup';
 import { minifyJsFile } from './uglify';
-import { downlevelCodeWithTsc } from '../ts/downlevel-transformer';
+import { downlevelCodeWithTsc } from './downlevel-transformer';
 import { DependencyList } from './external-module-id-strategy';
 
 export interface FlattenOpts {
@@ -13,6 +13,9 @@ export interface FlattenOpts {
 
   /** UMD ID defined by the UMD bundle. */
   umdModuleId: string;
+
+  /** Specifies the location where debugger should locate the sourcemaps  */
+  sourceRoot: string;
 
   /** AMD ID defined in the UMD bundle. */
   amdId?: string;
@@ -27,21 +30,23 @@ export interface FlattenOpts {
   dependencyList: DependencyList;
 }
 
-export async function flattenToFesm(opts: FlattenOpts): Promise<void> {
+export async function flattenToFesm(opts: FlattenOpts): Promise<void[]> {
   return rollupBundleFile({
     moduleName: opts.esmModuleId,
     entry: opts.entryFile,
+    sourceRoot: opts.sourceRoot,
     format: 'es',
     dest: opts.destFile,
     dependencyList: opts.dependencyList
   });
 }
 
-export async function flattenToUmd(opts: FlattenOpts): Promise<void> {
+export async function flattenToUmd(opts: FlattenOpts): Promise<void[]> {
   return rollupBundleFile({
     transform: downlevelCodeWithTsc,
     moduleName: opts.umdModuleId,
     entry: opts.entryFile,
+    sourceRoot: opts.sourceRoot,
     format: 'umd',
     dest: opts.destFile,
     amd: { id: opts.amdId },

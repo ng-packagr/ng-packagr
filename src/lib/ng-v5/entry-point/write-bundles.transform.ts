@@ -31,6 +31,7 @@ export const writeBundlesTransform: Transform = pipe(
     const opts: FlattenOpts = {
       destFile: '',
       entryFile: '',
+      sourceRoot: entryPoint.data.tsConfig.options.sourceRoot,
       flatModuleFile: ngEntryPoint.flatModuleFile,
       esmModuleId: ngEntryPoint.moduleId,
       umdModuleId: ngEntryPoint.umdId,
