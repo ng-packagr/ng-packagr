@@ -11,20 +11,17 @@ import { redirectWriteFileCompilerHost } from '../ts/redirect-write-file-compile
 export async function compileSourceFiles(
   sourceFiles: ts.SourceFile[],
   tsConfig: TsConfig,
-  outDir?: string,
+  extraOptions?: Partial<ng.CompilerOptions>,
   declarationDir?: string
 ) {
   log.debug(`ngc (v${ng.VERSION.full})`);
 
-  const tsConfigOptions = { ...tsConfig.options };
-  if (outDir) {
-    tsConfigOptions.outDir = outDir;
-  }
+  const tsConfigOptions: ng.CompilerOptions = { ...tsConfig.options, ...extraOptions };
 
   // ts.CompilerHost
   let tsCompilerHost = createCompilerHostForSynthesizedSourceFiles(sourceFiles, tsConfigOptions);
   if (declarationDir) {
-    tsCompilerHost = redirectWriteFileCompilerHost(tsCompilerHost, tsConfig.options.baseUrl, declarationDir);
+    tsCompilerHost = redirectWriteFileCompilerHost(tsCompilerHost, tsConfigOptions.baseUrl, declarationDir);
   }
 
   // ng.CompilerHost
@@ -33,21 +30,13 @@ export async function compileSourceFiles(
     tsHost: tsCompilerHost
   });
 
-  // ng.Program
-  const ngProgram = ng.createProgram({
-    rootNames: tsConfig.rootNames,
-    options: tsConfigOptions,
-    host: ngCompilerHost
-  });
-
   // ngc
   const result = ng.performCompilation({
     rootNames: tsConfig.rootNames,
     options: tsConfigOptions,
     emitFlags: tsConfig.emitFlags,
     emitCallback: createEmitCallback(tsConfigOptions),
-    host: ngCompilerHost,
-    oldProgram: ngProgram
+    host: ngCompilerHost
   });
 
   const flatModuleFile = tsConfigOptions.flatModuleOutFile;
@@ -55,11 +44,13 @@ export async function compileSourceFiles(
 
   // XX(hack): redirect the `*.metadata.json` to the correct outDir
   // @link https://github.com/angular/angular/pull/21787
-  const metadataBundleFile = flatModuleFile.replace(flatModuleFileExtension, '.metadata.json');
-  const metadataSrc = path.resolve(tsConfigOptions.declarationDir, metadataBundleFile);
-  const metadataDest = path.resolve(declarationDir, metadataBundleFile);
-  if (metadataDest !== metadataSrc && fs.existsSync(metadataSrc)) {
-    await fs.move(metadataSrc, metadataDest, { overwrite: true });
+  if (declarationDir) {
+    const metadataBundleFile = flatModuleFile.replace(flatModuleFileExtension, '.metadata.json');
+    const metadataSrc = path.resolve(tsConfigOptions.declarationDir, metadataBundleFile);
+    const metadataDest = path.resolve(declarationDir, metadataBundleFile);
+    if (metadataDest !== metadataSrc && fs.existsSync(metadataSrc)) {
+      await fs.move(metadataSrc, metadataDest, { overwrite: true });
+    }
   }
 
   const exitCode = ng.exitCodeFromResult(result.diagnostics);

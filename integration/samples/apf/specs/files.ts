@@ -40,8 +40,8 @@ describe(`@sample/apf`, () => {
   });
 
   describe(`ESM5`, () => {
-    it(`should contain 8 '.js.map' files`, () => {
-      expect(glob.sync(`${DIST}/esm5/**/*.js.map`).length).equal(8);
+    it(`should contain 0 '.js.map' files`, () => {
+      expect(glob.sync(`${DIST}/esm5/**/*.js.map`).length).equal(0);
     });
 
     it(`should contain 8 '.js' files`, () => {
@@ -49,8 +49,8 @@ describe(`@sample/apf`, () => {
     });
 
     describe(`secondary`, () => {
-      it(`should contain 4 '.js.map' files`, () => {
-        expect(glob.sync(`${DIST}/esm5/secondary/**/*.js.map`).length).equal(4);
+      it(`should contain 0 '.js.map' files`, () => {
+        expect(glob.sync(`${DIST}/esm5/secondary/**/*.js.map`).length).equal(0);
       });
 
       it(`should contain 4 '.js' files`, () => {
@@ -60,8 +60,8 @@ describe(`@sample/apf`, () => {
   });
 
   describe(`ESM2015`, () => {
-    it(`should contain 8 '.js.map' files`, () => {
-      expect(glob.sync(`${DIST}/esm2015/**/*.js.map`).length).equal(8);
+    it(`should contain 0 '.js.map' files`, () => {
+      expect(glob.sync(`${DIST}/esm2015/**/*.js.map`).length).equal(0);
     });
 
     it(`should contain 8 '.js' files`, () => {
@@ -69,8 +69,8 @@ describe(`@sample/apf`, () => {
     });
 
     describe(`secondary`, () => {
-      it(`should contain 4 '.js.map' files`, () => {
-        expect(glob.sync(`${DIST}/esm2015/secondary/**/*.js.map`).length).equal(4);
+      it(`should contain 0 '.js.map' files`, () => {
+        expect(glob.sync(`${DIST}/esm2015/secondary/**/*.js.map`).length).equal(0);
       });
 
       it(`should contain 4 '.js' files`, () => {
