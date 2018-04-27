@@ -36,10 +36,7 @@ import { byEntryPoint } from './nodes';
  * @param renderStylesheets Transformation rendering xCSS stylesheets.
  * @param transformTsSources Transformation manipulating the typescript source files (thus inlining template and stylesheet data).
  * @param compileTs Transformation compiling typescript sources to ES2015 modules.
- * @param downlevelTs Transformation downlevel compilation from ES2015 TO ESM5.
  * @param writeBundles Transformation flattening ES2015 modules to ESM2015, ESM5, UMD, and minified UMD.
- * @param remapSourceMaps Transformation re-mapping of sourcemaps over a series of transpilations.
- * @param relocateSourceMaps Transformation re-locating (adapting) paths in the source maps.
  * @param writePackage Transformation writing a distribution-ready `package.json` (for publishing to npm registry).
  */
 export const entryPointTransformFactory = (
@@ -47,10 +44,7 @@ export const entryPointTransformFactory = (
   renderTemplates: Transform,
   transformTsSources: Transform,
   compileTs: Transform,
-  downlevelTs: Transform,
   writeBundles: Transform,
-  remapSourceMaps: Transform,
-  relocateSourceMaps: Transform,
   writePackage: Transform
 ): Transform =>
   pipe(
@@ -68,11 +62,9 @@ export const entryPointTransformFactory = (
     transformTsSources,
     // TypeScript sources compilation
     compileTs,
-    // Downlevel es2015 to es5
-    downlevelTs,
     // After TypeScript: bundling and write package
-    pipe(writeBundles, remapSourceMaps, relocateSourceMaps, writePackage),
-
+    writeBundles,
+    writePackage,
     transformFromPromise(async graph => {
       const entryPoint = graph.find(byEntryPoint().and(isInProgress));
       entryPoint.state = STATE_DONE;

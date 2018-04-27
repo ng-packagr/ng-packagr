@@ -30,6 +30,7 @@ export const writeBundlesTransform: Transform = pipe(
     const opts: FlattenOpts = {
       destFile: '',
       entryFile: '',
+      sourceRoot: entryPoint.data.tsConfig.options.sourceRoot,
       flatModuleFile: ngEntryPoint.flatModuleFile,
       esmModuleId: ngEntryPoint.moduleId,
       umdModuleId: ngEntryPoint.umdId,
@@ -66,7 +67,7 @@ async function writeFlatBundleFiles(destinationFiles: DestinationFiles, opts: Fl
   log.info('Bundling to UMD');
   await flattenToUmd({
     ...opts,
-    entryFile: fesm5,
+    entryFile: esm5,
     destFile: umd,
     dependencyList: opts.dependencyList
   });

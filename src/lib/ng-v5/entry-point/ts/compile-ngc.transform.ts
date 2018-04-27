@@ -1,4 +1,5 @@
 import * as path from 'path';
+import * as ts from 'typescript';
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { compileSourceFiles } from '../../../ngc/compile-source-files';
 import { TsConfig } from '../../../ts/tsconfig';
@@ -38,9 +39,33 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
   }
 
   // Compile TypeScript sources
-  const { esm2015, declarations } = entryPoint.data.destinationFiles;
+  const { esm2015, esm5, declarations } = entryPoint.data.destinationFiles;
   const previousTransform = tsSources.data;
-  await compileSourceFiles(tsSources.data.transformed, tsConfig, path.dirname(esm2015), path.dirname(declarations));
+
+  await Promise.all([
+    compileSourceFiles(
+      tsSources.data.transformed,
+      tsConfig,
+      {
+        outDir: path.dirname(esm2015),
+        declaration: true,
+        target: ts.ScriptTarget.ES2015
+      },
+      path.dirname(declarations)
+    ),
+
+    compileSourceFiles(tsSources.data.transformed, tsConfig, {
+      outDir: path.dirname(esm5),
+      target: ts.ScriptTarget.ES5,
+      downlevelIteration: true,
+      // the options are here, to improve the build time
+      declaration: false,
+      declarationDir: undefined,
+      skipMetadataEmit: true,
+      fullTemplateTypeCheck: false
+    })
+  ]);
+
   previousTransform.dispose();
 
   return graph;
