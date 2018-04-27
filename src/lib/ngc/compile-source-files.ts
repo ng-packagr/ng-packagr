@@ -44,7 +44,6 @@ export async function compileSourceFiles(
   const result = ng.performCompilation({
     rootNames: tsConfig.rootNames,
     options: tsConfigOptions,
-    emitFlags: tsConfig.emitFlags,
     emitCallback: createEmitCallback(tsConfigOptions),
     host: ngCompilerHost,
     oldProgram: ngProgram
