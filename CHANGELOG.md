@@ -66,9 +66,9 @@ More info in the APF v6 spec: https://docs.google.com/document/d/1CZC2rcpxffTDfR
 
 Documentation on npm bundled dependencies: http://npm.github.io/using-pkgs-docs/package-json/types/bundleddependencies.html 
 
-#### tarball generation
+#### Tarball generation
 
-As we don't generate a tarball by default anymore, you should manually, after the build, create it by running [`npm pack`](https://docs.npmjs.com/cli/pack) in the `dist` folder of your library. See [#802](https://github.com/dherges/ng-packagr/issues/802) and [#738 (comment)](https://github.com/dherges/ng-packagr/pull/738#issuecomment-379457152) for more informations.
+As we don't generate a tarball by default anymore, you should manually, after the build, create it by running [`npm pack`](https://docs.npmjs.com/cli/pack) in the `dist` folder of your library. See [#802](https://github.com/dherges/ng-packagr/issues/802) and [#738 (comment)](https://github.com/dherges/ng-packagr/pull/738#issuecomment-379457152) for more information.
 
 
 <a name="2.4.2"></a>
