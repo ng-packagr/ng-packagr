@@ -1,14 +1,18 @@
 language: node_js
 node_js:
-  - node
   - '9'
   - '8'
 script: 'yarn test'
 cache:
   yarn: true
+env: # https://docs.travis-ci.com/user/customizing-the-build#Rows-that-are-Allowed-to-Fail
 matrix:
+  include:
+    - node_js: node
+      env: "ALLOW_FAILURES=true"
   allow_failures:
-  - node_js: 10
+    - node_js: node
+      env: "ALLOW_FAILURES=true"
 notifications:
   webhooks:
     urls:
