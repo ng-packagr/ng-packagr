@@ -1,6 +1,5 @@
 import { map, switchMap } from 'rxjs/operators';
-import { fromPromise } from 'rxjs/observable/fromPromise';
-import { pipe } from 'rxjs/util/pipe';
+import { from as fromPromise, pipe } from 'rxjs';
 import { Transform } from '../../brocc/transform';
 import { FlattenOpts, flattenToFesm, flattenToUmd, flattenToUmdMin } from '../../flatten/flatten';
 import { NgEntryPoint } from '../../ng-package-format/entry-point';

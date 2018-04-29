@@ -1,9 +1,5 @@
-import { MonoTypeOperatorFunction } from 'rxjs/interfaces';
-import { Observable } from 'rxjs/Observable';
-import { fromPromise } from 'rxjs/observable/fromPromise';
-import { of as observableOf } from 'rxjs/observable/of';
+import { MonoTypeOperatorFunction, Observable, from as fromPromise, of as observableOf, pipe } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { pipe } from 'rxjs/util/pipe';
 import { BuildGraph } from './build-graph';
 
 /**

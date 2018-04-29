@@ -1,5 +1,5 @@
+import { pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { pipe } from 'rxjs/util/pipe';
 import * as log from '../../util/log';
 import { Transform } from '../../brocc/transform';
 import { transformSourceFiles } from '../../ngc/transform-source-files';

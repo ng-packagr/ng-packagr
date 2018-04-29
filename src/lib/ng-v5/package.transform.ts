@@ -1,10 +1,6 @@
 import * as path from 'path';
-import { Observable } from 'rxjs/Observable';
-import { concat as concatStatic } from 'rxjs/observable/concat';
-import { fromPromise } from 'rxjs/observable/fromPromise';
-import { of as observableOf } from 'rxjs/observable/of';
+import { Observable, concat as concatStatic, from as fromPromise, of as observableOf, pipe } from 'rxjs';
 import { concatMap, map, retry, switchMap, takeLast, tap } from 'rxjs/operators';
-import { pipe } from 'rxjs/util/pipe';
 import { BuildGraph } from '../brocc/build-graph';
 import { DepthBuilder, Groups } from '../brocc/depth';
 import { Node, STATE_IN_PROGESS } from '../brocc/node';
