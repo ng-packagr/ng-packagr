@@ -1,4 +1,4 @@
-import { pipeFromArray } from 'rxjs/util/pipe';
+import { pipe } from 'rxjs';
 import { STATE_DONE } from '../brocc/node';
 import { isInProgress } from '../brocc/select';
 import { Transform, transformFromPromise } from '../brocc/transform';
@@ -53,7 +53,7 @@ export const entryPointTransformFactory = (
   relocateSourceMaps: Transform,
   writePackage: Transform
 ): Transform =>
-  pipeFromArray([
+  pipe(
     //tap(() => log.info(`Building from sources for entry point`)),
 
     transformFromPromise(async graph => {
@@ -71,10 +71,7 @@ export const entryPointTransformFactory = (
     // Downlevel es2015 to es5
     downlevelTs,
     // After TypeScript: bundling and write package
-    writeBundles,
-    remapSourceMaps,
-    relocateSourceMaps,
-    writePackage,
+    pipe(writeBundles, remapSourceMaps, relocateSourceMaps, writePackage),
 
     transformFromPromise(async graph => {
       const entryPoint = graph.find(byEntryPoint().and(isInProgress));
@@ -82,4 +79,4 @@ export const entryPointTransformFactory = (
     })
 
     //tap(() => log.info(`Built.`))
-  ]);
+  );

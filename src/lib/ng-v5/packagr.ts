@@ -1,6 +1,6 @@
 import { ParsedConfiguration } from '@angular/compiler-cli';
 import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
-import { of as observableOf } from 'rxjs/observable/of';
+import { of as observableOf } from 'rxjs';
 import { take, map, catchError } from 'rxjs/operators';
 import { BuildGraph } from '../brocc/build-graph';
 import { Transform } from '../brocc/transform';
