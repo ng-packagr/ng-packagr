@@ -1,4 +1,4 @@
-import * as ng from '@angular/compiler-cli';
+import { ParsedConfiguration } from '@angular/compiler-cli/ngtools2';
 import { expect } from 'chai';
 import { ngPackagr, NgPackagr } from './packagr';
 import { provideProject, PROJECT_TOKEN } from './project.di';
@@ -33,12 +33,12 @@ describe(`ngPackagr()`, () => {
 
   describe(`withTsConfig()`, () => {
     it(`should return self instance for chaining`, () => {
-      const mockConfig = ({ project: 'foo' } as any) as ng.ParsedConfiguration;
+      const mockConfig = ({ project: 'foo' } as any) as ParsedConfiguration;
       expect(packager.withTsConfig(mockConfig)).to.equal(packager);
     });
 
     it(`should override the default tsconfig provider`, () => {
-      const mockConfig = ({ project: 'foo' } as any) as ng.ParsedConfiguration;
+      const mockConfig = ({ project: 'foo' } as any) as ParsedConfiguration;
       const providers = packager
         .withTsConfig(mockConfig)
         ['providers'].filter(p => (p as any).provide === DEFAULT_TS_CONFIG_TOKEN);

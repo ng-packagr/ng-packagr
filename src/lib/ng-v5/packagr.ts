@@ -1,4 +1,3 @@
-import { ParsedConfiguration } from '@angular/compiler-cli';
 import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
 import { of as observableOf } from 'rxjs';
 import { take, map, catchError } from 'rxjs/operators';

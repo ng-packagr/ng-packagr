@@ -1,5 +1,5 @@
-import { ParsedConfiguration } from '@angular/compiler-cli';
-
+// XX: has or is using name 'ParsedConfiguration' ... but cannot be named
+import { ParsedConfiguration } from '@angular/compiler-cli/src/perform_compile';
 import { Transform, transformFromPromise } from '../../brocc/transform';
 import { TsConfig, initializeTsConfig } from '../../ts/tsconfig';
 import * as log from '../../util/log';
