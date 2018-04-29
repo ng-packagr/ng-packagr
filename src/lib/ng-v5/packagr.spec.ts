@@ -1,4 +1,4 @@
-import { ParsedConfiguration } from '@angular/compiler-cli/ngtools2';
+import { ParsedConfiguration } from '@angular/compiler-cli/src/perform_compile';
 import { expect } from 'chai';
 import { ngPackagr, NgPackagr } from './packagr';
 import { provideProject, PROJECT_TOKEN } from './project.di';
