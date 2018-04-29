@@ -1,6 +1,5 @@
 import { VERSION as ROLLUP_VERSION } from 'rollup';
 import { VERSION as COMPILER_VERSION } from '@angular/compiler';
-import { VERSION as COMPILER_CLI_VERSION } from '@angular/compiler-cli';
 import { version as TS_VERSION } from 'typescript';
 import { Command } from './command';
 
@@ -16,7 +15,6 @@ export const version: Command<any, void> = (pkg: any) => {
 
   console.log(`ng-packagr:            ` + NG_PACKAGR_VERSION);
   console.log(`@angular/compiler:     ` + COMPILER_VERSION.full);
-  console.log(`@angular/compiler-cli: ` + COMPILER_CLI_VERSION.full);
   console.log(`rollup:                ` + ROLLUP_VERSION);
   console.log(`tsickle:               ` + TSICKLE_VERSION);
   console.log(`typescript:            ` + TS_VERSION);

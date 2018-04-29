@@ -1,6 +1,6 @@
-import * as ng from '@angular/compiler-cli';
+import * as ng from '@angular/compiler-cli/src/perform_compile';
 // XX: has or is using name 'ParsedConfiguration' ... but cannot be named
-import { ParsedConfiguration } from '@angular/compiler-cli';
+import { ParsedConfiguration } from '@angular/compiler-cli/src/perform_compile';
 import * as path from 'path';
 import * as ts from 'typescript';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
@@ -48,7 +48,7 @@ export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoint: NgEntr
 
   // minimal compilerOptions needed in order to avoid errors, with their associated default values
   // some are not overrided in order to keep the default associated TS errors if the user choose to set incorrect values
-  const requiredOptions: Partial<ng.CompilerOptions> = {
+  const requiredOptions: Partial<ts.CompilerOptions> = {
     emitDecoratorMetadata: true,
     experimentalDecorators: true,
     // required by inlineSources

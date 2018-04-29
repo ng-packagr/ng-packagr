@@ -1,5 +1,7 @@
 import * as fs from 'fs-extra';
-import * as ng from '@angular/compiler-cli';
+import * as ng from '@angular/compiler-cli/src/perform_compile';
+import * as ngTs from '@angular/compiler-cli/src/transformers/entry_points';
+import { VERSION as NG_VERSION } from '@angular/compiler-cli/src/version';
 import * as ts from 'typescript';
 import * as path from 'path';
 import { createCompilerHostForSynthesizedSourceFiles } from '../ts/synthesized-compiler-host';
@@ -14,7 +16,7 @@ export async function compileSourceFiles(
   outDir?: string,
   declarationDir?: string
 ) {
-  log.debug(`ngc (v${ng.VERSION.full})`);
+  log.debug(`ngc (v${NG_VERSION.full})`);
 
   const tsConfigOptions = { ...tsConfig.options };
   if (outDir) {
@@ -28,13 +30,13 @@ export async function compileSourceFiles(
   }
 
   // ng.CompilerHost
-  const ngCompilerHost = ng.createCompilerHost({
+  const ngCompilerHost = ngTs.createCompilerHost({
     options: tsConfigOptions,
     tsHost: tsCompilerHost
   });
 
   // ng.Program
-  const ngProgram = ng.createProgram({
+  const ngProgram = ngTs.createProgram({
     rootNames: tsConfig.rootNames,
     options: tsConfigOptions,
     host: ngCompilerHost

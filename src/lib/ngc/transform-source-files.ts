@@ -1,4 +1,4 @@
-import * as ng from '@angular/compiler-cli';
+import * as ng from '@angular/compiler-cli/ngtools2';
 import * as ts from 'typescript';
 import { TsConfig } from '../ts/tsconfig';
 
