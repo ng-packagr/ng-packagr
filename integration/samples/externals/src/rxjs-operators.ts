@@ -3,7 +3,7 @@ import { map } from 'rxjs/operator/map';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 
-import { $$observable as observable } from 'rxjs/symbol/observable';
+import { observable } from 'rxjs/symbol/observable';
 
 export class RxJsOperators {
   public observableMap() {
