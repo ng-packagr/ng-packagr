@@ -12,15 +12,9 @@
     "experimentalDecorators": true,
     "noEmitOnError": true,
     "noImplicitAny": false,
-    "types": [
-      "node"
-    ]
+    "skipLibCheck": true, // due to: https://github.com/angular/angular/issues/23112
+    "types": ["node"]
   },
-  "files": [
-    "cli/main.ts",
-    "public_api.ts"
-  ],
-  "exclude": [
-    "**/*.spec.ts"
-  ]
+  "files": ["cli/main.ts", "public_api.ts"],
+  "exclude": ["**/*.spec.ts"]
 }

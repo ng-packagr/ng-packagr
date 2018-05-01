@@ -1,6 +1,6 @@
 import * as rollup from 'rollup';
 import * as nodeResolve from 'rollup-plugin-node-resolve';
-import { sourcemaps } from './sourcemaps';
+import * as sourcemaps from 'rollup-plugin-sourcemaps';
 import * as commonJs from 'rollup-plugin-commonjs';
 import * as log from '../util/log';
 import { ExternalModuleIdStrategy, DependencyList } from './external-module-id-strategy';
@@ -63,13 +63,17 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void[]> {
 
   // relocate sourcemaps
   result.map.sources = result.map.sources.map(sourcePath => {
-    // the replace here is because during the compilation one of the `/` gets lost
-    const mapRootUrl = opts.sourceRoot.replace('//', '/');
-    if (sourcePath && sourcePath.indexOf(mapRootUrl) > 0) {
-      return `${opts.sourceRoot}${sourcePath.substr(sourcePath.indexOf(mapRootUrl) + mapRootUrl.length)}`;
+    if (!sourcePath) {
+      return sourcePath;
     }
 
-    return sourcePath;
+    // the replace here is because during the compilation one of the `/` gets lost sometimes
+    const mapRootUrl = opts.sourceRoot.replace('//', '/');
+    if (sourcePath.indexOf(mapRootUrl) > 0) {
+      return `${opts.sourceRoot}${sourcePath.substr(sourcePath.indexOf(mapRootUrl) + mapRootUrl.length)}`;
+    } else if (sourcePath.indexOf(opts.sourceRoot) > 0) {
+      return sourcePath.substr(sourcePath.indexOf(mapRootUrl));
+    }
   });
 
   return Promise.all([outputJson(`${opts.dest}.map`, result.map), outputFile(opts.dest, result.code)]);
