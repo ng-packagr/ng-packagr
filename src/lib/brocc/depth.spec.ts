@@ -24,6 +24,17 @@ describe(`DepthBuilder`, () => {
     expect(groups[2][0]).to.equal('a');
   });
 
+  it(`should group a, b->c, b->d`, () => {
+    const builder = new DepthBuilder();
+    builder.add('a');
+    builder.add('b', 'c');
+    builder.add('b', 'd');
+
+    const groups = builder.build();
+    expect(groups[0]).to.have.same.members(['a', 'c', 'd']);
+    expect(groups[1]).to.have.same.members(['b']);
+  });
+
   /*
    * This scenario is also visually documented:
    *  - [Dependencies](docs/graph/depth-graph.png)
