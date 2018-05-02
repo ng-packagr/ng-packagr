@@ -6,6 +6,7 @@ import { NgPackage } from '../../ng-package-format/package';
 import { ensureUnixPath } from '../../util/path';
 import { rimraf } from '../../util/rimraf';
 import * as log from '../../util/log';
+import { globFiles } from '../../util/glob';
 import { isEntryPointInProgress, EntryPointNode, isEntryPointDirty } from '../nodes';
 import { copyFiles } from '../../util/copy';
 
@@ -17,7 +18,12 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
 
   // 5. COPY SOURCE FILES TO DESTINATION
   log.info('Copying declaration files');
-  await copyFiles(`${path.dirname(ngEntryPoint.entryFilePath)}/**/*.d.ts`, path.dirname(destinationFiles.declarations));
+  // we don't want to copy `dist` and 'node_modules' declaration files but only files in source
+  const declarationFiles = await globFiles(`${path.dirname(ngEntryPoint.entryFilePath)}/**/*.d.ts`, {
+    ignore: ['**/node_modules/**/*', ngPackage.dest]
+  });
+
+  await copyFiles(declarationFiles, path.dirname(destinationFiles.declarations));
 
   // 6. WRITE PACKAGE.JSON
   log.info('Writing package metadata');

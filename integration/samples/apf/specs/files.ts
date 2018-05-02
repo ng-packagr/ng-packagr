@@ -9,6 +9,13 @@ describe(`@sample/apf`, () => {
     DIST = path.resolve(__dirname, '../dist');
   });
 
+  describe('dist', () => {
+    it(`should not have a nested 'dist' folder`, () => {
+      const dist = fs.existsSync(path.join(DIST, 'dist'));
+      expect(dist).to.be.false;
+    });
+  });
+
   describe(`FESM2015`, () => {
     it(`should contain 2 '.js.map' files`, () => {
       expect(glob.sync(`${DIST}/fesm2015/**/*.js.map`).length).equal(2);
