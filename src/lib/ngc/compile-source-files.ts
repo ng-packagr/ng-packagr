@@ -47,8 +47,8 @@ export async function compileSourceFiles(
     rootNames: tsConfig.rootNames,
     options: tsConfigOptions,
     emitCallback: createEmitCallback(tsConfigOptions),
-    host: ngCompilerHost,
-    oldProgram: ngProgram
+    emitFlags: tsConfig.emitFlags,
+    host: ngCompilerHost
   });
 
   const flatModuleFile = tsConfigOptions.flatModuleOutFile;
