@@ -55,22 +55,22 @@
     "update-notifier": "^2.3.0"
   },
   "peerDependencies": {
-    "@angular/compiler": "^5.0.0 || ^6.0.0-rc.0",
-    "@angular/compiler-cli": "^5.0.0 || ^6.0.0-rc.0",
+    "@angular/compiler": "^5.0.0 || ^6.0.0",
+    "@angular/compiler-cli": "^5.0.0 || ^6.0.0",
     "tsickle": ">=0.27.3",
     "tslib": "^1.7.1",
     "typescript": ">=2.4.2"
   },
   "devDependencies": {
     "@angular-devkit/core": "^0.6.0",
-    "@angular/cdk": "^6.0.0-rc.6",
-    "@angular/common": "^6.0.0-rc.6",
-    "@angular/compiler": "^6.0.0-rc.6",
-    "@angular/compiler-cli": "^6.0.0-rc.6",
-    "@angular/core": "^6.0.0-rc.6",
-    "@angular/http": "^6.0.0-rc.6",
-    "@angular/language-service": "^6.0.0-rc.6",
-    "@angular/platform-browser": "^6.0.0-rc.6",
+    "@angular/cdk": "~6.0.0",
+    "@angular/common": "~6.0.0",
+    "@angular/compiler": "~6.0.0",
+    "@angular/compiler-cli": "~6.0.0",
+    "@angular/core": "~6.0.0",
+    "@angular/http": "~6.0.0",
+    "@angular/language-service": "~6.0.0",
+    "@angular/platform-browser": "~6.0.0",
     "@commitlint/cli": "^6.0.0",
     "@commitlint/config-angular": "^6.0.2",
     "@types/acorn": "^4.0.3",
@@ -107,9 +107,9 @@
     "standard-version": "^4.0.0",
     "ts-node": "^6.0.0",
     "tsickle": "^0.27.3",
-    "tslib": "^1.7.1",
+    "tslib": "^1.9.0",
     "typescript": "~2.7.2",
-    "zone.js": "^0.8.10"
+    "zone.js": "^0.8.26"
   },
   "private": true,
   "scripts": {
