@@ -1,0 +1,12 @@
+{
+  "$schema": "../../../../src/package.schema.json",
+  "description":
+    "A secondary entry point (feature c) that depends on @sample/secondary/feature-a, @sample/secondary/feature-b and transitively on @sample/secondary/shared",
+  "private": true,
+  "repository": "https://github.com/dherges/ng-packagr.git",
+  "ngPackage": {
+    "lib": {
+      "entryFile": "feature-c.ts"
+    }
+  }
+}
