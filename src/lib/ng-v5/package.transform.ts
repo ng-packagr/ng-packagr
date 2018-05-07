@@ -59,8 +59,6 @@ export const packageTransformFactory = (
     // Add entry points to graph
     map(graph => {
       const ngPkg = graph.get(pkgUri);
-
-      const generateOutDirPath = (folder: string) => path.join(ngPkg.data.dest, folder);
       const entryPoints = [ngPkg.data.primary, ...ngPkg.data.secondaries].map(entryPoint => {
         const { destinationFiles, moduleId } = entryPoint;
         const node = new EntryPointNode(ngUrl(moduleId));
