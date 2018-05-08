@@ -48,4 +48,25 @@ describe(`DepthBuilder`, () => {
     expect(groups[3]).to.have.same.members(['b']);
     expect(groups[4]).to.have.same.members(['a']);
   });
+
+  /**
+   * This scenario is visually documented:
+   * https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggVERcbmIgLS0-IGRcbmIgLS0-IGNcbmIgLS0-IGVcbmEgLS0-IGJcbmEgLS0-IGRcbmEgLS0-IGNcbmEgLS0-IGVcbmQgLS0-IGVcbmMgLS0-IGRcbmMgLS0-IGUiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ
+   */
+  it(`should group an unordered complex scenario`, () => {
+    const builder = new DepthBuilder();
+    builder.add('b', ['d','c','e']);
+    builder.add('a', ['b', 'd', 'c', 'e']);
+    builder.add('d','e');
+    builder.add('c', ['d','e']);
+    builder.add('e');
+
+    const groups = builder.build();
+    expect(groups.length).to.equal(5);
+    expect(groups[0]).to.have.same.members(['e']);
+    expect(groups[1]).to.have.same.members(['d']);
+    expect(groups[2]).to.have.same.members(['c']);
+    expect(groups[3]).to.have.same.members(['b']);
+    expect(groups[4]).to.have.same.members(['a']);
+  });
 });
