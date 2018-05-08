@@ -5,23 +5,10 @@
     "target": "es5",
     "allowJs": true,
     "experimentalDecorators": true,
-    "lib": [
-      "es2015",
-      "es2016"
-    ],
-    "types": [
-      "chai",
-      "mocha",
-      "node",
-      "sinon"
-    ]
+    "lib": ["es2015", "es2016"],
+    "types": ["chai", "mocha", "node", "sinon"],
+    "typeRoots": ["../node_modules/@types"]
   },
-  "include": [
-    "**/specs/*.ts"
-  ],
-  "exclude": [
-    ".ng_build",
-    ".ng_pkgr_build",
-    ".ng_pkg_build"
-  ]
+  "include": ["**/specs/*.ts"],
+  "exclude": [".ng_build", ".ng_pkgr_build", ".ng_pkg_build"]
 }
