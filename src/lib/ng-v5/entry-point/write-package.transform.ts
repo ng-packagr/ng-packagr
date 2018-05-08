@@ -34,8 +34,10 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
   });
 
   // 7. CREATE PACKAGE .TGZ
-  log.info('Creating package .tgz');
-  _tar(`${ngEntryPoint.destinationPath}.tgz`, ngEntryPoint.destinationPath);
+  if (ngPackage.primary === ngEntryPoint) {
+    log.info('Creating package .tgz');
+    _tar(`${ngEntryPoint.destinationPath}.tgz`, ngEntryPoint.destinationPath);
+  }
 
   log.success(`Built ${ngEntryPoint.moduleId}`);
 
