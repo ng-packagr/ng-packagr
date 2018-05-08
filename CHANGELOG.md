@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.4.3"></a>
+## [2.4.3](https://github.com/dherges/ng-packagr/compare/v2.4.2...v2.4.3) (2018-05-08)
+
+
+### Bug Fixes
+
+* generate tarball only for primary entry point (one per npm package) ([#848](https://github.com/dherges/ng-packagr/issues/848)) ([e4b31c7](https://github.com/dherges/ng-packagr/commit/e4b31c7))
+
+
+
 <a name="2.4.2"></a>
 ## [2.4.2](https://github.com/dherges/ng-packagr/compare/v2.4.1...v2.4.2) (2018-04-08)
 
