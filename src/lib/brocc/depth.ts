@@ -86,6 +86,8 @@ export class DepthBuilder {
 
         const dependencyDepth = nodeDepths.get(parent.token);
         if (currentDepth > dependencyDepth) {
+          // Push the dependency to the queue again and track its depth
+          nodeQueue.push(parent);
           nodeDepths.set(parent.token, currentDepth);
         }
       });
