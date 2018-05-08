@@ -55,18 +55,33 @@ describe(`DepthBuilder`, () => {
    */
   it(`should group an unordered complex scenario`, () => {
     const builder = new DepthBuilder();
-    builder.add('b', ['d','c','e']);
+    builder.add('b', ['d', 'c', 'e']);
     builder.add('a', ['b', 'd', 'c', 'e']);
-    builder.add('d','e');
-    builder.add('c', ['d','e']);
+    builder.add('d', 'e');
+    builder.add('c', ['d', 'e']);
     builder.add('e');
 
     const groups = builder.build();
-    expect(groups.length).to.equal(5);
     expect(groups[0]).to.have.same.members(['e']);
     expect(groups[1]).to.have.same.members(['d']);
     expect(groups[2]).to.have.same.members(['c']);
     expect(groups[3]).to.have.same.members(['b']);
     expect(groups[4]).to.have.same.members(['a']);
+  });
+
+  it(`should create a max depth that holds all buckets`, () => {
+    const builder = new DepthBuilder();
+    builder.add('parent');
+    builder.add('a', ['shared']);
+    builder.add('b', ['a']);
+    builder.add('c', ['a', 'b']);
+    builder.add('shared');
+    builder.add('sub');
+
+    const groups = builder.build();
+    expect(groups[0]).to.have.same.members(['parent', 'shared', 'sub']);
+    expect(groups[1]).to.have.same.members(['a']);
+    expect(groups[2]).to.have.same.members(['b']);
+    expect(groups[3]).to.have.same.members(['c']);
   });
 });
