@@ -12,6 +12,7 @@ import { Transform } from '../brocc/transform';
 import * as log from '../util/log';
 import { copyFiles } from '../util/copy';
 import { rimraf } from '../util/rimraf';
+import { createTarball } from '../util/tar';
 import { PackageNode, EntryPointNode, ngUrl, isEntryPoint, byEntryPoint } from './nodes';
 import { discoverPackages } from './discover-packages';
 
@@ -106,6 +107,7 @@ const writeNpmPackage = (pkgUri: string): Transform =>
         Promise.all([
           copyFiles(`${ngPkg.data.src}/README.md`, ngPkg.data.dest),
           copyFiles(`${ngPkg.data.src}/LICENSE`, ngPkg.data.dest),
+          createTarball(`${ngPkg.data.dest}.tgz`, ngPkg.data.dest),
           rimraf(ngPkg.data.workingDirectory)
         ])
       ).pipe(map(() => graph));
