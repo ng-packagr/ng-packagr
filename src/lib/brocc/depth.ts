@@ -86,6 +86,8 @@ export class DepthBuilder {
 
         const dependencyDepth = nodeDepths.get(parent.token);
         if (currentDepth > dependencyDepth) {
+          // Push the dependency to the queue again and track its depth
+          nodeQueue.push(parent);
           nodeDepths.set(parent.token, currentDepth);
         }
       });
@@ -93,7 +95,7 @@ export class DepthBuilder {
 
     // All nodes with the same max distance from a root can be run in parallel
     // Now we need to bucket nodes by max depth
-    const buckets: Token[][] = new Array<Token[]>(maxDepth);
+    const buckets: Token[][] = new Array<Token[]>(maxDepth + 1);
     for (let i = 0; i < buckets.length; i++) {
       buckets[i] = [];
     }

@@ -6,7 +6,8 @@
     "allowJs": true,
     "experimentalDecorators": true,
     "lib": ["es2015", "es2016"],
-    "types": ["chai", "mocha", "node", "sinon"]
+    "types": ["chai", "mocha", "node", "sinon"],
+    "typeRoots": ["../node_modules/@types"]
   },
   "include": ["**/specs/*.ts"]
 }

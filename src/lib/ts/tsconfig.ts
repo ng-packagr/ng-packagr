@@ -53,6 +53,7 @@ export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoint: NgEntr
     experimentalDecorators: true,
     moduleResolution: ts.ModuleResolutionKind.NodeJs,
     target: ts.ScriptTarget.ES2015,
+    declaration: true,
     lib: ['dom', 'es2015']
   };
 

@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0-rc.3"></a>
+# [3.0.0-rc.3](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.2...v3.0.0-rc.3) (2018-05-06)
+
+
+### Bug Fixes
+
+* let `ngc` determine the typescript `emitFlags` ([#813](https://github.com/dherges/ng-packagr/issues/813)) ([9b47d72](https://github.com/dherges/ng-packagr/commit/9b47d72))
+* migrate code base to compiler-cli@6 ([927e581](https://github.com/dherges/ng-packagr/commit/927e581))
+* migrate dependencies to angular 6 ([13917eb](https://github.com/dherges/ng-packagr/commit/13917eb))
+* remove nested `dist` folder ([#829](https://github.com/dherges/ng-packagr/issues/829)) ([f9af7ca](https://github.com/dherges/ng-packagr/commit/f9af7ca))
+* unpin rollup-plugin-commonjs to version ^9.1.3 ([#823](https://github.com/dherges/ng-packagr/issues/823)) ([17f791f](https://github.com/dherges/ng-packagr/commit/17f791f))
+* update fs-extra to version ^6.0.0 ([#825](https://github.com/dherges/ng-packagr/issues/825)) ([2aabd33](https://github.com/dherges/ng-packagr/commit/2aabd33))
+* update rollup to version ^0.58.0 ([#772](https://github.com/dherges/ng-packagr/issues/772)) ([cfcf3f9](https://github.com/dherges/ng-packagr/commit/cfcf3f9))
+* update rollup-plugin-commonjs to version ^9.1.2 ([#819](https://github.com/dherges/ng-packagr/issues/819)) ([1731968](https://github.com/dherges/ng-packagr/commit/1731968))
+* update rxjs to version ~6.0.0 ([b171a28](https://github.com/dherges/ng-packagr/commit/b171a28))
+* update rxjs to version ~6.1.0 ([#832](https://github.com/dherges/ng-packagr/issues/832)) ([365c759](https://github.com/dherges/ng-packagr/commit/365c759))
+
+
+### Features
+
+* enable `fullTemplateTypeCheck` ([#826](https://github.com/dherges/ng-packagr/issues/826)) ([83f2cb6](https://github.com/dherges/ng-packagr/commit/83f2cb6))
+
+
+
 <a name="3.0.0-rc.2"></a>
 # [3.0.0-rc.2](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.1...v3.0.0-rc.2) (2018-04-21)
 
