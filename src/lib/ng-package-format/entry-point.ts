@@ -66,7 +66,7 @@ export class NgEntryPoint {
 
     if (this.secondaryData) {
       primaryDestPath = this.secondaryData.primaryDestinationPath;
-      secondaryDir = path.basename(this.secondaryData.destinationPath);
+      secondaryDir = path.relative(primaryDestPath, this.secondaryData.destinationPath);
     }
 
     const flatModuleFile = this.flatModuleFile;
