@@ -41,7 +41,7 @@ describe(`DepthBuilder`, () => {
     builder.add('h', 'j');
 
     const groups = builder.build();
-    expect(groups.length).to.equal(5);
+    expect(groups.length).to.equal(6);
     expect(groups[0]).to.have.same.members(['d', 'g', 'i', 'j']);
     expect(groups[1]).to.have.same.members(['e', 'f', 'h']);
     expect(groups[2]).to.have.same.members(['c']);

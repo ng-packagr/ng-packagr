@@ -95,7 +95,7 @@ export class DepthBuilder {
 
     // All nodes with the same max distance from a root can be run in parallel
     // Now we need to bucket nodes by max depth
-    const buckets: Token[][] = new Array<Token[]>(maxDepth);
+    const buckets: Token[][] = new Array<Token[]>(maxDepth + 1);
     for (let i = 0; i < buckets.length; i++) {
       buckets[i] = [];
     }
