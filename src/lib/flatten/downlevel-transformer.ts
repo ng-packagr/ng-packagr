@@ -29,28 +29,6 @@ const COMPILER_OPTIONS: CompilerOptions = {
 /**
  * Downlevels a .js file from `ES2015` to `ES5`. Internally, uses `tsc`.
  *
- */
-export function downlevelEmitWithTsc(entryPoint: string, outDir: string): Promise<void> {
-  log.debug(`tsc downlevel ${entryPoint}`);
-
-  const compilerOptions: CompilerOptions = {
-    ...COMPILER_OPTIONS,
-    mapRoot: path.dirname(entryPoint),
-    outDir
-  };
-
-  const compilerHost = createCompilerHost(compilerOptions);
-  const program = createProgram([entryPoint], compilerOptions, compilerHost);
-  const emitResult = program.emit();
-
-  return emitResult.emitSkipped
-    ? Promise.reject(new Error(formatDiagnostics(emitResult.diagnostics, compilerHost)))
-    : Promise.resolve();
-}
-
-/**
- * Downlevels a .js file from `ES2015` to `ES5`. Internally, uses `tsc`.
- *
  * Required for some external as they contains `ES2015` syntax such as `const` and `let`
  */
 export function downlevelCodeWithTsc(code: string, filePath: string): Promise<{ code: string; map: RawSourceMap }> {

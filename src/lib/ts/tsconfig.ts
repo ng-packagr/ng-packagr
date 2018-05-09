@@ -51,8 +51,6 @@ export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoint: NgEntr
   const requiredOptions: Partial<ts.CompilerOptions> = {
     emitDecoratorMetadata: true,
     experimentalDecorators: true,
-    // required by inlineSources
-    sourceMap: true,
     moduleResolution: ts.ModuleResolutionKind.NodeJs,
     target: ts.ScriptTarget.ES2015,
     declaration: true,
@@ -72,12 +70,16 @@ export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoint: NgEntr
       // setting this as basedir will rewire triple-slash references
       declarationDir: basePath,
       // required in order to avoid "ENOENT: no such file or directory, .../.ng_pkg_build/..." errors when using the programmatic API
-      inlineSources: true
+      inlineSources: true,
+      // setting the below here because these are a must have with these valus
+      inlineSourceMap: true,
+      sourceMap: false,
+      sourceRoot: `ng://${entryPoint.moduleId}`
     }
   };
 
   tsConfig.rootNames = overrideConfig.rootNames;
-  tsConfig.options = Object.assign({}, requiredOptions, tsConfig.options, overrideConfig.options);
+  tsConfig.options = { ...requiredOptions, ...tsConfig.options, ...overrideConfig.options };
 
   switch (entryPoint.jsxConfig) {
     case 'preserve':
