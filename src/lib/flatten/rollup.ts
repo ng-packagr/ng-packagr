@@ -83,6 +83,6 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void[]> {
 
   // rollup doesn't add a sourceMappingURL
   // https://github.com/rollup/rollup/issues/121
-  result.code = `${result.code}\n//# sourceMappingURL=${sourcemapFile}`;
+  result.code = `${result.code}\n//# sourceMappingURL=${result.map.toUrl()}`;
   return Promise.all([outputJson(sourcemapFullFile, result.map), outputFile(opts.dest, result.code)]);
 }
