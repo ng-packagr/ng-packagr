@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0-rc.4"></a>
+# [3.0.0-rc.4](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.3...v3.0.0-rc.4) (2018-05-10)
+
+
+### Bug Fixes
+
+* add missing 'declaration' option in tsconfig ([#790](https://github.com/dherges/ng-packagr/issues/790)) ([dbd8ce1](https://github.com/dherges/ng-packagr/commit/dbd8ce1))
+* correct depth analysis of unordered dependencies for secondaries ([#846](https://github.com/dherges/ng-packagr/issues/846)) ([f4beea9](https://github.com/dherges/ng-packagr/commit/f4beea9))
+* create an array large enough to hold all buckets ([#845](https://github.com/dherges/ng-packagr/issues/845)) ([353b0fa](https://github.com/dherges/ng-packagr/commit/353b0fa))
+* handle nested entry points with same name ([#850](https://github.com/dherges/ng-packagr/issues/850)) ([f911882](https://github.com/dherges/ng-packagr/commit/f911882)), closes [#851](https://github.com/dherges/ng-packagr/issues/851) [#849](https://github.com/dherges/ng-packagr/issues/849)
+* inline sourcemaps as base64-encoded data URI in esm5/esm015 ([#812](https://github.com/dherges/ng-packagr/issues/812)) ([095feb1](https://github.com/dherges/ng-packagr/commit/095feb1)), closes [#785](https://github.com/dherges/ng-packagr/issues/785) [#803](https://github.com/dherges/ng-packagr/issues/803)
+
+
+
 <a name="3.0.0-rc.3"></a>
 # [3.0.0-rc.3](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.2...v3.0.0-rc.3) (2018-05-06)
 
