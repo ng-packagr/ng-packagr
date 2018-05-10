@@ -78,7 +78,8 @@ export async function writePackageJson(
   // read tslib version from `@angular/compiler` so that our tslib
   // version at least matches that of angular if we use require('tslib').version
   // it will get what installed and not the minimum version nor if it is a `~` or `^`
-  if (!(packageJson.dependencies && packageJson.dependencies.tslib)) {
+  // this is only required for primary
+  if (!entryPoint.isSecondaryEntryPoint && !(packageJson.dependencies && packageJson.dependencies.tslib)) {
     const { dependencies: angularDependencies = {} } = require('@angular/compiler/package.json');
     const tsLibVersion = angularDependencies.tslib;
 

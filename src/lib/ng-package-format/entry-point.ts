@@ -51,6 +51,11 @@ export class NgEntryPoint {
     return path.resolve(this.basePath, this.entryFile);
   }
 
+  /** Whether or not the entrypoint is secondary */
+  public get isSecondaryEntryPoint(): boolean {
+    return !!this.secondaryData;
+  }
+
   /** Absolute directory path of this entry point's 'package.json'. */
   public get destinationPath(): DirectoryPath {
     if (this.secondaryData) {
