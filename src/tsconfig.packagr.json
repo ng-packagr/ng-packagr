@@ -13,7 +13,8 @@
     "noEmitOnError": true,
     "noImplicitAny": false,
     "skipLibCheck": true, // due to: https://github.com/angular/angular/issues/23112
-    "types": ["node"]
+    "types": ["node"],
+    "typeRoots": ["../node_modules/@types"]
   },
   "files": ["cli/main.ts", "public_api.ts"],
   "exclude": ["**/*.spec.ts"]

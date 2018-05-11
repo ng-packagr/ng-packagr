@@ -13,6 +13,10 @@ describe(`@sample/apf`, () => {
       expect(PACKAGE).to.be.ok;
     });
 
+    it(`should have 'tslib' as a dependency`, () => {
+      expect(PACKAGE.dependencies.tslib).to.be.ok;
+    });
+
     it(`should not have ngPackage field`, () => {
       expect(PACKAGE.ngPackage).to.be.undefined;
     });
@@ -66,6 +70,10 @@ describe(`@sample/apf`, () => {
     let PACKAGE;
     before(() => {
       PACKAGE = require('../dist/secondary/package.json');
+    });
+
+    it(`should not have 'tslib' as a dependency`, () => {
+      expect(PACKAGE.dependencies && PACKAGE.dependencies.tslib).to.be.undefined;
     });
 
     it(`should exist`, () => {
