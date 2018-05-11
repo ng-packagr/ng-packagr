@@ -10,6 +10,13 @@ describe('@sample/apf', () => {
   });
 
   describe('dist', () => {
+    it('should contain a total of 115 files', () => {
+      // this is a safe guard / alternative to snapshots in order to
+      // protect ourselves from doing a change that will emit unexpected files.
+      const files = glob.sync(path.join(DIST, '**/*'));
+      expect(files.length).to.equals(115);
+    });
+
     it(`should not have a nested 'dist' folder`, () => {
       const dist = fs.existsSync(path.join(DIST, 'dist'));
       expect(dist).to.be.false;
