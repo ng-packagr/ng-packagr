@@ -63,7 +63,6 @@ export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoint: NgEntr
       flatModuleId: entryPoint.moduleId,
       flatModuleOutFile: `${entryPoint.flatModuleFile}.js`,
       basePath: basePath,
-      baseUrl: basePath,
       rootDir: basePath,
       outDir: '',
       lib: entryPoint.languageLevel ? entryPoint.languageLevel.map(lib => `lib.${lib}.d.ts`) : tsConfig.options.lib,
