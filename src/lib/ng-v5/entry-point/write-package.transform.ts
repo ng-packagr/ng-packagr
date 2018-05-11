@@ -20,7 +20,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
   log.info('Copying declaration files');
   // we don't want to copy `dist` and 'node_modules' declaration files but only files in source
   const declarationFiles = await globFiles(`${path.dirname(ngEntryPoint.entryFilePath)}/**/*.d.ts`, {
-    ignore: ['**/node_modules/**/*', ngPackage.dest]
+    ignore: ['**/node_modules/**/*', path.join(ngPackage.dest, '**/*')]
   });
 
   await copyFiles(declarationFiles, path.dirname(destinationFiles.declarations));

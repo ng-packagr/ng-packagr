@@ -114,17 +114,29 @@ describe('@sample/apf', () => {
     });
   });
 
-  describe('sample-apf.d.ts', () => {
-    it(`should exist`, () => {
-      const file = fs.existsSync(path.join(DIST, 'sample-apf.d.ts'));
-      expect(file).to.be.true;
+  describe('declarations', () => {
+    describe('sample-apf.d.ts', () => {
+      it(`should exist`, () => {
+        const file = fs.existsSync(path.join(DIST, 'sample-apf.d.ts'));
+        expect(file).to.be.true;
+      });
     });
-  });
 
-  describe('sample-apf-secondary.d.ts', () => {
-    it(`should exist`, () => {
-      const file = fs.existsSync(path.join(DIST, 'secondary', 'sample-apf-secondary.d.ts'));
-      expect(file).to.be.true;
+    describe('sample-apf-secondary.d.ts', () => {
+      it(`should exist`, () => {
+        const file = fs.existsSync(path.join(DIST, 'secondary', 'sample-apf-secondary.d.ts'));
+        expect(file).to.be.true;
+      });
+    });
+
+    describe('primary.component.d.ts', () => {
+      it(`should only exist in the dist/src`, () => {
+        let file = fs.existsSync(path.join(DIST, 'primary.component.d.ts'));
+        expect(file).to.be.false;
+
+        file = fs.existsSync(path.join(DIST, 'src', 'primary.component.d.ts'));
+        expect(file).to.be.true;
+      });
     });
   });
 });
