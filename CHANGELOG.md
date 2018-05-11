@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0-rc.5"></a>
+# [3.0.0-rc.5](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.4...v3.0.0-rc.5) (2018-05-11)
+
+
+### Bug Fixes
+
+* do not disable fullTemplateTypeCheck when ES5 downleveling ([#860](https://github.com/dherges/ng-packagr/issues/860)) ([dfa83f9](https://github.com/dherges/ng-packagr/commit/dfa83f9)), closes [#826](https://github.com/dherges/ng-packagr/issues/826) [#812](https://github.com/dherges/ng-packagr/issues/812) [#822](https://github.com/dherges/ng-packagr/issues/822) [#826](https://github.com/dherges/ng-packagr/issues/826)
+* don't override `baseUrl` ([#862](https://github.com/dherges/ng-packagr/issues/862)) ([769b091](https://github.com/dherges/ng-packagr/commit/769b091))
+
+
+### BREAKING CHANGES
+
+* `baseUrl` in `tsconfig` is not overridden anymore, thus non-relative module paths will be resolved relative to the `baseUrl` in `tsconfig.json`
+
+
+
 <a name="3.0.0-rc.4"></a>
 # [3.0.0-rc.4](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.3...v3.0.0-rc.4) (2018-05-10)
 
