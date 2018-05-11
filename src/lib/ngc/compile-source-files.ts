@@ -21,7 +21,7 @@ export async function compileSourceFiles(
   // ts.CompilerHost
   let tsCompilerHost = createCompilerHostForSynthesizedSourceFiles(sourceFiles, tsConfigOptions);
   if (declarationDir) {
-    tsCompilerHost = redirectWriteFileCompilerHost(tsCompilerHost, tsConfigOptions.baseUrl, declarationDir);
+    tsCompilerHost = redirectWriteFileCompilerHost(tsCompilerHost, tsConfigOptions.basePath, declarationDir);
   }
 
   // ng.CompilerHost
