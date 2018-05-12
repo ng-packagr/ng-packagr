@@ -172,7 +172,7 @@ export class NgEntryPoint {
    *
    * @link https://github.com/webpack/webpack/tree/master/examples/side-effects
    */
-  public get hasSideEffects(): boolean {
-    return this.packageJson['sideEffects'] === true;
+  public get sideEffects(): boolean | string[] {
+    return this.packageJson['sideEffects'] || false;
   }
 }
