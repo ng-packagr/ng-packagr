@@ -42,14 +42,10 @@ export class Node {
   public dependsOn(dependent: Node | Node[]) {
     const newDeps = dependent instanceof Array ? dependent : [dependent];
 
-    newDeps.forEach(dep => {
-      dep._dependees = dep._dependees.filter(d => d !== this).concat(this);
-    });
+    newDeps.forEach(dep => (dep._dependees = dep._dependees.filter(d => d.url !== this.url).concat(this)));
 
     this._dependents = this._dependents
-      .filter(existing => {
-        return newDeps.some(newDep => newDep !== existing);
-      })
+      .filter(existing => newDeps.some(newDep => newDep.url !== existing.url))
       .concat(newDeps);
   }
 }
