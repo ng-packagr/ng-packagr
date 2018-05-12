@@ -17,8 +17,8 @@ describe(`@sample/core`, () => {
       expect(BUNDLE).to.contain(`global.sample.core = {}`);
     });
 
-    it(`should import TS helpers from 'tslib'`, () => {
-      expect(BUNDLE).to.contain('tslib');
+    it(`should not import TS helpers from 'tslib'`, () => {
+      expect(BUNDLE).not.to.contain('tslib');
     });
   });
 

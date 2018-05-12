@@ -57,6 +57,10 @@ describe(`@sample/externals`, () => {
     it(`should embed 'template' function`, () => {
       expect(BUNDLE).to.contain('template(string, options, guard)');
     });
+
+    it(`should not import 'tslib`, () => {
+      expect(BUNDLE).to.not.contain("require('tslib')");
+    });
   });
 });
 
