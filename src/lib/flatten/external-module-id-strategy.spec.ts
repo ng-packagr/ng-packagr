@@ -31,8 +31,8 @@ describe(`rollup`, () => {
           expect(externalModuleIdStrategy.isExternalDependency('ui.core')).to.be.true;
         });
 
-        it(`should return 'true' for external module 'tslib'`, () => {
-          expect(externalModuleIdStrategy.isExternalDependency('tslib')).to.be.true;
+        it(`should return 'false' for external module 'tslib'`, () => {
+          expect(externalModuleIdStrategy.isExternalDependency('tslib')).to.be.false;
         });
       });
 
@@ -68,8 +68,8 @@ describe(`rollup`, () => {
           expect(externalModuleIdStrategy.isExternalDependency('ui.core')).to.be.true;
         });
 
-        it(`should return 'true' for external module 'tslib'`, () => {
-          expect(externalModuleIdStrategy.isExternalDependency('tslib')).to.be.true;
+        it(`should return 'false' for external module 'tslib'`, () => {
+          expect(externalModuleIdStrategy.isExternalDependency('tslib')).to.be.false;
         });
       });
     });

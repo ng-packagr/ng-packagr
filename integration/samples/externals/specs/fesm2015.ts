@@ -23,6 +23,10 @@ describe(`@sample/externals`, () => {
     it(`should import 'lodash.template`, () => {
       expect(BUNDLE).to.contain("from 'lodash.template'");
     });
+
+    it(`should import 'tslib`, () => {
+      expect(BUNDLE).to.contain("from 'tslib'");
+    });
   });
 });
 
