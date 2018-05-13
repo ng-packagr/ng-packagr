@@ -10,6 +10,13 @@ describe('@sample/apf', () => {
   });
 
   describe('dist', () => {
+    it('should contain a total of 115 files', () => {
+      // this is a safe guard / alternative to snapshots in order to
+      // protect ourselves from doing a change that will emit unexpected files.
+      const files = glob.sync(path.join(DIST, '**/*'));
+      expect(files.length).to.equals(115);
+    });
+
     it(`should not have a nested 'dist' folder`, () => {
       const dist = fs.existsSync(path.join(DIST, 'dist'));
       expect(dist).to.be.false;
@@ -114,17 +121,29 @@ describe('@sample/apf', () => {
     });
   });
 
-  describe('sample-apf.d.ts', () => {
-    it(`should exist`, () => {
-      const file = fs.existsSync(path.join(DIST, 'sample-apf.d.ts'));
-      expect(file).to.be.true;
+  describe('declarations', () => {
+    describe('sample-apf.d.ts', () => {
+      it(`should exist`, () => {
+        const file = fs.existsSync(path.join(DIST, 'sample-apf.d.ts'));
+        expect(file).to.be.true;
+      });
     });
-  });
 
-  describe('sample-apf-secondary.d.ts', () => {
-    it(`should exist`, () => {
-      const file = fs.existsSync(path.join(DIST, 'secondary', 'sample-apf-secondary.d.ts'));
-      expect(file).to.be.true;
+    describe('sample-apf-secondary.d.ts', () => {
+      it(`should exist`, () => {
+        const file = fs.existsSync(path.join(DIST, 'secondary', 'sample-apf-secondary.d.ts'));
+        expect(file).to.be.true;
+      });
+    });
+
+    describe('primary.component.d.ts', () => {
+      it(`should only exist in the dist/src`, () => {
+        let file = fs.existsSync(path.join(DIST, 'primary.component.d.ts'));
+        expect(file).to.be.false;
+
+        file = fs.existsSync(path.join(DIST, 'src', 'primary.component.d.ts'));
+        expect(file).to.be.true;
+      });
     });
   });
 });
