@@ -25,7 +25,7 @@ export class ExternalModuleIdStrategy {
       return false;
     }
 
-    const externals = this.getBundledDependencies();
+    const externals = this.getNonBundledDependencies();
     if (
       Array.isArray(externals)
         ? !externals.some(x => x === moduleId || moduleId.startsWith(`${x}/`))
@@ -40,13 +40,12 @@ export class ExternalModuleIdStrategy {
   /**
    * Returns a array of strings or a RegExp of non-bundled dependencies.
    */
-  getBundledDependencies(): string[] | RegExp {
+  getNonBundledDependencies(): string[] | RegExp {
     const { bundledDependencies = [], dependencies = [] } = this.dependencyList;
 
     // return catch all for when there are no 'bundledDependencies' is very important for secondary entry
     // as if this is not the case everything will be bundled in the secondary entry point
     // since no dependencies are defined.
-
     if (this.moduleFormat !== 'umd' || !bundledDependencies.length) {
       return /./; // catch all as external
     }
