@@ -19,7 +19,8 @@ export const transformComponent: (
   transformer: ComponentTransformer
 ) => ts.TransformerFactory<ts.SourceFile> = transformer => context => sourceFile => {
   // skip source files from 'node_modules' directory (third-party source)
-  if (sourceFile.fileName.includes('node_modules')) {
+  // 'ngfactory' and 'ngstyles' should also be skipped
+  if (/node_modules|\.ngfactory|\.ngstyle/.test(sourceFile.fileName)) {
     return sourceFile;
   }
 

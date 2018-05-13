@@ -1,4 +1,3 @@
-import * as fs from 'fs-extra';
 import * as ts from 'typescript';
 import * as path from 'path';
 
@@ -28,7 +27,7 @@ export function redirectWriteFileCompilerHost(
         const projectRelativePath = path.relative(baseDir, fileName);
         filePath = path.resolve(declarationDir, projectRelativePath);
       }
-      fs.outputFileSync(filePath, data);
+      compilerHost.writeFile(filePath, data, writeByteOrderMark, onError, sourceFiles);
     }
   };
 }
