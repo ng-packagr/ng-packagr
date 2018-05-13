@@ -61,7 +61,9 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
       // the options are here, to improve the build time
       declaration: false,
       declarationDir: undefined,
-      skipMetadataEmit: true
+      skipMetadataEmit: true,
+      skipTemplateCodegen: true,
+      strictMetadataEmit: false
     })
   ]);
 
