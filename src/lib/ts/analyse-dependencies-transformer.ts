@@ -19,10 +19,24 @@ export const analyseDependencies = (analyser: DependencyAnalyser) => (context: t
     return text.substring(1, text.length - 1);
   };
 
+  const findModuleIdFromExport = (node: ts.ExportDeclaration) => {
+    if (!node.moduleSpecifier) {
+      return undefined;
+    }
+
+    const text = node.moduleSpecifier.getText();
+
+    return text.substring(1, text.length - 1);
+  };
+
   const visitImports: ts.Visitor = node => {
     if (ts.isImportDeclaration(node)) {
       // Found an 'import ...' declaration
       const importedModuleId: string = findModuleIdFromImport(node);
+      analyser(node.getSourceFile(), importedModuleId);
+    } else if (ts.isExportDeclaration(node) && node.moduleSpecifier) {
+      // Found an 'export ... from ...' declaration
+      const importedModuleId: string = findModuleIdFromExport(node);
       analyser(node.getSourceFile(), importedModuleId);
     } else {
       return ts.visitEachChild(node, visitImports, context);
