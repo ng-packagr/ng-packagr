@@ -15,7 +15,6 @@ import {
 export const compileNgcTransform: Transform = transformFromPromise(async graph => {
   log.info(`Compiling TypeScript sources through ngc`);
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
-  const tsSources = entryPoint.find(isTypeScriptSources) as TypeScriptSourceNode;
   const tsConfig: TsConfig = entryPoint.data.tsConfig;
 
   // Add paths mappings for dependencies
@@ -40,12 +39,11 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
 
   // Compile TypeScript sources
   const { esm2015, esm5, declarations } = entryPoint.data.destinationFiles;
-  const previousTransform = tsSources.data;
 
   await Promise.all([
     compileSourceFiles(
-      tsSources.data.transformed,
       tsConfig,
+      entryPoint.dependents,
       {
         outDir: path.dirname(esm2015),
         declaration: true,
@@ -54,7 +52,7 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
       path.dirname(declarations)
     ),
 
-    compileSourceFiles(tsSources.data.transformed, tsConfig, {
+    compileSourceFiles(tsConfig, entryPoint.dependents, {
       outDir: path.dirname(esm5),
       target: ts.ScriptTarget.ES5,
       downlevelIteration: true,
@@ -66,8 +64,6 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
       strictMetadataEmit: false
     })
   ]);
-
-  previousTransform.dispose();
 
   return graph;
 });
