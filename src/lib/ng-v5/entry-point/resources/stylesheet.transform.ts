@@ -1,6 +1,5 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import stripBom = require('strip-bom');
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { NgEntryPoint } from '../../../ng-package-format/entry-point';
 import * as log from '../../../util/log';
