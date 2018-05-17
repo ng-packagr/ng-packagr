@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.4.5"></a>
+## [2.4.5](https://github.com/dherges/ng-packagr/compare/v2.4.4...v2.4.5) (2018-05-17)
+
+
+### Bug Fixes
+
+* create an array large enough to hold all buckets ([#877](https://github.com/dherges/ng-packagr/issues/877)) ([f4f616d](https://github.com/dherges/ng-packagr/commit/f4f616d))
+
+
+
 <a name="2.4.4"></a>
 ## [2.4.4](https://github.com/dherges/ng-packagr/compare/v2.4.3...v2.4.4) (2018-05-08)
 
