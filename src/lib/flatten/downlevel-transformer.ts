@@ -1,13 +1,4 @@
-import {
-  ModuleKind,
-  ScriptTarget,
-  createCompilerHost,
-  CompilerOptions,
-  createProgram,
-  formatDiagnostics,
-  transpileModule,
-  ModuleResolutionKind
-} from 'typescript';
+import { ModuleKind, ScriptTarget, CompilerOptions, transpileModule, ModuleResolutionKind } from 'typescript';
 import { RawSourceMap } from 'rollup';
 import * as path from 'path';
 

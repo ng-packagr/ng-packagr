@@ -1,5 +1,3 @@
-let NODE_COUNT = 0;
-
 export type NodeState = '' | 'dirty' | 'in-progress' | 'pending' | 'done';
 
 export const STATE_DIRTY: NodeState = 'dirty';

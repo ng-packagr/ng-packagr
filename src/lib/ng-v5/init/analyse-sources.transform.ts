@@ -1,55 +1,67 @@
+import * as ng from '@angular/compiler-cli';
+import * as path from 'path';
 import { pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as log from '../../util/log';
 import { Transform } from '../../brocc/transform';
-import { transformSourceFiles } from '../../ngc/transform-source-files';
-import { analyseDependencies } from '../../ts/analyse-dependencies-transformer';
-import { transformComponentSourceFiles } from '../../ts/ng-component-transformer';
-import { isEntryPoint, TemplateNode, StylesheetNode, TypeScriptSourceNode, fileUrl, tsUrl } from '../nodes';
+import { isEntryPoint, isPackage, PackageNode, EntryPointNode } from '../nodes';
+import { cacheCompilerHost } from '../../ts/cache-compiler-host';
 
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {
     const entryPoints = graph.filter(isEntryPoint);
-    for (let entryPoint of entryPoints) {
-      log.debug(`Analysing sources for ${entryPoint.data.entryPoint.moduleId}`);
+    const ngPkg = graph.find(isPackage) as PackageNode;
+    const { moduleResolutionCache } = ngPkg;
 
-      // Extracts templateUrl and styleUrls from `@Component({..})` decorators.
-      const extractResources = transformComponentSourceFiles({
-        template: ({ templateFilePath }) => {
-          const templateNode = new TemplateNode(fileUrl(templateFilePath));
-          graph.put(templateNode);
+    const analyseEntryPoint = (entryPoint: EntryPointNode) => {
+      const { tsConfig } = entryPoint.data;
+      const { analysisFileCache, resourcesFileCache } = entryPoint.cache;
+      const { moduleId, entryFilePath } = entryPoint.data.entryPoint;
+      log.debug(`Analysing sources for ${moduleId}`);
 
-          // mark that entryPoint depends on node
-          entryPoint.dependsOn(templateNode);
+      let compilerHost = cacheCompilerHost(
+        tsConfig.options,
+        analysisFileCache,
+        resourcesFileCache,
+        moduleResolutionCache
+      );
+
+      const { moduleNameToFileName, readResource } = compilerHost;
+
+      compilerHost = {
+        ...compilerHost,
+        moduleNameToFileName: (moduleName: string, containingFile: string) => {
+          const resolvedModule: string = moduleNameToFileName.call(this, moduleName, containingFile);
+          let dep = entryPoints.find(ep => ep.data.entryPoint.moduleId === moduleName);
+
+          if (dep) {
+            log.debug(
+              `Found entry point dependency: ${entryPoint.data.entryPoint.moduleId} -> ${dep.data.entryPoint.moduleId}`
+            );
+            entryPoint.dependsOn(dep);
+          }
+
+          return resolvedModule;
         },
-        stylesheet: ({ styleFilePath }) => {
-          const stylesheetNode = new StylesheetNode(fileUrl(styleFilePath));
-          graph.put(stylesheetNode);
-
-          // mark that entryPoint depends on node
-          entryPoint.dependsOn(stylesheetNode);
+        readResource: (fileName: string) => {
+          readResource.call(this, fileName);
+          return '';
         }
+      };
+
+      const program: ng.Program = ng.createProgram({
+        rootNames: tsConfig.rootNames,
+        options: tsConfig.options,
+        host: compilerHost
       });
 
-      // Extract TypeScript dependencies from source text (`import .. from 'moduleId'`)
-      const extractDependencies = analyseDependencies((sourceFile, moduleId) => {
-        log.debug(`Found dependency in ${sourceFile.fileName}: ${moduleId}`);
-        const dep = entryPoints.find(ep => ep.data.entryPoint.moduleId === moduleId);
-        if (dep) {
-          log.debug(
-            `Found entry point dependency: ${entryPoint.data.entryPoint.moduleId} -> ${dep.data.entryPoint.moduleId}`
-          );
-          entryPoint.dependsOn(dep);
-        }
-      });
+      const diagnostics = program.getNgStructuralDiagnostics();
+      if (diagnostics.length) {
+        throw new Error(ng.formatDiagnostics(diagnostics));
+      }
+    };
 
-      // TODO: a typescript `SourceFile` may also be added as individual nod to the graph
-      const tsSourcesNode = new TypeScriptSourceNode(tsUrl(entryPoint.data.entryPoint.moduleId));
-      tsSourcesNode.data = transformSourceFiles(entryPoint.data.tsConfig, [extractResources, extractDependencies]);
-      graph.put(tsSourcesNode);
-      entryPoint.dependsOn(tsSourcesNode);
-    }
-
+    entryPoints.forEach(analyseEntryPoint);
     return graph;
   })
 );

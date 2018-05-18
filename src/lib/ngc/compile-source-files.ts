@@ -2,15 +2,18 @@ import * as fs from 'fs-extra';
 import * as ng from '@angular/compiler-cli';
 import * as ts from 'typescript';
 import * as path from 'path';
-import { createCompilerHostForSynthesizedSourceFiles } from '../ts/synthesized-compiler-host';
 import { TsConfig } from '../ts/tsconfig';
 import * as log from '../util/log';
 import { createEmitCallback } from './create-emit-callback';
 import { redirectWriteFileCompilerHost } from '../ts/redirect-write-file-compiler-host';
+import { cacheCompilerHost } from '../ts/cache-compiler-host';
+import { FileCache } from '../file/file-cache';
 
 export async function compileSourceFiles(
-  sourceFiles: ts.SourceFile[],
   tsConfig: TsConfig,
+  sourcesFileCache: FileCache,
+  resourcesFileCache: FileCache,
+  moduleResolutionCache: ts.ModuleResolutionCache,
   extraOptions?: Partial<ng.CompilerOptions>,
   declarationDir?: string
 ) {
@@ -18,8 +21,7 @@ export async function compileSourceFiles(
 
   const tsConfigOptions: ng.CompilerOptions = { ...tsConfig.options, ...extraOptions };
 
-  // ts.CompilerHost
-  let tsCompilerHost = createCompilerHostForSynthesizedSourceFiles(sourceFiles, tsConfigOptions);
+  let tsCompilerHost = cacheCompilerHost(tsConfigOptions, sourcesFileCache, resourcesFileCache, moduleResolutionCache);
   if (declarationDir) {
     tsCompilerHost = redirectWriteFileCompilerHost(tsCompilerHost, tsConfigOptions.basePath, declarationDir);
   }
@@ -30,21 +32,22 @@ export async function compileSourceFiles(
     tsHost: tsCompilerHost
   });
 
-  // ngc
-  const result = ng.performCompilation({
+  const program = ng.createProgram({
     rootNames: tsConfig.rootNames,
     options: tsConfigOptions,
-    emitCallback: createEmitCallback(tsConfigOptions),
-    emitFlags: tsConfig.emitFlags,
     host: ngCompilerHost
   });
 
-  const flatModuleFile = tsConfigOptions.flatModuleOutFile;
-  const flatModuleFileExtension = path.extname(flatModuleFile);
+  const result = program.emit({
+    emitCallback: createEmitCallback(tsConfigOptions),
+    emitFlags: tsConfig.emitFlags
+  });
 
   // XX(hack): redirect the `*.metadata.json` to the correct outDir
   // @link https://github.com/angular/angular/pull/21787
   if (declarationDir) {
+    const flatModuleFile = tsConfigOptions.flatModuleOutFile;
+    const flatModuleFileExtension = path.extname(flatModuleFile);
     const metadataBundleFile = flatModuleFile.replace(flatModuleFileExtension, '.metadata.json');
     const metadataSrc = path.resolve(tsConfigOptions.declarationDir, metadataBundleFile);
     const metadataDest = path.resolve(declarationDir, metadataBundleFile);

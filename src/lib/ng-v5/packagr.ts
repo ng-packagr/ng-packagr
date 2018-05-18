@@ -1,6 +1,6 @@
 import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
 import { of as observableOf } from 'rxjs';
-import { take, map, catchError } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { BuildGraph } from '../brocc/build-graph';
 import { Transform } from '../brocc/transform';
 import { TsConfig } from '../ts/tsconfig';
@@ -9,6 +9,7 @@ import { provideTsConfig } from './init/init-tsconfig.di';
 import { ENTRY_POINT_PROVIDERS } from './entry-point.di';
 import { PACKAGE_TRANSFORM, PACKAGE_PROVIDERS } from './package.di';
 import { provideProject } from './project.di';
+import { provideOptions, NgPackagrOptions } from './options.di';
 
 /**
  * The original ng-packagr implemented on top of a rxjs-ified and di-jectable transformation pipeline.
@@ -21,6 +22,18 @@ export class NgPackagr {
   private buildTransform: InjectionToken<Transform> = PACKAGE_TRANSFORM.provide;
 
   constructor(private providers: Provider[]) {}
+
+  /**
+   * Adds options to ng-packagr
+   *
+   * @param options Ng Packagr Options
+   * @return Self instance for fluent API
+   */
+  public withOptions(options: NgPackagrOptions): NgPackagr {
+    this.providers.push(provideOptions(options));
+
+    return this;
+  }
 
   /**
    * Sets the path to the user's "ng-package" file (either `package.json`, `ng-package.json`, or `ng-package.js`)
@@ -83,13 +96,12 @@ export class NgPackagr {
     return observableOf(new BuildGraph())
       .pipe(
         buildTransformOperator,
-        take(1),
         catchError(err => {
           // Report error and re-throw to subscribers
           log.error(err);
           throw err;
         }),
-        map(() => {})
+        map(() => undefined)
       )
       .toPromise();
   }

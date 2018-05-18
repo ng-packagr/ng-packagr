@@ -7,7 +7,7 @@ import { ensureUnixPath } from '../../util/path';
 import { rimraf } from '../../util/rimraf';
 import * as log from '../../util/log';
 import { globFiles } from '../../util/glob';
-import { isEntryPointInProgress, EntryPointNode, isEntryPointDirty } from '../nodes';
+import { EntryPointNode, isEntryPointInProgress } from '../nodes';
 import { copyFiles } from '../../util/copy';
 
 export const writePackageTransform: Transform = transformFromPromise(async graph => {

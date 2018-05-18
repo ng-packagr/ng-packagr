@@ -25,8 +25,6 @@ export const writeBundlesTransform: Transform = pipe(
         return prev;
       }, {});
 
-    const { bundledDependencies, dependencies = {}, peerDependencies = {} } = entryPoint.data.entryPoint.packageJson;
-
     const opts: FlattenOpts = {
       destFile: '',
       entryFile: '',

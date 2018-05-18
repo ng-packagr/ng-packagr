@@ -4,6 +4,8 @@ import { ParsedConfiguration } from '@angular/compiler-cli/src/perform_compile';
 import * as path from 'path';
 import * as ts from 'typescript';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
+import { EntryPointNode } from '../ng-v5/nodes';
+import * as log from '../util/log';
 
 /**
  * TypeScript configuration used internally (marker typer).
@@ -40,59 +42,83 @@ export function createDefaultTsConfig(values?: TsConfig | string): TsConfig {
  * Initializes TypeScript Compiler options and Angular Compiler options by overriding the
  * default config with entry point-specific values.
  */
-export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoint: NgEntryPoint): TsConfig => {
-  const basePath = path.dirname(entryPoint.entryFilePath);
+export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoints: EntryPointNode[]) => {
+  entryPoints.forEach(currentEntryPoint => {
+    const { entryPoint } = currentEntryPoint.data;
+    log.debug(`Initializing tsconfig for ${entryPoint.moduleId}`);
+    const basePath = path.dirname(entryPoint.entryFilePath);
 
-  // Resolve defaults from DI token and create a deep copy of the defaults
-  let tsConfig: TsConfig = JSON.parse(JSON.stringify(defaultTsConfig));
+    // Resolve defaults from DI token and create a deep copy of the defaults
+    let tsConfig: TsConfig = JSON.parse(JSON.stringify(defaultTsConfig));
 
-  // minimal compilerOptions needed in order to avoid errors, with their associated default values
-  // some are not overrided in order to keep the default associated TS errors if the user choose to set incorrect values
-  const requiredOptions: Partial<ts.CompilerOptions> = {
-    emitDecoratorMetadata: true,
-    experimentalDecorators: true,
-    moduleResolution: ts.ModuleResolutionKind.NodeJs,
-    target: ts.ScriptTarget.ES2015,
-    declaration: true,
-    lib: ['dom', 'es2015']
-  };
+    // minimal compilerOptions needed in order to avoid errors, with their associated default values
+    // some are not overrided in order to keep the default associated TS errors if the user choose to set incorrect values
+    const requiredOptions: Partial<ts.CompilerOptions> = {
+      emitDecoratorMetadata: true,
+      experimentalDecorators: true,
+      moduleResolution: ts.ModuleResolutionKind.NodeJs,
+      target: ts.ScriptTarget.ES2015,
+      declaration: true,
+      lib: ['dom', 'es2015']
+    };
 
-  const overrideConfig: Partial<TsConfig> = {
-    rootNames: [entryPoint.entryFilePath],
-    options: {
-      flatModuleId: entryPoint.moduleId,
-      flatModuleOutFile: `${entryPoint.flatModuleFile}.js`,
-      basePath: basePath,
-      rootDir: basePath,
-      outDir: '',
-      lib: entryPoint.languageLevel ? entryPoint.languageLevel.map(lib => `lib.${lib}.d.ts`) : tsConfig.options.lib,
-      // setting this as basedir will rewire triple-slash references
-      declarationDir: basePath,
-      // required in order to avoid "ENOENT: no such file or directory, .../.ng_pkg_build/..." errors when using the programmatic API
-      inlineSources: true,
-      // setting the below here because these are a must have with these valus
-      inlineSourceMap: true,
-      sourceMap: false,
-      sourceRoot: `ng://${entryPoint.moduleId}`
+    const overrideConfig: Partial<TsConfig> = {
+      rootNames: [entryPoint.entryFilePath],
+      options: {
+        flatModuleId: entryPoint.moduleId,
+        flatModuleOutFile: `${entryPoint.flatModuleFile}.js`,
+        basePath: basePath,
+        rootDir: basePath,
+        outDir: '',
+        lib: entryPoint.languageLevel ? entryPoint.languageLevel.map(lib => `lib.${lib}.d.ts`) : tsConfig.options.lib,
+        // setting this as basedir will rewire triple-slash references
+        declarationDir: basePath,
+        // required in order to avoid "ENOENT: no such file or directory, .../.ng_pkg_build/..." errors when using the programmatic API
+        inlineSources: true,
+        // setting the below here because these are a must have with these valus
+        inlineSourceMap: true,
+        sourceMap: false,
+        sourceRoot: `ng://${entryPoint.moduleId}`
+      }
+    };
+
+    tsConfig.rootNames = overrideConfig.rootNames;
+    tsConfig.options = { ...requiredOptions, ...tsConfig.options, ...overrideConfig.options };
+
+    switch (entryPoint.jsxConfig) {
+      case 'preserve':
+        tsConfig.options.jsx = ts.JsxEmit.Preserve;
+        break;
+      case 'react':
+        tsConfig.options.jsx = ts.JsxEmit.React;
+        break;
+      case 'react-native':
+        tsConfig.options.jsx = ts.JsxEmit.ReactNative;
+        break;
+      default:
+        break;
     }
-  };
 
-  tsConfig.rootNames = overrideConfig.rootNames;
-  tsConfig.options = { ...requiredOptions, ...tsConfig.options, ...overrideConfig.options };
+    // Add paths mappings for dependencies
+    const entryPointDeps = entryPoints.filter(x => x.data.entryPoint.moduleId !== entryPoint.moduleId);
+    if (entryPointDeps.length > 0) {
+      if (!tsConfig.options.paths) {
+        tsConfig.options.paths = {};
+      }
 
-  switch (entryPoint.jsxConfig) {
-    case 'preserve':
-      tsConfig.options.jsx = ts.JsxEmit.Preserve;
-      break;
-    case 'react':
-      tsConfig.options.jsx = ts.JsxEmit.React;
-      break;
-    case 'react-native':
-      tsConfig.options.jsx = ts.JsxEmit.ReactNative;
-      break;
-    default:
-      break;
-  }
+      for (let dep of entryPointDeps) {
+        const { entryPoint, destinationFiles } = dep.data;
+        const { moduleId, entryFilePath } = entryPoint;
+        const mappedPath = [destinationFiles.declarations, entryFilePath];
 
-  return tsConfig;
+        if (!tsConfig.options.paths[moduleId]) {
+          tsConfig.options.paths[moduleId] = mappedPath;
+        } else {
+          tsConfig.options.paths[moduleId].concat(mappedPath);
+        }
+      }
+    }
+
+    currentEntryPoint.data.tsConfig = tsConfig;
+  });
 };
