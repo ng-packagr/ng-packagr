@@ -1,6 +1,4 @@
 import { InjectionToken, ValueProvider, Provider } from 'injection-js';
-import { Transform } from '../brocc/transform';
-import { TransformProvider, provideTransform } from '../brocc/transform.di';
 
 export const OPTIONS_TOKEN = new InjectionToken<NgPackagrOptions>(`ng.v5.options`);
 export interface NgPackagrOptions {

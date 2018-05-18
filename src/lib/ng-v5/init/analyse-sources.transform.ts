@@ -1,5 +1,4 @@
 import * as ng from '@angular/compiler-cli';
-import * as path from 'path';
 import { pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as log from '../../util/log';
@@ -16,7 +15,7 @@ export const analyseSourcesTransform: Transform = pipe(
     const analyseEntryPoint = (entryPoint: EntryPointNode) => {
       const { tsConfig } = entryPoint.data;
       const { analysisFileCache, resourcesFileCache } = entryPoint.cache;
-      const { moduleId, entryFilePath } = entryPoint.data.entryPoint;
+      const { moduleId } = entryPoint.data.entryPoint;
       log.debug(`Analysing sources for ${moduleId}`);
 
       let compilerHost = cacheCompilerHost(

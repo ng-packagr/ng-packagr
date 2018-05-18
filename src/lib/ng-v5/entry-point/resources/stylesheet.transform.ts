@@ -3,7 +3,6 @@ import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { NgEntryPoint } from '../../../ng-package-format/entry-point';
 import * as log from '../../../util/log';
 import { CssUrl } from '../../../ng-package-format/shared';
-import { CacheEntry } from '../../../file/file-cache';
 import { isEntryPointInProgress, isPackage, EntryPointNode } from '../../nodes';
 
 // CSS Tools
