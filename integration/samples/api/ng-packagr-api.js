@@ -3,7 +3,7 @@ const path = require('path');
 
 ngPackage
   .ngPackagr()
-  .forProject(path.join(__dirname, 'ng-package.js'))
+  .forProject(path.join(__dirname, 'ng-package-config.js'))
   .withTsConfig(path.join(__dirname, 'tsconfig.ngc.json'))
   .build()
   .catch(error => {
