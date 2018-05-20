@@ -36,9 +36,11 @@ export const analyseSourcesTransform: Transform = pipe(
         log.debug(`Found dependency in ${sourceFile.fileName}: ${moduleId}`);
         const dep = entryPoints.find(ep => ep.data.entryPoint.moduleId === moduleId);
         if (dep) {
-          log.debug(
-            `Found entry point dependency: ${entryPoint.data.entryPoint.moduleId} -> ${dep.data.entryPoint.moduleId}`
-          );
+          if (entryPoint.data.entryPoint.moduleId === moduleId) {
+            throw new Error(`Entry point ${moduleId} has a circular dependency on itself.`);
+          }
+
+          log.debug(`Found entry point dependency: ${entryPoint.data.entryPoint.moduleId} -> ${moduleId}`);
           entryPoint.dependsOn(dep);
         }
       });
