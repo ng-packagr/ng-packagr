@@ -52,7 +52,7 @@ export class FileCache {
     return this.cache.has(this.normalizeKey(fileName));
   }
 
-  get(fileName: string): CacheEntry {
+  getOrCreate(fileName: string): CacheEntry {
     const normalizedKey = this.normalizeKey(fileName);
     let entry = this.cache.get(normalizedKey);
 

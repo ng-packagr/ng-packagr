@@ -17,7 +17,7 @@ export function cacheCompilerHost(
 
     // ts specific
     fileExists: (fileName: string) => {
-      const cache = sourcesFileCache.get(fileName);
+      const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.exists === undefined) {
         cache.exists = compilerHost.fileExists.call(this, fileName);
       }
@@ -25,7 +25,7 @@ export function cacheCompilerHost(
     },
 
     getSourceFile: (fileName: string, languageVersion: ts.ScriptTarget) => {
-      const cache = sourcesFileCache.get(fileName);
+      const cache = sourcesFileCache.getOrCreate(fileName);
       if (!cache.sourceFile) {
         cache.sourceFile = compilerHost.getSourceFile.call(this, fileName, languageVersion);
       }
@@ -33,7 +33,7 @@ export function cacheCompilerHost(
     },
 
     readFile: (fileName: string) => {
-      const cache = sourcesFileCache.get(fileName);
+      const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.content === undefined) {
         cache.content = compilerHost.readFile.call(this, fileName);
       }
@@ -58,7 +58,7 @@ export function cacheCompilerHost(
     },
 
     readResource: (fileName: string) => {
-      const cache = resourcesFileCache.get(fileName);
+      const cache = resourcesFileCache.getOrCreate(fileName);
       if (cache.content === undefined) {
         // todo: transform styles here.
         // the empty string is needed because of include paths file's won't be resolved properly.

@@ -39,7 +39,7 @@ export const stylesheetTransform: Transform = transformFromPromise(async graph =
   const postCssProcessor = createPostCssProcessor(ngPkg.data.basePath, entryPoint.data.entryPoint.cssUrl);
 
   for (let filePath of stylesheetPaths) {
-    const cachedData = resourcesFileCache.get(filePath);
+    const cachedData = resourcesFileCache.getOrCreate(filePath);
     // Render pre-processor language (sass, styl, less)
     const renderedCss: string = await renderPreProcessor(
       filePath,

@@ -6,14 +6,14 @@ describe('FileCache', () => {
 
   beforeEach(() => {
     cache = new FileCache();
-    cache.get('/component/component-primary.ts');
-    cache.get('/component/component-primary.html');
-    cache.get('/component/component-primary.scss');
-    cache.get('/service/component-service.ts');
+    cache.getOrCreate('/component/component-primary.ts');
+    cache.getOrCreate('/component/component-primary.html');
+    cache.getOrCreate('/component/component-primary.scss');
+    cache.getOrCreate('/service/component-service.ts');
   });
 
   it('should return an empty object when file is not found', () => {
-    expect(cache.get('not-available')).to.ok;
+    expect(cache.getOrCreate('not-available')).to.ok;
   });
 
   it(`should delete only a single with default 'DeleteStrategy'`, () => {
