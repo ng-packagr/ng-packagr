@@ -60,7 +60,9 @@ export class EntryPointNode extends Node {
   cache = {
     analysisFileCache: new FileCache(),
     compilationFileCache: new FileCache(),
-    resourcesFileCache: new FileCache()
+    resourcesFileCache: new FileCache(),
+    moduleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
+    analysisModuleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s)
   };
 
   data: {
@@ -72,6 +74,5 @@ export class EntryPointNode extends Node {
 
 export class PackageNode extends Node {
   readonly type = TYPE_NG_PACKAGE;
-  readonly moduleResolutionCache = ts.createModuleResolutionCache(process.cwd(), s => s);
   data: NgPackage;
 }

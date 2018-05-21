@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'ng-component',
-  template: '<h1>Angular!</h1>',
+  template: '<h1>{{title}}</h1>',
   styleUrls: ['./angular.component.scss']
 })
-export class AngularComponent {}
+export class AngularComponent {
+  @Input() title = 'Angular';
+}
