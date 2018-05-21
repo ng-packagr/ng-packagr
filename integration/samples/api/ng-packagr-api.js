@@ -5,7 +5,6 @@ ngPackage
   .ngPackagr()
   .forProject(path.join(__dirname, 'ng-package.js'))
   .withTsConfig(path.join(__dirname, 'tsconfig.ngc.json'))
-  .withOptions({ watch: true })
   .build()
   .catch(error => {
     console.error(error);

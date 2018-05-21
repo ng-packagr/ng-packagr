@@ -39,6 +39,7 @@ export async function compileSourceFiles(
   });
 
   // Don't use `ng.emit` as it doesn't output all errors.
+  // https://github.com/angular/angular/issues/24024
   const result = ng.performCompilation({
     rootNames: tsConfig.rootNames,
     options: tsConfigOptions,
