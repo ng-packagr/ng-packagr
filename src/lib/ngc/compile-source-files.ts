@@ -57,7 +57,7 @@ export async function compileSourceFiles(
     const metadataSrc = path.resolve(tsConfigOptions.declarationDir, metadataBundleFile);
     const metadataDest = path.resolve(declarationDir, metadataBundleFile);
     if (metadataDest !== metadataSrc && fs.existsSync(metadataSrc)) {
-      await fs.move(metadataSrc, metadataDest, { overwrite: true });
+      fs.moveSync(metadataSrc, metadataDest, { overwrite: true });
     }
   }
 
