@@ -8,12 +8,13 @@ import { createEmitCallback } from './create-emit-callback';
 import { redirectWriteFileCompilerHost } from '../ts/redirect-write-file-compiler-host';
 import { cacheCompilerHost } from '../ts/cache-compiler-host';
 import { FileCache } from '../file/file-cache';
+import { StylesheetProcessor } from '../ng-v5/entry-point/resources/stylesheet-processor';
 
 export async function compileSourceFiles(
   tsConfig: TsConfig,
   sourcesFileCache: FileCache,
-  resourcesFileCache: FileCache,
   moduleResolutionCache: ts.ModuleResolutionCache,
+  stylesheetProcessor: StylesheetProcessor,
   extraOptions?: Partial<ng.CompilerOptions>,
   declarationDir?: string
 ) {
@@ -21,7 +22,7 @@ export async function compileSourceFiles(
 
   const tsConfigOptions: ng.CompilerOptions = { ...tsConfig.options, ...extraOptions };
 
-  let tsCompilerHost = cacheCompilerHost(tsConfigOptions, sourcesFileCache, resourcesFileCache, moduleResolutionCache);
+  let tsCompilerHost = cacheCompilerHost(tsConfigOptions, sourcesFileCache, moduleResolutionCache, stylesheetProcessor);
   if (declarationDir) {
     tsCompilerHost = redirectWriteFileCompilerHost(tsCompilerHost, tsConfigOptions.basePath, declarationDir);
   }

@@ -14,33 +14,17 @@ export const analyseSourcesTransform: Transform = pipe(
 
     const analyseEntryPoint = (entryPoint: EntryPointNode) => {
       const { tsConfig } = entryPoint.data;
-      const { analysisFileCache, resourcesFileCache, analysisModuleResolutionCache } = entryPoint.cache;
+      const { analysisFileCache, analysisModuleResolutionCache } = entryPoint.cache;
       const { moduleId } = entryPoint.data.entryPoint;
       log.debug(`Analysing sources for ${moduleId}`);
 
-      let compilerHost = cacheCompilerHost(
-        tsConfig.options,
-        analysisFileCache,
-        resourcesFileCache,
-        analysisModuleResolutionCache
-      );
+      let compilerHost = cacheCompilerHost(tsConfig.options, analysisFileCache, analysisModuleResolutionCache);
 
       const { readResource } = compilerHost;
 
       compilerHost = {
         ...compilerHost,
-        // todo: we cannot use the below due to https://github.com/angular/angular/issues/24010
-        // moduleNameToFileName: (moduleName: string, containingFile: string) => {
-        //   const resolvedModule: string = moduleNameToFileName.call(this, moduleName, containingFile);
-        //   if (!moduleName.startsWith('.') && !containingFile.includes('node_modules')) {
-        //     moduleDependencies.push(moduleName);
-        //   }
-        //   return resolvedModule;
-        // },
-        readResource: (fileName: string) => {
-          readResource.call(this, fileName);
-          return '';
-        }
+        readResource: () => ''
       };
 
       const program: ng.Program = ng.createProgram({

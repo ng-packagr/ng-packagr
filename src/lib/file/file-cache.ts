@@ -5,8 +5,6 @@ export interface CacheEntry {
   exists?: boolean;
   sourceFile?: ts.SourceFile;
   content?: string;
-  /** This is mainly used for post transformation such as for SCSS, Stylus and Less */
-  processedContent?: string;
 }
 
 export const enum DeleteStrategy {

@@ -103,15 +103,13 @@ const watchTransformFactory = (
           graph.filter(isEntryPoint).forEach((node: EntryPointNode) => {
             node.state = 'dirty';
 
-            const { analysisFileCache, resourcesFileCache, compilationFileCache } = node.cache;
+            const { analysisFileCache, compilationFileCache } = node.cache;
             const { filePath } = fileChange;
 
             if (fileChange.event === 'unlinkDir') {
-              resourcesFileCache.delete(filePath, DeleteStrategy.PartialMatch);
               analysisFileCache.delete(filePath, DeleteStrategy.PartialMatch);
               compilationFileCache.delete(filePath, DeleteStrategy.PartialMatch);
             } else {
-              resourcesFileCache.delete(filePath);
               analysisFileCache.delete(filePath);
               compilationFileCache.delete(filePath);
             }

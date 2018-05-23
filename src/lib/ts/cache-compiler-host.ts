@@ -3,12 +3,13 @@ import * as ng from '@angular/compiler-cli';
 import * as path from 'path';
 import { ensureUnixPath } from '../util/path';
 import { FileCache } from '../file/file-cache';
+import { StylesheetProcessor } from '../ng-v5/entry-point/resources/stylesheet-processor';
 
 export function cacheCompilerHost(
   compilerOptions: ng.CompilerOptions,
   sourcesFileCache: FileCache,
-  resourcesFileCache: FileCache,
-  moduleResolutionCache: ts.ModuleResolutionCache
+  moduleResolutionCache: ts.ModuleResolutionCache,
+  stylesheetProcessor?: StylesheetProcessor
 ): ng.CompilerHost {
   const compilerHost = ng.createCompilerHost({ options: compilerOptions });
 
@@ -58,15 +59,18 @@ export function cacheCompilerHost(
     },
 
     readResource: (fileName: string) => {
-      const cache = resourcesFileCache.getOrCreate(fileName);
+      const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.content === undefined) {
         // todo: transform styles here.
         // the empty string is needed because of include paths file's won't be resolved properly.
         cache.content = compilerHost.readFile.call(this, fileName);
+        if (!/(html|htm)$/.test(path.extname(fileName))) {
+          cache.content = stylesheetProcessor.process(fileName, cache.content);
+        }
         cache.exists = true;
       }
 
-      return cache.processedContent || cache.content;
+      return cache.content;
     }
   };
 }

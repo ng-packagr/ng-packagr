@@ -60,7 +60,6 @@ export class EntryPointNode extends Node {
   cache = {
     analysisFileCache: new FileCache(),
     compilationFileCache: new FileCache(),
-    resourcesFileCache: new FileCache(),
     moduleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
     analysisModuleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s)
   };
