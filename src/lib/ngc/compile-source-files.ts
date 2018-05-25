@@ -33,20 +33,14 @@ export async function compileSourceFiles(
     tsHost: tsCompilerHost
   });
 
-  const program = ng.createProgram({
-    rootNames: tsConfig.rootNames,
-    options: tsConfigOptions,
-    host: ngCompilerHost
-  });
-
   // Don't use `ng.emit` as it doesn't output all errors.
   // https://github.com/angular/angular/issues/24024
   const result = ng.performCompilation({
     rootNames: tsConfig.rootNames,
     options: tsConfigOptions,
+    host: ngCompilerHost,
     emitCallback: createEmitCallback(tsConfigOptions),
-    emitFlags: tsConfig.emitFlags,
-    host: ngCompilerHost
+    emitFlags: tsConfig.emitFlags
   });
 
   // XX(hack): redirect the `*.metadata.json` to the correct outDir
