@@ -1,5 +1,5 @@
 import { SchemaClassFactory } from '@ngtools/json-schema';
-import { pathExists, readJson, lstat } from 'fs-extra';
+import { pathExistsSync, lstat } from 'fs-extra';
 import * as path from 'path';
 import * as log from '../util/log';
 import { ensureUnixPath } from '../util/path';
@@ -16,9 +16,6 @@ const NgPackageSchemaClass = SchemaClassFactory<NgPackageConfig>(ngPackageSchema
 /** Instantiates a concrete schema from `NgPackageConfig` */
 const instantiateSchemaClass = (ngPackageJson: NgPackageConfig) => new NgPackageSchemaClass(ngPackageJson);
 
-const fileExists = async (pathLike: string): Promise<boolean> =>
-  (await pathExists(pathLike)) && (await lstat(pathLike)).isFile();
-
 interface UserPackage {
   packageJson: object;
   ngPackageJson: object;
@@ -32,25 +29,24 @@ interface UserPackage {
  * @return The user's package
  */
 const resolveUserPackage = async (folderPathOrFilePath: string): Promise<UserPackage | undefined> => {
-  const pathStats = await lstat(folderPathOrFilePath);
-  const fullPath = path.isAbsolute(folderPathOrFilePath) ? folderPathOrFilePath : path.resolve(folderPathOrFilePath);
+  const readConfigFile = async (filePath: string) => (pathExistsSync(filePath) ? import(filePath) : undefined);
+  const fullPath = path.resolve(folderPathOrFilePath);
+  const pathStats = await lstat(fullPath);
   const basePath = pathStats.isDirectory() ? fullPath : path.dirname(fullPath);
-
-  const packageJson = await readJson(path.join(basePath, 'package.json'));
-  const ngPackageJsonPath = path.join(basePath, 'ng-package.json');
-  const ngPackageJsPath = path.join(basePath, 'ng-package.js');
+  const packageJson = await readConfigFile(path.join(basePath, 'package.json'));
 
   let ngPackageJson: undefined | object;
 
   if (packageJson['ngPackage']) {
     // Read `ngPackage` from `package.json`
     ngPackageJson = { ...packageJson['ngPackage'] };
-  } else if (await fileExists(ngPackageJsonPath)) {
-    // Read 'ng-package.json' file
-    ngPackageJson = await readJson(ngPackageJsonPath);
-  } else if (await fileExists(ngPackageJsPath)) {
-    // Dynamic `require('<path>') the given file
-    ngPackageJson = await import(ngPackageJsPath);
+  } else if (pathStats.isDirectory()) {
+    ngPackageJson = await readConfigFile(path.join(basePath, 'ng-package.json'));
+    if (!ngPackageJson) {
+      ngPackageJson = await readConfigFile(path.join(basePath, 'ng-package.js'));
+    }
+  } else {
+    ngPackageJson = await readConfigFile(fullPath);
   }
 
   if (ngPackageJson) {
@@ -58,7 +54,7 @@ const resolveUserPackage = async (folderPathOrFilePath: string): Promise<UserPac
       basePath,
       packageJson,
       ngPackageJson
-    } as UserPackage;
+    };
   }
 
   if (pathStats.isDirectory()) {
