@@ -98,7 +98,7 @@ export class PackageNode extends Node {
 export class StylesheetNode extends Node {
   public readonly type = TYPE_STYLESHEET;
 
-  data: { content?: string };
+  data: { content?: string; source?: string };
 }
 
 export class TemplateNode extends Node {

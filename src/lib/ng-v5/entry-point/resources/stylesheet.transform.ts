@@ -1,6 +1,5 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import stripBom = require('strip-bom');
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { NgEntryPoint } from '../../../ng-package-format/entry-point';
 import * as log from '../../../util/log';
@@ -33,19 +32,22 @@ export const stylesheetTransform: Transform = transformFromPromise(async graph =
   const postCssProcessor = createPostCssProcessor(ngPkg.data.basePath, entryPoint.data.entryPoint.cssUrl);
 
   for (let stylesheetNode of stylesheetNodes) {
-    const filePath: string = fileUrlPath(stylesheetNode.url);
+    const { data, url } = stylesheetNode;
+    const filePath: string = fileUrlPath(url);
 
     // Render pre-processor language (sass, styl, less)
-    const renderedCss: string = await renderPreProcessor(filePath, ngPkg.data.basePath, entryPoint.data.entryPoint);
+    const renderedCss: string = await renderPreProcessor(
+      filePath,
+      data.source,
+      ngPkg.data.basePath,
+      entryPoint.data.entryPoint
+    );
 
     // Render postcss (autoprefixing and friends)
     const result = await postCssProcessor.process(renderedCss, {
       from: filePath,
       to: filePath.replace(path.extname(filePath), '.css')
     });
-
-    // Escape existing backslashes for the final output into a string literal, which would otherwise escape the character after it
-    const resultCss = result.css.replace(/\\/g, '\\\\');
 
     // Log warnings from postcss
     result.warnings().forEach(msg => {
@@ -54,8 +56,8 @@ export const stylesheetTransform: Transform = transformFromPromise(async graph =
 
     // Update node in the graph
     stylesheetNode.data = {
-      ...stylesheetNode.data,
-      content: resultCss
+      ...data,
+      content: result.css
     };
   }
 
@@ -88,14 +90,20 @@ function createPostCssProcessor(basePath: string, cssUrl: CssUrl): postcss.Proce
   return postcss(postCssPlugins);
 }
 
-async function renderPreProcessor(filePath: string, basePath: string, entryPoint: NgEntryPoint): Promise<string> {
+async function renderPreProcessor(
+  filePath: string,
+  data: string,
+  basePath: string,
+  entryPoint: NgEntryPoint
+): Promise<string> {
   log.debug(`Render styles for ${filePath}`);
   switch (path.extname(filePath)) {
     case '.scss':
     case '.sass':
       log.debug(`rendering sass from ${filePath}`);
       return renderSass({
-        file: filePath,
+        file: '-', // this is to avoid exception returned value of `file` must be a string
+        data,
         importer: nodeSassTildeImporter,
         includePaths: entryPoint.styleIncludePaths
       });
@@ -103,7 +111,7 @@ async function renderPreProcessor(filePath: string, basePath: string, entryPoint
     case '.less':
       log.debug(`rendering less from ${filePath}`);
       return renderLess({
-        filename: filePath,
+        data,
         paths: entryPoint.styleIncludePaths
       });
 
@@ -112,6 +120,7 @@ async function renderPreProcessor(filePath: string, basePath: string, entryPoint
       log.debug(`rendering styl from ${filePath}`);
       return renderStylus({
         filename: filePath,
+        data,
         root: basePath,
         paths: entryPoint.styleIncludePaths
       });
@@ -119,7 +128,7 @@ async function renderPreProcessor(filePath: string, basePath: string, entryPoint
     case '.css':
     default:
       log.debug(`reading css from ${filePath}`);
-      return fs.readFile(filePath).then(buffer => stripBom(buffer.toString()));
+      return data;
   }
 }
 
@@ -136,49 +145,37 @@ const renderSass = (sassOpts: any): Promise<string> => {
 };
 
 const renderLess = (lessOpts: any): Promise<string> => {
-  return fs
-    .readFile(lessOpts.filename)
-    .then(buffer => stripBom(buffer.toString()))
-    .then(
-      (lessData: string) =>
-        new Promise<string>((resolve, reject) => {
-          less.render(lessData || '', lessOpts, (err, result) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(result.css.toString());
-            }
-          });
-        })
-    );
+  return new Promise<string>((resolve, reject) => {
+    less.render(lessOpts.data || '', lessOpts, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result.css.toString());
+      }
+    });
+  });
 };
 
 /**
  * filename - absolute path to file
  * root - root folder of project (where ng-package.json is located)
  */
-const renderStylus = ({ filename, root, paths }): Promise<string> => {
-  return fs
-    .readFile(filename)
-    .then(buffer => stripBom(buffer.toString()))
-    .then(
-      (stylusData: string) =>
-        new Promise<string>((resolve, reject) => {
-          stylus(stylusData)
-            // add paths for resolve
-            .set('paths', [root, '.', ...paths, 'node_modules'])
-            // add support for resolving plugins from node_modules
-            .set('filename', filename)
-            // turn on url resolver in stylus, same as flag --resolve-url
-            .set('resolve url', true)
-            .define('url', stylus.resolver())
-            .render((err, css) => {
-              if (err) {
-                reject(err);
-              } else {
-                resolve(css);
-              }
-            });
-        })
-    );
+const renderStylus = ({ filename, data, root, paths }): Promise<string> => {
+  return new Promise<string>((resolve, reject) => {
+    stylus(data)
+      // add paths for resolve
+      .set('paths', [root, '.', ...paths, 'node_modules'])
+      // add support for resolving plugins from node_modules
+      .set('filename', filename)
+      // turn on url resolver in stylus, same as flag --resolve-url
+      .set('resolve url', true)
+      .define('url', stylus.resolver())
+      .render((err, css) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(css);
+        }
+      });
+  });
 };

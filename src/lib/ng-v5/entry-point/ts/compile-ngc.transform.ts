@@ -9,23 +9,32 @@ import {
   isTypeScriptSources,
   TypeScriptSourceNode,
   isEntryPoint,
-  EntryPointNode
+  EntryPointNode,
+  fileUrl
 } from '../../nodes';
 
 export const compileNgcTransform: Transform = transformFromPromise(async graph => {
   log.info(`Compiling TypeScript sources through ngc`);
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
-  const tsSources = entryPoint.find(isTypeScriptSources) as TypeScriptSourceNode;
   const tsConfig: TsConfig = entryPoint.data.tsConfig;
 
   // Compile TypeScript sources
   const { esm2015, esm5, declarations } = entryPoint.data.destinationFiles;
-  const previousTransform = tsSources.data;
+
+  const resourcesResolver = (fileName: string): string | undefined => {
+    const url = fileUrl(fileName);
+    const result = entryPoint.dependents.find(x => x.url === url);
+    if (!result) {
+      throw new Error(`Cannot read resource: ${fileName}`);
+    }
+
+    return result.data.content;
+  };
 
   await Promise.all([
     compileSourceFiles(
-      tsSources.data.transformed,
       tsConfig,
+      resourcesResolver,
       {
         outDir: path.dirname(esm2015),
         declaration: true,
@@ -34,7 +43,7 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
       path.dirname(declarations)
     ),
 
-    compileSourceFiles(tsSources.data.transformed, tsConfig, {
+    compileSourceFiles(tsConfig, resourcesResolver, {
       outDir: path.dirname(esm5),
       target: ts.ScriptTarget.ES5,
       downlevelIteration: true,
@@ -46,8 +55,6 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
       strictMetadataEmit: false
     })
   ]);
-
-  previousTransform.dispose();
 
   return graph;
 });
