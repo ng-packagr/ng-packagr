@@ -2,25 +2,67 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-<a name="3.0.0-rc.5"></a>
-# [3.0.0-rc.5](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.4...v3.0.0-rc.5) (2018-05-11)
+<a name="4.0.0-rc.0"></a>
 
+# [4.0.0-rc.0](https://github.com/dherges/ng-packagr/compare/v3.0.0...v4.0.0-rc.0) (2018-05-25)
+
+### Bug Fixes
+
+* unable to use an arbitrarily named config file ([#886](https://github.com/dherges/ng-packagr/issues/886)) ([a50bf7d](https://github.com/dherges/ng-packagr/commit/a50bf7d)), closes [#878](https://github.com/dherges/ng-packagr/issues/878)
+* update rxjs to version ~6.2.0 ([#898](https://github.com/dherges/ng-packagr/issues/898)) ([9e3de7c](https://github.com/dherges/ng-packagr/commit/9e3de7c))
+
+### Features
+
+* embed templates and stylesheets with ngc `enableResourceInlining` ([#872](https://github.com/dherges/ng-packagr/issues/872)) ([2655def](https://github.com/dherges/ng-packagr/commit/2655def)), closes [#770](https://github.com/dherges/ng-packagr/issues/770)
+
+### BREAKING CHANGES
+
+* ng-packagr now requires a `peerDependency` of `@angular/compiler: ^6.0.0` and `@angular/compiler-cli: ^6.0.0`. Removes support for building packages with Angular compiler v5.
+* Consumers using a constum tsconfig via the programmatic API need to add `enableResourceInlining` under `angularCompilerOptions`
+
+<a name="3.0.0"></a>
+
+# [3.0.0](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.5...v3.0.0) (2018-05-25)
+
+### Bug Fixes
+
+* allow sideEffects to be set as an array ([#866](https://github.com/dherges/ng-packagr/issues/866)) ([04bb2ad](https://github.com/dherges/ng-packagr/commit/04bb2ad))
+* analyse exported imports ([#873](https://github.com/dherges/ng-packagr/issues/873)) ([c03d6f8](https://github.com/dherges/ng-packagr/commit/c03d6f8))
+* auto-wire paths for transitive dependencies of entry points ([#875](https://github.com/dherges/ng-packagr/issues/875)) ([e9da0cf](https://github.com/dherges/ng-packagr/commit/e9da0cf)), closes [#852](https://github.com/dherges/ng-packagr/issues/852)
+* embed tslib helpers in umd bundle ([#868](https://github.com/dherges/ng-packagr/issues/868)) ([0fc30e5](https://github.com/dherges/ng-packagr/commit/0fc30e5))
+* internal method `dependsOn` appends instead of replacing ([#867](https://github.com/dherges/ng-packagr/issues/867)) ([207f2ac](https://github.com/dherges/ng-packagr/commit/207f2ac))
+* remove duplicate declarations under `dist` ([#864](https://github.com/dherges/ng-packagr/issues/864)) ([46fd858](https://github.com/dherges/ng-packagr/commit/46fd858))
+* throw an error when a circular dependency is detected ([#888](https://github.com/dherges/ng-packagr/issues/888)) ([ada4081](https://github.com/dherges/ng-packagr/commit/ada4081)), closes [#855](https://github.com/dherges/ng-packagr/issues/855)
+* update rollup to version ^0.59.0 ([#876](https://github.com/dherges/ng-packagr/issues/876)) ([57f5ed9](https://github.com/dherges/ng-packagr/commit/57f5ed9))
+
+### Features
+
+* provide UMD module id defaults for rxjs v6 ([#840](https://github.com/dherges/ng-packagr/issues/840)) ([6613dde](https://github.com/dherges/ng-packagr/commit/6613dde)), closes [#781](https://github.com/dherges/ng-packagr/issues/781) [#838](https://github.com/dherges/ng-packagr/issues/838)
+
+### Performance Improvements
+
+* remove extra template type checking for downleveling ([#863](https://github.com/dherges/ng-packagr/issues/863)) ([0e0e46d](https://github.com/dherges/ng-packagr/commit/0e0e46d))
+
+### BREAKING CHANGES
+
+* UMD module ids for rxjs v5 are now longer provided out-ot-the-box. Users whishing to a build library for rxjs@5 (potentially relying on rxjs-compat), must provide the UMD module IDs in the ngPackage.lib.umdModuleIds section. Please take a look at the changeset of PR #840 to see what the UMD module IDs used to be for v5.
+
+<a name="3.0.0-rc.5"></a>
+
+# [3.0.0-rc.5](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.4...v3.0.0-rc.5) (2018-05-11)
 
 ### Bug Fixes
 
 * do not disable fullTemplateTypeCheck when ES5 downleveling ([#860](https://github.com/dherges/ng-packagr/issues/860)) ([dfa83f9](https://github.com/dherges/ng-packagr/commit/dfa83f9)), closes [#826](https://github.com/dherges/ng-packagr/issues/826) [#812](https://github.com/dherges/ng-packagr/issues/812) [#822](https://github.com/dherges/ng-packagr/issues/822) [#826](https://github.com/dherges/ng-packagr/issues/826)
 * don't override `baseUrl` ([#862](https://github.com/dherges/ng-packagr/issues/862)) ([769b091](https://github.com/dherges/ng-packagr/commit/769b091))
 
-
 ### BREAKING CHANGES
 
 * `baseUrl` in `tsconfig` is not overridden anymore, thus non-relative module paths will be resolved relative to the `baseUrl` in `tsconfig.json`
 
-
-
 <a name="3.0.0-rc.4"></a>
-# [3.0.0-rc.4](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.3...v3.0.0-rc.4) (2018-05-10)
 
+# [3.0.0-rc.4](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.3...v3.0.0-rc.4) (2018-05-10)
 
 ### Bug Fixes
 
@@ -30,11 +72,9 @@ All notable changes to this project will be documented in this file. See [standa
 * handle nested entry points with same name ([#850](https://github.com/dherges/ng-packagr/issues/850)) ([f911882](https://github.com/dherges/ng-packagr/commit/f911882)), closes [#851](https://github.com/dherges/ng-packagr/issues/851) [#849](https://github.com/dherges/ng-packagr/issues/849)
 * inline sourcemaps as base64-encoded data URI in esm5/esm015 ([#812](https://github.com/dherges/ng-packagr/issues/812)) ([095feb1](https://github.com/dherges/ng-packagr/commit/095feb1)), closes [#785](https://github.com/dherges/ng-packagr/issues/785) [#803](https://github.com/dherges/ng-packagr/issues/803)
 
-
-
 <a name="3.0.0-rc.3"></a>
-# [3.0.0-rc.3](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.2...v3.0.0-rc.3) (2018-05-06)
 
+# [3.0.0-rc.3](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.2...v3.0.0-rc.3) (2018-05-06)
 
 ### Bug Fixes
 
@@ -49,16 +89,13 @@ All notable changes to this project will be documented in this file. See [standa
 * update rxjs to version ~6.0.0 ([b171a28](https://github.com/dherges/ng-packagr/commit/b171a28))
 * update rxjs to version ~6.1.0 ([#832](https://github.com/dherges/ng-packagr/issues/832)) ([365c759](https://github.com/dherges/ng-packagr/commit/365c759))
 
-
 ### Features
 
 * enable `fullTemplateTypeCheck` ([#826](https://github.com/dherges/ng-packagr/issues/826)) ([83f2cb6](https://github.com/dherges/ng-packagr/commit/83f2cb6))
 
-
-
 <a name="3.0.0-rc.2"></a>
-# [3.0.0-rc.2](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.1...v3.0.0-rc.2) (2018-04-21)
 
+# [3.0.0-rc.2](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.1...v3.0.0-rc.2) (2018-04-21)
 
 ### Bug Fixes
 
@@ -67,21 +104,17 @@ All notable changes to this project will be documented in this file. See [standa
 * missing options when setting custom tsconfig ([#786](https://github.com/dherges/ng-packagr/issues/786)) ([d687853](https://github.com/dherges/ng-packagr/commit/d687853))
 * update rollup-plugin-commonjs to version 9.1.0 ([#659](https://github.com/dherges/ng-packagr/issues/659)) ([5204b0c](https://github.com/dherges/ng-packagr/commit/5204b0c))
 
-
-
 <a name="3.0.0-rc.1"></a>
-# [3.0.0-rc.1](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.0...v3.0.0-rc.1) (2018-04-17)
 
+# [3.0.0-rc.1](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.0...v3.0.0-rc.1) (2018-04-17)
 
 ### Features
 
 * add `"sideEffects": false` flag to dist-ready package.json ([#776](https://github.com/dherges/ng-packagr/issues/776)) ([11535bb](https://github.com/dherges/ng-packagr/commit/11535bb))
 
-
-
 <a name="3.0.0-rc.0"></a>
-# [3.0.0-rc.0](https://github.com/dherges/ng-packagr/compare/v2.4.2...v3.0.0-rc.0) (2018-04-16)
 
+# [3.0.0-rc.0](https://github.com/dherges/ng-packagr/compare/v2.4.2...v3.0.0-rc.0) (2018-04-16)
 
 ### Bug Fixes
 
@@ -89,87 +122,78 @@ All notable changes to this project will be documented in this file. See [standa
 * update browserslist to version ^3.0.0 ([#610](https://github.com/dherges/ng-packagr/issues/610)) ([2f50354](https://github.com/dherges/ng-packagr/commit/2f50354))
 * update less to version ^3.0.0 ([#611](https://github.com/dherges/ng-packagr/issues/611)) ([f45d89d](https://github.com/dherges/ng-packagr/commit/f45d89d))
 
-
 ### Features
 
-*  build libaries in Angular Package Format (APF) v6.0 (#738) ([4e6c4f4](https://github.com/dherges/ng-packagr/commit/4e6c4f4)), closes [#738](https://github.com/dherges/ng-packagr/issues/738) [#705](https://github.com/dherges/ng-packagr/issues/705)
+* build libaries in Angular Package Format (APF) v6.0 (#738) ([4e6c4f4](https://github.com/dherges/ng-packagr/commit/4e6c4f4)), closes [#738](https://github.com/dherges/ng-packagr/issues/738) [#705](https://github.com/dherges/ng-packagr/issues/705)
 * drop support for node v6 and v7 (no longer supported by devkit) ([ee7e65d](https://github.com/dherges/ng-packagr/commit/ee7e65d))
 * remove deprecated code ([#773](https://github.com/dherges/ng-packagr/issues/773)) ([866a4b5](https://github.com/dherges/ng-packagr/commit/866a4b5))
 * update tsickle to =>0.27.3, rollup to ^0.57.1 ([#769](https://github.com/dherges/ng-packagr/issues/769)) ([3bcf233](https://github.com/dherges/ng-packagr/commit/3bcf233)), closes [#679](https://github.com/dherges/ng-packagr/issues/679)
 
-
 ### BREAKING CHANGES
 
 Removes several deprecated code items.
-  - option `sassIncludePaths` is removed, please use `styleIncludePaths` instead
-  - option `workingDirectory` is removed, removed corresponding getter from `NgPackage` class
-  - method `createNgPackage` removed from programmatic API
-  - removed `NgArtefacts` class from API
-  - removed `BuildStep` interface from API
-  - removed tarball generation ([#721](https://github.com/dherges/ng-packagr/issues/721))
+
+* option `sassIncludePaths` is removed, please use `styleIncludePaths` instead
+* option `workingDirectory` is removed, removed corresponding getter from `NgPackage` class
+* method `createNgPackage` removed from programmatic API
+* removed `NgArtefacts` class from API
+* removed `BuildStep` interface from API
+* removed tarball generation ([#721](https://github.com/dherges/ng-packagr/issues/721))
 
 There were some important changes, mainly related to `rollup`, most of the options and functionality provided by `rollup` plugins (comments & license) have been removed, due to the fact this is not inline with APF V6 as one will end up with different outputs in different modules.
-  - **`comments` option has been removed** 
-  - **`licensePath` option has been removed** 
+
+* **`comments` option has been removed**
+* **`licensePath` option has been removed**
 
 In APF V6, it is recommanded to not embed dependencies due to the fact that it will end up having multiple copies of the same library in a single application.
 
-  - **`embedded` option has been removed and the original functionality was dropped** as it increased the chance of having 2 copies of the same library. The recommended migration is to switch to `bundledDependencies`
+* **`embedded` option has been removed and the original functionality was dropped** as it increased the chance of having 2 copies of the same library. The recommended migration is to switch to `bundledDependencies`
 
 More info in the APF v6 spec: https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview
 
-Documentation on npm bundled dependencies: http://npm.github.io/using-pkgs-docs/package-json/types/bundleddependencies.html 
+Documentation on npm bundled dependencies: http://npm.github.io/using-pkgs-docs/package-json/types/bundleddependencies.html
 
 #### Tarball generation
 
 As we don't generate a tarball by default anymore, you should manually, after the build, create it by running [`npm pack`](https://docs.npmjs.com/cli/pack) in the `dist` folder of your library. See [#802](https://github.com/dherges/ng-packagr/issues/802) and [#738 (comment)](https://github.com/dherges/ng-packagr/pull/738#issuecomment-379457152) for more information.
 
-
 <a name="2.4.2"></a>
-## [2.4.2](https://github.com/dherges/ng-packagr/compare/v2.4.1...v2.4.2) (2018-04-08)
 
+## [2.4.2](https://github.com/dherges/ng-packagr/compare/v2.4.1...v2.4.2) (2018-04-08)
 
 ### Bug Fixes
 
 * update uglify-js version ([#754](https://github.com/dherges/ng-packagr/issues/754)) ([ff176b7](https://github.com/dherges/ng-packagr/commit/ff176b7)), closes [#752](https://github.com/dherges/ng-packagr/issues/752)
 
-
-
 <a name="2.4.1"></a>
-## [2.4.1](https://github.com/dherges/ng-packagr/compare/v2.4.0...v2.4.1) (2018-03-25)
 
+## [2.4.1](https://github.com/dherges/ng-packagr/compare/v2.4.0...v2.4.1) (2018-03-25)
 
 ### Bug Fixes
 
 * don't verify devDependencies in dist-ready package.json ([#721](https://github.com/dherges/ng-packagr/issues/721)) ([3535e86](https://github.com/dherges/ng-packagr/commit/3535e86))
 
-
-
 <a name="2.4.0"></a>
-# [2.4.0](https://github.com/dherges/ng-packagr/compare/v2.3.0...v2.4.0) (2018-03-25)
 
+# [2.4.0](https://github.com/dherges/ng-packagr/compare/v2.3.0...v2.4.0) (2018-03-25)
 
 ### Features
 
 * create a tarball (dist.tgz) for the npm package ([#715](https://github.com/dherges/ng-packagr/issues/715)) ([94bc915](https://github.com/dherges/ng-packagr/commit/94bc915))
 
-
 ### Performance Improvements
 
 * read content and map `async` in `minifyJsFile` ([#717](https://github.com/dherges/ng-packagr/issues/717)) ([4da0052](https://github.com/dherges/ng-packagr/commit/4da0052))
 
-
-
 <a name="2.3.0"></a>
-# [2.3.0](https://github.com/dherges/ng-packagr/compare/v2.2.0...v2.3.0) (2018-03-25)
 
+# [2.3.0](https://github.com/dherges/ng-packagr/compare/v2.2.0...v2.3.0) (2018-03-25)
 
 ### Bug Fixes
 
 * cannot read property 'text' of undefined ([#669](https://github.com/dherges/ng-packagr/issues/669)) ([b91eb66](https://github.com/dherges/ng-packagr/commit/b91eb66)), closes [#668](https://github.com/dherges/ng-packagr/issues/668)
 * move `keepLifecycleScripts` to ngPackage conf ([#688](https://github.com/dherges/ng-packagr/issues/688)) ([8eb6667](https://github.com/dherges/ng-packagr/commit/8eb6667))
 * validate non-peerDependencies at build time ([#687](https://github.com/dherges/ng-packagr/issues/687)) ([ec9779c](https://github.com/dherges/ng-packagr/commit/ec9779c))
-
 
 ### Features
 
@@ -179,18 +203,15 @@ As we don't generate a tarball by default anymore, you should manually, after th
 * remove scripts section in dist-ready package.json ([#686](https://github.com/dherges/ng-packagr/issues/686)) ([810e58a](https://github.com/dherges/ng-packagr/commit/810e58a))
 * support intra-package dependencies (re. entry points, experimental) ([#685](https://github.com/dherges/ng-packagr/issues/685)) ([988968e](https://github.com/dherges/ng-packagr/commit/988968e))
 
-
-
 <a name="2.2.0"></a>
-# [2.2.0](https://github.com/dherges/ng-packagr/compare/v2.1.0...v2.2.0) (2018-03-06)
 
+# [2.2.0](https://github.com/dherges/ng-packagr/compare/v2.1.0...v2.2.0) (2018-03-06)
 
 ### Bug Fixes
 
 * add `chalk` to dependencies ([#647](https://github.com/dherges/ng-packagr/issues/647)) ([e8aa93f](https://github.com/dherges/ng-packagr/commit/e8aa93f))
 * lock rollup-plugin-commonjs dependency at 8.3.0 ([#658](https://github.com/dherges/ng-packagr/issues/658)) ([59d0c3b](https://github.com/dherges/ng-packagr/commit/59d0c3b)), closes [#657](https://github.com/dherges/ng-packagr/issues/657)
 * update rollup-plugin-license to version ^0.6.0 ([#664](https://github.com/dherges/ng-packagr/issues/664)) ([2a21d7e](https://github.com/dherges/ng-packagr/commit/2a21d7e))
-
 
 ### Features
 
@@ -200,12 +221,9 @@ As we don't generate a tarball by default anymore, you should manually, after th
 * analyse typescript dependencies of an entry point ([#648](https://github.com/dherges/ng-packagr/issues/648)) ([749d48b](https://github.com/dherges/ng-packagr/commit/749d48b))
 * reduce library bundle size by clean-css ([#563](https://github.com/dherges/ng-packagr/issues/563)) ([65386c2](https://github.com/dherges/ng-packagr/commit/65386c2)), closes [#614](https://github.com/dherges/ng-packagr/issues/614)
 
-
 ### Performance Improvements
 
 * re-use postcss processor instance per entry point ([#645](https://github.com/dherges/ng-packagr/issues/645)) ([f70985b](https://github.com/dherges/ng-packagr/commit/f70985b))
-
-
 
 <a name="2.1.0"></a>
 
