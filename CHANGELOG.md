@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0-rc.0"></a>
+# [4.0.0-rc.0](https://github.com/dherges/ng-packagr/compare/v3.0.0...v4.0.0-rc.0) (2018-05-25)
+
+
+### Bug Fixes
+
+* unable to use an arbitrarily named config file ([#886](https://github.com/dherges/ng-packagr/issues/886)) ([a50bf7d](https://github.com/dherges/ng-packagr/commit/a50bf7d)), closes [#878](https://github.com/dherges/ng-packagr/issues/878)
+* update rxjs to version ~6.2.0 ([#898](https://github.com/dherges/ng-packagr/issues/898)) ([9e3de7c](https://github.com/dherges/ng-packagr/commit/9e3de7c))
+
+
+### Features
+
+* embed templates and stylesheets with ngc `enableResourceInlining` ([#872](https://github.com/dherges/ng-packagr/issues/872)) ([2655def](https://github.com/dherges/ng-packagr/commit/2655def)), closes [#770](https://github.com/dherges/ng-packagr/issues/770)
+
+
+### BREAKING CHANGES
+
+* - ng-packagr now requires a `peerDependency` of `@angular/compiler: ^6.0.0` and `@angular/compiler-cli: ^6.0.0`. Removes support for building packages with Angular compiler v5.
+- Consumers using a constum tsconfig via the programmatic API need to add `enableResourceInlining` under `angularCompilerOptions`
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.5...v3.0.0) (2018-05-25)
 
