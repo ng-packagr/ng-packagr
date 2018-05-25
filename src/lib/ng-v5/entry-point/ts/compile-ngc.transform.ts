@@ -9,7 +9,8 @@ import {
   isTypeScriptSources,
   TypeScriptSourceNode,
   isEntryPoint,
-  EntryPointNode
+  EntryPointNode,
+  fileUrl
 } from '../../nodes';
 
 export const compileNgcTransform: Transform = transformFromPromise(async graph => {
@@ -20,10 +21,20 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
   // Compile TypeScript sources
   const { esm2015, esm5, declarations } = entryPoint.data.destinationFiles;
 
+  const resourcesResolver = (fileName: string): string | undefined => {
+    const url = fileUrl(fileName);
+    const result = entryPoint.dependents.find(x => x.url === url);
+    if (!result) {
+      throw new Error(`Cannot read resource: ${fileName}`);
+    }
+
+    return result.data.content;
+  };
+
   await Promise.all([
     compileSourceFiles(
       tsConfig,
-      entryPoint.dependents,
+      resourcesResolver,
       {
         outDir: path.dirname(esm2015),
         declaration: true,
@@ -32,7 +43,7 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
       path.dirname(declarations)
     ),
 
-    compileSourceFiles(tsConfig, entryPoint.dependents, {
+    compileSourceFiles(tsConfig, resourcesResolver, {
       outDir: path.dirname(esm5),
       target: ts.ScriptTarget.ES5,
       downlevelIteration: true,

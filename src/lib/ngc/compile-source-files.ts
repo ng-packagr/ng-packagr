@@ -6,12 +6,10 @@ import { TsConfig } from '../ts/tsconfig';
 import * as log from '../util/log';
 import { createEmitCallback } from './create-emit-callback';
 import { redirectWriteFileCompilerHost } from '../ts/redirect-write-file-compiler-host';
-import { fileUrl } from '../ng-v5/nodes';
-import { Node } from '../brocc/node';
 
 export async function compileSourceFiles(
   tsConfig: TsConfig,
-  resources: Node[] | undefined,
+  readResourcesResolver: (fileName: string) => string | undefined,
   extraOptions?: Partial<ng.CompilerOptions>,
   declarationDir?: string
 ) {
@@ -30,16 +28,8 @@ export async function compileSourceFiles(
     tsHost: tsCompilerHost
   });
 
-  // This is used in combination with 'enableResourceInlining'
-  ngCompilerHost.readResource = (fileName: string) => {
-    const url = fileUrl(fileName);
-    const result = resources.find(x => x.url === url);
-    if (!result) {
-      throw new Error(`Cannot read resource: ${fileName}`);
-    }
-
-    return result.data.content;
-  };
+  // This is used in combination with 'enableResourceInlining' to read file contents of templates and stylesheets
+  ngCompilerHost.readResource = readResourcesResolver;
 
   const program = ng.createProgram({
     rootNames: tsConfig.rootNames,
