@@ -3,56 +3,12 @@ import { umdModuleIdStrategy } from './umd-module-id-strategy';
 
 describe(`rollup`, () => {
   describe(`umdModuleIdStrategy()`, () => {
-    it(`should map 'rxjs/add/observable/bindCallback' to 'Rx.Observable'`, () => {
-      expect(umdModuleIdStrategy('rxjs/add/observable/bindCallback')).to.equal('Rx.Observable');
+    it(`should map 'rxjs' to 'rxjs'`, () => {
+      expect(umdModuleIdStrategy('rxjs')).to.equal('rxjs');
     });
 
-    it(`should map 'rxjs/TeardownLogic' to 'Rx'`, () => {
-      expect(umdModuleIdStrategy('rxjs/TeardownLogic')).to.equal('Rx');
-    });
-
-    it(`should map 'rxjs/add/operator/audit' to 'Rx.Observable.prototype'`, () => {
-      expect(umdModuleIdStrategy('rxjs/add/operator/audit')).to.equal('Rx.Observable.prototype');
-    });
-
-    it(`should map 'rxjs/observable' to 'Rx.Observable'`, () => {
-      expect(umdModuleIdStrategy('rxjs/observable')).to.equal('Rx.Observable');
-    });
-
-    it(`should map 'rxjs/observable/bindCallback' to 'Rx.Observable'`, () => {
-      expect(umdModuleIdStrategy('rxjs/observable/bindCallback')).to.equal('Rx.Observable');
-    });
-
-    it(`should map 'rxjs/operators' to 'Rx.Observable.prototype'`, () => {
-      expect(umdModuleIdStrategy('rxjs/operators')).to.equal('Rx.Observable.prototype');
-    });
-
-    it(`should map 'rxjs/operator/audit' to 'Rx.Observable.prototype'`, () => {
-      expect(umdModuleIdStrategy('rxjs/operator/audit')).to.equal('Rx.Observable.prototype');
-    });
-
-    it(`should map 'rxjs/operators/audit' to 'Rx.Observable.prototype'`, () => {
-      expect(umdModuleIdStrategy('rxjs/operator/audit')).to.equal('Rx.Observable.prototype');
-    });
-
-    it(`should map 'rxjs/symbol' to 'Rx.Symbol'`, () => {
-      expect(umdModuleIdStrategy('rxjs/symbol')).to.equal('Rx.Symbol');
-    });
-
-    it(`should map 'rxjs/symbol/iterator' to 'Rx.Symbol'`, () => {
-      expect(umdModuleIdStrategy('rxjs/symbol/iterator')).to.equal('Rx.Symbol');
-    });
-
-    it(`should map 'rxjs/scheduler' to 'Rx.Scheduler'`, () => {
-      expect(umdModuleIdStrategy('rxjs/scheduler')).to.equal('Rx.Scheduler');
-    });
-
-    it(`should map 'rxjs/scheduler/queue' to 'Rx.Scheduler'`, () => {
-      expect(umdModuleIdStrategy('rxjs/scheduler/queue')).to.equal('Rx.Scheduler');
-    });
-
-    it(`should map 'rxjs/util/TimeoutError' to 'Rx.TimeoutError'`, () => {
-      expect(umdModuleIdStrategy('rxjs/util/TimeoutError')).to.equal('Rx.TimeoutError');
+    it(`should map 'rxjs/operators' to 'rxjs.operators'`, () => {
+      expect(umdModuleIdStrategy('rxjs/operators')).to.equal('rxjs.operators');
     });
 
     it(`should map '@angular/core' to 'ng.core'`, () => {

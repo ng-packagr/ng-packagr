@@ -17,28 +17,12 @@ export const umdModuleIdStrategy = (moduleId: string, umdModuleIds: { [key: stri
     return `ng.${regMatch[1]}`.replace(/\//g, '.');
   }
 
-  if (/^rxjs\/(add\/)?observable/.test(moduleId)) {
-    return 'Rx.Observable';
+  if (moduleId === 'rxjs') {
+    return 'rxjs';
   }
 
-  if (/^rxjs\/scheduler/.test(moduleId)) {
-    return 'Rx.Scheduler';
-  }
-
-  if (/^rxjs\/symbol/.test(moduleId)) {
-    return 'Rx.Symbol';
-  }
-
-  if (/^rxjs\/(add\/)?operator/.test(moduleId)) {
-    return 'Rx.Observable.prototype';
-  }
-
-  if (/^rxjs\/[^\/]+$/.test(moduleId)) {
-    return 'Rx';
-  }
-
-  if ((regMatch = /^rxjs\/util\/(\/?.*)/.exec(moduleId))) {
-    return `Rx.${regMatch[1]}`;
+  if ((regMatch = /^rxjs\/(\/?.*)/.exec(moduleId))) {
+    return `rxjs.${regMatch[1]}`;
   }
 
   if (moduleId === 'tslib') {

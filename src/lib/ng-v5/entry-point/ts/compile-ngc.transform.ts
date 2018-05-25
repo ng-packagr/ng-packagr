@@ -10,7 +10,6 @@ import { StylesheetProcessor } from '../resources/stylesheet-processor';
 export const compileNgcTransform: Transform = transformFromPromise(async graph => {
   log.info(`Compiling TypeScript sources through ngc`);
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
-
   const tsConfig: TsConfig = entryPoint.data.tsConfig;
 
   // Compile TypeScript sources
