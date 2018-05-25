@@ -100,6 +100,13 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Sample: issue-852",
+      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "args": ["issue-852"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Sample: externals",
       "program": "${workspaceRoot}/integration/samples.dev.js",
       "args": ["externals"]

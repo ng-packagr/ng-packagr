@@ -18,26 +18,6 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
   const tsSources = entryPoint.find(isTypeScriptSources) as TypeScriptSourceNode;
   const tsConfig: TsConfig = entryPoint.data.tsConfig;
 
-  // Add paths mappings for dependencies
-  const entryPointDeps = entryPoint.filter(isEntryPoint) as EntryPointNode[];
-  if (entryPointDeps.length > 0) {
-    if (!tsConfig.options.paths) {
-      tsConfig.options.paths = {};
-    }
-
-    for (let dep of entryPointDeps) {
-      const { entryPoint, destinationFiles } = dep.data;
-      const depModuleId = entryPoint.moduleId;
-      const mappedPath = [destinationFiles.declarations];
-
-      if (!tsConfig.options.paths[depModuleId]) {
-        tsConfig.options.paths[depModuleId] = mappedPath;
-      } else {
-        tsConfig.options.paths[depModuleId].concat(mappedPath);
-      }
-    }
-  }
-
   // Compile TypeScript sources
   const { esm2015, esm5, declarations } = entryPoint.data.destinationFiles;
   const previousTransform = tsSources.data;
