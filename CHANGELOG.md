@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### BREAKING CHANGES
 
 * ng-packagr now requires a `peerDependency` of `@angular/compiler: ^6.0.0` and `@angular/compiler-cli: ^6.0.0`. Removes support for building packages with Angular compiler v5.
-* Consumers using a constum tsconfig via the programmatic API need to add `enableResourceInlining` under `angularCompilerOptions`
+* Consumers using a custom tsconfig via the programmatic API need to add `enableResourceInlining` under `angularCompilerOptions`
 
 
 
