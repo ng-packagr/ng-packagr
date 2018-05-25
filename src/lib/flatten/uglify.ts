@@ -12,21 +12,24 @@ export async function minifyJsFile(inputPath: string, outputPath?: string): Prom
     readFile(`${inputPath}.map`)
   ]);
 
-  const result = minify(inputFileBuffer.toString(), {
-    sourceMap: {
-      includeSources: true,
-      content: JSON.parse(inputSourceMapBuffer.toString()),
-      url: basename(sourcemapOut)
-    },
-    parse: {
-      bare_returns: true
-    },
-    ie8: true,
-    warnings: true,
-    output: {
-      comments: 'some'
+  const result = minify(
+    { [inputPath]: inputFileBuffer.toString() },
+    {
+      sourceMap: {
+        includeSources: true,
+        content: JSON.parse(inputSourceMapBuffer.toString()),
+        url: basename(sourcemapOut)
+      },
+      parse: {
+        bare_returns: true
+      },
+      ie8: true,
+      warnings: true,
+      output: {
+        comments: 'some'
+      }
     }
-  });
+  );
 
   if (result.warnings) {
     for (const warningMessage of result.warnings) {
