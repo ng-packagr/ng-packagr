@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.5...v3.0.0) (2018-05-25)
+
+
+### Bug Fixes
+
+* allow sideEffects to be set as an array ([#866](https://github.com/dherges/ng-packagr/issues/866)) ([04bb2ad](https://github.com/dherges/ng-packagr/commit/04bb2ad))
+* analyse exported imports ([#873](https://github.com/dherges/ng-packagr/issues/873)) ([c03d6f8](https://github.com/dherges/ng-packagr/commit/c03d6f8))
+* auto-wire paths for transitive dependencies of entry points ([#875](https://github.com/dherges/ng-packagr/issues/875)) ([e9da0cf](https://github.com/dherges/ng-packagr/commit/e9da0cf)), closes [#852](https://github.com/dherges/ng-packagr/issues/852)
+* embed tslib helpers in umd bundle ([#868](https://github.com/dherges/ng-packagr/issues/868)) ([0fc30e5](https://github.com/dherges/ng-packagr/commit/0fc30e5))
+* internal method `dependsOn` appends instead of replacing ([#867](https://github.com/dherges/ng-packagr/issues/867)) ([207f2ac](https://github.com/dherges/ng-packagr/commit/207f2ac))
+* remove duplicate declarations under `dist` ([#864](https://github.com/dherges/ng-packagr/issues/864)) ([46fd858](https://github.com/dherges/ng-packagr/commit/46fd858))
+* throw an error when a circular dependency is detected ([#888](https://github.com/dherges/ng-packagr/issues/888)) ([ada4081](https://github.com/dherges/ng-packagr/commit/ada4081)), closes [#855](https://github.com/dherges/ng-packagr/issues/855)
+* update rollup to version ^0.59.0 ([#876](https://github.com/dherges/ng-packagr/issues/876)) ([57f5ed9](https://github.com/dherges/ng-packagr/commit/57f5ed9))
+
+
+### Features
+
+* provide UMD module id defaults for rxjs v6 ([#840](https://github.com/dherges/ng-packagr/issues/840)) ([6613dde](https://github.com/dherges/ng-packagr/commit/6613dde)), closes [#781](https://github.com/dherges/ng-packagr/issues/781) [#838](https://github.com/dherges/ng-packagr/issues/838)
+
+
+### Performance Improvements
+
+* remove extra template type checking for downleveling ([#863](https://github.com/dherges/ng-packagr/issues/863)) ([0e0e46d](https://github.com/dherges/ng-packagr/commit/0e0e46d))
+
+
+### BREAKING CHANGES
+
+* UMD module ids for rxjs v5 are now longer provided out-ot-the-box. Users whishing to a build library for rxjs@5 (potentially relying on rxjs-compat), must provide the UMD module IDs in the ngPackage.lib.umdModuleIds section. Please take a look at the changeset of PR #840 to see what the UMD module IDs used to be for v5.
+
+
+
 <a name="3.0.0-rc.5"></a>
 # [3.0.0-rc.5](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.4...v3.0.0-rc.5) (2018-05-11)
 

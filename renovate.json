@@ -3,7 +3,7 @@
   "semanticCommits": true,
   "semanticPrefix": "build:",
   "commitMessage": "{{semanticPrefix}}update {{depName}} to version {{newVersion}}",
-  "separateMajorReleases": false,
+  "separateMajorMinor": false,
   "dependencies": {
     "semanticPrefix": "fix:"
   },

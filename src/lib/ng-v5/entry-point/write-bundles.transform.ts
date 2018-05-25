@@ -13,7 +13,7 @@ import { unique } from '../../util/array';
 export const writeBundlesTransform: Transform = pipe(
   switchMap(graph => {
     const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
-    const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
+    const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
 
     // Add UMD module IDs for dependencies
     const dependencyUmdIds = entryPoint
@@ -25,12 +25,10 @@ export const writeBundlesTransform: Transform = pipe(
         return prev;
       }, {});
 
-    const { bundledDependencies, dependencies = {}, peerDependencies = {} } = entryPoint.data.entryPoint.packageJson;
-
     const opts: FlattenOpts = {
       destFile: '',
       entryFile: '',
-      sourceRoot: entryPoint.data.tsConfig.options.sourceRoot,
+      sourceRoot: tsConfig.options.sourceRoot,
       flatModuleFile: ngEntryPoint.flatModuleFile,
       esmModuleId: ngEntryPoint.moduleId,
       umdModuleId: ngEntryPoint.umdId,
@@ -39,10 +37,9 @@ export const writeBundlesTransform: Transform = pipe(
         ...ngEntryPoint.umdModuleIds,
         ...dependencyUmdIds
       },
-      dependencyList: getDepenencyListForGraph(graph)
+      dependencyList: getDependencyListForGraph(graph)
     };
 
-    const { destinationFiles } = entryPoint.data;
     return fromPromise(writeFlatBundleFiles(destinationFiles, opts)).pipe(map(() => graph));
   })
 );
@@ -76,8 +73,8 @@ async function writeFlatBundleFiles(destinationFiles: DestinationFiles, opts: Fl
   await flattenToUmdMin(umd, umdMinified);
 }
 
-/** Get all list of depencies for the entire 'BuildGraph' */
-function getDepenencyListForGraph(graph: BuildGraph): DependencyList {
+/** Get all list of dependencies for the entire 'BuildGraph' */
+function getDependencyListForGraph(graph: BuildGraph): DependencyList {
   // We need to do this because if A dependecy on bundled B
   // And A has a secondary entry point A/1 we want only to bundle B if it's used.
   // Also if A/1 depends on A we don't want to bundle A thus we mark this a dependency.
