@@ -58,8 +58,7 @@ export class StylesheetProcessor {
           cmd = `${cmd} --include-path=${this.styleIncludePaths.join(':')}`;
         }
 
-        const css = execSync(cmd).toString();
-        return css;
+        return execSync(cmd).toString();
 
       case '.styl':
       case '.stylus':

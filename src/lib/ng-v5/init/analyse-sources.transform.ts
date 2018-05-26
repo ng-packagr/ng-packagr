@@ -7,11 +7,14 @@ import { Transform } from '../../brocc/transform';
 import { isEntryPoint, EntryPointNode } from '../nodes';
 import { cacheCompilerHost } from '../../ts/cache-compiler-host';
 import { unique, flatten } from '../../util/array';
-import { BuildGraph } from '../../brocc/build-graph';
 
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {
-    graph.filter(isEntryPoint).forEach((entryPoint: EntryPointNode) => analyseEntryPoint(entryPoint, graph));
+    const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
+
+    for (let entryPoint of entryPoints) {
+      analyseEntryPoint(entryPoint, entryPoints);
+    }
 
     return graph;
   })
@@ -21,10 +24,9 @@ export const analyseSourcesTransform: Transform = pipe(
  * Analyses an entrypoint, searching for TypeScript dependencies and additional resources (Templates and Stylesheets).
  *
  * @param entryPoint Current entry point that should be analysed.
- * @param graph The current build graph.
+ * @param entryPoints List of all entry points.
  */
-function analyseEntryPoint(entryPoint: EntryPointNode, graph: BuildGraph) {
-  const entryPoints = graph.filter(isEntryPoint);
+function analyseEntryPoint(entryPoint: EntryPointNode, entryPoints: EntryPointNode[]) {
   const { tsConfig } = entryPoint.data;
   const { analysisFileCache, analysisModuleResolutionCache } = entryPoint.cache;
   const { moduleId } = entryPoint.data.entryPoint;
