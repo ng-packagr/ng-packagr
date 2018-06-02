@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.1"></a>
+## [3.0.1](https://github.com/dherges/ng-packagr/compare/v3.0.0...v3.0.1) (2018-06-02)
+
+
+### Bug Fixes
+
+* unable to use an arbitrarily named config file ([#886](https://github.com/dherges/ng-packagr/issues/886)) ([#906](https://github.com/dherges/ng-packagr/issues/906)) ([8377bc4](https://github.com/dherges/ng-packagr/commit/8377bc4)), closes [#878](https://github.com/dherges/ng-packagr/issues/878)
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/dherges/ng-packagr/compare/v3.0.0-rc.5...v3.0.0) (2018-05-25)
 
