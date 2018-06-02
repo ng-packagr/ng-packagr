@@ -59,7 +59,7 @@ If neccessay, it's recommended that these tools pick up the `package.json` gener
 ### Folder layout
 
 Various folder layouts exist and are commonly used within the Angular community.
-The different styles are reflected in the [integration samples of ng-packagr](./integration).
+The different styles are reflected in the [integration samples of ng-packagr](../integration).
 
 First, the Angulare core package layout:
 
