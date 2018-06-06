@@ -158,8 +158,8 @@ my_package
 ├── package.json
 └── testing
     ├── src
+    |   ├── public_api.ts
     |   └── *.ts
-    ├── public_api.ts
     └── package.json
 ```
 
