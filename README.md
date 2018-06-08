@@ -18,7 +18,7 @@
 
 ## Usage Example
 
-Let's talk us through a _getting started_ that'll build an Angular library from TypeScript sources and create a distribution-ready npm package:
+Let's walk through a _getting started_ that'll build an Angular library from TypeScript sources and create a distribution-ready npm package:
 create a `package.json` file, add the custom `ngPackage` property, and eventually run `ng-packagr -p package.json`
 – Here we go:
 
