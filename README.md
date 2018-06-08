@@ -29,7 +29,7 @@ create a `package.json` file, add the custom `ngPackage` property, and eventuall
   "version": "1.0.0",
   "ngPackage": {
     "lib": {
-      "entryFile": "src/public_api.ts"
+      "entryFile": "public_api.ts"
     }
   }
 }
