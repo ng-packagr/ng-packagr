@@ -46,4 +46,4 @@ Note: You need to supply a full and valid tsconfig. You can get started by takin
 
 ## Angular CLI Users
 
-Overriding a tsconfig for Angular CLI users is straight forward as Angular CLI already uses the API. All you need to do is amend `tsconfig.lib.json` under your library folder.
+Overriding a tsconfig for Angular CLI users is straight forward as Angular CLI already uses the API. All you need to do is amend `tsconfig.lib.json` under the library folder.
