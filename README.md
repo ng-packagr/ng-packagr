@@ -18,9 +18,9 @@
 
 ## Usage Example
 
-Let's talk us through a _getting started_ that'll build an Angular library from TypeScript sources and create a distribution-ready npm package:
+Let's walk through a _getting started_ that'll build an Angular library from TypeScript sources and create a distribution-ready npm package:
 create a `package.json` file, add the custom `ngPackage` property, and eventually run `ng-packagr -p package.json`
-– Here we go:
+– Here we go:
 
 ```json
 {
@@ -104,7 +104,7 @@ To configure with a `package.json`, put the configuration in the `ngPackage` cus
   "$schema": "./node_modules/ng-packagr/package.schema.json",
   "ngPackage": {
     "lib": {
-      "entryFile": "public_api.ts"
+      "entryFile": "src/public_api.ts"
     }
   }
 }
@@ -118,7 +118,7 @@ Example of `ng-package.json`:
 {
   "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
   "lib": {
-    "entryFile": "public_api.ts"
+    "entryFile": "src/public_api.ts"
   }
 }
 ```
@@ -128,7 +128,7 @@ Example of `ng-package.js`:
 ```js
 module.exports = {
   lib: {
-    entryFile: 'public_api.ts'
+    entryFile: 'src/public_api.ts'
   }
 };
 ```
@@ -152,14 +152,14 @@ One way this can be done is by mimicking the folder structure of the following e
 ```
 my_package
 ├── src
+|   ├── public_api.ts
 |   └── *.ts
-├── public_api.ts
 ├── ng-package.json
 ├── package.json
 └── testing
     ├── src
+    |   ├── public_api.ts
     |   └── *.ts
-    ├── public_api.ts
     └── package.json
 ```
 
