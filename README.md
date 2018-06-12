@@ -279,6 +279,25 @@ The `jsx` flag will accept what the corresponding `tsconfig` accepts, more infor
 
 Note: Don't forget to include `react` and `react-dom` in `umdModuleIds` so that you're shipping a correct UMD bundle!
 
+#### What if I have legacy code that I want to provide Angular wrappers for?
+
+Suppose you have a legacy library and you want to provide Angular wrappers for it.
+There are two ways of approaching this: either include sources or use [npm's bundled dependencies](http://npm.github.io/using-pkgs-docs/package-json/types/bundleddependencies.html).
+
+Include the legacy code in the source code of your library.
+It will be included in the source set during compilation and part of your library.
+
+Take advantage of npm's bundled dependencies.
+[Bundled dependencies are useful when](https://stackoverflow.com/a/25044361)
+
+ - you want to re-use a third party library that doesn't come from the npm registry or that was modified
+ - you want to re-use your own projects as modules
+ - you want to distribute some files with your module
+
+
+**TODO: document usage example** 
+
+
 ## Further documentation
 
 We keep track of user questions in GitHub's issue tracker and try to build a documentation from it.
