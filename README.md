@@ -35,8 +35,10 @@ create a `package.json` file, add the custom `ngPackage` property, and eventuall
 }
 ```
 
-Note: Paths in the `ngPackage` section are resolved relative to the location of the `package.json` file.
+Note 1: Paths in the `ngPackage` section are resolved relative to the location of the `package.json` file.
 In the above example, `public_api.ts` is the entry file to the library's sources and must be placed next to `package.json` (a sibling in the same folder).
+
+Note 2: referencing the `$schema` enables JSON editing support (auto-completion for configuration) in IDEs like [VSCode](https://github.com/Microsoft/vscode).
 
 You can easily run _ng-packagr_ through a npm/yarn script:
 
@@ -79,12 +81,15 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
   * :tiger: Embed assets data w/ [postcss-url](https://github.com/postcss/postcss-url#inline)
 
 
-## How to
-- [Embed assets in css](docs/embed-assets-css.md)
+## How to…
+- [Embed Assets in CSS](docs/embed-assets-css.md)
+- [Managing Dependencies](docs/dependencies.md)
+- [Change Configuration Locations](docs/configuration-locations.md)
 - [Override tsconfig](docs/override-tsconfig.md)
-- [Add dependencies whitelisting](docs/dependencies-whitelisting.md)
 - [Add Style Include Paths](docs/style-include-paths.md)
-- [Change language level](docs/language-level.md)
+- [Change ECMAScript Language Level](docs/language-level.md)
+- [Package Secondary Entrypoints (sub packages)](docs/secondary-entrypoints.md)
+- [Enable JSX Templates, Bridging the Gap Between Angular and React](docs/jsx.md)
 
 ## Advanced Use Cases
 
@@ -98,90 +103,6 @@ Here is a [demo repository showing ng-packagr and Angular CLI](https://github.co
 
 What about [ng-packagr alongside Nx Workspace](https://github.com/dherges/nx-packaged)? Well, they work well together!
 
-#### Configuration Locations
-
-Configuration is picked up from the project file given by the `-p` CLI option.
-The `-p`option may refer to a `package.json` (with custom `ngPackage` property), an `ng-package.json`, or an `ng-package.js` file.
-When the `-p` option refers to a directory, the configuration is picked up from the first matching source;
-locations are tried in the above-mentioned order.
-
-To configure with a `package.json`, put the configuration in the `ngPackage` custom property:
-
-```json
-{
-  "$schema": "./node_modules/ng-packagr/package.schema.json",
-  "ngPackage": {
-    "lib": {
-      "entryFile": "src/public_api.ts"
-    }
-  }
-}
-```
-
-To configure with a `ng-package.json` or `ng-package.js`, keep the library's `package.json` in the same folder next to `ng-package.json` or `ng-package.js`.
-
-Example of `ng-package.json`:
-
-```json
-{
-  "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
-  "lib": {
-    "entryFile": "src/public_api.ts"
-  }
-}
-```
-
-Example of `ng-package.js`:
-
-```js
-module.exports = {
-  lib: {
-    entryFile: 'src/public_api.ts'
-  }
-};
-```
-
-Note: referencing the `$schema` enables JSON editing support (auto-completion for configuration) in IDEs like [VSCode](https://github.com/Microsoft/vscode).
-
-#### Secondary Entry Points
-
-Besides the primary entry point, a package can contain one or more secondary entry points (e.g. `@angular/core/testing`, `@angular/cdk/a11y`, …).
-These contain symbols that we don't want to group together with the symbols in the main entry point.
-The module id of a secondary entry directs the module loader to a sub-directory by the secondary's name.
-For instance, `@angular/core/testing` resolves to a directory under `node_modules/@angular/core/testing` containing a `package.json` file that references the correct bundle files for what an application's build system is looking for.
-
-For library developers, secondary entry points are dynamically discovered by searching for `package.json` files within subdirectories of the main `package.json` file's folder!
-
-##### Tell me now, how do I use secondary entry points (a.k.a. sub-packages)?
-
-All you have to do is create a `package.json` file and put it where you want a secondary entry point to be created.
-One way this can be done is by mimicking the folder structure of the following example which has a testing entry point in addition to its main entry point.
-
-```
-my_package
-├── src
-|   ├── public_api.ts
-|   └── *.ts
-├── ng-package.json
-├── package.json
-└── testing
-    ├── src
-    |   ├── public_api.ts
-    |   └── *.ts
-    └── package.json
-```
-
-The contents of `my_package/testing/package.json` can be as simple as:
-
-```json
-{
-  "ngPackage": {}
-}
-```
-
-No, that is not a typo. No name is required. No version is required.
-It's all handled for you by ng-packagr!
-When built, the primary entry point is imported by `import {..} from '@my/library'` and the secondary entry point with `import {..} from '@my/library/testing'`.
 
 #### Changing the entry file: What if I don't like `public_api.ts`?
 
@@ -198,52 +119,18 @@ For example, the following would use `index.ts` as the entry point:
 }
 ```
 
-By default, ng-packagr will treat dependencies as external dependencies.
-When writing the [UMD bundle](https://github.com/umdjs/umd), ng-packagr does its best to provide common default values for the UMD module identifiers and `rollup` will also do its best to guess the module ID of an external dependency.
-Even then, you should make sure that the UMD module identifiers of the external dependencies are correct.
-In case ng-packagr doesn't provide a default and rollup is unable to guess the correct identifier, you should explicitly provide the module identifier by using `umdModuleIds` in the library's package file section like so:
-
-```json
-{
-  "$schema": "../../../src/ng-package.schema.json",
-  "lib": {
-    "umdModuleIds": {
-      "lodash": "_",
-      "date-fns": "DateFns"
-    }
-  }
-}
-```
-
-#### React loves Angular, Angular loves React
-
-What if I want to use React Components in Angular?
-
-If you have React Components that you're using in your library, and want to use proper JSX/TSX syntax in order to
-construct them, you can set the `jsx` flag for your library through `ng-package.json` like so:
-
-```json
-{
-  "$schema": "../../../src/ng-package.schema.json",
-  "lib": {
-    "entryFile": "public_api.ts",
-    "umdModuleIds": {
-      "react": "React",
-      "react-dom": "ReactDOM"
-    },
-    "jsx": "react"
-  }
-}
-```
-
-The `jsx` flag will accept what the corresponding `tsconfig` accepts, more information [in the TypeScript Handbook chaper on JSX](https://www.typescriptlang.org/docs/handbook/jsx.html).
-
-Note: Don't forget to include `react` and `react-dom` in `umdModuleIds` so that you're shipping a correct UMD bundle!
-
-## Further documentation
+#### Further user questions and documentation
 
 We keep track of user questions in GitHub's issue tracker and try to build a documentation from it.
 [Explore issues w/ label documentation](https://github.com/dherges/ng-packagr/issues?q=label%3Adocumentation%20).
+
+#### Contributing to ng-packagr
+
+[General contribution guidelines](./CONTRIBUTING.md)
+
+If you like to submit a pull request, you'll find it helpful to take a look at the [initial design document where it all started](./docs/DESIGN.md).
+
+To orchestrate the different tools, ng-packagr features a [custom transformation pipeline](docs/transformation-pipeline.md#a-transformation-pipeline). The transformation pipeline is built on top of RxJS and Angular Dependency Injection concepts.
 
 ## Knowledge
 
