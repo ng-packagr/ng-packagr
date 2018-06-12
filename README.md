@@ -83,9 +83,9 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
 
 ## How to…
 - [Embed Assets in CSS](docs/embed-assets-css.md)
+- [Managing Dependencies](docs/dependencies.md)
 - [Change Configuration Locations](docs/configuration-locations.md)
 - [Override tsconfig](docs/override-tsconfig.md)
-- [Add Whitelist for 'dependencies' Section](docs/dependencies-whitelisting.md)
 - [Add Style Include Paths](docs/style-include-paths.md)
 - [Change ECMAScript Language Level](docs/language-level.md)
 - [Package Secondary Entrypoints (sub packages)](docs/secondary-entrypoints.md)
@@ -114,23 +114,6 @@ For example, the following would use `index.ts` as the entry point:
   "ngPackage": {
     "lib": {
       "entryFile": "index.ts"
-    }
-  }
-}
-```
-
-By default, ng-packagr will treat dependencies as external dependencies.
-When writing the [UMD bundle](https://github.com/umdjs/umd), ng-packagr does its best to provide common default values for the UMD module identifiers and `rollup` will also do its best to guess the module ID of an external dependency.
-Even then, you should make sure that the UMD module identifiers of the external dependencies are correct.
-In case ng-packagr doesn't provide a default and rollup is unable to guess the correct identifier, you should explicitly provide the module identifier by using `umdModuleIds` in the library's package file section like so:
-
-```json
-{
-  "$schema": "../../../src/ng-package.schema.json",
-  "lib": {
-    "umdModuleIds": {
-      "lodash": "_",
-      "date-fns": "DateFns"
     }
   }
 }
