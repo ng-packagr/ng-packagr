@@ -35,8 +35,10 @@ create a `package.json` file, add the custom `ngPackage` property, and eventuall
 }
 ```
 
-Note: Paths in the `ngPackage` section are resolved relative to the location of the `package.json` file.
+Note 1: Paths in the `ngPackage` section are resolved relative to the location of the `package.json` file.
 In the above example, `public_api.ts` is the entry file to the library's sources and must be placed next to `package.json` (a sibling in the same folder).
+
+Note 2: referencing the `$schema` enables JSON editing support (auto-completion for configuration) in IDEs like [VSCode](https://github.com/Microsoft/vscode).
 
 You can easily run _ng-packagr_ through a npm/yarn script:
 
@@ -97,51 +99,6 @@ Nikolas LeBlanc wrote a tutorial on [building an Angular 4 Component Library wit
 Here is a [demo repository showing ng-packagr and Angular CLI](https://github.com/dherges/ng-packaged) in action.
 
 What about [ng-packagr alongside Nx Workspace](https://github.com/dherges/nx-packaged)? Well, they work well together!
-
-#### Configuration Locations
-
-Configuration is picked up from the project file given by the `-p` CLI option.
-The `-p`option may refer to a `package.json` (with custom `ngPackage` property), an `ng-package.json`, or an `ng-package.js` file.
-When the `-p` option refers to a directory, the configuration is picked up from the first matching source;
-locations are tried in the above-mentioned order.
-
-To configure with a `package.json`, put the configuration in the `ngPackage` custom property:
-
-```json
-{
-  "$schema": "./node_modules/ng-packagr/package.schema.json",
-  "ngPackage": {
-    "lib": {
-      "entryFile": "src/public_api.ts"
-    }
-  }
-}
-```
-
-To configure with a `ng-package.json` or `ng-package.js`, keep the library's `package.json` in the same folder next to `ng-package.json` or `ng-package.js`.
-
-Example of `ng-package.json`:
-
-```json
-{
-  "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
-  "lib": {
-    "entryFile": "src/public_api.ts"
-  }
-}
-```
-
-Example of `ng-package.js`:
-
-```js
-module.exports = {
-  lib: {
-    entryFile: 'src/public_api.ts'
-  }
-};
-```
-
-Note: referencing the `$schema` enables JSON editing support (auto-completion for configuration) in IDEs like [VSCode](https://github.com/Microsoft/vscode).
 
 #### Secondary Entry Points
 
