@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0-rc.1"></a>
+# [4.0.0-rc.1](https://github.com/dherges/ng-packagr/compare/v4.0.0-rc.0...v4.0.0-rc.1) (2018-06-12)
+
+
+### Bug Fixes
+
+* update rollup to version ^0.60.0 ([#926](https://github.com/dherges/ng-packagr/issues/926)) ([9de5a1d](https://github.com/dherges/ng-packagr/commit/9de5a1d))
+
+
+### Performance Improvements
+
+* speed up discovery of secondary entry points ([#930](https://github.com/dherges/ng-packagr/issues/930)) ([d646721](https://github.com/dherges/ng-packagr/commit/d646721)), closes [#921](https://github.com/dherges/ng-packagr/issues/921)
+
+
+
 <a name="4.0.0-rc.0"></a>
 # [4.0.0-rc.0](https://github.com/dherges/ng-packagr/compare/v3.0.0...v4.0.0-rc.0) (2018-05-25)
 
