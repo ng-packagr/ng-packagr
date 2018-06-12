@@ -4,7 +4,7 @@ Publishing an npm packages with `dependencies` easily leads to installing multip
 
 A motivation why `peerDependencies` are the preferred solution for libraries can be found on the [Hidden Variables blog](https://blog.domenic.me/peer-dependencies).
 
-ng-packagr verifies `dependencies` and `devDependencies` at build time and fail the build, if a dependency is not whitelisted explicitly.
+ng-packagr verifies `dependencies` at build time and fail the build, if a dependency is not whitelisted explicitly.
 
 Whitelisting can be done using the `whitelistedNonPeerDependencies` option in the ng-packagr configuration. Each entry will be matched as a RegExp.
 a

@@ -78,6 +78,14 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
   * :monkey: Adds vendor-specific prefixes w/ [autoprefixer](https://github.com/postcss/autoprefixer#autoprefixer-) and [browserslist](https://github.com/ai/browserslist#queries) &mdash; just tell your desired `.browserslistrc`
   * :tiger: Embed assets data w/ [postcss-url](https://github.com/postcss/postcss-url#inline)
 
+
+## How to
+- [Embed assets in css](docs/embed-assets-css.md)
+- [Override tsconfig](docs/override-tsconfig.md)
+- [Add dependencies whitelisting](docs/dependencies-whitelisting.md)
+- [Add Style Include Paths](docs/style-include-paths.md)
+- [Change language level](docs/language-level.md)
+
 ## Advanced Use Cases
 
 #### Examples and Tutorials
@@ -185,53 +193,6 @@ For example, the following would use `index.ts` as the entry point:
   "ngPackage": {
     "lib": {
       "entryFile": "index.ts"
-    }
-  }
-}
-```
-
-#### Language Level: How do I use es2016 or es2017 features in my TypeScript library?
-
-You can change the TypeScript language level support in tsconfig by setting `lib.languageLevel` property in the `ngPackage` section:
-For example:
-
-```json
-{
-  "ngPackage": {
-    "lib": {
-      "languageLevel": ["dom", "es2017"]
-    }
-  }
-}
-```
-
-#### How to embed assets in CSS?
-
-You can embed assets such as font and images inside the outputted css.
-More information [in the CSS tricks website](https://css-tricks.com/data-uris)
-
-Valid values: `none` or `inline`.
-
-```json
-{
-  "ngPackage": {
-    "lib": {
-      "cssUrl": "inline"
-    }
-  }
-}
-```
-
-#### What if I have multiple SASS/SCSS/Less/Stylus include paths?
-
-In case you have multiple include paths for `@import` statements (e.g., when setting the `stylePreprocessorOptions` in `.angular-cli.json`),
-the additional paths may be configured through the `styleIncludePaths` option.
-
-```json
-{
-  "ngPackage": {
-    "lib": {
-      "styleIncludePaths": ["./src/assets/styles"]
     }
   }
 }
