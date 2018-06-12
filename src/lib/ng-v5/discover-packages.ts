@@ -86,19 +86,18 @@ const primaryEntryPoint = ({ packageJson, ngPackageJson, basePath }: UserPackage
  * @param excludeFolder A sub-folder of `directoryPath` that is excluded from search results.
  */
 const findSecondaryPackagesPaths = async (directoryPath: string, excludeFolder: string): Promise<string[]> => {
-  const excludedFolders = ['node_modules', 'dist', path.resolve(directoryPath, excludeFolder)];
-
-  const EXCLUDE_FOLDERS = [];
-  for (let folder of excludedFolders) {
-    EXCLUDE_FOLDERS.push(`**/${folder}/**/package.json`, `**/${folder}/**/ng-package.json`);
-  }
-  EXCLUDE_FOLDERS.push(`${directoryPath}/package.json`, `${directoryPath}/ng-package.json`);
+  const ignore = [
+    '**/node_modules/**/*',
+    `${path.resolve(directoryPath, excludeFolder)}/**/*`,
+    `${directoryPath}/package.json`
+  ];
 
   const filePaths = await globFiles(`${directoryPath}/**/package.json`, {
-    ignore: EXCLUDE_FOLDERS,
+    ignore,
     cwd: directoryPath
   });
-  return filePaths.map(path.dirname).filter((value, index, array) => array.indexOf(value) === index);
+
+  return filePaths.map(path.dirname);
 };
 
 /**
