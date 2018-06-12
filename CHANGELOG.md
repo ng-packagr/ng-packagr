@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.2"></a>
+## [3.0.2](https://github.com/dherges/ng-packagr/compare/v3.0.1...v3.0.2) (2018-06-12)
+
+
+### Performance Improvements
+
+* speed up discovery of secondary entry points ([#931](https://github.com/dherges/ng-packagr/issues/931)) ([e1e63e2](https://github.com/dherges/ng-packagr/commit/e1e63e2)), closes [#921](https://github.com/dherges/ng-packagr/issues/921)
+
+
+
 <a name="3.0.1"></a>
 ## [3.0.1](https://github.com/dherges/ng-packagr/compare/v3.0.0...v3.0.1) (2018-06-02)
 
