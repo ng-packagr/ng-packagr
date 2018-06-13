@@ -5,7 +5,7 @@
 As a rule of thumb, consider that your library's dependencies are declared as `peerDependencies`.
 In most cases, this is the recommended solution for library dependencies.
 
-## Why?
+### Why?
 
 Publishing an npm packages with a `dependencies` section in `package.json` easily leads to installing multiple versions of a dependency to an application's `node_modules` folder.
 While this is a desirable solution on server-side or standalone programs, it's a source for bugs on front-end build stacks and UI technologies – you don't want to install two different versions of Angular or RxJS.
