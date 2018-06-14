@@ -84,7 +84,7 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
 ## How to…
 - [Embed Assets in CSS](docs/embed-assets-css.md)
 - [Managing Dependencies](docs/dependencies.md)
-- [Change the Entry File of a Library](docs-entry-file.md)
+- [Change the Entry File of a Library](docs/entry-file.md)
 - [Change Configuration Locations](docs/configuration-locations.md)
 - [Override tsconfig](docs/override-tsconfig.md)
 - [Add Style Include Paths](docs/style-include-paths.md)
