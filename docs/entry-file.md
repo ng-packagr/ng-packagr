@@ -4,7 +4,7 @@
 
 The entry file is the starting point of a library's public API surface.
 All symbols that are exported from the entry file are available to users of the library and should be considered public.
-Symbols that are note exported from the entry file should be considered internal.
+Symbols that are not exported from the entry file should be considered internal.
 
 ### Minimal Example
 
