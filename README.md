@@ -84,6 +84,7 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
 ## How to…
 - [Embed Assets in CSS](docs/embed-assets-css.md)
 - [Managing Dependencies](docs/dependencies.md)
+- [Change the Entry File of a Library](docs/entry-file.md)
 - [Change Configuration Locations](docs/configuration-locations.md)
 - [Override tsconfig](docs/override-tsconfig.md)
 - [Add Style Include Paths](docs/style-include-paths.md)
@@ -103,23 +104,7 @@ Here is a [demo repository showing ng-packagr and Angular CLI](https://github.co
 
 What about [ng-packagr alongside Nx Workspace](https://github.com/dherges/nx-packaged)? Well, they work well together!
 
-
-#### Changing the entry file: What if I don't like `public_api.ts`?
-
-You can change the entry point file by using the `ngPackage` configuration field in `package.json` (or `ng-package.json`).
-For example, the following would use `index.ts` as the entry point:
-
-```json
-{
-  "ngPackage": {
-    "lib": {
-      "entryFile": "index.ts"
-    }
-  }
-}
-```
-
-#### Further user questions and documentation
+#### Further user questions and issue-driven documentation
 
 We keep track of user questions in GitHub's issue tracker and try to build a documentation from it.
 [Explore issues w/ label documentation](https://github.com/dherges/ng-packagr/issues?q=label%3Adocumentation%20).
