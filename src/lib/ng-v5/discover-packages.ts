@@ -87,8 +87,8 @@ const primaryEntryPoint = ({ packageJson, ngPackageJson, basePath }: UserPackage
  */
 const findSecondaryPackagesPaths = async (directoryPath: string, excludeFolder: string): Promise<string[]> => {
   const ignore = [
-    '**/node_modules/**/*',
-    `${path.resolve(directoryPath, excludeFolder)}/**/*`,
+    '**/node_modules/**',
+    `${path.resolve(directoryPath, excludeFolder)}/**`,
     `${directoryPath}/package.json`
   ];
 
