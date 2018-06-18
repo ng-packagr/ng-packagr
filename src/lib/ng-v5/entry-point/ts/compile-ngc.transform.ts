@@ -49,5 +49,10 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
 
   previousTransform.dispose();
 
+  // Clean up TypeScript compiler nodes. Releases TypeScript memory allocations to avoid memory
+  // leaks with multiple secondary entry points.
+  tsSources.data.dispose();
+  tsSources.data = null;
+
   return graph;
 });
