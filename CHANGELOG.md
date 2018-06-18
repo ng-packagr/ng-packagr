@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.3"></a>
+## [3.0.3](https://github.com/dherges/ng-packagr/compare/v3.0.2...v3.0.3) (2018-06-18)
+
+
+### Bug Fixes
+
+* release typescript compiler memory allocations ([#957](https://github.com/dherges/ng-packagr/issues/957)) ([c456d15](https://github.com/dherges/ng-packagr/commit/c456d15))
+
+
+### Performance Improvements
+
+* don't scan `node_modules` directory while globbing ([#950](https://github.com/dherges/ng-packagr/issues/950)) ([525174e](https://github.com/dherges/ng-packagr/commit/525174e)), closes [#948](https://github.com/dherges/ng-packagr/issues/948)
+
+
+
 <a name="3.0.2"></a>
 ## [3.0.2](https://github.com/dherges/ng-packagr/compare/v3.0.1...v3.0.2) (2018-06-12)
 
