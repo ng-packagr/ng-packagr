@@ -33,7 +33,7 @@
     },
     "whitelistedNonPeerDependencies": {
       "description":
-        "A list of dependencies that are allowed in the 'dependendencies' and 'devDependencies' section of package.json. Values in the list are regular expressions matched against npm package names.",
+        "A list of dependencies that are allowed in the 'dependencies' and 'devDependencies' section of package.json. Values in the list are regular expressions matched against npm package names.",
       "type": "array",
       "items": {
         "type": "string"
