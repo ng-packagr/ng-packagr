@@ -1,0 +1,21 @@
+environment:
+  nodejs_version: "8"
+  nodejs_version: "9"
+
+matrix:
+  fast_finish: true
+
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - yarn install --frozen-lockfile --non-interactive
+
+test_script:
+  - node --version
+  - yarn test
+
+build: off
+deploy: off
+
+cache:
+  - node_modules
+  - "%LOCALAPPDATA%\\Yarn"
