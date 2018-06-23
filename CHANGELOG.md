@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0-rc.2"></a>
+# [4.0.0-rc.2](https://github.com/dherges/ng-packagr/compare/v4.0.0-rc.1...v4.0.0-rc.2) (2018-06-23)
+
+
+### Bug Fixes
+
+* update read-pkg-up to version ^4.0.0 ([#955](https://github.com/dherges/ng-packagr/issues/955)) ([c07e888](https://github.com/dherges/ng-packagr/commit/c07e888))
+
+
+### Features
+
+* add support for incremental builds ([#884](https://github.com/dherges/ng-packagr/issues/884)) ([fbbb434](https://github.com/dherges/ng-packagr/commit/fbbb434)), closes [#828](https://github.com/dherges/ng-packagr/issues/828) [#743](https://github.com/dherges/ng-packagr/issues/743) [#635](https://github.com/dherges/ng-packagr/issues/635)
+
+
+### Performance Improvements
+
+* don't scan `node_modules` directory while globbing ([#949](https://github.com/dherges/ng-packagr/issues/949)) ([ee7b892](https://github.com/dherges/ng-packagr/commit/ee7b892)), closes [#948](https://github.com/dherges/ng-packagr/issues/948)
+
+
+
 <a name="4.0.0-rc.1"></a>
 # [4.0.0-rc.1](https://github.com/dherges/ng-packagr/compare/v4.0.0-rc.0...v4.0.0-rc.1) (2018-06-12)
 
