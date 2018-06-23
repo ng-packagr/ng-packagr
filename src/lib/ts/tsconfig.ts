@@ -3,7 +3,6 @@ import * as ng from '@angular/compiler-cli/src/perform_compile';
 import { ParsedConfiguration } from '@angular/compiler-cli/src/perform_compile';
 import * as path from 'path';
 import * as ts from 'typescript';
-import { NgEntryPoint } from '../ng-package-format/entry-point';
 import { EntryPointNode } from '../ng-v5/nodes';
 import * as log from '../util/log';
 

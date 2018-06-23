@@ -9,6 +9,8 @@ import { ngPackagr } from '../ng-v5/packagr';
 export interface CliArguments {
   /** Path to the project file 'package.json', 'ng-package.json', or 'ng-package.js'. */
   project: string;
+  /** Whether or not ng-packagr will watch for file changes and perform an incremental build. */
+  watch?: boolean;
 }
 
 /**
@@ -19,4 +21,5 @@ export interface CliArguments {
 export const build: Command<CliArguments, void> = opts =>
   ngPackagr()
     .forProject(opts.project)
+    .withOptions({ watch: opts.watch })
     .build();

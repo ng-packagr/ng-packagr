@@ -14,7 +14,6 @@ import { byEntryPoint } from './nodes';
  * The current transformation pipeline can be thought of as:
  *
  *  - clean
- *  - renderStylesheets
  *  - compileTs
  *  - downlevelTs
  *  - writeBundles
@@ -30,13 +29,11 @@ import { byEntryPoint } from './nodes';
  * The transformation pipeline is pluggable through the dependency injection system.
  * Sub-transformations are passed to this factory function as arguments.
  *
- * @param renderStylesheets Transformation rendering xCSS stylesheets.
  * @param compileTs Transformation compiling typescript sources to ES2015 modules.
  * @param writeBundles Transformation flattening ES2015 modules to ESM2015, ESM5, UMD, and minified UMD.
  * @param writePackage Transformation writing a distribution-ready `package.json` (for publishing to npm registry).
  */
 export const entryPointTransformFactory = (
-  renderStylesheets: Transform,
   compileTs: Transform,
   writeBundles: Transform,
   writePackage: Transform
@@ -49,8 +46,6 @@ export const entryPointTransformFactory = (
       const entryPoint = graph.find(byEntryPoint().and(isInProgress));
       log.info(`Building entry point '${entryPoint.data.entryPoint.moduleId}'`);
     }),
-    // Stylesheet rendering
-    renderStylesheets,
     // TypeScript sources compilation
     compileTs,
     // After TypeScript: bundling and write package

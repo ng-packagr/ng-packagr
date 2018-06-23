@@ -6,10 +6,15 @@ import { TsConfig } from '../ts/tsconfig';
 import * as log from '../util/log';
 import { createEmitCallback } from './create-emit-callback';
 import { redirectWriteFileCompilerHost } from '../ts/redirect-write-file-compiler-host';
+import { cacheCompilerHost } from '../ts/cache-compiler-host';
+import { FileCache } from '../file/file-cache';
+import { StylesheetProcessor } from '../ng-v5/entry-point/resources/stylesheet-processor';
 
 export async function compileSourceFiles(
   tsConfig: TsConfig,
-  readResourcesResolver: (fileName: string) => string | undefined,
+  sourcesFileCache: FileCache,
+  moduleResolutionCache: ts.ModuleResolutionCache,
+  stylesheetProcessor: StylesheetProcessor,
   extraOptions?: Partial<ng.CompilerOptions>,
   declarationDir?: string
 ) {
@@ -17,7 +22,7 @@ export async function compileSourceFiles(
 
   const tsConfigOptions: ng.CompilerOptions = { ...tsConfig.options, ...extraOptions };
 
-  let tsCompilerHost = ts.createCompilerHost(tsConfigOptions);
+  let tsCompilerHost = cacheCompilerHost(tsConfigOptions, sourcesFileCache, moduleResolutionCache, stylesheetProcessor);
   if (declarationDir) {
     tsCompilerHost = redirectWriteFileCompilerHost(tsCompilerHost, tsConfigOptions.basePath, declarationDir);
   }
@@ -28,16 +33,12 @@ export async function compileSourceFiles(
     tsHost: tsCompilerHost
   });
 
-  // This is used in combination with 'enableResourceInlining' to read file contents of templates and stylesheets
-  ngCompilerHost.readResource = readResourcesResolver;
-
-  const program = ng.createProgram({
+  // Don't use `ng.emit` as it doesn't output all errors.
+  // https://github.com/angular/angular/issues/24024
+  const result = ng.performCompilation({
     rootNames: tsConfig.rootNames,
     options: tsConfigOptions,
-    host: ngCompilerHost
-  });
-
-  const result = program.emit({
+    host: ngCompilerHost,
     emitCallback: createEmitCallback(tsConfigOptions),
     emitFlags: tsConfig.emitFlags
   });
@@ -51,7 +52,7 @@ export async function compileSourceFiles(
     const metadataSrc = path.resolve(tsConfigOptions.declarationDir, metadataBundleFile);
     const metadataDest = path.resolve(declarationDir, metadataBundleFile);
     if (metadataDest !== metadataSrc && fs.existsSync(metadataSrc)) {
-      await fs.move(metadataSrc, metadataDest, { overwrite: true });
+      fs.moveSync(metadataSrc, metadataDest, { overwrite: true });
     }
   }
 

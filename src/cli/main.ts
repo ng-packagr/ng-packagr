@@ -15,6 +15,7 @@ function parseProjectPath(parsed: string): string {
 program
   .name('ng-packagr')
   .option('-V, --version', 'Prints version info')
+  .option('-w, --watch', 'Watch for file changes')
   .option(
     '-p, --project [path]',
     "Path to the 'ng-package.json' or 'package.json' file.",
@@ -33,4 +34,4 @@ program.on('option:version', () => {
 
 program.parse(process.argv);
 
-execute(build, { project: program.opts().project }).catch(err => process.exit(111));
+execute(build, { project: program.opts().project, watch: !!program.opts().watch }).catch(err => process.exit(111));

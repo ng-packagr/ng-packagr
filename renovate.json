@@ -7,10 +7,7 @@
   "dependencies": {
     "semanticPrefix": "fix:"
   },
-  "packageFiles": [
-    "package.json",
-    "integration/consumers/ng-cli/package.json"
-  ],
+  "packageFiles": ["package.json", "integration/consumers/ng-cli/package.json"],
   "packageRules": [
     {
       "packagePatterns": ["^@angular\/.*"],

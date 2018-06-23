@@ -93,6 +93,13 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Sample: scss-paths",
+      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "args": ["scss-paths"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Sample: embed-assets",
       "program": "${workspaceRoot}/integration/samples.dev.js",
       "args": ["embed-assets"]

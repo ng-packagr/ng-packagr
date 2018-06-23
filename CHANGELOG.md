@@ -629,7 +629,7 @@ This should be (is a) non-breaking change as any Angular project requires typesc
 
 # [1.5.0](https://github.com/dherges/ng-packagr/compare/v1.4.0...v1.5.0) (2017-11-05)
 
-Secondary entrypoints – such as `@angular/core/testing`, `@angular/common/http`, `@angular/cdk/a11y`, et al. – can now be bundled with ng-packagr. Angular's `tsc-wrapped` is now version ^4.4.5 and `typescript` is ^2.3.4 – whether these work well with Angular 5 needs to be verified.
+Secondary entrypoints – such as `@angular/core/testing`, `@angular/common/http`, `@angular/cdk/a11y`, et al. – can now be bundled with ng-packagr. Angular's `tsc-wrapped` is now version ^4.4.5 and `typescript` is ^2.3.4 – whether these work well with Angular 5 needs to be verified.
 
 ### Bug Fixes
 

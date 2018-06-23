@@ -22,6 +22,10 @@ export const info = (msg: string) => {
   console.log(chalk.blue(msg));
 };
 
+export const msg = (msg: string) => {
+  console.log(chalk.white(msg));
+};
+
 export const debug = (msg: string) => {
   if (process.env.DEBUG) {
     console.log(chalk.inverse.cyan(`[debug] ${msg}`));

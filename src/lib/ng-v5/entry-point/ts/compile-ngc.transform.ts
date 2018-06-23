@@ -4,14 +4,8 @@ import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { compileSourceFiles } from '../../../ngc/compile-source-files';
 import { TsConfig } from '../../../ts/tsconfig';
 import * as log from '../../../util/log';
-import {
-  isEntryPointInProgress,
-  isTypeScriptSources,
-  TypeScriptSourceNode,
-  isEntryPoint,
-  EntryPointNode,
-  fileUrl
-} from '../../nodes';
+import { isEntryPointInProgress, EntryPointNode, isPackage } from '../../nodes';
+import { StylesheetProcessor } from '../resources/stylesheet-processor';
 
 export const compileNgcTransform: Transform = transformFromPromise(async graph => {
   log.info(`Compiling TypeScript sources through ngc`);
@@ -20,21 +14,16 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
 
   // Compile TypeScript sources
   const { esm2015, esm5, declarations } = entryPoint.data.destinationFiles;
-
-  const resourcesResolver = (fileName: string): string | undefined => {
-    const url = fileUrl(fileName);
-    const result = entryPoint.dependents.find(x => x.url === url);
-    if (!result) {
-      throw new Error(`Cannot read resource: ${fileName}`);
-    }
-
-    return result.data.content;
-  };
+  const { compilationFileCache, moduleResolutionCache } = entryPoint.cache;
+  const { basePath, cssUrl, styleIncludePaths } = entryPoint.data.entryPoint;
+  const stylesheetProcessor = new StylesheetProcessor(basePath, cssUrl, styleIncludePaths);
 
   await Promise.all([
     compileSourceFiles(
       tsConfig,
-      resourcesResolver,
+      compilationFileCache,
+      moduleResolutionCache,
+      stylesheetProcessor,
       {
         outDir: path.dirname(esm2015),
         declaration: true,
@@ -43,7 +32,7 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
       path.dirname(declarations)
     ),
 
-    compileSourceFiles(tsConfig, resourcesResolver, {
+    compileSourceFiles(tsConfig, compilationFileCache, moduleResolutionCache, stylesheetProcessor, {
       outDir: path.dirname(esm5),
       target: ts.ScriptTarget.ES5,
       downlevelIteration: true,
