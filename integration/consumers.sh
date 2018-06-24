@@ -1,10 +1,8 @@
 #!/bin/bash
 set -e
 
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-cd "$parent_path"
-echo "Running consumer builds in $parent_path"
-
+cd "integration"
+echo "Running consumer builds in $PWD"
 # Prepare samples
 array=( 'custom' 'material' 'secondary' )
 for sample in "${array[@]}"; do

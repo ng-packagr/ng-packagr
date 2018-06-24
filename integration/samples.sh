@@ -1,7 +1,15 @@
 #!/bin/bash
 set -e
 
-for D in `find ./integration/samples/* -maxdepth 0 -type d`
+FIND_COMMAND=""
+
+if [[ $OSTYPE == "win32" ]]; then
+    FIND_COMMAND="dir /b /o:n /ad"
+else
+    FIND_COMMAND="find ./integration/samples/* -maxdepth 0 -type d"
+fi
+
+for D in $FIND_COMMAND
 do
     P_JS=${D}/ng-package.js
     P_JSON=${D}/ng-package.json
