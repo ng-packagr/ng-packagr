@@ -1,4 +1,8 @@
 environment:
+  global:
+    # Set %PATH% to avoid msys/cygwin DLL conflicts which causes:
+    # 'fatal error - cygheap base mismatch detected'
+    PATH: C:\msys64\usr\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Yarn\bin;C:\Program Files (x86)\nodejs
   nodejs_version: "8"
 
 matrix:
@@ -6,10 +10,10 @@ matrix:
 
 install:
   - ps: Install-Product node $env:nodejs_version
+  - node --version
   - yarn install --frozen-lockfile --non-interactive
 
 test_script:
-  - node --version
   - yarn test
 
 build: off
