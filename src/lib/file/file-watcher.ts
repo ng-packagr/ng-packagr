@@ -23,7 +23,7 @@ export function createFileWatch(
   });
 
   const handleFileChange = (event: FileWatchEvent, filePath: string, observer: Observer<FileChangedEvent>) => {
-    log.debug(`Watch: file changed ${filePath}`);
+    log.debug(`Watch: Path changed. Event: ${event}, Path: ${filePath}`);
 
     observer.next({
       filePath: path.resolve(ensureUnixPath(filePath)),
