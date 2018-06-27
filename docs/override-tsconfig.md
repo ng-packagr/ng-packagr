@@ -42,7 +42,21 @@ ngPackage
   });
 ```
 
-Note: You need to supply a full and valid tsconfig. You can get started by taking a look at [our internal tsconfig](../src/lib/ts/conf/tsconfig.ngc.json).
+Notes:
+
+You need to supply a full and valid tsconfig. You can get started by taking a look at [our internal tsconfig](../src/lib/ts/conf/tsconfig.ngc.json).
+
+Your `tsconfig.lib.json` can extends it
+
+```json
+{
+  "extends": "<root>/node_modules/ng-packagr/lib/ts/conf/tsconfig.ngc.json",
+  "compilerOptions": {
+    "types": ["node"]
+    // Other overrides
+  }
+}
+```
 
 ## Angular CLI Users
 
