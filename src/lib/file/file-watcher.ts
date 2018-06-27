@@ -33,5 +33,6 @@ export function createFileWatch(
 
   return Observable.create(observer => {
     watch.on('all', (event: FileWatchEvent, filePath: string) => handleFileChange(event, filePath, observer));
+    return () => watch.close();
   });
 }
