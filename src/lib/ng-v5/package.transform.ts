@@ -1,5 +1,5 @@
 import { Observable, concat as concatStatic, from as fromPromise, of as observableOf, pipe, EMPTY } from 'rxjs';
-import { concatMap, map, switchMap, takeLast, tap, mapTo, catchError, startWith, throttleTime } from 'rxjs/operators';
+import { concatMap, map, switchMap, takeLast, tap, mapTo, catchError, startWith, debounceTime } from 'rxjs/operators';
 import { BuildGraph } from '../brocc/build-graph';
 import { DepthBuilder } from '../brocc/depth';
 import { STATE_IN_PROGESS } from '../brocc/node';
@@ -115,10 +115,10 @@ const watchTransformFactory = (
             }
           })
         ),
+        debounceTime(200),
         tap(() => log.msg(FileChangeDetected)),
         startWith(undefined),
-        mapTo(graph),
-        throttleTime(200)
+        mapTo(graph)
       );
     }),
     switchMap(graph => {
