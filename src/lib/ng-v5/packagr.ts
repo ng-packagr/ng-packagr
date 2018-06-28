@@ -1,5 +1,5 @@
 import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
-import { of as observableOf } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { BuildGraph } from '../brocc/build-graph';
 import { Transform } from '../brocc/transform';
@@ -90,20 +90,38 @@ export class NgPackagr {
    * @return A promisified result of the transformation pipeline.
    */
   public build(): Promise<void> {
+    return this.buildAsObservable().toPromise();
+  }
+
+  /**
+   * Builds and watch for changes by kick-starting the 'watch' transform over an (initially) empty `BuildGraph``
+   *
+   * @return An observable result of the transformation pipeline.
+   */
+  public watch(): Observable<void> {
+    this.providers.push(provideOptions({ watch: true }));
+
+    return this.buildAsObservable();
+  }
+
+  /**
+   * Builds the project by kick-starting the 'build' transform over an (initially) empty `BuildGraph``
+   *
+   * @return An observable result of the transformation pipeline.
+   */
+  public buildAsObservable(): Observable<void> {
     const injector = ReflectiveInjector.resolveAndCreate(this.providers);
     const buildTransformOperator = injector.get(this.buildTransform);
 
-    return observableOf(new BuildGraph())
-      .pipe(
-        buildTransformOperator,
-        catchError(err => {
-          // Report error and re-throw to subscribers
-          log.error(err);
-          throw err;
-        }),
-        map(() => undefined)
-      )
-      .toPromise();
+    return observableOf(new BuildGraph()).pipe(
+      buildTransformOperator,
+      catchError(err => {
+        // Report error and re-throw to subscribers
+        log.error(err);
+        throw err;
+      }),
+      map(() => undefined)
+    );
   }
 }
 

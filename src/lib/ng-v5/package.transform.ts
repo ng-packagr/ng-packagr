@@ -1,4 +1,4 @@
-import { Observable, concat as concatStatic, from as fromPromise, of as observableOf, pipe, EMPTY } from 'rxjs';
+import { Observable, concat as concatStatic, from as fromPromise, of as observableOf, pipe, NEVER } from 'rxjs';
 import { concatMap, map, switchMap, takeLast, tap, mapTo, catchError, startWith, debounceTime } from 'rxjs/operators';
 import { BuildGraph } from '../brocc/build-graph';
 import { DepthBuilder } from '../brocc/depth';
@@ -122,14 +122,13 @@ const watchTransformFactory = (
       );
     }),
     switchMap(graph => {
-      const { url } = graph.find(isPackage) as PackageNode;
       return observableOf(graph).pipe(
         buildTransformFactory(project, analyseSourcesTransform, entryPointTransform),
         tap(() => log.msg(CompleteWaitingForFileChange)),
         catchError(error => {
           log.error(error);
           log.msg(FailedWaitingForFileChange);
-          return EMPTY;
+          return NEVER;
         })
       );
     })
