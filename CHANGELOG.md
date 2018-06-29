@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0-rc.3"></a>
+# [4.0.0-rc.3](https://github.com/dherges/ng-packagr/compare/v4.0.0-rc.2...v4.0.0-rc.3) (2018-06-29)
+
+
+### Bug Fixes
+
+* debounce when a file changes ([#975](https://github.com/dherges/ng-packagr/issues/975)) ([25e2f42](https://github.com/dherges/ng-packagr/commit/25e2f42))
+* update rollup to version ^0.62.0 ([#963](https://github.com/dherges/ng-packagr/issues/963)) ([e44ab14](https://github.com/dherges/ng-packagr/commit/e44ab14))
+
+
+### Features
+
+* add `watch` and `buildAsObservable` methods ([#982](https://github.com/dherges/ng-packagr/issues/982)) ([6975192](https://github.com/dherges/ng-packagr/commit/6975192))
+* update `lib` compiler option to `es2018` ([#956](https://github.com/dherges/ng-packagr/issues/956)) ([6bbedee](https://github.com/dherges/ng-packagr/commit/6bbedee))
+
+
+### Performance Improvements
+
+* add teardown logic for watch ([#980](https://github.com/dherges/ng-packagr/issues/980)) ([42ffec4](https://github.com/dherges/ng-packagr/commit/42ffec4))
+
+
+### BREAKING CHANGES
+
+* The following `peerDependencies` are now required
+- `tslib: ^1.9.0`
+- `typescript: ^2.7.0`
+
+The default for `lib.languageLevel`  is now `es2018`. In case this needs to be changed. This can to be done by overriding the tsconfig. More on how to override the tsconfig can be found here: https://github.com/dherges/ng-packagr/blob/master/docs/override-tsconfig.md
+
+
+
 <a name="4.0.0-rc.2"></a>
 # [4.0.0-rc.2](https://github.com/dherges/ng-packagr/compare/v4.0.0-rc.1...v4.0.0-rc.2) (2018-06-23)
 
