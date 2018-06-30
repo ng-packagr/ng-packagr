@@ -76,21 +76,21 @@ export class TestHarness {
   }
 
   /**
-   * Gets invoked when a compilation errors without any error
+   * Gets invoked when a compilation completes succesfully.
    */
   onComplete(done: () => void): void {
     this.completeHandler = done;
   }
 
   /**
-   * Gets invoked when a compilation error occuries
+   * Gets invoked when a compilation error occuries.
    */
   onFailure(done: (error: Error) => void): void {
     sinon.stub(log, 'error').callsFake(done);
   }
 
   /**
-   * Remove the entire directory for the current test case
+   * Remove the entire directory for the current test case.
    */
   emptyTestDirectory(): void {
     fs.emptyDirSync(this.tmpPath);
@@ -102,7 +102,7 @@ export class TestHarness {
         .forProject(path.join(this.tmpPath, 'package.json'))
         .watch()
         .pipe(
-          tap(() => resolve()), // we are only interested when in the first builds, that's why we are resolving it.
+          tap(() => resolve()), // we are only interested when in the first builds, that's why we are resolving it
           tap(() => this.completeHandler())
         )
         .subscribe();
