@@ -46,7 +46,7 @@ Notes:
 
 You need to supply a full and valid tsconfig. You can get started by taking a look at [our internal tsconfig](../src/lib/ts/conf/tsconfig.ngc.json).
 
-Your `tsconfig.lib.json` can extends it
+Your `tsconfig.lib.json` can extend it
 
 ```json
 {
