@@ -29,10 +29,6 @@ All notable changes to this project will be documented in this file. See [standa
 - `tslib: ^1.9.0`
 - `typescript: ^2.7.0`
 
-The default for `lib.languageLevel`  is now `es2018`. In case this needs to be changed. This can to be done by overriding the tsconfig. More on how to override the tsconfig can be found here: https://github.com/dherges/ng-packagr/blob/master/docs/override-tsconfig.md
-
-
-
 <a name="4.0.0-rc.2"></a>
 # [4.0.0-rc.2](https://github.com/dherges/ng-packagr/compare/v4.0.0-rc.1...v4.0.0-rc.2) (2018-06-23)
 
