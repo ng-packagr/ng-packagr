@@ -7,11 +7,6 @@ export interface CacheEntry {
   content?: string;
 }
 
-export const enum DeleteStrategy {
-  FullMatch = 0,
-  PartialMatch = 1
-}
-
 export class FileCache {
   private cache: Map<string, CacheEntry> = new Map();
 
@@ -29,21 +24,9 @@ export class FileCache {
     return ensureUnixPath(fileName);
   }
 
-  delete(fileName: string, deleteStrategy: DeleteStrategy = DeleteStrategy.FullMatch): boolean {
+  delete(fileName: string): boolean {
     const normalizedKey = this.normalizeKey(fileName);
-    if (deleteStrategy === DeleteStrategy.FullMatch) {
-      return this.cache.delete(this.normalizeKey(fileName));
-    }
-
-    let deleted: boolean;
-    this.cache.forEach((_value, key) => {
-      const normalizedFileKey = this.normalizeKey(key);
-      if (normalizedFileKey.startsWith(normalizedKey)) {
-        deleted = this.cache.delete(normalizedFileKey) || deleted;
-      }
-    });
-
-    return deleted;
+    return this.cache.delete(this.normalizeKey(fileName));
   }
 
   has(fileName: string): boolean {
