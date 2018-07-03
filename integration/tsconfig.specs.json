@@ -1,14 +1,7 @@
 {
-  "buildOnSave": false,
-  "compileOnSave": false,
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "target": "es2015",
-    "allowJs": true,
-    "experimentalDecorators": true,
-    "lib": ["es2015", "es2016"],
-    "types": ["chai", "mocha", "node", "sinon"],
-    "typeRoots": ["../node_modules/@types"]
+    "allowJs": true
   },
-  "include": ["**/specs/*.ts"],
-  "exclude": [".ng_build", ".ng_pkgr_build", ".ng_pkg_build"]
+  "include": ["**/specs/*.ts"]
 }

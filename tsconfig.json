@@ -2,12 +2,17 @@
   "buildOnSave": false,
   "compileOnSave": false,
   "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2015",
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "target": "es5",
-    "lib": ["es2015", "es2016"],
-    "types": ["chai", "mocha", "node", "sinon"],
-    "jsx": "react"
+    "noEmitOnError": true,
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "inlineSourceMap": false,
+    "inlineSources": true,
+    "lib": ["es2018"],
+    "types": ["chai", "mocha", "node", "sinon"]
   },
-  "exclude": ["dist", ".ng_build", "integration"]
+  "exclude": ["dist", "integration"]
 }
