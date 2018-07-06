@@ -21,6 +21,12 @@ describe(`@sample/scss-paths`, () => {
       expect(scssStyles).to.contain(`background-color:yellow`);
     });
 
+    it(`should autoprefix based on the config in .browserslistrc`, () => {
+      const scssStyles = METADATA['metadata']['BazComponent']['decorators'][0]['arguments'][0]['styles'][0];
+      expect(scssStyles).to.contain(`display:flex`);
+      expect(scssStyles).to.contain(`display:-ms-flexbox`);
+    });
+
     it(`should resolve the styles from the Less theme`, () => {
       const lessStyles = METADATA['metadata']['BazComponent']['decorators'][0]['arguments'][0]['styles'][1];
       expect(lessStyles).to.contain(`.baz .oom`);

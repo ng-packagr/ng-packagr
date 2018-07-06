@@ -64,7 +64,7 @@ export const stylesheetTransform: Transform = transformFromPromise(async graph =
 
 function createPostCssProcessor(basePath: string, cssUrl: CssUrl): postcss.Processor {
   log.debug(`determine browserslist for ${basePath}`);
-  const browsers = browserslist(undefined, { filePath: basePath });
+  const browsers = browserslist(undefined, { path: basePath });
 
   const postCssPlugins = [];
 
