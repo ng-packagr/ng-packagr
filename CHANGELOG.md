@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.4"></a>
+## [3.0.4](https://github.com/dherges/ng-packagr/compare/v3.0.3...v3.0.4) (2018-07-17)
+
+
+### Bug Fixes
+
+* browserlist configuration is not being picked up ([#993](https://github.com/dherges/ng-packagr/issues/993)) ([ab9777c](https://github.com/dherges/ng-packagr/commit/ab9777c)), closes [angular/angular-cli#11480](https://github.com/angular/angular-cli/issues/11480)
+
+
+
 <a name="3.0.3"></a>
 ## [3.0.3](https://github.com/dherges/ng-packagr/compare/v3.0.2...v3.0.3) (2018-06-18)
 
