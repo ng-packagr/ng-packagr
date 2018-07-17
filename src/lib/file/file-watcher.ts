@@ -5,6 +5,7 @@ import { ensureUnixPath } from '../util/path';
 import * as log from '../util/log';
 
 export type FileWatchEvent = 'change' | 'unlink' | 'add' | 'unlinkDir' | 'addDir';
+
 export interface FileChangedEvent {
   filePath: string;
   event: FileWatchEvent;
@@ -24,6 +25,13 @@ export function createFileWatch(
 
   const handleFileChange = (event: FileWatchEvent, filePath: string, observer: Observer<FileChangedEvent>) => {
     log.debug(`Watch: Path changed. Event: ${event}, Path: ${filePath}`);
+
+    const ignoredEvents: FileWatchEvent[] = ['unlinkDir', 'addDir'];
+
+    if (ignoredEvents.includes(event)) {
+      // we don't need to trigger on directory removed or renamed as chokidar will fire the changes for each file
+      return;
+    }
 
     observer.next({
       filePath: path.resolve(ensureUnixPath(filePath)),

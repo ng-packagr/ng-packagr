@@ -1,20 +1,10 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "target": "es2015",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "inlineSourceMap": false,
-    "inlineSources": true,
     "declaration": true,
-    "lib": ["es2015"],
     "outDir": "../dist",
-    "experimentalDecorators": true,
-    "noEmitOnError": true,
-    "noImplicitAny": false,
     "skipLibCheck": true, // due to: https://github.com/angular/angular/issues/23112
-    "types": ["node"],
-    "typeRoots": ["../node_modules/@types"]
+    "types": ["node"]
   },
   "files": ["cli/main.ts", "public_api.ts"],
   "exclude": ["**/*.spec.ts"]

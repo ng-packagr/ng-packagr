@@ -1,13 +1,4 @@
 {
-  "buildOnSave": false,
-  "compileOnSave": false,
-  "compilerOptions": {
-    "target": "es5",
-    "allowJs": true,
-    "experimentalDecorators": true,
-    "lib": ["es2015", "es2016"],
-    "types": ["chai", "mocha", "node", "sinon"],
-    "typeRoots": ["../node_modules/@types"]
-  },
+  "extends": "../tsconfig.json",
   "include": ["**/specs/*.ts"]
 }

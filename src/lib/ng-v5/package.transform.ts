@@ -11,7 +11,6 @@ import { PackageNode, EntryPointNode, ngUrl, isEntryPoint, byEntryPoint, isPacka
 import { discoverPackages } from './discover-packages';
 import { createFileWatch } from '../file/file-watcher';
 import { NgPackagrOptions } from './options.di';
-import { DeleteStrategy } from '../file/file-cache';
 
 /**
  * A transformation for building an npm package:
@@ -106,13 +105,8 @@ const watchTransformFactory = (
             const { analysisFileCache, compilationFileCache } = node.cache;
             const { filePath } = fileChange;
 
-            if (fileChange.event === 'unlinkDir') {
-              analysisFileCache.delete(filePath, DeleteStrategy.PartialMatch);
-              compilationFileCache.delete(filePath, DeleteStrategy.PartialMatch);
-            } else {
-              analysisFileCache.delete(filePath);
-              compilationFileCache.delete(filePath);
-            }
+            analysisFileCache.delete(filePath);
+            compilationFileCache.delete(filePath);
           })
         ),
         debounceTime(200),
