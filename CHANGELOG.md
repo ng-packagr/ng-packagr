@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0-rc.4"></a>
+# [4.0.0-rc.4](https://github.com/dherges/ng-packagr/compare/v4.0.0-rc.3...v4.0.0-rc.4) (2018-07-17)
+
+
+### Bug Fixes
+
+* browserlist configuration is not being picked up ([#994](https://github.com/dherges/ng-packagr/issues/994)) ([72b2a00](https://github.com/dherges/ng-packagr/commit/72b2a00)), closes [angular/angular-cli#11480](https://github.com/angular/angular-cli/issues/11480)
+* don't exclude `node_modules` from watch ([#995](https://github.com/dherges/ng-packagr/issues/995)) ([3863d79](https://github.com/dherges/ng-packagr/commit/3863d79))
+
+
+
 <a name="4.0.0-rc.3"></a>
 # [4.0.0-rc.3](https://github.com/dherges/ng-packagr/compare/v4.0.0-rc.2...v4.0.0-rc.3) (2018-06-29)
 
