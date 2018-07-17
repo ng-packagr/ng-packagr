@@ -11,6 +11,7 @@ import { PackageNode, EntryPointNode, ngUrl, isEntryPoint, byEntryPoint, isPacka
 import { discoverPackages } from './discover-packages';
 import { createFileWatch } from '../file/file-watcher';
 import { NgPackagrOptions } from './options.di';
+import { unique } from '../util/array';
 
 /**
  * A transformation for building an npm package:
@@ -98,17 +99,40 @@ const watchTransformFactory = (
     switchMap(graph => {
       const { data } = graph.find(isPackage) as PackageNode;
       return createFileWatch(data.src, [data.dest]).pipe(
-        tap(fileChange =>
-          graph.filter(isEntryPoint).forEach((node: EntryPointNode) => {
-            node.state = 'dirty';
+        tap(fileChange => {
+          const entryPoints = graph.filter(isEntryPoint);
+          const { filePath } = fileChange;
+          let filePathsToClean: string[] = [filePath];
 
+          entryPoints.forEach((node: EntryPointNode) => {
+            const { compilationFileCache } = node.cache;
+            const cached = compilationFileCache.get(filePath);
+
+            // when a ts file changes we also need to clean it's .d.ts file
+            // and the entrypoint metadata due to the fact that metadata is used to validate component properties
+            if (cached && cached.declarationFileName) {
+              const { metadata } = node.data.destinationFiles;
+              filePathsToClean.push(cached.declarationFileName, metadata);
+            }
+          });
+
+          filePathsToClean = unique(filePathsToClean);
+
+          entryPoints.forEach((node: EntryPointNode) => {
             const { analysisFileCache, compilationFileCache } = node.cache;
-            const { filePath } = fileChange;
 
-            analysisFileCache.delete(filePath);
-            compilationFileCache.delete(filePath);
-          })
-        ),
+            let isDirty = false;
+
+            filePathsToClean.forEach(x => {
+              isDirty = analysisFileCache.delete(x) || isDirty;
+              isDirty = compilationFileCache.delete(x) || isDirty;
+            });
+
+            if (isDirty) {
+              node.state = 'dirty';
+            }
+          });
+        }),
         debounceTime(200),
         tap(() => log.msg(FileChangeDetected)),
         startWith(undefined),
@@ -164,7 +188,7 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
     concatMap(graph => {
       // Calculate node/dependency depth and determine build order
       const depthBuilder = new DepthBuilder();
-      const entryPoints = graph.filter(isEntryPoint);
+      const entryPoints = graph.filter(x => isEntryPoint(x) && x.state !== 'done');
       entryPoints.forEach(entryPoint => {
         const deps = entryPoint.filter(isEntryPoint).map(ep => ep.url);
         depthBuilder.add(entryPoint.url, deps);

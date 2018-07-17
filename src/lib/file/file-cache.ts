@@ -5,6 +5,7 @@ export interface CacheEntry {
   exists?: boolean;
   sourceFile?: ts.SourceFile;
   content?: string;
+  declarationFileName?: string;
 }
 
 export class FileCache {
@@ -31,6 +32,10 @@ export class FileCache {
 
   has(fileName: string): boolean {
     return this.cache.has(this.normalizeKey(fileName));
+  }
+
+  get(fileName: string): CacheEntry | undefined {
+    return this.cache.get(this.normalizeKey(fileName));
   }
 
   getOrCreate(fileName: string): CacheEntry {
