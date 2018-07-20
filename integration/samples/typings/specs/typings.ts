@@ -29,4 +29,15 @@ describe(`sample-typings`, () => {
       expect(CHALK_DTS).to.be.ok;
     });
   });
+
+  describe(`src/nested/reference/mocked.d.ts`, () => {
+    let MOCKED_DTS;
+    before(() => {
+      MOCKED_DTS = fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'nested/reference/mocked.d.ts'), 'utf-8');
+    });
+
+    it(`should exist in 'dist' folder`, () => {
+      expect(MOCKED_DTS).to.be.ok;
+    });
+  });
 });
