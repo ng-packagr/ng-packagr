@@ -1,0 +1,3 @@
+interface Mocked {
+  foo: string;
+}

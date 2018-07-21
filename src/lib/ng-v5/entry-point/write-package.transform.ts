@@ -8,7 +8,6 @@ import { rimraf } from '../../util/rimraf';
 import * as log from '../../util/log';
 import { globFiles } from '../../util/glob';
 import { EntryPointNode, isEntryPointInProgress } from '../nodes';
-import { copyFiles } from '../../util/copy';
 
 export const writePackageTransform: Transform = transformFromPromise(async graph => {
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
@@ -23,7 +22,15 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     ignore: ['**/node_modules/**', `${ngPackage.dest}/**`]
   });
 
-  await copyFiles(declarationFiles, path.dirname(destinationFiles.declarations));
+  if (declarationFiles.length) {
+    await Promise.all(
+      declarationFiles.map(value => {
+        const relativePath = path.relative(ngEntryPoint.entryFilePath, value);
+        const destination = path.resolve(destinationFiles.declarations, relativePath);
+        return fs.copy(value, destination);
+      })
+    );
+  }
 
   // 6. WRITE PACKAGE.JSON
   log.info('Writing package metadata');
