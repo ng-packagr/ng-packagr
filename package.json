@@ -130,7 +130,7 @@
     "integration:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --require ts-node/register \"integration/samples/*/specs/**/*.ts\"",
     "integration:consumers": "integration/consumers.sh",
     "integration:consumers:ngc": "ngc -p integration/consumers/tsc/tsconfig.json",
-    "integration:watch:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --timeout 20000 --require ts-node/register \"integration/watch/*.spec.ts\"",
+    "integration:watch:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --timeout 25000 --require ts-node/register \"integration/watch/*.spec.ts\"",
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json mocha --require ts-node/register \"src/**/*.spec.ts\"",
     "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:watch:specs && yarn integration:consumers",
     "commitmsg": "commitlint -e",

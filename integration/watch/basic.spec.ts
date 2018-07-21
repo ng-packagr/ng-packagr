@@ -19,8 +19,8 @@ describe('basic', () => {
   describe('primary entrypoint', () => {
     it("should perform initial compilation when 'watch' is started", () => {
       harness.expectDtsToMatch('public_api', /title = "hello world"/);
-      harness.expectFesm5ToContain('basic', 'title', 'hello world');
-      harness.expectFesm2015ToContain('basic', 'title', 'hello world');
+      harness.expectFesm5ToMatch('basic', /hello world/);
+      harness.expectFesm2015ToMatch('basic', /hello world/);
       harness.expectMetadataToContain('basic', 'metadata.title', 'hello world');
     });
 
@@ -30,8 +30,8 @@ describe('basic', () => {
 
         harness.onComplete(() => {
           harness.expectDtsToMatch('public_api', /title = "foo bar"/);
-          harness.expectFesm5ToContain('basic', 'title', 'foo bar');
-          harness.expectFesm2015ToContain('basic', 'title', 'foo bar');
+          harness.expectFesm5ToMatch('basic', /foo bar/);
+          harness.expectFesm2015ToMatch('basic', /foo bar/);
           harness.expectMetadataToContain('basic', 'metadata.title', 'foo bar');
           done();
         });
@@ -42,8 +42,8 @@ describe('basic', () => {
 
         harness.onComplete(() => {
           harness.expectDtsToMatch('public_api', /title = "foo bar"/);
-          harness.expectFesm5ToContain('basic', 'title', 'foo bar');
-          harness.expectFesm2015ToContain('basic', 'title', 'foo bar');
+          harness.expectFesm5ToMatch('basic', /foo bar/);
+          harness.expectFesm2015ToMatch('basic', /foo bar/);
           harness.expectMetadataToContain('basic', 'metadata.title', 'foo bar');
           done();
         });
@@ -62,8 +62,8 @@ describe('basic', () => {
         harness.copyTestCase('secondary-valid');
 
         harness.onComplete(() => {
-          harness.expectFesm5ToContain('basic-secondary', 'ɵa.decorators[0].args[0].template', 'Hello Angular');
-          harness.expectFesm2015ToContain('basic-secondary', 'ɵa.decorators[0].args[0].template', 'Hello Angular');
+          harness.expectFesm5ToMatch('basic-secondary', /Hello Angular/);
+          harness.expectFesm2015ToMatch('basic-secondary', /Hello Angular/);
           harness.expectMetadataToContain(
             'secondary/basic-secondary',
             'metadata.ɵa.decorators[0].arguments[0].template',

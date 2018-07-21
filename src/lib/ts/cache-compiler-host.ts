@@ -33,6 +33,25 @@ export function cacheCompilerHost(
       return cache.sourceFile;
     },
 
+    writeFile: (
+      fileName: string,
+      data: string,
+      writeByteOrderMark: boolean,
+      onError?: (message: string) => void,
+      sourceFiles?: ReadonlyArray<ts.SourceFile>
+    ) => {
+      if (fileName.endsWith('.d.ts')) {
+        sourceFiles.forEach(source => {
+          const cache = sourcesFileCache.getOrCreate(source.fileName);
+          if (!cache.declarationFileName) {
+            cache.declarationFileName = ensureUnixPath(fileName);
+          }
+        });
+      }
+
+      compilerHost.writeFile.call(this, fileName, data, writeByteOrderMark, onError, sourceFiles);
+    },
+
     readFile: (fileName: string) => {
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.content === undefined) {
