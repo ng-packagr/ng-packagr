@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/dherges/ng-packagr/compare/v4.0.0-rc.4...v4.0.0) (2018-07-22)
+
+
+### Bug Fixes
+
+* copy nested triple slash referenced typings to correct path ([#1009](https://github.com/dherges/ng-packagr/issues/1009)) ([9b7b701](https://github.com/dherges/ng-packagr/commit/9b7b701)), closes [#1007](https://github.com/dherges/ng-packagr/issues/1007)
+* update autoprefixer to ^9.0.0, browserslist to ^4.0.0 ([#1010](https://github.com/dherges/ng-packagr/issues/1010)) ([2171398](https://github.com/dherges/ng-packagr/commit/2171398))
+* update fs-extra to version ^7.0.0 ([#1003](https://github.com/dherges/ng-packagr/issues/1003)) ([0fb2138](https://github.com/dherges/ng-packagr/commit/0fb2138))
+* update postcss to version ^7.0.0 ([#1004](https://github.com/dherges/ng-packagr/issues/1004)) ([e2a3905](https://github.com/dherges/ng-packagr/commit/e2a3905))
+* update rollup to version ^0.63.0 ([#1005](https://github.com/dherges/ng-packagr/issues/1005)) ([5764f38](https://github.com/dherges/ng-packagr/commit/5764f38))
+
+
+### Features
+
+* build only entrypoints that are effected by the change ([#991](https://github.com/dherges/ng-packagr/issues/991)) ([1f79aa2](https://github.com/dherges/ng-packagr/commit/1f79aa2)), closes [#974](https://github.com/dherges/ng-packagr/issues/974)
+
+
+
 <a name="4.0.0-rc.4"></a>
 # [4.0.0-rc.4](https://github.com/dherges/ng-packagr/compare/v4.0.0-rc.3...v4.0.0-rc.4) (2018-07-17)
 
