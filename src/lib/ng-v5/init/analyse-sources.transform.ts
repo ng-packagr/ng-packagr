@@ -10,8 +10,7 @@ import { unique, flatten } from '../../util/array';
 
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {
-    const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
-
+    const entryPoints = graph.filter(x => isEntryPoint(x) && x.state !== 'done') as EntryPointNode[];
     for (let entryPoint of entryPoints) {
       analyseEntryPoint(entryPoint, entryPoints);
     }
