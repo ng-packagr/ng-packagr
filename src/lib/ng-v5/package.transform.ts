@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { Observable, concat as concatStatic, from as fromPromise, of as observableOf, pipe, NEVER } from 'rxjs';
 import { concatMap, map, switchMap, takeLast, tap, mapTo, catchError, startWith, debounceTime } from 'rxjs/operators';
 import { BuildGraph } from '../brocc/build-graph';
@@ -5,13 +6,13 @@ import { DepthBuilder } from '../brocc/depth';
 import { STATE_IN_PROGESS } from '../brocc/node';
 import { Transform } from '../brocc/transform';
 import * as log from '../util/log';
-import { copyFiles } from '../util/copy';
 import { rimraf } from '../util/rimraf';
 import { PackageNode, EntryPointNode, ngUrl, isEntryPoint, byEntryPoint, isPackage } from './nodes';
 import { discoverPackages } from './discover-packages';
 import { createFileWatch } from '../file/file-watcher';
 import { NgPackagrOptions } from './options.di';
 import { unique } from '../util/array';
+import { copyFile } from '../util/copy';
 
 /**
  * A transformation for building an npm package:
@@ -176,10 +177,14 @@ const buildTransformFactory = (project: string, analyseSourcesTransform: Transfo
 const writeNpmPackage = (pkgUri: string): Transform =>
   pipe(
     switchMap(graph => {
-      const ngPkg = graph.get(pkgUri);
-      return fromPromise(copyFiles([`${ngPkg.data.src}/LICENSE`, `${ngPkg.data.src}/README.md`], ngPkg.data.dest)).pipe(
-        map(() => graph)
+      const { data } = graph.get(pkgUri);
+      const filesToCopy = Promise.all(
+        [`${data.src}/LICENSE`, `${data.src}/README.md`].map(src =>
+          copyFile(src, path.join(data.dest, path.basename(src)))
+        )
       );
+
+      return fromPromise(filesToCopy).pipe(map(() => graph));
     })
   );
 
