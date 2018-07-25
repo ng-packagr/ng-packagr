@@ -1,14 +1,7 @@
-import * as fs from 'fs-extra';
-import { debug } from './log';
-import { toArray } from './array';
+import { copy, CopyOptions, pathExists } from 'fs-extra';
 
-export async function copyFiles(src: string | string[], dest: string): Promise<void> {
-  const files = toArray(src);
-  for (let file of files) {
-    const doesExist = await fs.pathExists(file);
-    if (doesExist) {
-      debug(`copyFiles from ${src} to ${dest}`);
-      await fs.copy(file, dest);
-    }
-  }
+export async function copyFile(src: string, dest: string, options?: CopyOptions): Promise<void> {
+  const exists = await pathExists(src);
+
+  return exists ? copy(src, dest, options) : undefined;
 }

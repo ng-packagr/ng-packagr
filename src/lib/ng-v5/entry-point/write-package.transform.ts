@@ -7,7 +7,8 @@ import { ensureUnixPath } from '../../util/path';
 import { rimraf } from '../../util/rimraf';
 import * as log from '../../util/log';
 import { globFiles } from '../../util/glob';
-import { isEntryPointInProgress, EntryPointNode, isEntryPointDirty } from '../nodes';
+import { EntryPointNode, isEntryPointInProgress } from '../nodes';
+import { copyFile } from '../../util/copy';
 
 export const writePackageTransform: Transform = transformFromPromise(async graph => {
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
@@ -27,7 +28,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
       declarationFiles.map(value => {
         const relativePath = path.relative(ngEntryPoint.entryFilePath, value);
         const destination = path.resolve(destinationFiles.declarations, relativePath);
-        return fs.copy(value, destination);
+        return copyFile(value, destination);
       })
     );
   }

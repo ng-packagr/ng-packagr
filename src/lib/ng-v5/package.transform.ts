@@ -6,7 +6,6 @@ import { DepthBuilder, Groups } from '../brocc/depth';
 import { Node, STATE_IN_PROGESS } from '../brocc/node';
 import { Transform } from '../brocc/transform';
 import * as log from '../util/log';
-import { copyFiles } from '../util/copy';
 import { rimraf } from '../util/rimraf';
 import { PackageNode, EntryPointNode, ngUrl, isEntryPoint, byEntryPoint } from './nodes';
 import { discoverPackages } from './discover-packages';
@@ -91,11 +90,14 @@ export const packageTransformFactory = (
 const writeNpmPackage = (pkgUri: string): Transform =>
   pipe(
     switchMap(graph => {
-      const ngPkg = graph.get(pkgUri);
-
-      return fromPromise(copyFiles([`${ngPkg.data.src}/LICENSE`, `${ngPkg.data.src}/README.md`], ngPkg.data.dest)).pipe(
-        map(() => graph)
+      const { data } = graph.get(pkgUri);
+      const filesToCopy = Promise.all(
+        [`${data.src}/LICENSE`, `${data.src}/README.md`].map(src =>
+          copyFile(src, path.join(data.dest, path.basename(src)))
+        )
       );
+
+      return fromPromise(filesToCopy).pipe(map(() => graph));
     })
   );
 
