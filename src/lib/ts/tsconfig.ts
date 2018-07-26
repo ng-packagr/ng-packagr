@@ -77,7 +77,8 @@ export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoints: Entry
         // setting the below here because these are a must have with these valus
         inlineSourceMap: true,
         sourceMap: false,
-        sourceRoot: `ng://${entryPoint.moduleId}`
+        sourceRoot: `ng://${entryPoint.moduleId}`,
+        enableResourceInlining: true
       }
     };
 
