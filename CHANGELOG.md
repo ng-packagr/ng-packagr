@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file. See [standa
 <a name="3.0.6"></a>
 ## [3.0.6](https://github.com/dherges/ng-packagr/compare/v3.0.5...v3.0.6) (2018-07-26)
 
+### Other
 
+* With this release we removed `cpx` from dependencies
 
 <a name="3.0.5"></a>
 ## [3.0.5](https://github.com/dherges/ng-packagr/compare/v3.0.4...v3.0.5) (2018-07-22)
