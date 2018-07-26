@@ -1,6 +1,17 @@
 import * as path from 'path';
-import { Observable, concat as concatStatic, from as fromPromise, of as observableOf, pipe, NEVER } from 'rxjs';
-import { concatMap, map, switchMap, takeLast, tap, mapTo, catchError, startWith, debounceTime } from 'rxjs/operators';
+import { Observable, concat as concatStatic, of as observableOf, pipe, NEVER, from } from 'rxjs';
+import {
+  concatMap,
+  map,
+  switchMap,
+  tap,
+  mapTo,
+  catchError,
+  startWith,
+  debounceTime,
+  filter,
+  last
+} from 'rxjs/operators';
 import { BuildGraph } from '../brocc/build-graph';
 import { DepthBuilder } from '../brocc/depth';
 import { STATE_IN_PROGESS } from '../brocc/node';
@@ -11,7 +22,7 @@ import { PackageNode, EntryPointNode, ngUrl, isEntryPoint, byEntryPoint, isPacka
 import { discoverPackages } from './discover-packages';
 import { createFileWatch } from '../file/file-watcher';
 import { NgPackagrOptions } from './options.di';
-import { unique } from '../util/array';
+import { unique, flatten } from '../util/array';
 import { copyFile } from '../util/copy';
 
 /**
@@ -50,7 +61,7 @@ export const packageTransformFactory = (
     switchMap(graph => {
       const pkg = discoverPackages({ project });
 
-      return fromPromise(pkg).pipe(
+      return from(pkg).pipe(
         map(value => {
           const ngPkg = new PackageNode(pkgUri);
           ngPkg.data = value;
@@ -62,7 +73,7 @@ export const packageTransformFactory = (
     // Clean the primary dest folder (should clean all secondary sub-directory, as well)
     switchMap(graph => {
       const { dest, deleteDestPath } = graph.get(pkgUri).data;
-      return fromPromise(deleteDestPath ? rimraf(dest) : Promise.resolve());
+      return from(deleteDestPath ? rimraf(dest) : Promise.resolve());
     }, (graph, _) => graph),
     // Add entry points to graph
     map(graph => {
@@ -184,7 +195,7 @@ const writeNpmPackage = (pkgUri: string): Transform =>
         )
       );
 
-      return fromPromise(filesToCopy).pipe(map(() => graph));
+      return from(filesToCopy).pipe(map(() => graph));
     })
   );
 
@@ -193,7 +204,7 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
     concatMap(graph => {
       // Calculate node/dependency depth and determine build order
       const depthBuilder = new DepthBuilder();
-      const entryPoints = graph.filter(x => isEntryPoint(x) && x.state !== 'done');
+      const entryPoints = graph.filter(isEntryPoint);
       entryPoints.forEach(entryPoint => {
         const deps = entryPoint.filter(isEntryPoint).map(ep => ep.url);
         depthBuilder.add(entryPoint.url, deps);
@@ -201,28 +212,20 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
 
       // The array index is the depth.
       const groups = depthBuilder.build();
-      const flattenedGroups = groups.reduce((prev, current) => prev.concat(current), []);
-      let currentIndex = 0;
 
       // Build entry points with lower depth values first.
-      const eps$ = flattenedGroups.map(() =>
-        observableOf(graph).pipe(
-          tap(() => {
-            // Find current entry point in progress
-            const epUrl = flattenedGroups[currentIndex];
-            const entryPoint = graph.find(byEntryPoint().and(ep => ep.url === epUrl));
-
+      return from(flatten(groups)).pipe(
+        map(epUrl => graph.find(byEntryPoint().and(ep => ep.url === epUrl)) as EntryPointNode),
+        filter(entryPoint => entryPoint.state !== 'done'),
+        concatMap(ep =>
+          observableOf(ep).pipe(
             // Mark the entry point as 'in-progress'
-            entryPoint.state = STATE_IN_PROGESS;
-          }),
-          epTransform,
-          tap(() => {
-            currentIndex += 1;
-          })
-        )
+            tap(entryPoint => (entryPoint.state = STATE_IN_PROGESS)),
+            mapTo(graph),
+            epTransform
+          )
+        ),
+        last()
       );
-
-      // Build all entry points, then continue
-      return concatStatic(...eps$).pipe(takeLast(1));
     })
   );
