@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.1"></a>
+## [4.0.1](https://github.com/dherges/ng-packagr/compare/v4.0.0...v4.0.1) (2018-07-26)
+
+
+### Bug Fixes
+
+* add `enableResourceInlining` by default to tsconfig ([#1021](https://github.com/dherges/ng-packagr/issues/1021)) ([d2e9678](https://github.com/dherges/ng-packagr/commit/d2e9678)), closes [#976](https://github.com/dherges/ng-packagr/issues/976)
+
+
+### Performance Improvements
+
+* analyse sources only for dirty entrypoints ([#1017](https://github.com/dherges/ng-packagr/issues/1017)) ([191cf00](https://github.com/dherges/ng-packagr/commit/191cf00))
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/dherges/ng-packagr/compare/v4.0.0-rc.4...v4.0.0) (2018-07-22)
 
