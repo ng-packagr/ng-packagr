@@ -2,26 +2,28 @@ import * as path from 'path';
 import * as ts from 'typescript';
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { compileSourceFiles } from '../../../ngc/compile-source-files';
-import { TsConfig } from '../../../ts/tsconfig';
+import { TsConfig, setDependenciesTsConfigPaths } from '../../../ts/tsconfig';
 import * as log from '../../../util/log';
-import { isEntryPointInProgress, EntryPointNode, isPackage } from '../../nodes';
+import { isEntryPointInProgress, EntryPointNode, isPackage, isEntryPoint } from '../../nodes';
 import { StylesheetProcessor } from '../resources/stylesheet-processor';
 
 export const compileNgcTransform: Transform = transformFromPromise(async graph => {
   log.info(`Compiling TypeScript sources through ngc`);
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
-  const tsConfig: TsConfig = entryPoint.data.tsConfig;
+  const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
+  // Add paths mappings for dependencies
+  const tsConfig = setDependenciesTsConfigPaths(entryPoint.data.tsConfig, entryPoints);
 
   // Compile TypeScript sources
   const { esm2015, esm5, declarations } = entryPoint.data.destinationFiles;
-  const { compilationFileCache, moduleResolutionCache } = entryPoint.cache;
+  const { sourcesFileCache, moduleResolutionCache } = entryPoint.cache;
   const { basePath, cssUrl, styleIncludePaths } = entryPoint.data.entryPoint;
   const stylesheetProcessor = new StylesheetProcessor(basePath, cssUrl, styleIncludePaths);
 
   await Promise.all([
     compileSourceFiles(
       tsConfig,
-      compilationFileCache,
+      sourcesFileCache,
       moduleResolutionCache,
       stylesheetProcessor,
       {
@@ -32,7 +34,7 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
       path.dirname(declarations)
     ),
 
-    compileSourceFiles(tsConfig, compilationFileCache, moduleResolutionCache, stylesheetProcessor, {
+    compileSourceFiles(tsConfig, sourcesFileCache, moduleResolutionCache, stylesheetProcessor, {
       outDir: path.dirname(esm5),
       target: ts.ScriptTarget.ES5,
       downlevelIteration: true,
