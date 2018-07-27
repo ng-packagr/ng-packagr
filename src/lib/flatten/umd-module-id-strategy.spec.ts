@@ -44,8 +44,8 @@ describe(`rollup`, () => {
       expect(umdModuleIdStrategy('foo', { foo: FOO_MODULE })).to.equal(FOO_MODULE);
     });
 
-    it(`should map 'foo' to '' when no 'umdModuleIds' is provided`, () => {
-      expect(umdModuleIdStrategy('foo')).to.empty;
+    it(`should map 'foo' to 'foo' when no 'umdModuleIds' is provided`, () => {
+      expect(umdModuleIdStrategy('foo')).to.equal('foo');
     });
   });
 });
