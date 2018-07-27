@@ -17,17 +17,9 @@ export const umdModuleIdStrategy = (moduleId: string, umdModuleIds: { [key: stri
     return `ng.${regMatch[1]}`.replace(/\//g, '.');
   }
 
-  if (moduleId === 'rxjs') {
-    return 'rxjs';
-  }
-
   if ((regMatch = /^rxjs\/(\/?.*)/.exec(moduleId))) {
     return `rxjs.${regMatch[1]}`;
   }
 
-  if (moduleId === 'tslib') {
-    return 'tslib';
-  }
-
-  return ''; // leave it up to rollup to guess the global name
+  return moduleId; // pipe moduleId because rollup will set to null otherwise.
 };
