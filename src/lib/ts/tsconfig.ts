@@ -32,7 +32,7 @@ export function readDefaultTsConfig(fileName?: string): TsConfig {
     outDir: '',
     declaration: true,
 
-    // ng compiler to options
+    // ng compiler options
     enableResourceInlining: true,
 
     // these are required to set the appropriate EmitFlags
