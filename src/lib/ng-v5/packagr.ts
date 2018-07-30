@@ -1,9 +1,9 @@
 import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
+import { ParsedConfiguration } from '@angular/compiler-cli';
 import { of as observableOf, Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { BuildGraph } from '../brocc/build-graph';
 import { Transform } from '../brocc/transform';
-import { TsConfig } from '../ts/tsconfig';
 import * as log from '../util/log';
 import { provideTsConfig } from './init/init-tsconfig.di';
 import { ENTRY_POINT_PROVIDERS } from './entry-point.di';
@@ -66,7 +66,7 @@ export class NgPackagr {
    * @param defaultValues A tsconfig providing default values to the compilation.
    * @return Self instance for fluent API
    */
-  public withTsConfig(defaultValues: TsConfig | string): NgPackagr {
+  public withTsConfig(defaultValues: ParsedConfiguration | string): NgPackagr {
     this.providers.push(provideTsConfig(defaultValues));
 
     return this;

@@ -34,4 +34,4 @@ program.on('option:version', () => {
 
 program.parse(process.argv);
 
-execute(build, { project: program.opts().project, watch: !!program.opts().watch }).catch(err => process.exit(111));
+execute(build, { project: program.opts().project, watch: !!program.opts().watch }).catch(() => process.exit(111));

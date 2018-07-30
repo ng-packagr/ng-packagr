@@ -1,6 +1,4 @@
 import { expect } from 'chai';
-import * as fs from 'fs';
-import * as path from 'path';
 
 describe(`@sample/jsx`, () => {
   describe(`jsx.es5.js`, () => {

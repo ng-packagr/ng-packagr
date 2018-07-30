@@ -1,10 +1,9 @@
-// XX: has or is using name 'ParsedConfiguration' ... but cannot be named
-import { ParsedConfiguration } from '@angular/compiler-cli/src/perform_compile';
+import { ParsedConfiguration } from '@angular/compiler-cli';
 import { Transform, transformFromPromise } from '../../brocc/transform';
-import { TsConfig, initializeTsConfig } from '../../ts/tsconfig';
 import { isEntryPoint, EntryPointNode } from '../nodes';
+import { initializeTsConfig } from '../../ts/tsconfig';
 
-export const initTsConfigTransformFactory = (defaultTsConfig: TsConfig): Transform =>
+export const initTsConfigTransformFactory = (defaultTsConfig: ParsedConfiguration): Transform =>
   transformFromPromise(async graph => {
     // Initialize tsconfig for each entry point
     const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];

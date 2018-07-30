@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { ExternalModuleIdStrategy, DependencyList } from './external-module-id-strategy';
+import { ExternalModuleIdStrategy } from './external-module-id-strategy';
 
 describe(`rollup`, () => {
   describe(`ExternalModuleIdStrategy`, () => {

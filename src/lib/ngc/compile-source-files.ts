@@ -1,6 +1,5 @@
 import * as ng from '@angular/compiler-cli';
 import * as ts from 'typescript';
-import { TsConfig } from '../ts/tsconfig';
 import * as log from '../util/log';
 import { createEmitCallback } from './create-emit-callback';
 import { redirectWriteFileCompilerHost } from '../ts/redirect-write-file-compiler-host';
@@ -9,7 +8,7 @@ import { FileCache } from '../file/file-cache';
 import { StylesheetProcessor } from '../ng-v5/entry-point/resources/stylesheet-processor';
 
 export async function compileSourceFiles(
-  tsConfig: TsConfig,
+  tsConfig: ng.ParsedConfiguration,
   sourcesFileCache: FileCache,
   moduleResolutionCache: ts.ModuleResolutionCache,
   stylesheetProcessor: StylesheetProcessor,

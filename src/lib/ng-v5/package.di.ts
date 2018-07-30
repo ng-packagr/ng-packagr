@@ -10,7 +10,7 @@ import { OPTIONS_TOKEN, DEFAULT_OPTIONS_PROVIDER } from './options.di';
 
 export const PACKAGE_TRANSFORM_TOKEN = new InjectionToken<Transform>(`ng.v5.packageTransform`);
 
-export const PACKAGE_TRANSFORM = provideTransform({
+export const PACKAGE_TRANSFORM: TransformProvider = provideTransform({
   provide: PACKAGE_TRANSFORM_TOKEN,
   useFactory: packageTransformFactory,
   deps: [PROJECT_TOKEN, OPTIONS_TOKEN, INIT_TS_CONFIG_TOKEN, ANALYSE_SOURCES_TOKEN, ENTRY_POINT_TRANSFORM_TOKEN]

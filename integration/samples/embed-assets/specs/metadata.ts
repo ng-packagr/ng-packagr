@@ -1,9 +1,6 @@
 import { expect } from 'chai';
-import * as fs from 'fs';
-import * as path from 'path';
 
 describe(`@sample/embed-assets`, () => {
-
   describe(`sample-embed-assets.metadata.json`, () => {
     let METADATA;
     before(() => {
@@ -15,9 +12,9 @@ describe(`@sample/embed-assets`, () => {
     });
 
     it(`should embeded the image with 'dataUri'`, () => {
-      expect(METADATA['metadata']['AngularComponent']['decorators'][0]['arguments'][0]['styles'][0])
-        .to.contain("data:image/png;base64");
+      expect(METADATA['metadata']['AngularComponent']['decorators'][0]['arguments'][0]['styles'][0]).to.contain(
+        'data:image/png;base64'
+      );
     });
   });
-
 });

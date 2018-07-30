@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { Observable, concat as concatStatic, of as observableOf, pipe, NEVER, from } from 'rxjs';
+import { Observable, of as observableOf, pipe, NEVER, from } from 'rxjs';
 import {
   concatMap,
   map,
@@ -100,7 +100,7 @@ export const packageTransformFactory = (
 
 const watchTransformFactory = (
   project: string,
-  options: NgPackagrOptions,
+  _options: NgPackagrOptions,
   analyseSourcesTransform: Transform,
   entryPointTransform: Transform
 ) => (source$: Observable<BuildGraph>): Observable<BuildGraph> => {

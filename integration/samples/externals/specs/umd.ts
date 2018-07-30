@@ -20,7 +20,7 @@ describe(`@sample/externals`, () => {
 
     it(`'target$' should be .subscribe()-able and emit values`, () => {
       const values: number[] = [];
-      const subscription = API.target$.subscribe(next => values.push(next), err => {}, () => {});
+      const subscription = API.target$.subscribe(next => values.push(next), () => {}, () => {});
 
       expect(subscription).to.be.ok;
       expect(values).to.have.length(5);

@@ -26,7 +26,6 @@ export class FileCache {
   }
 
   delete(fileName: string): boolean {
-    const normalizedKey = this.normalizeKey(fileName);
     return this.cache.delete(this.normalizeKey(fileName));
   }
 

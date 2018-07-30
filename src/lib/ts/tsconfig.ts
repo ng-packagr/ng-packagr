@@ -5,14 +5,9 @@ import { EntryPointNode } from '../ng-v5/nodes';
 import * as log from '../util/log';
 
 /**
- * TypeScript configuration used internally (marker typer).
- */
-export type TsConfig = ng.ParsedConfiguration;
-
-/**
  * Reads the default TypeScript configuration.
  */
-export function readDefaultTsConfig(fileName?: string): TsConfig {
+export function readDefaultTsConfig(fileName?: string): ng.ParsedConfiguration {
   if (!fileName) {
     fileName = path.resolve(__dirname, 'conf', 'tsconfig.ngc.json');
   }
@@ -48,7 +43,7 @@ export function readDefaultTsConfig(fileName?: string): TsConfig {
  *
  * @param values File path or parsed configuration.
  */
-export function createDefaultTsConfig(values?: TsConfig | string): TsConfig {
+export function createDefaultTsConfig(values?: ng.ParsedConfiguration | string): ng.ParsedConfiguration {
   if (!values) {
     return readDefaultTsConfig();
   } else if (typeof values === 'string') {
@@ -62,14 +57,14 @@ export function createDefaultTsConfig(values?: TsConfig | string): TsConfig {
  * Initializes TypeScript Compiler options and Angular Compiler options by overriding the
  * default config with entry point-specific values.
  */
-export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoints: EntryPointNode[]) => {
+export const initializeTsConfig = (defaultTsConfig: ng.ParsedConfiguration, entryPoints: EntryPointNode[]) => {
   entryPoints.forEach(currentEntryPoint => {
     const { entryPoint } = currentEntryPoint.data;
     log.debug(`Initializing tsconfig for ${entryPoint.moduleId}`);
     const basePath = path.dirname(entryPoint.entryFilePath);
 
     // Resolve defaults from DI token and create a deep copy of the defaults
-    let tsConfig: TsConfig = JSON.parse(JSON.stringify(defaultTsConfig));
+    let tsConfig: ng.ParsedConfiguration = JSON.parse(JSON.stringify(defaultTsConfig));
 
     let jsx = tsConfig.options.jsx;
     switch (entryPoint.jsxConfig) {
