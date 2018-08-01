@@ -37,6 +37,10 @@ describe(`@sample/core`, () => {
       expect(sourceMap).to.be.ok;
     });
 
+    it(`should not have any 'null' in sources`, () => {
+      expect(sourceMap.sources.includes(null)).to.be.false;
+    });
+
     it(`should have 'sources' and 'sourcesContent' property`, () => {
       expect(sourceMap.sources).to.be.an('array').that.is.not.empty;
       expect(sourceMap.sourcesContent).to.be.an('array').that.is.not.empty;
@@ -45,7 +49,7 @@ describe(`@sample/core`, () => {
 
     it(`should reference each 'sources' path with a common prefix`, () => {
       const everyUeveryMe = (sourceMap.sources as string[])
-        .filter(fileName => fileName !== 'null')
+        .filter(fileName => fileName !== 'null' && !fileName.startsWith('node_modules'))
         .every(fileName => fileName.startsWith('ng://@sample/core') && fileName.endsWith('.ts'));
       expect(everyUeveryMe).to.be.true;
     });
