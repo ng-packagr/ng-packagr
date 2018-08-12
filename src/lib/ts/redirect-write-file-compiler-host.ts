@@ -23,7 +23,7 @@ export function redirectWriteFileCompilerHost(
       sourceFiles?: ReadonlyArray<ts.SourceFile>
     ) => {
       let filePath = fileName;
-      if (fileName.endsWith('.d.ts')) {
+      if (/(\.d\.ts|\.metadata\.json)$/.test(fileName)) {
         const projectRelativePath = path.relative(baseDir, fileName);
         filePath = path.resolve(declarationDir, projectRelativePath);
       }
