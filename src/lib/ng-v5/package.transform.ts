@@ -10,7 +10,8 @@ import {
   startWith,
   debounceTime,
   filter,
-  last
+  takeLast,
+  defaultIfEmpty
 } from 'rxjs/operators';
 import { BuildGraph } from '../brocc/build-graph';
 import { DepthBuilder } from '../brocc/depth';
@@ -224,7 +225,8 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
             epTransform
           )
         ),
-        last()
+        takeLast(1), // don't use last as sometimes it this will cause 'no elements in sequence',
+        defaultIfEmpty(graph)
       );
     })
   );
