@@ -58,8 +58,7 @@ export class EntryPointNode extends Node {
   readonly type = TYPE_NG_ENTRY_POINT;
 
   cache = {
-    analysisFileCache: new FileCache(),
-    compilationFileCache: new FileCache(),
+    sourcesFileCache: new FileCache(),
     moduleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
     analysisModuleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s)
   };

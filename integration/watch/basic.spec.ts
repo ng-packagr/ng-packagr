@@ -53,6 +53,14 @@ describe('basic', () => {
           expect(error.message).to.match(/is not assignable to type 'boolean'/);
         });
       });
+
+      it('should emit complete when a file changes outside of the compilation', done => {
+        harness.copyTestCase('new-file');
+
+        harness.onComplete(() => {
+          done();
+        });
+      });
     });
   });
 
