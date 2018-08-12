@@ -79,6 +79,8 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void[]> {
       return `${opts.sourceRoot}${sourcePath.substr(sourcePath.indexOf(mapRootUrl) + mapRootUrl.length)}`;
     } else if (sourcePath.indexOf(opts.sourceRoot) > 0) {
       return sourcePath.substr(sourcePath.indexOf(mapRootUrl));
+    } else {
+      return sourcePath;
     }
   });
 
