@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.1.0"></a>
+# [4.1.0](https://github.com/dherges/ng-packagr/compare/v4.0.1...v4.1.0) (2018-08-12)
+
+
+### Bug Fixes
+
+* add fallback for `sources` when re-wiring sourcemaps ([#1033](https://github.com/dherges/ng-packagr/issues/1033)) ([9521281](https://github.com/dherges/ng-packagr/commit/9521281))
+* no elements in sequence error ([#1029](https://github.com/dherges/ng-packagr/issues/1029)) ([e80cc22](https://github.com/dherges/ng-packagr/commit/e80cc22))
+* update node-sass to v4.9.3 ([#1046](https://github.com/dherges/ng-packagr/issues/1046)) ([befb3da](https://github.com/dherges/ng-packagr/commit/befb3da)), closes [#1045](https://github.com/dherges/ng-packagr/issues/1045)
+* update postcss-url to version ^8.0.0 ([#1042](https://github.com/dherges/ng-packagr/issues/1042)) ([6b4ba96](https://github.com/dherges/ng-packagr/commit/6b4ba96))
+* update rollup to version ^0.64.0 ([#1039](https://github.com/dherges/ng-packagr/issues/1039)) ([5d1ab49](https://github.com/dherges/ng-packagr/commit/5d1ab49))
+* update rollup to version ^0.64.0 ([#1047](https://github.com/dherges/ng-packagr/issues/1047)) ([8cb4780](https://github.com/dherges/ng-packagr/commit/8cb4780))
+
+
+### Features
+
+* add support for `~` import syntax for `less` ([#1036](https://github.com/dherges/ng-packagr/issues/1036)) ([bd7c529](https://github.com/dherges/ng-packagr/commit/bd7c529)), closes [#827](https://github.com/dherges/ng-packagr/issues/827) [#227](https://github.com/dherges/ng-packagr/issues/227)
+
+
+### Performance Improvements
+
+* reduce memory consumption ([#1022](https://github.com/dherges/ng-packagr/issues/1022)) ([3ba995e](https://github.com/dherges/ng-packagr/commit/3ba995e))
+
+
+
 <a name="4.0.1"></a>
 ## [4.0.1](https://github.com/dherges/ng-packagr/compare/v4.0.0...v4.0.1) (2018-07-26)
 
