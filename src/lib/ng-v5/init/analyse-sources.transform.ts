@@ -6,7 +6,8 @@ import * as log from '../../util/log';
 import { Transform } from '../../brocc/transform';
 import { isEntryPoint, EntryPointNode } from '../nodes';
 import { cacheCompilerHost } from '../../ts/cache-compiler-host';
-import { unique, flatten } from '../../util/array';
+import { unique } from '../../util/array';
+import { setDependenciesTsConfigPaths } from '../../ts/tsconfig';
 
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {
@@ -26,14 +27,16 @@ export const analyseSourcesTransform: Transform = pipe(
  * @param entryPoints List of all entry points.
  */
 function analyseEntryPoint(entryPoint: EntryPointNode, entryPoints: EntryPointNode[]) {
-  const { tsConfig } = entryPoint.data;
-  const { analysisFileCache, analysisModuleResolutionCache } = entryPoint.cache;
+  const { sourcesFileCache, analysisModuleResolutionCache } = entryPoint.cache;
   const { moduleId } = entryPoint.data.entryPoint;
 
   log.debug(`Analysing sources for ${moduleId}`);
 
+  // Add paths mappings for dependencies
+  const tsConfig = setDependenciesTsConfigPaths(entryPoint.data.tsConfig, entryPoints, true);
+
   const compilerHost = {
-    ...cacheCompilerHost(tsConfig.options, analysisFileCache, analysisModuleResolutionCache),
+    ...cacheCompilerHost(tsConfig.options, sourcesFileCache, analysisModuleResolutionCache),
     readResource: () => ''
   };
 

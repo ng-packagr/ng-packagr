@@ -117,8 +117,8 @@ const watchTransformFactory = (
           let filePathsToClean: string[] = [filePath];
 
           entryPoints.forEach((node: EntryPointNode) => {
-            const { compilationFileCache } = node.cache;
-            const cached = compilationFileCache.get(filePath);
+            const { sourcesFileCache } = node.cache;
+            const cached = sourcesFileCache.get(filePath);
 
             // when a ts file changes we also need to clean it's .d.ts file
             // and the entrypoint metadata due to the fact that metadata is used to validate component properties
@@ -131,13 +131,12 @@ const watchTransformFactory = (
           filePathsToClean = unique(filePathsToClean);
 
           entryPoints.forEach((node: EntryPointNode) => {
-            const { analysisFileCache, compilationFileCache } = node.cache;
+            const { sourcesFileCache } = node.cache;
 
             let isDirty = false;
 
             filePathsToClean.forEach(x => {
-              isDirty = analysisFileCache.delete(x) || isDirty;
-              isDirty = compilationFileCache.delete(x) || isDirty;
+              isDirty = sourcesFileCache.delete(x) || isDirty;
             });
 
             if (isDirty) {

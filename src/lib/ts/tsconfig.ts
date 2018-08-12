@@ -99,26 +99,43 @@ export const initializeTsConfig = (defaultTsConfig: TsConfig, entryPoints: Entry
         break;
     }
 
-    // Add paths mappings for dependencies
-    const entryPointDeps = entryPoints.filter(x => x.data.entryPoint.moduleId !== entryPoint.moduleId);
-    if (entryPointDeps.length > 0) {
-      if (!tsConfig.options.paths) {
-        tsConfig.options.paths = {};
-      }
-
-      for (let dep of entryPointDeps) {
-        const { entryPoint, destinationFiles } = dep.data;
-        const { moduleId, entryFilePath } = entryPoint;
-        const mappedPath = [destinationFiles.declarations, entryFilePath];
-
-        if (!tsConfig.options.paths[moduleId]) {
-          tsConfig.options.paths[moduleId] = mappedPath;
-        } else {
-          tsConfig.options.paths[moduleId].concat(mappedPath);
-        }
-      }
-    }
-
     currentEntryPoint.data.tsConfig = tsConfig;
   });
 };
+
+/**
+ * Set the paths for entrypoint dependencies.
+ *
+ * This doesn't mutate the object.
+ *
+ * @param parsedTsConfig - A parsed tsconfig
+ * @param entryPoints - A list of entryPoints
+ * @param pointToSource Point the path mapping to either the source code or emitted declarations.
+ * Typically for analysis one should point to the source files while for a compilation once should use the emitted declarations
+ */
+export function setDependenciesTsConfigPaths(
+  parsedTsConfig: ng.ParsedConfiguration,
+  entryPoints: EntryPointNode[],
+  pointToSource = false
+) {
+  const tsConfig = JSON.parse(JSON.stringify(parsedTsConfig));
+
+  // Add paths mappings for dependencies
+  if (!tsConfig.options.paths) {
+    tsConfig.options.paths = {};
+  }
+
+  for (let dep of entryPoints) {
+    const { entryPoint } = dep.data;
+    const { moduleId, destinationFiles, entryFilePath } = entryPoint;
+    const mappedPath = [pointToSource ? entryFilePath : destinationFiles.declarations];
+
+    if (!tsConfig.options.paths[moduleId]) {
+      tsConfig.options.paths[moduleId] = mappedPath;
+    } else {
+      tsConfig.options.paths[moduleId].concat(mappedPath).reverse();
+    }
+  }
+
+  return tsConfig;
+}
