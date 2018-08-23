@@ -21,7 +21,7 @@ describe(`@sample/scss-paths`, () => {
       expect(scssStyles).to.contain(`background-color:yellow`);
     });
 
-    it(`should autoprefix based on the config in .browserslistrc`, () => {
+    it(`should autoprefix scss based on the config in .browserslistrc`, () => {
       const scssStyles = METADATA['metadata']['BazComponent']['decorators'][0]['arguments'][0]['styles'][0];
       expect(scssStyles).to.contain(`display:flex`);
       expect(scssStyles).to.contain(`display:-ms-flexbox`);
@@ -41,6 +41,18 @@ describe(`@sample/scss-paths`, () => {
     it(`should resolve the styles from the Stylus theme`, () => {
       const stylusStyles = METADATA['metadata']['BazComponent']['decorators'][0]['arguments'][0]['styles'][2];
       expect(stylusStyles).to.contain(`font-size:32pt`);
+    });
+
+    it(`should resolve the styles from the SASS theme`, () => {
+      const scssStyles = METADATA['metadata']['BazComponent']['decorators'][0]['arguments'][0]['styles'][0];
+      expect(scssStyles).to.contain(`color:#00f`);
+      expect(scssStyles).to.contain(`background-color:yellow`);
+    });
+
+    it(`should autoprefix sass based on the config in .browserslistrc`, () => {
+      const scssStyles = METADATA['metadata']['BazComponent']['decorators'][0]['arguments'][0]['styles'][3];
+      expect(scssStyles).to.contain(`display:flex`);
+      expect(scssStyles).to.contain(`display:-ms-flexbox`);
     });
   });
 
@@ -86,6 +98,16 @@ describe(`@sample/scss-paths`, () => {
     it(`should resolve the Stylus styles from the sub-module common utilities`, () => {
       const stylusStyles = METADATA['metadata']['BarComponent']['decorators'][0]['arguments'][0]['styles'][2];
       expect(stylusStyles).to.contain(`font-face:sans-serif`);
+    });
+
+    it(`should resolve the SASS styles from the parent theme`, () => {
+      const scssStyles = METADATA['metadata']['BarComponent']['decorators'][0]['arguments'][0]['styles'][3];
+      expect(scssStyles).to.contain(`background-color:yellow`);
+    });
+
+    it(`should resolve the SASS styles from the sub-module common utilities`, () => {
+      const scssStyles = METADATA['metadata']['BarComponent']['decorators'][0]['arguments'][0]['styles'][3];
+      expect(scssStyles).to.contain(`border:10px solid yellow`);
     });
   });
 });

@@ -1,0 +1,15 @@
+@import 'baz.theme'
+@import 'baz.theme2'
+@import 'theme'
+@import '~node-sass/test/fixtures/include-files/file-not-processed-by-loader'
+
+.foo2
+  @include local-test-mixin2()
+
+.foo
+  @include local-test-mixin()
+
+.baz
+  color: $variable-defined-by-file-not-processed-by-loader
+  background-color: $background-color-bright
+  display: flex

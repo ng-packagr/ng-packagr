@@ -1,9 +1,14 @@
 @import 'baz.theme';
+@import 'baz.theme2';
 @import 'theme';
 @import '~node-sass/test/fixtures/include-files/file-not-processed-by-loader';
 
 .foo {
   @include local-test-mixin();
+}
+
+.foo2 {
+  @include local-test-mixin2();
 }
 
 .baz {
