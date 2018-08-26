@@ -39,12 +39,23 @@ export class StylesheetProcessor {
   private renderPreProcessor(filePath: string, content: string): string {
     switch (path.extname(filePath)) {
       case '.scss':
+        log.debug(`rendering scss from ${filePath}`);
+        return sass
+          .renderSync({
+            file: filePath,
+            data: content,
+            importer: nodeSassTildeImporter,
+            includePaths: this.styleIncludePaths
+          })
+          .css.toString();
+
       case '.sass':
         log.debug(`rendering sass from ${filePath}`);
         return sass
           .renderSync({
             file: filePath,
             data: content,
+            indentedSyntax: true,
             importer: nodeSassTildeImporter,
             includePaths: this.styleIncludePaths
           })
