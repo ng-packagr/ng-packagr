@@ -1,9 +1,6 @@
 import { expect } from 'chai';
-import * as fs from 'fs';
-import * as path from 'path';
 
 describe(`@sample/same-name`, () => {
-
   describe(`sample-testing.metadata.json`, () => {
     let METADATA;
     before(() => {
@@ -29,7 +26,6 @@ describe(`@sample/same-name`, () => {
     it(`should be "__symbolic": "module"`, () => {
       expect(METADATA['__symbolic']).to.equal('module');
     });
-
   });
 
   describe(`testing/sample-testing-testing.metadata.json`, () => {
@@ -57,6 +53,5 @@ describe(`@sample/same-name`, () => {
     it(`should be "__symbolic": "module"`, () => {
       expect(METADATA['__symbolic']).to.equal('module');
     });
-
   });
 });

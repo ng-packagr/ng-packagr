@@ -1,6 +1,4 @@
 import { expect } from 'chai';
-import * as fs from 'fs';
-import * as path from 'path';
 
 describe(`issue-852`, () => {
   describe(`issue-852.metadata.json`, () => {

@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import { Observable } from 'rxjs/Observable';
 
 describe(`@sample/externals`, () => {
   describe(`FESM 2015 Bundle`, () => {

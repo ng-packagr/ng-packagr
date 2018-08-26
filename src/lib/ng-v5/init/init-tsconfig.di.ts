@@ -1,12 +1,11 @@
-// XX: has or is using name 'ParsedConfiguration' ... but cannot be named
-import { ParsedConfiguration } from '@angular/compiler-cli/src/perform_compile';
+import { ParsedConfiguration } from '@angular/compiler-cli';
 import { InjectionToken, Provider } from 'injection-js';
 import { Transform } from '../../brocc/transform';
 import { TransformProvider, provideTransform } from '../../brocc/transform.di';
-import { createDefaultTsConfig, TsConfig } from '../../ts/tsconfig';
+import { createDefaultTsConfig } from '../../ts/tsconfig';
 import { initTsConfigTransformFactory } from './init-tsconfig.transform';
 
-export const provideTsConfig = (values?: TsConfig | string): Provider => {
+export const provideTsConfig = (values?: ParsedConfiguration | string): Provider => {
   return {
     provide: DEFAULT_TS_CONFIG_TOKEN,
     useFactory: () => {
@@ -16,7 +15,7 @@ export const provideTsConfig = (values?: TsConfig | string): Provider => {
   };
 };
 
-export const DEFAULT_TS_CONFIG_TOKEN = new InjectionToken<TsConfig>('ng.v5.defaultTsConfig');
+export const DEFAULT_TS_CONFIG_TOKEN = new InjectionToken<ParsedConfiguration>('ng.v5.defaultTsConfig');
 
 export const DEFAULT_TS_CONFIG_PROVIDER: Provider = provideTsConfig();
 

@@ -1,9 +1,9 @@
 import * as ts from 'typescript';
+import { ParsedConfiguration } from '@angular/compiler-cli';
 import { Node } from '../brocc/node';
 import { by, isInProgress, isDirty } from '../brocc/select';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
 import { NgPackage } from '../ng-package-format/package';
-import { TsConfig } from '../ts/tsconfig';
 import { DestinationFiles } from '../ng-package-format/shared';
 import { FileCache } from '../file/file-cache';
 
@@ -66,7 +66,7 @@ export class EntryPointNode extends Node {
   data: {
     destinationFiles: DestinationFiles;
     entryPoint: NgEntryPoint;
-    tsConfig?: TsConfig;
+    tsConfig?: ParsedConfiguration;
   };
 }
 

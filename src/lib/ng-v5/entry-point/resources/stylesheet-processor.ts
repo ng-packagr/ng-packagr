@@ -17,7 +17,7 @@ export class StylesheetProcessor {
   private postCssProcessor: postcss.Processor;
 
   constructor(readonly basePath: string, readonly cssUrl?: CssUrl, readonly styleIncludePaths?: string[]) {
-    this.postCssProcessor = this.createPostCssProcessor(basePath, cssUrl, styleIncludePaths);
+    this.postCssProcessor = this.createPostCssProcessor(basePath, cssUrl);
   }
 
   process(filePath: string, content: string) {
@@ -93,7 +93,7 @@ export class StylesheetProcessor {
     }
   }
 
-  private createPostCssProcessor(basePath: string, cssUrl?: CssUrl, styleIncludePaths?: string[]): postcss.Processor {
+  private createPostCssProcessor(basePath: string, cssUrl?: CssUrl): postcss.Processor {
     log.debug(`determine browserslist for ${basePath}`);
     const browsers = browserslist(undefined, { path: basePath });
 

@@ -2,9 +2,9 @@ import * as path from 'path';
 import * as ts from 'typescript';
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { compileSourceFiles } from '../../../ngc/compile-source-files';
-import { TsConfig, setDependenciesTsConfigPaths } from '../../../ts/tsconfig';
+import { setDependenciesTsConfigPaths } from '../../../ts/tsconfig';
 import * as log from '../../../util/log';
-import { isEntryPointInProgress, EntryPointNode, isPackage, isEntryPoint } from '../../nodes';
+import { isEntryPointInProgress, EntryPointNode, isEntryPoint } from '../../nodes';
 import { StylesheetProcessor } from '../resources/stylesheet-processor';
 
 export const compileNgcTransform: Transform = transformFromPromise(async graph => {
