@@ -95,7 +95,7 @@ export class StylesheetProcessor {
 
     // this is important to be executed post running `postcssUrl`
     postCssPlugins.push(
-      autoprefixer({ browsers }),
+      autoprefixer({ browsers, grid: true }),
       postcssClean({
         level: {
           2: {
