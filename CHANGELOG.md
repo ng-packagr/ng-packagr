@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.1.1"></a>
+## [4.1.1](https://github.com/dherges/ng-packagr/compare/v4.1.0...v4.1.1) (2018-08-26)
+
+
+### Bug Fixes
+
+* allow sass indexed syntax to be compiled (+ integration tests) ([#1053](https://github.com/dherges/ng-packagr/issues/1053)) ([34a259d](https://github.com/dherges/ng-packagr/commit/34a259d))
+
+
+
 <a name="4.1.0"></a>
 # [4.1.0](https://github.com/dherges/ng-packagr/compare/v4.0.1...v4.1.0) (2018-08-12)
 
