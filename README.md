@@ -3,16 +3,16 @@
 > Transpile your libraries to Angular Package Format
 
 [![npm](https://img.shields.io/npm/v/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
-[![npm License](https://img.shields.io/npm/l/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr/blob/master/LICENSE)
+[![npm License](https://img.shields.io/npm/l/ng-packagr.svg?style=flat-square)](https://github.com/ng-packagr/ng-packagr/blob/master/LICENSE)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat-square)](https://conventionalcommits.org)
-[![CircleCI](https://img.shields.io/circleci/project/github/dherges/ng-packagr/master.svg?label=Circle%20CI&style=flat-square)](https://circleci.com/gh/dherges/ng-packagr)
-[![Travis](https://img.shields.io/travis/dherges/ng-packagr/master.svg?label=Travis%20CI&style=flat-square)](https://travis-ci.org/dherges/ng-packagr)
+[![CircleCI](https://img.shields.io/circleci/project/github/ng-packagr/ng-packagr/master.svg?label=Circle%20CI&style=flat-square)](https://circleci.com/gh/ng-packagr/ng-packagr)
+[![Travis](https://img.shields.io/travis/ng-packagr/ng-packagr/master.svg?label=Travis%20CI&style=flat-square)](https://travis-ci.org/ng-packagr/ng-packagr)
 
-[![GitHub contributors](https://img.shields.io/github/contributors/dherges/ng-packagr.svg?style=flat-square)](https://github.com/dherges/ng-packagr)
-[![GitHub PR Stats](http://issuestats.com/github/dherges/ng-packagr/badge/pr?style=flat-square)](http://issuestats.com/github/dherges/ng-packagr)
-[![GitHub Issue Stats](http://issuestats.com/github/dherges/ng-packagr/badge/issue?style=flat-square)](http://issuestats.com/github/dherges/ng-packagr)
+[![GitHub contributors](https://img.shields.io/github/contributors/ng-packagr/ng-packagr.svg?style=flat-square)](https://github.com/ng-packagr/ng-packagr)
+[![GitHub PR Stats](http://issuestats.com/github/ng-packagr/ng-packagr/badge/pr?style=flat-square)](http://issuestats.com/github/ng-packagr/ng-packagr)
+[![GitHub Issue Stats](http://issuestats.com/github/ng-packagr/ng-packagr/badge/issue?style=flat-square)](http://issuestats.com/github/ng-packagr/ng-packagr)
 
-[![GitHub stars](https://img.shields.io/github/stars/dherges/ng-packagr.svg?label=GitHub%20Stars&style=flat-square)](https://github.com/dherges/ng-packagr)
+[![GitHub stars](https://img.shields.io/github/stars/ng-packagr/ng-packagr.svg?label=GitHub%20Stars&style=flat-square)](https://github.com/ng-packagr/ng-packagr)
 [![npm Downloads](https://img.shields.io/npm/dw/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg?style=flat-square)](https://renovateapp.com/)
 
@@ -100,14 +100,14 @@ A great step-by-step [example of making an Angular CLI project with a library di
 
 Nikolas LeBlanc wrote a tutorial on [building an Angular 4 Component Library with the Angular CLI and ng-packagr](https://medium.com/@ngl817/building-an-angular-4-component-library-with-the-angular-cli-and-ng-packagr-53b2ade0701e)
 
-Here is a [demo repository showing ng-packagr and Angular CLI](https://github.com/dherges/ng-packaged) in action.
+Here is a [demo repository showing ng-packagr and Angular CLI](https://github.com/ng-packagr/ng-packaged) in action.
 
-What about [ng-packagr alongside Nx Workspace](https://github.com/dherges/nx-packaged)? Well, they work well together!
+What about [ng-packagr alongside Nx Workspace](https://github.com/ng-packagr/nx-packaged)? Well, they work well together!
 
 #### Further user questions and issue-driven documentation
 
 We keep track of user questions in GitHub's issue tracker and try to build a documentation from it.
-[Explore issues w/ label documentation](https://github.com/dherges/ng-packagr/issues?q=label%3Adocumentation%20).
+[Explore issues w/ label documentation](https://github.com/ng-packagr/ng-packagr/issues?q=label%3Adocumentation%20).
 
 #### Contributing to ng-packagr
 
