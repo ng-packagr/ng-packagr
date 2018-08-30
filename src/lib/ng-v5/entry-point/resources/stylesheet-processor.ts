@@ -37,32 +37,24 @@ export class StylesheetProcessor {
   }
 
   private renderPreProcessor(filePath: string, content: string): string {
-    switch (path.extname(filePath)) {
-      case '.scss':
-        log.debug(`rendering scss from ${filePath}`);
-        return sass
-          .renderSync({
-            file: filePath,
-            data: content,
-            importer: nodeSassTildeImporter,
-            includePaths: this.styleIncludePaths
-          })
-          .css.toString();
+    const ext = path.extname(filePath);
 
+    log.debug(`rendering ${ext} from ${filePath}`);
+
+    switch (ext) {
       case '.sass':
-        log.debug(`rendering sass from ${filePath}`);
+      case '.scss':
         return sass
           .renderSync({
             file: filePath,
             data: content,
-            indentedSyntax: true,
+            indentedSyntax: '.sass' === ext,
             importer: nodeSassTildeImporter,
             includePaths: this.styleIncludePaths
           })
           .css.toString();
 
       case '.less':
-        log.debug(`rendering less from ${filePath}`);
         // this is the only way I found to make LESS sync
         let cmd = `node node_modules/less/bin/lessc ${filePath} --less-plugin-npm-import="prefix=~"`;
         if (this.styleIncludePaths.length) {
@@ -73,7 +65,6 @@ export class StylesheetProcessor {
 
       case '.styl':
       case '.stylus':
-        log.debug(`rendering styl from ${filePath}`);
         return (
           stylus(content)
             // add paths for resolve
@@ -88,7 +79,6 @@ export class StylesheetProcessor {
 
       case '.css':
       default:
-        log.debug(`reading css from ${filePath}`);
         return content;
     }
   }
