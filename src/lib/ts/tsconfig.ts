@@ -58,6 +58,10 @@ export function createDefaultTsConfig(values?: ng.ParsedConfiguration | string):
  * default config with entry point-specific values.
  */
 export const initializeTsConfig = (defaultTsConfig: ng.ParsedConfiguration, entryPoints: EntryPointNode[]) => {
+  if (defaultTsConfig.errors.length > 0) {
+    throw ng.formatDiagnostics(defaultTsConfig.errors);
+  }
+
   entryPoints.forEach(currentEntryPoint => {
     const { entryPoint } = currentEntryPoint.data;
     log.debug(`Initializing tsconfig for ${entryPoint.moduleId}`);

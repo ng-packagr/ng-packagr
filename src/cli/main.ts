@@ -21,6 +21,11 @@ program
     "Path to the 'ng-package.json' or 'package.json' file.",
     parseProjectPath,
     DEFAULT_PROJECT_PATH
+  )
+  .option(
+    '-c, --config [config]',
+    'Path to a tsconfig file.',
+    (value: string | undefined) => (value ? path.resolve(value) : undefined)
   );
 
 const dir = path.dirname(module.filename);
@@ -34,4 +39,5 @@ program.on('option:version', () => {
 
 program.parse(process.argv);
 
-execute(build, { project: program.opts().project, watch: !!program.opts().watch }).catch(() => process.exit(111));
+const { config, project, watch } = program.opts();
+execute(build, { config, project, watch: !!watch }).catch(() => process.exit(111));
