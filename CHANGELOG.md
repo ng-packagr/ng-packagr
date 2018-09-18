@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.2.0"></a>
+# [4.2.0](https://github.com/ng-packagr/ng-packagr/compare/v4.1.1...v4.2.0) (2018-09-18)
+
+
+### Bug Fixes
+
+* update rollup to version `^0.65.0` ([03db010](https://github.com/ng-packagr/ng-packagr/commit/03db010))
+* update rollup to version ^0.66.0 ([3d381b0](https://github.com/ng-packagr/ng-packagr/commit/3d381b0))
+
+
+### Features
+
+* add  and  version  as peerDependencies ([97c5fec](https://github.com/ng-packagr/ng-packagr/commit/97c5fec))
+* add `TypeScript` version 3 as a `peerDependency` ([5f0b761](https://github.com/ng-packagr/ng-packagr/commit/5f0b761))
+* add a option to pass a custom `tsconfig` in `CLI` ([cb6a980](https://github.com/ng-packagr/ng-packagr/commit/cb6a980))
+
+
+
 <a name="4.1.1"></a>
 ## [4.1.1](https://github.com/dherges/ng-packagr/compare/v4.1.0...v4.1.1) (2018-08-26)
 
