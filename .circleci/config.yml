@@ -4,9 +4,11 @@ defaults: &defaults
     - image: angular/ngcontainer:0.3.3
   working_directory: ~/repo
 
+attach_options: &attach_options
+  at: ~/repo
+
 jobs:
-  # Build for all branches and tags
-  build:
+  install:
     <<: *defaults
     steps:
       # Checkout, Download and cache dependencies
@@ -18,8 +20,16 @@ jobs:
       - save_cache:
           key: v4-dependencies-{{ checksum "yarn.lock" }}
           paths:
-            - "node_modules"
-      # Run the ci build
+            - 'node_modules'
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
+  build_&_test:
+    <<: *defaults
+    steps:
+      - attach_workspace: *attach_options
+      # Build and run tests
       - run: yarn test
       # Store artefacts on circle
       - run:
@@ -34,8 +44,16 @@ jobs:
       - store_artifacts:
           path: ~/repo/dist
           destination: dist
-      - deploy:
-          name: Deploy Git tag to npm registry
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace: *attach_options
+      - run:
+          name: Deploying package to npm registry
           command: |
             # CIRCLE_TAG indicates whether the job runs for the tag (as opposed to: the commit on the branch)
             if [ -z "${CIRCLE_TAG}" ]; then
@@ -55,15 +73,23 @@ jobs:
             yarn publish:ci
             pushd dist
             npm publish --tag ${NPM_TAG}
-            npm pack .
 
 workflows:
   version: 2
   cirunner:
     jobs:
-      - build:
+      - install
+      - build_&_test:
           filters:
             branches:
               ignore: /gh-pages/
+          requires:
+            - install
+      - deploy:
+          requires:
+            - build_&_test
+          filters:
+            branches:
+              only: master
             tags:
               only: /v.*/
