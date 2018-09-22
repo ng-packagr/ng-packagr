@@ -64,10 +64,10 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
  *
  * #### Example
  *
- * A consumer of the enty point depends on it by `import {..} from '@my/module/id';`.
+ * A consumer of the entry point depends on it by `import {..} from '@my/module/id';`.
  * The module id `@my/module/id` will be resolved to the `package.json` file that is written by
  * this build step.
- * The proprties `main`, `module`, `typings` (and so on) in the `package.json` point to the
+ * The properties `main`, `module`, `typings` (and so on) in the `package.json` point to the
  * flattened JavaScript bundles, type definitions, (...).
  *
  * @param entryPoint An entry point of an Angular package / library
@@ -99,7 +99,7 @@ export async function writePackageJson(
     }
   }
 
-  // Verify non-peerDependencies as they can easily lead to duplicated installs or version conflicts
+  // Verify non-peerDependencies as they can easily lead to duplicate installs or version conflicts
   // in the node_modules folder of an application
   const whitelist = pkg.whitelistedNonPeerDependencies.map(value => new RegExp(value));
   try {
