@@ -16,14 +16,15 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
 
   // Compile TypeScript sources
   const { esm2015, esm5, declarations } = entryPoint.data.destinationFiles;
-  const { sourcesFileCache, moduleResolutionCache } = entryPoint.cache;
+  const { moduleResolutionCache } = entryPoint.cache;
   const { basePath, cssUrl, styleIncludePaths } = entryPoint.data.entryPoint;
   const stylesheetProcessor = new StylesheetProcessor(basePath, cssUrl, styleIncludePaths);
 
   await Promise.all([
     compileSourceFiles(
+      graph,
+      entryPoint,
       tsConfig,
-      sourcesFileCache,
       moduleResolutionCache,
       stylesheetProcessor,
       {
@@ -34,7 +35,7 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
       path.dirname(declarations)
     ),
 
-    compileSourceFiles(tsConfig, sourcesFileCache, moduleResolutionCache, stylesheetProcessor, {
+    compileSourceFiles(graph, entryPoint, tsConfig, moduleResolutionCache, stylesheetProcessor, {
       outDir: path.dirname(esm5),
       target: ts.ScriptTarget.ES5,
       downlevelIteration: true,

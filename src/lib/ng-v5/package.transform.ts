@@ -19,12 +19,13 @@ import { STATE_IN_PROGESS } from '../brocc/node';
 import { Transform } from '../brocc/transform';
 import * as log from '../util/log';
 import { rimraf } from '../util/rimraf';
-import { PackageNode, EntryPointNode, ngUrl, isEntryPoint, byEntryPoint, isPackage } from './nodes';
+import { PackageNode, EntryPointNode, ngUrl, isEntryPoint, byEntryPoint, isPackage, fileUrl } from './nodes';
 import { discoverPackages } from './discover-packages';
 import { createFileWatch } from '../file/file-watcher';
 import { NgPackagrOptions } from './options.di';
-import { unique, flatten } from '../util/array';
+import { flatten } from '../util/array';
 import { copyFile } from '../util/copy';
+import { ensureUnixPath } from '../util/path';
 
 /**
  * A transformation for building an npm package:
@@ -78,10 +79,10 @@ export const packageTransformFactory = (
     }, (graph, _) => graph),
     // Add entry points to graph
     map(graph => {
-      const ngPkg = graph.get(pkgUri);
+      const ngPkg = graph.get(pkgUri) as PackageNode;
       const entryPoints = [ngPkg.data.primary, ...ngPkg.data.secondaries].map(entryPoint => {
         const { destinationFiles, moduleId } = entryPoint;
-        const node = new EntryPointNode(ngUrl(moduleId));
+        const node = new EntryPointNode(ngUrl(moduleId), ngPkg.cache.sourcesFileCache);
         node.data = { entryPoint, destinationFiles };
         node.state = 'dirty';
         ngPkg.dependsOn(node);
@@ -110,38 +111,32 @@ const watchTransformFactory = (
 
   return source$.pipe(
     switchMap(graph => {
-      const { data } = graph.find(isPackage) as PackageNode;
+      const { data, cache } = graph.find(isPackage) as PackageNode;
       return createFileWatch(data.src, [data.dest]).pipe(
         tap(fileChange => {
-          const entryPoints = graph.filter(isEntryPoint);
           const { filePath } = fileChange;
-          let filePathsToClean: string[] = [filePath];
+          const { sourcesFileCache } = cache;
+          const cachedSourceFile = sourcesFileCache.get(filePath);
 
-          entryPoints.forEach((node: EntryPointNode) => {
-            const { sourcesFileCache } = node.cache;
-            const cached = sourcesFileCache.get(filePath);
+          if (!cachedSourceFile) {
+            return;
+          }
 
-            // when a ts file changes we also need to clean it's .d.ts file
-            // and the entrypoint metadata due to the fact that metadata is used to validate component properties
-            if (cached && cached.declarationFileName) {
-              const { metadata } = node.data.destinationFiles;
-              filePathsToClean.push(cached.declarationFileName, metadata);
-            }
-          });
+          const { declarationFileName } = cachedSourceFile;
 
-          filePathsToClean = unique(filePathsToClean);
+          sourcesFileCache.delete(filePath);
+          sourcesFileCache.delete(declarationFileName);
 
-          entryPoints.forEach((node: EntryPointNode) => {
-            const { sourcesFileCache } = node.cache;
+          const uriToClean = [filePath, declarationFileName].map(x => fileUrl(ensureUnixPath(x)));
+          const nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
 
-            let isDirty = false;
-
-            filePathsToClean.forEach(x => {
-              isDirty = sourcesFileCache.delete(x) || isDirty;
-            });
-
+          const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
+          entryPoints.forEach(entryPoint => {
+            const isDirty = entryPoint.dependents.some(x => nodesToClean.some(node => node.url === x.url));
             if (isDirty) {
-              node.state = 'dirty';
+              entryPoint.state = 'dirty';
+              const { metadata } = entryPoint.data.destinationFiles;
+              sourcesFileCache.delete(metadata);
             }
           });
         }),
