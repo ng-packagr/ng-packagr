@@ -8,12 +8,13 @@ import { isEntryPoint, EntryPointNode } from '../nodes';
 import { cacheCompilerHost } from '../../ts/cache-compiler-host';
 import { unique } from '../../util/array';
 import { setDependenciesTsConfigPaths } from '../../ts/tsconfig';
+import { BuildGraph } from '../../brocc/build-graph';
 
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {
     const entryPoints = graph.filter(x => isEntryPoint(x) && x.state !== 'done') as EntryPointNode[];
     for (let entryPoint of entryPoints) {
-      analyseEntryPoint(entryPoint, entryPoints);
+      analyseEntryPoint(graph, entryPoint, entryPoints);
     }
 
     return graph;
@@ -23,11 +24,12 @@ export const analyseSourcesTransform: Transform = pipe(
 /**
  * Analyses an entrypoint, searching for TypeScript dependencies and additional resources (Templates and Stylesheets).
  *
+ * @param graph Build graph
  * @param entryPoint Current entry point that should be analysed.
  * @param entryPoints List of all entry points.
  */
-function analyseEntryPoint(entryPoint: EntryPointNode, entryPoints: EntryPointNode[]) {
-  const { sourcesFileCache, analysisModuleResolutionCache } = entryPoint.cache;
+function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryPoints: EntryPointNode[]) {
+  const { analysisModuleResolutionCache } = entryPoint.cache;
   const { moduleId } = entryPoint.data.entryPoint;
 
   log.debug(`Analysing sources for ${moduleId}`);
@@ -36,7 +38,7 @@ function analyseEntryPoint(entryPoint: EntryPointNode, entryPoints: EntryPointNo
   const tsConfig = setDependenciesTsConfigPaths(entryPoint.data.tsConfig, entryPoints, true);
 
   const compilerHost = {
-    ...cacheCompilerHost(tsConfig.options, sourcesFileCache, analysisModuleResolutionCache),
+    ...cacheCompilerHost(graph, entryPoint, tsConfig.options, analysisModuleResolutionCache),
     readResource: () => ''
   };
 

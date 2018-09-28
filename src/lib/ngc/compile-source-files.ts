@@ -4,12 +4,14 @@ import * as log from '../util/log';
 import { createEmitCallback } from './create-emit-callback';
 import { redirectWriteFileCompilerHost } from '../ts/redirect-write-file-compiler-host';
 import { cacheCompilerHost } from '../ts/cache-compiler-host';
-import { FileCache } from '../file/file-cache';
 import { StylesheetProcessor } from '../ng-v5/entry-point/resources/stylesheet-processor';
+import { BuildGraph } from '../brocc/build-graph';
+import { EntryPointNode } from '../ng-v5/nodes';
 
 export async function compileSourceFiles(
+  graph: BuildGraph,
+  entryPoint: EntryPointNode,
   tsConfig: ng.ParsedConfiguration,
-  sourcesFileCache: FileCache,
   moduleResolutionCache: ts.ModuleResolutionCache,
   stylesheetProcessor: StylesheetProcessor,
   extraOptions?: Partial<ng.CompilerOptions>,
@@ -19,7 +21,13 @@ export async function compileSourceFiles(
 
   const tsConfigOptions: ng.CompilerOptions = { ...tsConfig.options, ...extraOptions };
 
-  let tsCompilerHost = cacheCompilerHost(tsConfigOptions, sourcesFileCache, moduleResolutionCache, stylesheetProcessor);
+  let tsCompilerHost = cacheCompilerHost(
+    graph,
+    entryPoint,
+    tsConfigOptions,
+    moduleResolutionCache,
+    stylesheetProcessor
+  );
   if (declarationDir) {
     tsCompilerHost = redirectWriteFileCompilerHost(tsCompilerHost, tsConfigOptions.basePath, declarationDir);
   }

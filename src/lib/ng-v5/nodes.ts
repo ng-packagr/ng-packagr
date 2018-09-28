@@ -57,6 +57,14 @@ export function ngUrl(path: string): string {
 export class EntryPointNode extends Node {
   readonly type = TYPE_NG_ENTRY_POINT;
 
+  constructor(public readonly url: string, readonly sourcesFileCache?: FileCache) {
+    super(url);
+
+    if (sourcesFileCache) {
+      this.cache.sourcesFileCache = sourcesFileCache;
+    }
+  }
+
   cache = {
     sourcesFileCache: new FileCache(),
     moduleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
@@ -73,4 +81,8 @@ export class EntryPointNode extends Node {
 export class PackageNode extends Node {
   readonly type = TYPE_NG_PACKAGE;
   data: NgPackage;
+
+  cache = {
+    sourcesFileCache: new FileCache()
+  };
 }

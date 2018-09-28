@@ -2,16 +2,31 @@ import * as ts from 'typescript';
 import * as ng from '@angular/compiler-cli';
 import * as path from 'path';
 import { ensureUnixPath } from '../util/path';
-import { FileCache } from '../file/file-cache';
 import { StylesheetProcessor } from '../ng-v5/entry-point/resources/stylesheet-processor';
+import { EntryPointNode, fileUrl } from '../ng-v5/nodes';
+import { Node } from '../brocc/node';
+import { BuildGraph } from '../brocc/build-graph';
 
 export function cacheCompilerHost(
+  graph: BuildGraph,
+  entryPoint: EntryPointNode,
   compilerOptions: ng.CompilerOptions,
-  sourcesFileCache: FileCache,
   moduleResolutionCache: ts.ModuleResolutionCache,
   stylesheetProcessor?: StylesheetProcessor
 ): ng.CompilerHost {
+  const { sourcesFileCache } = entryPoint.cache;
   const compilerHost = ng.createCompilerHost({ options: compilerOptions });
+  const addDependee = (fileName: string) => {
+    const nodeUri = fileUrl(ensureUnixPath(fileName));
+    let node = graph.get(nodeUri);
+
+    if (!node) {
+      node = new Node(nodeUri);
+      graph.put(node);
+    }
+
+    entryPoint.dependsOn(node);
+  };
 
   return {
     ...compilerHost,
@@ -26,6 +41,8 @@ export function cacheCompilerHost(
     },
 
     getSourceFile: (fileName: string, languageVersion: ts.ScriptTarget) => {
+      addDependee(fileName);
+
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (!cache.sourceFile) {
         cache.sourceFile = compilerHost.getSourceFile.call(this, fileName, languageVersion);
@@ -53,6 +70,8 @@ export function cacheCompilerHost(
     },
 
     readFile: (fileName: string) => {
+      addDependee(fileName);
+
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.content === undefined) {
         cache.content = compilerHost.readFile.call(this, fileName);
