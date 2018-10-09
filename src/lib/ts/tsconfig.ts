@@ -132,7 +132,7 @@ export function setDependenciesTsConfigPaths(
     if (!tsConfig.options.paths[moduleId]) {
       tsConfig.options.paths[moduleId] = mappedPath;
     } else {
-      tsConfig.options.paths[moduleId].concat(mappedPath).reverse();
+      tsConfig.options.paths[moduleId].unshift(...mappedPath);
     }
   }
 
