@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.3.0"></a>
+# [4.3.0](https://github.com/ng-packagr/ng-packagr/compare/v4.2.0...v4.3.0) (2018-10-09)
+
+
+### Bug Fixes
+
+* `JavaScript heap out of memory` when having a lot of secondary entrypoints ([ca3d1d3](https://github.com/ng-packagr/ng-packagr/commit/ca3d1d3)), closes [#1099](https://github.com/ng-packagr/ng-packagr/issues/1099)
+* tsconfig path mapping ([4421e6f](https://github.com/ng-packagr/ng-packagr/commit/4421e6f))
+
+
+### Features
+
+* add support for TypeScript 3.1 ([c354261](https://github.com/ng-packagr/ng-packagr/commit/c354261))
+
+
+
 <a name="4.2.0"></a>
 # [4.2.0](https://github.com/ng-packagr/ng-packagr/compare/v4.1.1...v4.2.0) (2018-09-18)
 
