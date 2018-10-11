@@ -97,6 +97,8 @@ export function cacheCompilerHost(
     },
 
     readResource: (fileName: string) => {
+      addDependee(fileName);
+
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.content === undefined) {
         // todo: transform styles here.
