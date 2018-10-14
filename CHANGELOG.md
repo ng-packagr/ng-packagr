@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.3.1"></a>
+## [4.3.1](https://github.com/ng-packagr/ng-packagr/compare/v4.3.0...v4.3.1) (2018-10-14)
+
+
+### Bug Fixes
+
+* update templates and styles in watch mode ([bfc019f](https://github.com/ng-packagr/ng-packagr/commit/bfc019f))
+
+
+
 <a name="4.3.0"></a>
 # [4.3.0](https://github.com/ng-packagr/ng-packagr/compare/v4.2.0...v4.3.0) (2018-10-09)
 
