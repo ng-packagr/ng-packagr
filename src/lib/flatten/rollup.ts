@@ -2,6 +2,7 @@ import * as rollup from 'rollup';
 import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as sourcemaps from 'rollup-plugin-sourcemaps';
 import * as commonJs from 'rollup-plugin-commonjs';
+import * as rollupJson from 'rollup-plugin-json';
 import * as path from 'path';
 import * as log from '../util/log';
 import { ExternalModuleIdStrategy, DependencyList } from './external-module-id-strategy';
@@ -38,7 +39,7 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void[]> {
     external: moduleId => externalModuleIdStrategy.isExternalDependency(moduleId),
     inlineDynamicImports: false,
     input: opts.entry,
-    plugins: [nodeResolve(), commonJs(), sourcemaps(), { transform: opts.transform }],
+    plugins: [rollupJson(), nodeResolve(), commonJs(), sourcemaps(), { transform: opts.transform }],
     onwarn: warning => {
       if (typeof warning === 'string') {
         log.warn(warning);
