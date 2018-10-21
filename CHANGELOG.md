@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.4.0"></a>
+# [4.4.0](https://github.com/ng-packagr/ng-packagr/compare/v4.3.1...v4.4.0) (2018-10-21)
+
+
+### Features
+
+* add support for `resolveJsonModule` ([1bf8eaf](https://github.com/ng-packagr/ng-packagr/commit/1bf8eaf)), closes [#1050](https://github.com/ng-packagr/ng-packagr/issues/1050)
+
+
+
 <a name="4.3.1"></a>
 ## [4.3.1](https://github.com/ng-packagr/ng-packagr/compare/v4.3.0...v4.3.1) (2018-10-14)
 
