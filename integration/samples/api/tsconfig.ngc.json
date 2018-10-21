@@ -1,6 +1,6 @@
 {
   "angularCompilerOptions": {
-    "annotateForClosureCompiler": true,
+    "annotateForClosureCompiler": false,
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
     "fullTemplateTypeCheck": true,
@@ -14,6 +14,9 @@
     "module": "es2015",
     "moduleResolution": "node",
     "outDir": "",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "declaration": true,
     "inlineSourceMap": true,
     "inlineSources": true,
