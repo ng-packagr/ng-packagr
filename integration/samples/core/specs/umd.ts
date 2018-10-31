@@ -13,6 +13,10 @@ describe(`@sample/core`, () => {
       expect(BUNDLE).to.be.ok;
     });
 
+    it(`should have sourceMap url pointing to file`, () => {
+      expect(BUNDLE).to.contain('sourceMappingURL=sample-core.umd.js.map');
+    });
+
     it(`should export the module with module name 'sample.core'`, () => {
       expect(BUNDLE).to.contain(`global.sample.core = {}`);
     });
