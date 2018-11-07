@@ -9,9 +9,6 @@
 [![Travis](https://img.shields.io/travis/ng-packagr/ng-packagr/master.svg?label=Travis%20CI&style=flat-square)](https://travis-ci.org/ng-packagr/ng-packagr)
 
 [![GitHub contributors](https://img.shields.io/github/contributors/ng-packagr/ng-packagr.svg?style=flat-square)](https://github.com/ng-packagr/ng-packagr)
-[![GitHub PR Stats](http://issuestats.com/github/ng-packagr/ng-packagr/badge/pr?style=flat-square)](http://issuestats.com/github/ng-packagr/ng-packagr)
-[![GitHub Issue Stats](http://issuestats.com/github/ng-packagr/ng-packagr/badge/issue?style=flat-square)](http://issuestats.com/github/ng-packagr/ng-packagr)
-
 [![GitHub stars](https://img.shields.io/github/stars/ng-packagr/ng-packagr.svg?label=GitHub%20Stars&style=flat-square)](https://github.com/ng-packagr/ng-packagr)
 [![npm Downloads](https://img.shields.io/npm/dw/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg?style=flat-square)](https://renovateapp.com/)
