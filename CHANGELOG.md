@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.4.1"></a>
+## [4.4.1](https://github.com/ng-packagr/ng-packagr/compare/v4.4.0...v4.4.1) (2018-11-07)
+
+
+### Bug Fixes
+
+* ignore git folder on watch ([c61cbfc](https://github.com/ng-packagr/ng-packagr/commit/c61cbfc))
+* UMD sourceMappingURL should point to file ([ab02f0f](https://github.com/ng-packagr/ng-packagr/commit/ab02f0f))
+* update rollup to version ^0.67.0 ([4422aa1](https://github.com/ng-packagr/ng-packagr/commit/4422aa1))
+
+
+
 <a name="4.4.0"></a>
 # [4.4.0](https://github.com/ng-packagr/ng-packagr/compare/v4.3.1...v4.4.0) (2018-10-21)
 
