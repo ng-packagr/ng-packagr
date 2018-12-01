@@ -25,7 +25,7 @@ jobs:
           root: ~/repo
           paths: .
 
-  build_&_test:
+  build_and_test:
     <<: *defaults
     steps:
       - attach_workspace: *attach_options
@@ -79,10 +79,12 @@ workflows:
   cirunner:
     jobs:
       - install
-      - build_&_test:
+      - build_and_test:
           filters:
             branches:
               ignore: /gh-pages/
+            tags:
+              only: /v.*/
           requires:
             - install
       - deploy:
@@ -90,6 +92,6 @@ workflows:
             - build_&_test
           filters:
             branches:
-              only: master
+              ignore: /.*/
             tags:
               only: /v.*/
