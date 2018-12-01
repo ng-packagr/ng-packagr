@@ -79,6 +79,9 @@ workflows:
   cirunner:
     jobs:
       - install
+         filters:
+            tags:
+              only: /v.*/
       - build_and_test:
           filters:
             branches:
