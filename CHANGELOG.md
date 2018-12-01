@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.4.2"></a>
+## [4.4.2](https://github.com/ng-packagr/ng-packagr/compare/v4.4.1...v4.4.2) (2018-12-01)
+
+
+### Bug Fixes
+
+* add opencollective postinstall hook ([c3dbaeb](https://github.com/ng-packagr/ng-packagr/commit/c3dbaeb))
+
+
+
 <a name="4.4.1"></a>
 ## [4.4.1](https://github.com/ng-packagr/ng-packagr/compare/v4.4.0...v4.4.1) (2018-11-07)
 
