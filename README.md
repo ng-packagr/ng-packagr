@@ -2,67 +2,94 @@
 
 > Transpile your libraries to Angular Package Format
 
-[![Backers on Open Collective](https://opencollective.com/ng-packagr/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/ng-packagr/sponsors/badge.svg)](#sponsors)
+
 [![npm](https://img.shields.io/npm/v/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
 [![npm License](https://img.shields.io/npm/l/ng-packagr.svg?style=flat-square)](https://github.com/ng-packagr/ng-packagr/blob/master/LICENSE)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat-square)](https://conventionalcommits.org)
 [![CircleCI](https://img.shields.io/circleci/project/github/ng-packagr/ng-packagr/master.svg?label=Circle%20CI&style=flat-square)](https://circleci.com/gh/ng-packagr/ng-packagr)
 [![Travis](https://img.shields.io/travis/ng-packagr/ng-packagr/master.svg?label=Travis%20CI&style=flat-square)](https://travis-ci.org/ng-packagr/ng-packagr)
 
+[![Backers on Open Collective](https://opencollective.com/ng-packagr/backers/badge.svg?style=flat-square)](#backers)
+[![Sponsors on Open Collective](https://opencollective.com/ng-packagr/sponsors/badge.svg?style=flat-square)](#sponsors)
 [![GitHub contributors](https://img.shields.io/github/contributors/ng-packagr/ng-packagr.svg?style=flat-square)](https://github.com/ng-packagr/ng-packagr)
 [![GitHub stars](https://img.shields.io/github/stars/ng-packagr/ng-packagr.svg?label=GitHub%20Stars&style=flat-square)](https://github.com/ng-packagr/ng-packagr)
 [![npm Downloads](https://img.shields.io/npm/dw/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg?style=flat-square)](https://renovateapp.com/)
 
 
-<!doctype html>
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="/public/vendors/normalize.css">
-    <title>Open Collective</title>
-    <style>
-      #content-404 {
-        margin: 7% auto;
-        max-width: 400px;
-        font-size: 18px;
-      }
+## Sponsors
 
-      #content-404 img{
-        width: 100%;
-      }
+Become a sponsor and get your logo on our README on Github with a link to your
+site.
+[[Become a sponsor](https://opencollective.com/ng-packagr#contributors)]
 
-      #content-404 p{
-        margin-left: 13px;
-      }
-  </style>
-  </head>
-  <body>
-    <div id="content-404">
-      <a href='https://opencollective.com/'> <img src='/public/images/LogoLargeTransparent.png'></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/0/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/1/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/2/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/3/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/4/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/5/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/6/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/7/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/8/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/9/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/9/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/10/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/10/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/11/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/11/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/12/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/12/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/13/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/13/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/14/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/14/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/15/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/15/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/16/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/16/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/17/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/17/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/18/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/18/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/19/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/19/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/20/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/20/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/21/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/21/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/22/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/22/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/23/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/23/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/24/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/24/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/25/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/25/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/26/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/26/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/27/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/27/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/28/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/28/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/sponsor/29/website" target="_blank"><img src="https://opencollective.com/ng-packagr/sponsor/29/avatar.svg"></a>
 
-      <p><b>We couldn&#x27;t find that page :(</b></p>
-      <pre></pre>
 
-      <p>Try our <a href='https://opencollective.com/'>homepage</a>, <a href='https://opencollective.com/faq'>FAQ</a> or <a href='https://medium.com/open-collective'>blog</a>. </p>
+## Backers
 
-      <p>Or chat with us on our <a href='https://slack.opencollective.com/'>Slack channel</a>.</p>
+Support us with a monthly donation and help us continue our activities.
+[[Become a backer](https://opencollective.com/ng-packagr#contributors)]
 
-      <img src='/public/images/404.gif'>
-
-    </div>
-      <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-71870756-1', 'auto');
-        ga('send', 'pageview');
-
-      </script>
-  </body>
-</html>
+<a href="https://opencollective.com/ng-packagr/backer/0/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/0/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/1/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/1/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/2/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/2/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/3/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/3/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/4/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/4/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/5/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/5/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/6/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/6/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/7/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/7/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/8/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/8/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/9/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/9/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/10/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/10/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/11/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/11/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/12/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/12/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/13/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/13/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/14/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/14/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/15/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/15/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/16/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/16/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/17/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/17/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/18/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/18/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/19/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/19/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/20/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/20/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/21/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/21/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/22/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/22/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/23/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/23/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/24/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/24/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/25/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/25/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/26/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/26/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/27/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/27/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/28/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/28/avatar.svg"></a>
+<a href="https://opencollective.com/ng-packagr/backer/29/website" target="_blank"><img src="https://opencollective.com/ng-packagr/backer/29/avatar.svg"></a>
 
 
 ## Usage Example
