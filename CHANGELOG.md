@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.4.5"></a>
+## [4.4.5](https://github.com/ng-packagr/ng-packagr/compare/v4.4.4...v4.4.5) (2018-12-01)
+
+
+
 <a name="4.4.4"></a>
 ## [4.4.4](https://github.com/ng-packagr/ng-packagr/compare/v4.4.3...v4.4.4) (2018-12-01)
 
