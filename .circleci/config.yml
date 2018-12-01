@@ -39,9 +39,11 @@ jobs:
               && cp -r --parents integration/samples/**/dist /tmp/artefacts \
               && cp -r --parents integration/consumers/**/dist /tmp/artefacts
       - store_artifacts:
+          name: Store artefacts
           path: /tmp/artefacts/integration
           destination: integration
       - store_artifacts:
+          name: Store artefacts
           path: ~/repo/dist
           destination: dist
       - persist_to_workspace:
@@ -78,8 +80,8 @@ workflows:
   version: 2
   cirunner:
     jobs:
-      - install
-         filters:
+      - install:
+          filters:
             tags:
               only: /v.*/
       - build_and_test:
