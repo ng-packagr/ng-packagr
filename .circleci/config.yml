@@ -89,7 +89,7 @@ workflows:
             - install
       - deploy:
           requires:
-            - build_&_test
+            - build_and_test
           filters:
             branches:
               ignore: /.*/
