@@ -41,6 +41,7 @@
     "less-plugin-npm-import": "^2.1.0",
     "node-sass": "^4.9.3",
     "node-sass-tilde-importer": "^1.0.0",
+    "opencollective": "^1.0.3",
     "postcss": "^7.0.0",
     "postcss-url": "^8.0.0",
     "read-pkg-up": "^4.0.0",
@@ -135,6 +136,12 @@
     "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:watch:specs && yarn integration:consumers",
     "commitmsg": "commitlint -e",
     "precommit": "pretty-quick --staged",
-    "gh-pages": "gh-pages -d docs/ghpages"
+    "gh-pages": "gh-pages -d docs/ghpages",
+    "postinstall": "opencollective postinstall"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/ng-packagr",
+    "logo": "https://opencollective.com/opencollective/logo.txt"
   }
 }
