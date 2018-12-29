@@ -42,13 +42,25 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     readResource: () => ''
   };
 
+  // we cannot re-use an ng program without emitting
+  // todo: change to ts program
   const program: ng.Program = ng.createProgram({
     rootNames: tsConfig.rootNames,
-    options: tsConfig.options,
+    options: {
+      ...tsConfig.options,
+      // we don't need angular metadata to analyse entrypoints
+      skipMetadataEmit: true,
+      skipTemplateCodegen: true,
+      strictMetadataEmit: false,
+      skipLibCheck: true,
+      noResolve: true,
+      noLib: true,
+      types: []
+    },
     host: compilerHost
   });
 
-  const diagnostics = program.getNgSemanticDiagnostics();
+  const diagnostics = program.getTsSyntacticDiagnostics();
   if (diagnostics.length) {
     throw new Error(ng.formatDiagnostics(diagnostics));
   }
