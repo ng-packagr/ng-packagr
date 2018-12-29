@@ -42,8 +42,9 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     readResource: () => ''
   };
 
-  // we cannot re-use an ng program without emitting
-  // todo: change to ts program
+  // a new program is created here, as re-uing a program is only possible when emitting
+  // which is not done for entry-point analysis.
+  // we should probably use a TS program instead.
   const program: ng.Program = ng.createProgram({
     rootNames: tsConfig.rootNames,
     options: {
@@ -68,7 +69,6 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
   // this is a workaround due to the below
   // https://github.com/angular/angular/issues/24010
   let moduleStatements: string[] = [];
-
   program
     .getTsProgram()
     .getSourceFiles()

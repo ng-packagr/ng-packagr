@@ -16,7 +16,8 @@ export function cacheCompilerHost(
 ): ng.CompilerHost {
   const { sourcesFileCache } = entryPoint.cache;
   const compilerHost = ng.createCompilerHost({ options: compilerOptions });
-  const addDependee = (fileName: string) => {
+
+  const getNode = (fileName: string) => {
     const nodeUri = fileUrl(ensureUnixPath(fileName));
     let node = graph.get(nodeUri);
 
@@ -25,6 +26,11 @@ export function cacheCompilerHost(
       graph.put(node);
     }
 
+    return node;
+  };
+
+  const addDependee = (fileName: string) => {
+    const node = getNode(fileName);
     entryPoint.dependsOn(node);
   };
 
@@ -93,7 +99,12 @@ export function cacheCompilerHost(
     },
 
     resourceNameToFileName: (resourceName: string, containingFilePath: string) => {
-      return path.resolve(path.dirname(containingFilePath), resourceName);
+      const resourcePath = path.resolve(path.dirname(containingFilePath), resourceName);
+      const containingNode = getNode(containingFilePath);
+      const resourceNode = getNode(resourcePath);
+      containingNode.dependsOn(resourceNode);
+
+      return resourcePath;
     },
 
     readResource: (fileName: string) => {

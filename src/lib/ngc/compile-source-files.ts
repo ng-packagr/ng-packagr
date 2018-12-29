@@ -38,18 +38,44 @@ export async function compileSourceFiles(
     tsHost: tsCompilerHost
   });
 
-  // Don't use `ng.emit` as it doesn't output all errors.
-  // https://github.com/angular/angular/issues/24024
   const emitFlags = tsConfigOptions.declaration ? tsConfig.emitFlags : ng.EmitFlags.JS;
 
-  const result = ng.performCompilation({
+  const scriptTarget = tsConfigOptions.target;
+  const cache = entryPoint.cache;
+  const oldProgram = cache.oldPrograms && cache.oldPrograms[scriptTarget];
+
+  const ngProgram = ng.createProgram({
     rootNames: tsConfig.rootNames,
     options: tsConfigOptions,
     host: ngCompilerHost,
+    oldProgram
+  });
+
+  await ngProgram.loadNgStructureAsync();
+
+  const diagnostics = [
+    ...ngProgram.getNgOptionDiagnostics(),
+    ...ngProgram.getTsSyntacticDiagnostics(),
+    ...ngProgram.getTsSemanticDiagnostics(),
+    ...ngProgram.getNgSemanticDiagnostics(),
+    ...ngProgram.getNgStructuralDiagnostics()
+  ];
+
+  log.debug(
+    `ngc program structure is reused: ${
+      oldProgram ? (oldProgram.getTsProgram() as any).structureIsReused : 'No old program'
+    }`
+  );
+
+  cache.oldPrograms = { ...cache.oldPrograms, [scriptTarget]: ngProgram };
+
+  const exitCode = ng.exitCodeFromResult(diagnostics);
+  if (exitCode !== 0) {
+    throw new Error(ng.formatDiagnostics(diagnostics));
+  }
+
+  ngProgram.emit({
     emitCallback: createEmitCallback(tsConfigOptions),
     emitFlags
   });
-
-  const exitCode = ng.exitCodeFromResult(result.diagnostics);
-  return exitCode === 0 ? Promise.resolve() : Promise.reject(new Error(ng.formatDiagnostics(result.diagnostics)));
 }

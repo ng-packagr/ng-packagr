@@ -33,6 +33,10 @@ export class Node {
     return this._dependents;
   }
 
+  public get dependees(): Node[] {
+    return this._dependees;
+  }
+
   private _dependents: Node[] = [];
   private _dependees: Node[] = [];
 

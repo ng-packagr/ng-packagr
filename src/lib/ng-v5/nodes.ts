@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import { ParsedConfiguration } from '@angular/compiler-cli';
+import { ParsedConfiguration, Program } from '@angular/compiler-cli';
 import { Node } from '../brocc/node';
 import { by, isInProgress, isDirty } from '../brocc/select';
 import { NgEntryPoint } from '../ng-package-format/entry-point';
@@ -65,7 +65,12 @@ export class EntryPointNode extends Node {
     }
   }
 
-  cache = {
+  cache: {
+    oldPrograms?: Record<ts.ScriptTarget, Program>;
+    sourcesFileCache: FileCache;
+    moduleResolutionCache: ts.ModuleResolutionCache;
+    analysisModuleResolutionCache: ts.ModuleResolutionCache;
+  } = {
     sourcesFileCache: new FileCache(),
     moduleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
     analysisModuleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s)

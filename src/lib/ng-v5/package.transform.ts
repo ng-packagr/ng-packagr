@@ -19,7 +19,16 @@ import { STATE_IN_PROGESS } from '../brocc/node';
 import { Transform } from '../brocc/transform';
 import * as log from '../util/log';
 import { rimraf } from '../util/rimraf';
-import { PackageNode, EntryPointNode, ngUrl, isEntryPoint, byEntryPoint, isPackage, fileUrl } from './nodes';
+import {
+  PackageNode,
+  EntryPointNode,
+  ngUrl,
+  isEntryPoint,
+  byEntryPoint,
+  isPackage,
+  fileUrl,
+  fileUrlPath
+} from './nodes';
 import { discoverPackages } from './discover-packages';
 import { createFileWatch } from '../file/file-watcher';
 import { NgPackagrOptions } from './options.di';
@@ -73,10 +82,13 @@ export const packageTransformFactory = (
       );
     }),
     // Clean the primary dest folder (should clean all secondary sub-directory, as well)
-    switchMap(graph => {
-      const { dest, deleteDestPath } = graph.get(pkgUri).data;
-      return from(deleteDestPath ? rimraf(dest) : Promise.resolve());
-    }, (graph, _) => graph),
+    switchMap(
+      graph => {
+        const { dest, deleteDestPath } = graph.get(pkgUri).data;
+        return from(deleteDestPath ? rimraf(dest) : Promise.resolve());
+      },
+      (graph, _) => graph
+    ),
     // Add entry points to graph
     map(graph => {
       const ngPkg = graph.get(pkgUri) as PackageNode;
@@ -124,11 +136,13 @@ const watchTransformFactory = (
 
           const { declarationFileName } = cachedSourceFile;
 
-          sourcesFileCache.delete(filePath);
-          sourcesFileCache.delete(declarationFileName);
-
           const uriToClean = [filePath, declarationFileName].map(x => fileUrl(ensureUnixPath(x)));
-          const nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
+          let nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
+
+          nodesToClean = flatten([...nodesToClean, ...nodesToClean.map(x => x.dependees)]);
+
+          // delete node that changes
+          nodesToClean.forEach(node => sourcesFileCache.delete(fileUrlPath(node.url)));
 
           const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
           entryPoints.forEach(entryPoint => {
