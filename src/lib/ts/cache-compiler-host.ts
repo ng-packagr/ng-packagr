@@ -101,8 +101,6 @@ export function cacheCompilerHost(
 
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.content === undefined) {
-        // todo: transform styles here.
-        // the empty string is needed because of include paths file's won't be resolved properly.
         cache.content = compilerHost.readFile.call(this, fileName);
         if (!/(html|htm)$/.test(path.extname(fileName))) {
           cache.content = stylesheetProcessor.process(fileName, cache.content);
