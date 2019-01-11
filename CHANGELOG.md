@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.5.0"></a>
+# [4.5.0](https://github.com/ng-packagr/ng-packagr/compare/v4.4.5...v4.5.0) (2019-01-11)
+
+
+### Bug Fixes
+
+* update rollup-plugin-node-resolve to version ^4.0.0 ([ab2a55a](https://github.com/ng-packagr/ng-packagr/commit/ab2a55a))
+
+
+### Features
+
+* add support for TypeScript 3.2 ([9e6ee67](https://github.com/ng-packagr/ng-packagr/commit/9e6ee67))
+
+
+### Performance Improvements
+
+* cache ng program for faster incremental builds ([4131d4c](https://github.com/ng-packagr/ng-packagr/commit/4131d4c))
+* improve entry points analyses ([bcc7f05](https://github.com/ng-packagr/ng-packagr/commit/bcc7f05))
+
+
+
 <a name="4.4.5"></a>
 ## [4.4.5](https://github.com/ng-packagr/ng-packagr/compare/v4.4.4...v4.4.5) (2018-12-01)
 
