@@ -133,7 +133,7 @@
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json mocha --require ts-node/register \"src/**/*.spec.ts\"",
     "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:watch:specs && yarn integration:consumers",
     "gh-pages": "gh-pages -d docs/ghpages",
-    "postinstall": "opencollective postinstall"
+    "postinstall": "node postinstall"
   },
   "collective": {
     "type": "opencollective",

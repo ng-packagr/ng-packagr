@@ -14,6 +14,7 @@ const copy = (paths, opts) => {
 
 copy(['src/**.schema.json', 'dist'], { up: 1 })
   .then(() => copy(['src/lib/ts/conf/**/*.json', 'dist'], { up: 1 }))
+  .then(() => copy(['src/postinstall.js', 'dist'], { up: 1 }))
   .catch(err => {
     console.error('Cannot copy files', err);
     process.exit(1);
