@@ -6,15 +6,16 @@ import { StylesheetProcessor } from '../ng-v5/entry-point/resources/stylesheet-p
 import { EntryPointNode, fileUrl } from '../ng-v5/nodes';
 import { Node } from '../brocc/node';
 import { BuildGraph } from '../brocc/build-graph';
+import { FileCache } from '../file/file-cache';
 
 export function cacheCompilerHost(
   graph: BuildGraph,
   entryPoint: EntryPointNode,
   compilerOptions: ng.CompilerOptions,
   moduleResolutionCache: ts.ModuleResolutionCache,
-  stylesheetProcessor?: StylesheetProcessor
+  stylesheetProcessor?: StylesheetProcessor,
+  sourcesFileCache: FileCache = entryPoint.cache.sourcesFileCache
 ): ng.CompilerHost {
-  const { sourcesFileCache } = entryPoint.cache;
   const compilerHost = ng.createCompilerHost({ options: compilerOptions });
 
   const getNode = (fileName: string) => {

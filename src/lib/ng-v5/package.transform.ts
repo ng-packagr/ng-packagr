@@ -94,7 +94,11 @@ export const packageTransformFactory = (
       const ngPkg = graph.get(pkgUri) as PackageNode;
       const entryPoints = [ngPkg.data.primary, ...ngPkg.data.secondaries].map(entryPoint => {
         const { destinationFiles, moduleId } = entryPoint;
-        const node = new EntryPointNode(ngUrl(moduleId), ngPkg.cache.sourcesFileCache);
+        const node = new EntryPointNode(
+          ngUrl(moduleId),
+          ngPkg.cache.sourcesFileCache,
+          ngPkg.cache.analysisSourcesFileCache
+        );
         node.data = { entryPoint, destinationFiles };
         node.state = 'dirty';
         ngPkg.dependsOn(node);
@@ -127,7 +131,7 @@ const watchTransformFactory = (
       return createFileWatch(data.src, [data.dest]).pipe(
         tap(fileChange => {
           const { filePath } = fileChange;
-          const { sourcesFileCache } = cache;
+          const { sourcesFileCache, analysisSourcesFileCache } = cache;
           const cachedSourceFile = sourcesFileCache.get(filePath);
 
           if (!cachedSourceFile) {
@@ -142,7 +146,10 @@ const watchTransformFactory = (
           nodesToClean = flatten([...nodesToClean, ...nodesToClean.map(x => x.dependees)]);
 
           // delete node that changes
-          nodesToClean.forEach(node => sourcesFileCache.delete(fileUrlPath(node.url)));
+          nodesToClean.forEach(node => {
+            analysisSourcesFileCache.delete(fileUrlPath(node.url));
+            sourcesFileCache.delete(fileUrlPath(node.url));
+          });
 
           const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
           entryPoints.forEach(entryPoint => {

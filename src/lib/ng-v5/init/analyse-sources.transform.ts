@@ -7,7 +7,6 @@ import { Transform } from '../../brocc/transform';
 import { isEntryPoint, EntryPointNode } from '../nodes';
 import { cacheCompilerHost } from '../../ts/cache-compiler-host';
 import { unique } from '../../util/array';
-import { setDependenciesTsConfigPaths } from '../../ts/tsconfig';
 import { BuildGraph } from '../../brocc/build-graph';
 
 export const analyseSourcesTransform: Transform = pipe(
@@ -29,39 +28,37 @@ export const analyseSourcesTransform: Transform = pipe(
  * @param entryPoints List of all entry points.
  */
 function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryPoints: EntryPointNode[]) {
-  const { analysisModuleResolutionCache } = entryPoint.cache;
+  const { analysisModuleResolutionCache, oldPrograms, analysisSourcesFileCache } = entryPoint.cache;
+  const oldProgram = oldPrograms && (oldPrograms['analysis'] as ts.Program | undefined);
   const { moduleId } = entryPoint.data.entryPoint;
 
   log.debug(`Analysing sources for ${moduleId}`);
 
-  // Add paths mappings for dependencies
-  const tsConfig = setDependenciesTsConfigPaths(entryPoint.data.tsConfig, entryPoints, true);
-
-  const compilerHost = {
-    ...cacheCompilerHost(graph, entryPoint, tsConfig.options, analysisModuleResolutionCache),
-    readResource: () => ''
+  const tsConfigOptions = {
+    ...entryPoint.data.tsConfig.options,
+    skipLibCheck: true,
+    resolveJsonModule: false,
+    moduleResolution: ts.ModuleResolutionKind.Classic,
+    types: []
   };
 
-  // a new program is created here, as re-uing a program is only possible when emitting
-  // which is not done for entry-point analysis.
-  // we should probably use a TS program instead.
-  const program: ng.Program = ng.createProgram({
-    rootNames: tsConfig.rootNames,
-    options: {
-      ...tsConfig.options,
-      // we don't need angular metadata to analyse entrypoints
-      skipMetadataEmit: true,
-      skipTemplateCodegen: true,
-      strictMetadataEmit: false,
-      skipLibCheck: true,
-      noResolve: true,
-      noLib: true,
-      types: []
-    },
-    host: compilerHost
+  const compilerHost = cacheCompilerHost(
+    graph,
+    entryPoint,
+    tsConfigOptions,
+    analysisModuleResolutionCache,
+    undefined,
+    analysisSourcesFileCache
+  );
+
+  const program: ts.Program = ts.createProgram({
+    rootNames: entryPoint.data.tsConfig.rootNames,
+    options: tsConfigOptions,
+    host: compilerHost,
+    oldProgram
   });
 
-  const diagnostics = program.getTsSyntacticDiagnostics();
+  const diagnostics = program.getOptionsDiagnostics();
   if (diagnostics.length) {
     throw new Error(ng.formatDiagnostics(diagnostics));
   }
@@ -70,7 +67,6 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
   // https://github.com/angular/angular/issues/24010
   let moduleStatements: string[] = [];
   program
-    .getTsProgram()
     .getSourceFiles()
     .filter(x => !/node_modules|\.ngfactory|\.ngstyle|(\.d\.ts$)/.test(x.fileName))
     .forEach(sourceFile => {
@@ -89,6 +85,12 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
           }
         });
     });
+
+  log.debug(
+    `tsc program structure is reused: ${oldProgram ? (oldProgram as any).structureIsReused : 'No old program'}`
+  );
+
+  entryPoint.cache.oldPrograms = { ...entryPoint.cache.oldPrograms, ['analysis']: program };
 
   moduleStatements = unique(moduleStatements);
   moduleStatements.forEach(moduleName => {
