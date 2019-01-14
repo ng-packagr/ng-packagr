@@ -42,7 +42,7 @@ export async function compileSourceFiles(
 
   const scriptTarget = tsConfigOptions.target;
   const cache = entryPoint.cache;
-  const oldProgram = cache.oldPrograms && cache.oldPrograms[scriptTarget];
+  const oldProgram = cache.oldPrograms && (cache.oldPrograms[scriptTarget] as ng.Program | undefined);
 
   const ngProgram = ng.createProgram({
     rootNames: tsConfig.rootNames,
