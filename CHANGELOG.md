@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.6.0"></a>
+# [4.6.0](https://github.com/ng-packagr/ng-packagr/compare/v4.3.1...v4.6.0) (2019-01-15)
+
+
+### Bug Fixes
+
+* add opencollective postinstall hook ([c3dbaeb](https://github.com/ng-packagr/ng-packagr/commit/c3dbaeb))
+* analyses of secondary entrypoints doesn't work with deep imports ([3f56df2](https://github.com/ng-packagr/ng-packagr/commit/3f56df2)), closes [#1183](https://github.com/ng-packagr/ng-packagr/issues/1183)
+* ignore git folder on watch ([c61cbfc](https://github.com/ng-packagr/ng-packagr/commit/c61cbfc))
+* UMD sourceMappingURL should point to file ([ab02f0f](https://github.com/ng-packagr/ng-packagr/commit/ab02f0f))
+* update rollup to version ^0.67.0 ([4422aa1](https://github.com/ng-packagr/ng-packagr/commit/4422aa1))
+* update rollup-plugin-node-resolve to version ^4.0.0 ([ab2a55a](https://github.com/ng-packagr/ng-packagr/commit/ab2a55a))
+
+
+### Features
+
+* add support for `resolveJsonModule` ([1bf8eaf](https://github.com/ng-packagr/ng-packagr/commit/1bf8eaf)), closes [#1050](https://github.com/ng-packagr/ng-packagr/issues/1050)
+* add support for TypeScript 3.2 ([9e6ee67](https://github.com/ng-packagr/ng-packagr/commit/9e6ee67))
+
+
+### Performance Improvements
+
+* cache ng program for faster incremental builds ([4131d4c](https://github.com/ng-packagr/ng-packagr/commit/4131d4c))
+* improve entry points analyses ([bcc7f05](https://github.com/ng-packagr/ng-packagr/commit/bcc7f05))
+
+
+
 <a name="4.5.0"></a>
 # [4.5.0](https://github.com/ng-packagr/ng-packagr/compare/v4.4.5...v4.5.0) (2019-01-11)
 
