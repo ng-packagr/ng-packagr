@@ -51,12 +51,12 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     analysisSourcesFileCache
   );
 
-  const program: ts.Program = ts.createProgram({
-    rootNames: entryPoint.data.tsConfig.rootNames,
-    options: tsConfigOptions,
-    host: compilerHost,
+  const program: ts.Program = ts.createProgram(
+    entryPoint.data.tsConfig.rootNames,
+    tsConfigOptions,
+    compilerHost,
     oldProgram
-  });
+  );
 
   const diagnostics = program.getOptionsDiagnostics();
   if (diagnostics.length) {
