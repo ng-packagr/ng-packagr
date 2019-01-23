@@ -64,7 +64,7 @@ export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCall
   }) =>
     tsickle.emitWithTsickle(
       program,
-      { ...tsickleHost, options, ...{ host } },
+      { ...tsickleHost, options, moduleResolutionHost: host },
       host,
       options,
       targetSourceFile,
