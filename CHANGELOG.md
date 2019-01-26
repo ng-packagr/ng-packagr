@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.7.0"></a>
+# [4.7.0](https://github.com/ng-packagr/ng-packagr/compare/v4.6.0...v4.7.0) (2019-01-26)
+
+
+### Bug Fixes
+
+* read error when having files with spaces in less ([22cfdcc](https://github.com/ng-packagr/ng-packagr/commit/22cfdcc)), closes [#1197](https://github.com/ng-packagr/ng-packagr/issues/1197)
+* use old TypeScript API to support users which are still on 2.7.x+ ([eec8b84](https://github.com/ng-packagr/ng-packagr/commit/eec8b84)), closes [#1186](https://github.com/ng-packagr/ng-packagr/issues/1186)
+* use ts.compilerHost as moduleResolutionHost for tsickle.emitWithTsickle to support tsickle 0.33.1 ([30d3720](https://github.com/ng-packagr/ng-packagr/commit/30d3720)), closes [#1189](https://github.com/ng-packagr/ng-packagr/issues/1189)
+
+
+### Features
+
+* add support for tsickle to 0.34.0 ([3b67d90](https://github.com/ng-packagr/ng-packagr/commit/3b67d90))
+
+
+### Performance Improvements
+
+* simplify Node `dependsOn` logic ([4a0585d](https://github.com/ng-packagr/ng-packagr/commit/4a0585d))
+
+
+
 <a name="4.6.0"></a>
 # [4.6.0](https://github.com/ng-packagr/ng-packagr/compare/v4.3.1...v4.6.0) (2019-01-15)
 
