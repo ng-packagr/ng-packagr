@@ -56,7 +56,7 @@ export class StylesheetProcessor {
 
       case '.less':
         // this is the only way I found to make LESS sync
-        let cmd = `node node_modules/less/bin/lessc ${filePath} --less-plugin-npm-import="prefix=~"`;
+        let cmd = `node node_modules/less/bin/lessc "${filePath}" --less-plugin-npm-import="prefix=~"`;
         if (this.styleIncludePaths.length) {
           cmd = `${cmd} --include-path=${this.styleIncludePaths.join(':')}`;
         }
