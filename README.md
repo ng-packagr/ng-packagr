@@ -7,7 +7,6 @@
 [![npm License](https://img.shields.io/npm/l/ng-packagr.svg?style=flat-square)](https://github.com/ng-packagr/ng-packagr/blob/master/LICENSE)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=flat-square)](https://conventionalcommits.org)
 [![CircleCI](https://img.shields.io/circleci/project/github/ng-packagr/ng-packagr/master.svg?label=Circle%20CI&style=flat-square)](https://circleci.com/gh/ng-packagr/ng-packagr)
-[![Travis](https://img.shields.io/travis/ng-packagr/ng-packagr/master.svg?label=Travis%20CI&style=flat-square)](https://travis-ci.org/ng-packagr/ng-packagr)
 
 [![Backers on Open Collective](https://opencollective.com/ng-packagr/backers/badge.svg?style=flat-square)](#backers)
 [![Sponsors on Open Collective](https://opencollective.com/ng-packagr/sponsors/badge.svg?style=flat-square)](#sponsors)
