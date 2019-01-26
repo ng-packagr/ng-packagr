@@ -44,10 +44,14 @@ export class Node {
   public dependsOn(dependent: Node | Node[]) {
     const newDeps = dependent instanceof Array ? dependent : [dependent];
 
-    newDeps.forEach(dep => (dep._dependees = dep._dependees.filter(d => d.url !== this.url).concat(this)));
+    for (const newDep of newDeps) {
+      if (newDep._dependees.some(x => x.url === this.url)) {
+        // nodes already depends on each other
+        continue;
+      }
 
-    this._dependents = this._dependents
-      .filter(existing => newDeps.some(newDep => newDep.url !== existing.url))
-      .concat(newDeps);
+      newDep._dependees.push(this);
+      this._dependents.push(newDep);
+    }
   }
 }
