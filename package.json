@@ -41,7 +41,7 @@
     "less-plugin-npm-import": "^2.1.0",
     "node-sass": "^4.9.3",
     "node-sass-tilde-importer": "^1.0.0",
-    "opencollective": "^1.0.3",
+    "opencollective-postinstall": "^2.0.1",
     "postcss": "^7.0.0",
     "postcss-url": "^8.0.0",
     "read-pkg-up": "^4.0.0",
@@ -133,7 +133,7 @@
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json mocha --require ts-node/register \"src/**/*.spec.ts\"",
     "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:watch:specs && yarn integration:consumers",
     "gh-pages": "gh-pages -d docs/ghpages",
-    "postinstall": "opencollective postinstall"
+    "postinstall": "opencollective-postinstall"
   },
   "collective": {
     "type": "opencollective",
