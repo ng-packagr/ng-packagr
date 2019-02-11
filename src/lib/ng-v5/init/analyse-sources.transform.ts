@@ -8,6 +8,7 @@ import { isEntryPoint, EntryPointNode } from '../nodes';
 import { cacheCompilerHost } from '../../ts/cache-compiler-host';
 import { unique } from '../../util/array';
 import { BuildGraph } from '../../brocc/build-graph';
+import { ensureUnixPath } from '../../util/path';
 
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {
@@ -37,8 +38,6 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
   const tsConfigOptions = {
     ...entryPoint.data.tsConfig.options,
     skipLibCheck: true,
-    resolveJsonModule: false,
-    moduleResolution: ts.ModuleResolutionKind.Classic,
     types: []
   };
 
@@ -50,6 +49,24 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     undefined,
     analysisSourcesFileCache
   );
+
+  compilerHost.resolveModuleNames = (moduleNames: string[], containingFile: string) => {
+    return moduleNames.map(moduleName => {
+      if (!moduleName.startsWith('.')) {
+        return undefined;
+      }
+
+      const { resolvedModule } = ts.resolveModuleName(
+        moduleName,
+        ensureUnixPath(containingFile),
+        tsConfigOptions,
+        compilerHost,
+        analysisModuleResolutionCache
+      );
+
+      return resolvedModule;
+    });
+  };
 
   const program: ts.Program = ts.createProgram(
     entryPoint.data.tsConfig.rootNames,
