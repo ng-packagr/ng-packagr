@@ -52,28 +52,36 @@ export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCall
     transformTypesToClosure
   };
 
-  return ({
-    program,
-    targetSourceFile,
-    writeFile,
-    cancellationToken,
-    emitOnlyDtsFiles,
-    customTransformers = {},
-    host,
-    options
-  }) =>
-    tsickle.emitWithTsickle(
+  if (options.annotateForClosureCompiler || options.annotationsAs === 'static fields') {
+    return ({
       program,
-      { ...tsickleHost, options, moduleResolutionHost: host },
-      host,
-      options,
       targetSourceFile,
       writeFile,
       cancellationToken,
       emitOnlyDtsFiles,
-      {
-        beforeTs: customTransformers.before,
-        afterTs: customTransformers.after
-      }
-    );
+      customTransformers = {},
+      host,
+      options
+    }) =>
+      require('tsickle').emitWithTsickle(
+        program,
+        { ...tsickleHost, options, moduleResolutionHost: host },
+        host,
+        options,
+        targetSourceFile,
+        writeFile,
+        cancellationToken,
+        emitOnlyDtsFiles,
+        {
+          beforeTs: customTransformers.before,
+          afterTs: customTransformers.after
+        }
+      );
+  } else {
+    return ({ program, targetSourceFile, writeFile, cancellationToken, emitOnlyDtsFiles, customTransformers = {} }) =>
+      program.emit(targetSourceFile, writeFile, cancellationToken, emitOnlyDtsFiles, {
+        after: customTransformers.after,
+        before: customTransformers.before
+      });
+  }
 }
