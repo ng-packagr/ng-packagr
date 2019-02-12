@@ -36,7 +36,7 @@ describe(`@sample/core`, () => {
     });
 
     it(`should import TS helpers from 'tslib'`, () => {
-      expect(BUNDLE).to.contain(`import { __spread } from 'tslib'`);
+      expect(BUNDLE).to.contain('tslib');
     });
 
     it(`should downlevel iteration`, () => {
