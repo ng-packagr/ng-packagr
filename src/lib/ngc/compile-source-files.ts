@@ -53,14 +53,6 @@ export async function compileSourceFiles(
 
   await ngProgram.loadNgStructureAsync();
 
-  const diagnostics = [
-    ...ngProgram.getNgOptionDiagnostics(),
-    ...ngProgram.getTsSyntacticDiagnostics(),
-    ...ngProgram.getTsSemanticDiagnostics(),
-    ...ngProgram.getNgSemanticDiagnostics(),
-    ...ngProgram.getNgStructuralDiagnostics()
-  ];
-
   log.debug(
     `ngc program structure is reused: ${
       oldProgram ? (oldProgram.getTsProgram() as any).structureIsReused : 'No old program'
@@ -69,13 +61,35 @@ export async function compileSourceFiles(
 
   cache.oldPrograms = { ...cache.oldPrograms, [scriptTarget]: ngProgram };
 
-  const exitCode = ng.exitCodeFromResult(diagnostics);
-  if (exitCode !== 0) {
-    throw new Error(ng.formatDiagnostics(diagnostics));
+  const allDiagnostics = [
+    ...ngProgram.getNgOptionDiagnostics(),
+    ...ngProgram.getTsSyntacticDiagnostics(),
+    ...ngProgram.getTsSemanticDiagnostics(),
+    ...ngProgram.getNgSemanticDiagnostics(),
+    ...ngProgram.getNgStructuralDiagnostics()
+  ];
+
+  // if we have an error we don't want to transpile.
+  const hasError = ng.exitCodeFromResult(allDiagnostics) > 0;
+  if (!hasError) {
+    // certain errors are only emitted by a compilation hence append to previous diagnostics
+    const { diagnostics } = ngProgram.emit({
+      emitCallback: createEmitCallback(tsConfigOptions),
+      emitFlags
+    });
+
+    allDiagnostics.push(...diagnostics);
   }
 
-  ngProgram.emit({
-    emitCallback: createEmitCallback(tsConfigOptions),
-    emitFlags
-  });
+  if (allDiagnostics.length === 0) {
+    return;
+  }
+
+  const exitCode = ng.exitCodeFromResult(allDiagnostics);
+  const formattedDiagnostics = ng.formatDiagnostics(allDiagnostics);
+  if (exitCode !== 0) {
+    throw new Error(formattedDiagnostics);
+  } else {
+    log.msg(formattedDiagnostics);
+  }
 }
