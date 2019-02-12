@@ -36,8 +36,8 @@ describe(`@sample/core`, () => {
       expect(API.AngularService).to.be.ok;
     });
 
-    it(`should not import TS helpers from 'tslib'`, () => {
-      expect(BUNDLE).not.to.contain('tslib');
+    it(`should import TS helpers from 'tslib'`, () => {
+      expect(BUNDLE).to.contain('tslib');
     });
   });
 });
