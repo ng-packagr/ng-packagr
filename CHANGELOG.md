@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.7.1"></a>
+## [4.7.1](https://github.com/ng-packagr/ng-packagr/compare/v4.7.0...v4.7.1) (2019-02-15)
+
+
+### Bug Fixes
+
+* don't use classic module resolution during analyse ([f0a1c38](https://github.com/ng-packagr/ng-packagr/commit/f0a1c38)), closes [#1210](https://github.com/ng-packagr/ng-packagr/issues/1210)
+* emit complete diagnostics ([82e1fd0](https://github.com/ng-packagr/ng-packagr/commit/82e1fd0))
+* replace opencollective-cli with opencollective-postinstall ([#1203](https://github.com/ng-packagr/ng-packagr/issues/1203)) ([44776da](https://github.com/ng-packagr/ng-packagr/commit/44776da)), closes [#1178](https://github.com/ng-packagr/ng-packagr/issues/1178)
+
+
+
 <a name="4.7.0"></a>
 # [4.7.0](https://github.com/ng-packagr/ng-packagr/compare/v4.6.0...v4.7.0) (2019-01-26)
 
