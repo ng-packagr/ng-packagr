@@ -143,7 +143,12 @@ const watchTransformFactory = (
           const uriToClean = [filePath, declarationFileName].map(x => fileUrl(ensureUnixPath(x)));
           let nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
 
-          nodesToClean = flatten([...nodesToClean, ...nodesToClean.map(x => x.dependees)]);
+          nodesToClean = flatten([
+            ...nodesToClean,
+            // if a non ts file changes we need to clean up it's direct dependees
+            // this is mainly done for resources such as html and css
+            ...nodesToClean.filter(x => !x.url.endsWith('.ts')).map(x => x.dependees)
+          ]);
 
           // delete node that changes
           nodesToClean.forEach(node => {
