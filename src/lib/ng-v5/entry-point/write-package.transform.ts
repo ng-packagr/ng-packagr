@@ -1,3 +1,4 @@
+import { Extractor, IExtractorConfig, IExtractorOptions } from '@microsoft/api-extractor';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { Transform, transformFromPromise } from '../../brocc/transform';
@@ -6,9 +7,7 @@ import { NgPackage } from '../../ng-package-format/package';
 import { ensureUnixPath } from '../../util/path';
 import { rimraf } from '../../util/rimraf';
 import * as log from '../../util/log';
-import { globFiles } from '../../util/glob';
 import { EntryPointNode, isEntryPointInProgress } from '../nodes';
-import { copyFile } from '../../util/copy';
 
 export const writePackageTransform: Transform = transformFromPromise(async graph => {
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
@@ -16,22 +15,58 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
   const ngPackage: NgPackage = graph.find(node => node.type === 'application/ng-package').data;
   const { destinationFiles } = entryPoint.data;
 
-  // 5. COPY SOURCE FILES TO DESTINATION
+  // 5. GENERATE D.TS PUBLIC API
   log.info('Copying declaration files');
-  // we don't want to copy `dist` and 'node_modules' declaration files but only files in source
-  const declarationFiles = await globFiles(`${path.dirname(ngEntryPoint.entryFilePath)}/**/*.d.ts`, {
-    ignore: ['**/node_modules/**', `${ngPackage.dest}/**`]
-  });
 
-  if (declarationFiles.length) {
-    await Promise.all(
-      declarationFiles.map(value => {
-        const relativePath = path.relative(ngEntryPoint.entryFilePath, value);
-        const destination = path.resolve(destinationFiles.declarations, relativePath);
-        return copyFile(value, destination);
-      })
-    );
-  }
+  // XX: if we use the public_api.d.ts file for flattening, the greek symbols would be omitted
+  // thus, app builds would likely fail
+  // const entryPointDtsFile = path.resolve(path.dirname(destinationFiles.declarations), ngEntryPoint.entryFile.replace('.ts', '.d.ts'));
+  const config: IExtractorConfig = {
+    compiler: {
+      configType: 'tsconfig',
+      rootFolder: process.cwd()
+    },
+    project: {
+      entryPointSourceFile: destinationFiles.declarations //entryPointDtsFile
+    },
+    apiJsonFile: {
+      enabled: true,
+      outputFolder: `${ngEntryPoint.destinationPath}/typings`
+    },
+    apiReviewFile: {
+      enabled: true,
+      tempFolder: `${ngEntryPoint.destinationPath}/typings`
+    },
+    dtsRollup: {
+      enabled: true,
+      publishFolder: ngPackage.dest,
+      trimming: true,
+      publishFolderForBeta: `${ngEntryPoint.destinationPath}/typings/beta`,
+      publishFolderForInternal: `${ngEntryPoint.destinationPath}/typings/internal`,
+      publishFolderForPublic: `${ngEntryPoint.destinationPath}/typings`,
+      mainDtsRollupPath: `${ngEntryPoint.flatModuleFile}-api.d.ts`
+    }
+  };
+  const options: IExtractorOptions = {};
+  const extractor: Extractor = new Extractor(config, options);
+  extractor.processProject();
+
+  // TODO: check destinationFiles.declarations points to generated API index
+
+  // we don't want to copy `dist` and 'node_modules' declaration files but only files in source
+  // const declarationFiles = await globFiles(`${path.dirname(ngEntryPoint.entryFilePath)}/**/*.d.ts`, {
+  //   ignore: ['**/node_modules/**', `${ngPackage.dest}/**`]
+  // });
+
+  // if (declarationFiles.length) {
+  //   await Promise.all(
+  //     declarationFiles.map(value => {
+  //       const relativePath = path.relative(ngEntryPoint.entryFilePath, value);
+  //       const destination = path.resolve(destinationFiles.declarations, relativePath);
+  //       return copyFile(value, destination);
+  //     })
+  //   );
+  // }
 
   // 6. WRITE PACKAGE.JSON
   log.info('Writing package metadata');
