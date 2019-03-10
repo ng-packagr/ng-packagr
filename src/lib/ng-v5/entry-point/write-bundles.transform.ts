@@ -64,7 +64,7 @@ async function writeFlatBundleFiles(destinationFiles: DestinationFiles, opts: Fl
   log.info('Bundling to UMD');
   await flattenToUmd({
     ...opts,
-    entryFile: esm5,
+    entryFile: fesm5,
     destFile: umd,
     dependencyList: opts.dependencyList
   });
