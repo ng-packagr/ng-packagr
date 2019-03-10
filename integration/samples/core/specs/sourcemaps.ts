@@ -48,10 +48,10 @@ describe(`@sample/core`, () => {
     });
 
     it(`should reference each 'sources' path with a common prefix`, () => {
-      const everyUeveryMe = (sourceMap.sources as string[])
-        .filter(fileName => fileName !== 'null' && !fileName.startsWith('node_modules'))
+      const sourceMapPaths = (sourceMap.sources as string[])
+        .filter(fileName => fileName !== 'null' && !fileName.includes('node_modules'))
         .every(fileName => fileName.startsWith('ng://@sample/core') && fileName.endsWith('.ts'));
-      expect(everyUeveryMe).to.be.true;
+      expect(sourceMapPaths).to.be.true;
     });
   });
 });
