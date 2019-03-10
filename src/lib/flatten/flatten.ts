@@ -30,7 +30,7 @@ export interface FlattenOpts {
   dependencyList: DependencyList;
 }
 
-export async function flattenToFesm(opts: FlattenOpts): Promise<void[]> {
+export async function flattenToFesm(opts: FlattenOpts): Promise<void> {
   return rollupBundleFile({
     moduleName: opts.esmModuleId,
     entry: opts.entryFile,
@@ -41,7 +41,7 @@ export async function flattenToFesm(opts: FlattenOpts): Promise<void[]> {
   });
 }
 
-export async function flattenToUmd(opts: FlattenOpts): Promise<void[]> {
+export async function flattenToUmd(opts: FlattenOpts): Promise<void> {
   return rollupBundleFile({
     transform: downlevelCodeWithTsc,
     moduleName: opts.umdModuleId,

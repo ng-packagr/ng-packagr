@@ -18,11 +18,11 @@ describe(`@sample/secondary/feature-a`, () => {
   });
 
   it(`should register as 'global.sample.secondary[feature-a]' on global scope (UMD)`, () => {
-    expect(UMD_BUNDLE_CONTENTS).to.contain(`global.sample.secondary['feature-a'] = {}`);
+    expect(UMD_BUNDLE_CONTENTS).to.contain(`global.sample.secondary[\'feature-a\'] = {}`);
   });
 
   it(`should resolve '@sample/secondary/shared' from global-scope (UMD)`, () => {
-    expect(UMD_BUNDLE_CONTENTS).to.contain(`),global.sample.secondary.shared)`);
+    expect(UMD_BUNDLE_CONTENTS).to.contain(`), global.sample.secondary.shared)`);
   });
 
   it(`should 'require('@sample/secondary/shared')' from factory (UMD)`, () => {

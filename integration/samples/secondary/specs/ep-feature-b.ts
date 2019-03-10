@@ -18,11 +18,11 @@ describe(`@sample/secondary/feature-b`, () => {
   });
 
   it(`should register as 'global.sample.secondary[feature-b]' on global scope (UMD)`, () => {
-    expect(UMD_BUNDLE_CONTENTS).to.contain(`global.sample.secondary['feature-b'] = {}`);
+    expect(UMD_BUNDLE_CONTENTS).to.contain(`global.sample.secondary[\'feature-b\'] = {}`);
   });
 
   it(`should resolve '@sample/secondary/feature-a' from global-scope (UMD)`, () => {
-    expect(UMD_BUNDLE_CONTENTS).to.contain(`),global.sample.secondary['feature-a'])`);
+    expect(UMD_BUNDLE_CONTENTS).to.contain(`), global.sample.secondary[\'feature-a\'])`);
   });
 
   it(`should 'require('@sample/secondary/feature-a')' from factory (UMD)`, () => {

@@ -3,12 +3,11 @@ import * as nodeResolve from 'rollup-plugin-node-resolve';
 import * as sourcemaps from 'rollup-plugin-sourcemaps';
 import * as commonJs from 'rollup-plugin-commonjs';
 import * as rollupJson from 'rollup-plugin-json';
-import * as path from 'path';
 import * as log from '../util/log';
 import { ExternalModuleIdStrategy, DependencyList } from './external-module-id-strategy';
 import { umdModuleIdStrategy } from './umd-module-id-strategy';
 import { TransformHook } from 'rollup';
-import { outputFile, outputJson } from 'fs-extra';
+import { ensureUnixPath } from '../util/path';
 
 /**
  * Options used in `ng-packagr` for writing flat bundle files.
@@ -28,7 +27,7 @@ export interface RollupOptions {
 }
 
 /** Runs rollup over the given entry file, writes a bundle file. */
-export async function rollupBundleFile(opts: RollupOptions): Promise<void[]> {
+export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
   log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dest} (${opts.format})`);
 
   const externalModuleIdStrategy = new ExternalModuleIdStrategy(opts.format, opts.dependencyList);
@@ -55,9 +54,7 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void[]> {
   });
 
   // Output the bundle to disk
-  const sourcemapFullFile = `${opts.dest}.map`;
-  const sourcemapFile = path.basename(sourcemapFullFile);
-  const result = await bundle.generate({
+  await bundle.write({
     name: opts.moduleName,
     format: opts.format,
     amd: opts.amd,
@@ -65,28 +62,23 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void[]> {
     banner: '',
     globals: moduleId => umdModuleIdStrategy(moduleId, opts.umdModuleIds || {}),
     sourcemap: true,
-    sourcemapFile
-  });
+    sourcemapPathTransform: (sourcePath: string) => {
+      sourcePath = ensureUnixPath(sourcePath);
+      // relocate sourcemaps
+      if (!sourcePath) {
+        return sourcePath;
+      }
 
-  // relocate sourcemaps
-  result.map.sources = result.map.sources.map(sourcePath => {
-    if (!sourcePath) {
-      return sourcePath;
+      // the replace here is because during the compilation one of the `/` gets lost sometimes
+      const sourceRoot = ensureUnixPath(opts.sourceRoot);
+      const mapRootUrl = sourceRoot.replace('//', '/');
+      if (sourcePath.indexOf(mapRootUrl) >= 0) {
+        return `${sourceRoot}${sourcePath.substr(sourcePath.indexOf(mapRootUrl) + mapRootUrl.length)}`;
+      } else if (sourcePath.indexOf(sourceRoot) >= 0) {
+        return sourcePath.substr(sourcePath.indexOf(mapRootUrl));
+      } else {
+        return sourcePath;
+      }
     }
-
-    // the replace here is because during the compilation one of the `/` gets lost sometimes
-    const mapRootUrl = opts.sourceRoot.replace('//', '/');
-    if (sourcePath.indexOf(mapRootUrl) > 0) {
-      return `${opts.sourceRoot}${sourcePath.substr(sourcePath.indexOf(mapRootUrl) + mapRootUrl.length)}`;
-    } else if (sourcePath.indexOf(opts.sourceRoot) > 0) {
-      return sourcePath.substr(sourcePath.indexOf(mapRootUrl));
-    } else {
-      return sourcePath;
-    }
   });
-
-  // rollup doesn't add a sourceMappingURL
-  // https://github.com/rollup/rollup/issues/121
-  result.code = `${result.code}\n//# sourceMappingURL=${sourcemapFile}`;
-  return Promise.all([outputJson(sourcemapFullFile, result.map), outputFile(opts.dest, result.code)]);
 }

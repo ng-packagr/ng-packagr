@@ -1,4 +1,4 @@
-import { minify } from 'uglify-js';
+import { minify } from 'terser';
 import { writeFile, readFile } from 'fs-extra';
 import { basename } from 'path';
 import { debug, warn } from './../util/log';
