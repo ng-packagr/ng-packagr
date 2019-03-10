@@ -1,6 +1,5 @@
 import { rollupBundleFile } from './rollup';
 import { minifyJsFile } from './uglify';
-import { downlevelCodeWithTsc } from './downlevel-transformer';
 import { DependencyList } from './external-module-id-strategy';
 
 export interface FlattenOpts {
@@ -43,7 +42,6 @@ export async function flattenToFesm(opts: FlattenOpts): Promise<void> {
 
 export async function flattenToUmd(opts: FlattenOpts): Promise<void> {
   return rollupBundleFile({
-    transform: downlevelCodeWithTsc,
     moduleName: opts.umdModuleId,
     entry: opts.entryFile,
     sourceRoot: opts.sourceRoot,
