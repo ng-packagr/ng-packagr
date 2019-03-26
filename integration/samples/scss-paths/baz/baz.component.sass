@@ -1,8 +1,7 @@
 @import 'baz.theme'
 @import 'baz.theme2'
 @import 'theme'
-@import '~node-sass/test/fixtures/include-files/file-not-processed-by-loader'
-
+@import '~@angular/cdk/overlay'
 .foo2
   @include local-test-mixin2()
 
@@ -10,6 +9,6 @@
   @include local-test-mixin()
 
 .baz
-  color: $variable-defined-by-file-not-processed-by-loader
+  color: $cdk-overlay-dark-backdrop-background
   background-color: $background-color-bright
   display: flex

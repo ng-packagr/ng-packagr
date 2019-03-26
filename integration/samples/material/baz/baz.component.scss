@@ -1,6 +1,6 @@
-@import '~node-sass/test/fixtures/include-files/file-not-processed-by-loader';
+@import '~@angular/cdk/overlay';
 
 .baz {
-    color: $variable-defined-by-file-not-processed-by-loader;
-    content: "\2014 \00A0";
+  color: $cdk-overlay-dark-backdrop-background;
+  content: '\2014 \00A0';
 }

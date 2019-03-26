@@ -10,8 +10,23 @@ import * as nodeSassTildeImporter from 'node-sass-tilde-importer';
 import * as postcss from 'postcss';
 import * as postcssUrl from 'postcss-url';
 import postcssClean from './postcss-clean';
-import * as sass from 'node-sass';
 import * as stylus from 'stylus';
+
+/*
+  * Please be aware of the few differences in behaviour https://github.com/sass/dart-sass/blob/master/README.md#behavioral-differences-from-ruby-sass
+  * By default `npm install` will install sass.
+  * To use node-sass you need to use:
+  *   Npm:
+  *     `npm install node-sass --save-dev`
+  *   Yarn:
+  *     `yarn add node-sass --dev`
+  */
+let sassComplier: any | undefined;
+try {
+  sassComplier = require('node-sass'); // Check if node-sass is explicitly included.
+} catch {
+  sassComplier = require('sass');
+}
 
 export class StylesheetProcessor {
   private postCssProcessor: postcss.Processor;
@@ -44,7 +59,7 @@ export class StylesheetProcessor {
     switch (ext) {
       case '.sass':
       case '.scss':
-        return sass
+        return sassComplier
           .renderSync({
             file: filePath,
             data: content,
