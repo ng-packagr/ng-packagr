@@ -1,5 +1,6 @@
-@import '~@angular/cdk/overlay';
+@import '~@angular/material/theming';
+@include mat-core();
 
 .baz {
-  color: $cdk-overlay-dark-backdrop-background;
+  color: #fff;
 }

@@ -1,7 +1,8 @@
 @import 'baz.theme'
 @import 'baz.theme2'
 @import 'theme'
-@import '~@angular/cdk/overlay'
+@import '~@angular/material/theming'
+@include mat-core()
 .foo2
   @include local-test-mixin2()
 
@@ -9,6 +10,5 @@
   @include local-test-mixin()
 
 .baz
-  color: $cdk-overlay-dark-backdrop-background
   background-color: $background-color-bright
   display: flex
