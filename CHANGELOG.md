@@ -31,7 +31,20 @@ All notable changes to this project will be documented in this file. See [standa
 
 * Users outside of Google don't usually need closure annotations hence `annotateForClosureCompiler` is turned off by default. In case users want to emit closure compatable code. they need to install `tsickle` and enable opt it this feature.
 
+* We no longer use node-sass by default, instead we use sass (dart-sass).
 
+While in most cases this should not have an impact the generated code, dart sass has some differences from Ruby Sass. See https://github.com/sass/dart-sass#behavioral-differences-from-ruby-sass for more details
+
+If you wish to use node-sass instead of sass you need to install node-sass as a dev dependency.
+
+npm users
+```
+npm install node-sass --save-dev
+```
+yarn users
+```
+yarn add node-sass --dev
+```
 
 <a name="4.7.1"></a>
 ## [4.7.1](https://github.com/ng-packagr/ng-packagr/compare/v4.7.0...v4.7.1) (2019-02-15)
