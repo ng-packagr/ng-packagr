@@ -37,7 +37,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### BREAKING CHANGES
 
-* Users outside of Google don't usually need closure annotations hence `annotateForClosureCompiler` is turned off by default. In case users want to emit closure compatible code. they need to install `tsickle` and enable opt it this feature.
+* Users outside of Google don't usually need closure annotations hence `annotateForClosureCompiler` is turned off by default. In case users want to emit closure compatible code, they need to install `tsickle` and enable opt it this feature.
 
 * We no longer use node-sass by default, instead we use sass (dart-sass).
 
