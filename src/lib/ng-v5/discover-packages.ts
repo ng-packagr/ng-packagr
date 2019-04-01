@@ -35,8 +35,11 @@ const resolveUserPackage = async (folderPathOrFilePath: string): Promise<UserPac
   const basePath = pathStats.isDirectory() ? fullPath : path.dirname(fullPath);
   const packageJson = await readConfigFile(path.join(basePath, 'package.json'));
 
-  let ngPackageJson: undefined | object;
+  if (!packageJson) {
+    throw new Error(`Cannot discover package sources at ${folderPathOrFilePath} as 'package.json' was not found.`);
+  }
 
+  let ngPackageJson: undefined | object;
   if (packageJson['ngPackage']) {
     // Read `ngPackage` from `package.json`
     ngPackageJson = { ...packageJson['ngPackage'] };
