@@ -62,6 +62,7 @@ export async function compileSourceFiles(
   cache.oldPrograms = { ...cache.oldPrograms, [scriptTarget]: ngProgram };
 
   const allDiagnostics = [
+    ...ngProgram.getTsOptionDiagnostics(),
     ...ngProgram.getNgOptionDiagnostics(),
     ...ngProgram.getTsSyntacticDiagnostics(),
     ...ngProgram.getTsSemanticDiagnostics(),
