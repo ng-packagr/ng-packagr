@@ -9,8 +9,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 * emit ts option diagnostic ([ed960b6](https://github.com/ng-packagr/ng-packagr/commit/ed960b6))
 * error out gracefully when `package.json` is not found ([902dea2](https://github.com/ng-packagr/ng-packagr/commit/902dea2)), closes [#1255](https://github.com/ng-packagr/ng-packagr/issues/1255)
-* punctuation in changelog ([32ccc0f](https://github.com/ng-packagr/ng-packagr/commit/32ccc0f))
-* typo in changelog ([24e7dea](https://github.com/ng-packagr/ng-packagr/commit/24e7dea))
 
 
 ### Features
