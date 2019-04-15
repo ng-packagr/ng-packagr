@@ -15,8 +15,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 * add support for TypeScript 3.4 ([828065c](https://github.com/ng-packagr/ng-packagr/commit/828065c))
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
-
 
 ## [5.0.1](https://github.com/ng-packagr/ng-packagr/compare/v5.0.0...v5.0.1) (2019-03-27)
 
