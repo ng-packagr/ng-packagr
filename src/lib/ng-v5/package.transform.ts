@@ -212,7 +212,7 @@ const writeNpmPackage = (pkgUri: string): Transform =>
       const { data } = graph.get(pkgUri);
       const filesToCopy = Promise.all(
         [`${data.src}/LICENSE`, `${data.src}/README.md`].map(src =>
-          copyFile(src, path.join(data.dest, path.basename(src)))
+          copyFile(src, path.join(data.dest, path.basename(src)), {dereference: true})
         )
       );
 
