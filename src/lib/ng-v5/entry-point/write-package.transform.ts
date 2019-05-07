@@ -110,13 +110,15 @@ export async function writePackageJson(
   }
 
   // Removes scripts from package.json after build
-  if (pkg.keepLifecycleScripts !== true) {
-    log.info(`Removing scripts section in package.json as it's considered a potential security vulnerability.`);
-    delete packageJson.scripts;
-  } else {
-    log.warn(
-      `You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`
-    );
+  if (packageJson.scripts) {
+    if (pkg.keepLifecycleScripts !== true) {
+      log.info(`Removing scripts section in package.json as it's considered a potential security vulnerability.`);
+      delete packageJson.scripts;
+    } else {
+      log.warn(
+        `You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`
+      );
+    }
   }
 
   // keep the dist package.json clean
