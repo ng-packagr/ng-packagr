@@ -2,16 +2,16 @@ import chalk from 'chalk';
 
 export const error = (err: string | Error) => {
   if (err instanceof Error) {
-    console.log('\n' + chalk.red('BUILD ERROR'));
-    console.log(chalk.red(err.message));
-    console.log(chalk.red(err.stack) + '\n');
+    console.error('\n' + chalk.red('BUILD ERROR'));
+    console.error(chalk.red(err.message));
+    console.error(chalk.red(err.stack) + '\n');
   } else {
-    console.log(chalk.red(err));
+    console.error(chalk.red(err));
   }
 };
 
 export const warn = (msg: string) => {
-  console.log(chalk.yellow(msg));
+  console.warn(chalk.yellow(msg));
 };
 
 export const success = (msg: string) => {
