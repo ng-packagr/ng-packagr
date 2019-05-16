@@ -38,7 +38,15 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
     external: moduleId => externalModuleIdStrategy.isExternalDependency(moduleId),
     inlineDynamicImports: false,
     input: opts.entry,
-    plugins: [rollupJson(), nodeResolve(), commonJs(), sourcemaps(), { transform: opts.transform }],
+    plugins: [
+      rollupJson(),
+      // @ts-ignore
+      nodeResolve(),
+      // @ts-ignore
+      commonJs(),
+      sourcemaps(),
+      { transform: opts.transform }
+    ],
     onwarn: warning => {
       if (typeof warning === 'string') {
         log.warn(warning);
