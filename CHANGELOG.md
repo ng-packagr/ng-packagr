@@ -20,6 +20,72 @@ All notable changes to this project will be documented in this file. See [standa
 * update several rollup dependencies ([0772371](https://github.com/ng-packagr/ng-packagr/commit/0772371))
 
 
+# [5.1.0](https://github.com/ng-packagr/ng-packagr/compare/v5.0.1...v5.1.0) (2019-04-15)
+
+
+### Bug Fixes
+
+* emit ts option diagnostic ([ed960b6](https://github.com/ng-packagr/ng-packagr/commit/ed960b6))
+* error out gracefully when `package.json` is not found ([902dea2](https://github.com/ng-packagr/ng-packagr/commit/902dea2)), closes [#1255](https://github.com/ng-packagr/ng-packagr/issues/1255)
+
+
+### Features
+
+* add support for TypeScript 3.4 ([828065c](https://github.com/ng-packagr/ng-packagr/commit/828065c))
+
+
+## [5.0.1](https://github.com/ng-packagr/ng-packagr/compare/v5.0.0...v5.0.1) (2019-03-27)
+
+
+### Bug Fixes
+
+* version command should not require tsickle ([6ac0dcf](https://github.com/ng-packagr/ng-packagr/commit/6ac0dcf))
+
+
+# [5.0.0](https://github.com/ng-packagr/ng-packagr/compare/v4.7.1...v5.0.0) (2019-03-27)
+
+
+### Bug Fixes
+
+* update core-js to version ^3.0.0 ([b985c49](https://github.com/ng-packagr/ng-packagr/commit/b985c49))
+* update read-pkg-up to version ^5.0.0 ([cb172fa](https://github.com/ng-packagr/ng-packagr/commit/cb172fa))
+* update rollup-plugin-json to version ^4.0.0 ([8d4d4a7](https://github.com/ng-packagr/ng-packagr/commit/8d4d4a7))
+
+
+### Features
+
+* add node-sass support with sass as default ([43a0be6](https://github.com/ng-packagr/ng-packagr/commit/43a0be6))
+* add support for Angular 8 and TypeScript 3.3 ([dfe5a27](https://github.com/ng-packagr/ng-packagr/commit/dfe5a27))
+* remove tsickle from direct peerDepedencies ([1555cf6](https://github.com/ng-packagr/ng-packagr/commit/1555cf6)), closes [#1202](https://github.com/ng-packagr/ng-packagr/issues/1202)
+* replace `uglify-js` with `terser` ([a18d7ad](https://github.com/ng-packagr/ng-packagr/commit/a18d7ad))
+* update rollup to version 1.6+ ([82f97e4](https://github.com/ng-packagr/ng-packagr/commit/82f97e4)), closes [#1227](https://github.com/ng-packagr/ng-packagr/issues/1227)
+
+
+### Performance Improvements
+
+* generate umd bundle directly from fesm5 instead of esm5 ([b25731b](https://github.com/ng-packagr/ng-packagr/commit/b25731b))
+* reduce the amount of dependees that are removed ([408541e](https://github.com/ng-packagr/ng-packagr/commit/408541e))
+
+
+### BREAKING CHANGES
+
+* Users outside of Google don't usually need closure annotations hence `annotateForClosureCompiler` is turned off by default. In case users want to emit closure compatible code, they need to install `tsickle` and enable opt it this feature.
+
+* We no longer use node-sass by default, instead we use sass (dart-sass).
+
+While in most cases this should not have an impact the generated code, dart sass has some differences from Ruby Sass. See https://github.com/sass/dart-sass#behavioral-differences-from-ruby-sass for more details
+
+If you wish to use node-sass instead of sass you need to install node-sass as a dev dependency.
+
+npm users
+```
+npm install node-sass --save-dev
+```
+yarn users
+```
+yarn add node-sass --dev
+```
+
 
 <a name="4.7.1"></a>
 ## [4.7.1](https://github.com/ng-packagr/ng-packagr/compare/v4.7.0...v4.7.1) (2019-02-15)
