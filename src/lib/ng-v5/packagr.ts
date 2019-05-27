@@ -1,6 +1,6 @@
 import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
 import { ParsedConfiguration } from '@angular/compiler-cli';
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf, Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { BuildGraph } from '../brocc/build-graph';
 import { Transform } from '../brocc/transform';
@@ -117,8 +117,9 @@ export class NgPackagr {
       buildTransformOperator,
       catchError(err => {
         // Report error and re-throw to subscribers
-        log.error(err);
-        throw err;
+        const msg = process.env.DEBUG || !(err instanceof Error) ? err : err.message;
+        log.error(msg);
+        throw throwError(err);
       }),
       map(() => undefined)
     );

@@ -20,33 +20,31 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
   const { basePath, cssUrl, styleIncludePaths } = entryPoint.data.entryPoint;
   const stylesheetProcessor = new StylesheetProcessor(basePath, cssUrl, styleIncludePaths);
 
-  await Promise.all([
-    compileSourceFiles(
-      graph,
-      entryPoint,
-      tsConfig,
-      moduleResolutionCache,
-      stylesheetProcessor,
-      {
-        outDir: path.dirname(esm2015),
-        declaration: true,
-        target: ts.ScriptTarget.ES2015
-      },
-      path.dirname(declarations)
-    ),
+  await compileSourceFiles(
+    graph,
+    entryPoint,
+    tsConfig,
+    moduleResolutionCache,
+    stylesheetProcessor,
+    {
+      outDir: path.dirname(esm2015),
+      declaration: true,
+      target: ts.ScriptTarget.ES2015
+    },
+    path.dirname(declarations)
+  );
 
-    compileSourceFiles(graph, entryPoint, tsConfig, moduleResolutionCache, stylesheetProcessor, {
-      outDir: path.dirname(esm5),
-      target: ts.ScriptTarget.ES5,
-      downlevelIteration: true,
-      // the options are here, to improve the build time
-      declaration: false,
-      declarationDir: undefined,
-      skipMetadataEmit: true,
-      skipTemplateCodegen: true,
-      strictMetadataEmit: false
-    })
-  ]);
+  await compileSourceFiles(graph, entryPoint, tsConfig, moduleResolutionCache, stylesheetProcessor, {
+    outDir: path.dirname(esm5),
+    target: ts.ScriptTarget.ES5,
+    downlevelIteration: true,
+    // the options are here, to improve the build time
+    declaration: false,
+    declarationDir: undefined,
+    skipMetadataEmit: true,
+    skipTemplateCodegen: true,
+    strictMetadataEmit: false
+  });
 
   return graph;
 });
