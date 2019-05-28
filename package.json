@@ -40,7 +40,6 @@
     "less": "^3.8.0",
     "less-plugin-npm-import": "^2.1.0",
     "node-sass-tilde-importer": "^1.0.0",
-    "opencollective-postinstall": "^2.0.1",
     "postcss": "^7.0.0",
     "postcss-url": "^8.0.0",
     "read-pkg-up": "^5.0.0",
@@ -130,8 +129,7 @@
     "integration:watch:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --timeout 25000 --require ts-node/register \"integration/watch/*.spec.ts\"",
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json mocha --require ts-node/register \"src/**/*.spec.ts\"",
     "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:watch:specs && yarn integration:consumers",
-    "gh-pages": "gh-pages -d docs/ghpages",
-    "postinstall": "opencollective-postinstall"
+    "gh-pages": "gh-pages -d docs/ghpages"
   },
   "collective": {
     "type": "opencollective",
