@@ -56,10 +56,6 @@ describe(`@sample/core`, () => {
       expect(service['__symbolic']).to.equal('reference');
       expect(service['module']).to.equal('@angular/core');
       expect(service['name']).to.equal('Injectable');
-      const deps = METADATA['metadata']['AngularService']['members']['__ctor__'][0]['parameters'][0];
-      expect(deps['__symbolic']).to.equal('reference');
-      expect(deps['module']).to.equal('@angular/http');
-      expect(deps['name']).to.equal('Http');
     });
   });
 });
