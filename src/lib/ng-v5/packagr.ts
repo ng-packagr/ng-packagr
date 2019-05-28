@@ -119,7 +119,7 @@ export class NgPackagr {
         // Report error and re-throw to subscribers
         const msg = process.env.DEBUG || !(err instanceof Error) ? err : err.message;
         log.error(msg);
-        throw throwError(err);
+        return throwError(err);
       }),
       map(() => undefined)
     );
