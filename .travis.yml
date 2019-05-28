@@ -1,7 +1,7 @@
 language: node_js
 node_js:
-  - '9'
-  - '8'
+  - '10.9'
+  - '12.1'
 script: 'yarn test'
 cache:
   yarn: true
@@ -9,10 +9,10 @@ env: # https://docs.travis-ci.com/user/customizing-the-build#Rows-that-are-Allow
 matrix:
   include:
     - node_js: node
-      env: "ALLOW_FAILURES=true"
+      env: 'ALLOW_FAILURES=true'
   allow_failures:
     - node_js: node
-      env: "ALLOW_FAILURES=true"
+      env: 'ALLOW_FAILURES=true'
 notifications:
   webhooks:
     urls:

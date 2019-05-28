@@ -1,4 +1,4 @@
-import {Component, ContentChild, ElementRef, HostListener, Input, QueryList} from "@angular/core";
+import { Component, ContentChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'custom-foo-bar',
@@ -6,14 +6,11 @@ import {Component, ContentChild, ElementRef, HostListener, Input, QueryList} fro
   styleUrls: ['./foo-bar.component.styl']
 })
 export class FooBarComponent {
-    @ContentChild('heading', { read: ElementRef })
-    buttons: ElementRef;
+  @ContentChild('heading', { read: ElementRef, static: true })
+  buttons: ElementRef;
 
-    constructor(
-      private elementRef: ElementRef
-    ) {}
+  constructor(private elementRef: ElementRef) {}
 
-    inlineButtons: any[] = [];
-    menuButtons: any[] = [];
-
+  inlineButtons: any[] = [];
+  menuButtons: any[] = [];
 }
