@@ -117,8 +117,7 @@ export class NgPackagr {
       buildTransformOperator,
       catchError(err => {
         // Report error and re-throw to subscribers
-        const msg = process.env.DEBUG || !(err instanceof Error) ? err : err.message;
-        log.error(msg);
+        log.error(err);
         return throwError(err);
       }),
       map(() => undefined)

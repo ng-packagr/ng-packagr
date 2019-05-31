@@ -89,7 +89,7 @@ export async function compileSourceFiles(
   const exitCode = ng.exitCodeFromResult(allDiagnostics);
   const formattedDiagnostics = ng.formatDiagnostics(allDiagnostics);
   if (exitCode !== 0) {
-    throw formattedDiagnostics;
+    throw new Error(formattedDiagnostics);
   } else {
     log.msg(formattedDiagnostics);
   }
