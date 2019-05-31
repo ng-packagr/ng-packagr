@@ -4,7 +4,10 @@ export const error = (err: string | Error) => {
   if (err instanceof Error) {
     console.error('\n' + chalk.red('BUILD ERROR'));
     console.error(chalk.red(err.message));
-    console.error(chalk.red(err.stack) + '\n');
+
+    if (process.env.DEBUG) {
+      console.error(chalk.red(err.stack) + '\n');
+    }
   } else {
     console.error(chalk.red(err));
   }
