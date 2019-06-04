@@ -100,7 +100,7 @@ export class StylesheetProcessor {
 
   private createPostCssProcessor(basePath: string, cssUrl?: CssUrl): postcss.Processor {
     log.debug(`determine browserslist for ${basePath}`);
-    const browsers = browserslist(undefined, { path: basePath });
+    const overrideBrowserslist = browserslist(undefined, { path: basePath });
 
     const postCssPlugins = [];
 
@@ -111,7 +111,7 @@ export class StylesheetProcessor {
 
     // this is important to be executed post running `postcssUrl`
     postCssPlugins.push(
-      autoprefixer({ browsers, grid: true }),
+      autoprefixer({ overrideBrowserslist, grid: true }),
       postcssClean({
         level: {
           2: {
