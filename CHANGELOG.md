@@ -13,19 +13,6 @@ All notable changes to this project will be documented in this file. See [standa
 * update @angular/cdk to version ~8.0.0 ([#1301](https://github.com/ng-packagr/ng-packagr/issues/1301)) ([f7a462a](https://github.com/ng-packagr/ng-packagr/commit/f7a462a))
 * update terser to version ^4.0.0 ([dd28818](https://github.com/ng-packagr/ng-packagr/commit/dd28818))
 
-
-### Build System
-
-* introduce support for minor beta releases ([a73a600](https://github.com/ng-packagr/ng-packagr/commit/a73a600))
-* update @commitlint/cli to version ^8.0.0 ([5856506](https://github.com/ng-packagr/ng-packagr/commit/5856506))
-* update angular and typescript ([c72d351](https://github.com/ng-packagr/ng-packagr/commit/c72d351))
-* update codelyzer to version ~5.1.0 ([d612ca3](https://github.com/ng-packagr/ng-packagr/commit/d612ca3))
-* update husky to version ^2.0.0 ([5398fe7](https://github.com/ng-packagr/ng-packagr/commit/5398fe7))
-* update standard-version to version ^6.0.0 ([6c0c039](https://github.com/ng-packagr/ng-packagr/commit/6c0c039))
-* update ts-node to version ~8.2.0 ([3e730fc](https://github.com/ng-packagr/ng-packagr/commit/3e730fc))
-* update tslint to version ~5.17.0 ([58d4217](https://github.com/ng-packagr/ng-packagr/commit/58d4217))
-
-
 ### Features
 
 * support inline javascript in less ([#1300](https://github.com/ng-packagr/ng-packagr/issues/1300)) ([e0b4136](https://github.com/ng-packagr/ng-packagr/commit/e0b4136)), closes [#1298](https://github.com/ng-packagr/ng-packagr/issues/1298)
