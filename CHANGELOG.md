@@ -10,7 +10,6 @@ All notable changes to this project will be documented in this file. See [standa
 * add quotes to less include-path ([af6816b](https://github.com/ng-packagr/ng-packagr/commit/af6816b))
 * don't write stacktraces when there are errors ([42692b0](https://github.com/ng-packagr/ng-packagr/commit/42692b0))
 * remove opencollective postinstall scripts ([123f39a](https://github.com/ng-packagr/ng-packagr/commit/123f39a))
-* update @angular/cdk to version ~8.0.0 ([#1301](https://github.com/ng-packagr/ng-packagr/issues/1301)) ([f7a462a](https://github.com/ng-packagr/ng-packagr/commit/f7a462a))
 * update terser to version ^4.0.0 ([dd28818](https://github.com/ng-packagr/ng-packagr/commit/dd28818))
 
 ### Features
