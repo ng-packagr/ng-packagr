@@ -1,0 +1,17 @@
+{
+  "name": "@sample/ivy",
+  "description": "A sample library to test ivy builds",
+  "version": "1.0.0-pre.0",
+  "private": true,
+  "repository": "https://github.com/ng-packagr/ng-packagr.git",
+  "peerDependencies": {
+    "@angular/common": "^4.1.3",
+    "@angular/core": "^4.1.3",
+    "rxjs": "^5.0.1",
+    "zone.js": "^0.8.4"
+  },
+  "scripts": {
+    "test":
+      "../../../node_modules/.bin/cross-env TS_NODE_PROJECT=../../../integration/tsconfig.specs.json ../../../node_modules/.bin/mocha --compilers ts:ts-node/register specs/**/*.ts"
+  }
+}
