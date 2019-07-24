@@ -13,14 +13,14 @@ import postcssClean from './postcss-clean';
 import * as stylus from 'stylus';
 
 /*
-  * Please be aware of the few differences in behaviour https://github.com/sass/dart-sass/blob/master/README.md#behavioral-differences-from-ruby-sass
-  * By default `npm install` will install sass.
-  * To use node-sass you need to use:
-  *   Npm:
-  *     `npm install node-sass --save-dev`
-  *   Yarn:
-  *     `yarn add node-sass --dev`
-  */
+ * Please be aware of the few differences in behaviour https://github.com/sass/dart-sass/blob/master/README.md#behavioral-differences-from-ruby-sass
+ * By default `npm install` will install sass.
+ * To use node-sass you need to use:
+ *   Npm:
+ *     `npm install node-sass --save-dev`
+ *   Yarn:
+ *     `yarn add node-sass --dev`
+ */
 let sassComplier: any | undefined;
 try {
   sassComplier = require('node-sass'); // Check if node-sass is explicitly included.
@@ -42,7 +42,7 @@ export class StylesheetProcessor {
     // Render postcss (autoprefixing and friends)
     const result = this.postCssProcessor.process(renderedCss, {
       from: filePath,
-      to: filePath.replace(path.extname(filePath), '.css')
+      to: filePath.replace(path.extname(filePath), '.css'),
     });
 
     // Log warnings from postcss
@@ -65,7 +65,7 @@ export class StylesheetProcessor {
             data: content,
             indentedSyntax: '.sass' === ext,
             importer: nodeSassTildeImporter,
-            includePaths: this.styleIncludePaths
+            includePaths: this.styleIncludePaths,
           })
           .css.toString();
 
@@ -115,10 +115,10 @@ export class StylesheetProcessor {
       postcssClean({
         level: {
           2: {
-            specialComments: false
-          }
-        }
-      })
+            specialComments: false,
+          },
+        },
+      }),
     );
 
     return postcss(postCssPlugins);

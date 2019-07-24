@@ -14,7 +14,7 @@ export function cacheCompilerHost(
   compilerOptions: ng.CompilerOptions,
   moduleResolutionCache: ts.ModuleResolutionCache,
   stylesheetProcessor?: StylesheetProcessor,
-  sourcesFileCache: FileCache = entryPoint.cache.sourcesFileCache
+  sourcesFileCache: FileCache = entryPoint.cache.sourcesFileCache,
 ): ng.CompilerHost {
   const compilerHost = ng.createCompilerHost({ options: compilerOptions });
 
@@ -62,7 +62,7 @@ export function cacheCompilerHost(
       data: string,
       writeByteOrderMark: boolean,
       onError?: (message: string) => void,
-      sourceFiles?: ReadonlyArray<ts.SourceFile>
+      sourceFiles?: ReadonlyArray<ts.SourceFile>,
     ) => {
       if (fileName.endsWith('.d.ts')) {
         sourceFiles.forEach(source => {
@@ -93,7 +93,7 @@ export function cacheCompilerHost(
         ensureUnixPath(containingFile),
         compilerOptions,
         compilerHost,
-        moduleResolutionCache
+        moduleResolutionCache,
       );
 
       return resolvedModule && resolvedModule.resolvedFileName;
@@ -121,6 +121,6 @@ export function cacheCompilerHost(
       }
 
       return cache.content;
-    }
+    },
   };
 }

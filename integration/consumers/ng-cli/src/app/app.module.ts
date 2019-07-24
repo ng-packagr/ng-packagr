@@ -21,9 +21,9 @@ import { SecondaryModule } from './secondary/secondary.module';
 
     // app
     CdkModule,
-    SecondaryModule
+    SecondaryModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

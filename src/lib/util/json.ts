@@ -14,11 +14,13 @@ export async function modifyJsonFiles(globPattern: string | string[], modifyFn: 
   const fileNames: string[] = await globFiles(globPattern);
 
   await Promise.all(
-    fileNames.map(async (fileName: string): Promise<void> => {
-      const fileContent: any = await tryReadJson(fileName);
-      const modified = modifyFn(fileContent);
-      await writeJson(fileName, modified, { spaces: 2 });
-    })
+    fileNames.map(
+      async (fileName: string): Promise<void> => {
+        const fileContent: any = await tryReadJson(fileName);
+        const modified = modifyFn(fileContent);
+        await writeJson(fileName, modified, { spaces: 2 });
+      },
+    ),
   );
 }
 

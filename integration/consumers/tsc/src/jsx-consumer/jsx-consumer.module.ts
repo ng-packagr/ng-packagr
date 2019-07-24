@@ -4,15 +4,8 @@ import { ReactIntegrationModule } from '@sample/jsx';
 import { JsxConsumerComponent } from './jsx-consumer.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactIntegrationModule
-  ],
-  declarations: [
-    JsxConsumerComponent
-  ],
-  exports: [
-    JsxConsumerComponent
-  ]
+  imports: [CommonModule, ReactIntegrationModule],
+  declarations: [JsxConsumerComponent],
+  exports: [JsxConsumerComponent],
 })
 export class JsxConsumerModule {}

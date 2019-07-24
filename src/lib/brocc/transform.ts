@@ -30,5 +30,5 @@ export const transformFromPromise = (transformFn: PromiseBasedTransform): Transf
       } else {
         return observableOf(transformResult ? transformResult : graph);
       }
-    })
+    }),
   );

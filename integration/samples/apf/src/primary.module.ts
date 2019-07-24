@@ -5,6 +5,6 @@ import { PrimaryAngularComponent } from './primary.component';
 @NgModule({
   imports: [CommonModule],
   declarations: [PrimaryAngularComponent],
-  exports: [PrimaryAngularComponent]
+  exports: [PrimaryAngularComponent],
 })
 export class PrimaryAngularModule {}

@@ -7,6 +7,6 @@ import { PrimaryAngularService } from './primary.service';
   imports: [CommonModule],
   declarations: [PrimaryAngularComponent],
   providers: [PrimaryAngularService],
-  exports: [PrimaryAngularComponent]
+  exports: [PrimaryAngularComponent],
 })
 export class PrimaryAngularModule {}

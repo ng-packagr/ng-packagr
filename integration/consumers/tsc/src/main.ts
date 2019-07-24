@@ -7,16 +7,7 @@ import { MaterialConsumerModule } from './material-consumer/material-consumer.mo
 import { ModuleImportDirective } from './module-imports';
 
 @NgModule({
-  imports: [
-    CoreConsumerModule,
-    CustomConsulerModule,
-    JsxConsumerModule,
-    MaterialConsumerModule
-  ],
-  declarations: [
-    FooComponent,
-    BarComponent,
-    ModuleImportDirective
-  ]
+  imports: [CoreConsumerModule, CustomConsulerModule, JsxConsumerModule, MaterialConsumerModule],
+  declarations: [FooComponent, BarComponent, ModuleImportDirective],
 })
 export class ConsumerModule {}

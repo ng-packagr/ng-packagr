@@ -9,28 +9,15 @@ import { LessBazComponent } from './less-baz/less-baz.component';
 import { InternalService } from './internal.service';
 
 @NgModule({
-  imports: [ CommonModule ],
-  declarations: [
-    BarComponent,
-    BazComponent,
-    FooComponent,
-    FooBarComponent,
-    LessBazComponent
-  ],
-  exports: [
-    BazComponent,
-    FooComponent,
-    FooBarComponent,
-    LessBazComponent
-  ]
+  imports: [CommonModule],
+  declarations: [BarComponent, BazComponent, FooComponent, FooBarComponent, LessBazComponent],
+  exports: [BazComponent, FooComponent, FooBarComponent, LessBazComponent],
 })
 export class CustomModule {
-
   public static forRoot(): ModuleWithProviders {
-
     return {
       ngModule: CustomModule,
-      providers: [ InternalService ]
+      providers: [InternalService],
     };
   }
 }

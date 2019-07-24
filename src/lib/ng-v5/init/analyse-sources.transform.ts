@@ -18,7 +18,7 @@ export const analyseSourcesTransform: Transform = pipe(
     }
 
     return graph;
-  })
+  }),
 );
 
 /**
@@ -38,7 +38,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
   const tsConfigOptions = {
     ...entryPoint.data.tsConfig.options,
     skipLibCheck: true,
-    types: []
+    types: [],
   };
 
   const compilerHost = cacheCompilerHost(
@@ -47,7 +47,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     tsConfigOptions,
     analysisModuleResolutionCache,
     undefined,
-    analysisSourcesFileCache
+    analysisSourcesFileCache,
   );
 
   compilerHost.resolveModuleNames = (moduleNames: string[], containingFile: string) => {
@@ -61,7 +61,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
         ensureUnixPath(containingFile),
         tsConfigOptions,
         compilerHost,
-        analysisModuleResolutionCache
+        analysisModuleResolutionCache,
       );
 
       return resolvedModule;
@@ -72,7 +72,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     entryPoint.data.tsConfig.rootNames,
     tsConfigOptions,
     compilerHost,
-    oldProgram
+    oldProgram,
   );
 
   const diagnostics = program.getOptionsDiagnostics();
@@ -104,7 +104,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     });
 
   log.debug(
-    `tsc program structure is reused: ${oldProgram ? (oldProgram as any).structureIsReused : 'No old program'}`
+    `tsc program structure is reused: ${oldProgram ? (oldProgram as any).structureIsReused : 'No old program'}`,
   );
 
   entryPoint.cache.oldPrograms = { ...entryPoint.cache.oldPrograms, ['analysis']: program };

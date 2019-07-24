@@ -36,7 +36,7 @@ import { byEntryPoint } from './nodes';
 export const entryPointTransformFactory = (
   compileTs: Transform,
   writeBundles: Transform,
-  writePackage: Transform
+  writePackage: Transform,
 ): Transform =>
   pipe(
     //tap(() => log.info(`Building from sources for entry point`)),
@@ -54,7 +54,7 @@ export const entryPointTransformFactory = (
     transformFromPromise(async graph => {
       const entryPoint = graph.find(byEntryPoint().and(isInProgress));
       entryPoint.state = STATE_DONE;
-    })
+    }),
 
     //tap(() => log.info(`Built.`))
   );

@@ -29,9 +29,9 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
     {
       outDir: path.dirname(esm2015),
       declaration: true,
-      target: ts.ScriptTarget.ES2015
+      target: ts.ScriptTarget.ES2015,
     },
-    path.dirname(declarations)
+    path.dirname(declarations),
   );
 
   await compileSourceFiles(graph, entryPoint, tsConfig, moduleResolutionCache, stylesheetProcessor, {
@@ -43,7 +43,7 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
     declarationDir: undefined,
     skipMetadataEmit: true,
     skipTemplateCodegen: true,
-    strictMetadataEmit: false
+    strictMetadataEmit: false,
   });
 
   return graph;

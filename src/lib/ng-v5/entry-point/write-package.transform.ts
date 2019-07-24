@@ -20,7 +20,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
   log.info('Copying declaration files');
   // we don't want to copy `dist` and 'node_modules' declaration files but only files in source
   const declarationFiles = await globFiles(`${path.dirname(ngEntryPoint.entryFilePath)}/**/*.d.ts`, {
-    ignore: ['**/node_modules/**', `${ngPackage.dest}/**`]
+    ignore: ['**/node_modules/**', `${ngPackage.dest}/**`],
   });
 
   if (declarationFiles.length) {
@@ -29,7 +29,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
         const relativePath = path.relative(ngEntryPoint.entryFilePath, value);
         const destination = path.resolve(destinationFiles.declarations, relativePath);
         return copyFile(value, destination);
-      })
+      }),
     );
   }
 
@@ -50,7 +50,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     // XX 'metadata' property in 'package.json' is non-standard. Keep it anyway?
     metadata: relativeUnixFromDestPath(destinationFiles.metadata),
     // webpack v4+ specific flag to enable advanced optimizations and code splitting
-    sideEffects: ngEntryPoint.sideEffects
+    sideEffects: ngEntryPoint.sideEffects,
   });
 
   log.success(`Built ${ngEntryPoint.moduleId}`);
@@ -76,7 +76,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
 export async function writePackageJson(
   entryPoint: NgEntryPoint,
   pkg: NgPackage,
-  additionalProperties: { [key: string]: string | boolean | string[] }
+  additionalProperties: { [key: string]: string | boolean | string[] },
 ): Promise<void> {
   log.debug('Writing package.json');
 
@@ -94,7 +94,7 @@ export async function writePackageJson(
     if (tsLibVersion) {
       packageJson.dependencies = {
         ...packageJson.dependencies,
-        tslib: tsLibVersion
+        tslib: tsLibVersion,
       };
     }
   }
@@ -116,7 +116,7 @@ export async function writePackageJson(
       delete packageJson.scripts;
     } else {
       log.warn(
-        `You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`
+        `You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`,
       );
     }
   }
@@ -128,7 +128,9 @@ export async function writePackageJson(
 
   // `outputJson()` creates intermediate directories, if they do not exist
   // -- https://github.com/jprichardson/node-fs-extra/blob/master/docs/outputJson.md
-  await fs.outputJson(path.join(entryPoint.destinationPath, 'package.json'), packageJson, { spaces: 2 });
+  await fs.outputJson(path.join(entryPoint.destinationPath, 'package.json'), packageJson, {
+    spaces: 2,
+  });
 }
 
 function checkNonPeerDependencies(packageJson: { [key: string]: any }, property: string, whitelist: RegExp[]) {
@@ -138,7 +140,7 @@ function checkNonPeerDependencies(packageJson: { [key: string]: any }, property:
         log.debug(`Dependency ${dep} is whitelisted in '${property}'`);
       } else {
         log.warn(
-          `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep} to 'peerDependencies' or remove it from '${property}'.`
+          `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep} to 'peerDependencies' or remove it from '${property}'.`,
         );
         throw new Error(`Dependency ${dep} must be explicitly whitelisted.`);
       }

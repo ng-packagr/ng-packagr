@@ -8,6 +8,6 @@ import { BazComponent } from './baz/baz.component';
 @NgModule({
   imports: [RouterModule.forChild([])],
   declarations: [FooComponent, BarComponent, FooBarComponent, BazComponent],
-  exports: [FooComponent, BarComponent, FooBarComponent, BazComponent]
+  exports: [FooComponent, BarComponent, FooBarComponent, BazComponent],
 })
 export class UiLibModule {}

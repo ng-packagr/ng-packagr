@@ -40,7 +40,7 @@ describe(`rollup`, () => {
         before(() => {
           externalModuleIdStrategy = new ExternalModuleIdStrategy('umd', {
             bundledDependencies: ['@angular/core'],
-            dependencies: ['ui.core']
+            dependencies: ['ui.core'],
           });
         });
 
@@ -107,7 +107,9 @@ describe(`rollup`, () => {
 
       describe(`and 'bundledDependencies' are specified`, () => {
         before(() => {
-          externalModuleIdStrategy = new ExternalModuleIdStrategy('es', { bundledDependencies: ['@angular/core'] });
+          externalModuleIdStrategy = new ExternalModuleIdStrategy('es', {
+            bundledDependencies: ['@angular/core'],
+          });
         });
 
         it(`should return 'false' paths starting with '.'`, () => {

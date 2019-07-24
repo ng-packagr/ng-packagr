@@ -11,7 +11,7 @@ export const YEAH_I_AM_RUNNING_IN_A_LOOP_FAST = [SHARED_FEATURE, FEATURE_A, FEAT
     <ul>
       <li *ngFor="let string of strings">{{ string }}</li>
     </ul>
-  `
+  `,
 })
 export class SecondaryComponent {
   strings = YEAH_I_AM_RUNNING_IN_A_LOOP_FAST;

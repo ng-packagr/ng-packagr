@@ -55,7 +55,10 @@ export class DepthBuilder {
   }
 
   public build(): Groups {
-    const allNodes = Array.from(this.dependencyMap.entries()).map(([token, dependencies]) => ({ token, dependencies }));
+    const allNodes = Array.from(this.dependencyMap.entries()).map(([token, dependencies]) => ({
+      token,
+      dependencies,
+    }));
     // Start with root nodes and expand from there
     const nodeQueue = allNodes.filter(node => node.dependencies.length === 0);
 

@@ -6,6 +6,6 @@ import { PrimaryAngularModule } from 'intra-dependent';
 @NgModule({
   imports: [CommonModule, PrimaryAngularModule],
   declarations: [SecondaryAngularComponent],
-  exports: [SecondaryAngularComponent]
+  exports: [SecondaryAngularComponent],
 })
 export class SecondaryAngularModule {}

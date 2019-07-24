@@ -43,7 +43,7 @@ export class NgEntryPoint {
     /** Absolute directory path of this entry point's `package.json` location. */
     public readonly basePath: string,
     /** XX: additional auto-configured data passed for scondary entry point's. Needs better docs. */
-    private readonly secondaryData?: { [key: string]: any }
+    private readonly secondaryData?: { [key: string]: any },
   ) {}
 
   /** Absolute file path of the entry point's source code entry file. */
@@ -85,7 +85,7 @@ export class NgEntryPoint {
       fesm2015: pathJoinWithDest('fesm2015', `${flatModuleFile}.js`),
       fesm5: pathJoinWithDest('fesm5', `${flatModuleFile}.js`),
       umd: pathJoinWithDest('bundles', `${flatModuleFile}.umd.js`),
-      umdMinified: pathJoinWithDest('bundles', `${flatModuleFile}.umd.min.js`)
+      umdMinified: pathJoinWithDest('bundles', `${flatModuleFile}.umd.min.js`),
     };
   }
 
@@ -115,8 +115,8 @@ export class NgEntryPoint {
 
   public get styleIncludePaths(): string[] {
     const includePaths = this.$get('lib.styleIncludePaths') || [];
-    return includePaths.map(
-      includePath => (path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath))
+    return includePaths.map(includePath =>
+      path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath),
     );
   }
 

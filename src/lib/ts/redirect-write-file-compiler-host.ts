@@ -11,7 +11,7 @@ import * as path from 'path';
 export function redirectWriteFileCompilerHost(
   compilerHost: ts.CompilerHost,
   baseDir: string,
-  declarationDir: string
+  declarationDir: string,
 ): ts.CompilerHost {
   return {
     ...compilerHost,
@@ -20,7 +20,7 @@ export function redirectWriteFileCompilerHost(
       data: string,
       writeByteOrderMark: boolean,
       onError?: (message: string) => void,
-      sourceFiles?: ReadonlyArray<ts.SourceFile>
+      sourceFiles?: ReadonlyArray<ts.SourceFile>,
     ) => {
       let filePath = fileName;
       if (/(\.d\.ts|\.metadata\.json)$/.test(fileName)) {
@@ -28,6 +28,6 @@ export function redirectWriteFileCompilerHost(
         filePath = path.resolve(declarationDir, projectRelativePath);
       }
       compilerHost.writeFile.call(this, filePath, data, writeByteOrderMark, onError, sourceFiles);
-    }
+    },
   };
 }

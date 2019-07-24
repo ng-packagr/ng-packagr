@@ -5,6 +5,6 @@ import { SecondaryAngularComponent } from './secondary.component';
 @NgModule({
   imports: [CommonModule],
   declarations: [SecondaryAngularComponent],
-  exports: [SecondaryAngularComponent]
+  exports: [SecondaryAngularComponent],
 })
 export class SecondaryAngularModule {}

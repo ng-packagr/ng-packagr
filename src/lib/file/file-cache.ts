@@ -13,7 +13,7 @@ export class FileCache {
 
   forEach: (
     callbackfn: (value: CacheEntry, key: string, map: Map<string, CacheEntry>) => void,
-    thisArg?: any
+    thisArg?: any,
   ) => void = this.cache.forEach.bind(this.cache);
   clear: () => void = this.cache.clear.bind(this.cache);
 

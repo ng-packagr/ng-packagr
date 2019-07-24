@@ -45,7 +45,7 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
       // @ts-ignore
       commonJs(),
       sourcemaps(),
-      { transform: opts.transform }
+      { transform: opts.transform },
     ],
     onwarn: warning => {
       if (typeof warning === 'string') {
@@ -58,7 +58,7 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
         log.warn(warning.message);
       }
     },
-    preserveSymlinks: true
+    preserveSymlinks: true,
   });
 
   // Output the bundle to disk
@@ -87,6 +87,6 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
       } else {
         return sourcePath;
       }
-    }
+    },
   });
 }

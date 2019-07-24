@@ -13,14 +13,14 @@ export interface FileChangedEvent {
 
 export function createFileWatch(
   projectPath: string,
-  ignoredPaths: (RegExp | string)[] = []
+  ignoredPaths: (RegExp | string)[] = [],
 ): Observable<FileChangedEvent> {
   log.debug(`Watching for changes: projectPath: ${projectPath}, ignoredPaths: ${ignoredPaths}`);
 
   const watch = chokidar.watch(projectPath, {
     ignoreInitial: true,
     ignored: [...ignoredPaths, /((^[\/\\])\..)|(\.js$)|(\.map$)|(\.metadata\.json)/],
-    persistent: true
+    persistent: true,
   });
 
   const handleFileChange = (event: FileWatchEvent, filePath: string, observer: Observer<FileChangedEvent>) => {
@@ -35,7 +35,7 @@ export function createFileWatch(
 
     observer.next({
       filePath: path.resolve(ensureUnixPath(filePath)),
-      event
+      event,
     });
   };
 

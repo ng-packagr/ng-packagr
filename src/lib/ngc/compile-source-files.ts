@@ -15,7 +15,7 @@ export async function compileSourceFiles(
   moduleResolutionCache: ts.ModuleResolutionCache,
   stylesheetProcessor: StylesheetProcessor,
   extraOptions?: Partial<ng.CompilerOptions>,
-  declarationDir?: string
+  declarationDir?: string,
 ) {
   log.debug(`ngc (v${ng.VERSION.full})`);
 
@@ -26,7 +26,7 @@ export async function compileSourceFiles(
     entryPoint,
     tsConfigOptions,
     moduleResolutionCache,
-    stylesheetProcessor
+    stylesheetProcessor,
   );
   if (declarationDir) {
     tsCompilerHost = redirectWriteFileCompilerHost(tsCompilerHost, tsConfigOptions.basePath, declarationDir);
@@ -35,7 +35,7 @@ export async function compileSourceFiles(
   // ng.CompilerHost
   const ngCompilerHost = ng.createCompilerHost({
     options: tsConfigOptions,
-    tsHost: tsCompilerHost
+    tsHost: tsCompilerHost,
   });
 
   const emitFlags = tsConfigOptions.declaration ? tsConfig.emitFlags : ng.EmitFlags.JS;
@@ -48,7 +48,7 @@ export async function compileSourceFiles(
     rootNames: tsConfig.rootNames,
     options: tsConfigOptions,
     host: ngCompilerHost,
-    oldProgram
+    oldProgram,
   });
 
   await ngProgram.loadNgStructureAsync();
@@ -56,7 +56,7 @@ export async function compileSourceFiles(
   log.debug(
     `ngc program structure is reused: ${
       oldProgram ? (oldProgram.getTsProgram() as any).structureIsReused : 'No old program'
-    }`
+    }`,
   );
 
   cache.oldPrograms = { ...cache.oldPrograms, [scriptTarget]: ngProgram };
@@ -67,7 +67,7 @@ export async function compileSourceFiles(
     ...ngProgram.getTsSyntacticDiagnostics(),
     ...ngProgram.getTsSemanticDiagnostics(),
     ...ngProgram.getNgSemanticDiagnostics(),
-    ...ngProgram.getNgStructuralDiagnostics()
+    ...ngProgram.getNgStructuralDiagnostics(),
   ];
 
   // if we have an error we don't want to transpile.
@@ -76,7 +76,7 @@ export async function compileSourceFiles(
     // certain errors are only emitted by a compilation hence append to previous diagnostics
     const { diagnostics } = ngProgram.emit({
       emitCallback: createEmitCallback(tsConfigOptions),
-      emitFlags
+      emitFlags,
     });
 
     allDiagnostics.push(...diagnostics);

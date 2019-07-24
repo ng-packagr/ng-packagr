@@ -8,7 +8,10 @@ const CDK_VERSION_TOKEN = new InjectionToken<Version>('VERSION_TOKEN');
 
 @Component({
   selector: 'app-some-cdk-component',
-  template: `<div cdkObserveContent></div><cdk-table></cdk-table>`
+  template: `
+    <div cdkObserveContent></div>
+    <cdk-table></cdk-table>
+  `,
 })
 export class SomeCdkComponent {}
 
@@ -19,8 +22,8 @@ export class SomeCdkComponent {}
   providers: [
     {
       provide: CDK_VERSION_TOKEN,
-      useValue: VERSION
-    }
-  ]
+      useValue: VERSION,
+    },
+  ],
 })
 export class CdkModule {}

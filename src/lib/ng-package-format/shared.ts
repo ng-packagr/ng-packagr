@@ -11,7 +11,7 @@ export type DirectoryPath = string;
 
 export enum CssUrl {
   inline = 'inline',
-  none = 'none'
+  none = 'none',
 }
 
 /** A list of output absolute paths for various formats */

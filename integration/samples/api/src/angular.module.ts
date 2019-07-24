@@ -5,7 +5,7 @@ import { AngularComponent } from './angular.component';
   imports: [CommonModule],
   declarations: [AngularComponent],
   exports: [AngularComponent],
-  providers: []
+  providers: [],
 })
 export class AngularModule {}
 

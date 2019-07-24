@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 
 describe(`@sample/secondary`, () => {
-
   describe(`sample-secondary.metadata.json`, () => {
     let METADATA;
     before(() => {
@@ -38,6 +37,5 @@ describe(`@sample/secondary`, () => {
     it(`should "importAs": "@sample/secondary/sub-module"`, () => {
       expect(METADATA['importAs']).to.equal('@sample/secondary/sub-module');
     });
-
   });
 });

@@ -7,22 +7,8 @@ import { FoobarConsumerComponent } from './foo-bar-consumer.componene';
 import { FooConsumerComponent } from './foo-consumer.componene';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    UiLibModule
-  ],
-  declarations: [
-    BarConsumerComponent,
-    BazConsumerComponent,
-    FoobarConsumerComponent,
-    FooConsumerComponent
-  ],
-  exports: [
-    BarConsumerComponent,
-    BazConsumerComponent,
-    FoobarConsumerComponent,
-    FooConsumerComponent
-  ]
+  imports: [CommonModule, UiLibModule],
+  declarations: [BarConsumerComponent, BazConsumerComponent, FoobarConsumerComponent, FooConsumerComponent],
+  exports: [BarConsumerComponent, BazConsumerComponent, FoobarConsumerComponent, FooConsumerComponent],
 })
-export class MaterialConsumerModule {
-}
+export class MaterialConsumerModule {}

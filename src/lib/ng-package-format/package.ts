@@ -43,7 +43,7 @@ export class NgPackage {
     /**
      * An array of seconary entry points.
      */
-    public readonly secondaries: NgEntryPoint[] = []
+    public readonly secondaries: NgEntryPoint[] = [],
   ) {}
 
   /** Absolute path of the package's source folder, derived from the user's (primary) package location. */

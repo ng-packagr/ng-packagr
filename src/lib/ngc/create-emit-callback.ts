@@ -49,7 +49,7 @@ export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCall
     untyped: true,
     convertIndexImportShorthand: false,
     transformDecorators,
-    transformTypesToClosure
+    transformTypesToClosure,
   };
 
   if (options.annotateForClosureCompiler || options.annotationsAs === 'static fields') {
@@ -61,7 +61,7 @@ export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCall
       emitOnlyDtsFiles,
       customTransformers = {},
       host,
-      options
+      options,
     }) =>
       require('tsickle').emitWithTsickle(
         program,
@@ -74,14 +74,14 @@ export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCall
         emitOnlyDtsFiles,
         {
           beforeTs: customTransformers.before,
-          afterTs: customTransformers.after
-        }
+          afterTs: customTransformers.after,
+        },
       );
   } else {
     return ({ program, targetSourceFile, writeFile, cancellationToken, emitOnlyDtsFiles, customTransformers = {} }) =>
       program.emit(targetSourceFile, writeFile, cancellationToken, emitOnlyDtsFiles, {
         after: customTransformers.after,
-        before: customTransformers.before
+        before: customTransformers.before,
       });
   }
 }

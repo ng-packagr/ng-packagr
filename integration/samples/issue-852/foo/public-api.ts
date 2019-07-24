@@ -7,6 +7,6 @@ export class FooClass {
   constructor(
     @Optional()
     @Inject(BAR_TOKEN)
-    matDateLocale: string
+    matDateLocale: string,
   ) {}
 }

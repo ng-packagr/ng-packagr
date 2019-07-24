@@ -3,7 +3,7 @@ import { PrimaryAngularService } from 'intra-dependent';
 
 @Component({
   selector: 'ng-component-secondary',
-  template: '<ng-component [count]="count"></ng-component>'
+  template: '<ng-component [count]="count"></ng-component>',
 })
 export class SecondaryAngularComponent {
   count = 100;

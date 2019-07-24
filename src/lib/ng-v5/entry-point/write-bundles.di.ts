@@ -7,5 +7,5 @@ export const WRITE_BUNDLES_TRANSFORM_TOKEN = new InjectionToken<Transform>(`ng.v
 
 export const WRITE_BUNDLES_TRANSFORM: TransformProvider = provideTransform({
   provide: WRITE_BUNDLES_TRANSFORM_TOKEN,
-  useFactory: () => writeBundlesTransform
+  useFactory: () => writeBundlesTransform,
 });
