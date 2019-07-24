@@ -1,9 +1,9 @@
 environment:
-  global:
-    # Set %PATH% to avoid msys/cygwin DLL conflicts which causes:
-    # 'fatal error - cygheap base mismatch detected'
-    PATH: C:\msys64\usr\bin;C:\WINDOWS\system32;C:\Program Files (x86)\7-Zip;C:\WINDOWS;C:\Program Files (x86)\Yarn\bin;C:\Program Files (x86)\nodejs
-  nodejs_version: '8'
+  # global
+  # Set %PATH% to avoid msys/cygwin DLL conflicts which causes:
+  # 'fatal error - cygheap base mismatch detected'
+  # PATH: C:\msys64\usr\bin;C:\WINDOWS\system32;C:\Program Files (x86)\7-Zip;C:\WINDOWS;C:\Program Files (x86)\Yarn\bin;C:\Program Files (x86)\nodejs
+  nodejs_version: '10'
 
 matrix:
   fast_finish: true
