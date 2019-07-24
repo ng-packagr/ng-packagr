@@ -5,7 +5,7 @@ export function and(...criteria: ((node: Node) => boolean)[]) {
 }
 
 export function by(
-  criteria: (node: Node) => boolean
+  criteria: (node: Node) => boolean,
 ): {
   (node: Node): boolean;
   and: (criteria: (node: Node) => boolean) => (node: Node) => boolean;

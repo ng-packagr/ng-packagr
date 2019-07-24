@@ -8,7 +8,7 @@ export interface NgPackagrOptions {
 
 export const provideOptions = (options: NgPackagrOptions = {}): ValueProvider => ({
   provide: OPTIONS_TOKEN,
-  useValue: options
+  useValue: options,
 });
 
 export const DEFAULT_OPTIONS_PROVIDER: Provider = provideOptions();

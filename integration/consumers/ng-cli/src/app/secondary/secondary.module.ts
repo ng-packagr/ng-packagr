@@ -7,6 +7,6 @@ import { SecondaryComponent } from './secondary.component';
 @NgModule({
   imports: [CommonModule, UiLibModule, SubModule],
   declarations: [SecondaryComponent],
-  exports: [SecondaryComponent]
+  exports: [SecondaryComponent],
 })
 export class SecondaryModule {}

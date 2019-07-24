@@ -76,7 +76,7 @@ describe(`@sample/secondary`, () => {
   describe(`should-be-ignored/package.json`, () => {
     it(`should not exist`, () => {
       expect(() =>
-        fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'should-be-ignored', 'package.json'), 'utf-8')
+        fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'should-be-ignored', 'package.json'), 'utf-8'),
       ).throw();
     });
   });

@@ -14,7 +14,7 @@ describe(`sample-typings`, () => {
       expect(VALIDATOR_DTS).to.contain('chalk.d.ts');
       expect(VALIDATOR_DTS).to.satisfy(
         (value: string) => value.startsWith(`/// <reference path="chalk.d.ts" />`),
-        'Expected validator.d.ts to contain a triple-slash reference'
+        'Expected validator.d.ts to contain a triple-slash reference',
       );
     });
   });

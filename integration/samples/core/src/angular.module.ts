@@ -6,21 +6,9 @@ import { AngularPipe } from './angular.pipe';
 import { AngularService } from './angular.service';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [
-    AngularComponent,
-    AngularDirective,
-    AngularPipe
-  ],
-  exports: [
-    AngularComponent,
-    AngularDirective,
-    AngularPipe
-  ],
-  providers: [
-    AngularService
-  ]
+  imports: [CommonModule],
+  declarations: [AngularComponent, AngularDirective, AngularPipe],
+  exports: [AngularComponent, AngularDirective, AngularPipe],
+  providers: [AngularService],
 })
 export class AngularModule {}

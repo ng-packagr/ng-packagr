@@ -120,7 +120,7 @@ export class NgPackagr {
         log.error(err);
         return throwError(err);
       }),
-      map(() => undefined)
+      map(() => undefined),
     );
   }
 }
@@ -129,5 +129,5 @@ export const ngPackagr = (): NgPackagr =>
   new NgPackagr([
     // Add default providers to this list.
     ...PACKAGE_PROVIDERS,
-    ...ENTRY_POINT_PROVIDERS
+    ...ENTRY_POINT_PROVIDERS,
   ]);

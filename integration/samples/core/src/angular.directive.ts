@@ -1,6 +1,6 @@
-import { Directive } from "@angular/core";
+import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[ng-directive]'
+  selector: '[ng-directive]',
 })
 export class AngularDirective {}

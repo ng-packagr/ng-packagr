@@ -36,7 +36,7 @@ export async function flattenToFesm(opts: FlattenOpts): Promise<void> {
     sourceRoot: opts.sourceRoot,
     format: 'es',
     dest: opts.destFile,
-    dependencyList: opts.dependencyList
+    dependencyList: opts.dependencyList,
   });
 }
 
@@ -49,9 +49,9 @@ export async function flattenToUmd(opts: FlattenOpts): Promise<void> {
     dest: opts.destFile,
     amd: { id: opts.amdId },
     umdModuleIds: {
-      ...opts.umdModuleIds
+      ...opts.umdModuleIds,
     },
-    dependencyList: opts.dependencyList
+    dependencyList: opts.dependencyList,
   });
 }
 

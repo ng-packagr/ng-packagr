@@ -35,13 +35,13 @@ export const writeBundlesTransform: Transform = pipe(
       amdId: ngEntryPoint.amdId,
       umdModuleIds: {
         ...ngEntryPoint.umdModuleIds,
-        ...dependencyUmdIds
+        ...dependencyUmdIds,
       },
-      dependencyList: getDependencyListForGraph(graph)
+      dependencyList: getDependencyListForGraph(graph),
     };
 
     return fromPromise(writeFlatBundleFiles(destinationFiles, opts)).pipe(map(() => graph));
-  })
+  }),
 );
 
 async function writeFlatBundleFiles(destinationFiles: DestinationFiles, opts: FlattenOpts): Promise<void> {
@@ -51,14 +51,14 @@ async function writeFlatBundleFiles(destinationFiles: DestinationFiles, opts: Fl
   await flattenToFesm({
     ...opts,
     entryFile: esm2015,
-    destFile: fesm2015
+    destFile: fesm2015,
   });
 
   log.info('Bundling to FESM5');
   await flattenToFesm({
     ...opts,
     entryFile: esm5,
-    destFile: fesm5
+    destFile: fesm5,
   });
 
   log.info('Bundling to UMD');
@@ -66,7 +66,7 @@ async function writeFlatBundleFiles(destinationFiles: DestinationFiles, opts: Fl
     ...opts,
     entryFile: fesm5,
     destFile: umd,
-    dependencyList: opts.dependencyList
+    dependencyList: opts.dependencyList,
   });
 
   log.info('Minifying UMD bundle');
@@ -81,7 +81,7 @@ function getDependencyListForGraph(graph: BuildGraph): DependencyList {
 
   const dependencyList: DependencyList = {
     dependencies: [],
-    bundledDependencies: []
+    bundledDependencies: [],
   };
 
   for (const entry of graph.filter(isEntryPoint)) {
@@ -92,8 +92,8 @@ function getDependencyListForGraph(graph: BuildGraph): DependencyList {
       dependencyList.dependencies.concat(
         Object.keys(dependencies),
         Object.keys(peerDependencies),
-        entry.data.entryPoint.moduleId
-      )
+        entry.data.entryPoint.moduleId,
+      ),
     );
   }
 

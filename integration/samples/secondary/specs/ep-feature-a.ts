@@ -10,10 +10,10 @@ describe(`@sample/secondary/feature-a`, () => {
 
   before(() => {
     UMD_BUNDLE_CONTENTS = fs.readFileSync(path.resolve(DIST, 'bundles', 'sample-secondary-feature-a.umd.js'), {
-      encoding: 'utf-8'
+      encoding: 'utf-8',
     });
     ESM5_CONTENTS = fs.readFileSync(path.resolve(DIST, 'fesm5', 'sample-secondary-feature-a.js'), {
-      encoding: 'utf-8'
+      encoding: 'utf-8',
     });
   });
 
@@ -35,7 +35,7 @@ describe(`@sample/secondary/feature-a`, () => {
 
   it(`should depend on '@sample/secondary/shared' for AMD (UMD)`, () => {
     expect(UMD_BUNDLE_CONTENTS).to.contain(
-      `define('@sample/secondary/feature-a', ['exports', '@sample/secondary/shared']`
+      `define('@sample/secondary/feature-a', ['exports', '@sample/secondary/shared']`,
     );
   });
 

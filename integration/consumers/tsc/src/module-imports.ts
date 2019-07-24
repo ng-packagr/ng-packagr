@@ -1,6 +1,6 @@
 import * as core from '@angular/core';
 
 @core.Directive({
-  selector: 'moduleImport'
+  selector: 'moduleImport',
 })
 export class ModuleImportDirective {}

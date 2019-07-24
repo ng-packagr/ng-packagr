@@ -75,7 +75,7 @@ describe('basic', () => {
           harness.expectMetadataToContain(
             'secondary/basic-secondary',
             'metadata.ɵa.decorators[0].arguments[0].template',
-            'Hello Angular'
+            'Hello Angular',
           );
           done();
         });

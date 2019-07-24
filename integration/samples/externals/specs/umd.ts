@@ -9,7 +9,7 @@ describe(`@sample/externals`, () => {
     let BUNDLE;
     before(() => {
       BUNDLE = fs.readFileSync(path.resolve(__dirname, '../dist/bundles/sample-externals.umd.js'), {
-        encoding: 'utf-8'
+        encoding: 'utf-8',
       });
       API = require('../dist/bundles/sample-externals.umd.min.js');
     });
@@ -69,7 +69,7 @@ describe(`@sample/externals/testing`, () => {
     let BUNDLE;
     before(() => {
       BUNDLE = fs.readFileSync(path.resolve(__dirname, '../dist/bundles/sample-externals-testing.umd.js'), {
-        encoding: 'utf-8'
+        encoding: 'utf-8',
       });
     });
 

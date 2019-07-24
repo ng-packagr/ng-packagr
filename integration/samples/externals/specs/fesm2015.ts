@@ -7,7 +7,7 @@ describe(`@sample/externals`, () => {
     let BUNDLE;
     before(() => {
       BUNDLE = fs.readFileSync(path.resolve(__dirname, '../dist/fesm2015/sample-externals.js'), {
-        encoding: 'utf-8'
+        encoding: 'utf-8',
       });
     });
 
@@ -34,7 +34,7 @@ describe(`@sample/externals/testing`, () => {
     let BUNDLE;
     before(() => {
       BUNDLE = fs.readFileSync(path.resolve(__dirname, '../dist/fesm2015/sample-externals-testing.js'), {
-        encoding: 'utf-8'
+        encoding: 'utf-8',
       });
     });
 

@@ -116,7 +116,7 @@ export class TestHarness {
         .watch()
         .pipe(
           tap(() => resolve()), // we are only interested when in the first builds, that's why we are resolving it
-          tap(() => this.completeHandler())
+          tap(() => this.completeHandler()),
         )
         .subscribe();
     });

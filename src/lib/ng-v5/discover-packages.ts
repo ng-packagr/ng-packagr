@@ -56,7 +56,7 @@ const resolveUserPackage = async (folderPathOrFilePath: string): Promise<UserPac
     return {
       basePath,
       packageJson,
-      ngPackageJson
+      ngPackageJson,
     };
   }
 
@@ -93,12 +93,12 @@ const findSecondaryPackagesPaths = async (directoryPath: string, excludeFolder: 
     '**/node_modules/**',
     '**/.git/**',
     `${path.resolve(directoryPath, excludeFolder)}/**`,
-    `${directoryPath}/package.json`
+    `${directoryPath}/package.json`,
   ];
 
   const filePaths = await globFiles(`${directoryPath}/**/package.json`, {
     ignore,
-    cwd: directoryPath
+    cwd: directoryPath,
   });
 
   return filePaths.map(path.dirname);
@@ -113,7 +113,7 @@ const findSecondaryPackagesPaths = async (directoryPath: string, excludeFolder: 
 const secondaryEntryPoint = (
   primaryDirectoryPath: string,
   primary: NgEntryPoint,
-  { packageJson, ngPackageJson, basePath }: UserPackage
+  { packageJson, ngPackageJson, basePath }: UserPackage,
 ): NgEntryPoint => {
   if (path.resolve(basePath) === path.resolve(primaryDirectoryPath)) {
     log.error(`Cannot read secondary entry point. It's already a primary entry point. path=${basePath}`);
@@ -126,7 +126,7 @@ const secondaryEntryPoint = (
   return new NgEntryPoint(packageJson, ngPackageJson, instantiateSchemaClass(ngPackageJson), basePath, {
     moduleId: secondaryModuleId,
     primaryDestinationPath: primary.destinationPath,
-    destinationPath: path.join(primary.destinationPath, relativeSourcePath)
+    destinationPath: path.join(primary.destinationPath, relativeSourcePath),
   });
 };
 
@@ -145,14 +145,14 @@ export const discoverPackages = async ({ project }: { project: string }): Promis
             log.warn(`Cannot read secondary entry point at ${folderPath}. Skipping.`);
 
             return null;
-          })
-        )
-      )
+          }),
+        ),
+      ),
     )
     .then(secondaryPackages =>
       secondaryPackages
         .filter(value => !!value)
-        .map(secondaryPackage => secondaryEntryPoint(primaryPackage.basePath, primary, secondaryPackage))
+        .map(secondaryPackage => secondaryEntryPoint(primaryPackage.basePath, primary, secondaryPackage)),
     );
   if (secondaries.length > 0) {
     log.debug(`Found secondary entry points: ${secondaries.map(e => e.moduleId).join(', ')}`);

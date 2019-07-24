@@ -11,7 +11,7 @@ export const provideTsConfig = (values?: ParsedConfiguration | string): Provider
     useFactory: () => {
       return createDefaultTsConfig(values);
     },
-    deps: []
+    deps: [],
   };
 };
 
@@ -24,5 +24,5 @@ export const INIT_TS_CONFIG_TOKEN = new InjectionToken<Transform>('ng.v5.initTsC
 export const INIT_TS_CONFIG_TRANSFORM: TransformProvider = provideTransform({
   provide: INIT_TS_CONFIG_TOKEN,
   useFactory: initTsConfigTransformFactory,
-  deps: [DEFAULT_TS_CONFIG_TOKEN]
+  deps: [DEFAULT_TS_CONFIG_TOKEN],
 });

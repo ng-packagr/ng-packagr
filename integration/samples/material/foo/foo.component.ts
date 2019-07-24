@@ -4,7 +4,7 @@ import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'foo-component',
-  template: 'foo'
+  template: 'foo',
 })
 export class FooComponent {
   doSomething() {}

@@ -60,7 +60,7 @@ export class EntryPointNode extends Node {
   constructor(
     public readonly url: string,
     readonly sourcesFileCache?: FileCache,
-    readonly analysisSourcesFileCache?: FileCache
+    readonly analysisSourcesFileCache?: FileCache,
   ) {
     super(url);
 
@@ -83,7 +83,7 @@ export class EntryPointNode extends Node {
     sourcesFileCache: new FileCache(),
     analysisSourcesFileCache: new FileCache(),
     moduleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
-    analysisModuleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s)
+    analysisModuleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
   };
 
   data: {
@@ -99,6 +99,6 @@ export class PackageNode extends Node {
 
   cache = {
     sourcesFileCache: new FileCache(),
-    analysisSourcesFileCache: new FileCache()
+    analysisSourcesFileCache: new FileCache(),
   };
 }

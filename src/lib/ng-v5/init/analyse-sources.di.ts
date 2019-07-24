@@ -7,5 +7,5 @@ export const ANALYSE_SOURCES_TOKEN = new InjectionToken<Transform>(`ng.v5.analys
 
 export const ANALYSE_SOURCES_TRANSFORM: TransformProvider = provideTransform({
   provide: ANALYSE_SOURCES_TOKEN,
-  useFactory: () => analyseSourcesTransform
+  useFactory: () => analyseSourcesTransform,
 });

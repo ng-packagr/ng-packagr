@@ -11,7 +11,7 @@ import {
   debounceTime,
   filter,
   takeLast,
-  defaultIfEmpty
+  defaultIfEmpty,
 } from 'rxjs/operators';
 import { BuildGraph } from '../brocc/build-graph';
 import { DepthBuilder } from '../brocc/depth';
@@ -27,7 +27,7 @@ import {
   byEntryPoint,
   isPackage,
   fileUrl,
-  fileUrlPath
+  fileUrlPath,
 } from './nodes';
 import { discoverPackages } from './discover-packages';
 import { createFileWatch } from '../file/file-watcher';
@@ -58,7 +58,7 @@ export const packageTransformFactory = (
   options: NgPackagrOptions,
   initTsConfigTransform: Transform,
   analyseSourcesTransform: Transform,
-  entryPointTransform: Transform
+  entryPointTransform: Transform,
 ) => (source$: Observable<BuildGraph>): Observable<BuildGraph> => {
   const pkgUri = ngUrl(project);
 
@@ -78,7 +78,7 @@ export const packageTransformFactory = (
           ngPkg.data = value;
 
           return graph.put(ngPkg);
-        })
+        }),
       );
     }),
     // Clean the primary dest folder (should clean all secondary sub-directory, as well)
@@ -87,7 +87,7 @@ export const packageTransformFactory = (
         const { dest, deleteDestPath } = graph.get(pkgUri).data;
         return from(deleteDestPath ? rimraf(dest) : Promise.resolve());
       },
-      (graph, _) => graph
+      (graph, _) => graph,
     ),
     // Add entry points to graph
     map(graph => {
@@ -97,7 +97,7 @@ export const packageTransformFactory = (
         const node = new EntryPointNode(
           ngUrl(moduleId),
           ngPkg.cache.sourcesFileCache,
-          ngPkg.cache.analysisSourcesFileCache
+          ngPkg.cache.analysisSourcesFileCache,
         );
         node.data = { entryPoint, destinationFiles };
         node.state = 'dirty';
@@ -111,7 +111,7 @@ export const packageTransformFactory = (
     // Initialize the tsconfig for each entry point
     initTsConfigTransform,
     // perform build
-    buildTransform
+    buildTransform,
   );
 };
 
@@ -119,7 +119,7 @@ const watchTransformFactory = (
   project: string,
   _options: NgPackagrOptions,
   analyseSourcesTransform: Transform,
-  entryPointTransform: Transform
+  entryPointTransform: Transform,
 ) => (source$: Observable<BuildGraph>): Observable<BuildGraph> => {
   const CompleteWaitingForFileChange = '\nCompilation complete. Watching for file changes...';
   const FileChangeDetected = '\nFile change detected. Starting incremental compilation...';
@@ -147,7 +147,7 @@ const watchTransformFactory = (
             ...nodesToClean,
             // if a non ts file changes we need to clean up it's direct dependees
             // this is mainly done for resources such as html and css
-            ...nodesToClean.filter(x => !x.url.endsWith('.ts')).map(x => x.dependees)
+            ...nodesToClean.filter(x => !x.url.endsWith('.ts')).map(x => x.dependees),
           ]);
 
           // delete node that changes
@@ -169,7 +169,7 @@ const watchTransformFactory = (
         debounceTime(200),
         tap(() => log.msg(FileChangeDetected)),
         startWith(undefined),
-        mapTo(graph)
+        mapTo(graph),
       );
     }),
     switchMap(graph => {
@@ -180,14 +180,14 @@ const watchTransformFactory = (
           log.error(error);
           log.msg(FailedWaitingForFileChange);
           return NEVER;
-        })
+        }),
       );
-    })
+    }),
   );
 };
 
 const buildTransformFactory = (project: string, analyseSourcesTransform: Transform, entryPointTransform: Transform) => (
-  source$: Observable<BuildGraph>
+  source$: Observable<BuildGraph>,
 ): Observable<BuildGraph> => {
   const pkgUri = ngUrl(project);
   return source$.pipe(
@@ -202,7 +202,7 @@ const buildTransformFactory = (project: string, analyseSourcesTransform: Transfo
       log.success(`Built Angular Package!
  - from: ${ngPkg.data.src}
  - to:   ${ngPkg.data.dest}`);
-    })
+    }),
   );
 };
 
@@ -212,12 +212,12 @@ const writeNpmPackage = (pkgUri: string): Transform =>
       const { data } = graph.get(pkgUri);
       const filesToCopy = Promise.all(
         [`${data.src}/LICENSE`, `${data.src}/README.md`].map(src =>
-          copyFile(src, path.join(data.dest, path.basename(src)), {dereference: true})
-        )
+          copyFile(src, path.join(data.dest, path.basename(src)), { dereference: true }),
+        ),
       );
 
       return from(filesToCopy).pipe(map(() => graph));
-    })
+    }),
   );
 
 const scheduleEntryPoints = (epTransform: Transform): Transform =>
@@ -243,11 +243,11 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
             // Mark the entry point as 'in-progress'
             tap(entryPoint => (entryPoint.state = STATE_IN_PROGESS)),
             mapTo(graph),
-            epTransform
-          )
+            epTransform,
+          ),
         ),
         takeLast(1), // don't use last as sometimes it this will cause 'no elements in sequence',
-        defaultIfEmpty(graph)
+        defaultIfEmpty(graph),
       );
-    })
+    }),
   );

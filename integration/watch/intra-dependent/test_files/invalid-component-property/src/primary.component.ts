@@ -2,8 +2,9 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'ng-component',
-  template: '{{ counter }}'
+  template: '{{ counter }}',
 })
 export class PrimaryAngularComponent {
-  @Input() counter: string;
+  @Input()
+  counter: string;
 }

@@ -7,5 +7,5 @@ export const WRITE_PACKAGE_TRANSFORM_TOKEN = new InjectionToken<Transform>(`ng.v
 
 export const WRITE_PACKAGE_TRANSFORM: TransformProvider = provideTransform({
   provide: WRITE_PACKAGE_TRANSFORM_TOKEN,
-  useFactory: () => writePackageTransform
+  useFactory: () => writePackageTransform,
 });

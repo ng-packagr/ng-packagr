@@ -6,10 +6,10 @@ import { AngularModule, TestInterface } from '@sample/api';
 @NgModule({
   imports: [CommonModule, AngularModule],
   declarations: [SecondaryAngularComponent],
-  exports: [SecondaryAngularComponent]
+  exports: [SecondaryAngularComponent],
 })
 export class SecondaryAngularModule {
   x: TestInterface = {
-    title: 'x'
+    title: 'x',
   };
 }

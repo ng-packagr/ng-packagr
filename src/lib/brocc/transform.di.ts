@@ -43,6 +43,6 @@ export interface TransformProvider extends FactoryProvider {
 export function provideTransform(module: TransformProvider): TransformProvider {
   return {
     ...module,
-    deps: module.deps || []
+    deps: module.deps || [],
   };
 }

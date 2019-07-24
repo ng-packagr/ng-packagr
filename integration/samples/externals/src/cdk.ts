@@ -4,6 +4,6 @@ import { PortalModule } from '@angular/cdk/portal';
 
 // XX. what happens if I import one from '@angular/cdk/foo' and then again from '@angular/cdk'???
 @NgModule({
-  imports: [OverlayModule, PortalModule]
+  imports: [OverlayModule, PortalModule],
 })
 export class SomeModule {}

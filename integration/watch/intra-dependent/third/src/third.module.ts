@@ -5,6 +5,6 @@ import { ThirdAngularComponent } from './third.component';
 @NgModule({
   imports: [CommonModule],
   declarations: [ThirdAngularComponent],
-  exports: [ThirdAngularComponent]
+  exports: [ThirdAngularComponent],
 })
 export class ThirdAngularModule {}

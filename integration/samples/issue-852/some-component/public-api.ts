@@ -2,7 +2,7 @@ import { Component, NgModule } from '@angular/core';
 
 @Component({
   selector: 'some-component',
-  template: ''
+  template: '',
 })
 export class SomeComponent {
   constructor() {}
@@ -10,6 +10,6 @@ export class SomeComponent {
 
 @NgModule({
   declarations: [SomeComponent],
-  exports: [SomeComponent]
+  exports: [SomeComponent],
 })
 export class SomeComponentModule {}

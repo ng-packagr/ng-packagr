@@ -9,23 +9,23 @@ export async function minifyJsFile(inputPath: string, outputPath?: string): Prom
   const sourcemapOut = `${outputPath}.map`;
   const [inputFileBuffer, inputSourceMapBuffer]: Buffer[] = await Promise.all([
     readFile(inputPath),
-    readFile(`${inputPath}.map`)
+    readFile(`${inputPath}.map`),
   ]);
 
   const result = minify(inputFileBuffer.toString(), {
     sourceMap: {
       includeSources: true,
       content: JSON.parse(inputSourceMapBuffer.toString()),
-      url: basename(sourcemapOut)
+      url: basename(sourcemapOut),
     },
     parse: {
-      bare_returns: true
+      bare_returns: true,
     },
     ie8: true,
     warnings: true,
     output: {
-      comments: 'some'
-    }
+      comments: 'some',
+    },
   });
 
   if (result.warnings) {
