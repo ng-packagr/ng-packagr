@@ -1,5 +1,4 @@
 import * as path from 'path';
-import { SchemaClass } from '@ngtools/json-schema';
 import { NgPackageConfig } from '../../ng-package.schema';
 import { DirectoryPath, SourceFilePath, CssUrl, DestinationFiles } from './shared';
 
@@ -38,8 +37,6 @@ export class NgEntryPoint {
     public readonly packageJson: any,
     /** Values from either the `ngPackage` option (from `package.json`) or values from `ng-package.json`. */
     public readonly ngPackageJson: NgPackageConfig,
-    /** Corresponding JSON schema class instantiated from `ngPackageJson` values. */
-    private readonly $schema: SchemaClass<NgPackageConfig>,
     /** Absolute directory path of this entry point's `package.json` location. */
     public readonly basePath: string,
     /** XX: additional auto-configured data passed for scondary entry point's. Needs better docs. */
@@ -90,7 +87,14 @@ export class NgEntryPoint {
   }
 
   public $get(key: string): any {
-    return this.$schema.$$get(key);
+    const parts = key.split('.');
+    let value = this.ngPackageJson;
+
+    for (const key of parts) {
+      value = value[key];
+    }
+
+    return value;
   }
 
   public get entryFile(): SourceFilePath {
@@ -115,8 +119,8 @@ export class NgEntryPoint {
 
   public get styleIncludePaths(): string[] {
     const includePaths = this.$get('lib.styleIncludePaths') || [];
-    return includePaths.map(includePath =>
-      path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath),
+    return includePaths.map(
+      includePath => (path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath)),
     );
   }
 

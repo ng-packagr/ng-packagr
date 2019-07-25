@@ -27,7 +27,7 @@
   "main": "./public_api.js",
   "typings": "./public_api.d.ts",
   "dependencies": {
-    "@ngtools/json-schema": "^1.1.0",
+    "ajv": "^6.10.2",
     "autoprefixer": "^9.6.0",
     "browserslist": "^4.0.0",
     "chalk": "^2.3.1",
