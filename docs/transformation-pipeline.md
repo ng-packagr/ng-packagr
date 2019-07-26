@@ -50,7 +50,7 @@ const myTransform: Transform = pipe(
     // Return the graph instance, thus passing it to "next" (a subsequent transform)
     return graph;
   }),
-  tap(() => console.log('Finished something'))
+  tap(() => console.log('Finished something')),
 );
 ```
 
@@ -60,7 +60,10 @@ A Transformation may be composed of several "sub-transformations". Composition t
 import { pipe } from 'rxjs/util/pipe';
 
 function composedTransformationFactory(firstSubTransform: Transform, secondSubTransform: Transform) {
-  return pipe(firstSubTransform, secondSubTransform);
+  return pipe(
+    firstSubTransform,
+    secondSubTransform,
+  );
 }
 ```
 
@@ -86,7 +89,7 @@ The implementation of `BuildGraph` and `Node` are still very naive.
 Their implementation may change and their APIs may change with breaking changes.
 They **must not** be considered "stable" at this point in time.
 
-The "default" ng-packagr transformation for Angular v5 is still heavily centered on the idea of an [entry point](https://github.com/dherges/ng-packagr/blob/master/src/lib/ng-package-format/entry-point.ts#L7).
+The "default" ng-packagr transformation for Angular v5 is still heavily centered on the idea of an [entry point](https://github.com/ng-packagr/ng-packagr/blob/master/src/lib/ng-package-format/entry-point.ts#L7).
 
 The rxjs-ified pipeline allows to add a watch mode by marking nodes in the graph as "dirty" and then triggering the transformation processing.
 The individual transformations will then be able to re-build just what has changed.
@@ -102,8 +105,8 @@ import { ngPackagr } from 'ng-packagr';
 ngPackagr().withProviders([
   {
     provide: STYLESHEET_TRANSFORM,
-    useFactory: myCustomizedStylesheetTransformFactory
-  }
+    useFactory: myCustomizedStylesheetTransformFactory,
+  },
 ]);
 ```
 
@@ -116,7 +119,7 @@ Example could look like – this needs to be explored further before implementin
 export const myTransform: Transform = pipe(/* .. */);
 
 @Transform({
-  type: 'promise'
+  type: 'promise',
 })
 export async function myTransform(graph: BuildGraph): Promise<BuildGraph> {
   await doAsync();
@@ -125,10 +128,14 @@ export async function myTransform(graph: BuildGraph): Promise<BuildGraph> {
 
 @Transform({
   type: 'factory',
-  deps: [ firstTransformToken, secondTransformToken ]
+  deps: [firstTransformToken, secondTransformToken],
 })
 export function myComposedTransform(firstTransform, secondTransform) {
-  return pipe(firstTransform, tap(() => console.log('Adding my custom processing in-between')), secondTransform);
+  return pipe(
+    firstTransform,
+    tap(() => console.log('Adding my custom processing in-between')),
+    secondTransform,
+  );
 }
 ```
 
