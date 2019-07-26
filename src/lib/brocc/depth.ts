@@ -24,7 +24,7 @@ export type Groups = Token[][];
  *
  * Here, foobar has depth 0, bar has depth 1, and foo has depth 2.
  *
- * @link https://github.com/dherges/ng-packagr/pull/419#issuecomment-354015908
+ * @link https://github.com/ng-packagr/ng-packagr/pull/419#issuecomment-354015908
  */
 export class DepthBuilder {
   // this serves as a tracker for dependencies between tokens

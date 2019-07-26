@@ -1,5 +1,4 @@
-Contributing
-============
+# Contributing
 
 Hi you,
 
@@ -9,7 +8,6 @@ Angular is a great framework with a good community and
 contributions to ng-packagr are welcome!
 
 However, if you like to help improving ng-packagr please follow these guidelines!
-
 
 ## For Users
 
@@ -24,12 +22,11 @@ If possible, take a look at the [`integration/samples`](./integration/samples) a
 Is the error you faced in an application importing the library?
 Try to break the Angular CLI app in [`integration/consumers/ng-cli`](./integration/consumers/ng-cli)!
 
-
 ## For Developers
 
 Want to open a pull request?
 
-Please take a look at the [issues labelled with "PR Welcome"](https://github.com/dherges/ng-packagr/labels/community%3A%20PR%20welcome)!
+Please take a look at the [issues labelled with "PR Welcome"](https://github.com/ng-packagr/ng-packagr/labels/community%3A%20PR%20welcome)!
 These are good issues to get started with and help improving ng-packagr!
 
 #### Before opening the pull request

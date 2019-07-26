@@ -16,7 +16,7 @@ import { provideOptions, NgPackagrOptions } from './options.di';
  *
  * See the `docs/transformations.md` for more prose description.
  *
- * @link https://github.com/dherges/ng-packagr/pull/572
+ * @link https://github.com/ng-packagr/ng-packagr/pull/572
  */
 export class NgPackagr {
   private buildTransform: InjectionToken<Transform> = PACKAGE_TRANSFORM.provide;
