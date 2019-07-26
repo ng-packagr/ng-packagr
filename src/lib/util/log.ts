@@ -2,8 +2,7 @@ import chalk from 'chalk';
 
 export const error = (err: string | Error) => {
   if (err instanceof Error) {
-    console.error('\n' + chalk.red('BUILD ERROR'));
-    console.error(chalk.red(err.message));
+    console.error(chalk.red('ERROR: ' + err.message));
 
     if (process.env.DEBUG) {
       console.error(chalk.red(err.stack) + '\n');
@@ -14,7 +13,7 @@ export const error = (err: string | Error) => {
 };
 
 export const warn = (msg: string) => {
-  console.warn(chalk.yellow(msg));
+  console.warn(chalk.yellow('WARNING: ' + msg));
 };
 
 export const success = (msg: string) => {

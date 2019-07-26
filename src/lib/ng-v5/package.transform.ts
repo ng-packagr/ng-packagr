@@ -199,9 +199,11 @@ const buildTransformFactory = (project: string, analyseSourcesTransform: Transfo
     writeNpmPackage(pkgUri),
     tap(graph => {
       const ngPkg = graph.get(pkgUri);
+      log.success('\n------------------------------------------------------------------------------');
       log.success(`Built Angular Package!
  - from: ${ngPkg.data.src}
  - to:   ${ngPkg.data.dest}`);
+      log.success('------------------------------------------------------------------------------');
     }),
   );
 };

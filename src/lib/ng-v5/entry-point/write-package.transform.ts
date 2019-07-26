@@ -38,6 +38,8 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
   const relativeUnixFromDestPath = (filePath: string) =>
     ensureUnixPath(path.relative(ngEntryPoint.destinationPath, filePath));
 
+  const isIvy = entryPoint.data.tsConfig.options.enableIvy;
+
   await writePackageJson(ngEntryPoint, ngPackage, {
     main: relativeUnixFromDestPath(destinationFiles.umd),
     module: relativeUnixFromDestPath(destinationFiles.fesm5),
@@ -47,8 +49,8 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     fesm5: relativeUnixFromDestPath(destinationFiles.fesm5),
     fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
     typings: relativeUnixFromDestPath(destinationFiles.declarations),
-    // XX 'metadata' property in 'package.json' is non-standard. Keep it anyway?
-    metadata: relativeUnixFromDestPath(destinationFiles.metadata),
+    // Ivy doesn't generate metadata files
+    metadata: isIvy ? undefined : relativeUnixFromDestPath(destinationFiles.metadata),
     // webpack v4+ specific flag to enable advanced optimizations and code splitting
     sideEffects: ngEntryPoint.sideEffects,
   });

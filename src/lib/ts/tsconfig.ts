@@ -116,7 +116,7 @@ export function setDependenciesTsConfigPaths(
   parsedTsConfig: ng.ParsedConfiguration,
   entryPoints: EntryPointNode[],
   pointToSource = false,
-) {
+): ng.ParsedConfiguration {
   const tsConfig = JSON.parse(JSON.stringify(parsedTsConfig));
 
   // Add paths mappings for dependencies
