@@ -44,7 +44,9 @@ export const entryPointTransformFactory = (
     transformFromPromise(async graph => {
       // Peek the first entry point from the graph
       const entryPoint = graph.find(byEntryPoint().and(isInProgress));
-      log.info(`Building entry point '${entryPoint.data.entryPoint.moduleId}'`);
+      log.msg('\n------------------------------------------------------------------------------');
+      log.msg(`Building entry point '${entryPoint.data.entryPoint.moduleId}'`);
+      log.msg('------------------------------------------------------------------------------');
     }),
     // TypeScript sources compilation
     compileTs,

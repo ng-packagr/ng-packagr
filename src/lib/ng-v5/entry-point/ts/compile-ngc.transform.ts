@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as ts from 'typescript';
 import { Transform, transformFromPromise } from '../../../brocc/transform';
 import { compileSourceFiles } from '../../../ngc/compile-source-files';
+import { NgccProcessor } from '../../../ngc/ngcc-processor';
 import { setDependenciesTsConfigPaths } from '../../../ts/tsconfig';
 import * as log from '../../../util/log';
 import { isEntryPointInProgress, EntryPointNode, isEntryPoint } from '../../nodes';
@@ -20,9 +21,10 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
   const { basePath, cssUrl, styleIncludePaths } = entryPoint.data.entryPoint;
   const stylesheetProcessor = new StylesheetProcessor(basePath, cssUrl, styleIncludePaths);
 
+  const ngccProcessor = tsConfig.options.enableIvy ? new NgccProcessor(tsConfig.options, entryPoints) : undefined;
+
   await compileSourceFiles(
     graph,
-    entryPoint,
     tsConfig,
     moduleResolutionCache,
     stylesheetProcessor,
@@ -32,9 +34,10 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
       target: ts.ScriptTarget.ES2015,
     },
     path.dirname(declarations),
+    ngccProcessor,
   );
 
-  await compileSourceFiles(graph, entryPoint, tsConfig, moduleResolutionCache, stylesheetProcessor, {
+  await compileSourceFiles(graph, tsConfig, moduleResolutionCache, stylesheetProcessor, {
     outDir: path.dirname(esm5),
     target: ts.ScriptTarget.ES5,
     downlevelIteration: true,

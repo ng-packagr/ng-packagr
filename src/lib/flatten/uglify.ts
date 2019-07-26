@@ -19,9 +19,9 @@ export async function minifyJsFile(inputPath: string, outputPath?: string): Prom
       url: basename(sourcemapOut),
     },
     parse: {
+      ecma: 5,
       bare_returns: true,
     },
-    ie8: true,
     warnings: true,
     output: {
       comments: 'some',
