@@ -11,17 +11,17 @@
   optionalDependencies:
     parse5 "^5.0.0"
 
-"@angular/common@~8.2.0-next.2":
-  version "8.2.0-next.2"
-  resolved "https://registry.yarnpkg.com/@angular/common/-/common-8.2.0-next.2.tgz#2e713ed07887aaa17596db98f38e88be4951ec3c"
-  integrity sha512-eWUK1ePmB49Qs76GcFelv4WvS4fs0eetzO50PRRytDsj4a+1nzrVV4NR8ozM/TyQrI1lrvcuEVMNDRj2B/crcg==
+"@angular/common@~8.2.0-rc.0":
+  version "8.2.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/common/-/common-8.2.0-rc.0.tgz#58b4fdc85d7db9667d9f9d28e8cb6356923c5e92"
+  integrity sha512-aOTXW2KRGhX/y5v6NUFFxxoTi1HlMwGv9XaxH1I9qj+YnlHO+oVqyHB4MS+gvb2eLqbyxKTKzUYWsMDblX8nVA==
   dependencies:
     tslib "^1.9.0"
 
-"@angular/compiler-cli@~8.2.0-next.2":
-  version "8.2.0-next.2"
-  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-8.2.0-next.2.tgz#664f10638138cd686a18dfc84ab118adf65a50d1"
-  integrity sha512-LaGVfdL9vXzSo4hlTbJOn+6TW3SwXiRsxhx6tLTan3Pe/gNWUspZxzasMMwpSVzUoZ1yPSZWg+NQSBEYZCitVA==
+"@angular/compiler-cli@~8.2.0-rc.0":
+  version "8.2.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-8.2.0-rc.0.tgz#a5b290d5c92d0f9a6de5d17c63ea7740169845e3"
+  integrity sha512-w4KSp2cSYpg2qcONZeVaeCGB0JkiXdXVIPO9PdkCp8tU7KYVOAt/ZbN91zBKunSD4EbzlaF7pr290J094CH04w==
   dependencies:
     canonical-path "1.0.0"
     chokidar "^2.1.1"
@@ -34,17 +34,17 @@
     tslib "^1.9.0"
     yargs "13.1.0"
 
-"@angular/compiler@~8.2.0-next.2":
-  version "8.2.0-next.2"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-8.2.0-next.2.tgz#2a8216b18c3d58c13d977752a338a4b9727d9c8b"
-  integrity sha512-2Ow0/agJFC6nhosExzFInM1Ut/BYsB2xcNAipL0SFFwYJbcnmDH28dmlk3JXEMxNHnbhAlnM0BHQpfdCsu++CQ==
+"@angular/compiler@~8.2.0-rc.0":
+  version "8.2.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-8.2.0-rc.0.tgz#3c288d33717e3a687333a5e7de533f871a5e5fca"
+  integrity sha512-fS2/5MTUtYy38kCwToltqBku6aq0hq90jn0p37TSRoYsNm7Ae2NU3nkM36A5G1wzetBn6R92updswbR62OVD1w==
   dependencies:
     tslib "^1.9.0"
 
-"@angular/core@~8.2.0-next.2":
-  version "8.2.0-next.2"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-8.2.0-next.2.tgz#6f69a47b37ee2b5f1c7140afe5e2c9ac6157d410"
-  integrity sha512-ngmjcGIb/nlWo41EX9ClejyHdA73LekZDAthtTLRvjNRVhCWIvZnU9r50WWiO5hXnjhhyRZjtQK+xI7c3x0P4w==
+"@angular/core@~8.2.0-rc.0":
+  version "8.2.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-8.2.0-rc.0.tgz#97a028fb2871abed3aa5fd04b5c4237818a5adb8"
+  integrity sha512-G7vdTjNCxhpLlOaAcQ/xWt9kFLs1PkNkMzyRsiGUe/k5Mlr+xcmUDb1e5N3bLHJmIDFIUO1fXp/KHp1dysqB7g==
   dependencies:
     tslib "^1.9.0"
 
@@ -55,17 +55,17 @@
   dependencies:
     tslib "^1.7.1"
 
-"@angular/platform-browser@~8.2.0-next.2":
-  version "8.2.0-next.2"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-8.2.0-next.2.tgz#4ee05ae60206695c73a0d4dbb274f753f56f4d3e"
-  integrity sha512-/GR0iu+XCmqGfLvmzvJzMALwnLQcGC53OCnvEpFL+5iJiauMPZim97CJq7CUvsvDYfikr2VnwRM1jBHHhspeXA==
+"@angular/platform-browser@~8.2.0-rc.0":
+  version "8.2.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-8.2.0-rc.0.tgz#69ae708dfc74fcc03e8cd1cdb296e1a828b433b9"
+  integrity sha512-Vk9Zdv6kHm3hwPvhc6FG0AnMxWOkNXfdAoXTLDY4vbo367ym1xxcDUmUf+mou/HODpnGdoHKSTLj5SEua2SSMw==
   dependencies:
     tslib "^1.9.0"
 
-"@angular/router@~8.2.0-next.2":
-  version "8.2.0-next.2"
-  resolved "https://registry.yarnpkg.com/@angular/router/-/router-8.2.0-next.2.tgz#cfc2d5b50b6b0c854bbe7d0f54ccf5cf594845ae"
-  integrity sha512-6eN+JXfgFXdzVRG0/XURc1gN+dry/F4vSZzXe5bmHiFUFVGzxtvKPr1sTS+OMJScmCNrzQL2bKM/2r00uxD8pQ==
+"@angular/router@~8.2.0-rc.0":
+  version "8.2.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@angular/router/-/router-8.2.0-rc.0.tgz#8a5eba78917d45485fc5001592e690d9ed4e4ad8"
+  integrity sha512-hpidAfvDpIaWBccogRNck1cFO/STgN/KinF/VkMWeYMlt9IFwefEOWwY/d1V71L3wjTwV+NMhuUTguE8OptT3w==
   dependencies:
     tslib "^1.9.0"
 
@@ -2374,7 +2374,7 @@ glob@7.0.x:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@7.1.3, glob@^7.0.3, glob@^7.0.5, glob@^7.0.6, glob@^7.1.2:
+glob@7.1.3, glob@^7.0.5, glob@^7.0.6, glob@^7.1.2:
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.3.tgz#3960832d3f1574108342dafd3a67b332c0969df1"
   integrity sha512-vcfuiIxogLV4DlGBHIUOwI0IbrJ8HWPc4MU7HzviGeNho/UJDfi6B5p3sHeWIQ0KGIU0Jpxi5ZHxemQfLkkAwQ==
