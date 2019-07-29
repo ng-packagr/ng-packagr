@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.4.2](https://github.com/ng-packagr/ng-packagr/compare/v5.4.1...v5.4.2) (2019-07-29)
+
+
+### Bug Fixes
+
+* handle deep undefined in schema options ([02055d0](https://github.com/ng-packagr/ng-packagr/commit/02055d0)), closes [#1356](https://github.com/ng-packagr/ng-packagr/issues/1356)
+
+
+
 ### [5.4.1](https://github.com/ng-packagr/ng-packagr/compare/v5.4.0...v5.4.1) (2019-07-29)
 
 
