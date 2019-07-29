@@ -43,8 +43,10 @@ describe(`sample-custom`, () => {
         expect(baz).to.be.ok;
       });
 
-      it(`should have the <h1> template inlined`, () => {
-        expect(baz.template).to.satisfy(str => str.startsWith(`<h1 class="supersized">Baz!</h1>`));
+      it('should have the svg template inlined', () => {
+        expect(baz.template).to.satisfy(str =>
+          str.startsWith(`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">`),
+        );
       });
 
       it(`should have a styles array with two stylesheets`, () => {

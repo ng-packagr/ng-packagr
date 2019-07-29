@@ -114,7 +114,7 @@ export function cacheCompilerHost(
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.content === undefined) {
         cache.content = compilerHost.readFile.call(this, fileName);
-        if (!/(html|htm)$/.test(path.extname(fileName))) {
+        if (!/(html|htm|svg)$/.test(path.extname(fileName))) {
           cache.content = stylesheetProcessor.process(fileName, cache.content);
         }
         cache.exists = true;
