@@ -35,6 +35,7 @@
       "description": "Description of the library's entry point.",
       "type": "object",
       "additionalProperties": false,
+      "default": {},
       "properties": {
         "entryFile": {
           "description": "Entry file to the public API (default: `src/public_api.ts`).",
@@ -43,8 +44,7 @@
         },
         "flatModuleFile": {
           "description": "Filename of the auto-generated flat module file (if empty, defaults to the package name as given in `package.json`).",
-          "type": "string",
-          "default": ""
+          "type": "string"
         },
         "umdModuleIds": {
           "description": "A map of external dependencies and their correspondent UMD module identifiers. Map keys are TypeScript / EcmaScript module identifiers. Map values are UMD module ids. The purpose of this map is to correctly bundle an UMD module file (with `rollup`). By default, `rxjs`, `tslib` and `@angular/*` dependency symbols are supported.",
