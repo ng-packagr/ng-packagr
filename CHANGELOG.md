@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.4.1](https://github.com/ng-packagr/ng-packagr/compare/v5.4.0...v5.4.1) (2019-07-29)
+
+
+### Bug Fixes
+
+* remove defaults from `languageLevel` ([7650c65](https://github.com/ng-packagr/ng-packagr/commit/7650c65))
+
+
+
 ## [5.4.0](https://github.com/ng-packagr/ng-packagr/compare/v5.3.0...v5.4.0) (2019-07-29)
 
 ### Features
