@@ -89,8 +89,11 @@ export class NgEntryPoint {
   public $get(key: string): any {
     const parts = key.split('.');
     let value = this.ngPackageJson;
-
     for (const key of parts) {
+      if (value == undefined) {
+        break;
+      }
+
       value = value[key];
     }
 
@@ -119,8 +122,8 @@ export class NgEntryPoint {
 
   public get styleIncludePaths(): string[] {
     const includePaths = this.$get('lib.styleIncludePaths') || [];
-    return includePaths.map(
-      includePath => (path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath)),
+    return includePaths.map(includePath =>
+      path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath),
     );
   }
 
