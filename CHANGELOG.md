@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.4.0](https://github.com/ng-packagr/ng-packagr/compare/v5.3.0...v5.4.0) (2019-07-29)
+
+
+### Build System
+
+* update @angular-devkit/build-angular to version ~0.801.0 ([18d7feb](https://github.com/ng-packagr/ng-packagr/commit/18d7feb))
+* update @angular/cdk to version ~8.1.0 ([ed3a72e](https://github.com/ng-packagr/ng-packagr/commit/ed3a72e))
+* update @angular/cli to version ~8.1.0 ([f581c7f](https://github.com/ng-packagr/ng-packagr/commit/f581c7f))
+* update @types/fs-extra to version ^8.0.0 ([705d0cc](https://github.com/ng-packagr/ng-packagr/commit/705d0cc))
+* update @types/node to version ~12.6.0 ([24a0ee0](https://github.com/ng-packagr/ng-packagr/commit/24a0ee0))
+* update angular packages to 8.2.0-rc.0 ([1bf4b05](https://github.com/ng-packagr/ng-packagr/commit/1bf4b05))
+* update husky to version ^3.0.0 ([48b7d7b](https://github.com/ng-packagr/ng-packagr/commit/48b7d7b))
+* update json-schema-to-typescript to version ^7.0.0 ([9254a3e](https://github.com/ng-packagr/ng-packagr/commit/9254a3e))
+* update karma to version ~4.2.0 ([112c59c](https://github.com/ng-packagr/ng-packagr/commit/112c59c))
+* update karma-coverage-istanbul-reporter to version ~2.1.0 ([d02142b](https://github.com/ng-packagr/ng-packagr/commit/d02142b))
+* update serveral build and testing depedencies ([3e7b223](https://github.com/ng-packagr/ng-packagr/commit/3e7b223))
+* update ts-node to version ~8.3.0 ([290f35f](https://github.com/ng-packagr/ng-packagr/commit/290f35f))
+* update tsickle to version ^0.36.0 ([8034b4a](https://github.com/ng-packagr/ng-packagr/commit/8034b4a))
+* update tslint to version ~5.18.0 ([64af03c](https://github.com/ng-packagr/ng-packagr/commit/64af03c))
+* update TypeScript to 3.5.0 ([f8249d8](https://github.com/ng-packagr/ng-packagr/commit/f8249d8))
+
+
+### Features
+
+* add support for Ivy libraries ([b6dfcf6](https://github.com/ng-packagr/ng-packagr/commit/b6dfcf6))
+* add support for typescript 3.5 and Angular 8.X pre-releases ([798de61](https://github.com/ng-packagr/ng-packagr/commit/798de61))
+* use `ajv` to validate schema ([e5e9864](https://github.com/ng-packagr/ng-packagr/commit/e5e9864))
+
+
+### Tests
+
+* add ivy sample integration test ([281d250](https://github.com/ng-packagr/ng-packagr/commit/281d250))
+
+
+
 ## [5.3.0](https://github.com/ng-packagr/ng-packagr/compare/v5.2.0...v5.3.0) (2019-06-05)
 
 
