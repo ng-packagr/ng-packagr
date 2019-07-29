@@ -88,13 +88,13 @@ export class NgEntryPoint {
 
   public $get(key: string): any {
     const parts = key.split('.');
-    let value = this.ngPackageJson;
+    let value = this.ngPackageJson as unknown;
     for (const key of parts) {
-      if (value == undefined) {
-        break;
+      if (typeof value === 'object' && value.hasOwnProperty(key)) {
+        value = value[key];
+      } else {
+        return undefined;
       }
-
-      value = value[key];
     }
 
     return value;
