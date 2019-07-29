@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.4.3](https://github.com/ng-packagr/ng-packagr/compare/v5.4.2...v5.4.3) (2019-07-29)
+
+
+### Bug Fixes
+
+* handle svg templates same as html files ([2156f5f](https://github.com/ng-packagr/ng-packagr/commit/2156f5f))
+
+
+
 ### [5.4.2](https://github.com/ng-packagr/ng-packagr/compare/v5.4.1...v5.4.2) (2019-07-29)
 
 
