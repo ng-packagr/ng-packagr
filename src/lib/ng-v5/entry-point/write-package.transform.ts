@@ -38,22 +38,27 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
   const relativeUnixFromDestPath = (filePath: string) =>
     ensureUnixPath(path.relative(ngEntryPoint.destinationPath, filePath));
 
-  const isIvy = entryPoint.data.tsConfig.options.enableIvy;
+  const isIvy = !!entryPoint.data.tsConfig.options.enableIvy;
 
-  await writePackageJson(ngEntryPoint, ngPackage, {
-    main: relativeUnixFromDestPath(destinationFiles.umd),
-    module: relativeUnixFromDestPath(destinationFiles.fesm5),
-    es2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
-    esm5: relativeUnixFromDestPath(destinationFiles.esm5),
-    esm2015: relativeUnixFromDestPath(destinationFiles.esm2015),
-    fesm5: relativeUnixFromDestPath(destinationFiles.fesm5),
-    fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
-    typings: relativeUnixFromDestPath(destinationFiles.declarations),
-    // Ivy doesn't generate metadata files
-    metadata: isIvy ? undefined : relativeUnixFromDestPath(destinationFiles.metadata),
-    // webpack v4+ specific flag to enable advanced optimizations and code splitting
-    sideEffects: ngEntryPoint.sideEffects,
-  });
+  await writePackageJson(
+    ngEntryPoint,
+    ngPackage,
+    {
+      main: relativeUnixFromDestPath(destinationFiles.umd),
+      module: relativeUnixFromDestPath(destinationFiles.fesm5),
+      es2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
+      esm5: relativeUnixFromDestPath(destinationFiles.esm5),
+      esm2015: relativeUnixFromDestPath(destinationFiles.esm2015),
+      fesm5: relativeUnixFromDestPath(destinationFiles.fesm5),
+      fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
+      typings: relativeUnixFromDestPath(destinationFiles.declarations),
+      // Ivy doesn't generate metadata files
+      metadata: isIvy ? undefined : relativeUnixFromDestPath(destinationFiles.metadata),
+      // webpack v4+ specific flag to enable advanced optimizations and code splitting
+      sideEffects: ngEntryPoint.sideEffects,
+    },
+    isIvy,
+  );
 
   log.success(`Built ${ngEntryPoint.moduleId}`);
 
@@ -75,10 +80,11 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
  * @param entryPoint An entry point of an Angular package / library
  * @param additionalProperties Additional properties, e.g. binary artefacts (bundle files), to merge into `package.json`
  */
-export async function writePackageJson(
+async function writePackageJson(
   entryPoint: NgEntryPoint,
   pkg: NgPackage,
   additionalProperties: { [key: string]: string | boolean | string[] },
+  isIvy: boolean,
 ): Promise<void> {
   log.debug('Writing package.json');
 
@@ -121,6 +127,16 @@ export async function writePackageJson(
         `You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`,
       );
     }
+  }
+
+  if (isIvy && !entryPoint.isSecondaryEntryPoint) {
+    const scripts = packageJson.scripts || (packageJson.scripts = {});
+    scripts.prepublishOnly =
+      'node --eval "console.error(\'' +
+      'ERROR: Trying to publish a package that has been compiled by Ivy. This is not allowed.\\n' +
+      'Please delete and rebuild the package, without compiling with Ivy, before attempting to publish.\\n' +
+      '\')" ' +
+      '&& exit 1';
   }
 
   // keep the dist package.json clean

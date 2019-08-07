@@ -11,6 +11,10 @@ describe(`@sample/apf`, () => {
       expect(PACKAGE).to.be.ok;
     });
 
+    it(`should not have 'prepublishOnly' script`, () => {
+      expect(PACKAGE.scripts && PACKAGE.scripts.prepublishOnly).to.be.undefined;
+    });
+
     it(`should have 'tslib' as a dependency`, () => {
       expect(PACKAGE.dependencies.tslib).to.be.ok;
     });
@@ -76,6 +80,10 @@ describe(`@sample/apf`, () => {
 
     it(`should exist`, () => {
       expect(PACKAGE).to.be.ok;
+    });
+
+    it(`should not have 'prepublishOnly' script`, () => {
+      expect(PACKAGE.scripts && PACKAGE.scripts.prepublishOnly).to.be.undefined;
     });
 
     it(`should not have ngPackage field`, () => {
