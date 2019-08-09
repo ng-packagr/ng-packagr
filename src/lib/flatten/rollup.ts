@@ -59,6 +59,9 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
       }
     },
     preserveSymlinks: true,
+    // Disable treeshaking when generating bundles
+    // see: https://github.com/angular/angular/pull/32069
+    treeshake: false,
   });
 
   // Output the bundle to disk
