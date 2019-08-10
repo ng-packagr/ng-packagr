@@ -45,7 +45,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     ngPackage,
     {
       main: relativeUnixFromDestPath(destinationFiles.umd),
-      module: relativeUnixFromDestPath(destinationFiles.fesm5),
+      module: relativeUnixFromDestPath(destinationFiles.module),
       es2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
       esm5: relativeUnixFromDestPath(destinationFiles.esm5),
       esm2015: relativeUnixFromDestPath(destinationFiles.esm2015),

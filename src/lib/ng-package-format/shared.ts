@@ -32,4 +32,6 @@ export interface DestinationFiles {
   umd: string;
   /** Absolute path of this entry point `UMD` Minifief bundle */
   umdMinified: string;
+  /** Absolute path of this entry point prefered module */
+  module: string;
 }

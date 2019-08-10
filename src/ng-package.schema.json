@@ -84,6 +84,16 @@
         "umdId": {
           "description": "ID for the UMD bundle. By default, uses a value derived from the entry point's module ID (i.e., name property in package.json)",
           "type": "string"
+        },
+        "module": {
+          "description": "Preferred library entry module type. By default, uses fesm5",
+          "type": "string",
+          "enum": [
+            "fesm5",
+            "fesm2015",
+            "esm5",
+            "esm2015"
+          ]
         }
       }
     }

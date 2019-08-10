@@ -83,6 +83,7 @@ export class NgEntryPoint {
       fesm5: pathJoinWithDest('fesm5', `${flatModuleFile}.js`),
       umd: pathJoinWithDest('bundles', `${flatModuleFile}.umd.js`),
       umdMinified: pathJoinWithDest('bundles', `${flatModuleFile}.umd.min.js`),
+      module: pathJoinWithDest(this.module, `${flatModuleFile}.js`),
     };
   }
 
@@ -102,6 +103,10 @@ export class NgEntryPoint {
 
   public get entryFile(): SourceFilePath {
     return this.$get('lib.entryFile');
+  }
+
+  public get module(): string {
+    return this.$get('lib.module') || "fesm5";
   }
 
   public get cssUrl(): CssUrl {
