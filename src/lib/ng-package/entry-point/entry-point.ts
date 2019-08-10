@@ -20,6 +20,10 @@ export interface DestinationFiles {
   umd: string;
   /** Absolute path of this entry point `UMD` Minifief bundle */
   umdMinified: string;
+  /** Absolute path of this entry point preferred es5 module */
+  module: string;
+  /** Absolute path of this entry point preferred es2015 module */
+  es2015: string;
 }
 
 /**
@@ -103,6 +107,8 @@ export class NgEntryPoint {
       fesm5: pathJoinWithDest('fesm5', `${flatModuleFile}.js`),
       umd: pathJoinWithDest('bundles', `${flatModuleFile}.umd.js`),
       umdMinified: pathJoinWithDest('bundles', `${flatModuleFile}.umd.min.js`),
+      module: pathJoinWithDest(this.module, `${flatModuleFile}.js`),
+      es2015: pathJoinWithDest(this.es2015, `${flatModuleFile}.js`),
     };
   }
 
@@ -122,6 +128,14 @@ export class NgEntryPoint {
 
   public get entryFile(): string {
     return this.$get('lib.entryFile');
+  }
+
+  public get module(): string {
+    return this.$get('lib.module') || 'fesm5';
+  }
+
+  public get es2015(): string {
+    return this.$get('lib.es2015') || 'fesm2015';
   }
 
   public get cssUrl(): CssUrl {
