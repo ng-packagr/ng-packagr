@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.5.0](https://github.com/ng-packagr/ng-packagr/compare/v5.4.3...v5.5.0) (2019-08-14)
+
+
+### Bug Fixes
+
+* disable treeshaking when generating bundles ([34b26fc](https://github.com/ng-packagr/ng-packagr/commit/34b26fc))
+* update commander to version ^3.0.0 ([dcd4853](https://github.com/ng-packagr/ng-packagr/commit/dcd4853))
+
+
+### Features
+
+* disable Ivy in default tsconfig ([f50dd2f](https://github.com/ng-packagr/ng-packagr/commit/f50dd2f))
+* show error when trying to publish ivy packages ([c3122d6](https://github.com/ng-packagr/ng-packagr/commit/c3122d6))
+
 ### [5.4.3](https://github.com/ng-packagr/ng-packagr/compare/v5.4.2...v5.4.3) (2019-07-29)
 
 
