@@ -227,11 +227,52 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
     concatMap(graph => {
       // Calculate node/dependency depth and determine build order
       const depthBuilder = new DepthBuilder();
-      const entryPoints = graph.filter(isEntryPoint);
-      entryPoints.forEach(entryPoint => {
-        const deps = entryPoint.filter(isEntryPoint).map(ep => ep.url);
-        depthBuilder.add(entryPoint.url, deps);
-      });
+      const entryPoints: any[] = graph.filter(isEntryPoint);
+
+      const primaryEntryPoint = entryPoints[0];
+
+      if (entryPoints.length) {
+        // Handle secondary entry
+        const entryPoint = primaryEntryPoint.data.entryPoint;
+        // get package name
+        const packageName = entryPoint.packageJson.name;
+        // get package source file root path
+        const baseRootPath = entryPoint.basePath.replace(/\\/g, '/');
+        // get primary package url
+        const baseUrl = primaryEntryPoint.url;
+        // create source file cache map
+        const sourcesFileCache = new Map();
+        //  for loop entryPoints
+        entryPoints.forEach(entryPoint => {
+          // get entryPoint base path
+          const basePath = entryPoint.data.entryPoint.basePath.replace(/\\/g, '/');
+          // get entryPoint path
+          const path = basePath.replace(baseRootPath, '').replace(/^\//, '');
+          if (path) {
+            let url = [baseUrl, path].join('/');
+            let deps = new Set();
+            entryPoint.analysisSourcesFileCache.forEach((value, key: string) => {
+              if (key.indexOf(basePath) === 0) {
+                for (const key2 of value.sourceFile.resolvedModules.keys()) {
+                  if (key2.indexOf(packageName) === 0) {
+                    const path2 = key2.replace(packageName, '').replace(/\//g, '');
+                    deps.add(path2 ? [baseUrl, path2].join('/') : baseUrl);
+                  }
+                }
+              }
+            });
+            sourcesFileCache.set(url, deps);
+          } else {
+            sourcesFileCache.set(baseUrl, new Set());
+          }
+        });
+        sourcesFileCache.forEach((value, key) => {
+          depthBuilder.add(key, [...value]);
+        });
+      } else {
+        // Handle primary entry
+        depthBuilder.add(primaryEntryPoint.url, []);
+      }
 
       // The array index is the depth.
       const groups = depthBuilder.build();
