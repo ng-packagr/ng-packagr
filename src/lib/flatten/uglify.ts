@@ -22,7 +22,7 @@ export async function minifyJsFile(inputPath: string, outputPath?: string): Prom
       ecma: 5,
       bare_returns: true,
     },
-    warnings: true,
+    warnings: false,
     output: {
       comments: 'some',
     },
