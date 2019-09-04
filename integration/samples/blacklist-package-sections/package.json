@@ -1,0 +1,28 @@
+{
+  "$schema": "../../../src/package.schema.json",
+  "name": "@sample/blacklist-package-sections",
+  "description": "A sample library with the blacklistPackageSections setting set",
+  "version": "1.0.0-pre.0",
+  "private": true,
+  "repository": "https://github.com/ng-packagr/ng-packagr.git",
+  "ngPackage": {
+    "lib": {
+      "entryFile": "src/public_api.ts"
+    },
+    "blacklistedPackageSections": [
+      "version",
+      "testA",
+      "testC"
+    ]
+  },
+  "testA": {
+    "a": "1",
+    "b": "2",
+    "c": "3"
+  },
+  "testB": {
+    "i": "x",
+    "ii": "y",
+    "iii": "z"
+  }
+}
