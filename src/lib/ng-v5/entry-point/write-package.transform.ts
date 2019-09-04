@@ -117,6 +117,14 @@ async function writePackageJson(
     throw e;
   }
 
+  // Removes blacklisted sections from package.json after build
+  if (pkg.blacklistedPackageSections.length > 0) {
+    log.info(`Removing blacklisted sections in package.json`);
+    for (const section of pkg.blacklistedPackageSections) {
+      delete packageJson[section];
+    }
+  }
+
   // Removes scripts from package.json after build
   if (packageJson.scripts) {
     if (pkg.keepLifecycleScripts !== true) {

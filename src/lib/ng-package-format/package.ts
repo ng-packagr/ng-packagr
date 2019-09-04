@@ -74,6 +74,19 @@ export class NgPackage {
     return value.concat('tslib').filter((value, index, self) => self.indexOf(value) === index);
   }
 
+  public get blacklistedPackageSections(): string[] {
+    // XX: default array values from JSON schema not recognized
+    const defValue = [];
+    const value = (this.primary.$get('blacklistedPackageSections') as string[]) || defValue;
+
+    const isDisallowed = (value: string, disallowed: string[] = []) => disallowed.some(d => d === value);
+
+    // Always remove disallowed values, and dedupe
+    return value
+      .filter(value => !isDisallowed(value, ['name', 'version']))
+      .filter((value, index, self) => self.indexOf(value) === index);
+  }
+
   private absolutePathFromPrimary(key: string) {
     return path.resolve(this.basePath, this.primary.$get(key));
   }
