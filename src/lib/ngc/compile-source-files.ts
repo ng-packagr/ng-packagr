@@ -9,6 +9,7 @@ import { EntryPointNode, isEntryPointInProgress } from '../ng-v5/nodes';
 import { NgccProcessor } from './ngcc-processor';
 import { ngccTransformCompilerHost } from '../ts/ngcc-transform-compiler-host';
 import { createEmitCallback } from './create-emit-callback';
+import { downlevelConstructorParameters } from '../ts/ctor-parameters';
 
 export async function compileSourceFiles(
   graph: BuildGraph,
@@ -84,6 +85,9 @@ export async function compileSourceFiles(
       emitFlags,
       // For Ivy we don't need a custom emitCallback to have tsickle transforms
       emitCallback: tsConfigOptions.enableIvy ? undefined : createEmitCallback(tsConfigOptions),
+      customTransformers: {
+        beforeTs: [downlevelConstructorParameters(() => ngProgram.getTsProgram().getTypeChecker())],
+      },
     });
 
     allDiagnostics.push(...diagnostics);
