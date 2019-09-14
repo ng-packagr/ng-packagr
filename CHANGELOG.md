@@ -12,13 +12,6 @@ All notable changes to this project will be documented in this file. See [standa
 * update rimraf to version ^3.0.0 ([9236102](https://github.com/ng-packagr/ng-packagr/commit/9236102))
 
 
-### Build System
-
-* update karma to version ~4.3.0 ([d69291d](https://github.com/ng-packagr/ng-packagr/commit/d69291d))
-* update tsickle to version ^0.37.0 ([7e96bd2](https://github.com/ng-packagr/ng-packagr/commit/7e96bd2))
-
-
-
 ## [5.5.0](https://github.com/ng-packagr/ng-packagr/compare/v5.4.3...v5.5.0) (2019-08-14)
 
 
