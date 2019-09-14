@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.5.1](https://github.com/ng-packagr/ng-packagr/compare/v5.5.0...v5.5.1) (2019-09-14)
+
+
+### Bug Fixes
+
+* add downlevelConstructorParameters transformer ([b959010](https://github.com/ng-packagr/ng-packagr/commit/b959010)), closes [#1400](https://github.com/ng-packagr/ng-packagr/issues/1400)
+* remove terser warnings as these as not actionable ([9c80f62](https://github.com/ng-packagr/ng-packagr/commit/9c80f62)), closes [#1394](https://github.com/ng-packagr/ng-packagr/issues/1394)
+* update rimraf to version ^3.0.0 ([9236102](https://github.com/ng-packagr/ng-packagr/commit/9236102))
+
+
+### Build System
+
+* update karma to version ~4.3.0 ([d69291d](https://github.com/ng-packagr/ng-packagr/commit/d69291d))
+* update tsickle to version ^0.37.0 ([7e96bd2](https://github.com/ng-packagr/ng-packagr/commit/7e96bd2))
+
+
+
 ## [5.5.0](https://github.com/ng-packagr/ng-packagr/compare/v5.4.3...v5.5.0) (2019-08-14)
 
 
