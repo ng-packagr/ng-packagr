@@ -37,3 +37,8 @@ The contents of `my_package/testing/package.json` can be as simple as:
 No, that is not a typo. No name is required. No version is required.
 It's all handled for you by ng-packagr!
 When built, the primary entry point is imported by `import {..} from '@my/library'` and the secondary entry point with `import {..} from '@my/library/testing'`.
+
+### Alternative to `package.json`
+
+Alternatively, you could create `ng-package.json` instead of `package.json`.
+This is particularly useful in conjunction with `no-implicit-dependencies` TSLint rule, which will complain if `package.json` does not contain the dependencies used in the secondary entry point, which is misleading since all the dependencies should be mentioned in the primary `package.json`.
