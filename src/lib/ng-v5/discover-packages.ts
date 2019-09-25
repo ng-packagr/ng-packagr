@@ -32,21 +32,22 @@ function formatSchemaValidationErrors(errors: ajv.ErrorObject[]): string {
  * Resolves a user's package by testing for 'package.json', 'ng-package.json', or 'ng-package.js'.
  *
  * @param folderPathOrFilePath A path pointing either to a file or a directory
+ * @param isSecondary A boolean determining if this is a secondary package
  * @return The user's package
  */
-async function resolveUserPackage(folderPathOrFilePath: string): Promise<UserPackage | undefined> {
+async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = false): Promise<UserPackage | undefined> {
   const readConfigFile = async (filePath: string) => (pathExistsSync(filePath) ? import(filePath) : undefined);
   const fullPath = path.resolve(folderPathOrFilePath);
   const pathStats = await lstat(fullPath);
   const basePath = pathStats.isDirectory() ? fullPath : path.dirname(fullPath);
   const packageJson = await readConfigFile(path.join(basePath, 'package.json'));
 
-  if (!packageJson) {
+  if (!packageJson && !isSecondary) {
     throw new Error(`Cannot discover package sources at ${folderPathOrFilePath} as 'package.json' was not found.`);
   }
 
   let ngPackageJson: undefined | object;
-  if (packageJson['ngPackage']) {
+  if (packageJson && packageJson['ngPackage']) {
     // Read `ngPackage` from `package.json`
     ngPackageJson = { ...packageJson['ngPackage'] };
   } else if (pathStats.isDirectory()) {
@@ -74,7 +75,7 @@ async function resolveUserPackage(folderPathOrFilePath: string): Promise<UserPac
 
     return {
       basePath,
-      packageJson,
+      packageJson: packageJson || {},
       ngPackageJson,
     };
   }
@@ -109,9 +110,10 @@ async function findSecondaryPackagesPaths(directoryPath: string, excludeFolder: 
     '**/.git/**',
     `${path.resolve(directoryPath, excludeFolder)}/**`,
     `${directoryPath}/package.json`,
+    `${directoryPath}/ng-package.json`,
   ];
 
-  const filePaths = await globFiles(`${directoryPath}/**/package.json`, {
+  const filePaths = await globFiles(`${directoryPath}/**/{package,ng-package}.json`, {
     ignore,
     cwd: directoryPath,
   });
@@ -156,7 +158,7 @@ export async function discoverPackages({ project }: { project: string }): Promis
     .then(folderPaths =>
       Promise.all(
         folderPaths.map(folderPath =>
-          resolveUserPackage(folderPath).catch(() => {
+          resolveUserPackage(folderPath, true).catch(() => {
             log.warn(`Cannot read secondary entry point at ${folderPath}. Skipping.`);
 
             return null;
