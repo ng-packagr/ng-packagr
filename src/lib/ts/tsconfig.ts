@@ -16,7 +16,6 @@ export function readDefaultTsConfig(fileName?: string): ng.ParsedConfiguration {
   const extraOptions: ng.CompilerOptions = {
     moduleResolution: ts.ModuleResolutionKind.NodeJs,
     target: ts.ScriptTarget.ES2015,
-    emitDecoratorMetadata: true,
     experimentalDecorators: true,
 
     // sourcemaps

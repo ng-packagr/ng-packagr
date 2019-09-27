@@ -18,41 +18,43 @@ import * as api from '@angular/compiler-cli/src/transformers/api';
 
 // @link https://github.com/angular/angular/blob/83d207d/packages/compiler-cli/src/main.ts#L42-L84
 export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCallback | undefined {
-  const transformDecorators = options.annotationsAs !== 'decorators';
+  const transformDecorators = options.enableIvy === false && options.annotationsAs !== 'decorators';
   const transformTypesToClosure = options.annotateForClosureCompiler;
   if (!transformDecorators && !transformTypesToClosure) {
     return undefined;
   }
-  if (transformDecorators) {
-    // This is needed as a workaround for https://github.com/angular/tsickle/issues/635
-    // Otherwise tsickle might emit references to non imported values
-    // as TypeScript elided the import.
-    options.emitDecoratorMetadata = true;
-  }
-  const tsickleHost: Pick<
-    tsickle.TsickleHost,
-    | 'shouldSkipTsickleProcessing'
-    | 'pathToModuleName'
-    | 'shouldIgnoreWarningsForPath'
-    | 'fileNameToModuleId'
-    | 'googmodule'
-    | 'untyped'
-    | 'convertIndexImportShorthand'
-    | 'transformDecorators'
-    | 'transformTypesToClosure'
-  > = {
-    shouldSkipTsickleProcessing: fileName => /\.d\.ts$/.test(fileName) || GENERATED_FILES.test(fileName),
-    pathToModuleName: (_context, _importPath) => '',
-    shouldIgnoreWarningsForPath: _filePath => false,
-    fileNameToModuleId: fileName => fileName,
-    googmodule: false,
-    untyped: true,
-    convertIndexImportShorthand: false,
-    transformDecorators,
-    transformTypesToClosure,
-  };
 
   if (options.annotateForClosureCompiler || options.annotationsAs === 'static fields') {
+    if (transformDecorators) {
+      // This is needed as a workaround for https://github.com/angular/tsickle/issues/635
+      // Otherwise tsickle might emit references to non imported values
+      // as TypeScript elided the import.
+      options.emitDecoratorMetadata = true;
+    }
+
+    const tsickleHost: Pick<
+      tsickle.TsickleHost,
+      | 'shouldSkipTsickleProcessing'
+      | 'pathToModuleName'
+      | 'shouldIgnoreWarningsForPath'
+      | 'fileNameToModuleId'
+      | 'googmodule'
+      | 'untyped'
+      | 'convertIndexImportShorthand'
+      | 'transformDecorators'
+      | 'transformTypesToClosure'
+    > = {
+      shouldSkipTsickleProcessing: fileName => /\.d\.ts$/.test(fileName) || GENERATED_FILES.test(fileName),
+      pathToModuleName: (_context, _importPath) => '',
+      shouldIgnoreWarningsForPath: _filePath => false,
+      fileNameToModuleId: fileName => fileName,
+      googmodule: false,
+      untyped: true,
+      convertIndexImportShorthand: false,
+      transformDecorators,
+      transformTypesToClosure,
+    };
+
     return ({
       program,
       targetSourceFile,
@@ -63,9 +65,10 @@ export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCall
       host,
       options,
     }) =>
+      // tslint:disable-next-line:no-require-imports only depend on tsickle if requested
       require('tsickle').emitWithTsickle(
         program,
-        { ...tsickleHost, options, moduleResolutionHost: host },
+        { ...tsickleHost, options, host, moduleResolutionHost: host },
         host,
         options,
         targetSourceFile,
@@ -77,11 +80,7 @@ export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCall
           afterTs: customTransformers.after,
         },
       );
-  } else {
-    return ({ program, targetSourceFile, writeFile, cancellationToken, emitOnlyDtsFiles, customTransformers = {} }) =>
-      program.emit(targetSourceFile, writeFile, cancellationToken, emitOnlyDtsFiles, {
-        after: customTransformers.after,
-        before: customTransformers.before,
-      });
   }
+
+  return undefined;
 }
