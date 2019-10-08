@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.6.0](https://github.com/ng-packagr/ng-packagr/compare/v5.5.1...v5.6.0) (2019-10-08)
+
+
+### Bug Fixes
+
+* disable internal `emitDecoratorMetadata` ([d0bf507](https://github.com/ng-packagr/ng-packagr/commit/d0bf507))
+* support the ng-package.json in secondary entry points ([#1406](https://github.com/ng-packagr/ng-packagr/issues/1406)) ([8b97bfa](https://github.com/ng-packagr/ng-packagr/commit/8b97bfa))
+* update @angular/cdk to version ~8.2.0 ([0007fef](https://github.com/ng-packagr/ng-packagr/commit/0007fef))
+
+
+### Build System
+
+* update @angular-devkit/build-angular to version ~0.803.0 ([194c6bb](https://github.com/ng-packagr/ng-packagr/commit/194c6bb))
+* update cross-env to version ^6.0.0 ([120331a](https://github.com/ng-packagr/ng-packagr/commit/120331a))
+* update jasmine-core to version ~3.5.0 ([#1404](https://github.com/ng-packagr/ng-packagr/issues/1404)) ([aeabd95](https://github.com/ng-packagr/ng-packagr/commit/aeabd95))
+* update ts-node to version ~8.4.0 ([9a4dddc](https://github.com/ng-packagr/ng-packagr/commit/9a4dddc))
+* update tslint to version ~5.20.0 ([4e4b1d5](https://github.com/ng-packagr/ng-packagr/commit/4e4b1d5))
+* update zone.js to version ^0.10.0 ([88f8cb4](https://github.com/ng-packagr/ng-packagr/commit/88f8cb4))
+
+
+### Features
+
+* copies `CHANGELOG.md` to package destination ([db5ad68](https://github.com/ng-packagr/ng-packagr/commit/db5ad68))
+
+
+### Tests
+
+* update angular cli dev packages ([3e26f7b](https://github.com/ng-packagr/ng-packagr/commit/3e26f7b))
+
+
+
 ### [5.5.1](https://github.com/ng-packagr/ng-packagr/compare/v5.5.0...v5.5.1) (2019-09-14)
 
 
