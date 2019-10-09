@@ -95,13 +95,20 @@ async function writePackageJson(
   // version at least matches that of angular if we use require('tslib').version
   // it will get what installed and not the minimum version nor if it is a `~` or `^`
   // this is only required for primary
-  if (!entryPoint.isSecondaryEntryPoint && !(packageJson.dependencies && packageJson.dependencies.tslib)) {
-    const { dependencies: angularDependencies = {} } = require('@angular/compiler/package.json');
-    const tsLibVersion = angularDependencies.tslib;
+  if (
+    !entryPoint.isSecondaryEntryPoint &&
+    !(packageJson.peerDependencies && packageJson.peerDependencies.tslib) &&
+    !(packageJson.dependencies && packageJson.dependencies.tslib)
+  ) {
+    const {
+      peerDependencies: angularPeerDependencies = {},
+      dependencies: angularDependencies = {},
+    } = require('@angular/compiler/package.json');
+    const tsLibVersion = angularPeerDependencies.tslib || angularDependencies.tslib;
 
     if (tsLibVersion) {
-      packageJson.dependencies = {
-        ...packageJson.dependencies,
+      packageJson.peerDependencies = {
+        ...packageJson.peerDependencies,
         tslib: tsLibVersion,
       };
     }
