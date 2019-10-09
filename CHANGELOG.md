@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.6.1](https://github.com/ng-packagr/ng-packagr/compare/v5.6.0...v5.6.1) (2019-10-09)
+
+
+### Bug Fixes
+
+* tsickle references to non imported values when using Angular 8 ([de5894b](https://github.com/ng-packagr/ng-packagr/commit/de5894b))
+
 ## [5.6.0](https://github.com/ng-packagr/ng-packagr/compare/v5.5.1...v5.6.0) (2019-10-08)
 
 
