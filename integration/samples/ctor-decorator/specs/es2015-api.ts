@@ -23,5 +23,9 @@ describe(`@sample/ctor-decorator`, () => {
     it('should not contain any __metadata', () => {
       expect(BUNDLE).not.to.contain('__metadata');
     });
+
+    it('should contain import to type used for DI (HttpClient)', () => {
+      expect(BUNDLE).to.contain(`import { HttpClientModule, HttpClient } from '@angular/common/http'`);
+    });
   });
 });

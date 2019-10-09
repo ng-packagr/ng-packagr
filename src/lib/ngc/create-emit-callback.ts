@@ -18,7 +18,7 @@ import * as api from '@angular/compiler-cli/src/transformers/api';
 
 // @link https://github.com/angular/angular/blob/83d207d/packages/compiler-cli/src/main.ts#L42-L84
 export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCallback | undefined {
-  const transformDecorators = options.enableIvy === false && options.annotationsAs !== 'decorators';
+  const transformDecorators = !options.enableIvy && options.annotationsAs !== 'decorators';
   const transformTypesToClosure = options.annotateForClosureCompiler;
   if (!transformDecorators && !transformTypesToClosure) {
     return undefined;
