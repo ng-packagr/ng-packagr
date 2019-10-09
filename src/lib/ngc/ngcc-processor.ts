@@ -1,4 +1,4 @@
-import { Logger, PathMappings } from '@angular/compiler-cli/ngcc';
+import { Logger, PathMappings, process as mainNgcc } from '@angular/compiler-cli/ngcc';
 import { existsSync } from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
@@ -10,12 +10,10 @@ export class NgccProcessor {
   private _processedModules = new Set<string>();
   private _logger: NgccLogger;
   private _nodeModulesDirectory: string;
-  private _ngcc: typeof import('@angular/compiler-cli/ngcc');
   private _pathMappings: PathMappings | undefined;
   private _entryPointsUrl: string[];
 
   constructor(private readonly compilerOptions: ts.CompilerOptions, private readonly entryPoints: EntryPointNode[]) {
-    this._ngcc = require('@angular/compiler-cli/ngcc');
     this._entryPointsUrl = this.entryPoints.map(({ url }) => ngUrl(url));
 
     const { baseUrl, paths } = this.compilerOptions;
@@ -49,7 +47,7 @@ export class NgccProcessor {
       return;
     }
 
-    this._ngcc.process({
+    mainNgcc({
       basePath: this._nodeModulesDirectory,
       targetEntryPointPath: path.dirname(packageJsonPath),
       compileAllFormats: false,
