@@ -15,8 +15,8 @@ describe(`@sample/apf`, () => {
       expect(PACKAGE.scripts && PACKAGE.scripts.prepublishOnly).to.be.undefined;
     });
 
-    it(`should have 'tslib' as a dependency`, () => {
-      expect(PACKAGE.dependencies.tslib).to.be.ok;
+    it(`should have 'tslib' as a peerDependencies`, () => {
+      expect(PACKAGE.peerDependencies.tslib).to.be.ok;
     });
 
     it(`should not have ngPackage field`, () => {
@@ -74,8 +74,8 @@ describe(`@sample/apf`, () => {
       PACKAGE = require('../dist/secondary/package.json');
     });
 
-    it(`should not have 'tslib' as a dependency`, () => {
-      expect(PACKAGE.dependencies && PACKAGE.dependencies.tslib).to.be.undefined;
+    it(`should not have 'tslib' as a peerDependencies`, () => {
+      expect(PACKAGE.peerDependencies && PACKAGE.peerDependencies.tslib).to.be.undefined;
     });
 
     it(`should exist`, () => {
