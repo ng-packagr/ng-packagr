@@ -53,7 +53,7 @@ export class NgccProcessor {
       basePath: this._nodeModulesDirectory,
       targetEntryPointPath: path.dirname(packageJsonPath),
       compileAllFormats: false,
-      propertiesToConsider: ['fesm2015', 'fesm5', 'es2015', 'esm2015', 'esm5', 'main', 'module'],
+      propertiesToConsider: ['es2015', 'browser', 'module', 'main'],
       createNewEntryPointFormats: true,
       logger: this._logger,
       pathMappings: this._pathMappings,
