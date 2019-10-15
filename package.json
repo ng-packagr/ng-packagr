@@ -1,6 +1,6 @@
 {
   "name": "ng-packagr",
-  "version": "5.6.1",
+  "version": "5.7.0",
   "description": "Compile and package a TypeScript library to Angular Package Format",
   "keywords": [
     "angular",
@@ -129,11 +129,6 @@
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json mocha --require ts-node/register \"src/**/*.spec.ts\"",
     "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:watch:specs && yarn integration:consumers",
     "gh-pages": "gh-pages -d docs/ghpages"
-  },
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/ng-packagr",
-    "logo": "https://opencollective.com/opencollective/logo.txt"
   },
   "husky": {
     "hooks": {

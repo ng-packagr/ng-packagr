@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.7.0](https://github.com/ng-packagr/ng-packagr/compare/v5.6.1...v5.7.0) (2019-10-15)
+
+
+### Bug Fixes
+
+* re prioritize ngcc `propertiesToConsider` properties based ([ea89fb3](https://github.com/ng-packagr/ng-packagr/commit/ea89fb3)), closes [/github.com/angular/angular-cli/blob/0d70565f9d80f1d765622eb8c8b2c3c701723599/packages/angular_devkit/build_angular/src/angular-cli-files/models/webpack-configs/browser.ts#L68](https://github.com/ng-packagr//github.com/angular/angular-cli/blob/0d70565f9d80f1d765622eb8c8b2c3c701723599/packages/angular_devkit/build_angular/src/angular-cli-files/models/webpack-configs/browser.ts/issues/L68)
+
+
+### Features
+
+* deprecate inlining of `bundledDependencies` ([0c52486](https://github.com/ng-packagr/ng-packagr/commit/0c52486))
+
 ### [5.6.1](https://github.com/ng-packagr/ng-packagr/compare/v5.6.0...v5.6.1) (2019-10-09)
 
 
