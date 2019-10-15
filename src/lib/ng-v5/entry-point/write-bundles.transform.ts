@@ -86,7 +86,6 @@ function getDependencyListForGraph(graph: BuildGraph): DependencyList {
 
   for (const entry of graph.filter(isEntryPoint)) {
     const { bundledDependencies = [], dependencies = {}, peerDependencies = {} } = entry.data.entryPoint.packageJson;
-
     dependencyList.bundledDependencies = unique(dependencyList.bundledDependencies.concat(bundledDependencies));
     dependencyList.dependencies = unique(
       dependencyList.dependencies.concat(
@@ -94,6 +93,14 @@ function getDependencyListForGraph(graph: BuildGraph): DependencyList {
         Object.keys(peerDependencies),
         entry.data.entryPoint.moduleId,
       ),
+    );
+  }
+
+  if (dependencyList.bundledDependencies.length) {
+    log.warn(
+      `Inlining of 'bundledDependencies' has been deprecated in version 5 and will be removed in future versions.` +
+        '\n' +
+        `List the depedency in the 'peerDependencies' section instead.`,
     );
   }
 
