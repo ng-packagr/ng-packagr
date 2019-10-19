@@ -19,14 +19,14 @@ describe('@sample/ivy', () => {
   describe('angular.component.d.ts', () => {
     it(`should contain Ivy declarations`, () => {
       const content = fs.readFileSync(path.join(DIST, 'src/angular.component.d.ts'), { encoding: 'utf-8' });
-      expect(content).to.contain('ngComponentDef');
+      expect(content).to.contain('ɵcmp');
     });
   });
 
   describe('fesm5/sample-ivy.js', () => {
     it(`should contain Ivy generated code`, () => {
       const content = fs.readFileSync(path.join(DIST, 'fesm5/sample-ivy.js'), { encoding: 'utf-8' });
-      expect(content).to.contain('ngComponentDef');
+      expect(content).to.contain('ɵcmp');
       expect(content).to.contain('ɵɵelementStart(0, "h1")');
     });
   });
@@ -34,7 +34,7 @@ describe('@sample/ivy', () => {
   describe('fesm2015/sample-ivy.js', () => {
     it(`should contain Ivy generated code`, () => {
       const content = fs.readFileSync(path.join(DIST, 'fesm2015/sample-ivy.js'), { encoding: 'utf-8' });
-      expect(content).to.contain('ngComponentDef');
+      expect(content).to.contain('ɵcmp');
       expect(content).to.contain('ɵɵelementStart(0, "h1")');
     });
 
