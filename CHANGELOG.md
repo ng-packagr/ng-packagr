@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/v5.7.0...v9.0.0-rc.0) (2019-10-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* TypeScript versions prior to 3.6.4 are no longer supported.no longer supported.
+* `tslib` will be longer be added as a `dependencies`, but rather it will be added as a `peerDependencies`.
+
+This is to be inline with the Angular framework as per
+
+### Features
+
+* add support to TypeScript 3.6 ([342b799](https://github.com/ng-packagr/ng-packagr/commit/342b799))
+* add tslib as peerDepedency ([5077f87](https://github.com/ng-packagr/ng-packagr/commit/5077f87))
+* update peerDependencies ([7ff60f5](https://github.com/ng-packagr/ng-packagr/commit/7ff60f5))
+
 ## [5.7.0](https://github.com/ng-packagr/ng-packagr/compare/v5.6.1...v5.7.0) (2019-10-15)
 
 
