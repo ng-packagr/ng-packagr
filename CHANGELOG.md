@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0-rc.1](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.0...v9.0.0-rc.1) (2019-10-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove usage of deprecated `less-plugin-npm-import`. In less v3 is supports node_modules resolutions by default.
+
+Before
+```css
+@import '~module/less/linenumbers';
+```
+
+After
+```css
+@import 'module/less/linenumbers';
+```
+
+### Bug Fixes
+
+* lock rollup version ([75ac180](https://github.com/ng-packagr/ng-packagr/commit/75ac180)), closes [#1431](https://github.com/ng-packagr/ng-packagr/issues/1431)
+
+
+* remove less-plugin-npm-import ([6a5ae37](https://github.com/ng-packagr/ng-packagr/commit/6a5ae37))
+
 ## [9.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/v5.7.0...v9.0.0-rc.0) (2019-10-22)
 
 
