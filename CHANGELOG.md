@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.7.1](https://github.com/ng-packagr/ng-packagr/compare/v5.7.0...v5.7.1) (2019-10-29)
+
+
+### Bug Fixes
+
+* lock rollup version ([e80b275](https://github.com/ng-packagr/ng-packagr/commit/e80b275)), closes [#1431](https://github.com/ng-packagr/ng-packagr/issues/1431)
+
 ## [5.7.0](https://github.com/ng-packagr/ng-packagr/compare/v5.6.1...v5.7.0) (2019-10-15)
 
 
