@@ -150,7 +150,15 @@ async function writePackageJson(
   // this will not throw if ngPackage field does not exist
   delete packageJson.ngPackage;
 
-  const packageJsonPropertiesToDelete = ['devDependencies', 'jest', 'workspaces', 'husky'];
+  const packageJsonPropertiesToDelete = [
+    'stylelint',
+    'prettier',
+    'browserslist',
+    'devDependencies',
+    'jest',
+    'workspaces',
+    'husky',
+  ];
 
   for (const prop of packageJsonPropertiesToDelete) {
     if (prop in packageJson) {
