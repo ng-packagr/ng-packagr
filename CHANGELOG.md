@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0-rc.2](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.1...v9.0.0-rc.2) (2019-11-14)
+
+
+### Bug Fixes
+
+* add more package json sections to remove ([57cc4d1](https://github.com/ng-packagr/ng-packagr/commit/57cc4d1))
+* remove redundant section in package.json ([5efad3a](https://github.com/ng-packagr/ng-packagr/commit/5efad3a))
+* skip NGCC when file system is read only ([0e44793](https://github.com/ng-packagr/ng-packagr/commit/0e44793))
+* update commander to version ^4.0.0 ([ee41977](https://github.com/ng-packagr/ng-packagr/commit/ee41977))
+* update rollup to version 1.26.2 ([8e91477](https://github.com/ng-packagr/ng-packagr/commit/8e91477))
+* update rollup to version 1.26.3 ([1a67c7c](https://github.com/ng-packagr/ng-packagr/commit/1a67c7c))
+* update rollup to version 1.26.4 ([844f7d3](https://github.com/ng-packagr/ng-packagr/commit/844f7d3))
+* update rollup to version 1.26.5 ([cb5bda7](https://github.com/ng-packagr/ng-packagr/commit/cb5bda7))
+
 ## [9.0.0-rc.1](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.0...v9.0.0-rc.1) (2019-10-29)
 
 
