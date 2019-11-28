@@ -12,7 +12,13 @@ export const initTsConfigTransformFactory = (defaultTsConfig: ParsedConfiguratio
     initializeTsConfig(defaultTsConfig, entryPoints);
 
     if (defaultTsConfig.options.enableIvy) {
-      msg(chalk.yellow('\n** It is not recommended to publish Ivy libraries to NPM repositories **'));
+      const ivyMsg =
+        '******************************************************************************\n' +
+        'It is not recommended to publish Ivy libraries to NPM repositories.\n' +
+        'Read more here: https://next.angular.io/guide/ivy#maintaining-library-compatibility\n' +
+        '******************************************************************************';
+
+      msg(chalk.yellow(ivyMsg));
     }
 
     return graph;
