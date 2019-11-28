@@ -1,5 +1,5 @@
 import { ParsedConfiguration } from '@angular/compiler-cli';
-import chalk from 'chalk';
+import * as chalk from 'chalk';
 import { Transform, transformFromPromise } from '../../brocc/transform';
 import { isEntryPoint, EntryPointNode } from '../nodes';
 import { initializeTsConfig } from '../../ts/tsconfig';

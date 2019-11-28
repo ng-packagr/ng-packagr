@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import * as chalk from 'chalk';
 
 export const error = (err: string | Error) => {
   if (err instanceof Error) {
