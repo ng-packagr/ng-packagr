@@ -1,4 +1,4 @@
 /// <reference path="./chalk.d.ts" />
-import chalk from 'chalk';
+import * as chalk from 'chalk';
 
-export const result = chalk.blue('message');
+export { chalk };
