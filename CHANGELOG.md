@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0-rc.3](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.2...v9.0.0-rc.3) (2019-12-04)
+
+
+### Bug Fixes
+
+* add `assets` option to schema ([a5efd1c](https://github.com/ng-packagr/ng-packagr/commit/a5efd1c)), closes [#1092](https://github.com/ng-packagr/ng-packagr/issues/1092)
+* add link to Angular guide when showing ivy publish warning ([6bee029](https://github.com/ng-packagr/ng-packagr/commit/6bee029)), closes [#1453](https://github.com/ng-packagr/ng-packagr/issues/1453)
+* update rollup to version 1.27.2 ([abf0ae4](https://github.com/ng-packagr/ng-packagr/commit/abf0ae4))
+* update rollup to version 1.27.4 ([4eb6b74](https://github.com/ng-packagr/ng-packagr/commit/4eb6b74))
+* update rollup to version 1.27.5 ([7877045](https://github.com/ng-packagr/ng-packagr/commit/7877045))
+* update rollup to version 1.27.6 ([77fbff4](https://github.com/ng-packagr/ng-packagr/commit/77fbff4))
+* update rollup to version 1.27.7 ([2400425](https://github.com/ng-packagr/ng-packagr/commit/2400425))
+* update rollup to version 1.27.8 ([7f623d9](https://github.com/ng-packagr/ng-packagr/commit/7f623d9))
+
 ## [9.0.0-rc.2](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.1...v9.0.0-rc.2) (2019-11-14)
 
 
