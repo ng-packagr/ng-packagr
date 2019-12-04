@@ -40,7 +40,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
 
     if (assetFiles.length) {
       // COPY ASSET FILES TO DESTINATION
-      log.info('Copying assets files');
+      log.info('Copying assets');
       await Promise.all(
         assetFiles.map(value => {
           const relativePath = path.relative(ngPackage.src, value);
