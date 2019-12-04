@@ -43,6 +43,7 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
     downlevelIteration: true,
     // the options are here, to improve the build time
     declaration: false,
+    declarationMap: false,
     declarationDir: undefined,
     skipMetadataEmit: true,
     skipTemplateCodegen: true,
