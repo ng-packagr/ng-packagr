@@ -31,6 +31,14 @@
       },
       "default": ["tslib"]
     },
+    "assets": {
+      "type": "array",
+      "description": "A list of files which are simply copied into the package.",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
     "lib": {
       "description": "Description of the library's entry point.",
       "type": "object",
