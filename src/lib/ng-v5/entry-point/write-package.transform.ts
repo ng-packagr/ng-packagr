@@ -16,21 +16,40 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
   const ngPackage: NgPackage = graph.find(node => node.type === 'application/ng-package').data;
   const { destinationFiles } = entryPoint.data;
 
-  // 5. COPY SOURCE FILES TO DESTINATION
-  log.info('Copying declaration files');
   // we don't want to copy `dist` and 'node_modules' declaration files but only files in source
   const declarationFiles = await globFiles(`${path.dirname(ngEntryPoint.entryFilePath)}/**/*.d.ts`, {
     ignore: ['**/node_modules/**', `${ngPackage.dest}/**`],
   });
 
   if (declarationFiles.length) {
+    // COPY SOURCE FILES TO DESTINATION
+    log.info('Copying declaration files');
     await Promise.all(
       declarationFiles.map(value => {
         const relativePath = path.relative(ngEntryPoint.entryFilePath, value);
         const destination = path.resolve(destinationFiles.declarations, relativePath);
-        return copyFile(value, destination);
+        return copyFile(value, destination, { overwrite: true, dereference: true });
       }),
     );
+  }
+  if (ngPackage.assets.length && !ngEntryPoint.isSecondaryEntryPoint) {
+    const assets = ngPackage.assets.map(x => path.join(ngPackage.src, x));
+    const assetFiles = await globFiles(assets, {
+      ignore: ['**/node_modules/**', `${ngPackage.dest}/**`],
+    });
+
+    if (assetFiles.length) {
+      // COPY ASSET FILES TO DESTINATION
+      log.info('Copying assets files');
+      await Promise.all(
+        assetFiles.map(value => {
+          const relativePath = path.relative(ngPackage.src, value);
+          const destination = path.resolve(ngPackage.dest, relativePath);
+
+          return copyFile(value, destination, { overwrite: true, dereference: true });
+        }),
+      );
+    }
   }
 
   // 6. WRITE PACKAGE.JSON

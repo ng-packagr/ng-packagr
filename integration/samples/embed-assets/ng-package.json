@@ -1,5 +1,6 @@
 {
   "$schema": "../../../src/ng-package.schema.json",
+  "assets": ["./assets/**/*.png", "./assets-2"],
   "lib": {
     "entryFile": "public_api.ts",
     "cssUrl": "inline"

@@ -64,6 +64,9 @@ export class NgPackage {
   public get keepLifecycleScripts(): boolean {
     return this.primary.$get('keepLifecycleScripts') === true;
   }
+  public get assets(): string[] {
+    return this.primary.$get('assets');
+  }
 
   public get whitelistedNonPeerDependencies(): string[] {
     // XX: default array values from JSON schema not recognized
