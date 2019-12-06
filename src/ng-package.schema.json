@@ -23,6 +23,11 @@
       "type": "boolean",
       "default": false
     },
+    "allowIvyPublish": {
+      "description": "Allow an Ivy compiled library to be published.",
+      "type": "boolean",
+      "default": false
+    },
     "whitelistedNonPeerDependencies": {
       "description": "A list of dependencies that are allowed in the 'dependencies' and 'devDependencies' section of package.json. Values in the list are regular expressions matched against npm package names.",
       "type": "array",

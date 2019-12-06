@@ -62,10 +62,15 @@ export class NgPackage {
   }
 
   public get keepLifecycleScripts(): boolean {
-    return this.primary.$get('keepLifecycleScripts') === true;
+    return this.primary.$get('keepLifecycleScripts');
   }
+
   public get assets(): string[] {
     return this.primary.$get('assets');
+  }
+
+  public get allowIvyPublish(): boolean {
+    return this.primary.$get('allowIvyPublish');
   }
 
   public get whitelistedNonPeerDependencies(): string[] {

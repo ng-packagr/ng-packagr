@@ -155,7 +155,7 @@ async function writePackageJson(
     }
   }
 
-  if (isIvy && !entryPoint.isSecondaryEntryPoint) {
+  if (isIvy && !entryPoint.isSecondaryEntryPoint && !pkg.allowIvyPublish) {
     const scripts = packageJson.scripts || (packageJson.scripts = {});
     scripts.prepublishOnly =
       'node --eval "console.error(\'' +
