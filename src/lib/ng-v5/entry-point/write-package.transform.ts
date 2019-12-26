@@ -7,18 +7,25 @@ import { ensureUnixPath } from '../../util/path';
 import { rimraf } from '../../util/rimraf';
 import * as log from '../../util/log';
 import { globFiles } from '../../util/glob';
-import { EntryPointNode, isEntryPointInProgress } from '../nodes';
+import { EntryPointNode, isEntryPointInProgress, isPackage } from '../nodes';
 import { copyFile } from '../../util/copy';
 
 export const writePackageTransform: Transform = transformFromPromise(async graph => {
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
   const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
-  const ngPackage: NgPackage = graph.find(node => node.type === 'application/ng-package').data;
+  const ngPackage: NgPackage = graph.find(isPackage).data;
   const { destinationFiles } = entryPoint.data;
+  const ignorePaths: string[] = [
+    '.gitkeep',
+    '**/.DS_Store',
+    '**/Thumbs.db',
+    '**/node_modules/**',
+    `${ngPackage.dest}/**`,
+  ];
 
   // we don't want to copy `dist` and 'node_modules' declaration files but only files in source
   const declarationFiles = await globFiles(`${path.dirname(ngEntryPoint.entryFilePath)}/**/*.d.ts`, {
-    ignore: ['**/node_modules/**', `${ngPackage.dest}/**`],
+    ignore: ignorePaths,
   });
 
   if (declarationFiles.length) {
@@ -35,7 +42,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
   if (ngPackage.assets.length && !ngEntryPoint.isSecondaryEntryPoint) {
     const assets = ngPackage.assets.map(x => path.join(ngPackage.src, x));
     const assetFiles = await globFiles(assets, {
-      ignore: ['**/node_modules/**', `${ngPackage.dest}/**`],
+      ignore: ignorePaths,
     });
 
     if (assetFiles.length) {
