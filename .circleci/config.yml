@@ -50,7 +50,7 @@ jobs:
       #     destination: dist
       - persist_to_workspace:
           root: ~/repo
-          paths: .
+          paths: dist
 
   deploy:
     <<: *defaults
