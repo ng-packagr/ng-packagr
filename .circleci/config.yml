@@ -14,13 +14,15 @@ jobs:
       # Checkout, Download and cache dependencies
       - checkout
       - restore_cache:
-          key: v4-dependencies-{{ checksum "yarn.lock" }}
+          keys:
+            - v5-dependencies-{{ checksum "yarn.lock" }}
+            - v5-dependencies-
       # Install dependencies
       - run: yarn install --frozen-lockfile --non-interactive
       - save_cache:
-          key: v4-dependencies-{{ checksum "yarn.lock" }}
+          key: v5-dependencies-{{ checksum "yarn.lock" }}
           paths:
-            - 'node_modules'
+            - ~/.cache/yarn
       - persist_to_workspace:
           root: ~/repo
           paths: .
