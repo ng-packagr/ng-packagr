@@ -33,21 +33,6 @@ jobs:
       - attach_workspace: *attach_options
       # Build and run tests
       - run: yarn test
-      # Store artefacts on circle
-      # - run:
-      #    name: Collect artefacts
-      #    command: |
-      #      mkdir -p /tmp/artefacts \
-      #        && cp -r --parents integration/samples/**/dist /tmp/artefacts \
-      #        && cp -r --parents integration/consumers/**/dist /tmp/artefacts
-      # - store_artifacts:
-      #    name: Store artefacts
-      #    path: /tmp/artefacts/integration
-      #     destination: integration
-      # - store_artifacts:
-      #     name: Store artefacts
-      #     path: ~/repo/dist
-      #     destination: dist
       - persist_to_workspace:
           root: ~/repo
           paths: dist
