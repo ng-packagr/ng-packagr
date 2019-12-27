@@ -83,6 +83,9 @@ export const initializeTsConfig = (defaultTsConfig: ng.ParsedConfiguration, entr
     let tsConfig: ng.ParsedConfiguration = JSON.parse(JSON.stringify(defaultTsConfig));
 
     let jsx = tsConfig.options.jsx;
+    if (entryPoint.jsxConfig) {
+      log.warn(`'jsx' option has been deprecated use a custom tsconfig instead.`);
+    }
     switch (entryPoint.jsxConfig) {
       case 'preserve':
         jsx = ts.JsxEmit.Preserve;
@@ -95,6 +98,10 @@ export const initializeTsConfig = (defaultTsConfig: ng.ParsedConfiguration, entr
         break;
       default:
         break;
+    }
+
+    if (entryPoint.languageLevel) {
+      log.warn(`'languageLevel' option has been deprecated use a custom tsconfig instead.`);
     }
 
     const overrideOptions: ng.CompilerOptions = {
