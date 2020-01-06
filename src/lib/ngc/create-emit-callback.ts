@@ -44,7 +44,7 @@ export function createEmitCallback(options: api.CompilerOptions): api.TsEmitCall
       | 'transformDecorators'
       | 'transformTypesToClosure'
     > = {
-      shouldSkipTsickleProcessing: fileName => /\.(d\.ts|json)$/.test(fileName) || GENERATED_FILES.test(fileName),
+      shouldSkipTsickleProcessing: fileName => /\.d\.ts$/.test(fileName) || GENERATED_FILES.test(fileName),
       pathToModuleName: (_context, _importPath) => '',
       shouldIgnoreWarningsForPath: _filePath => false,
       fileNameToModuleId: fileName => fileName,
