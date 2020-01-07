@@ -1,8 +1,8 @@
 import { ParsedConfiguration } from '@angular/compiler-cli';
 import { InjectionToken, Provider } from 'injection-js';
-import { Transform } from '../../graph/transform';
-import { TransformProvider, provideTransform } from '../../graph/transform.di';
-import { createDefaultTsConfig } from '../../ts/tsconfig';
+import { Transform } from '../graph/transform';
+import { TransformProvider, provideTransform } from '../graph/transform.di';
+import { createDefaultTsConfig } from '../ts/tsconfig';
 import { initTsConfigTransformFactory } from './init-tsconfig.transform';
 
 export const provideTsConfig = (values?: ParsedConfiguration | string): Provider => {
