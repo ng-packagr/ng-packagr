@@ -4,8 +4,8 @@ import { provideTransform, TransformProvider } from '../graph/transform.di';
 import { PROJECT_TOKEN } from '../project.di';
 import { ENTRY_POINT_TRANSFORM_TOKEN } from './entry-point/entry-point.di';
 import { packageTransformFactory } from './package.transform';
-import { ANALYSE_SOURCES_TOKEN, ANALYSE_SOURCES_TRANSFORM } from './init/analyse-sources.di';
-import { DEFAULT_TS_CONFIG_PROVIDER, INIT_TS_CONFIG_TRANSFORM, INIT_TS_CONFIG_TOKEN } from './init/init-tsconfig.di';
+import { ANALYSE_SOURCES_TOKEN, ANALYSE_SOURCES_TRANSFORM } from './analyse-sources.di';
+import { DEFAULT_TS_CONFIG_PROVIDER, INIT_TS_CONFIG_TRANSFORM, INIT_TS_CONFIG_TOKEN } from './init-tsconfig.di';
 import { OPTIONS_TOKEN, DEFAULT_OPTIONS_PROVIDER } from './options.di';
 
 export const PACKAGE_TRANSFORM_TOKEN = new InjectionToken<Transform>(`ng.v5.packageTransform`);

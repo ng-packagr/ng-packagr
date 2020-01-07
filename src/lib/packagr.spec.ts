@@ -2,7 +2,7 @@ import { ParsedConfiguration } from '@angular/compiler-cli/src/perform_compile';
 import { expect } from 'chai';
 import { ngPackagr, NgPackagr } from './packagr';
 import { provideProject, PROJECT_TOKEN } from './project.di';
-import { DEFAULT_TS_CONFIG_TOKEN } from './ng-package/init/init-tsconfig.di';
+import { DEFAULT_TS_CONFIG_TOKEN } from './ng-package/init-tsconfig.di';
 
 describe(`ngPackagr()`, () => {
   let packager: NgPackagr;

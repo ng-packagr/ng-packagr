@@ -2,9 +2,8 @@ import * as ts from 'typescript';
 import { ParsedConfiguration, Program } from '@angular/compiler-cli';
 import { Node } from '../graph/node';
 import { by, isInProgress, isDirty } from '../graph/select';
-import { NgEntryPoint } from './entry-point/entry-point';
+import { NgEntryPoint, DestinationFiles } from './entry-point/entry-point';
 import { NgPackage } from './package';
-import { DestinationFiles } from '../shared';
 import { FileCache } from '../file-system/file-cache';
 
 export const TYPE_NG_PACKAGE = 'application/ng-package';
