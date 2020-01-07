@@ -2,13 +2,13 @@ import * as ng from '@angular/compiler-cli';
 import * as ts from 'typescript';
 import { pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as log from '../utils/log';
-import { Transform } from '../graph/transform';
-import { isEntryPoint, EntryPointNode } from './nodes';
-import { cacheCompilerHost } from '../ts/cache-compiler-host';
-import { unique } from '../utils/array';
-import { BuildGraph } from '../graph/build-graph';
-import { ensureUnixPath } from '../utils/path';
+import * as log from '../../utils/log';
+import { Transform } from '../../graph/transform';
+import { isEntryPoint, EntryPointNode } from '../nodes';
+import { cacheCompilerHost } from '../../ts/cache-compiler-host';
+import { unique } from '../../utils/array';
+import { BuildGraph } from '../../graph/build-graph';
+import { ensureUnixPath } from '../../utils/path';
 
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {

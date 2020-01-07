@@ -5,7 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 import { BuildGraph } from './graph/build-graph';
 import { Transform } from './graph/transform';
 import * as log from './utils/log';
-import { provideTsConfig } from './ng-package/init-tsconfig.di';
+import { provideTsConfig } from './ng-package/entry-point/init-tsconfig.di';
 import { ENTRY_POINT_PROVIDERS } from './ng-package/entry-point/entry-point.di';
 import { PACKAGE_TRANSFORM, PACKAGE_PROVIDERS } from './ng-package/package.di';
 import { provideProject } from './project.di';

@@ -1,9 +1,9 @@
 import { ParsedConfiguration } from '@angular/compiler-cli';
 import * as chalk from 'chalk';
-import { Transform, transformFromPromise } from '../graph/transform';
-import { isEntryPoint, EntryPointNode } from './nodes';
-import { initializeTsConfig } from '../ts/tsconfig';
-import { msg } from '../utils/log';
+import { Transform, transformFromPromise } from '../../graph/transform';
+import { isEntryPoint, EntryPointNode } from '../nodes';
+import { initializeTsConfig } from '../../ts/tsconfig';
+import { msg } from '../../utils/log';
 
 export const initTsConfigTransformFactory = (defaultTsConfig: ParsedConfiguration): Transform =>
   transformFromPromise(async graph => {
