@@ -17,6 +17,7 @@
             "tsConfig": "src/tsconfig.app.json",
             "preserveSymlinks": true,
             "polyfills": "src/polyfills.ts",
+            "progress": false,
             "assets": ["src/assets", "src/favicon.ico"],
             "styles": ["src/styles.css"],
             "scripts": []
