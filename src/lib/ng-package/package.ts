@@ -32,6 +32,11 @@ import { NgEntryPoint } from './entry-point/entry-point';
  *
  * @link https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/edit#
  */
+
+export type AssetPattern = string | AssetEntry;
+
+export type AssetEntry = { glob: string; input: string; ignore?: string[]; output: string };
+
 export class NgPackage {
   constructor(
     private readonly basePath: string,
@@ -63,7 +68,7 @@ export class NgPackage {
   public get keepLifecycleScripts(): boolean {
     return this.primary.$get('keepLifecycleScripts') === true;
   }
-  public get assets(): string[] {
+  public get assets(): AssetPattern[] {
     return this.primary.$get('assets');
   }
 

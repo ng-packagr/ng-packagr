@@ -13,5 +13,10 @@ describe(`@sample/embed-assets`, () => {
     it(`should support asset pattern '"./assets/**/*.png"`, () => {
       expect(existsSync(join(dist, 'assets/image.png'))).to.be.true;
     });
+
+    it(`should support asset pattern '"./assets/**/*.png"`, () => {
+      expect(existsSync(join(dist, 'custom-assets/assets-3/image.png'))).to.be.true;
+      expect(existsSync(join(dist, 'custom-assets/assets-3/image.svg'))).to.be.false;
+    });
   });
 });
