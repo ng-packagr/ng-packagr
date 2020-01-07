@@ -26,8 +26,8 @@ program
     value ? path.resolve(value) : undefined,
   );
 
-const dir = path.dirname(module.filename);
-const pkg = readPkgUp.sync({ cwd: dir }).pkg;
+// typings doesn't have the package property
+const { package: pkg } = readPkgUp.sync({ cwd: __dirname }) as any;
 updateNotifier({ pkg }).notify();
 
 program.on('option:version', () => {
