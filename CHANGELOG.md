@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0-rc.4](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.3...v9.0.0-rc.4) (2020-01-07)
+
+
+### Bug Fixes
+
+* ignore `.gitkeep`, `Thumbs.db` and `.DS_Store` when copying files ([a5b10e2](https://github.com/ng-packagr/ng-packagr/commit/a5b10e2))
+* ignore JSON files in tsickle processing ([#1489](https://github.com/ng-packagr/ng-packagr/issues/1489)) ([ec44059](https://github.com/ng-packagr/ng-packagr/commit/ec44059)), closes [#325](https://github.com/ng-packagr/ng-packagr/issues/325)
+* update rollup to version 1.27.11 ([8af4d10](https://github.com/ng-packagr/ng-packagr/commit/8af4d10))
+* update rollup to version 1.27.14 ([d3fadce](https://github.com/ng-packagr/ng-packagr/commit/d3fadce))
+* update rollup to version 1.27.9 ([3505645](https://github.com/ng-packagr/ng-packagr/commit/3505645))
+* update rollup to version 1.28.0 ([624f31f](https://github.com/ng-packagr/ng-packagr/commit/624f31f))
+* update update-notifier to version ^4.0.0 ([f05cbbf](https://github.com/ng-packagr/ng-packagr/commit/f05cbbf))
+
 ## [9.0.0-rc.3](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.2...v9.0.0-rc.3) (2019-12-04)
 
 
