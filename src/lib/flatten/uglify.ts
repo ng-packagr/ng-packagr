@@ -1,7 +1,7 @@
 import { minify } from 'terser';
 import { writeFile, readFile } from 'fs-extra';
 import { basename } from 'path';
-import { debug, warn } from './../util/log';
+import { debug, warn } from '../utils/log';
 
 export async function minifyJsFile(inputPath: string, outputPath?: string): Promise<string> {
   debug(`minifyJsFile: ${inputPath}`);

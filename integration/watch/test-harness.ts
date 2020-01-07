@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra';
 import * as sinon from 'sinon';
 import * as path from 'path';
-import * as log from '../../src/lib/util/log';
+import * as log from '../../src/lib/utils/log';
 import { expect } from 'chai';
 import { Subscription } from 'rxjs';
 import { ngPackagr } from '../../src/public_api';

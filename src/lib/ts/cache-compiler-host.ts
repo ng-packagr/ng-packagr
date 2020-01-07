@@ -1,12 +1,12 @@
 import * as ts from 'typescript';
 import * as ng from '@angular/compiler-cli';
 import * as path from 'path';
-import { ensureUnixPath } from '../util/path';
-import { StylesheetProcessor } from '../ng-v5/entry-point/resources/stylesheet-processor';
-import { EntryPointNode, fileUrl } from '../ng-v5/nodes';
-import { Node } from '../brocc/node';
-import { BuildGraph } from '../brocc/build-graph';
-import { FileCache } from '../file/file-cache';
+import { ensureUnixPath } from '../utils/path';
+import { StylesheetProcessor } from '../styles/stylesheet-processor';
+import { EntryPointNode, fileUrl } from '../ng-package/nodes';
+import { BuildGraph } from '../graph/build-graph';
+import { FileCache } from '../file-system/file-cache';
+import { Node } from '../graph/node';
 
 export function cacheCompilerHost(
   graph: BuildGraph,
