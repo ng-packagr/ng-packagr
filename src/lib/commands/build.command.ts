@@ -1,5 +1,5 @@
 import { Command } from './command';
-import { ngPackagr } from '../ng-v5/packagr';
+import { ngPackagr } from '../packagr';
 
 /**
  * CLI arguments passed to `ng-packagr` executable and `build()` command.

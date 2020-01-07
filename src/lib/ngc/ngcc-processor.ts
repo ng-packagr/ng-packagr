@@ -2,8 +2,8 @@ import { Logger, PathMappings, process as mainNgcc } from '@angular/compiler-cli
 import { existsSync, constants, accessSync } from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
-import * as log from '../util/log';
-import { EntryPointNode, ngUrl } from '../ng-v5/nodes';
+import * as log from '../utils/log';
+import { EntryPointNode, ngUrl } from '../ng-package/nodes';
 
 // Transform a package and its typings when NGTSC is resolving a module.
 export class NgccProcessor {

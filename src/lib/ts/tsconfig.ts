@@ -1,8 +1,8 @@
 import * as ng from '@angular/compiler-cli';
 import * as path from 'path';
 import * as ts from 'typescript';
-import { EntryPointNode } from '../ng-v5/nodes';
-import * as log from '../util/log';
+import { EntryPointNode } from '../ng-package/nodes';
+import * as log from '../utils/log';
 
 /**
  * Reads the default TypeScript configuration.
