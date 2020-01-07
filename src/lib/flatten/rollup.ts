@@ -1,6 +1,6 @@
 import * as rollup from 'rollup';
 import * as nodeResolve from 'rollup-plugin-node-resolve';
-import * as sourcemaps from 'rollup-plugin-sourcemaps';
+import sourcemaps from 'rollup-plugin-sourcemaps';
 import * as commonJs from 'rollup-plugin-commonjs';
 import * as rollupJson from 'rollup-plugin-json';
 import * as log from '../utils/log';
