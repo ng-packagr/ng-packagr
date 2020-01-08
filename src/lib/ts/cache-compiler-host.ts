@@ -7,6 +7,7 @@ import { EntryPointNode, fileUrl } from '../ng-package/nodes';
 import { BuildGraph } from '../graph/build-graph';
 import { FileCache } from '../file-system/file-cache';
 import { Node } from '../graph/node';
+import * as log from '../utils/log';
 
 export function cacheCompilerHost(
   graph: BuildGraph,
@@ -17,6 +18,9 @@ export function cacheCompilerHost(
   sourcesFileCache: FileCache = entryPoint.cache.sourcesFileCache,
 ): ng.CompilerHost {
   const compilerHost = ng.createCompilerHost({ options: compilerOptions });
+  let tsPaths = Object.keys(compilerOptions.paths || {});
+  tsPaths = tsPaths.map(path => path.split('/*', 1)[0]);
+  log.debug(`Paths: ${tsPaths}`);
 
   const getNode = (fileName: string) => {
     const nodeUri = fileUrl(ensureUnixPath(fileName));
@@ -35,7 +39,7 @@ export function cacheCompilerHost(
     entryPoint.dependsOn(node);
   };
 
-  return {
+  const cacheCompilerHost = {
     ...compilerHost,
 
     // ts specific
@@ -53,6 +57,39 @@ export function cacheCompilerHost(
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (!cache.sourceFile) {
         cache.sourceFile = compilerHost.getSourceFile.call(this, fileName, languageVersion);
+        if (cache.sourceFile) {
+          // Taken from https://github.com/vvasabi/ng-packagr/commit/4a9e689224be826f872d9d1d5801fa33f46d2eed
+          cache.sourceFile.statements
+            .filter(x => ts.isImportDeclaration(x) || ts.isExportDeclaration(x))
+            .map(node => node as ts.ImportDeclaration | ts.ExportDeclaration)
+            .filter(node => !!node.moduleSpecifier)
+            .forEach(node => {
+              const text = node.moduleSpecifier.getText();
+              const flags = node.moduleSpecifier.flags;
+              const trimmedText = text.substring(1, text.length - 1);
+              if (trimmedText.startsWith('.')) {
+                return;
+              }
+
+              if (!tsPaths.some(path => trimmedText.includes(path))) {
+                return;
+              }
+
+              log.debug(`Attempting to process file ${trimmedText}`);
+
+              const file = cacheCompilerHost.moduleNameToFileName(trimmedText, cache.sourceFile.fileName);
+              if (!file || !file.startsWith(compilerOptions.basePath)) {
+                log.error(`Could not find file ${trimmedText}`);
+                return;
+              }
+
+              const newPath = './' + path.relative(path.dirname(cache.sourceFile.fileName), file).replace(/\.ts$/, '');
+              node.moduleSpecifier = ts.createLiteral(newPath);
+              node.moduleSpecifier.flags = flags; // or else tsickle pukes
+              node.moduleSpecifier.getText = () => '"' + newPath + '"'; // prevents lookup in original source
+              log.debug(`Re-written to path ${newPath}`);
+            });
+        }
       }
       return cache.sourceFile;
     },
@@ -123,4 +160,5 @@ export function cacheCompilerHost(
       return cache.content;
     },
   };
+  return cacheCompilerHost;
 }
