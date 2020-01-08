@@ -9,6 +9,8 @@ import { FileCache } from '../file-system/file-cache';
 export const TYPE_NG_PACKAGE = 'application/ng-package';
 export const TYPE_NG_ENTRY_POINT = 'application/ng-entry-point';
 
+export type GlobCache = Record<string, boolean | 'DIR' | 'FILE' | string[]>;
+
 /** A node that can be read through the `fs` api. */
 export const URL_PROTOCOL_FILE = 'file://';
 
@@ -85,7 +87,7 @@ export class PackageNode extends Node {
   data: NgPackage;
 
   cache = {
-    globCache: {} as Record<string, boolean | 'DIR' | 'FILE' | string[]>,
+    globCache: {} as GlobCache,
     sourcesFileCache: new FileCache(),
   };
 }
