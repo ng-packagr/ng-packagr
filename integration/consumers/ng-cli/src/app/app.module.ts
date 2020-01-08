@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { CdkModule } from './cdk/cdk.module';
 import { SecondaryModule } from './secondary/secondary.module';
 
+import { Config } from 'library';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -23,7 +25,7 @@ import { SecondaryModule } from './secondary/secondary.module';
     CdkModule,
     SecondaryModule,
   ],
-  providers: [],
+  providers: [{ provide: Config, useValue: { base: 'http://override.app' } }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

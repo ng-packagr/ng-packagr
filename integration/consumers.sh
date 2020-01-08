@@ -4,9 +4,9 @@ set -e
 cd "integration"
 echo "Running consumer builds in $PWD"
 # Prepare samples
-array=( 'custom' 'material' 'secondary' )
-for sample in "${array[@]}"; do
-    pushd "samples/${sample}/dist"
+dists=( 'custom/dist' 'material/dist' 'secondary/dist' 'library/dist/library' )
+for sample in "${dists[@]}"; do
+    pushd "samples/${sample}"
     yarn unlink || true
     yarn link
     popd
@@ -16,6 +16,7 @@ done
 pushd consumers/ng-cli
 yarn install
 yarn link sample-custom
+yarn link library
 yarn link @sample/material
 yarn link @sample/secondary
 yarn build:dev --output-path dist/dev
