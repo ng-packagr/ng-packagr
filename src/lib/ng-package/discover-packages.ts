@@ -154,23 +154,20 @@ export async function discoverPackages({ project }: { project: string }): Promis
   const primary = new NgEntryPoint(packageJson, ngPackageJson, basePath);
   log.debug(`Found primary entry point: ${primary.moduleId}`);
 
-  const secondaries = await findSecondaryPackagesPaths(basePath, primary.$get('dest'))
-    .then(folderPaths =>
-      Promise.all(
-        folderPaths.map(folderPath =>
-          resolveUserPackage(folderPath, true).catch(() => {
-            log.warn(`Cannot read secondary entry point at ${folderPath}. Skipping.`);
+  const folderPaths = await findSecondaryPackagesPaths(basePath, primary.$get('dest'));
+  const secondaries: NgEntryPoint[] = [];
 
-            return null;
-          }),
-        ),
-      ),
-    )
-    .then(secondaryPackages =>
-      secondaryPackages
-        .filter(value => !!value)
-        .map(secondaryPackage => secondaryEntryPoint(basePath, primary, secondaryPackage)),
-    );
+  for (const folderPath of folderPaths) {
+    try {
+      const secondaryPackage = await resolveUserPackage(folderPath, true);
+      if (secondaryPackage) {
+        secondaries.push(secondaryEntryPoint(basePath, primary, secondaryPackage));
+      }
+    } catch {
+      log.warn(`Cannot read secondary entry point at ${folderPath}. Skipping.`);
+    }
+  }
+
   if (secondaries.length > 0) {
     log.debug(`Found secondary entry points: ${secondaries.map(e => e.moduleId).join(', ')}`);
   }
