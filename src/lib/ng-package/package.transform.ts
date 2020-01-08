@@ -130,7 +130,8 @@ const watchTransformFactory = (
           const { sourcesFileCache } = cache;
           const cachedSourceFile = sourcesFileCache.get(filePath);
 
-          if (event === 'unlink') {
+          // Reset cache when files has been modified
+          if (event === 'unlink' || event === 'add') {
             cache.globCache = {};
           }
 
