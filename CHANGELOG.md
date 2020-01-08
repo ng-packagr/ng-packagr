@@ -9,6 +9,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 * update rollup to version 1.29.0 ([04fa486](https://github.com/ng-packagr/ng-packagr/commit/04fa486))
 
+### Performance
+* use TypeScript scanner to build dependency tree ([1cdc8c8](https://github.com/ng-packagr/ng-packagr/commit/1cdc8c8))
+
 ## [9.0.0-rc.4](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.3...v9.0.0-rc.4) (2020-01-07)
 
 
