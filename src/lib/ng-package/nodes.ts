@@ -56,33 +56,21 @@ export function ngUrl(path: string): string {
 export class EntryPointNode extends Node {
   readonly type = TYPE_NG_ENTRY_POINT;
 
-  constructor(
-    public readonly url: string,
-    readonly sourcesFileCache?: FileCache,
-    readonly analysisSourcesFileCache?: FileCache,
-  ) {
+  constructor(public readonly url: string, readonly sourcesFileCache?: FileCache) {
     super(url);
 
     if (sourcesFileCache) {
       this.cache.sourcesFileCache = sourcesFileCache;
     }
-
-    if (analysisSourcesFileCache) {
-      this.cache.analysisSourcesFileCache = analysisSourcesFileCache;
-    }
   }
 
   cache: {
-    oldPrograms?: Record<ts.ScriptTarget | 'analysis', Program | ts.Program>;
+    oldPrograms?: Record<ts.ScriptTarget, Program>;
     sourcesFileCache: FileCache;
-    analysisSourcesFileCache: FileCache;
     moduleResolutionCache: ts.ModuleResolutionCache;
-    analysisModuleResolutionCache: ts.ModuleResolutionCache;
   } = {
     sourcesFileCache: new FileCache(),
-    analysisSourcesFileCache: new FileCache(),
     moduleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
-    analysisModuleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
   };
 
   data: {
@@ -97,7 +85,7 @@ export class PackageNode extends Node {
   data: NgPackage;
 
   cache = {
+    globCache: {} as Record<string, boolean | 'DIR' | 'FILE' | string[]>,
     sourcesFileCache: new FileCache(),
-    analysisSourcesFileCache: new FileCache(),
   };
 }

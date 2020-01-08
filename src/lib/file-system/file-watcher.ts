@@ -4,7 +4,8 @@ import { Observer, Observable } from 'rxjs';
 import { ensureUnixPath } from '../utils/path';
 import * as log from '../utils/log';
 
-export type FileWatchEvent = 'change' | 'unlink' | 'add' | 'unlinkDir' | 'addDir';
+type AllFileWatchEvents = 'change' | 'unlink' | 'add' | 'unlinkDir' | 'addDir';
+export type FileWatchEvent = Exclude<AllFileWatchEvents, 'unlinkDir' | 'addDir'>;
 
 export interface FileChangedEvent {
   filePath: string;
@@ -23,24 +24,22 @@ export function createFileWatch(
     persistent: true,
   });
 
-  const handleFileChange = (event: FileWatchEvent, filePath: string, observer: Observer<FileChangedEvent>) => {
+  const handleFileChange = (event: AllFileWatchEvents, filePath: string, observer: Observer<FileChangedEvent>) => {
     log.debug(`Watch: Path changed. Event: ${event}, Path: ${filePath}`);
 
-    const ignoredEvents: FileWatchEvent[] = ['unlinkDir', 'addDir'];
-
-    if (ignoredEvents.includes(event)) {
+    if (event === 'unlinkDir' || event === 'addDir') {
       // we don't need to trigger on directory removed or renamed as chokidar will fire the changes for each file
       return;
     }
 
     observer.next({
-      filePath: path.resolve(ensureUnixPath(filePath)),
+      filePath: ensureUnixPath(path.resolve(filePath)),
       event,
     });
   };
 
   return Observable.create(observer => {
-    watch.on('all', (event: FileWatchEvent, filePath: string) => handleFileChange(event, filePath, observer));
+    watch.on('all', (event: AllFileWatchEvents, filePath: string) => handleFileChange(event, filePath, observer));
     return () => watch.close();
   });
 }
