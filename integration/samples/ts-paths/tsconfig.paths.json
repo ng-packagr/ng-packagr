@@ -21,7 +21,7 @@
     "importHelpers": true,
     "lib": ["dom", "es2015"],
     "paths": {
-      "@ts-path/api": ["./src/api/index"]
+      "@ts-path/api": ["src/api/index"]
     }
   },
   "exclude": ["node_modules", "dist"],
