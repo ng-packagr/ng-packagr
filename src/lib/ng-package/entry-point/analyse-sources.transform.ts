@@ -21,14 +21,13 @@ export const analyseSourcesTransform = transformFromPromise(async graph => {
 /**
  * Analyses an entrypoint, searching for TypeScript dependencies and additional resources (Templates and Stylesheets).
  */
-async function analyseEntryPoint(
-  packageNode: PackageNode,
-  entryPoint: EntryPointNode,
-  entryPoints: EntryPointNode[],
-) {
+async function analyseEntryPoint(packageNode: PackageNode, entryPoint: EntryPointNode, entryPoints: EntryPointNode[]) {
   const { cache, data } = entryPoint;
   const { moduleId, entryFilePath } = data.entryPoint;
   log.debug(`Analysing sources for ${moduleId}`);
+
+  const primaryModuleId = packageNode.data.primary.moduleId;
+
   const tsFiles = await globFiles('**/*.{ts,tsx}', {
     absolute: true,
     cwd: dirname(entryFilePath),
@@ -66,19 +65,19 @@ async function analyseEntryPoint(
 
     entry.sourceFile = ts.createSourceFile(normalizedFilePath, content, ts.ScriptTarget.ESNext, true);
     entry.sourceFile.statements
-    .filter(x => ts.isImportDeclaration(x) || ts.isExportDeclaration(x))
-    .forEach((node: ts.ImportDeclaration | ts.ExportDeclaration) => {
-      const { moduleSpecifier } = node;
-      if (!moduleSpecifier || !ts.isStringLiteral(moduleSpecifier)) {
-        return;
-      }
+      .filter(x => ts.isImportDeclaration(x) || ts.isExportDeclaration(x))
+      .forEach((node: ts.ImportDeclaration | ts.ExportDeclaration) => {
+        const { moduleSpecifier } = node;
+        if (!moduleSpecifier || !ts.isStringLiteral(moduleSpecifier)) {
+          return;
+        }
 
-      const moduleName = moduleSpecifier.text;
-      if (moduleName.startsWith(`${packageNode.data.primary.moduleId}/`)) {
-        potentialDependencies.add(moduleName);
-      }
-    });
-  };
+        const moduleName = moduleSpecifier.text;
+        if (moduleName === primaryModuleId || moduleName.startsWith(`${primaryModuleId}/`)) {
+          potentialDependencies.add(moduleName);
+        }
+      });
+  }
 
   const entryPointsMapped: Record<string, EntryPointNode> = {};
   for (const dep of entryPoints) {
