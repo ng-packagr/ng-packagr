@@ -74,7 +74,7 @@ async function analyseEntryPoint(
       }
 
       const moduleName = moduleSpecifier.text;
-      if (moduleName.startsWith(packageNode.data.primary.moduleId)) {
+      if (moduleName.startsWith(`${packageNode.data.primary.moduleId}/`)) {
         potentialDependencies.add(moduleName);
       }
     });
