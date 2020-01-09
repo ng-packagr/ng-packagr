@@ -4,14 +4,15 @@ import * as log from '../../utils/log';
 import { transformFromPromise } from '../../graph/transform';
 import { isEntryPoint, EntryPointNode, isPackage, PackageNode } from '../nodes';
 import { globFiles } from '../../utils/glob';
+import { ensureUnixPath } from '../../utils/path';
+import { dirname } from 'path';
 
 export const analyseSourcesTransform = transformFromPromise(async graph => {
   const packageNode = graph.find(isPackage) as PackageNode;
   const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
-  const scanner = ts.createScanner(ts.ScriptTarget.Latest, true);
 
   for (const entryPoint of entryPoints.filter(({ state }) => state !== 'done')) {
-    await analyseEntryPoint(packageNode, entryPoint, entryPoints, scanner);
+    await analyseEntryPoint(packageNode, entryPoint, entryPoints);
   }
 
   return graph;
@@ -24,14 +25,13 @@ async function analyseEntryPoint(
   packageNode: PackageNode,
   entryPoint: EntryPointNode,
   entryPoints: EntryPointNode[],
-  scanner: ts.Scanner,
 ) {
   const { cache, data } = entryPoint;
-  const { moduleId, basePath } = data.entryPoint;
+  const { moduleId, entryFilePath } = data.entryPoint;
   log.debug(`Analysing sources for ${moduleId}`);
-
-  const tsFiles = await globFiles(`${basePath}/**/*.ts`, {
+  const tsFiles = await globFiles('**/*.{ts,tsx}', {
     absolute: true,
+    cwd: dirname(entryFilePath),
     cache: packageNode.cache.globCache,
     ignore: [
       '**/node_modules/**',
@@ -45,7 +45,8 @@ async function analyseEntryPoint(
 
   const potentialDependencies = new Set<string>();
   for (const filePath of tsFiles) {
-    const entry = cache.sourcesFileCache.getOrCreate(filePath);
+    const normalizedFilePath = ensureUnixPath(filePath);
+    const entry = cache.sourcesFileCache.getOrCreate(normalizedFilePath);
 
     let content: string | undefined;
     if (entry.content === undefined) {
@@ -63,24 +64,21 @@ async function analyseEntryPoint(
       continue;
     }
 
-    scanner.setText(content);
-    let token = scanner.scan();
-    while (token !== ts.SyntaxKind.EndOfFileToken) {
-      if (token === ts.SyntaxKind.ImportKeyword || token === ts.SyntaxKind.ExportKeyword) {
-        while (token !== ts.SyntaxKind.StringLiteral && token !== ts.SyntaxKind.EndOfFileToken) {
-          token = scanner.scan();
-        }
-
-        const moduleName = scanner.getTokenValue();
-        // Child Entry points need to start with primary entrypoint
-        if (moduleName.startsWith(packageNode.data.primary.moduleId)) {
-          potentialDependencies.add(moduleName);
-        }
+    entry.sourceFile = ts.createSourceFile(normalizedFilePath, content, ts.ScriptTarget.ESNext, true);
+    entry.sourceFile.statements
+    .filter(x => ts.isImportDeclaration(x) || ts.isExportDeclaration(x))
+    .forEach((node: ts.ImportDeclaration | ts.ExportDeclaration) => {
+      const { moduleSpecifier } = node;
+      if (!moduleSpecifier || !ts.isStringLiteral(moduleSpecifier)) {
+        return;
       }
 
-      token = scanner.scan();
-    }
-  }
+      const moduleName = moduleSpecifier.text;
+      if (moduleName.startsWith(packageNode.data.primary.moduleId)) {
+        potentialDependencies.add(moduleName);
+      }
+    });
+  };
 
   const entryPointsMapped: Record<string, EntryPointNode> = {};
   for (const dep of entryPoints) {
