@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0-rc.6](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.5...v9.0.0-rc.6) (2020-01-09)
+
+
+### Bug Fixes
+
+* analyse only non done entry points ([e8db885](https://github.com/ng-packagr/ng-packagr/commit/e8db885))
+* reset glob cache on file add ([0306d59](https://github.com/ng-packagr/ng-packagr/commit/0306d59))
+
+
+### Performance
+
+* re-populate glob cache ([3323b2a](https://github.com/ng-packagr/ng-packagr/commit/3323b2a))
+
 ## [9.0.0-rc.5](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.4...v9.0.0-rc.5) (2020-01-08)
 
 
