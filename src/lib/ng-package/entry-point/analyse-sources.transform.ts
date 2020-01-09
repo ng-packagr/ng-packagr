@@ -7,10 +7,10 @@ import { globFiles } from '../../utils/glob';
 
 export const analyseSourcesTransform = transformFromPromise(async graph => {
   const packageNode = graph.find(isPackage) as PackageNode;
-  const entryPoints = graph.filter(x => isEntryPoint(x) && x.state !== 'done') as EntryPointNode[];
+  const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
   const scanner = ts.createScanner(ts.ScriptTarget.Latest, true);
 
-  for (const entryPoint of entryPoints) {
+  for (const entryPoint of entryPoints.filter(({ state }) => state !== 'done')) {
     await analyseEntryPoint(packageNode, entryPoint, entryPoints, scanner);
   }
 
