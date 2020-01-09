@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0-rc.7](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.6...v9.0.0-rc.7) (2020-01-09)
+
+
+### Bug Fixes
+
+* circular dependency on itself error ([702c3f2](https://github.com/ng-packagr/ng-packagr/commit/702c3f2)), closes [#1508](https://github.com/ng-packagr/ng-packagr/issues/1508)
+
 ## [9.0.0-rc.6](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.5...v9.0.0-rc.6) (2020-01-09)
 
 
