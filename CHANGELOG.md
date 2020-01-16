@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0-rc.7](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.6...v9.0.0-rc.7) (2020-01-09)
+
+
+### Bug Fixes
+
+* circular dependency on itself error ([702c3f2](https://github.com/ng-packagr/ng-packagr/commit/702c3f2)), closes [#1508](https://github.com/ng-packagr/ng-packagr/issues/1508)
+
+## [9.0.0-rc.6](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.5...v9.0.0-rc.6) (2020-01-09)
+
+
+### Bug Fixes
+
+* analyse only non done entry points ([e8db885](https://github.com/ng-packagr/ng-packagr/commit/e8db885))
+* reset glob cache on file add ([0306d59](https://github.com/ng-packagr/ng-packagr/commit/0306d59))
+
+
+### Performance
+
+* re-populate glob cache ([3323b2a](https://github.com/ng-packagr/ng-packagr/commit/3323b2a))
+
+## [9.0.0-rc.5](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.4...v9.0.0-rc.5) (2020-01-08)
+
+
+### Bug Fixes
+
+* update rollup to version 1.29.0 ([04fa486](https://github.com/ng-packagr/ng-packagr/commit/04fa486))
+
+### Performance
+* use TypeScript scanner to build dependency tree ([1cdc8c8](https://github.com/ng-packagr/ng-packagr/commit/1cdc8c8))
+
 ## [9.0.0-rc.4](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.3...v9.0.0-rc.4) (2020-01-07)
 
 

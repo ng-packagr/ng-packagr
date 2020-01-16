@@ -9,6 +9,8 @@ import { FileCache } from '../file-system/file-cache';
 export const TYPE_NG_PACKAGE = 'application/ng-package';
 export const TYPE_NG_ENTRY_POINT = 'application/ng-entry-point';
 
+export type GlobCache = Record<string, boolean | 'DIR' | 'FILE' | string[]>;
+
 /** A node that can be read through the `fs` api. */
 export const URL_PROTOCOL_FILE = 'file://';
 
@@ -56,33 +58,21 @@ export function ngUrl(path: string): string {
 export class EntryPointNode extends Node {
   readonly type = TYPE_NG_ENTRY_POINT;
 
-  constructor(
-    public readonly url: string,
-    readonly sourcesFileCache?: FileCache,
-    readonly analysisSourcesFileCache?: FileCache,
-  ) {
+  constructor(public readonly url: string, readonly sourcesFileCache?: FileCache) {
     super(url);
 
     if (sourcesFileCache) {
       this.cache.sourcesFileCache = sourcesFileCache;
     }
-
-    if (analysisSourcesFileCache) {
-      this.cache.analysisSourcesFileCache = analysisSourcesFileCache;
-    }
   }
 
   cache: {
-    oldPrograms?: Record<ts.ScriptTarget | 'analysis', Program | ts.Program>;
+    oldPrograms?: Record<ts.ScriptTarget, Program>;
     sourcesFileCache: FileCache;
-    analysisSourcesFileCache: FileCache;
     moduleResolutionCache: ts.ModuleResolutionCache;
-    analysisModuleResolutionCache: ts.ModuleResolutionCache;
   } = {
     sourcesFileCache: new FileCache(),
-    analysisSourcesFileCache: new FileCache(),
     moduleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
-    analysisModuleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
   };
 
   data: {
@@ -97,7 +87,7 @@ export class PackageNode extends Node {
   data: NgPackage;
 
   cache = {
+    globCache: {} as GlobCache,
     sourcesFileCache: new FileCache(),
-    analysisSourcesFileCache: new FileCache(),
   };
 }

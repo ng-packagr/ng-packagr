@@ -7,13 +7,14 @@ import { ensureUnixPath } from '../../utils/path';
 import { rimraf } from '../../utils/rimraf';
 import * as log from '../../utils/log';
 import { globFiles } from '../../utils/glob';
-import { EntryPointNode, isEntryPointInProgress, isPackage } from '../nodes';
+import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode } from '../nodes';
 import { copyFile } from '../../utils/copy';
 
 export const writePackageTransform: Transform = transformFromPromise(async graph => {
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
   const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
-  const ngPackage: NgPackage = graph.find(isPackage).data;
+  const ngPackageNode = graph.find(isPackage) as PackageNode;
+  const ngPackage = ngPackageNode.data;
   const { destinationFiles } = entryPoint.data;
   const ignorePaths: string[] = [
     '.gitkeep',
@@ -26,6 +27,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
   // we don't want to copy `dist` and 'node_modules' declaration files but only files in source
   const declarationFiles = await globFiles(`${path.dirname(ngEntryPoint.entryFilePath)}/**/*.d.ts`, {
     ignore: ignorePaths,
+    cache: ngPackageNode.cache.globCache,
   });
 
   if (declarationFiles.length) {
@@ -46,7 +48,10 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     const copyOptions = { overwrite: true, dereference: true };
 
     const assets = ngPackage.assets.filter(x => typeof x === 'string').map(x => path.join(ngPackage.src, x as string));
-    const assetFiles = await globFiles(assets, ingoreOptions);
+    const assetFiles = await globFiles(assets, {
+      ignore: ignorePaths,
+      cache: ngPackageNode.cache.globCache,
+    });
     if (assetFiles.length) {
       // COPY ASSET FILES TO DESTINATION
       log.info('Copying assets');
@@ -70,6 +75,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
             dot: true,
             nodir: true,
             ignore: [...ingoreOptions.ignore, ...(entry.ignore || [])],
+            cache: ngPackageNode.cache.globCache,
           };
           const files = await globFiles(entry.glob, options);
           return await Promise.all(files.map(x => copyFile(path.join(src, x), path.join(dest, x), copyOptions)));
@@ -221,17 +227,19 @@ async function writePackageJson(
   });
 }
 
-function checkNonPeerDependencies(packageJson: { [key: string]: any }, property: string, whitelist: RegExp[]) {
-  if (packageJson[property]) {
-    Object.keys(packageJson[property]).forEach(dep => {
-      if (whitelist.find(regex => regex.test(dep))) {
-        log.debug(`Dependency ${dep} is whitelisted in '${property}'`);
-      } else {
-        log.warn(
-          `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep} to 'peerDependencies' or remove it from '${property}'.`,
-        );
-        throw new Error(`Dependency ${dep} must be explicitly whitelisted.`);
-      }
-    });
+function checkNonPeerDependencies(packageJson: Record<string, unknown>, property: string, whitelist: RegExp[]) {
+  if (!packageJson[property]) {
+    return;
+  }
+
+  for (const dep of Object.keys(packageJson[property])) {
+    if (whitelist.find(regex => regex.test(dep))) {
+      log.debug(`Dependency ${dep} is whitelisted in '${property}'`);
+    } else {
+      log.warn(
+        `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep} to 'peerDependencies' or remove it from '${property}'.`,
+      );
+      throw new Error(`Dependency ${dep} must be explicitly whitelisted.`);
+    }
   }
 }

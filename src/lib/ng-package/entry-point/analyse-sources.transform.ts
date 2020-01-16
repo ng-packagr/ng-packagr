@@ -1,117 +1,92 @@
-import * as ng from '@angular/compiler-cli';
 import * as ts from 'typescript';
-import { pipe } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { readFileSync } from 'fs';
 import * as log from '../../utils/log';
-import { Transform } from '../../graph/transform';
-import { isEntryPoint, EntryPointNode } from '../nodes';
-import { cacheCompilerHost } from '../../ts/cache-compiler-host';
-import { unique } from '../../utils/array';
-import { BuildGraph } from '../../graph/build-graph';
+import { transformFromPromise } from '../../graph/transform';
+import { isEntryPoint, EntryPointNode, isPackage, PackageNode } from '../nodes';
+import { globFiles } from '../../utils/glob';
 import { ensureUnixPath } from '../../utils/path';
+import { dirname } from 'path';
 
-export const analyseSourcesTransform: Transform = pipe(
-  map(graph => {
-    const entryPoints = graph.filter(x => isEntryPoint(x) && x.state !== 'done') as EntryPointNode[];
-    for (let entryPoint of entryPoints) {
-      analyseEntryPoint(graph, entryPoint, entryPoints);
-    }
+export const analyseSourcesTransform = transformFromPromise(async graph => {
+  const packageNode = graph.find(isPackage) as PackageNode;
+  const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
 
-    return graph;
-  }),
-);
+  for (const entryPoint of entryPoints.filter(({ state }) => state !== 'done')) {
+    await analyseEntryPoint(packageNode, entryPoint, entryPoints);
+  }
+
+  return graph;
+});
 
 /**
  * Analyses an entrypoint, searching for TypeScript dependencies and additional resources (Templates and Stylesheets).
- *
- * @param graph Build graph
- * @param entryPoint Current entry point that should be analysed.
- * @param entryPoints List of all entry points.
  */
-function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryPoints: EntryPointNode[]) {
-  const { analysisModuleResolutionCache, oldPrograms, analysisSourcesFileCache } = entryPoint.cache;
-  const oldProgram = oldPrograms && (oldPrograms['analysis'] as ts.Program | undefined);
-  const { moduleId } = entryPoint.data.entryPoint;
-
+async function analyseEntryPoint(packageNode: PackageNode, entryPoint: EntryPointNode, entryPoints: EntryPointNode[]) {
+  const { cache, data } = entryPoint;
+  const { moduleId, entryFilePath } = data.entryPoint;
   log.debug(`Analysing sources for ${moduleId}`);
 
-  const tsConfigOptions = {
-    ...entryPoint.data.tsConfig.options,
-    skipLibCheck: true,
-    types: [],
-  };
+  const primaryModuleId = packageNode.data.primary.moduleId;
 
-  const compilerHost = cacheCompilerHost(
-    graph,
-    entryPoint,
-    tsConfigOptions,
-    analysisModuleResolutionCache,
-    undefined,
-    analysisSourcesFileCache,
-  );
+  const tsFiles = await globFiles('**/*.{ts,tsx}', {
+    absolute: true,
+    cwd: dirname(entryFilePath),
+    cache: packageNode.cache.globCache,
+    ignore: [
+      '**/node_modules/**',
+      '**/.git/**',
+      `${packageNode.data.dest}/**`,
+      ...(packageNode.data.primary.moduleId === moduleId
+        ? entryPoints.filter(e => e !== entryPoint).map(e => `${e.data.entryPoint.basePath}/**`)
+        : []),
+    ],
+  });
 
-  compilerHost.resolveModuleNames = (moduleNames: string[], containingFile: string) => {
-    return moduleNames.map(moduleName => {
-      if (!moduleName.startsWith('.')) {
-        return undefined;
+  const potentialDependencies = new Set<string>();
+  for (const filePath of tsFiles) {
+    const normalizedFilePath = ensureUnixPath(filePath);
+    const entry = cache.sourcesFileCache.getOrCreate(normalizedFilePath);
+
+    let content: string | undefined;
+    if (entry.content === undefined) {
+      // file already loaded previously
+      content = readFileSync(filePath, 'utf8');
+      entry.content = content;
+      entry.exists = true;
+
+      if (!content) {
+        // if file is blank skip
+        continue;
       }
+    } else {
+      // Previously processed.
+      continue;
+    }
 
-      const { resolvedModule } = ts.resolveModuleName(
-        moduleName,
-        ensureUnixPath(containingFile),
-        tsConfigOptions,
-        compilerHost,
-        analysisModuleResolutionCache,
-      );
+    entry.sourceFile = ts.createSourceFile(normalizedFilePath, content, ts.ScriptTarget.ESNext, true);
+    entry.sourceFile.statements
+      .filter(x => ts.isImportDeclaration(x) || ts.isExportDeclaration(x))
+      .forEach((node: ts.ImportDeclaration | ts.ExportDeclaration) => {
+        const { moduleSpecifier } = node;
+        if (!moduleSpecifier || !ts.isStringLiteral(moduleSpecifier)) {
+          return;
+        }
 
-      return resolvedModule;
-    });
-  };
-
-  const program: ts.Program = ts.createProgram(
-    entryPoint.data.tsConfig.rootNames,
-    tsConfigOptions,
-    compilerHost,
-    oldProgram,
-  );
-
-  const diagnostics = program.getOptionsDiagnostics();
-  if (diagnostics.length) {
-    throw new Error(ng.formatDiagnostics(diagnostics));
+        const moduleName = moduleSpecifier.text;
+        if (moduleName === primaryModuleId || moduleName.startsWith(`${primaryModuleId}/`)) {
+          potentialDependencies.add(moduleName);
+        }
+      });
   }
 
-  // this is a workaround due to the below
-  // https://github.com/angular/angular/issues/24010
-  let moduleStatements: string[] = [];
-  program
-    .getSourceFiles()
-    .filter(x => !/node_modules|\.ngfactory|\.ngstyle|(\.d\.ts$)/.test(x.fileName))
-    .forEach(sourceFile => {
-      sourceFile.statements
-        .filter(x => ts.isImportDeclaration(x) || ts.isExportDeclaration(x))
-        .forEach((node: ts.ImportDeclaration | ts.ExportDeclaration) => {
-          const { moduleSpecifier } = node;
-          if (!moduleSpecifier) {
-            return;
-          }
+  const entryPointsMapped: Record<string, EntryPointNode> = {};
+  for (const dep of entryPoints) {
+    entryPointsMapped[dep.data.entryPoint.moduleId] = dep;
+  }
 
-          const text = moduleSpecifier.getText();
-          const trimmedText = text.substring(1, text.length - 1);
-          if (!trimmedText.startsWith('.')) {
-            moduleStatements.push(trimmedText);
-          }
-        });
-    });
+  for (const moduleName of potentialDependencies) {
+    const dep = entryPointsMapped[moduleName];
 
-  log.debug(
-    `tsc program structure is reused: ${oldProgram ? (oldProgram as any).structureIsReused : 'No old program'}`,
-  );
-
-  entryPoint.cache.oldPrograms = { ...entryPoint.cache.oldPrograms, ['analysis']: program };
-
-  moduleStatements = unique(moduleStatements);
-  moduleStatements.forEach(moduleName => {
-    const dep = entryPoints.find(ep => ep.data.entryPoint.moduleId === moduleName);
     if (dep) {
       log.debug(`Found entry point dependency: ${moduleId} -> ${moduleName}`);
 
@@ -120,6 +95,8 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
       }
 
       entryPoint.dependsOn(dep);
+    } else {
+      throw new Error(`Entry point ${moduleName} which is required by ${moduleId} doesn't exists.`);
     }
-  });
+  }
 }
