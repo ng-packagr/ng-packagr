@@ -15,7 +15,7 @@ export const initTsConfigTransformFactory = (defaultTsConfig: ParsedConfiguratio
       const ivyMsg =
         '******************************************************************************\n' +
         'It is not recommended to publish Ivy libraries to NPM repositories.\n' +
-        'Read more here: https://next.angular.io/guide/ivy#maintaining-library-compatibility\n' +
+        'Read more here: https://v9.angular.io/guide/ivy#maintaining-library-compatibility\n' +
         '******************************************************************************';
 
       msg(chalk.yellow(ivyMsg));
