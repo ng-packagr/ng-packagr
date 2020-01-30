@@ -2,7 +2,7 @@
 
 ## Why?
 
-While developing a library you may want to certain assets that are being used inside your components gets embedded into the outputted css as otherwise it can get rather tricky to implement something that will work for all module formats.
+While developing a library you may want certain assets that are being used inside your components gets embedded into the outputted css as otherwise it can get rather tricky to implement something that will work for all module formats.
 
 A way to overcome this and include certain assets, is to use background images inside css and embed the assets with data URIs.
 
