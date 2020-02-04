@@ -99,6 +99,20 @@ export function cacheCompilerHost(
       return resolvedModule && resolvedModule.resolvedFileName;
     },
 
+    resolveModuleNames: (moduleNames: string[], containingFile: string) => {
+      return moduleNames.map(moduleName => {
+        const { resolvedModule } = ts.resolveModuleName(
+          moduleName,
+          ensureUnixPath(containingFile),
+          compilerOptions,
+          compilerHost,
+          moduleResolutionCache,
+        );
+
+        return resolvedModule;
+      });
+    },
+
     resourceNameToFileName: (resourceName: string, containingFilePath: string) => {
       const resourcePath = path.resolve(path.dirname(containingFilePath), resourceName);
       const containingNode = getNode(containingFilePath);

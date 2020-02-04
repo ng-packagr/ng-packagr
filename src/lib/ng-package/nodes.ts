@@ -67,11 +67,13 @@ export class EntryPointNode extends Node {
   }
 
   cache: {
-    oldPrograms?: Record<ts.ScriptTarget, Program>;
+    oldPrograms?: Record<ts.ScriptTarget | 'analysis', Program | ts.Program>;
     sourcesFileCache: FileCache;
+    analysesSourcesFileCache: FileCache;
     moduleResolutionCache: ts.ModuleResolutionCache;
   } = {
     sourcesFileCache: new FileCache(),
+    analysesSourcesFileCache: new FileCache(),
     moduleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
   };
 
