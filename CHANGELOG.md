@@ -12,18 +12,9 @@ All notable changes to this project will be documented in this file. See [standa
 * analyse should cater for module name being the primary entry point ([7b8e491](https://github.com/ng-packagr/ng-packagr/commit/7b8e491))
 * circular dependency on itself error ([702c3f2](https://github.com/ng-packagr/ng-packagr/commit/702c3f2)), closes [#1508](https://github.com/ng-packagr/ng-packagr/issues/1508)
 * ignore `.gitkeep`, `Thumbs.db` and `.DS_Store` when copying files ([a5b10e2](https://github.com/ng-packagr/ng-packagr/commit/a5b10e2))
-* ignore JSON files in tsickle processing ([#1489](https://github.com/ng-packagr/ng-packagr/issues/1489)) ([ec44059](https://github.com/ng-packagr/ng-packagr/commit/ec44059)), closes [#325](https://github.com/ng-packagr/ng-packagr/issues/325)
 * incorrect detection of potential dependent entry-points ([932bf48](https://github.com/ng-packagr/ng-packagr/commit/932bf48)), closes [#1510](https://github.com/ng-packagr/ng-packagr/issues/1510)
 * reset glob cache on file add ([0306d59](https://github.com/ng-packagr/ng-packagr/commit/0306d59))
 * switch to a more accurate module analyse ([92ca053](https://github.com/ng-packagr/ng-packagr/commit/92ca053)), closes [#1523](https://github.com/ng-packagr/ng-packagr/issues/1523)
-* update rollup to version 1.27.11 ([8af4d10](https://github.com/ng-packagr/ng-packagr/commit/8af4d10))
-* update rollup to version 1.27.14 ([d3fadce](https://github.com/ng-packagr/ng-packagr/commit/d3fadce))
-* update rollup to version 1.27.9 ([3505645](https://github.com/ng-packagr/ng-packagr/commit/3505645))
-* update rollup to version 1.28.0 ([624f31f](https://github.com/ng-packagr/ng-packagr/commit/624f31f))
-* update rollup to version 1.29.0 ([04fa486](https://github.com/ng-packagr/ng-packagr/commit/04fa486))
-* update rollup to version 1.29.1 ([64e380d](https://github.com/ng-packagr/ng-packagr/commit/64e380d))
-* update rollup to version 1.30.0 ([90eb47d](https://github.com/ng-packagr/ng-packagr/commit/90eb47d))
-* update rollup to version 1.30.1 ([a027395](https://github.com/ng-packagr/ng-packagr/commit/a027395))
 * update rollup to version 1.31.0 ([f8704fd](https://github.com/ng-packagr/ng-packagr/commit/f8704fd))
 * update update-notifier to version ^4.0.0 ([f05cbbf](https://github.com/ng-packagr/ng-packagr/commit/f05cbbf))
 
@@ -36,7 +27,6 @@ All notable changes to this project will be documented in this file. See [standa
 ### Performance
 
 * re-populate glob cache ([3323b2a](https://github.com/ng-packagr/ng-packagr/commit/3323b2a))
-* use TypeScript scanner to build dependency tree ([1cdc8c8](https://github.com/ng-packagr/ng-packagr/commit/1cdc8c8))
 
 ## [9.0.0-rc.7](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.6...v9.0.0-rc.7) (2020-01-09)
 
