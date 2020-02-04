@@ -76,6 +76,11 @@ export async function compileSourceFiles(
     ...ngProgram.getNgStructuralDiagnostics(),
   ];
 
+  const beforeTs: ts.TransformerFactory<ts.SourceFile>[] = [];
+  if (!tsConfigOptions.annotateForClosureCompiler) {
+    beforeTs.push(downlevelConstructorParameters(() => ngProgram.getTsProgram().getTypeChecker()));
+  }
+
   // if we have an error we don't want to transpile.
   const hasError = ng.exitCodeFromResult(allDiagnostics) > 0;
   if (!hasError) {
@@ -86,7 +91,7 @@ export async function compileSourceFiles(
       // For Ivy we don't need a custom emitCallback to have tsickle transforms
       emitCallback: tsConfigOptions.enableIvy ? undefined : createEmitCallback(tsConfigOptions),
       customTransformers: {
-        beforeTs: [downlevelConstructorParameters(() => ngProgram.getTsProgram().getTypeChecker())],
+        beforeTs,
       },
     });
 
