@@ -1,8 +1,8 @@
 import * as rollup from 'rollup';
-import * as nodeResolve from 'rollup-plugin-node-resolve';
+import * as nodeResolve from '@rollup/plugin-node-resolve';
 import * as sourcemaps from 'rollup-plugin-sourcemaps';
-import * as commonJs from 'rollup-plugin-commonjs';
-import * as rollupJson from 'rollup-plugin-json';
+import * as commonJs from '@rollup/plugin-commonjs';
+import * as rollupJson from '@rollup/plugin-json';
 import * as log from '../utils/log';
 import { ExternalModuleIdStrategy, DependencyList } from './external-module-id-strategy';
 import { umdModuleIdStrategy } from './umd-module-id-strategy';
@@ -39,11 +39,13 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
     inlineDynamicImports: false,
     input: opts.entry,
     plugins: [
+      // @ts-ignore
       rollupJson(),
       // @ts-ignore
       nodeResolve(),
       // @ts-ignore
       commonJs(),
+      // @ts-ignore
       sourcemaps(),
       { transform: opts.transform },
     ],
