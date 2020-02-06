@@ -41,32 +41,14 @@ This is to be inline with the Angular framework as per
 * skip NGCC when file system is read only ([0e44793](https://github.com/ng-packagr/ng-packagr/commit/0e44793))
 * switch to a more accurate module analyse ([92ca053](https://github.com/ng-packagr/ng-packagr/commit/92ca053)), closes [#1523](https://github.com/ng-packagr/ng-packagr/issues/1523)
 * update commander to version ^4.0.0 ([ee41977](https://github.com/ng-packagr/ng-packagr/commit/ee41977))
-* update rollup to version 1.26.2 ([8e91477](https://github.com/ng-packagr/ng-packagr/commit/8e91477))
-* update rollup to version 1.26.3 ([1a67c7c](https://github.com/ng-packagr/ng-packagr/commit/1a67c7c))
-* update rollup to version 1.26.4 ([844f7d3](https://github.com/ng-packagr/ng-packagr/commit/844f7d3))
-* update rollup to version 1.26.5 ([cb5bda7](https://github.com/ng-packagr/ng-packagr/commit/cb5bda7))
-* update rollup to version 1.27.11 ([8af4d10](https://github.com/ng-packagr/ng-packagr/commit/8af4d10))
-* update rollup to version 1.27.14 ([d3fadce](https://github.com/ng-packagr/ng-packagr/commit/d3fadce))
-* update rollup to version 1.27.2 ([abf0ae4](https://github.com/ng-packagr/ng-packagr/commit/abf0ae4))
-* update rollup to version 1.27.4 ([4eb6b74](https://github.com/ng-packagr/ng-packagr/commit/4eb6b74))
-* update rollup to version 1.27.5 ([7877045](https://github.com/ng-packagr/ng-packagr/commit/7877045))
-* update rollup to version 1.27.6 ([77fbff4](https://github.com/ng-packagr/ng-packagr/commit/77fbff4))
-* update rollup to version 1.27.7 ([2400425](https://github.com/ng-packagr/ng-packagr/commit/2400425))
-* update rollup to version 1.27.8 ([7f623d9](https://github.com/ng-packagr/ng-packagr/commit/7f623d9))
-* update rollup to version 1.27.9 ([3505645](https://github.com/ng-packagr/ng-packagr/commit/3505645))
-* update rollup to version 1.28.0 ([624f31f](https://github.com/ng-packagr/ng-packagr/commit/624f31f))
-* update rollup to version 1.29.0 ([04fa486](https://github.com/ng-packagr/ng-packagr/commit/04fa486))
-* update rollup to version 1.29.1 ([64e380d](https://github.com/ng-packagr/ng-packagr/commit/64e380d))
-* update rollup to version 1.30.0 ([90eb47d](https://github.com/ng-packagr/ng-packagr/commit/90eb47d))
-* update rollup to version 1.30.1 ([a027395](https://github.com/ng-packagr/ng-packagr/commit/a027395))
 * update rollup to version 1.31.0 ([f8704fd](https://github.com/ng-packagr/ng-packagr/commit/f8704fd))
 * update update-notifier to version ^4.0.0 ([f05cbbf](https://github.com/ng-packagr/ng-packagr/commit/f05cbbf))
 
 
 ### Features
 
-* add support for typescript 3.7 ([9e05fb3](https://github.com/ng-packagr/ng-packagr/commit/9e05fb3))
-* add support to TypeScript 3.6 ([342b799](https://github.com/ng-packagr/ng-packagr/commit/342b799))
+* add support for TypeScript 3.7 ([9e05fb3](https://github.com/ng-packagr/ng-packagr/commit/9e05fb3))
+* add support for TypeScript 3.6 ([342b799](https://github.com/ng-packagr/ng-packagr/commit/342b799))
 * add tslib as peerDepedency ([5077f87](https://github.com/ng-packagr/ng-packagr/commit/5077f87))
 * update peerDependencies ([7ff60f5](https://github.com/ng-packagr/ng-packagr/commit/7ff60f5))
 
@@ -74,9 +56,6 @@ This is to be inline with the Angular framework as per
 ### Performance
 
 * re-populate glob cache ([3323b2a](https://github.com/ng-packagr/ng-packagr/commit/3323b2a))
-* use TypeScript scanner to build dependency tree ([1cdc8c8](https://github.com/ng-packagr/ng-packagr/commit/1cdc8c8))
-
-
 * remove less-plugin-npm-import ([6a5ae37](https://github.com/ng-packagr/ng-packagr/commit/6a5ae37))
 
 ## [9.0.0-rc.9](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0-rc.8...v9.0.0-rc.9) (2020-02-05)
