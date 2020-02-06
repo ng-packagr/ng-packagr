@@ -21,7 +21,7 @@ After
 * TypeScript versions prior to 3.6.4 are no longer supported.no longer supported.
 * `tslib` will be longer be added as a `dependencies`, but rather it will be added as a `peerDependencies`.
 
-This is to be inline with the Angular framework as per
+This is to be inline with the Angular framework.
 
 ### Bug Fixes
 
