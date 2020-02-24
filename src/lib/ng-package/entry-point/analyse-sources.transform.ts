@@ -117,6 +117,10 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
         throw new Error(`Entry point ${moduleName} has a circular dependency on itself.`);
       }
 
+      if (dep.some(n => entryPoint === n)) {
+        throw new Error(`Entry point ${moduleName} has a circular dependency on ${moduleId}.`);
+      }
+
       entryPoint.dependsOn(dep);
     } else {
       throw new Error(`Entry point ${moduleName} which is required by ${moduleId} doesn't exists.`);
