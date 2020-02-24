@@ -158,13 +158,9 @@ export async function discoverPackages({ project }: { project: string }): Promis
   const secondaries: NgEntryPoint[] = [];
 
   for (const folderPath of folderPaths) {
-    try {
-      const secondaryPackage = await resolveUserPackage(folderPath, true);
-      if (secondaryPackage) {
-        secondaries.push(secondaryEntryPoint(basePath, primary, secondaryPackage));
-      }
-    } catch {
-      log.warn(`Cannot read secondary entry point at ${folderPath}. Skipping.`);
+    const secondaryPackage = await resolveUserPackage(folderPath, true);
+    if (secondaryPackage) {
+      secondaries.push(secondaryEntryPoint(basePath, primary, secondaryPackage));
     }
   }
 
