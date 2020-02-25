@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [9.0.2](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0...v9.0.2) (2020-02-25)
+
+
+### Bug Fixes
+
+* handle union type with a nullable argument ([c9f697f](https://github.com/ng-packagr/ng-packagr/commit/c9f697f)), closes [/github.com/angular/angular/blob/master/packages/compiler-cli/src/ngtsc/reflection/src/typescript.ts#L65-L66](https://github.com/ng-packagr//github.com/angular/angular/blob/master/packages/compiler-cli/src/ngtsc/reflection/src/typescript.ts/issues/L65-L66)
+* show schema errors ([cdf0e9c](https://github.com/ng-packagr/ng-packagr/commit/cdf0e9c))
+* throw error on circular dependencies ([af1d2f3](https://github.com/ng-packagr/ng-packagr/commit/af1d2f3)), closes [#1551](https://github.com/ng-packagr/ng-packagr/issues/1551)
+* update rollup to version 1.31.1 ([36830f4](https://github.com/ng-packagr/ng-packagr/commit/36830f4))
+
 ### [9.0.1](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0...v9.0.1) (2020-02-18)
 
 
