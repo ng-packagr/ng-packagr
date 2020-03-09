@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [9.0.3](https://github.com/ng-packagr/ng-packagr/compare/v9.0.2...v9.0.3) (2020-03-09)
+
+
+### Bug Fixes
+
+* update rollup to version 1.32.0 ([0e414ce](https://github.com/ng-packagr/ng-packagr/commit/0e414ce))
+* update rollup to version 1.32.1 ([9611545](https://github.com/ng-packagr/ng-packagr/commit/9611545))
+* wrong UMD ID's of Angular packages with a dash in name ([c996a61](https://github.com/ng-packagr/ng-packagr/commit/c996a61))
+
 ### [9.0.2](https://github.com/ng-packagr/ng-packagr/compare/v9.0.0...v9.0.2) (2020-02-25)
 
 
