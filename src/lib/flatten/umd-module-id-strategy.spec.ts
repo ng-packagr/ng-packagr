@@ -19,6 +19,10 @@ describe(`rollup`, () => {
       expect(umdModuleIdStrategy('@angular/common/http')).to.equal('ng.common.http');
     });
 
+    it(`should map '@angular/material/bottom-sheet' to 'ng.material.bottomSheet'`, () => {
+      expect(umdModuleIdStrategy('@angular/material/bottom-sheet')).to.equal('ng.material.bottomSheet');
+    });
+
     it(`should map '@angular/common/http/testing' to 'ng.common.http.testing'`, () => {
       expect(umdModuleIdStrategy('@angular/common/http/testing')).to.equal('ng.common.http.testing');
     });
