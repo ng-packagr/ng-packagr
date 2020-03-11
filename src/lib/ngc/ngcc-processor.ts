@@ -1,4 +1,4 @@
-import { Logger, PathMappings, process as mainNgcc } from '@angular/compiler-cli/ngcc';
+import { Logger, PathMappings, process as mainNgcc, LogLevel } from '@angular/compiler-cli/ngcc';
 import { existsSync, constants, accessSync } from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
@@ -105,6 +105,8 @@ export class NgccProcessor {
 }
 
 class NgccLogger implements Logger {
+  level = LogLevel.info;
+
   debug(...args: string[]) {
     log.debug(args.join(' '));
   }
