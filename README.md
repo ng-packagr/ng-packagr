@@ -102,6 +102,7 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
 - [Change ECMAScript Language Level](docs/language-level.md)
 - [Package Secondary Entrypoints (sub packages)](docs/secondary-entrypoints.md)
 - [Enable JSX Templates, Bridging the Gap Between Angular and React](docs/jsx.md)
+- [Add custom Typescript transformers](docs/custom-transformers.md)
 
 ## Advanced Use Cases
 
