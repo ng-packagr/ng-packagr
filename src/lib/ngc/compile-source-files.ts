@@ -10,6 +10,7 @@ import { NgccProcessor } from './ngcc-processor';
 import { ngccTransformCompilerHost } from '../ts/ngcc-transform-compiler-host';
 import { createEmitCallback } from './create-emit-callback';
 import { downlevelConstructorParameters } from '../ts/ctor-parameters';
+import { loadCustomTransformers } from './custom-transformers';
 
 export async function compileSourceFiles(
   graph: BuildGraph,
@@ -76,7 +77,11 @@ export async function compileSourceFiles(
     ...ngProgram.getNgStructuralDiagnostics(),
   ];
 
-  const beforeTs: ts.TransformerFactory<ts.SourceFile>[] = [];
+  const beforeTs: ts.TransformerFactory<ts.SourceFile>[] = loadCustomTransformers(
+    () => ngProgram.getTsProgram(),
+    tsConfigOptions,
+  );
+
   if (!tsConfigOptions.annotateForClosureCompiler) {
     beforeTs.push(downlevelConstructorParameters(() => ngProgram.getTsProgram().getTypeChecker()));
   }

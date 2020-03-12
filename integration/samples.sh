@@ -3,6 +3,8 @@ set -e
 
 FIND_COMMAND=""
 
+export DEBUG=true
+
 if [[ $OSTYPE == "win32" ]]; then
     FIND_COMMAND="dir /b /o:n /ad"
 else
