@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "module": "esnext",
     "outDir": "./dist/out-tsc",
     "baseUrl": "src",
     "skipLibCheck": true,
@@ -8,8 +9,13 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "target": "es2015",
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2018", "dom"]
+  },
+  // Figure out what's wrong with this test in Ivy
+  "angularCompilerOptions": {
+    "enableIvy": false,
+    "disableTypeScriptVersionCheck": true
   }
 }

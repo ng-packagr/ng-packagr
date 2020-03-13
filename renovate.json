@@ -10,13 +10,8 @@
   "packageFiles": ["package.json", "integration/consumers/ng-cli/package.json"],
   "packageRules": [
     {
-      "packagePatterns": ["^@angular\/.*"],
+      "packagePatterns": ["^@angular.*"],
       "groupName": "angular",
-      "pinVersions": false
-    },
-    {
-      "packagePatterns": ["^@angular-devkit\/.*"],
-      "groupName": "angular-devkit",
       "pinVersions": false
     },
     {
