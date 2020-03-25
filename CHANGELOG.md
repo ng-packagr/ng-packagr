@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.1.0](https://github.com/ng-packagr/ng-packagr/compare/v9.0.3...v9.1.0) (2020-03-25)
+
+
+### Bug Fixes
+
+* update @angular/common to version ~9.1.0 ([fd8c0a9](https://github.com/ng-packagr/ng-packagr/commit/fd8c0a9))
+* update fs-extra to version ^9.0.0 ([eb2cd7f](https://github.com/ng-packagr/ng-packagr/commit/eb2cd7f))
+* update rollup to version 2.0.3 ([f3a34cb](https://github.com/ng-packagr/ng-packagr/commit/f3a34cb))
+* update rollup to version 2.0.4 ([988e1cc](https://github.com/ng-packagr/ng-packagr/commit/988e1cc))
+* update rollup to version 2.0.5 ([cf85152](https://github.com/ng-packagr/ng-packagr/commit/cf85152))
+* update rollup to version 2.0.6 ([0d290cb](https://github.com/ng-packagr/ng-packagr/commit/0d290cb))
+* update rollup to version 2.1.0 ([2c399a9](https://github.com/ng-packagr/ng-packagr/commit/2c399a9))
+* update rollup to version 2.2.0 ([1de8443](https://github.com/ng-packagr/ng-packagr/commit/1de8443))
+
+
+### Features
+
+* add support for TypeScript 3.8 ([4a388af](https://github.com/ng-packagr/ng-packagr/commit/4a388af))
+
 ### [9.0.3](https://github.com/ng-packagr/ng-packagr/compare/v9.0.2...v9.0.3) (2020-03-09)
 
 
