@@ -12,13 +12,17 @@ export interface DestinationFiles {
   fesm5: string;
   /** Absolute path of this entry point `FESM5` module */
   fesm2015: string;
+  /** Absolute path of this entry point `FESNext` module */
+  fesnext: string;
   /** Absolute path of this entry point `ESM5` module */
   esm5: string;
   /** Absolute path of this entry point `ESM2015` module */
   esm2015: string;
+  /** Absolute path of this entry point `ESNext` module */
+  esnext: string;
   /** Absolute path of this entry point `UMD` bundle */
   umd: string;
-  /** Absolute path of this entry point `UMD` Minifief bundle */
+  /** Absolute path of this entry point `UMD` Minified bundle */
   umdMinified: string;
 }
 
@@ -59,7 +63,7 @@ export class NgEntryPoint {
     public readonly ngPackageJson: NgPackageConfig,
     /** Absolute directory path of this entry point's `package.json` location. */
     public readonly basePath: string,
-    /** XX: additional auto-configured data passed for scondary entry point's. Needs better docs. */
+    /** XX: additional auto-configured data passed for secondary entry point's. Needs better docs. */
     private readonly secondaryData?: { [key: string]: any },
   ) {}
 
@@ -97,8 +101,10 @@ export class NgEntryPoint {
     return {
       metadata: pathJoinWithDest(secondaryDir, `${flatModuleFile}.metadata.json`),
       declarations: pathJoinWithDest(secondaryDir, `${flatModuleFile}.d.ts`),
+      esnext: pathJoinWithDest('esnext', secondaryDir, `${flatModuleFile}.js`),
       esm2015: pathJoinWithDest('esm2015', secondaryDir, `${flatModuleFile}.js`),
       esm5: pathJoinWithDest('esm5', secondaryDir, `${flatModuleFile}.js`),
+      fesnext: pathJoinWithDest('fesnext', `${flatModuleFile}.js`),
       fesm2015: pathJoinWithDest('fesm2015', `${flatModuleFile}.js`),
       fesm5: pathJoinWithDest('fesm5', `${flatModuleFile}.js`),
       umd: pathJoinWithDest('bundles', `${flatModuleFile}.umd.js`),
@@ -142,7 +148,7 @@ export class NgEntryPoint {
 
   public get styleIncludePaths(): string[] {
     const includePaths = this.$get('lib.styleIncludePaths') || [];
-    return includePaths.map(includePath =>
+    return includePaths.map((includePath) =>
       path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath),
     );
   }
@@ -183,10 +189,7 @@ export class NgEntryPoint {
 
   private flattenModuleId(separator: string = '.') {
     if (this.moduleId.startsWith('@')) {
-      return this.moduleId
-        .substring(1)
-        .split('/')
-        .join(separator);
+      return this.moduleId.substring(1).split('/').join(separator);
     } else {
       return this.moduleId.split('/').join(separator);
     }

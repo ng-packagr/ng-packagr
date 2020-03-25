@@ -8,7 +8,7 @@ import * as log from '../../utils/log';
 import { isEntryPointInProgress, EntryPointNode, isEntryPoint } from '../nodes';
 import { StylesheetProcessor } from '../../styles/stylesheet-processor';
 
-export const compileNgcTransform: Transform = transformFromPromise(async graph => {
+export const compileNgcTransform: Transform = transformFromPromise(async (graph) => {
   log.info(`Compiling TypeScript sources through ngc`);
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
   const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
@@ -16,12 +16,23 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
   const tsConfig = setDependenciesTsConfigPaths(entryPoint.data.tsConfig, entryPoints);
 
   // Compile TypeScript sources
-  const { esm2015, esm5, declarations } = entryPoint.data.destinationFiles;
+  const { esnext, esm2015, esm5, declarations } = entryPoint.data.destinationFiles;
   const { moduleResolutionCache } = entryPoint.cache;
   const { basePath, cssUrl, styleIncludePaths } = entryPoint.data.entryPoint;
   const stylesheetProcessor = new StylesheetProcessor(basePath, cssUrl, styleIncludePaths);
 
   const ngccProcessor = tsConfig.options.enableIvy ? new NgccProcessor(tsConfig.options, entryPoints) : undefined;
+
+  await compileSourceFiles(graph, tsConfig, moduleResolutionCache, stylesheetProcessor, {
+    outDir: path.dirname(esnext),
+    target: ts.ScriptTarget.ESNext,
+    // the options are here, to improve the build time
+    declaration: false,
+    declarationDir: undefined,
+    skipMetadataEmit: true,
+    skipTemplateCodegen: true,
+    strictMetadataEmit: false,
+  });
 
   await compileSourceFiles(
     graph,

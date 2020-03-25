@@ -10,14 +10,14 @@ import { DependencyList } from '../../flatten/external-module-id-strategy';
 import { unique } from '../../utils/array';
 
 export const writeBundlesTransform: Transform = pipe(
-  switchMap(graph => {
+  switchMap((graph) => {
     const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
     const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
 
     // Add UMD module IDs for dependencies
     const dependencyUmdIds = entryPoint
       .filter(isEntryPoint)
-      .map(ep => ep.data.entryPoint)
+      .map((ep) => ep.data.entryPoint)
       .reduce((prev, ep: NgEntryPoint) => {
         prev[ep.moduleId] = ep.umdId;
 
@@ -44,7 +44,14 @@ export const writeBundlesTransform: Transform = pipe(
 );
 
 async function writeFlatBundleFiles(destinationFiles: DestinationFiles, opts: FlattenOpts): Promise<void> {
-  const { esm2015, fesm2015, esm5, fesm5, umd, umdMinified } = destinationFiles;
+  const { esnext, fesnext, esm2015, fesm2015, esm5, fesm5, umd, umdMinified } = destinationFiles;
+
+  log.info('Bundling to FESNext');
+  await flattenToFesm({
+    ...opts,
+    entryFile: esnext,
+    destFile: fesnext,
+  });
 
   log.info('Bundling to FESM2015');
   await flattenToFesm({
@@ -74,7 +81,7 @@ async function writeFlatBundleFiles(destinationFiles: DestinationFiles, opts: Fl
 
 /** Get all list of dependencies for the entire 'BuildGraph' */
 function getDependencyListForGraph(graph: BuildGraph): DependencyList {
-  // We need to do this because if A dependecy on bundled B
+  // We need to do this because if A dependency on bundled B
   // And A has a secondary entry point A/1 we want only to bundle B if it's used.
   // Also if A/1 depends on A we don't want to bundle A thus we mark this a dependency.
 
@@ -99,7 +106,7 @@ function getDependencyListForGraph(graph: BuildGraph): DependencyList {
     log.warn(
       `Inlining of 'bundledDependencies' has been deprecated in version 5 and will be removed in future versions.` +
         '\n' +
-        `List the depedency in the 'peerDependencies' section instead.`,
+        `List the dependency in the 'peerDependencies' section instead.`,
     );
   }
 

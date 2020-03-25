@@ -1,5 +1,5 @@
 {
-  "name": "ng-packagr",
+  "name": "@alauda/ng-packagr",
   "version": "9.0.3",
   "description": "Compile and package a TypeScript library to Angular Package Format",
   "keywords": [
@@ -134,5 +134,8 @@
       "commit-msg": "commitlint -e",
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

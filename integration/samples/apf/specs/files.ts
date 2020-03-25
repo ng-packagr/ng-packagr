@@ -10,16 +10,26 @@ describe('@sample/apf', () => {
   });
 
   describe('dist', () => {
-    it('should contain a total of 115 files', () => {
+    it('should contain a total of 148 files', () => {
       // this is a safe guard / alternative to snapshots in order to
       // protect ourselves from doing a change that will emit unexpected files.
       const files = glob.sync(path.join(DIST, '**/*'));
-      expect(files.length).to.equals(115);
+      expect(files.length).to.equals(148);
     });
 
     it(`should not have a nested 'dist' folder`, () => {
       const dist = fs.existsSync(path.join(DIST, 'dist'));
       expect(dist).to.be.false;
+    });
+  });
+
+  describe('FESNext', () => {
+    it(`should contain 4 '.js.map' files`, () => {
+      expect(glob.sync(`${DIST}/fesnext/**/*.js.map`).length).equal(4);
+    });
+
+    it(`should contain 4 '.js' files`, () => {
+      expect(glob.sync(`${DIST}/fesnext/**/*.js`).length).equal(4);
     });
   });
 
@@ -89,6 +99,26 @@ describe('@sample/apf', () => {
 
       it(`should contain 8 '.js' files`, () => {
         expect(glob.sync(`${DIST}/esm2015/secondary/**/*.js`).length).equal(8);
+      });
+    });
+  });
+
+  describe('ESNext', () => {
+    it(`should contain 0 '.js.map' files`, () => {
+      expect(glob.sync(`${DIST}/esnext/**/*.js.map`).length).equal(0);
+    });
+
+    it(`should contain 16 '.js' files`, () => {
+      expect(glob.sync(`${DIST}/esnext/**/*.js`).length).equal(16);
+    });
+
+    describe('secondary', () => {
+      it(`should contain 0 '.js.map' files`, () => {
+        expect(glob.sync(`${DIST}/esnext/secondary/**/*.js.map`).length).equal(0);
+      });
+
+      it(`should contain 8 '.js' files`, () => {
+        expect(glob.sync(`${DIST}/esnext/secondary/**/*.js`).length).equal(8);
       });
     });
   });
