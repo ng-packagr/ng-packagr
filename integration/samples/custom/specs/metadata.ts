@@ -30,7 +30,10 @@ describe(`sample-custom`, () => {
       expect(foo.selector).to.equal('custom-foo');
       expect(foo.template).to.contain('<h1>Foo!</h1>');
       expect(foo.styles[0]).to.contain('h1{');
-      expect(foo.styles[0]).to.contain('color:red}');
+      expect(foo.styles[0]).to.contain('color:red');
+
+      expect(foo.styles[0]).to.contain('transform');
+      expect(foo.styles[0]).to.contain('margin-left');
     });
 
     describe(`BazComponent`, () => {
@@ -44,15 +47,13 @@ describe(`sample-custom`, () => {
       });
 
       it('should have the svg template inlined', () => {
-        expect(baz.template).to.satisfy(str =>
+        expect(baz.template).to.satisfy((str) =>
           str.startsWith(`<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">`),
         );
       });
 
       it(`should have a styles array with two stylesheets`, () => {
-        expect(baz.styles)
-          .to.be.an('array')
-          .that.has.length(2);
+        expect(baz.styles).to.be.an('array').that.has.length(2);
       });
     });
 

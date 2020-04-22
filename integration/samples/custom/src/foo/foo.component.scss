@@ -2,4 +2,9 @@ $color: #ff0000;
 
 h1 {
   color: $color;
+
+  transition-property: transform, margin-left;
+  transition-delay: 0ms;
+  transition-duration: 375ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }

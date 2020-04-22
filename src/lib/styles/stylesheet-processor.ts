@@ -50,7 +50,7 @@ export class StylesheetProcessor {
     });
 
     // Log warnings from postcss
-    result.warnings().forEach(msg => log.warn(msg.toString()));
+    result.warnings().forEach((msg) => log.warn(msg.toString()));
 
     return result.css;
   }
@@ -117,11 +117,7 @@ export class StylesheetProcessor {
     postCssPlugins.push(
       autoprefixer({ overrideBrowserslist, grid: true }),
       postcssClean({
-        level: {
-          2: {
-            specialComments: false,
-          },
-        },
+        level: 1,
       }),
     );
 
