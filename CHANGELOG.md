@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [9.1.2](https://github.com/ng-packagr/ng-packagr/compare/v9.1.1...v9.1.2) (2020-04-30)
+
+
+### Bug Fixes
+
+* update rollup to version 2.7.1 ([ea8ca4a](https://github.com/ng-packagr/ng-packagr/commit/ea8ca4a))
+* update rollup to version 2.7.2 ([eb702ca](https://github.com/ng-packagr/ng-packagr/commit/eb702ca))
+* update rollup to version 2.7.3 ([64e4708](https://github.com/ng-packagr/ng-packagr/commit/64e4708))
+* update rollup to version 2.7.5 ([0736ba9](https://github.com/ng-packagr/ng-packagr/commit/0736ba9))
+
 ### [9.1.1](https://github.com/ng-packagr/ng-packagr/compare/v9.1.0...v9.1.1) (2020-04-13)
 
 
