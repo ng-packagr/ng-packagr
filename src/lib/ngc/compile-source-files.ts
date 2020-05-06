@@ -32,9 +32,7 @@ export async function compileSourceFiles(
     moduleResolutionCache,
     stylesheetProcessor,
   );
-  if (declarationDir) {
-    tsCompilerHost = redirectWriteFileCompilerHost(tsCompilerHost, tsConfigOptions.basePath, declarationDir);
-  }
+  tsCompilerHost = redirectWriteFileCompilerHost(tsCompilerHost, tsConfigOptions, declarationDir);
 
   if (tsConfigOptions.enableIvy && ngccProcessor) {
     tsCompilerHost = ngccTransformCompilerHost(tsCompilerHost, tsConfigOptions, ngccProcessor, moduleResolutionCache);

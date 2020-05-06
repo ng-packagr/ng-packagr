@@ -108,12 +108,17 @@ export const initializeTsConfig = (defaultTsConfig: ng.ParsedConfiguration, entr
       flatModuleId: entryPoint.moduleId,
       flatModuleOutFile: `${entryPoint.flatModuleFile}.js`,
       basePath,
-      rootDir: basePath,
       lib: entryPoint.languageLevel ? entryPoint.languageLevel.map(lib => `lib.${lib}.d.ts`) : tsConfig.options.lib,
       declarationDir: basePath,
       sourceRoot: `ng://${entryPoint.moduleId}`,
       jsx,
     };
+
+    if (tsConfig.options.rootDirs) {
+      overrideOptions.rootDirs = [...new Set([basePath, ...(tsConfig.options.rootDirs || [])])];
+    } else {
+      overrideOptions.rootDir = basePath;
+    }
 
     tsConfig.rootNames = [entryPoint.entryFilePath];
     tsConfig.options = { ...tsConfig.options, ...overrideOptions };
