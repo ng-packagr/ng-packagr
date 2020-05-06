@@ -8,7 +8,7 @@ import * as browserslist from 'browserslist';
 import * as nodeSassTildeImporter from 'node-sass-tilde-importer';
 import * as postcss from 'postcss';
 import * as postcssUrl from 'postcss-url';
-import postcssClean from './postcss-clean';
+import * as cssnanoPresetDefault from 'cssnano-preset-default';
 import * as stylus from 'stylus';
 
 export enum CssUrl {
@@ -50,7 +50,7 @@ export class StylesheetProcessor {
     });
 
     // Log warnings from postcss
-    result.warnings().forEach(msg => log.warn(msg.toString()));
+    result.warnings().forEach((msg) => log.warn(msg.toString()));
 
     return result.css;
   }
@@ -114,16 +114,19 @@ export class StylesheetProcessor {
     }
 
     // this is important to be executed post running `postcssUrl`
-    postCssPlugins.push(
-      autoprefixer({ overrideBrowserslist, grid: true }),
-      postcssClean({
-        level: {
-          2: {
-            specialComments: false,
-          },
-        },
-      }),
-    );
+    postCssPlugins.push(autoprefixer({ overrideBrowserslist, grid: true }));
+
+    const preset = cssnanoPresetDefault({
+      svgo: false,
+    });
+
+    const asyncPlugins = ['postcss-svgo'];
+    const cssNanoPlugins = preset.plugins
+      // replicate the `initializePlugin` behavior from https://github.com/cssnano/cssnano/blob/a566cc5/packages/cssnano/src/index.js#L8
+      .map(([creator, pluginConfig]) => creator(pluginConfig))
+      .filter((plugin) => !asyncPlugins.includes(plugin.postcssPlugin));
+
+    postCssPlugins.push(...cssNanoPlugins);
 
     return postcss(postCssPlugins);
   }
