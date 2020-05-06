@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [9.1.3](https://github.com/ng-packagr/ng-packagr/compare/v9.1.2...v9.1.3) (2020-05-06)
+
+
+### Bug Fixes
+
+* update browserslist and autoprefixer ([8293497](https://github.com/ng-packagr/ng-packagr/commit/8293497)), closes [#1611](https://github.com/ng-packagr/ng-packagr/issues/1611)
+* update rollup-plugin-sourcemaps to version ^0.6.0 ([f8c3459](https://github.com/ng-packagr/ng-packagr/commit/f8c3459))
+
 ### [9.1.2](https://github.com/ng-packagr/ng-packagr/compare/v9.1.1...v9.1.2) (2020-04-30)
 
 
