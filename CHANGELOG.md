@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/v9.1.2...v10.0.0-next.0) (2020-05-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* Deprecated `jsx` and `languageLevel` has been removed, Set these options in your `tsconfig.json` instead.
+
+### Features
+
+* add support for Angular version 10 ([cb984cd](https://github.com/ng-packagr/ng-packagr/commit/cb984cd161a3e7991a87dcd1315adfee10ae33ec))
+* replace css optimizer from clean-css with cssnano ([2c6160f](https://github.com/ng-packagr/ng-packagr/commit/2c6160f3d54e112bd8d465015ff24fe4b4db7530)), closes [#1607](https://github.com/ng-packagr/ng-packagr/issues/1607)
+* update to APF version 10 ([d47ccd7](https://github.com/ng-packagr/ng-packagr/commit/d47ccd7fb1763af052d068ea84edc79981bd0c94))
+
+
+### Bug Fixes
+
+* update commander to version ^5.0.0 ([0ec80b5](https://github.com/ng-packagr/ng-packagr/commit/0ec80b56582112bcc851c35391acba283e2fb6dc))
+* update rollup to version 2.8.0 ([e7aa579](https://github.com/ng-packagr/ng-packagr/commit/e7aa579c94d66c8fa67fd1b40c86053bb3891841))
+* update rollup-plugin-sourcemaps to version ^0.6.0 ([f8c3459](https://github.com/ng-packagr/ng-packagr/commit/f8c3459af0a5d2125343ec0e737bcb7cc6b0c460))
+
+
+* remove deprecated jsx and languageLevel options ([7503bd4](https://github.com/ng-packagr/ng-packagr/commit/7503bd4a30f8218896a8ec502f42ac810cc4dd64))
+
 ### [9.1.2](https://github.com/ng-packagr/ng-packagr/compare/v9.1.1...v9.1.2) (2020-04-30)
 
 
