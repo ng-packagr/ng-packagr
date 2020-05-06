@@ -10,7 +10,7 @@ import { globFiles } from '../../utils/glob';
 import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode } from '../nodes';
 import { copyFile } from '../../utils/copy';
 
-export const writePackageTransform: Transform = transformFromPromise(async graph => {
+export const writePackageTransform: Transform = transformFromPromise(async (graph) => {
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
   const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
   const ngPackageNode = graph.find(isPackage) as PackageNode;
@@ -34,7 +34,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     // COPY SOURCE FILES TO DESTINATION
     log.info('Copying declaration files');
     await Promise.all(
-      declarationFiles.map(value => {
+      declarationFiles.map((value) => {
         const relativePath = path.relative(ngEntryPoint.entryFilePath, value);
         const destination = path.resolve(destinationFiles.declarations, relativePath);
         return copyFile(value, destination, { overwrite: true, dereference: true });
@@ -42,7 +42,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     );
   }
   if (ngPackage.assets.length && !ngEntryPoint.isSecondaryEntryPoint) {
-    const assets = ngPackage.assets.map(x => path.join(ngPackage.src, x));
+    const assets = ngPackage.assets.map((x) => path.join(ngPackage.src, x));
     const assetFiles = await globFiles(assets, {
       ignore: ignorePaths,
       cache: ngPackageNode.cache.globCache,
@@ -52,7 +52,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
       // COPY ASSET FILES TO DESTINATION
       log.info('Copying assets');
       await Promise.all(
-        assetFiles.map(value => {
+        assetFiles.map((value) => {
           const relativePath = path.relative(ngPackage.src, value);
           const destination = path.resolve(ngPackage.dest, relativePath);
           return copyFile(value, destination, { overwrite: true, dereference: true });
@@ -73,11 +73,9 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     ngPackage,
     {
       main: relativeUnixFromDestPath(destinationFiles.umd),
-      module: relativeUnixFromDestPath(destinationFiles.fesm5),
+      module: relativeUnixFromDestPath(destinationFiles.fesm2015),
       es2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
-      esm5: relativeUnixFromDestPath(destinationFiles.esm5),
       esm2015: relativeUnixFromDestPath(destinationFiles.esm2015),
-      fesm5: relativeUnixFromDestPath(destinationFiles.fesm5),
       fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
       typings: relativeUnixFromDestPath(destinationFiles.declarations),
       // Ivy doesn't generate metadata files
@@ -144,7 +142,7 @@ async function writePackageJson(
 
   // Verify non-peerDependencies as they can easily lead to duplicate installs or version conflicts
   // in the node_modules folder of an application
-  const whitelist = pkg.whitelistedNonPeerDependencies.map(value => new RegExp(value));
+  const whitelist = pkg.whitelistedNonPeerDependencies.map((value) => new RegExp(value));
   try {
     checkNonPeerDependencies(packageJson, 'dependencies', whitelist);
   } catch (e) {
@@ -210,7 +208,7 @@ function checkNonPeerDependencies(packageJson: Record<string, unknown>, property
   }
 
   for (const dep of Object.keys(packageJson[property])) {
-    if (whitelist.find(regex => regex.test(dep))) {
+    if (whitelist.find((regex) => regex.test(dep))) {
       log.debug(`Dependency ${dep} is whitelisted in '${property}'`);
     } else {
       log.warn(

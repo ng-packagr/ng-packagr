@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 
 describe(`@sample/same-name`, () => {
-  describe(`esm5/sample-testing.js`, () => {
+  describe(`fesm2015/sample-testing.js`, () => {
     let API;
     before(() => {
-      API = require('../dist/fesm5/sample-testing.js');
+      API = require('../dist/fesm2015/sample-testing.js');
     });
 
     it(`should exist`, () => {
@@ -16,10 +16,10 @@ describe(`@sample/same-name`, () => {
     });
   });
 
-  describe(`esm5/sample-testing-testing.js`, () => {
+  describe(`fesm2015/sample-testing-testing.js`, () => {
     let APITesting;
     before(() => {
-      APITesting = require('../dist/fesm5/sample-testing-testing.js');
+      APITesting = require('../dist/fesm2015/sample-testing-testing.js');
     });
 
     it(`should exist`, () => {

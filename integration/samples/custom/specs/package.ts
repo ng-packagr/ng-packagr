@@ -25,10 +25,6 @@ describe(`sample-custom`, () => {
       expect(PACKAGE['main']).to.equal('bundles/sample-custom.umd.js');
     });
 
-    it(`should reference "module" bundle (FESM5)`, () => {
-      expect(PACKAGE['module']).to.equal('fesm5/sample-custom.js');
-    });
-
     it(`should reference "es2015" bundle (FESM2015)`, () => {
       expect(PACKAGE['es2015']).to.equal('fesm2015/sample-custom.js');
     });

@@ -8,12 +8,8 @@ export interface DestinationFiles {
   declarations: string;
   /** Absolute path of this entry point `metadata` */
   metadata: string;
-  /** Absolute path of this entry point `FESM5` module */
-  fesm5: string;
-  /** Absolute path of this entry point `FESM5` module */
+  /** Absolute path of this entry point `FESM2015` module */
   fesm2015: string;
-  /** Absolute path of this entry point `ESM5` module */
-  esm5: string;
   /** Absolute path of this entry point `ESM2015` module */
   esm2015: string;
   /** Absolute path of this entry point `UMD` bundle */
@@ -98,9 +94,7 @@ export class NgEntryPoint {
       metadata: pathJoinWithDest(secondaryDir, `${flatModuleFile}.metadata.json`),
       declarations: pathJoinWithDest(secondaryDir, `${flatModuleFile}.d.ts`),
       esm2015: pathJoinWithDest('esm2015', secondaryDir, `${flatModuleFile}.js`),
-      esm5: pathJoinWithDest('esm5', secondaryDir, `${flatModuleFile}.js`),
       fesm2015: pathJoinWithDest('fesm2015', `${flatModuleFile}.js`),
-      fesm5: pathJoinWithDest('fesm5', `${flatModuleFile}.js`),
       umd: pathJoinWithDest('bundles', `${flatModuleFile}.umd.js`),
       umdMinified: pathJoinWithDest('bundles', `${flatModuleFile}.umd.min.js`),
     };
@@ -142,7 +136,7 @@ export class NgEntryPoint {
 
   public get styleIncludePaths(): string[] {
     const includePaths = this.$get('lib.styleIncludePaths') || [];
-    return includePaths.map(includePath =>
+    return includePaths.map((includePath) =>
       path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath),
     );
   }
@@ -183,10 +177,7 @@ export class NgEntryPoint {
 
   private flattenModuleId(separator: string = '.') {
     if (this.moduleId.startsWith('@')) {
-      return this.moduleId
-        .substring(1)
-        .split('/')
-        .join(separator);
+      return this.moduleId.substring(1).split('/').join(separator);
     } else {
       return this.moduleId.split('/').join(separator);
     }

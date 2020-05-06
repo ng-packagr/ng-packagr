@@ -3,10 +3,10 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 describe(`@sample/core`, () => {
-  describe(`fesm5/sample-core.js.map`, () => {
+  describe(`fesm2015/sample-core.js.map`, () => {
     let sourceMap;
     before(() => {
-      sourceMap = fs.readJsonSync(path.resolve(__dirname, '../dist/fesm5/sample-core.js.map'));
+      sourceMap = fs.readJsonSync(path.resolve(__dirname, '../dist/fesm2015/sample-core.js.map'));
     });
 
     it(`should exist`, () => {
@@ -21,7 +21,7 @@ describe(`@sample/core`, () => {
 
     it(`should reference each 'sources' path with a common prefix`, () => {
       const everyUeveryMe = (sourceMap.sources as string[]).every(
-        fileName => fileName.startsWith('ng://@sample/core') && fileName.endsWith('.ts'),
+        (fileName) => fileName.startsWith('ng://@sample/core') && fileName.endsWith('.ts'),
       );
       expect(everyUeveryMe).to.be.true;
     });
@@ -49,8 +49,8 @@ describe(`@sample/core`, () => {
 
     it(`should reference each 'sources' path with a common prefix`, () => {
       const sourceMapPaths = (sourceMap.sources as string[])
-        .filter(fileName => fileName !== 'null' && !fileName.includes('node_modules'))
-        .every(fileName => fileName.startsWith('ng://@sample/core') && fileName.endsWith('.ts'));
+        .filter((fileName) => fileName !== 'null' && !fileName.includes('node_modules'))
+        .every((fileName) => fileName.startsWith('ng://@sample/core') && fileName.endsWith('.ts'));
       expect(sourceMapPaths).to.be.true;
     });
   });

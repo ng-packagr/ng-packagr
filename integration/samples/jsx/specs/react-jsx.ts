@@ -4,7 +4,7 @@ describe(`@sample/jsx`, () => {
   describe(`jsx.es5.js`, () => {
     let API;
     before(() => {
-      API = require('../dist/fesm5/sample-jsx.js');
+      API = require('../dist/fesm2015/sample-jsx.js');
     });
 
     it(`should exist`, () => {

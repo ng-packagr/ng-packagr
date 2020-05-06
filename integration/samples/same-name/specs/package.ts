@@ -19,10 +19,6 @@ describe(`@sample/same-name`, () => {
       expect(PACKAGE['main']).to.equal('bundles/sample-testing.umd.js');
     });
 
-    it(`should reference "module" bundle (FESM5)`, () => {
-      expect(PACKAGE['module']).to.equal('fesm5/sample-testing.js');
-    });
-
     it(`should reference "es2015" bundle (FESM2015)`, () => {
       expect(PACKAGE['es2015']).to.equal('fesm2015/sample-testing.js');
     });
@@ -48,10 +44,6 @@ describe(`@sample/same-name`, () => {
 
     it(`should reference "main" bundle (UMD)`, () => {
       expect(PACKAGE['main']).to.equal('../bundles/sample-testing-testing.umd.js');
-    });
-
-    it(`should reference "module" bundle (FESM5)`, () => {
-      expect(PACKAGE['module']).to.equal('../fesm5/sample-testing-testing.js');
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
