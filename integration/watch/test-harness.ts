@@ -67,10 +67,6 @@ export class TestHarness {
     fs.copySync(path.join(this.testSrc, 'test_files', caseName), this.testTempPath);
   }
 
-  expectFesm5ToMatch(fileName: string, regexp: RegExp): Chai.Assertion {
-    return expect(this.readFileSync(`fesm5/${fileName}.js`)).to.match(regexp);
-  }
-
   expectFesm2015ToMatch(fileName: string, regexp: RegExp): Chai.Assertion {
     return expect(this.readFileSync(`fesm2015/${fileName}.js`)).to.match(regexp);
   }
@@ -110,7 +106,7 @@ export class TestHarness {
   }
 
   private setUpNgPackagr(): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.ngPackagr$$ = ngPackagr()
         .forProject(path.join(this.testTempPath, 'package.json'))
         .watch()

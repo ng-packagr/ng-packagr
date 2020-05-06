@@ -18,7 +18,6 @@ import { byEntryPoint } from '../nodes';
  *  - downlevelTs
  *  - writeBundles
  *    - bundleToFesm15
- *    - bundleToFesm5
  *    - bundleToUmd
  *    - bundleToUmdMin
  *  - relocateSourceMaps
@@ -41,7 +40,7 @@ export const entryPointTransformFactory = (
   pipe(
     //tap(() => log.info(`Building from sources for entry point`)),
 
-    transformFromPromise(async graph => {
+    transformFromPromise(async (graph) => {
       // Peek the first entry point from the graph
       const entryPoint = graph.find(byEntryPoint().and(isInProgress));
       log.msg('\n------------------------------------------------------------------------------');
@@ -53,7 +52,7 @@ export const entryPointTransformFactory = (
     // After TypeScript: bundling and write package
     writeBundles,
     writePackage,
-    transformFromPromise(async graph => {
+    transformFromPromise(async (graph) => {
       const entryPoint = graph.find(byEntryPoint().and(isInProgress));
       entryPoint.state = STATE_DONE;
     }),

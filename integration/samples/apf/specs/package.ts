@@ -31,16 +31,12 @@ describe(`@sample/apf`, () => {
       expect(PACKAGE['main']).to.equal('bundles/sample-apf.umd.js');
     });
 
-    it(`should reference "module" bundle (FESM5)`, () => {
-      expect(PACKAGE['module']).to.equal('fesm5/sample-apf.js');
+    it(`should reference "module" bundle (fesm2015)`, () => {
+      expect(PACKAGE['module']).to.equal('fesm2015/sample-apf.js');
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
       expect(PACKAGE['es2015']).to.equal('fesm2015/sample-apf.js');
-    });
-
-    it(`should reference "esm5" file`, () => {
-      expect(PACKAGE['esm5']).to.equal('esm5/sample-apf.js');
     });
 
     it(`should reference "esm2015" file`, () => {
@@ -49,10 +45,6 @@ describe(`@sample/apf`, () => {
 
     it(`should reference "fesm2015" file`, () => {
       expect(PACKAGE['fesm2015']).to.equal('fesm2015/sample-apf.js');
-    });
-
-    it(`should reference "fesm5" file`, () => {
-      expect(PACKAGE['fesm5']).to.equal('fesm5/sample-apf.js');
     });
 
     it(`should reference "typings" files`, () => {
@@ -98,16 +90,12 @@ describe(`@sample/apf`, () => {
       expect(PACKAGE['main']).to.equal('../bundles/sample-apf-secondary.umd.js');
     });
 
-    it(`should reference "module" bundle (FESM5)`, () => {
-      expect(PACKAGE['module']).to.equal('../fesm5/sample-apf-secondary.js');
+    it(`should reference "module" bundle (fesm2015)`, () => {
+      expect(PACKAGE['module']).to.equal('../fesm2015/sample-apf-secondary.js');
     });
 
     it(`should reference "es2015" bundle (FESM2015)`, () => {
       expect(PACKAGE['es2015']).to.equal('../fesm2015/sample-apf-secondary.js');
-    });
-
-    it(`should reference "esm5" file`, () => {
-      expect(PACKAGE['esm5']).to.equal('../esm5/secondary/sample-apf-secondary.js');
     });
 
     it(`should reference "esm2015" file`, () => {
@@ -116,10 +104,6 @@ describe(`@sample/apf`, () => {
 
     it(`should reference "fesm2015" file`, () => {
       expect(PACKAGE['fesm2015']).to.equal('../fesm2015/sample-apf-secondary.js');
-    });
-
-    it(`should reference "fesm5" file`, () => {
-      expect(PACKAGE['fesm5']).to.equal('../fesm5/sample-apf-secondary.js');
     });
 
     it(`should reference "typings" files`, () => {

@@ -1,76 +1,62 @@
-import { map, switchMap } from 'rxjs/operators';
-import { from as fromPromise, pipe } from 'rxjs';
-import { Transform } from '../../graph/transform';
-import { FlattenOpts, flattenToFesm, flattenToUmd, flattenToUmdMin } from '../../flatten/flatten';
-import { NgEntryPoint, DestinationFiles } from './entry-point';
+import { Transform, transformFromPromise } from '../../graph/transform';
+import { NgEntryPoint } from './entry-point';
 import { isEntryPoint, isEntryPointInProgress, EntryPointNode } from '../nodes';
 import * as log from '../../utils/log';
 import { BuildGraph } from '../../graph/build-graph';
 import { DependencyList } from '../../flatten/external-module-id-strategy';
 import { unique } from '../../utils/array';
+import { downlevelCodeWithTsc } from '../../flatten/downlevel-plugin';
+import { rollupBundleFile } from '../../flatten/rollup';
+import { minifyJsFile } from '../../flatten/uglify';
 
-export const writeBundlesTransform: Transform = pipe(
-  switchMap(graph => {
-    const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
-    const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
+export const writeBundlesTransform: Transform = transformFromPromise(async (graph) => {
+  const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
+  const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
 
-    // Add UMD module IDs for dependencies
-    const dependencyUmdIds = entryPoint
-      .filter(isEntryPoint)
-      .map(ep => ep.data.entryPoint)
-      .reduce((prev, ep: NgEntryPoint) => {
-        prev[ep.moduleId] = ep.umdId;
+  // Add UMD module IDs for dependencies
+  const dependencyUmdIds = entryPoint
+    .filter(isEntryPoint)
+    .map((ep) => ep.data.entryPoint)
+    .reduce((prev, ep: NgEntryPoint) => {
+      prev[ep.moduleId] = ep.umdId;
 
-        return prev;
-      }, {});
+      return prev;
+    }, {});
 
-    const opts: FlattenOpts = {
-      destFile: '',
-      entryFile: '',
-      sourceRoot: tsConfig.options.sourceRoot,
-      flatModuleFile: ngEntryPoint.flatModuleFile,
-      esmModuleId: ngEntryPoint.moduleId,
-      umdModuleId: ngEntryPoint.umdId,
-      amdId: ngEntryPoint.amdId,
-      umdModuleIds: {
-        ...ngEntryPoint.umdModuleIds,
-        ...dependencyUmdIds,
-      },
-      dependencyList: getDependencyListForGraph(graph),
-    };
+  const { fesm2015, esm2015, umd, umdMinified } = destinationFiles;
 
-    return fromPromise(writeFlatBundleFiles(destinationFiles, opts)).pipe(map(() => graph));
-  }),
-);
-
-async function writeFlatBundleFiles(destinationFiles: DestinationFiles, opts: FlattenOpts): Promise<void> {
-  const { esm2015, fesm2015, esm5, fesm5, umd, umdMinified } = destinationFiles;
+  const opts = {
+    sourceRoot: tsConfig.options.sourceRoot,
+    amd: { id: ngEntryPoint.amdId },
+    umdModuleIds: {
+      ...ngEntryPoint.umdModuleIds,
+      ...dependencyUmdIds,
+    },
+    entry: esm2015,
+    dependencyList: getDependencyListForGraph(graph),
+  };
 
   log.info('Bundling to FESM2015');
-  await flattenToFesm({
+  await rollupBundleFile({
     ...opts,
-    entryFile: esm2015,
-    destFile: fesm2015,
-  });
-
-  log.info('Bundling to FESM5');
-  await flattenToFesm({
-    ...opts,
-    entryFile: esm5,
-    destFile: fesm5,
+    moduleName: ngEntryPoint.moduleId,
+    format: 'es',
+    dest: fesm2015,
   });
 
   log.info('Bundling to UMD');
-  await flattenToUmd({
+  await rollupBundleFile({
     ...opts,
-    entryFile: fesm5,
-    destFile: umd,
-    dependencyList: opts.dependencyList,
+    moduleName: ngEntryPoint.umdId,
+    entry: esm2015,
+    format: 'umd',
+    dest: umd,
+    transform: downlevelCodeWithTsc,
   });
 
   log.info('Minifying UMD bundle');
-  await flattenToUmdMin(umd, umdMinified);
-}
+  await minifyJsFile(umd, umdMinified);
+});
 
 /** Get all list of dependencies for the entire 'BuildGraph' */
 function getDependencyListForGraph(graph: BuildGraph): DependencyList {

@@ -25,10 +25,6 @@ describe(`@sample/secondary`, () => {
       expect(PACKAGE['main']).to.equal('bundles/sample-secondary.umd.js');
     });
 
-    it(`should reference "module" bundle (FESM5)`, () => {
-      expect(PACKAGE['module']).to.equal('fesm5/sample-secondary.js');
-    });
-
     it(`should reference "typings" files`, () => {
       expect(PACKAGE['typings']).to.equal('sample-secondary.d.ts');
     });
@@ -58,10 +54,6 @@ describe(`@sample/secondary`, () => {
 
     it(`should reference "main" bundle (UMD)`, () => {
       expect(PACKAGE['main']).to.equal('../bundles/sample-secondary-sub-module.umd.js');
-    });
-
-    it(`should reference "module" bundle (FESM5)`, () => {
-      expect(PACKAGE['module']).to.equal('../fesm5/sample-secondary-sub-module.js');
     });
 
     it(`should reference "typings" files`, () => {

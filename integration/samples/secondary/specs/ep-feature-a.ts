@@ -12,7 +12,7 @@ describe(`@sample/secondary/feature-a`, () => {
     UMD_BUNDLE_CONTENTS = fs.readFileSync(path.resolve(DIST, 'bundles', 'sample-secondary-feature-a.umd.js'), {
       encoding: 'utf-8',
     });
-    ESM5_CONTENTS = fs.readFileSync(path.resolve(DIST, 'fesm5', 'sample-secondary-feature-a.js'), {
+    ESM5_CONTENTS = fs.readFileSync(path.resolve(DIST, 'fesm2015', 'sample-secondary-feature-a.js'), {
       encoding: 'utf-8',
     });
   });
@@ -37,18 +37,6 @@ describe(`@sample/secondary/feature-a`, () => {
     expect(UMD_BUNDLE_CONTENTS).to.contain(
       `define('@sample/secondary/feature-a', ['exports', '@sample/secondary/shared']`,
     );
-  });
-
-  it(`should 'export { .. }' (ESM5)`, () => {
-    expect(ESM5_CONTENTS).to.contain(`export {`);
-  });
-
-  it(`should 'import .. from '@sample/secondary/shared';' (FESM5)`, () => {
-    expect(ESM5_CONTENTS).to.contain(`import { SHARED_FEATURE } from '@sample/secondary/shared';`);
-  });
-
-  it(`should 'export { .. }' (ESM2015)`, () => {
-    expect(ESM5_CONTENTS).to.contain(`export {`);
   });
 
   it(`should 'import .. from '@sample/secondary/shared';' (FESM2015)`, () => {
