@@ -8,6 +8,13 @@ All notable changes to this project will be documented in this file. See [standa
 ### ⚠ BREAKING CHANGES
 
 * Deprecated `jsx` and `languageLevel` has been removed, Set these options in your `tsconfig.json` instead.
+* esm5 and fesm5 formats are no longer generated.
+
+If you are not using Angular CLI to build your application or library,
+and you need to be able to build es5 artifacts, then you will need to
+downlevel the distributed Angular code to es5 on your own.
+
+Angular CLI will automatically downlevel the code to es5.
 
 ### Features
 
