@@ -74,7 +74,7 @@ export const initializeTsConfig = (defaultTsConfig: ng.ParsedConfiguration, entr
     throw ng.formatDiagnostics(defaultTsConfig.errors);
   }
 
-  entryPoints.forEach(currentEntryPoint => {
+  entryPoints.forEach((currentEntryPoint) => {
     const { entryPoint } = currentEntryPoint.data;
     log.debug(`Initializing tsconfig for ${entryPoint.moduleId}`);
     const basePath = path.dirname(entryPoint.entryFilePath);
@@ -82,37 +82,13 @@ export const initializeTsConfig = (defaultTsConfig: ng.ParsedConfiguration, entr
     // Resolve defaults from DI token and create a deep copy of the defaults
     let tsConfig: ng.ParsedConfiguration = JSON.parse(JSON.stringify(defaultTsConfig));
 
-    let jsx = tsConfig.options.jsx;
-    if (entryPoint.jsxConfig) {
-      log.warn(`'jsx' option has been deprecated use a custom tsconfig instead.`);
-    }
-    switch (entryPoint.jsxConfig) {
-      case 'preserve':
-        jsx = ts.JsxEmit.Preserve;
-        break;
-      case 'react':
-        jsx = ts.JsxEmit.React;
-        break;
-      case 'react-native':
-        jsx = ts.JsxEmit.ReactNative;
-        break;
-      default:
-        break;
-    }
-
-    if (entryPoint.languageLevel) {
-      log.warn(`'languageLevel' option has been deprecated use a custom tsconfig instead.`);
-    }
-
     const overrideOptions: ng.CompilerOptions = {
       flatModuleId: entryPoint.moduleId,
       flatModuleOutFile: `${entryPoint.flatModuleFile}.js`,
       basePath,
       rootDir: basePath,
-      lib: entryPoint.languageLevel ? entryPoint.languageLevel.map(lib => `lib.${lib}.d.ts`) : tsConfig.options.lib,
       declarationDir: basePath,
       sourceRoot: `ng://${entryPoint.moduleId}`,
-      jsx,
     };
 
     tsConfig.rootNames = [entryPoint.entryFilePath];

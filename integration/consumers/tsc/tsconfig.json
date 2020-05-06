@@ -16,22 +16,14 @@
     "outDir": "dist",
     "rootDir": "src",
     "baseUrl": "./",
-    "lib": [
-      "es2015",
-      "dom"
-    ],
+    "lib": ["es2015", "dom"],
     "experimentalDecorators": true,
     "paths": {
-      "@sample/core": [ "../../samples/core/dist" ],
-      "sample-custom": [ "../../samples/custom/dist" ],
-      "@sample/jsx": [ "../../samples/jsx/dist" ],
-      "@sample/material": [ "../../samples/material/dist" ]
+      "@sample/core": ["../../samples/core/dist"],
+      "sample-custom": ["../../samples/custom/dist"],
+      "@sample/material": ["../../samples/material/dist"]
     },
-    "types": [
-      "jasmine"
-    ]
+    "types": ["jasmine"]
   },
-  "files": [
-    "src/main.ts"
-  ]
+  "files": ["src/main.ts"]
 }

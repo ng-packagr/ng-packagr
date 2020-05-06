@@ -99,9 +99,7 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
 - [Change Configuration Locations](docs/configuration-locations.md)
 - [Override tsconfig](docs/override-tsconfig.md)
 - [Add Style Include Paths](docs/style-include-paths.md)
-- [Change ECMAScript Language Level](docs/language-level.md)
 - [Package Secondary Entrypoints (sub packages)](docs/secondary-entrypoints.md)
-- [Enable JSX Templates, Bridging the Gap Between Angular and React](docs/jsx.md)
 
 ## Advanced Use Cases
 
