@@ -126,10 +126,6 @@ export class NgEntryPoint {
     return this.$get('lib.umdModuleIds');
   }
 
-  public get jsxConfig(): string {
-    return this.$get('lib.jsx');
-  }
-
   public get flatModuleFile(): string {
     return this.$get('lib.flatModuleFile') || this.flattenModuleId('-');
   }
@@ -139,10 +135,6 @@ export class NgEntryPoint {
     return includePaths.map((includePath) =>
       path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath),
     );
-  }
-
-  public get languageLevel(): string[] {
-    return this.$get('lib.languageLevel');
   }
 
   /**
