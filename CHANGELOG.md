@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/v10.0.0-next.0...v10.0.0-next.1) (2020-05-13)
+
+
+### Performance
+
+* ignore node_modules from file watching ([74696e4](https://github.com/ng-packagr/ng-packagr/commit/74696e477070e47df3f118278f9220e269d885ab)), closes [#1583](https://github.com/ng-packagr/ng-packagr/issues/1583)
+* use endsWith instead of complex RegExp during dependency analysis ([4f550be](https://github.com/ng-packagr/ng-packagr/commit/4f550be7376d90d9aef7a5fcdc269ec3a17f42d5))
+
 ## [10.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/v9.1.2...v10.0.0-next.0) (2020-05-06)
 
 
