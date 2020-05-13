@@ -20,7 +20,7 @@ export function createFileWatch(
 
   const watch = chokidar.watch(projectPath, {
     ignoreInitial: true,
-    ignored: [...ignoredPaths, /((^[\/\\])\..)|(\.js$)|(\.map$)|(\.metadata\.json)/],
+    ignored: [...ignoredPaths, /((^[\/\\])\..)|(\.js$)|(\.map$)|(\.metadata\.json|node_modules)/],
     persistent: true,
   });
 
@@ -38,7 +38,7 @@ export function createFileWatch(
     });
   };
 
-  return Observable.create(observer => {
+  return Observable.create((observer) => {
     watch.on('all', (event: AllFileWatchEvents, filePath: string) => handleFileChange(event, filePath, observer));
     return () => watch.close();
   });
