@@ -36,9 +36,10 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
   const primaryModuleId = packageNode.data.primary.moduleId;
 
   debug(`Analysing sources for ${moduleId}`);
-  const tsConfigOptions = {
+  const tsConfigOptions: ts.CompilerOptions = {
     ...entryPoint.data.tsConfig.options,
     skipLibCheck: true,
+    noLib: true,
     types: [],
   };
 
@@ -81,7 +82,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
   const potentialDependencies = new Set<string>();
   program
     .getSourceFiles()
-    .filter(x => !/node_modules|\.ngfactory|\.ngstyle|(\.d\.ts$)/.test(x.fileName))
+    .filter(x => !x.fileName.endsWith('.d.ts'))
     .forEach(sourceFile => {
       sourceFile.statements
         .filter(x => ts.isImportDeclaration(x) || ts.isExportDeclaration(x))
