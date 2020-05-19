@@ -14,7 +14,7 @@ import { InternalService } from './internal.service';
   exports: [BazComponent, FooComponent, FooBarComponent, LessBazComponent],
 })
 export class CustomModule {
-  public static forRoot(): ModuleWithProviders {
+  public static forRoot(): ModuleWithProviders<CustomModule> {
     return {
       ngModule: CustomModule,
       providers: [InternalService],
