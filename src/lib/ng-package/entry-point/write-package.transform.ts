@@ -10,7 +10,7 @@ import { globFiles } from '../../utils/glob';
 import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode } from '../nodes';
 import { copyFile } from '../../utils/copy';
 
-export const writePackageTransform: Transform = transformFromPromise(async (graph) => {
+export const writePackageTransform: Transform = transformFromPromise(async graph => {
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
   const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
   const ngPackageNode = graph.find(isPackage) as PackageNode;
@@ -34,7 +34,7 @@ export const writePackageTransform: Transform = transformFromPromise(async (grap
     // COPY SOURCE FILES TO DESTINATION
     log.info('Copying declaration files');
     await Promise.all(
-      declarationFiles.map((value) => {
+      declarationFiles.map(value => {
         const relativePath = path.relative(ngEntryPoint.entryFilePath, value);
         const destination = path.resolve(destinationFiles.declarations, relativePath);
         return copyFile(value, destination, { overwrite: true, dereference: true });
@@ -42,7 +42,7 @@ export const writePackageTransform: Transform = transformFromPromise(async (grap
     );
   }
   if (ngPackage.assets.length && !ngEntryPoint.isSecondaryEntryPoint) {
-    const assets = ngPackage.assets.map((x) => path.join(ngPackage.src, x));
+    const assets = ngPackage.assets.map(x => path.join(ngPackage.src, x));
     const assetFiles = await globFiles(assets, {
       ignore: ignorePaths,
       cache: ngPackageNode.cache.globCache,
@@ -52,7 +52,7 @@ export const writePackageTransform: Transform = transformFromPromise(async (grap
       // COPY ASSET FILES TO DESTINATION
       log.info('Copying assets');
       await Promise.all(
-        assetFiles.map((value) => {
+        assetFiles.map(value => {
           const relativePath = path.relative(ngPackage.src, value);
           const destination = path.resolve(ngPackage.dest, relativePath);
           return copyFile(value, destination, { overwrite: true, dereference: true });
@@ -121,28 +121,32 @@ async function writePackageJson(
   // version at least matches that of angular if we use require('tslib').version
   // it will get what installed and not the minimum version nor if it is a `~` or `^`
   // this is only required for primary
-  if (
-    !entryPoint.isSecondaryEntryPoint &&
-    !(packageJson.peerDependencies && packageJson.peerDependencies.tslib) &&
-    !(packageJson.dependencies && packageJson.dependencies.tslib)
-  ) {
-    const {
-      peerDependencies: angularPeerDependencies = {},
-      dependencies: angularDependencies = {},
-    } = require('@angular/compiler/package.json');
-    const tsLibVersion = angularPeerDependencies.tslib || angularDependencies.tslib;
+  if (!entryPoint.isSecondaryEntryPoint) {
+    if (!packageJson.peerDependencies?.tslib && !packageJson.dependencies?.tslib) {
+      const {
+        peerDependencies: angularPeerDependencies = {},
+        dependencies: angularDependencies = {},
+      } = require('@angular/compiler/package.json');
+      const tsLibVersion = angularPeerDependencies.tslib || angularDependencies.tslib;
 
-    if (tsLibVersion) {
-      packageJson.peerDependencies = {
-        ...packageJson.peerDependencies,
-        tslib: tsLibVersion,
+      if (tsLibVersion) {
+        packageJson.dependencies = {
+          ...packageJson.dependencies,
+          tslib: tsLibVersion,
+        };
+      }
+    } else if (packageJson.peerDependencies?.tslib) {
+      log.warn(`'tslib' is no longer recommanded to be used as a 'peerDependencies'. Moving it to 'dependencies'.`);
+      packageJson.dependencies = {
+        ...(packageJson.dependencies || {}),
+        tslib: packageJson.peerDependencies.tslib,
       };
     }
   }
 
   // Verify non-peerDependencies as they can easily lead to duplicate installs or version conflicts
   // in the node_modules folder of an application
-  const whitelist = pkg.whitelistedNonPeerDependencies.map((value) => new RegExp(value));
+  const whitelist = pkg.whitelistedNonPeerDependencies.map(value => new RegExp(value));
   try {
     checkNonPeerDependencies(packageJson, 'dependencies', whitelist);
   } catch (e) {
@@ -208,7 +212,7 @@ function checkNonPeerDependencies(packageJson: Record<string, unknown>, property
   }
 
   for (const dep of Object.keys(packageJson[property])) {
-    if (whitelist.find((regex) => regex.test(dep))) {
+    if (whitelist.find(regex => regex.test(dep))) {
       log.debug(`Dependency ${dep} is whitelisted in '${property}'`);
     } else {
       log.warn(
