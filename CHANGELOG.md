@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [9.1.5](https://github.com/ng-packagr/ng-packagr/compare/v9.1.4...v9.1.5) (2020-05-19)
+
+
+### Bug Fixes
+
+* remove tslib from peerDependencies when adding it to dependencies ([593f861](https://github.com/ng-packagr/ng-packagr/commit/593f861))
+
 ### [9.1.4](https://github.com/ng-packagr/ng-packagr/compare/v9.1.3...v9.1.4) (2020-05-19)
 
 
