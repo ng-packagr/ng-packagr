@@ -55,20 +55,20 @@
     "update-notifier": "^4.0.0"
   },
   "peerDependencies": {
-    "@angular/compiler": "^10.0.0-next.0",
-    "@angular/compiler-cli": "^10.0.0-next.0",
+    "@angular/compiler": "^10.0.0-next.8",
+    "@angular/compiler-cli": "^10.0.0-next.8",
     "tslib": "^1.10.0",
-    "typescript": ">=3.6 < 3.9"
+    "typescript": ">=3.9 < 3.10"
   },
   "devDependencies": {
     "@angular/cdk": "^9.0.0",
-    "@angular/common": "~9.1.0-next.4",
-    "@angular/compiler": "~9.1.0-next.4",
-    "@angular/compiler-cli": "~9.1.0-next.4",
-    "@angular/core": "~9.1.0-next.4",
+    "@angular/common": "~10.0.0-next.8",
+    "@angular/compiler": "~10.0.0-next.8",
+    "@angular/compiler-cli": "~10.0.0-next.8",
+    "@angular/core": "~10.0.0-next.8",
     "@angular/material": "^9.0.0",
-    "@angular/platform-browser": "~9.1.0-next.4",
-    "@angular/router": "~9.1.0-next.4",
+    "@angular/platform-browser": "~10.0.0-next.8",
+    "@angular/router": "~10.0.0-next.8",
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-angular": "^8.0.0",
     "@types/acorn": "^4.0.3",
@@ -105,7 +105,7 @@
     "ts-node": "^8.0.0",
     "tsickle": "^0.38.0",
     "tslib": "^1.10.0",
-    "typescript": "~3.8.3",
+    "typescript": "~3.9.2",
     "zone.js": "^0.10.0"
   },
   "private": true,
