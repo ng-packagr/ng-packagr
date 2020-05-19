@@ -63,7 +63,7 @@
           "description": "Embed assets in css file using data URIs - see https://css-tricks.com/data-uris",
           "type": "string",
           "enum": ["none", "inline"],
-          "default": "none"
+          "default": "inline"
         },
         "styleIncludePaths": {
           "description": "Any additional paths that should be used to resolve style imports",
