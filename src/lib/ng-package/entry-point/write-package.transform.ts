@@ -143,6 +143,8 @@ async function writePackageJson(
         ...(packageJson.dependencies || {}),
         tslib: packageJson.peerDependencies.tslib,
       };
+
+      delete packageJson.peerDependencies.tslib;
     }
   }
 
