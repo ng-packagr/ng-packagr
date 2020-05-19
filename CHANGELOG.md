@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/v10.0.0-next.1...v10.0.0-next.2) (2020-05-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* `cssUrl` option default value has been changed to `inline`
+More info about this option can be found: https://github.com/ng-packagr/ng-packagr/blob/master/docs/embed-assets-css.md
+* TypeScript 3.8 is no longer supported, please update to TypeScript 3.9
+
+### Features
+
+* embed assets in css file using data uri by default ([d2a5731](https://github.com/ng-packagr/ng-packagr/commit/d2a573184dca47fbb0b0042614444e74e7e304b2))
+
+
+### Bug Fixes
+
+* auto add tslib as direct dependency ([4145af5](https://github.com/ng-packagr/ng-packagr/commit/4145af5588d57c6749535c3a3cbc242b296fae0a))
+
+
+* update to TypeScript 3.9 ([8524648](https://github.com/ng-packagr/ng-packagr/commit/8524648cad5ab8a24520c472304d533d28207b99))
+
 ## [10.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/v10.0.0-next.0...v10.0.0-next.1) (2020-05-13)
 
 
