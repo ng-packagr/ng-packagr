@@ -50,6 +50,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     moduleResolutionCache,
     undefined,
     analysesSourcesFileCache,
+    false,
   );
 
   compilerHost.resolveModuleNames = (moduleNames: string[], containingFile: string) => {

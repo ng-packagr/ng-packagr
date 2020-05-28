@@ -15,8 +15,10 @@ export function cacheCompilerHost(
   moduleResolutionCache: ts.ModuleResolutionCache,
   stylesheetProcessor?: StylesheetProcessor,
   sourcesFileCache: FileCache = entryPoint.cache.sourcesFileCache,
+  setParentNodes = true,
 ): ng.CompilerHost {
-  const compilerHost = ng.createCompilerHost({ options: compilerOptions });
+  const tsHost = ts.createCompilerHost(compilerOptions, setParentNodes);
+  const compilerHost = ng.createCompilerHost({ options: compilerOptions, tsHost });
 
   const getNode = (fileName: string) => {
     const nodeUri = fileUrl(ensureUnixPath(fileName));
@@ -49,7 +51,6 @@ export function cacheCompilerHost(
 
     getSourceFile: (fileName: string, languageVersion: ts.ScriptTarget) => {
       addDependee(fileName);
-
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (!cache.sourceFile) {
         cache.sourceFile = compilerHost.getSourceFile.call(this, fileName, languageVersion);
