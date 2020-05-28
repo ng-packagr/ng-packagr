@@ -7,7 +7,6 @@ import * as log from '../utils/log';
 import { ExternalModuleIdStrategy, DependencyList } from './external-module-id-strategy';
 import { umdModuleIdStrategy } from './umd-module-id-strategy';
 import { TransformHook } from 'rollup';
-import { ensureUnixPath } from '../utils/path';
 
 /**
  * Options used in `ng-packagr` for writing flat bundle files.
@@ -75,23 +74,5 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
     banner: '',
     globals: moduleId => umdModuleIdStrategy(moduleId, opts.umdModuleIds || {}),
     sourcemap: true,
-    sourcemapPathTransform: (sourcePath: string) => {
-      sourcePath = ensureUnixPath(sourcePath);
-      // relocate sourcemaps
-      if (!sourcePath) {
-        return sourcePath;
-      }
-
-      // the replace here is because during the compilation one of the `/` gets lost sometimes
-      const sourceRoot = ensureUnixPath(opts.sourceRoot);
-      const mapRootUrl = sourceRoot.replace('//', '/');
-      if (sourcePath.indexOf(mapRootUrl) >= 0) {
-        return `${sourceRoot}${sourcePath.substr(sourcePath.indexOf(mapRootUrl) + mapRootUrl.length)}`;
-      } else if (sourcePath.indexOf(sourceRoot) >= 0) {
-        return sourcePath.substr(sourcePath.indexOf(mapRootUrl));
-      } else {
-        return sourcePath;
-      }
-    },
   });
 }

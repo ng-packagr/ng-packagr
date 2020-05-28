@@ -74,7 +74,7 @@ export const initializeTsConfig = (defaultTsConfig: ng.ParsedConfiguration, entr
     throw ng.formatDiagnostics(defaultTsConfig.errors);
   }
 
-  entryPoints.forEach((currentEntryPoint) => {
+  entryPoints.forEach(currentEntryPoint => {
     const { entryPoint } = currentEntryPoint.data;
     log.debug(`Initializing tsconfig for ${entryPoint.moduleId}`);
     const basePath = path.dirname(entryPoint.entryFilePath);
@@ -88,7 +88,6 @@ export const initializeTsConfig = (defaultTsConfig: ng.ParsedConfiguration, entr
       basePath,
       rootDir: basePath,
       declarationDir: basePath,
-      sourceRoot: `ng://${entryPoint.moduleId}`,
     };
 
     tsConfig.rootNames = [entryPoint.entryFilePath];
