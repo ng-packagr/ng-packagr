@@ -18,13 +18,6 @@ describe(`@sample/core`, () => {
       expect(sourceMap.sourcesContent).to.be.an('array').that.is.not.empty;
       expect(sourceMap.sources).to.have.lengthOf(sourceMap.sourcesContent.length);
     });
-
-    it(`should reference each 'sources' path with a common prefix`, () => {
-      const everyUeveryMe = (sourceMap.sources as string[]).every(
-        (fileName) => fileName.startsWith('ng://@sample/core') && fileName.endsWith('.ts'),
-      );
-      expect(everyUeveryMe).to.be.true;
-    });
   });
 
   describe(`bundles/sample-core.umd.min.js.map`, () => {
@@ -45,13 +38,6 @@ describe(`@sample/core`, () => {
       expect(sourceMap.sources).to.be.an('array').that.is.not.empty;
       expect(sourceMap.sourcesContent).to.be.an('array').that.is.not.empty;
       expect(sourceMap.sources).to.have.lengthOf(sourceMap.sourcesContent.length);
-    });
-
-    it(`should reference each 'sources' path with a common prefix`, () => {
-      const sourceMapPaths = (sourceMap.sources as string[])
-        .filter((fileName) => fileName !== 'null' && !fileName.includes('node_modules'))
-        .every((fileName) => fileName.startsWith('ng://@sample/core') && fileName.endsWith('.ts'));
-      expect(sourceMapPaths).to.be.true;
     });
   });
 });
