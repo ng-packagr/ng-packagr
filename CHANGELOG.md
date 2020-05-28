@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/v10.0.0-next.2...v10.0.0-rc.0) (2020-05-28)
+
+
+### Bug Fixes
+
+* remove custom namespaced sourceRoot in sourcemaps ([481dd8f](https://github.com/ng-packagr/ng-packagr/commit/481dd8f77c927b564e3d3eb8c79e6cecdc580b52)), closes [#1622](https://github.com/ng-packagr/ng-packagr/issues/1622)
+* remove tslib from peerDependencies when adding it to dependencies ([2981f73](https://github.com/ng-packagr/ng-packagr/commit/2981f73ff264caca66886f4a62027d26e69e410b))
+* update @rollup/plugin-commonjs to version ^12.0.0 ([e89c5b1](https://github.com/ng-packagr/ng-packagr/commit/e89c5b1d325a83230428b1d8874d4a46fb6a0514))
+* update @rollup/plugin-node-resolve to version ^8.0.0 ([b2ac9a2](https://github.com/ng-packagr/ng-packagr/commit/b2ac9a291a1ce7bcdb33f00b04408ccc6c76e71c))
+
+
+### Performance
+
+* don't set setParentNodes for analyse sourcefiles ([d0ce240](https://github.com/ng-packagr/ng-packagr/commit/d0ce240130548b6633499f0685d6bbbff0cbb186))
+
 ## [10.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/v10.0.0-next.1...v10.0.0-next.2) (2020-05-19)
 
 
