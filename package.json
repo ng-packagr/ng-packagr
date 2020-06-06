@@ -115,7 +115,7 @@
     "postbuild": "node ./scripts/postbuild.js",
     "schema": "json2ts --input src/ng-package.schema.json --output src/ng-package.schema.ts",
     "prerelease": "yarn build",
-    "release": "standard-version --releaseCommitMessageFormat 'release: cut v%s' --no-verify",
+    "release": "standard-version --releaseCommitMessageFormat 'release: cut v{{currentTag}}' --no-verify",
     "postrelease": "node ./scripts/prepublish.js",
     "publish:ci": "yarn prerelease && yarn postrelease",
     "integration:samples": "integration/samples.sh",
