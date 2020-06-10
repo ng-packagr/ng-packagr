@@ -118,6 +118,8 @@ export class StylesheetProcessor {
 
     const preset = cssnanoPresetDefault({
       svgo: false,
+      // Disable calc optimizations due to several issues.
+      calc: false,
     });
 
     const asyncPlugins = ['postcss-svgo'];
