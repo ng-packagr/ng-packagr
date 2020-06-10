@@ -7,8 +7,9 @@ import { ensureUnixPath } from '../../utils/path';
 import { rimraf } from '../../utils/rimraf';
 import * as log from '../../utils/log';
 import { globFiles } from '../../utils/glob';
-import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode } from '../nodes';
+import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode, fileUrl } from '../nodes';
 import { copyFile } from '../../utils/copy';
+import { Node } from '../../graph/node';
 
 export const writePackageTransform: Transform = transformFromPromise(async graph => {
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
@@ -37,6 +38,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
       declarationFiles.map(value => {
         const relativePath = path.relative(ngEntryPoint.entryFilePath, value);
         const destination = path.resolve(destinationFiles.declarations, relativePath);
+        entryPoint.dependsOn(new Node(fileUrl(ensureUnixPath(relativePath))));
         return copyFile(value, destination, { overwrite: true, dereference: true });
       }),
     );
@@ -55,6 +57,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
         assetFiles.map(value => {
           const relativePath = path.relative(ngPackage.src, value);
           const destination = path.resolve(ngPackage.dest, relativePath);
+          entryPoint.dependsOn(new Node(fileUrl(ensureUnixPath(relativePath))));
           return copyFile(value, destination, { overwrite: true, dereference: true });
         }),
       );
