@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0-rc.1](https://github.com/ng-packagr/ng-packagr/compare/v10.0.0-rc.0...v10.0.0-rc.1) (2020-06-10)
+
+
+### Bug Fixes
+
+* disable CSS `calc` optimizations ([bdcc938](https://github.com/ng-packagr/ng-packagr/commit/bdcc938f765f3d58a79b395dcf7a749efddd3e94))
+* release commit message formatting ([300b4bf](https://github.com/ng-packagr/ng-packagr/commit/300b4bff0534d5fe1591063488b8ade3ef396900))
+* update @rollup/plugin-commonjs to version ^13.0.0 ([9413dbd](https://github.com/ng-packagr/ng-packagr/commit/9413dbd34f8d6a57abbfb9d71a72e97ecac47e1c))
+* watch assets files and re-copy on changes ([e7465c3](https://github.com/ng-packagr/ng-packagr/commit/e7465c3cbd5b0094af4739ec9250b34c4f3aad27)), closes [#1545](https://github.com/ng-packagr/ng-packagr/issues/1545)
+
 ## [10.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/v10.0.0-next.2...v10.0.0-rc.0) (2020-05-28)
 
 
