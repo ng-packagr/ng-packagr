@@ -8,7 +8,7 @@ import * as log from '../../utils/log';
 import { isEntryPointInProgress, EntryPointNode, isEntryPoint } from '../nodes';
 import { StylesheetProcessor } from '../../styles/stylesheet-processor';
 
-export const compileNgcTransform: Transform = transformFromPromise(async (graph) => {
+export const compileNgcTransform: Transform = transformFromPromise(async graph => {
   log.info(`Compiling TypeScript sources through ngc`);
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
   const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
@@ -30,10 +30,10 @@ export const compileNgcTransform: Transform = transformFromPromise(async (graph)
     stylesheetProcessor,
     {
       outDir: path.dirname(esm2015),
+      declarationDir: path.dirname(declarations),
       declaration: true,
       target: ts.ScriptTarget.ES2015,
     },
-    path.dirname(declarations),
     ngccProcessor,
   );
 
