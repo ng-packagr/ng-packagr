@@ -1,7 +1,6 @@
 import * as ng from '@angular/compiler-cli';
 import * as ts from 'typescript';
 import * as log from '../utils/log';
-import { redirectWriteFileCompilerHost } from '../ts/redirect-write-file-compiler-host';
 import { cacheCompilerHost } from '../ts/cache-compiler-host';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { BuildGraph } from '../graph/build-graph';
@@ -16,7 +15,6 @@ export async function compileSourceFiles(
   moduleResolutionCache: ts.ModuleResolutionCache,
   stylesheetProcessor: StylesheetProcessor,
   extraOptions?: Partial<ng.CompilerOptions>,
-  declarationDir?: string,
   ngccProcessor?: NgccProcessor,
 ) {
   log.debug(`ngc (v${ng.VERSION.full})`);
@@ -31,9 +29,6 @@ export async function compileSourceFiles(
     moduleResolutionCache,
     stylesheetProcessor,
   );
-  if (declarationDir) {
-    tsCompilerHost = redirectWriteFileCompilerHost(tsCompilerHost, tsConfigOptions.basePath, declarationDir);
-  }
 
   if (tsConfigOptions.enableIvy && ngccProcessor) {
     tsCompilerHost = ngccTransformCompilerHost(tsCompilerHost, tsConfigOptions, ngccProcessor, moduleResolutionCache);
