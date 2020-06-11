@@ -9,7 +9,6 @@ import { EntryPointNode, isEntryPointInProgress } from '../ng-package/nodes';
 import { NgccProcessor } from './ngcc-processor';
 import { ngccTransformCompilerHost } from '../ts/ngcc-transform-compiler-host';
 import { createEmitCallback } from './create-emit-callback';
-import { downlevelConstructorParameters } from '../ts/ctor-parameters';
 
 export async function compileSourceFiles(
   graph: BuildGraph,
@@ -76,11 +75,6 @@ export async function compileSourceFiles(
     ...ngProgram.getNgStructuralDiagnostics(),
   ];
 
-  const beforeTs: ts.TransformerFactory<ts.SourceFile>[] = [];
-  if (!tsConfigOptions.annotateForClosureCompiler) {
-    beforeTs.push(downlevelConstructorParameters(() => ngProgram.getTsProgram().getTypeChecker()));
-  }
-
   // if we have an error we don't want to transpile.
   const hasError = ng.exitCodeFromResult(allDiagnostics) > 0;
   if (!hasError) {
@@ -90,9 +84,6 @@ export async function compileSourceFiles(
       emitFlags,
       // For Ivy we don't need a custom emitCallback to have tsickle transforms
       emitCallback: tsConfigOptions.enableIvy ? undefined : createEmitCallback(tsConfigOptions),
-      customTransformers: {
-        beforeTs,
-      },
     });
 
     allDiagnostics.push(...diagnostics);
