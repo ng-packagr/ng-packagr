@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0-rc.2](https://github.com/ng-packagr/ng-packagr/compare/v10.0.0-rc.1...v10.0.0-rc.2) (2020-06-12)
+
+
+### Bug Fixes
+
+* issues with emitting declarationMap ([38ad52b](https://github.com/ng-packagr/ng-packagr/commit/38ad52b0980428a300126c4d8b83c5d06d552f29)), closes [#1464](https://github.com/ng-packagr/ng-packagr/issues/1464)
+
 ## [10.0.0-rc.1](https://github.com/ng-packagr/ng-packagr/compare/v10.0.0-rc.0...v10.0.0-rc.1) (2020-06-10)
 
 
