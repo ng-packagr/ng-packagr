@@ -14,14 +14,18 @@ jobs:
           issue-lock-inactive-days: 30
           issue-lock-comment: >
             This issue has been automatically locked due to inactivity.
+
             Please file a new issue if you are encountering a similar or related problem.
+
 
             <sub>_This action has been performed automatically by a bot._</sub>
           issue-lock-reason: ''
           pr-lock-inactive-days: 30
           pr-lock-comment: >
             This PR has been automatically locked due to inactivity.
+
             Please file a new issue if you are encountering a similar or related problem.
+
 
             <sub>_This action has been performed automatically by a bot._</sub>
           pr-lock-reason: ''
