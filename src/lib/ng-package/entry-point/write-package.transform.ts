@@ -8,7 +8,6 @@ import { rimraf } from '../../utils/rimraf';
 import * as log from '../../utils/log';
 import { globFiles } from '../../utils/glob';
 import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode, fileUrl } from '../nodes';
-import { copyFile } from '../../utils/copy';
 import { Node } from '../../graph/node';
 
 export const writePackageTransform: Transform = transformFromPromise(async graph => {
@@ -25,24 +24,6 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     `${ngPackage.dest}/**`,
   ];
 
-  // we don't want to copy `dist` and 'node_modules' declaration files but only files in source
-  const declarationFiles = await globFiles(`${path.dirname(ngEntryPoint.entryFilePath)}/**/*.d.ts`, {
-    ignore: ignorePaths,
-    cache: ngPackageNode.cache.globCache,
-  });
-
-  if (declarationFiles.length) {
-    // COPY SOURCE FILES TO DESTINATION
-    log.info('Copying declaration files');
-    await Promise.all(
-      declarationFiles.map(value => {
-        const relativePath = path.relative(ngEntryPoint.entryFilePath, value);
-        const destination = path.resolve(destinationFiles.declarations, relativePath);
-        entryPoint.dependsOn(new Node(fileUrl(ensureUnixPath(relativePath))));
-        return copyFile(value, destination, { overwrite: true, dereference: true });
-      }),
-    );
-  }
   if (ngPackage.assets.length && !ngEntryPoint.isSecondaryEntryPoint) {
     const assets = ngPackage.assets.map(x => path.join(ngPackage.src, x));
     const assetFiles = await globFiles(assets, {
@@ -58,7 +39,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
           const relativePath = path.relative(ngPackage.src, value);
           const destination = path.resolve(ngPackage.dest, relativePath);
           entryPoint.dependsOn(new Node(fileUrl(ensureUnixPath(relativePath))));
-          return copyFile(value, destination, { overwrite: true, dereference: true });
+          return fs.copy(value, destination, { overwrite: true, dereference: true });
         }),
       );
     }
