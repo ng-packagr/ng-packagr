@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [10.0.1](https://github.com/ng-packagr/ng-packagr/compare/v10.0.0...v10.0.1) (2020-07-09)
+
+
+### Bug Fixes
+
+* don't copy assets asynchronously ([374ec29](https://github.com/ng-packagr/ng-packagr/commit/374ec2964e8fbc49408462f4b4a936e4712e91ca))
+* update rxjs to version ~6.6.0 ([2ce95ab](https://github.com/ng-packagr/ng-packagr/commit/2ce95ab34f5cc0126a9c287163a3d43d6d3999b5))
+
 ## [10.0.0](https://github.com/ng-packagr/ng-packagr/compare/v10.0.0-rc.2...v10.0.0) (2020-06-24)
 
 ## [10.0.0-rc.2](https://github.com/ng-packagr/ng-packagr/compare/v10.0.0-rc.1...v10.0.0-rc.2) (2020-06-12)
