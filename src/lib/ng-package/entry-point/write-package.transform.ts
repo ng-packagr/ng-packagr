@@ -31,17 +31,13 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
       cache: ngPackageNode.cache.globCache,
     });
 
-    if (assetFiles.length) {
-      // COPY ASSET FILES TO DESTINATION
-      log.info('Copying assets');
-      await Promise.all(
-        assetFiles.map(value => {
-          const relativePath = path.relative(ngPackage.src, value);
-          const destination = path.resolve(ngPackage.dest, relativePath);
-          entryPoint.dependsOn(new Node(fileUrl(ensureUnixPath(relativePath))));
-          return fs.copy(value, destination, { overwrite: true, dereference: true });
-        }),
-      );
+    // COPY ASSET FILES TO DESTINATION
+    log.info('Copying assets');
+    for (const file of assetFiles) {
+      const relativePath = path.relative(ngPackage.src, file);
+      const destination = path.resolve(ngPackage.dest, relativePath);
+      entryPoint.dependsOn(new Node(fileUrl(ensureUnixPath(relativePath))));
+      fs.copySync(file, destination, { overwrite: true, dereference: true });
     }
   }
 
