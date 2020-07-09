@@ -1,4 +1,5 @@
 import * as path from 'path';
+import * as fs from 'fs-extra';
 import { Observable, of as observableOf, pipe, NEVER, from } from 'rxjs';
 import {
   concatMap,
@@ -34,7 +35,6 @@ import { discoverPackages } from './discover-packages';
 import { createFileWatch } from '../file-system/file-watcher';
 import { NgPackagrOptions } from './options.di';
 import { flatten } from '../utils/array';
-import { copyFile } from '../utils/copy';
 import { ensureUnixPath } from '../utils/path';
 import { FileCache } from '../file-system/file-cache';
 
@@ -218,9 +218,9 @@ const writeNpmPackage = (pkgUri: string): Transform =>
     switchMap(graph => {
       const { data } = graph.get(pkgUri);
       const filesToCopy = Promise.all(
-        [`${data.src}/LICENSE`, `${data.src}/README.md`, `${data.src}/CHANGELOG.md`].map(src =>
-          copyFile(src, path.join(data.dest, path.basename(src)), { dereference: true }),
-        ),
+        [`${data.src}/LICENSE`, `${data.src}/README.md`, `${data.src}/CHANGELOG.md`]
+          .filter(f => fs.existsSync(f))
+          .map(src => fs.copy(src, path.join(data.dest, path.basename(src)), { dereference: true, overwrite: true })),
       );
 
       return from(filesToCopy).pipe(map(() => graph));
