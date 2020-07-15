@@ -21,7 +21,9 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
   const { basePath, cssUrl, styleIncludePaths } = entryPoint.data.entryPoint;
   const stylesheetProcessor = new StylesheetProcessor(basePath, cssUrl, styleIncludePaths);
 
-  const ngccProcessor = tsConfig.options.enableIvy ? new NgccProcessor(tsConfig.options, entryPoints) : undefined;
+  const ngccProcessor = tsConfig.options.enableIvy
+    ? new NgccProcessor(tsConfig.project, tsConfig.options, entryPoints)
+    : undefined;
 
   await compileSourceFiles(
     graph,
