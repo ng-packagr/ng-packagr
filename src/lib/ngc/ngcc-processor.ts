@@ -1,4 +1,4 @@
-import { Logger, PathMappings, process as mainNgcc, LogLevel } from '@angular/compiler-cli/ngcc';
+import { Logger, process as mainNgcc, LogLevel } from '@angular/compiler-cli/ngcc';
 import { existsSync, constants, accessSync } from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
@@ -10,21 +10,17 @@ export class NgccProcessor {
   private _processedModules = new Set<string>();
   private _logger: NgccLogger;
   private _nodeModulesDirectory: string;
-  private _pathMappings: PathMappings | undefined;
   private _entryPointsUrl: string[];
 
-  constructor(private readonly compilerOptions: ts.CompilerOptions, private readonly entryPoints: EntryPointNode[]) {
+  constructor(
+    private projectPath: string,
+    private readonly compilerOptions: ts.CompilerOptions,
+    private readonly entryPoints: EntryPointNode[],
+  ) {
     this._entryPointsUrl = this.entryPoints.map(({ url }) => ngUrl(url));
 
-    const { baseUrl, paths } = this.compilerOptions;
+    const { baseUrl } = this.compilerOptions;
     this._nodeModulesDirectory = this.findNodeModulesDirectory(baseUrl);
-
-    if (baseUrl && paths) {
-      this._pathMappings = {
-        baseUrl,
-        paths,
-      };
-    }
   }
 
   processModule(moduleName: string, resolvedModule: ts.ResolvedModule | ts.ResolvedTypeReferenceDirective): void {
@@ -65,7 +61,7 @@ export class NgccProcessor {
       propertiesToConsider: ['es2015', 'browser', 'module', 'main'],
       createNewEntryPointFormats: true,
       logger: this._logger,
-      pathMappings: this._pathMappings,
+      tsConfigPath: this.projectPath,
     });
 
     this._processedModules.add(moduleName);
