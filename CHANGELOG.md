@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [10.0.2](https://github.com/ng-packagr/ng-packagr/compare/v10.0.1...v10.0.2) (2020-07-16)
+
+
+### Bug Fixes
+
+* pass tsconfig path to ngcc ([fd18984](https://github.com/ng-packagr/ng-packagr/commit/fd18984e9e7e6b04b7fbbcd95c1adce5aff3c940))
+* update @rollup/plugin-commonjs to version ^14.0.0 ([6581390](https://github.com/ng-packagr/ng-packagr/commit/6581390f3f9140e7b4bd80312b1740821443132c))
+
 ### [10.0.1](https://github.com/ng-packagr/ng-packagr/compare/v10.0.0...v10.0.1) (2020-07-09)
 
 
