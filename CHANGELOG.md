@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [10.0.3](https://github.com/ng-packagr/ng-packagr/compare/v10.0.2...v10.0.3) (2020-07-22)
+
+
+### Performance
+
+* implement rollup caching ([eb13316](https://github.com/ng-packagr/ng-packagr/commit/eb1331641b2828da0d188d5934f68f7307e6817b)), closes [#1580](https://github.com/ng-packagr/ng-packagr/issues/1580)
+
 ### [10.0.2](https://github.com/ng-packagr/ng-packagr/compare/v10.0.1...v10.0.2) (2020-07-16)
 
 
