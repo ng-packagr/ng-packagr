@@ -23,10 +23,11 @@ export interface RollupOptions {
   amd?: { id: string };
   transform?: TransformHook;
   dependencyList?: DependencyList;
+  cache?: rollup.RollupCache;
 }
 
 /** Runs rollup over the given entry file, writes a bundle file. */
-export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
+export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.RollupCache> {
   log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dest} (${opts.format})`);
 
   const externalModuleIdStrategy = new ExternalModuleIdStrategy(opts.format, opts.dependencyList);
@@ -36,6 +37,7 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
     context: 'this',
     external: moduleId => externalModuleIdStrategy.isExternalDependency(moduleId),
     inlineDynamicImports: false,
+    cache: opts.cache,
     input: opts.entry,
     plugins: [
       // @ts-ignore
@@ -75,4 +77,6 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<void> {
     globals: moduleId => umdModuleIdStrategy(moduleId, opts.umdModuleIds || {}),
     sourcemap: true,
   });
+
+  return bundle.cache;
 }
