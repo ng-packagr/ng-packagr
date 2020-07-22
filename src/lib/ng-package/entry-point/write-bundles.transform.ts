@@ -9,14 +9,15 @@ import { downlevelCodeWithTsc } from '../../flatten/downlevel-plugin';
 import { rollupBundleFile } from '../../flatten/rollup';
 import { minifyJsFile } from '../../flatten/uglify';
 
-export const writeBundlesTransform: Transform = transformFromPromise(async (graph) => {
+export const writeBundlesTransform: Transform = transformFromPromise(async graph => {
   const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
   const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
+  const cache = entryPoint.cache;
 
   // Add UMD module IDs for dependencies
   const dependencyUmdIds = entryPoint
     .filter(isEntryPoint)
-    .map((ep) => ep.data.entryPoint)
+    .map(ep => ep.data.entryPoint)
     .reduce((prev, ep: NgEntryPoint) => {
       prev[ep.moduleId] = ep.umdId;
 
@@ -37,20 +38,22 @@ export const writeBundlesTransform: Transform = transformFromPromise(async (grap
   };
 
   log.info('Bundling to FESM2015');
-  await rollupBundleFile({
+  cache.rollupFESMCache = await rollupBundleFile({
     ...opts,
     moduleName: ngEntryPoint.moduleId,
     format: 'es',
     dest: fesm2015,
+    cache: cache.rollupFESMCache,
   });
 
   log.info('Bundling to UMD');
-  await rollupBundleFile({
+  cache.rollupUMDCache = await rollupBundleFile({
     ...opts,
     moduleName: ngEntryPoint.umdId,
     entry: esm2015,
     format: 'umd',
     dest: umd,
+    cache: cache.rollupUMDCache,
     transform: downlevelCodeWithTsc,
   });
 

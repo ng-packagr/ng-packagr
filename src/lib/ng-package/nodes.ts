@@ -1,4 +1,5 @@
 import * as ts from 'typescript';
+import { RollupCache } from 'rollup';
 import { ParsedConfiguration, Program } from '@angular/compiler-cli';
 import { Node } from '../graph/node';
 import { by, isInProgress, isDirty } from '../graph/select';
@@ -71,6 +72,8 @@ export class EntryPointNode extends Node {
     sourcesFileCache: FileCache;
     analysesSourcesFileCache: FileCache;
     moduleResolutionCache: ts.ModuleResolutionCache;
+    rollupFESMCache?: RollupCache;
+    rollupUMDCache?: RollupCache;
   } = {
     sourcesFileCache: new FileCache(),
     analysesSourcesFileCache: new FileCache(),
