@@ -1,5 +1,5 @@
 // XX: internal in ngc's `main()`, a tsickle emit callback is passed to the tsc compiler
-// ... blatanlty copy-paste the emit callback here. it's not a public api.
+// ... blatantly copy-paste the emit callback here. it's not a public api.
 // ... @link https://github.com/angular/angular/blob/24bf3e2a251634811096b939e61d63297934579e/packages/compiler-cli/src/main.ts#L36-L38
 
 /*

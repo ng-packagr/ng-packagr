@@ -63,7 +63,7 @@ export const writeBundlesTransform: Transform = transformFromPromise(async graph
 
 /** Get all list of dependencies for the entire 'BuildGraph' */
 function getDependencyListForGraph(graph: BuildGraph): DependencyList {
-  // We need to do this because if A dependecy on bundled B
+  // We need to do this because if A dependency on bundled B
   // And A has a secondary entry point A/1 we want only to bundle B if it's used.
   // Also if A/1 depends on A we don't want to bundle A thus we mark this a dependency.
 
@@ -88,7 +88,7 @@ function getDependencyListForGraph(graph: BuildGraph): DependencyList {
     log.warn(
       `Inlining of 'bundledDependencies' has been deprecated in version 5 and will be removed in future versions.` +
         '\n' +
-        `List the depedency in the 'peerDependencies' section instead.`,
+        `List the dependency in the 'peerDependencies' section instead.`,
     );
   }
 
