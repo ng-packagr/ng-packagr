@@ -50,7 +50,7 @@ export interface DestinationFiles {
 export class NgEntryPoint {
   constructor(
     /** Values from the `package.json` file of this entry point. */
-    public readonly packageJson: any,
+    public readonly packageJson: Record<string, any>,
     /** Values from either the `ngPackage` option (from `package.json`) or values from `ng-package.json`. */
     public readonly ngPackageJson: NgPackageConfig,
     /** Absolute directory path of this entry point's `package.json` location. */
