@@ -10,8 +10,11 @@ import { globFiles } from '../utils/glob';
 const ngPackageSchemaJson = require('../../ng-package.schema.json');
 
 interface UserPackage {
-  packageJson: object;
-  ngPackageJson: object;
+  /** Values from the `package.json` file of this user package. */
+  packageJson: Record<string, any>;
+  /** NgPackageConfig for this user package. */
+  ngPackageJson: Record<string, any>;
+  /** Absolute directory path of this user package. */
   basePath: string;
 }
 
@@ -40,13 +43,17 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
   const fullPath = path.resolve(folderPathOrFilePath);
   const pathStats = await lstat(fullPath);
   const basePath = pathStats.isDirectory() ? fullPath : path.dirname(fullPath);
-  const packageJson = await readConfigFile(path.join(basePath, 'package.json'));
+  const packageJson: unknown = await readConfigFile(path.join(basePath, 'package.json'));
 
   if (!packageJson && !isSecondary) {
     throw new Error(`Cannot discover package sources at ${folderPathOrFilePath} as 'package.json' was not found.`);
   }
 
-  let ngPackageJson: undefined | object;
+  if (packageJson && typeof packageJson !== 'object') {
+    throw new Error(`Invalid 'package.json' at ${folderPathOrFilePath}.`);
+  }
+
+  let ngPackageJson: unknown;
   if (packageJson && packageJson['ngPackage']) {
     // Read `ngPackage` from `package.json`
     ngPackageJson = { ...packageJson['ngPackage'] };
@@ -76,7 +83,7 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
     return {
       basePath,
       packageJson: packageJson || {},
-      ngPackageJson,
+      ngPackageJson: ngPackageJson as Record<string, any>,
     };
   }
 
