@@ -1,9 +1,9 @@
 import { minify } from 'terser';
 import { writeFile, readFile } from 'fs-extra';
 import { basename } from 'path';
-import { debug, warn } from '../utils/log';
+import { debug } from '../utils/log';
 
-export async function minifyJsFile(inputPath: string, outputPath?: string): Promise<string> {
+export async function minifyJsFile(inputPath: string, outputPath?: string): Promise<void> {
   debug(`minifyJsFile: ${inputPath}`);
 
   const sourcemapOut = `${outputPath}.map`;
@@ -12,7 +12,7 @@ export async function minifyJsFile(inputPath: string, outputPath?: string): Prom
     readFile(`${inputPath}.map`),
   ]);
 
-  const result = minify(inputFileBuffer.toString(), {
+  const result = await minify(inputFileBuffer.toString(), {
     sourceMap: {
       includeSources: true,
       content: JSON.parse(inputSourceMapBuffer.toString()),
@@ -22,22 +22,12 @@ export async function minifyJsFile(inputPath: string, outputPath?: string): Prom
       ecma: 5,
       bare_returns: true,
     },
-    warnings: false,
-    output: {
+    format: {
       comments: 'some',
     },
   });
 
-  if (result.warnings) {
-    for (const warningMessage of result.warnings) {
-      warn(warningMessage);
-    }
-  }
-
-  if (result.error) {
-    throw result.error;
-  }
-
   await Promise.all([writeFile(outputPath, result.code), writeFile(sourcemapOut, result.map)]);
-  return outputPath;
+
+  return;
 }
