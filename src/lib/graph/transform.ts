@@ -3,7 +3,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { BuildGraph } from './build-graph';
 
 /**
- * A tranformation applied over the build graph.
+ * A transformation applied over the build graph.
  *
  * By design, a pipeable operator over `BuildGraph`.
  *  - A transformation takes a `BuildGraph` as input (from previous transformations).

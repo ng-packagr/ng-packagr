@@ -20,7 +20,7 @@ import { NgEntryPoint } from './entry-point/entry-point';
  *
  * A _Package_ is reflected by `NgPackage`.
  * An _Entry Point_ is reflected by `NgEntryPoint`.
- * One `NgPackage` relates to one (or many) `NgEentryPoint`,
+ * One `NgPackage` relates to one (or many) `NgEntryPoint`,
  * one `NgEntryPoint` relates to one `NgPackage`.
  *
  * #### Watch Out
@@ -40,7 +40,7 @@ export class NgPackage {
      */
     public readonly primary: NgEntryPoint,
     /**
-     * An array of seconary entry points.
+     * An array of secondary entry points.
      */
     public readonly secondaries: NgEntryPoint[] = [],
   ) {}

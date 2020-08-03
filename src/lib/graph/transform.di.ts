@@ -28,7 +28,7 @@ export interface TransformProvider extends FactoryProvider {
  * ```ts
  * const FOO_BAR_TOKEN = new InjectionToken<Transform>('fooBar');
  *
- * const FOO_BAR_TRANSFORM provideTransform({
+ * const FOO_BAR_TRANSFORM = provideTransform({
  *   provide: FOO_BAR_TOKEN,
  *   useFactory: (foo, bar) => {
  *     return pipe(foo, bar);

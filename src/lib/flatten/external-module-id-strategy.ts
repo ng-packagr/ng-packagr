@@ -45,7 +45,7 @@ export class ExternalModuleIdStrategy {
       return /./; // catch all as external
     }
 
-    // tslib should always be embeeded for umd modules
+    // tslib should always be embedded for umd modules
     if (bundledDependencies.length === 0) {
       return /^((?!tslib).)*$/;
     }

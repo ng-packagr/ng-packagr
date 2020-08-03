@@ -116,7 +116,7 @@ async function writePackageJson(
         };
       }
     } else if (packageJson.peerDependencies?.tslib) {
-      log.warn(`'tslib' is no longer recommanded to be used as a 'peerDependencies'. Moving it to 'dependencies'.`);
+      log.warn(`'tslib' is no longer recommended to be used as a 'peerDependencies'. Moving it to 'dependencies'.`);
       packageJson.dependencies = {
         ...(packageJson.dependencies || {}),
         tslib: packageJson.peerDependencies.tslib,

@@ -76,7 +76,7 @@ export class NgPackagr {
    * Overwrites the 'build' transform.
    *
    * @param transform
-   * @return Self intance for fluent API
+   * @return Self instance for fluent API
    */
   public withBuildTransform(transform: InjectionToken<Transform>): NgPackagr {
     this.buildTransform = transform;

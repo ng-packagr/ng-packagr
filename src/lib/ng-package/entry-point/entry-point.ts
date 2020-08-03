@@ -14,7 +14,7 @@ export interface DestinationFiles {
   esm2015: string;
   /** Absolute path of this entry point `UMD` bundle */
   umd: string;
-  /** Absolute path of this entry point `UMD` Minifief bundle */
+  /** Absolute path of this entry point `UMD` minified bundle */
   umdMinified: string;
 }
 
@@ -55,7 +55,7 @@ export class NgEntryPoint {
     public readonly ngPackageJson: NgPackageConfig,
     /** Absolute directory path of this entry point's `package.json` location. */
     public readonly basePath: string,
-    /** XX: additional auto-configured data passed for scondary entry point's. Needs better docs. */
+    /** XX: additional auto-configured data passed for secondary entry point's. Needs better docs. */
     private readonly secondaryData?: { [key: string]: any },
   ) {}
 
