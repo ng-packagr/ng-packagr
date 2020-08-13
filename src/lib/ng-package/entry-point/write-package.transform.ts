@@ -136,26 +136,27 @@ async function writePackageJson(
     throw e;
   }
 
-  // Removes scripts from package.json after build
-  if (packageJson.scripts) {
-    if (pkg.keepLifecycleScripts !== true) {
-      log.info(`Removing scripts section in package.json as it's considered a potential security vulnerability.`);
-      delete packageJson.scripts;
-    } else {
-      log.warn(
-        `You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`,
-      );
+  // Process package.json scripts.
+  if (pkg.keepLifecycleScripts) {
+    if (packageJson.scripts) {
+      log.warn(`You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`);
     }
-  }
+  } else {
+    if (packageJson.scripts) {
+      log.info(`Removing existing scripts section in package.json as it's considered a potential security vulnerability.`);
+      delete packageJson.scripts;
+    }
 
-  if (isIvy && !entryPoint.isSecondaryEntryPoint) {
-    const scripts = packageJson.scripts || (packageJson.scripts = {});
-    scripts.prepublishOnly =
-      'node --eval "console.error(\'' +
-      'ERROR: Trying to publish a package that has been compiled by Ivy. This is not allowed.\\n' +
-      'Please delete and rebuild the package, without compiling with Ivy, before attempting to publish.\\n' +
-      '\')" ' +
-      '&& exit 1';
+    if (isIvy && !entryPoint.isSecondaryEntryPoint) {
+      packageJson.scripts = {
+        prepublishOnly:
+          'node --eval "console.error(\'' +
+          'ERROR: Trying to publish a package that has been compiled by Ivy. This is not allowed.\\n' +
+          'Please delete and rebuild the package, without compiling with Ivy, before attempting to publish.\\n' +
+          '\')" ' +
+          '&& exit 1',
+      };
+    }
   }
 
   // keep the dist package.json clean
