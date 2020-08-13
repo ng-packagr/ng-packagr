@@ -131,20 +131,20 @@ async function findSecondaryPackagesPaths(directoryPath: string, excludeFolder: 
 /**
  * Reads a secondary entry point from it's package file.
  *
- * @param primaryDirectoryPath A path pointing to the directory of the primary entry point.
  * @param primary The primary entry point.
+ * @param userPackage The user package for the secondary entry point.
  */
 function secondaryEntryPoint(
-  primaryDirectoryPath: string,
   primary: NgEntryPoint,
-  { packageJson, ngPackageJson, basePath }: UserPackage,
+  userPackage: UserPackage,
 ): NgEntryPoint {
-  if (path.resolve(basePath) === path.resolve(primaryDirectoryPath)) {
+  const { packageJson, ngPackageJson, basePath } = userPackage;
+  if (path.resolve(basePath) === path.resolve(primary.basePath)) {
     log.error(`Cannot read secondary entry point. It's already a primary entry point. Path: ${basePath}`);
     throw new Error(`Secondary entry point is already a primary.`);
   }
 
-  const relativeSourcePath = path.relative(primaryDirectoryPath, basePath);
+  const relativeSourcePath = path.relative(primary.basePath, basePath);
   const secondaryModuleId = ensureUnixPath(`${primary.moduleId}/${relativeSourcePath}`);
 
   return new NgEntryPoint(packageJson, ngPackageJson, basePath, {
@@ -167,7 +167,7 @@ export async function discoverPackages({ project }: { project: string }): Promis
   for (const folderPath of folderPaths) {
     const secondaryPackage = await resolveUserPackage(folderPath, true);
     if (secondaryPackage) {
-      secondaries.push(secondaryEntryPoint(basePath, primary, secondaryPackage));
+      secondaries.push(secondaryEntryPoint(primary, secondaryPackage));
     }
   }
 
