@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [10.0.4](https://github.com/ng-packagr/ng-packagr/compare/v10.0.3...v10.0.4) (2020-08-13)
+
+
+### Bug Fixes
+
+* update @rollup/plugin-commonjs to version ^15.0.0 ([cc3254a](https://github.com/ng-packagr/ng-packagr/commit/cc3254aa230e1c94991514e780facc2eb19b4546))
+* update @rollup/plugin-node-resolve to version ^9.0.0 ([47606fd](https://github.com/ng-packagr/ng-packagr/commit/47606fd2ae254e024d9fdcac11489e114ced145a))
+
 ### [10.0.3](https://github.com/ng-packagr/ng-packagr/compare/v10.0.2...v10.0.3) (2020-07-22)
 
 
