@@ -13,7 +13,6 @@ The motivation is to help authors write libraries and generate the expected, dis
 According to [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview), there need to be the following build artefacts:
 
 * FESM2015 Bundle: `@<prefix>/<name>.js` in ES2015 syntax and ES2015 module format, a so-called Flat ECMAScript Module. It is referenced in the `es2015` property of `package.json`.
-* FESM5 Bundle: `@<prefix>/<name>.es5.js` in ES5 syntax and ES2015 module format, a so-called Flat ECMAScript Module (ESM, or FESM5, or FESM2014). It is referenced in the `module` property of `package.json`.
 * UMD Bundle: `@<prefix>/<name>.umd.js` in ES5 syntax and UMD module format, a so-called universal module definition format. It is referenced in the `main` property of `package.json`.
 * Type definitions: an `index.d.ts` file is needed to support TypeScript debugging and rich developer experience. It is references in the `typings` property of `package.json`
 * AoT Metadata: an `index.metadata.json` is needed for library consumers that wish to perform AoT compilation. The `*.metadata.json` file MUST have templates and stylesheets inlined. The `*.metadata.json` file MUST be located next to the type definitions file and MUST have the same base name (e.g. `index.d.ts` and `index.metadata.json`).
@@ -158,8 +157,8 @@ Reasonable default values should be shipped with `ng-packagr` without forcing us
 The default configuration should try to support `@angular/*` packages as well as `rxjs`, which is a transitive dependency in most cases and also requires special configuration in Rollup.
 
 Other configuration properties like `"entry"` or `"format"` cannot be set by users since their values depend on the order of transformations being applied.
-For example, the transformation to UMD requires an FESM5 input file.
-The FESM5 input file got created prior in the build process, thus `ng-packagr` will pass both the `"entry"` and `"format"` property to `rollup` without users being able to custimize.
+For example, the transformation to UMD requires an FESM2015 input file.
+The FESM2015 input file got created prior in the build process, thus `ng-packagr` will pass both the `"entry"` and `"format"` property to `rollup` without users being able to custimize.
 
 ~If required, users should be able to provide a custom rollup configuration to `ng-packagr` by settings the `rollup.config` JSON configuation property.~
 

@@ -29,7 +29,7 @@ import { byEntryPoint } from '../nodes';
  * Sub-transformations are passed to this factory function as arguments.
  *
  * @param compileTs Transformation compiling typescript sources to ES2015 modules.
- * @param writeBundles Transformation flattening ES2015 modules to ESM2015, ESM5, UMD, and minified UMD.
+ * @param writeBundles Transformation flattening ES2015 modules to ESM2015, UMD, and minified UMD.
  * @param writePackage Transformation writing a distribution-ready `package.json` (for publishing to npm registry).
  */
 export const entryPointTransformFactory = (
