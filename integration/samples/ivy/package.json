@@ -11,6 +11,7 @@
     "zone.js": "^0.8.4"
   },
   "scripts": {
+    "prepublishOnly": "node -e 'console.log(\"Performing prepublishOnly checks...\");'",
     "test":
       "../../../node_modules/.bin/cross-env TS_NODE_PROJECT=../../../integration/tsconfig.specs.json ../../../node_modules/.bin/mocha --compilers ts:ts-node/register specs/**/*.ts"
   }

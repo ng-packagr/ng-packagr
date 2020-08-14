@@ -195,21 +195,23 @@ async function writePackageJson(
 
   // Removes scripts from package.json after build
   if (packageJson.scripts) {
-    if (pkg.keepLifecycleScripts !== true) {
-      spinner.info(`Removing scripts section in package.json as it's considered a potential security vulnerability.`);
-      delete packageJson.scripts;
+    if (pkg.keepPackageScripts || pkg.keepLifecycleScripts) {
+      const npmPublishInfo = `The package.json file contains 'scripts', they are considered a potential security vulnerability if published to NPM.`;
+      const flagInfo = pkg.keepLifecycleScripts
+        ? `Unset 'keepLifecycleScripts' to remove the 'scripts' section from package.json.`
+        : `Unset 'keepPackageScripts' to remove the 'scripts' section from package.json.`;
+      spinner.warn(colors.yellow(npmPublishInfo + '\n' + flagInfo));
     } else {
-      spinner.warn(
-        colors.yellow(
-          `You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`,
-        ),
+      spinner.info(
+        `Removing existing 'scripts' section from package.json as it's considered a potential security vulnerability.`
       );
+      delete packageJson.scripts;
     }
   }
 
   if (isIvy && !entryPoint.isSecondaryEntryPoint && compilationMode !== 'partial') {
-    const scripts = packageJson.scripts || (packageJson.scripts = {});
-    scripts.prepublishOnly =
+    packageJson.scripts = packageJson.scripts || {};
+    packageJson.scripts.prepublishOnly =
       'node --eval "console.error(\'' +
       'ERROR: Trying to publish a package that has been compiled by Ivy in full compilation mode. This is not allowed.\\n' +
       'Please delete and rebuild the package with Ivy partial compilation mode, before attempting to publish.\\n' +
