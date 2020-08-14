@@ -20,7 +20,7 @@ Can you reproduce the error in the integration tests in ng-packagr?
 If possible, take a look at the [`integration/samples`](./integration/samples) and try to break one of these builds!
 
 Is the error you faced in an application importing the library?
-Try to break the Angular CLI app in [`integration/consumers/ng-cli`](./integration/consumers/ng-cli)!
+Try to break the Angular CLI app in [`integration/consumers/ng-cli`](./integration/consumers/ng-cli)!
 
 ## For Developers
 

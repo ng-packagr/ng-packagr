@@ -22,7 +22,7 @@ According to [Angular Package Format](https://docs.google.com/document/d/1CZC2rc
 **DO**: `ng-packagr` generates a TypeScript library in Angular Package Format.
 JavaScript bundles, type definitions and AoT metadata are auto-generated during build.
 
-### Public API entry
+### Public API entry
 
 Angular core libraries make heavy use of this pattern.
 They provide a `public_api.ts` file as entry point to their library.
@@ -31,7 +31,7 @@ This pattern is also a recommended approach for building flat modules.
 
 **DO**: `ng-packagr` supports a single entry file to a library's public API.
 
-### Package definition and library metadata
+### Package definition and library metadata
 
 For consumers of a library, the package definition is provided in a `package.json` file, including `peerDependencies`, `name`, `version`, etc.
 Most important, the build artefacts (see above) are referenced in `package.json`.
@@ -90,7 +90,7 @@ Finally, a custom folder layout:
    |- foo
       |- foo.ts
    |- bar
-      |- bar.ts
+      |- bar.ts
 ```
 
 **DO**: `ng-packagr` supports different folder layouts by setting paths in a JSON configuration file (see below).
