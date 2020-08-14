@@ -70,9 +70,22 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
     const _ajv = ajv({
       schemaId: 'auto',
       useDefaults: true,
+      jsonPointers: true,
     });
 
     const validate = _ajv.compile(ngPackageSchemaJson);
+    // Add handler for x-deprecated fields
+    _ajv.addKeyword('x-deprecated', {
+      validate: (schema, _data, _parentSchema, _dataPath, _parentDataObject, propertyName) => {
+        if (schema) {
+          log.warn(`Option "${propertyName}" is deprecated${typeof schema == 'string' ? ': ' + schema : '.'}`);
+        }
+
+        return true;
+      },
+      errors: false,
+    });
+
     const isValid = validate(ngPackageJson);
     if (!isValid) {
       throw new Error(
@@ -134,10 +147,7 @@ async function findSecondaryPackagesPaths(directoryPath: string, excludeFolder: 
  * @param primary The primary entry point.
  * @param userPackage The user package for the secondary entry point.
  */
-function secondaryEntryPoint(
-  primary: NgEntryPoint,
-  userPackage: UserPackage,
-): NgEntryPoint {
+function secondaryEntryPoint(primary: NgEntryPoint, userPackage: UserPackage): NgEntryPoint {
   const { packageJson, ngPackageJson, basePath } = userPackage;
   if (path.resolve(basePath) === path.resolve(primary.basePath)) {
     log.error(`Cannot read secondary entry point. It's already a primary entry point. Path: ${basePath}`);
