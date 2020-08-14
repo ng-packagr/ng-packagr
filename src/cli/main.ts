@@ -14,6 +14,7 @@ function parseProjectPath(parsed: string): string {
 
 program
   .name('ng-packagr')
+  .storeOptionsAsProperties(false)
   .option('-v, --version', 'Prints version info')
   .option('-w, --watch', 'Watch for file changes')
   .option(
