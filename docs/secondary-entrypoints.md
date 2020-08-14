@@ -7,7 +7,7 @@ For instance, `@angular/core/testing` resolves to a directory under `node_module
 
 For library developers, secondary entry points are dynamically discovered by searching for `package.json` files within subdirectories of the main `package.json` file's folder!
 
-## Example Folder Layout for Secondary Entrypoints
+## Example Folder Layout for Secondary Entry Points
 
 All you have to do is create a `package.json` file and put it where you want a secondary entry point to be created.
 One way this can be done is by mimicking the folder structure of the following example which has a testing entry point in addition to its main entry point.

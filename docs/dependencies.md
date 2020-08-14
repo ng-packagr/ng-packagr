@@ -40,7 +40,7 @@ in `package.json`:
 }
 ```
 
-If you'd like to turn off this feature completly, you can do so by providing a catch all RegExp as such;
+If you'd like to turn off this feature completely, you can do so by providing a catch all RegExp as such;
 
 ```json
 {
