@@ -1,5 +1,6 @@
 import { parse as parseJson } from 'jsonc-parser';
 import * as path from 'path';
+import { NgPackageConfig } from "../../ng-package.schema";
 import * as log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 import { NgEntryPoint } from './entry-point/entry-point';
@@ -12,7 +13,7 @@ interface UserPackage {
   /** Values from the `package.json` file of this user package. */
   packageJson: Record<string, any>;
   /** NgPackageConfig for this user package. */
-  ngPackageJson: Record<string, any>;
+  ngPackageJson: NgPackageConfig;
   /** Absolute directory path of this user package. */
   basePath: string;
 }
