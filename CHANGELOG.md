@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.1.0](https://github.com/ng-packagr/ng-packagr/compare/v10.0.4...v10.1.0) (2020-08-27)
+
+
+### Features
+
+* add support for TypeScript 4 ([eb8b0c2](https://github.com/ng-packagr/ng-packagr/commit/eb8b0c2553aa1847f4ab42f29a1a25e67f644d29))
+* show warning on deprecated option usage ([551a4d9](https://github.com/ng-packagr/ng-packagr/commit/551a4d9a866a8c337189f807d755856b995ffc9b))
+
+
+### Bug Fixes
+
+* update commander to version ^6.0.0 ([ec736e5](https://github.com/ng-packagr/ng-packagr/commit/ec736e5df6978be79dca236683936941f349a8e5))
+
+
+### Performance
+
+* cache normalized paths ([92f68e3](https://github.com/ng-packagr/ng-packagr/commit/92f68e3f09f66c990413e09cda5d742ad00c5b7f))
+
 ### [10.0.4](https://github.com/ng-packagr/ng-packagr/compare/v10.0.3...v10.0.4) (2020-08-13)
 
 
