@@ -1,5 +1,5 @@
 import { ParsedConfiguration } from '@angular/compiler-cli';
-import * as chalk from 'chalk';
+import { colors } from '../../utils/color';
 import { Transform, transformFromPromise } from '../../graph/transform';
 import { isEntryPoint, EntryPointNode } from '../nodes';
 import { initializeTsConfig } from '../../ts/tsconfig';
@@ -18,7 +18,7 @@ export const initTsConfigTransformFactory = (defaultTsConfig: ParsedConfiguratio
         'Read more here: https://v9.angular.io/guide/ivy#maintaining-library-compatibility\n' +
         '******************************************************************************';
 
-      msg(chalk.yellow(ivyMsg));
+      msg(colors.yellow(ivyMsg));
     }
 
     return graph;

@@ -1,35 +1,35 @@
-import * as chalk from 'chalk';
+import { colors } from './color';
 
 export const error = (err: string | Error) => {
   if (err instanceof Error) {
-    console.error(chalk.red('ERROR: ' + err.message));
+    console.error(colors.red('ERROR: ' + err.message));
 
     if (process.env.DEBUG) {
-      console.error(chalk.red(err.stack) + '\n');
+      console.error(colors.red(err.stack) + '\n');
     }
   } else {
-    console.error(chalk.red(err));
+    console.error(colors.red(err));
   }
 };
 
 export const warn = (msg: string) => {
-  console.warn(chalk.yellow('WARNING: ' + msg));
+  console.warn(colors.yellow('WARNING: ' + msg));
 };
 
 export const success = (msg: string) => {
-  console.log(chalk.green(msg));
+  console.log(colors.green(msg));
 };
 
 export const info = (msg: string) => {
-  console.log(chalk.blue(msg));
+  console.log(colors.blue(msg));
 };
 
 export const msg = (msg: string) => {
-  console.log(chalk.white(msg));
+  console.log(colors.white(msg));
 };
 
 export const debug = (msg: string) => {
   if (process.env.DEBUG) {
-    console.log(chalk.inverse.cyan(`[debug] ${msg}`));
+    console.log(colors.inverse.cyan(`[debug] ${msg}`));
   }
 };
