@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as log from '../utils/log';
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 
 // CSS Tools
 import * as autoprefixer from 'autoprefixer';
@@ -50,7 +50,7 @@ export class StylesheetProcessor {
     });
 
     // Log warnings from postcss
-    result.warnings().forEach((msg) => log.warn(msg.toString()));
+    result.warnings().forEach(msg => log.warn(msg.toString()));
 
     return result.css;
   }
@@ -75,12 +75,12 @@ export class StylesheetProcessor {
 
       case '.less':
         // this is the only way I found to make LESS sync
-        let cmd = `node "${require.resolve('less/bin/lessc')}" "${filePath}" --js`;
+        const args = [filePath, '--js'];
         if (this.styleIncludePaths.length) {
-          cmd += ` --include-path="${this.styleIncludePaths.join(':')}"`;
+          args.push(`--include-path=${this.styleIncludePaths.join(':')}`);
         }
 
-        return execSync(cmd).toString();
+        return execFileSync(require.resolve('less/bin/lessc'), args).toString();
 
       case '.styl':
       case '.stylus':
@@ -126,7 +126,7 @@ export class StylesheetProcessor {
     const cssNanoPlugins = preset.plugins
       // replicate the `initializePlugin` behavior from https://github.com/cssnano/cssnano/blob/a566cc5/packages/cssnano/src/index.js#L8
       .map(([creator, pluginConfig]) => creator(pluginConfig))
-      .filter((plugin) => !asyncPlugins.includes(plugin.postcssPlugin));
+      .filter(plugin => !asyncPlugins.includes(plugin.postcssPlugin));
 
     postCssPlugins.push(...cssNanoPlugins);
 
