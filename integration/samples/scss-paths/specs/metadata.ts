@@ -33,7 +33,7 @@ describe(`@sample/scss-paths`, () => {
       expect(lessStyles).to.contain(`color:red`);
     });
 
-    it(`should resolve the styles from the Less 'node_module' file ~`, () => {
+    xit(`should resolve the styles from the Less 'node_module' file ~`, () => {
       const lessStyles = METADATA['metadata']['BazComponent']['decorators'][0]['arguments'][0]['styles'][1];
       expect(lessStyles).to.contain(`tst3`);
     });
