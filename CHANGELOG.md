@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [10.1.1](https://github.com/ng-packagr/ng-packagr/compare/v10.1.0...v10.1.1) (2020-09-25)
+
+
+### Bug Fixes
+
+* add basePath as sourceRoot ([681fb1c](https://github.com/ng-packagr/ng-packagr/commit/681fb1c36b68efb3078dc3d846776e9e749ebf44))
+* replace execFile with execFileSync to fix a potential malicious cmd injection ([bda0fff](https://github.com/ng-packagr/ng-packagr/commit/bda0fff3443301f252930a73fdc8fb9502de596d))
+
 ## [10.1.0](https://github.com/ng-packagr/ng-packagr/compare/v10.0.4...v10.1.0) (2020-08-27)
 
 
