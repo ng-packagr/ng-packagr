@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [10.1.2](https://github.com/ng-packagr/ng-packagr/compare/v10.1.1...v10.1.2) (2020-09-26)
+
+
+### Bug Fixes
+
+* fix windows less spawn error ([9174c0b](https://github.com/ng-packagr/ng-packagr/commit/9174c0bca7290a4505f33f7fa13332785ea47459))
+
 ### [10.1.1](https://github.com/ng-packagr/ng-packagr/compare/v10.1.0...v10.1.1) (2020-09-25)
 
 
