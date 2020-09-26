@@ -75,12 +75,12 @@ export class StylesheetProcessor {
 
       case '.less':
         // this is the only way I found to make LESS sync
-        const args = [filePath, '--js'];
+        const args = [require.resolve('less/bin/lessc'), filePath, '--js'];
         if (this.styleIncludePaths.length) {
           args.push(`--include-path=${this.styleIncludePaths.join(':')}`);
         }
 
-        return execFileSync(require.resolve('less/bin/lessc'), args).toString();
+        return execFileSync('node', args).toString();
 
       case '.styl':
       case '.stylus':
