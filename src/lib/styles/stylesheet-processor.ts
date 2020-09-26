@@ -80,7 +80,7 @@ export class StylesheetProcessor {
           args.push(`--include-path=${this.styleIncludePaths.join(':')}`);
         }
 
-        return execFileSync(require.resolve('less/bin/lessc'), args).toString();
+        return execFileSync(require.resolve('less/bin/lessc'), args, { shell: true }).toString();
 
       case '.styl':
       case '.stylus':
