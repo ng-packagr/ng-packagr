@@ -10,8 +10,8 @@ import { StylesheetProcessor } from '../../styles/stylesheet-processor';
 
 export const compileNgcTransform: Transform = transformFromPromise(async graph => {
   log.info(`Compiling TypeScript sources through ngc`);
-  const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
-  const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
+  const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
+  const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
   // Add paths mappings for dependencies
   const tsConfig = setDependenciesTsConfigPaths(entryPoint.data.tsConfig, entryPoints);
 

@@ -20,7 +20,7 @@ export async function compileSourceFiles(
   log.debug(`ngc (v${ng.VERSION.full})`);
 
   const tsConfigOptions: ng.CompilerOptions = { ...tsConfig.options, ...extraOptions };
-  const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
+  const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
 
   let tsCompilerHost = cacheCompilerHost(
     graph,

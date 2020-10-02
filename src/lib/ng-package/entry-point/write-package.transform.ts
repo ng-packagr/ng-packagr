@@ -11,9 +11,9 @@ import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode, fileUrl
 import { Node } from '../../graph/node';
 
 export const writePackageTransform: Transform = transformFromPromise(async graph => {
-  const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
+  const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
   const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
-  const ngPackageNode = graph.find(isPackage) as PackageNode;
+  const ngPackageNode: PackageNode = graph.find(isPackage);
   const ngPackage = ngPackageNode.data;
   const { destinationFiles } = entryPoint.data;
   const ignorePaths: string[] = [

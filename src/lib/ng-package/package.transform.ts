@@ -93,7 +93,12 @@ export const packageTransformFactory = (
     ),
     // Add entry points to graph
     map(graph => {
-      const ngPkg = graph.get(pkgUri) as PackageNode;
+      const foundNode = graph.get(pkgUri);
+      if (!isPackage(foundNode)) {
+        return graph;
+      }
+
+      const ngPkg: PackageNode = foundNode;
       const entryPoints = [ngPkg.data.primary, ...ngPkg.data.secondaries].map(entryPoint => {
         const { destinationFiles, moduleId } = entryPoint;
         const node = new EntryPointNode(ngUrl(moduleId), ngPkg.cache.sourcesFileCache);
@@ -125,7 +130,7 @@ const watchTransformFactory = (
 
   return source$.pipe(
     switchMap(graph => {
-      const { data, cache } = graph.find(isPackage) as PackageNode;
+      const { data, cache } = graph.find(isPackage);
       return createFileWatch(data.src, [data.dest]).pipe(
         tap(fileChange => {
           const { filePath, event } = fileChange;
@@ -156,7 +161,7 @@ const watchTransformFactory = (
             sourcesFileCache.delete(fileUrlPath(node.url));
           });
 
-          const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
+          const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
           entryPoints.forEach(entryPoint => {
             const isDirty = entryPoint.dependents.some(x => nodesToClean.some(node => node.url === x.url));
             if (isDirty) {
@@ -232,7 +237,7 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
     concatMap(graph => {
       // Calculate node/dependency depth and determine build order
       const depthBuilder = new DepthBuilder();
-      const entryPoints = graph.filter(isEntryPoint);
+      const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
       entryPoints.forEach(entryPoint => {
         const deps = entryPoint.filter(isEntryPoint).map(ep => ep.url);
         depthBuilder.add(entryPoint.url, deps);
@@ -243,8 +248,8 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
 
       // Build entry points with lower depth values first.
       return from(flatten(groups)).pipe(
-        map(epUrl => graph.find(byEntryPoint().and(ep => ep.url === epUrl)) as EntryPointNode),
-        filter(entryPoint => entryPoint.state !== 'done'),
+        map((epUrl: string): EntryPointNode => graph.find(byEntryPoint().and(ep => ep.url === epUrl))),
+        filter((entryPoint: EntryPointNode): boolean => entryPoint.state !== 'done'),
         concatMap(ep =>
           observableOf(ep).pipe(
             // Mark the entry point as 'in-progress'

@@ -6,6 +6,7 @@ import { by, isInProgress, isDirty } from '../graph/select';
 import { NgEntryPoint, DestinationFiles } from './entry-point/entry-point';
 import { NgPackage } from './package';
 import { FileCache } from '../file-system/file-cache';
+import { ComplexPredicate } from '../graph/build-graph';
 
 export const TYPE_NG_PACKAGE = 'application/ng-package';
 export const TYPE_NG_ENTRY_POINT = 'application/ng-entry-point';
@@ -26,15 +27,15 @@ export function isPackage(node: Node): node is PackageNode {
   return node.type === TYPE_NG_PACKAGE;
 }
 
-export function byEntryPoint() {
+export function byEntryPoint(): ComplexPredicate<EntryPointNode> {
   return by(isEntryPoint);
 }
 
-export function isEntryPointInProgress() {
+export function isEntryPointInProgress(): ComplexPredicate<EntryPointNode> {
   return by(isEntryPoint).and(isInProgress);
 }
 
-export function isEntryPointDirty() {
+export function isEntryPointDirty(): ComplexPredicate<EntryPointNode> {
   return by(isEntryPoint).and(isDirty);
 }
 
