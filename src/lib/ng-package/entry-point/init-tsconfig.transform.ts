@@ -8,7 +8,7 @@ import { msg } from '../../utils/log';
 export const initTsConfigTransformFactory = (defaultTsConfig: ParsedConfiguration): Transform =>
   transformFromPromise(async graph => {
     // Initialize tsconfig for each entry point
-    const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
+    const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
     initializeTsConfig(defaultTsConfig, entryPoints);
 
     if (defaultTsConfig.options.enableIvy) {

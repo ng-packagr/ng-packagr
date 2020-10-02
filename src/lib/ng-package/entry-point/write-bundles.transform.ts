@@ -10,7 +10,7 @@ import { rollupBundleFile } from '../../flatten/rollup';
 import { minifyJsFile } from '../../flatten/uglify';
 
 export const writeBundlesTransform: Transform = transformFromPromise(async graph => {
-  const entryPoint = graph.find(isEntryPointInProgress()) as EntryPointNode;
+  const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
   const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
   const cache = entryPoint.cache;
 

@@ -1,9 +1,21 @@
 import { Node } from './node';
 
+export type SimplePredicate<T = Node> = {
+  (value: T, index: number): boolean;
+  and?: (criteria: SimplePredicate<T>) => SimplePredicate<T>;
+};
+
+export type ComplexPredicate<T = Node, R extends T = T> =
+  | SimplePredicate<T>
+  | {
+      (value: T, index: number): value is R;
+      and?: (criteria: ComplexPredicate<T, R>) => ComplexPredicate<T, R>;
+    };
+
 export interface Traversable<T> {
-  filter(by: (value: T, index: number) => boolean): T[];
-  find(by: (value: T, index: number) => boolean): T | undefined;
-  some(by: (value: T, index: number) => boolean): boolean;
+  filter<R extends T = T>(by: ComplexPredicate<T, R>): R[];
+  find<R extends T = T>(by: ComplexPredicate<T, R>): R | undefined;
+  some(by: SimplePredicate<T>): boolean;
 }
 
 /**
@@ -47,20 +59,16 @@ export class BuildGraph implements Traversable<Node> {
     return Array.from(values);
   }
 
-  public some(by: (value: Node, index: number) => boolean): boolean {
+  public some(by: SimplePredicate): boolean {
     return this.entries().some(by);
   }
 
-  public filter(by: (value: Node, index: number) => boolean): Node[] {
-    return this.entries().filter(by);
+  public filter<T extends Node = Node>(by: ComplexPredicate<Node, T>): T[] {
+    return this.entries().filter(by) as T[];
   }
 
-  public find(by: (value: Node, index: number) => boolean): Node | undefined {
-    return this.entries().find(by);
-  }
-
-  public from(node: Node): Traversable<Node> {
-    return node;
+  public find<T extends Node = Node>(by: ComplexPredicate<Node, T>): T | undefined {
+    return this.entries().find(by) as T | undefined;
   }
 
   get size(): number {

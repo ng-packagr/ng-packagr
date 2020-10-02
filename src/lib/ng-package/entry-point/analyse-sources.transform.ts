@@ -10,8 +10,8 @@ import { ensureUnixPath } from '../../utils/path';
 
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {
-    const entryPoints = graph.filter(isEntryPoint) as EntryPointNode[];
-    const dirtyEntryPoints = entryPoints.filter(x => x.state !== 'done') as EntryPointNode[];
+    const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
+    const dirtyEntryPoints: EntryPointNode[] = entryPoints.filter(x => x.state !== 'done');
 
     for (const entryPoint of dirtyEntryPoints) {
       analyseEntryPoint(graph, entryPoint, entryPoints);
@@ -32,7 +32,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
   const { oldPrograms, analysesSourcesFileCache, moduleResolutionCache } = entryPoint.cache;
   const oldProgram = oldPrograms && (oldPrograms['analysis'] as ts.Program | undefined);
   const { moduleId } = entryPoint.data.entryPoint;
-  const packageNode = graph.find(isPackage) as PackageNode;
+  const packageNode: PackageNode = graph.find(isPackage);
   const primaryModuleId = packageNode.data.primary.moduleId;
 
   debug(`Analysing sources for ${moduleId}`);
