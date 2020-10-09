@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [11.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/v10.1.2...v11.0.0-next.0) (2020-10-09)
+
+
+### Features
+
+* support Angular 11 ([66719af](https://github.com/ng-packagr/ng-packagr/commit/66719af0aa3238bdee2d09428979a2c32a24b5f5))
+
 ### [10.1.2](https://github.com/ng-packagr/ng-packagr/compare/v10.1.1...v10.1.2) (2020-09-26)
 
 
