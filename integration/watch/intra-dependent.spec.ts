@@ -22,27 +22,27 @@ describe('intra-dependent', () => {
     harness.expectFesm2015ToMatch('intra-dependent-secondary', /count = 100/);
   });
 
-  it('should throw error component inputs is changed without updating usages', (done) => {
+  it('should throw error component inputs is changed without updating usages', done => {
     harness.copyTestCase('invalid-component-property');
 
-    harness.onFailure((error) => {
+    harness.onFailure(error => {
       expect(error.message).to.match(/Can\'t bind to \'count\' since it isn\'t a known property/);
       harness.copyTestCase('valid');
       done();
     });
   });
 
-  it('should throw error service method is changed without updating usages', (done) => {
+  it('should throw error service method is changed without updating usages', done => {
     harness.copyTestCase('invalid-service-method');
 
-    harness.onFailure((error) => {
+    harness.onFailure(error => {
       expect(error.message).to.match(/Property \'initialize\' does not exist on type \'PrimaryAngularService\'/);
       harness.copyTestCase('valid');
       done();
     });
   });
 
-  it('should only build entrypoints that are dependent on the file changed.', (done) => {
+  it('should only build entrypoints that are dependent on the file changed.', done => {
     const primaryFesmPath = harness.getFilePath('fesm2015/intra-dependent.js');
     const secondaryFesmPath = harness.getFilePath('fesm2015/intra-dependent-secondary.js');
     const thirdFesmPath = harness.getFilePath('fesm2015/intra-dependent-third.js');
@@ -56,6 +56,15 @@ describe('intra-dependent', () => {
       expect(fs.statSync(primaryFesmPath).mtimeMs).to.greaterThan(primaryModifiedTime);
       expect(fs.statSync(secondaryFesmPath).mtimeMs).to.greaterThan(secondaryModifiedTime);
       expect(fs.statSync(thirdFesmPath).mtimeMs).to.equals(thirdModifiedTime);
+      done();
+    });
+  });
+
+  it('should fail when introducing a circular import.', done => {
+    harness.copyTestCase('circular');
+
+    harness.onFailure(error => {
+      expect(error.message).to.contain('Entry point intra-dependent has a circular dependency on itself.');
       done();
     });
   });
