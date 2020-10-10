@@ -60,12 +60,18 @@ export function ngUrl(path: string): string {
 export class EntryPointNode extends Node {
   readonly type = TYPE_NG_ENTRY_POINT;
 
-  constructor(public readonly url: string, readonly sourcesFileCache?: FileCache) {
+  constructor(
+    public readonly url: string,
+    sourcesFileCache: FileCache,
+    moduleResolutionCache: ts.ModuleResolutionCache,
+  ) {
     super(url);
 
-    if (sourcesFileCache) {
-      this.cache.sourcesFileCache = sourcesFileCache;
-    }
+    this.cache = {
+      sourcesFileCache,
+      analysesSourcesFileCache: new FileCache(),
+      moduleResolutionCache,
+    };
   }
 
   cache: {
@@ -75,10 +81,6 @@ export class EntryPointNode extends Node {
     moduleResolutionCache: ts.ModuleResolutionCache;
     rollupFESMCache?: RollupCache;
     rollupUMDCache?: RollupCache;
-  } = {
-    sourcesFileCache: new FileCache(),
-    analysesSourcesFileCache: new FileCache(),
-    moduleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
   };
 
   data: {
@@ -95,5 +97,6 @@ export class PackageNode extends Node {
   cache = {
     globCache: {} as GlobCache,
     sourcesFileCache: new FileCache(),
+    moduleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
   };
 }

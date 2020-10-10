@@ -101,7 +101,11 @@ export const packageTransformFactory = (
       const ngPkg: PackageNode = foundNode;
       const entryPoints = [ngPkg.data.primary, ...ngPkg.data.secondaries].map(entryPoint => {
         const { destinationFiles, moduleId } = entryPoint;
-        const node = new EntryPointNode(ngUrl(moduleId), ngPkg.cache.sourcesFileCache);
+        const node = new EntryPointNode(
+          ngUrl(moduleId),
+          ngPkg.cache.sourcesFileCache,
+          ngPkg.cache.moduleResolutionCache,
+        );
         node.data = { entryPoint, destinationFiles };
         node.state = 'dirty';
         ngPkg.dependsOn(node);
