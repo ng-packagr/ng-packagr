@@ -154,23 +154,27 @@ const watchTransformFactory = (
           const { declarationFileName } = cachedSourceFile;
 
           const uriToClean = [filePath, declarationFileName].map(x => fileUrl(ensureUnixPath(x)));
-          let nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
+          const nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
 
-          nodesToClean = flatten([
-            ...nodesToClean,
-            // if a non ts file changes we need to clean up it's direct dependees
-            // this is mainly done for resources such as html and css
-            ...nodesToClean.filter(x => !x.url.endsWith('.ts')).map(x => x.dependees),
-          ]);
+          const allUrlsToClean = new Set<string>(
+            flatten([
+              ...nodesToClean.map(node => node.url),
+              // if a non ts file changes we need to clean up its direct dependees
+              // this is mainly done for resources such as html and css
+              ...nodesToClean
+                .filter(node => !node.url.endsWith('.ts'))
+                .map(node => node.dependees.map(dependee => dependee.url)),
+            ]),
+          );
 
           // delete node that changes
-          nodesToClean.forEach(node => {
-            sourcesFileCache.delete(fileUrlPath(node.url));
+          allUrlsToClean.forEach(url => {
+            sourcesFileCache.delete(fileUrlPath(url));
           });
 
           const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
           entryPoints.forEach(entryPoint => {
-            const isDirty = entryPoint.dependents.some(x => nodesToClean.some(node => node.url === x.url));
+            const isDirty = entryPoint.dependents.some(dependent => allUrlsToClean.has(dependent.url));
             if (isDirty) {
               entryPoint.state = 'dirty';
               const { metadata } = entryPoint.data.destinationFiles;
