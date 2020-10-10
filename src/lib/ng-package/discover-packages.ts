@@ -1,4 +1,3 @@
-import * as ajv from 'ajv';
 import { pathExistsSync, lstat } from 'fs-extra';
 import * as path from 'path';
 import * as log from '../utils/log';
@@ -6,8 +5,7 @@ import { ensureUnixPath } from '../utils/path';
 import { NgEntryPoint } from './entry-point/entry-point';
 import { NgPackage } from './package';
 import { globFiles } from '../utils/glob';
-
-const ngPackageSchemaJson = require('../../ng-package.schema.json');
+import { validateNgPackageSchema } from './schema';
 
 interface UserPackage {
   /** Values from the `package.json` file of this user package. */
@@ -16,19 +14,6 @@ interface UserPackage {
   ngPackageJson: Record<string, any>;
   /** Absolute directory path of this user package. */
   basePath: string;
-}
-
-function formatSchemaValidationErrors(errors: ajv.ErrorObject[]): string {
-  return errors
-    .map(err => {
-      let message = `Data path ${JSON.stringify(err.dataPath)} ${err.message}`;
-      if (err.keyword === 'additionalProperties') {
-        message += ` (${(err.params as any).additionalProperty})`;
-      }
-
-      return message + '.';
-    })
-    .join('\n');
 }
 
 /**
@@ -67,36 +52,12 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
   }
 
   if (ngPackageJson) {
-    const _ajv = ajv({
-      schemaId: 'auto',
-      useDefaults: true,
-      jsonPointers: true,
-    });
-
-    const validate = _ajv.compile(ngPackageSchemaJson);
-    // Add handler for x-deprecated fields
-    _ajv.addKeyword('x-deprecated', {
-      validate: (schema, _data, _parentSchema, _dataPath, _parentDataObject, propertyName) => {
-        if (schema) {
-          log.warn(`Option "${propertyName}" is deprecated${typeof schema == 'string' ? ': ' + schema : '.'}`);
-        }
-
-        return true;
-      },
-      errors: false,
-    });
-
-    const isValid = validate(ngPackageJson);
-    if (!isValid) {
-      throw new Error(
-        `Configuration doesn\'t match the required schema.\n${formatSchemaValidationErrors(validate.errors)}`,
-      );
-    }
+    validateNgPackageSchema(ngPackageJson);
 
     return {
       basePath,
       packageJson: packageJson || {},
-      ngPackageJson: ngPackageJson as Record<string, any>,
+      ngPackageJson,
     };
   }
 
