@@ -104,6 +104,7 @@ export const packageTransformFactory = (
         const node = new EntryPointNode(
           ngUrl(moduleId),
           ngPkg.cache.sourcesFileCache,
+          ngPkg.cache.ngccProcessingCache,
           ngPkg.cache.moduleResolutionCache,
         );
         node.data = { entryPoint, destinationFiles };
@@ -138,8 +139,10 @@ const watchTransformFactory = (
       return createFileWatch(data.src, [data.dest]).pipe(
         tap(fileChange => {
           const { filePath, event } = fileChange;
-          const { sourcesFileCache } = cache;
+          const { sourcesFileCache, ngccProcessingCache } = cache;
           const cachedSourceFile = sourcesFileCache.get(filePath);
+
+          ngccProcessingCache.clear();
 
           if (!cachedSourceFile) {
             if (event === 'unlink' || event === 'add') {

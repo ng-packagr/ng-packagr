@@ -2,18 +2,25 @@ import { Logger, process as mainNgcc, LogLevel } from '@angular/compiler-cli/ngc
 import { existsSync, constants, accessSync } from 'fs';
 import * as path from 'path';
 import * as ts from 'typescript';
+import { NgccProcessingCache } from '../ng-package/ngcc-cache';
 import * as log from '../utils/log';
 import { EntryPointNode, ngUrl } from '../ng-package/nodes';
 
 // Transform a package and its typings when NGTSC is resolving a module.
 export class NgccProcessor {
+  /**
+   * Tracks the absolute module names that have already been processed by this instance. This is in
+   * addition to the `NgccProcessingCache` which is shared across entry-points, to avoid the need to
+   * resolve the package.json path for the module name which is required for `NgccProcessingCache`.
+   */
   private _processedModules = new Set<string>();
   private _logger: NgccLogger;
   private _nodeModulesDirectory: string;
   private _entryPointsUrl: string[];
 
   constructor(
-    private projectPath: string,
+    private readonly ngccProcessingCache: NgccProcessingCache,
+    private readonly projectPath: string,
     private readonly compilerOptions: ts.CompilerOptions,
     private readonly entryPoints: EntryPointNode[],
   ) {
@@ -36,7 +43,7 @@ export class NgccProcessor {
     }
 
     const packageJsonPath = this.tryResolvePackage(moduleName, resolvedFileName);
-    if (!packageJsonPath) {
+    if (!packageJsonPath || this.ngccProcessingCache.hasProcessed(packageJsonPath)) {
       // add it to processed so the second time round we skip this.
       this._processedModules.add(moduleName);
 
@@ -65,6 +72,7 @@ export class NgccProcessor {
     });
 
     this._processedModules.add(moduleName);
+    this.ngccProcessingCache.markProcessed(packageJsonPath);
   }
 
   /**
