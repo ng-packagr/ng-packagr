@@ -179,6 +179,10 @@ const watchTransformFactory = (
               entryPoint.state = 'dirty';
               const { metadata } = entryPoint.data.destinationFiles;
               sourcesFileCache.delete(metadata);
+
+              uriToClean.forEach(url => {
+                entryPoint.cache.analysesSourcesFileCache.delete(fileUrlPath(url));
+              });
             }
           });
 
