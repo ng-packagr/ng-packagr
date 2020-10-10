@@ -17,12 +17,12 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
 
   // Compile TypeScript sources
   const { esm2015, declarations } = entryPoint.data.destinationFiles;
-  const { moduleResolutionCache } = entryPoint.cache;
+  const { moduleResolutionCache, ngccProcessingCache } = entryPoint.cache;
   const { basePath, cssUrl, styleIncludePaths } = entryPoint.data.entryPoint;
   const stylesheetProcessor = new StylesheetProcessor(basePath, cssUrl, styleIncludePaths);
 
   const ngccProcessor = tsConfig.options.enableIvy
-    ? new NgccProcessor(tsConfig.project, tsConfig.options, entryPoints)
+    ? new NgccProcessor(ngccProcessingCache, tsConfig.project, tsConfig.options, entryPoints)
     : undefined;
 
   await compileSourceFiles(

@@ -4,6 +4,7 @@ import { ParsedConfiguration, Program } from '@angular/compiler-cli';
 import { Node } from '../graph/node';
 import { by, isInProgress, isDirty } from '../graph/select';
 import { NgEntryPoint, DestinationFiles } from './entry-point/entry-point';
+import { NgccProcessingCache } from './ngcc-cache';
 import { NgPackage } from './package';
 import { FileCache } from '../file-system/file-cache';
 import { ComplexPredicate } from '../graph/build-graph';
@@ -63,12 +64,14 @@ export class EntryPointNode extends Node {
   constructor(
     public readonly url: string,
     sourcesFileCache: FileCache,
+    ngccProcessingCache: NgccProcessingCache,
     moduleResolutionCache: ts.ModuleResolutionCache,
   ) {
     super(url);
 
     this.cache = {
       sourcesFileCache,
+      ngccProcessingCache,
       analysesSourcesFileCache: new FileCache(),
       moduleResolutionCache,
     };
@@ -77,6 +80,7 @@ export class EntryPointNode extends Node {
   cache: {
     oldPrograms?: Record<ts.ScriptTarget | 'analysis', Program | ts.Program>;
     sourcesFileCache: FileCache;
+    ngccProcessingCache: NgccProcessingCache;
     analysesSourcesFileCache: FileCache;
     moduleResolutionCache: ts.ModuleResolutionCache;
     rollupFESMCache?: RollupCache;
@@ -97,6 +101,7 @@ export class PackageNode extends Node {
   cache = {
     globCache: {} as GlobCache,
     sourcesFileCache: new FileCache(),
+    ngccProcessingCache: new NgccProcessingCache(),
     moduleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
   };
 }
