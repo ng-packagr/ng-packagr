@@ -8,12 +8,6 @@ import { EntryPointNode, ngUrl } from '../ng-package/nodes';
 
 // Transform a package and its typings when NGTSC is resolving a module.
 export class NgccProcessor {
-  /**
-   * Tracks the absolute module names that have already been processed by this instance. This is in
-   * addition to the `NgccProcessingCache` which is shared across entry-points, to avoid the need to
-   * resolve the package.json path for the module name which is required for `NgccProcessingCache`.
-   */
-  private _processedModules = new Set<string>();
   private _logger: NgccLogger;
   private _nodeModulesDirectory: string;
   private _entryPointsUrl: string[];
@@ -35,7 +29,7 @@ export class NgccProcessor {
     if (
       !resolvedFileName ||
       moduleName.startsWith('.') ||
-      this._processedModules.has(moduleName) ||
+      this.ngccProcessingCache.hasProcessed(moduleName) ||
       this._entryPointsUrl.includes(ngUrl(moduleName))
     ) {
       // Skip when module is unknown, relative, an entrypoint or already processed.
@@ -43,9 +37,9 @@ export class NgccProcessor {
     }
 
     const packageJsonPath = this.tryResolvePackage(moduleName, resolvedFileName);
-    if (!packageJsonPath || this.ngccProcessingCache.hasProcessed(packageJsonPath)) {
+    if (!packageJsonPath) {
       // add it to processed so the second time round we skip this.
-      this._processedModules.add(moduleName);
+      this.ngccProcessingCache.markProcessed(moduleName);
 
       return;
     }
@@ -56,7 +50,7 @@ export class NgccProcessor {
       accessSync(packageJsonPath, constants.W_OK);
     } catch {
       // add it to processed so the second time round we skip this.
-      this._processedModules.add(moduleName);
+      this.ngccProcessingCache.markProcessed(moduleName);
 
       return;
     }
@@ -71,8 +65,7 @@ export class NgccProcessor {
       tsConfigPath: this.projectPath,
     });
 
-    this._processedModules.add(moduleName);
-    this.ngccProcessingCache.markProcessed(packageJsonPath);
+    this.ngccProcessingCache.markProcessed(moduleName);
   }
 
   /**
