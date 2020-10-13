@@ -1,7 +1,7 @@
 /**
- * Registers the paths to package.json files of libraries that have been processed by ngcc. This
- * cache is reused across all entry-points of a package, so module requests across the entry-points
- * can determine whether invoking ngcc is necessary.
+ * Registers the absolute specifiers of libraries that have been processed by ngcc. This cache is
+ * reused across all entry-points of a package, so module requests across the entry-points can
+ * determine whether invoking ngcc is necessary.
  *
  * The cost of invoking ngcc for an entry-point that has already been processed is limited due to
  * a fast path in ngcc, however even in this fast-path does ngcc scan the entry-point to determine
@@ -9,17 +9,17 @@
  * are processed in batches during which the `node_modules` directory is not mutated.
  */
 export class NgccProcessingCache {
-  private readonly processedPackageJsonPaths = new Set<string>();
+  private readonly processedModuleNames = new Set<string>();
 
-  hasProcessed(packageJsonPath: string): boolean {
-    return this.processedPackageJsonPaths.has(packageJsonPath);
+  hasProcessed(moduleName: string): boolean {
+    return this.processedModuleNames.has(moduleName);
   }
 
-  markProcessed(packageJsonPath: string): void {
-    this.processedPackageJsonPaths.add(packageJsonPath);
+  markProcessed(moduleName: string): void {
+    this.processedModuleNames.add(moduleName);
   }
 
   clear(): void {
-    this.processedPackageJsonPaths.clear();
+    this.processedModuleNames.clear();
   }
 }
