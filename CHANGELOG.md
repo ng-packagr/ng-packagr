@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [11.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/v11.0.0-next.0...v11.0.0-next.1) (2020-10-14)
+
+
+### Bug Fixes
+
+* clear analysis cache to detect invalid imports in watch mode ([d6a3920](https://github.com/ng-packagr/ng-packagr/commit/d6a39203bb0fdbe1b5465355261a0c3b0a2c7501))
+
+
+### Performance
+
+* initialize ajv validator only once ([24f4b83](https://github.com/ng-packagr/ng-packagr/commit/24f4b8382edd5ee12c7c32a621fc15931dcf22ec))
+* short-circuit ngcc processing across entry-points ([599b742](https://github.com/ng-packagr/ng-packagr/commit/599b742b45f902e1402d4e9ac046a4223530be6b))
+* use set semantics when computing which entry-points to recompile ([f0f52c7](https://github.com/ng-packagr/ng-packagr/commit/f0f52c744c2b9e9b7977c2f11c28686ccb5a3e85))
+* use shared module resolution cache across all entry-points ([954ae79](https://github.com/ng-packagr/ng-packagr/commit/954ae797581e80969456c803f5d7467ad5403239))
+
 ## [11.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/v10.1.2...v11.0.0-next.0) (2020-10-09)
 
 
