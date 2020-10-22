@@ -1,6 +1,6 @@
 # ng-packagr
 
-> Transpile your libraries to Angular Package Format
+> Compile and package an Angular library in Angular Package Format
 
 
 [![npm](https://img.shields.io/npm/v/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
