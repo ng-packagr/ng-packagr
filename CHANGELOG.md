@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [11.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/v11.0.0-next.1...v11.0.0-next.2) (2020-10-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* TypeScript 3.9 is no longer supported, please upgrade to TypeScript 4.0.
+
+### Bug Fixes
+
+* update @angular/common to version ~10.2.0 ([7b51ebd](https://github.com/ng-packagr/ng-packagr/commit/7b51ebdea50e841928ccede199d230b3a6753bef))
+
+
+* remove TypeScript 3.9 support ([c36ac40](https://github.com/ng-packagr/ng-packagr/commit/c36ac404bc37e5884a3c12d8671fd8e5e3271356))
+
 ## [11.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/v11.0.0-next.0...v11.0.0-next.1) (2020-10-14)
 
 
