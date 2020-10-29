@@ -1,3 +1,4 @@
+import * as ora from 'ora';
 import { Transform, transformFromPromise } from '../../graph/transform';
 import { NgEntryPoint } from './entry-point';
 import { isEntryPoint, isEntryPointInProgress, EntryPointNode } from '../nodes';
@@ -37,28 +38,37 @@ export const writeBundlesTransform: Transform = transformFromPromise(async graph
     dependencyList: getDependencyListForGraph(graph),
   };
 
-  log.info('Bundling to FESM2015');
-  cache.rollupFESMCache = await rollupBundleFile({
-    ...opts,
-    moduleName: ngEntryPoint.moduleId,
-    format: 'es',
-    dest: fesm2015,
-    cache: cache.rollupFESMCache,
-  });
+  const spinner = ora();
+  try {
+    spinner.start('Bundling to FESM2015');
+    cache.rollupFESMCache = await rollupBundleFile({
+      ...opts,
+      moduleName: ngEntryPoint.moduleId,
+      format: 'es',
+      dest: fesm2015,
+      cache: cache.rollupFESMCache,
+    });
+    spinner.succeed();
 
-  log.info('Bundling to UMD');
-  cache.rollupUMDCache = await rollupBundleFile({
-    ...opts,
-    moduleName: ngEntryPoint.umdId,
-    entry: esm2015,
-    format: 'umd',
-    dest: umd,
-    cache: cache.rollupUMDCache,
-    transform: downlevelCodeWithTsc,
-  });
+    spinner.start('Bundling to UMD');
+    cache.rollupUMDCache = await rollupBundleFile({
+      ...opts,
+      moduleName: ngEntryPoint.umdId,
+      entry: esm2015,
+      format: 'umd',
+      dest: umd,
+      cache: cache.rollupUMDCache,
+      transform: downlevelCodeWithTsc,
+    });
+    spinner.succeed();
 
-  log.info('Minifying UMD bundle');
-  await minifyJsFile(umd, umdMinified);
+    spinner.start('Minifying UMD bundle');
+    await minifyJsFile(umd, umdMinified);
+    spinner.succeed();
+  } catch (error) {
+    spinner.fail();
+    throw error;
+  }
 });
 
 /** Get all list of dependencies for the entire 'BuildGraph' */
