@@ -1,6 +1,8 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import * as ora from 'ora';
 import { Transform, transformFromPromise } from '../../graph/transform';
+import { colors } from '../../utils/color';
 import { NgEntryPoint } from './entry-point';
 import { NgPackage } from '../package';
 import { ensureUnixPath } from '../../utils/path';
@@ -11,6 +13,7 @@ import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode, fileUrl
 import { Node } from '../../graph/node';
 
 export const writePackageTransform: Transform = transformFromPromise(async graph => {
+  const spinner = ora();
   const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
   const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
   const ngPackageNode: PackageNode = graph.find(isPackage);
@@ -32,41 +35,53 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     });
 
     // COPY ASSET FILES TO DESTINATION
-    log.info('Copying assets');
-    for (const file of assetFiles) {
-      const relativePath = path.relative(ngPackage.src, file);
-      const destination = path.resolve(ngPackage.dest, relativePath);
-      entryPoint.dependsOn(new Node(fileUrl(ensureUnixPath(relativePath))));
-      fs.copySync(file, destination, { overwrite: true, dereference: true });
+    spinner.start('Copying assets');
+    try {
+      for (const file of assetFiles) {
+        const relativePath = path.relative(ngPackage.src, file);
+        const destination = path.resolve(ngPackage.dest, relativePath);
+        entryPoint.dependsOn(new Node(fileUrl(ensureUnixPath(relativePath))));
+        await fs.copy(file, destination, { overwrite: true, dereference: true });
+      }
+    } catch (error) {
+      spinner.fail();
+      throw error;
     }
+    spinner.succeed();
   }
 
   // 6. WRITE PACKAGE.JSON
-  log.info('Writing package metadata');
-  const relativeUnixFromDestPath = (filePath: string) =>
-    ensureUnixPath(path.relative(ngEntryPoint.destinationPath, filePath));
+  try {
+    spinner.start('Writing package metadata');
+    const relativeUnixFromDestPath = (filePath: string) =>
+      ensureUnixPath(path.relative(ngEntryPoint.destinationPath, filePath));
 
-  const isIvy = !!entryPoint.data.tsConfig.options.enableIvy;
+    const isIvy = !!entryPoint.data.tsConfig.options.enableIvy;
 
-  await writePackageJson(
-    ngEntryPoint,
-    ngPackage,
-    {
-      main: relativeUnixFromDestPath(destinationFiles.umd),
-      module: relativeUnixFromDestPath(destinationFiles.fesm2015),
-      es2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
-      esm2015: relativeUnixFromDestPath(destinationFiles.esm2015),
-      fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
-      typings: relativeUnixFromDestPath(destinationFiles.declarations),
-      // Ivy doesn't generate metadata files
-      metadata: isIvy ? undefined : relativeUnixFromDestPath(destinationFiles.metadata),
-      // webpack v4+ specific flag to enable advanced optimizations and code splitting
-      sideEffects: ngEntryPoint.sideEffects,
-    },
-    isIvy,
-  );
-
-  log.success(`Built ${ngEntryPoint.moduleId}`);
+    await writePackageJson(
+      ngEntryPoint,
+      ngPackage,
+      {
+        main: relativeUnixFromDestPath(destinationFiles.umd),
+        module: relativeUnixFromDestPath(destinationFiles.fesm2015),
+        es2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
+        esm2015: relativeUnixFromDestPath(destinationFiles.esm2015),
+        fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
+        typings: relativeUnixFromDestPath(destinationFiles.declarations),
+        // Ivy doesn't generate metadata files
+        metadata: isIvy ? undefined : relativeUnixFromDestPath(destinationFiles.metadata),
+        // webpack v4+ specific flag to enable advanced optimizations and code splitting
+        sideEffects: ngEntryPoint.sideEffects,
+      },
+      isIvy,
+      spinner,
+    );
+  } catch (error) {
+    spinner.fail();
+    throw error;
+  }
+  spinner.succeed();
+  spinner.info(`Built ${ngEntryPoint.moduleId}`);
 
   return graph;
 });
@@ -91,6 +106,7 @@ async function writePackageJson(
   pkg: NgPackage,
   additionalProperties: { [key: string]: string | boolean | string[] },
   isIvy: boolean,
+  spinner: ora.Ora,
 ): Promise<void> {
   log.debug('Writing package.json');
 
@@ -116,7 +132,11 @@ async function writePackageJson(
         };
       }
     } else if (packageJson.peerDependencies?.tslib) {
-      log.warn(`'tslib' is no longer recommended to be used as a 'peerDependencies'. Moving it to 'dependencies'.`);
+      spinner.warn(
+        colors.yellow(
+          `'tslib' is no longer recommended to be used as a 'peerDependencies'. Moving it to 'dependencies'.`,
+        ),
+      );
       packageJson.dependencies = {
         ...(packageJson.dependencies || {}),
         tslib: packageJson.peerDependencies.tslib,
@@ -130,7 +150,7 @@ async function writePackageJson(
   // in the node_modules folder of an application
   const whitelist = pkg.whitelistedNonPeerDependencies.map(value => new RegExp(value));
   try {
-    checkNonPeerDependencies(packageJson, 'dependencies', whitelist);
+    checkNonPeerDependencies(packageJson, 'dependencies', whitelist, spinner);
   } catch (e) {
     await rimraf(entryPoint.destinationPath);
     throw e;
@@ -139,11 +159,13 @@ async function writePackageJson(
   // Removes scripts from package.json after build
   if (packageJson.scripts) {
     if (pkg.keepLifecycleScripts !== true) {
-      log.info(`Removing scripts section in package.json as it's considered a potential security vulnerability.`);
+      spinner.info(`Removing scripts section in package.json as it's considered a potential security vulnerability.`);
       delete packageJson.scripts;
     } else {
-      log.warn(
-        `You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`,
+      spinner.warn(
+        colors.yellow(
+          `You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`,
+        ),
       );
     }
   }
@@ -175,7 +197,7 @@ async function writePackageJson(
   for (const prop of packageJsonPropertiesToDelete) {
     if (prop in packageJson) {
       delete packageJson[prop];
-      log.info(`Removing ${prop} section in package.json.`);
+      spinner.info(`Removing ${prop} section in package.json.`);
     }
   }
 
@@ -188,7 +210,12 @@ async function writePackageJson(
   });
 }
 
-function checkNonPeerDependencies(packageJson: Record<string, unknown>, property: string, whitelist: RegExp[]) {
+function checkNonPeerDependencies(
+  packageJson: Record<string, unknown>,
+  property: string,
+  whitelist: RegExp[],
+  spinner: ora.Ora,
+) {
   if (!packageJson[property]) {
     return;
   }
@@ -197,8 +224,10 @@ function checkNonPeerDependencies(packageJson: Record<string, unknown>, property
     if (whitelist.find(regex => regex.test(dep))) {
       log.debug(`Dependency ${dep} is whitelisted in '${property}'`);
     } else {
-      log.warn(
-        `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep} to 'peerDependencies' or remove it from '${property}'.`,
+      spinner.warn(
+        colors.yellow(
+          `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep} to 'peerDependencies' or remove it from '${property}'.`,
+        ),
       );
       throw new Error(`Dependency ${dep} must be explicitly whitelisted.`);
     }
