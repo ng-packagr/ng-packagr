@@ -1,6 +1,6 @@
 # ng-packagr
 
-> Compile and package an Angular library in Angular Package Format (APF)
+> Compile and package a Angular libraries in Angular Package Format (APF)
 
 
 [![npm](https://img.shields.io/npm/v/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
