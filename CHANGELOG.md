@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [11.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/v11.0.0-next.3...v11.0.0-rc.0) (2020-11-05)
+
 ## [11.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/v11.0.0-next.2...v11.0.0-next.3) (2020-10-29)
 
 
