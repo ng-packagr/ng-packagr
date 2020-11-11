@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [11.0.0](https://github.com/ng-packagr/ng-packagr/compare/v11.0.0-rc.0...v11.0.0) (2020-11-11)
+
+
+### Bug Fixes
+
+* sourcemap should not differ based on build path ([6f946b7](https://github.com/ng-packagr/ng-packagr/commit/6f946b7c91c88fed1d6aa3fa6e06335d5769e86e))
+
 ## [11.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/v11.0.0-next.3...v11.0.0-rc.0) (2020-11-05)
 
 ## [11.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/v11.0.0-next.2...v11.0.0-next.3) (2020-10-29)
