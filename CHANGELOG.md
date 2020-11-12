@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### Bug Fixes
 
 * sourcemap should not differ based on build path ([1504c8e](https://github.com/ng-packagr/ng-packagr/commit/1504c8e06a64aee5b3ecc09327af25de5bd58385))
+* Revert "fix: update @rollup/plugin-commonjs to version ^16.0.0"
 
 ### [11.0.1](https://github.com/ng-packagr/ng-packagr/compare/v11.0.0...v11.0.1) (2020-11-11)
 
