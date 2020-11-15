@@ -85,19 +85,41 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     .getSourceFiles()
     .filter(x => !x.fileName.endsWith('.d.ts'))
     .forEach(sourceFile => {
-      sourceFile.statements
-        .filter(x => ts.isImportDeclaration(x) || ts.isExportDeclaration(x))
-        .forEach((node: ts.ImportDeclaration | ts.ExportDeclaration) => {
+      let importsAndExports = [];
+      let findImportsAndExports = (nodes: ts.Node[]) => {
+        for (let node of nodes) {
+          if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) {
+            importsAndExports.push(node);
+            continue;
+          }
+          if (ts.isCallExpression(node)) {
+            let childNodes = node.getChildren(sourceFile);
+            if (childNodes[0].getText(sourceFile) == 'import') {
+              importsAndExports.push(node);
+              continue;
+            }
+          }
+          findImportsAndExports(node.getChildren(sourceFile));
+        }
+      };
+      findImportsAndExports(sourceFile.statements.map(n => n));
+      importsAndExports.forEach((node: ts.ImportDeclaration | ts.ExportDeclaration | ts.CallExpression) => {
+        let moduleName;
+        if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) {
           const { moduleSpecifier } = node;
           if (!moduleSpecifier || !ts.isStringLiteral(moduleSpecifier)) {
             return;
           }
+          moduleName = moduleSpecifier.text;
+        } else {
+          let childNodes = node.getChildren(sourceFile);
+          moduleName = childNodes[2].getText(sourceFile).replace(/^"|"$/g, '');
+        }
 
-          const moduleName = moduleSpecifier.text;
-          if (moduleName === primaryModuleId || moduleName.startsWith(`${primaryModuleId}/`)) {
-            potentialDependencies.add(moduleName);
-          }
-        });
+        if (moduleName === primaryModuleId || moduleName.startsWith(`${primaryModuleId}/`)) {
+          potentialDependencies.add(moduleName);
+        }
+      });
     });
 
   debug(`tsc program structure is reused: ${oldProgram ? (oldProgram as any).structureIsReused : 'No old program'}`);
