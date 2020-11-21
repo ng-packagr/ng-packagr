@@ -1,46 +1,74 @@
-version: 2
-defaults: &defaults
-  docker:
-    - image: circleci/node:10.22-browsers
-  working_directory: ~/repo
+version: 2.1
 
 attach_options: &attach_options
   at: ~/repo
 
+orbs:
+  win: circleci/windows@2.2.0
+
+# Command Definitions
+# https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-commands
+commands:
+  custom_attach_workspace:
+    description: Attach workspace at a predefined location
+    steps:
+      - attach_workspace:
+          at: ~/repo
+  setup_windows:
+    steps:
+      - run: nvm install 12.18.0
+      - run: nvm use 12.18.0
+      - run: npm install -g yarn@1.17.3
+      - run: node --version
+      - run: yarn --version
+
+# Executor Definitions
+# https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-executors
+executors:
+  linux-executor:
+    docker:
+      - image: cimg/node:12.18-browsers
+    working_directory: ~/repo
+
 jobs:
-  install:
-    <<: *defaults
+  setup:
+    executor: linux-executor
     steps:
       # Checkout, Download and cache dependencies
       - checkout
       - restore_cache:
           keys:
-            - v5-dependencies-{{ checksum "yarn.lock" }}
-            - v5-dependencies-
+            - v6-dependencies-{{ checksum "yarn.lock" }}
+            - v6-dependencies-
       # Install dependencies
       - run: yarn install --frozen-lockfile --non-interactive
       - save_cache:
-          key: v5-dependencies-{{ checksum "yarn.lock" }}
+          key: v6-dependencies-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - persist_to_workspace:
           root: ~/repo
           paths: .
 
-  build_and_test:
-    <<: *defaults
+  build-and-test:
+    executor: linux-executor
     steps:
-      - attach_workspace: *attach_options
+      - custom_attach_workspace
       # Build and run tests
-      - run: yarn test
+      - run: yarn build
+      - run: yarn test:specs
+      - run: yarn integration:samples
+      - run: yarn integration:specs
+      - run: yarn integration:watch:specs
+      - run: yarn integration:consumers
       - persist_to_workspace:
           root: ~/repo
           paths: dist
 
   deploy:
-    <<: *defaults
+    executor: linux-executor
     steps:
-      - attach_workspace: *attach_options
+      - custom_attach_workspace
       - run:
           name: Deploying package to npm registry
           command: |
@@ -63,25 +91,53 @@ jobs:
             pushd dist
             npm publish --tag ${NPM_TAG}
 
+  setup-and-test-win:
+    executor:
+      name: win/default
+      shell: powershell.exe
+    steps:
+      # Checkout, Download and cache dependencies
+      - checkout
+      - setup_windows
+      - restore_cache:
+          keys:
+            - v6-dependencies-win-{{ checksum "yarn.lock" }}
+            - v6-dependencies-win
+      # Install dependencies
+      - run: yarn install --frozen-lockfile --non-interactive
+      - run: yarn build
+      - run: yarn test:specs
+      - run: yarn integration:samples
+      - run: yarn integration:specs
+      - save_cache:
+          key: v6-dependencies-win-{{ checksum "yarn.lock" }}
+          paths:
+            # Get cache dir on windows via `yarn cache dir`
+            - C:\Users\circleci\AppData\Local\Yarn\Cache\v4
+
 workflows:
-  version: 2
+  version: 2.1
   cirunner:
     jobs:
-      - install:
+      - setup:
           filters:
             tags:
               only: /v.*/
-      - build_and_test:
+      - build-and-test:
           filters:
-            branches:
-              ignore: /gh-pages/
             tags:
               only: /v.*/
           requires:
-            - install
+            - setup
+      - setup-and-test-win:
+          filters:
+            tags:
+              only: /v.*/
+          requires:
+            - setup
       - deploy:
           requires:
-            - build_and_test
+            - build-and-test
           filters:
             branches:
               ignore: /.*/
