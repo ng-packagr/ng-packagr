@@ -81,13 +81,12 @@ export const initializeTsConfig = (defaultTsConfig: ng.ParsedConfiguration, entr
 
     // Resolve defaults from DI token and create a deep copy of the defaults
     let tsConfig: ng.ParsedConfiguration = JSON.parse(JSON.stringify(defaultTsConfig));
-
     const overrideOptions: ng.CompilerOptions = {
       flatModuleId: entryPoint.moduleId,
       flatModuleOutFile: `${entryPoint.flatModuleFile}.js`,
       basePath,
       rootDir: basePath,
-      sourceRoot: path.relative(entryPoint.destinationFiles.esm2015, basePath),
+      sourceRoot: path.relative(path.dirname(entryPoint.destinationFiles.esm2015), basePath) + '/',
     };
 
     tsConfig.rootNames = [entryPoint.entryFilePath];
