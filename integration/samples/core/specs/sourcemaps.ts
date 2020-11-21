@@ -18,6 +18,10 @@ describe(`@sample/core`, () => {
       expect(sourceMap.sourcesContent).to.be.an('array').that.is.not.empty;
       expect(sourceMap.sources).to.have.lengthOf(sourceMap.sourcesContent.length);
     });
+
+    it('should point to the correct source path', () => {
+      expect(sourceMap.sources[0]).to.equal('../src/angular.component.ts');
+    });
   });
 
   describe(`bundles/sample-core.umd.min.js.map`, () => {
