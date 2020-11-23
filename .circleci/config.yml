@@ -38,12 +38,12 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v6-dependencies-{{ checksum "yarn.lock" }}
-            - v6-dependencies-
+            - v6-dependencies-linux{{ checksum "yarn.lock" }}
+            - v6-dependencies-linux
       # Install dependencies
       - run: yarn install --frozen-lockfile --non-interactive
       - save_cache:
-          key: v6-dependencies-{{ checksum "yarn.lock" }}
+          key: v6-dependencies-linux-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - persist_to_workspace:
