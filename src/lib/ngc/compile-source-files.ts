@@ -42,7 +42,7 @@ export async function compileSourceFiles(
 
   const scriptTarget = tsConfigOptions.target;
   const cache = entryPoint.cache;
-  const oldProgram = cache.oldPrograms && (cache.oldPrograms[scriptTarget] as ng.Program | undefined);
+  const oldProgram = (cache.oldPrograms && cache.oldPrograms[scriptTarget]) as ng.Program | undefined;
 
   const ngProgram = ng.createProgram({
     rootNames: tsConfig.rootNames,
@@ -53,9 +53,11 @@ export async function compileSourceFiles(
 
   await ngProgram.loadNgStructureAsync();
 
+  // TS 4.1+ stores the reuse state in the new program
+  const checkReuseProgram = (ts.versionMajorMinor as string) === '4.0' ? oldProgram : ngProgram;
   log.debug(
     `ngc program structure is reused: ${
-      oldProgram ? (oldProgram.getTsProgram() as any).structureIsReused : 'No old program'
+      checkReuseProgram ? (checkReuseProgram.getTsProgram() as any).structureIsReused : 'No old program'
     }`,
   );
 
