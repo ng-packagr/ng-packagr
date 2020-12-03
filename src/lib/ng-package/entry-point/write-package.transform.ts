@@ -13,7 +13,10 @@ import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode, fileUrl
 import { Node } from '../../graph/node';
 
 export const writePackageTransform: Transform = transformFromPromise(async graph => {
-  const spinner = ora();
+  const spinner = ora({
+    hideCursor: false,
+    discardStdin: false,
+  });
   const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
   const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
   const ngPackageNode: PackageNode = graph.find(isPackage);

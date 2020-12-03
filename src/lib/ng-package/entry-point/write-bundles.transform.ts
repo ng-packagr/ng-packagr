@@ -38,7 +38,11 @@ export const writeBundlesTransform: Transform = transformFromPromise(async graph
     dependencyList: getDependencyListForGraph(graph),
   };
 
-  const spinner = ora();
+  const spinner = ora({
+    hideCursor: false,
+    discardStdin: false,
+  });
+
   try {
     spinner.start('Bundling to FESM2015');
     cache.rollupFESMCache = await rollupBundleFile({
