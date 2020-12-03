@@ -9,7 +9,10 @@ import { isEntryPointInProgress, EntryPointNode, isEntryPoint } from '../nodes';
 import { StylesheetProcessor } from '../../styles/stylesheet-processor';
 
 export const compileNgcTransform: Transform = transformFromPromise(async graph => {
-  const spinner = ora().start(`Compiling TypeScript sources through NGC`);
+  const spinner = ora({
+    hideCursor: false,
+    discardStdin: false,
+  }).start(`Compiling TypeScript sources through NGC`);
 
   try {
     const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
