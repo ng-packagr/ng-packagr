@@ -20,7 +20,7 @@ describe(`@sample/core`, () => {
     });
 
     it('should point to the correct source path', () => {
-      expect(sourceMap.sources[0]).to.equal('../src/angular.component.ts');
+      expect(sourceMap.sources[0]).to.equal('../../src/angular.component.ts');
     });
   });
 
