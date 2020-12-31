@@ -86,7 +86,7 @@ export const initializeTsConfig = (defaultTsConfig: ng.ParsedConfiguration, entr
       flatModuleOutFile: `${entryPoint.flatModuleFile}.js`,
       basePath,
       rootDir: basePath,
-      sourceRoot: path.relative(path.dirname(entryPoint.destinationFiles.esm2015), basePath) + '/',
+      sourceRoot: '',
     };
 
     tsConfig.rootNames = [entryPoint.entryFilePath];
