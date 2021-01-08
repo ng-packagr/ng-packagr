@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "https://github.com/ng-packagr/ng-packagr/blob/master/src/ng-package.schema.json",
+  "$id": "https://github.com/ng-packagr/ng-packagr/blob/master/src/ng-package.schema.json",
   "title": "NgPackageConfig",
   "description": "JSON Schema for `ng-package.json` description file",
   "type": "object",
@@ -48,7 +48,8 @@
         "entryFile": {
           "description": "Entry file to the public API (default: `src/public_api.ts`).",
           "type": "string",
-          "default": "src/public_api.ts"
+          "default": "src/public_api.ts",
+          "x-deprecated": true
         },
         "flatModuleFile": {
           "description": "Filename of the auto-generated flat module file (if empty, defaults to the package name as given in `package.json`).",
