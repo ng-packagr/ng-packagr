@@ -125,7 +125,7 @@ export const packageTransformFactory = (
 
 const watchTransformFactory = (
   project: string,
-  _options: NgPackagrOptions,
+  options: NgPackagrOptions,
   analyseSourcesTransform: Transform,
   entryPointTransform: Transform,
 ) => (source$: Observable<BuildGraph>): Observable<BuildGraph> => {
@@ -136,7 +136,7 @@ const watchTransformFactory = (
   return source$.pipe(
     switchMap(graph => {
       const { data, cache } = graph.find(isPackage);
-      return createFileWatch(data.src, [data.dest]).pipe(
+      return createFileWatch(data.src, [data.dest, ...(options.ignoredPaths || [])]).pipe(
         tap(fileChange => {
           const { filePath, event } = fileChange;
           const { sourcesFileCache, ngccProcessingCache } = cache;

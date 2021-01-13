@@ -98,8 +98,8 @@ export class NgPackagr {
    *
    * @return An observable result of the transformation pipeline.
    */
-  public watch(): Observable<void> {
-    this.providers.push(provideOptions({ watch: true }));
+  public watch(ignoredPaths: (RegExp | string)[] = []): Observable<void> {
+    this.providers.push(provideOptions({ watch: true, ignoredPaths }));
 
     return this.buildAsObservable();
   }
