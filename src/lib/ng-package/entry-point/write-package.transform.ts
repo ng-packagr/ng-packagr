@@ -43,7 +43,14 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
       for (const file of assetFiles) {
         const relativePath = path.relative(ngPackage.src, file);
         const destination = path.resolve(ngPackage.dest, relativePath);
-        entryPoint.dependsOn(new Node(fileUrl(ensureUnixPath(relativePath))));
+        const nodeUri = fileUrl(ensureUnixPath(file));
+        let node = graph.get(nodeUri);
+        if (!node) {
+          node = new Node(nodeUri);
+          graph.put(node);
+        }
+
+        entryPoint.dependsOn(node);
         await fs.copy(file, destination, { overwrite: true, dereference: true });
       }
     } catch (error) {

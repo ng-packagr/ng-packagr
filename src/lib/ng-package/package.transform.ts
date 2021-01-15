@@ -141,6 +141,9 @@ const watchTransformFactory = (
           const { filePath, event } = fileChange;
           const { sourcesFileCache, ngccProcessingCache } = cache;
           const cachedSourceFile = sourcesFileCache.get(filePath);
+          const { declarationFileName } = cachedSourceFile || {};
+          const uriToClean = [filePath, declarationFileName].map(x => fileUrl(ensureUnixPath(x)));
+          const nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
 
           ngccProcessingCache.clear();
 
@@ -148,13 +151,11 @@ const watchTransformFactory = (
             if (event === 'unlink' || event === 'add') {
               cache.globCache = regenerateGlobCache(sourcesFileCache);
             }
-            return;
+
+            if (!nodesToClean) {
+              return;
+            }
           }
-
-          const { declarationFileName } = cachedSourceFile;
-
-          const uriToClean = [filePath, declarationFileName].map(x => fileUrl(ensureUnixPath(x)));
-          const nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
 
           const allUrlsToClean = new Set<string>(
             flatten([
