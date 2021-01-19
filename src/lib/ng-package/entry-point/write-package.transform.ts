@@ -1,4 +1,3 @@
-import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as ora from 'ora';
 import { Transform, transformFromPromise } from '../../graph/transform';
@@ -6,7 +5,7 @@ import { colors } from '../../utils/color';
 import { NgEntryPoint } from './entry-point';
 import { NgPackage } from '../package';
 import { ensureUnixPath } from '../../utils/path';
-import { rimraf } from '../../utils/rimraf';
+import { copyFile, exists, lstat, rimraf, writeFile } from '../../utils/fs';
 import * as log from '../../utils/log';
 import { globFiles } from '../../utils/glob';
 import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode, fileUrl } from '../nodes';
@@ -31,11 +30,35 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
   ];
 
   if (ngPackage.assets.length && !ngEntryPoint.isSecondaryEntryPoint) {
-    const assets = ngPackage.assets.map(x => path.join(ngPackage.src, x));
-    const assetFiles = await globFiles(assets, {
-      ignore: ignorePaths,
-      cache: ngPackageNode.cache.globCache,
-    });
+    const assetFiles: string[] = [];
+
+    for (let asset of ngPackage.assets) {
+      asset = path.join(ngPackage.src, asset);
+
+      if (await exists(asset)) {
+        const stats = await lstat(asset);
+
+        if (stats.isFile()) {
+          assetFiles.push(asset);
+          continue;
+        }
+
+        if (stats.isDirectory()) {
+          asset = path.join(asset, '**/*');
+        }
+      }
+
+      const files = await globFiles(asset, {
+        ignore: ignorePaths,
+        cache: ngPackageNode.cache.globCache,
+        dot: true,
+        nodir: true,
+      });
+
+      if (files.length) {
+        assetFiles.push(...files);
+      }
+    }
 
     // COPY ASSET FILES TO DESTINATION
     spinner.start('Copying assets');
@@ -51,7 +74,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
         }
 
         entryPoint.dependsOn(node);
-        await fs.copy(file, destination, { overwrite: true, dereference: true });
+        await copyFile(file, destination);
       }
     } catch (error) {
       spinner.fail();
@@ -212,12 +235,7 @@ async function writePackageJson(
   }
 
   packageJson.name = entryPoint.moduleId;
-
-  // `outputJson()` creates intermediate directories, if they do not exist
-  // -- https://github.com/jprichardson/node-fs-extra/blob/master/docs/outputJson.md
-  await fs.outputJson(path.join(entryPoint.destinationPath, 'package.json'), packageJson, {
-    spaces: 2,
-  });
+  await writeFile(path.join(entryPoint.destinationPath, 'package.json'), JSON.stringify(packageJson, undefined, 2));
 }
 
 function checkNonPeerDependencies(

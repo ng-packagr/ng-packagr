@@ -1,9 +1,11 @@
 import * as glob from 'glob';
-import { promisify } from './promisify';
+import { promisify } from 'util';
 import { flatten, toArray } from './array';
 
+const globPromise = promisify(glob);
+
 export async function globFiles(pattern: string | string[], options?: glob.IOptions): Promise<string[]> {
-  const globPromise = pattern => promisify<string[]>(resolveOrReject => glob(pattern, options, resolveOrReject));
-  const files = await Promise.all(toArray(pattern).map(globPromise));
+  const files = await Promise.all<string[]>(toArray(pattern).map(p => globPromise(p, options)));
+
   return flatten(files);
 }
