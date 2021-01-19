@@ -1,4 +1,3 @@
-import { pathExistsSync, lstat } from 'fs-extra';
 import * as path from 'path';
 import * as log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
@@ -6,6 +5,7 @@ import { NgEntryPoint } from './entry-point/entry-point';
 import { NgPackage } from './package';
 import { globFiles } from '../utils/glob';
 import { validateNgPackageSchema } from './schema';
+import { exists, lstat } from '../utils/fs';
 
 interface UserPackage {
   /** Values from the `package.json` file of this user package. */
@@ -24,7 +24,7 @@ interface UserPackage {
  * @return The user's package
  */
 async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = false): Promise<UserPackage | undefined> {
-  const readConfigFile = async (filePath: string) => (pathExistsSync(filePath) ? import(filePath) : undefined);
+  const readConfigFile = async (filePath: string) => ((await exists(filePath)) ? import(filePath) : undefined);
   const fullPath = path.resolve(folderPathOrFilePath);
   const pathStats = await lstat(fullPath);
   const basePath = pathStats.isDirectory() ? fullPath : path.dirname(fullPath);
@@ -96,6 +96,7 @@ async function findSecondaryPackagesPaths(directoryPath: string, excludeFolder: 
 
   const filePaths = await globFiles(`${directoryPath}/**/{package,ng-package}.json`, {
     ignore,
+    nodir: true,
     cwd: directoryPath,
   });
 
