@@ -48,8 +48,7 @@
         "entryFile": {
           "description": "Entry file to the public API (default: `src/public_api.ts`).",
           "type": "string",
-          "default": "src/public_api.ts",
-          "x-deprecated": true
+          "default": "src/public_api.ts"
         },
         "flatModuleFile": {
           "description": "Filename of the auto-generated flat module file (if empty, defaults to the package name as given in `package.json`).",
