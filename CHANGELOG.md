@@ -10,8 +10,6 @@ All notable changes to this project will be documented in this file. See [standa
 * add NGCC async integration ([232fb21](https://github.com/ng-packagr/ng-packagr/commit/232fb213d572294c5ea94280bd43e432e6d0995c))
 * add stylesheet processor DI ([dedb3b3](https://github.com/ng-packagr/ng-packagr/commit/dedb3b3de41c16e85fde6e39626a858bb6d473c1))
 * add support for using TypeScript 4.1 ([ffe3ab9](https://github.com/ng-packagr/ng-packagr/commit/ffe3ab935f83155cb7f5d0822902573ce96cdbe5))
-* clarify argument type of compileNgcTransformFactory ([643d3d5](https://github.com/ng-packagr/ng-packagr/commit/643d3d51d60e096d67e77a2141269a05df993eef))
-
 
 ### Bug Fixes
 
@@ -19,11 +17,6 @@ All notable changes to this project will be documented in this file. See [standa
 * changed assets not being copied during watch mode ([8d6664e](https://github.com/ng-packagr/ng-packagr/commit/8d6664e782bab40bfadd555dcdd9ef011b0104d6)), closes [#1826](https://github.com/ng-packagr/ng-packagr/issues/1826)
 * set sourceRoot to empty string to correctly resolve dts sources ([94dd2d8](https://github.com/ng-packagr/ng-packagr/commit/94dd2d8881bc06696fbe8e6b67f9f8a8e761fa96))
 * termination of process when using CTRL+C ([8f6c46e](https://github.com/ng-packagr/ng-packagr/commit/8f6c46ef4a8d418c37778b687f8f6bbb2d73f876))
-* update @rollup/plugin-commonjs to version ^17.0.0 ([b79622a](https://github.com/ng-packagr/ng-packagr/commit/b79622ab105bbbd41494369fed38159ad4783885))
-* update @rollup/plugin-node-resolve to version ^11.0.0 ([f45658a](https://github.com/ng-packagr/ng-packagr/commit/f45658a4aeb03316094803b923f6d2cf6965aee7))
-* update commander to version ^7.0.0 ([289b019](https://github.com/ng-packagr/ng-packagr/commit/289b019992cb9f3fb1c0c70aedd82e3b04e70ea5))
-* update less to version ^4.0.0 ([db8a459](https://github.com/ng-packagr/ng-packagr/commit/db8a45956555ff96a0a7fc087b8c806d0a2ab93d))
-
 
 ### Performance
 
