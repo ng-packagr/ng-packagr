@@ -220,7 +220,7 @@ class NgccLogger implements Logger {
   }
 
   info(...args: string[]) {
-    log.info(args.join(' - '));
+    log.info(args.join(' '));
   }
 
   warn(...args: string[]) {
