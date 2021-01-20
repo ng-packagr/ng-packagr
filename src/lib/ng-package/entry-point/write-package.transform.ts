@@ -32,37 +32,38 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
   if (ngPackage.assets.length && !ngEntryPoint.isSecondaryEntryPoint) {
     const assetFiles: string[] = [];
 
-    for (let asset of ngPackage.assets) {
-      asset = path.join(ngPackage.src, asset);
-
-      if (await exists(asset)) {
-        const stats = await lstat(asset);
-
-        if (stats.isFile()) {
-          assetFiles.push(asset);
-          continue;
-        }
-
-        if (stats.isDirectory()) {
-          asset = path.join(asset, '**/*');
-        }
-      }
-
-      const files = await globFiles(asset, {
-        ignore: ignorePaths,
-        cache: ngPackageNode.cache.globCache,
-        dot: true,
-        nodir: true,
-      });
-
-      if (files.length) {
-        assetFiles.push(...files);
-      }
-    }
-
     // COPY ASSET FILES TO DESTINATION
     spinner.start('Copying assets');
+
     try {
+      for (let asset of ngPackage.assets) {
+        asset = path.join(ngPackage.src, asset);
+
+        if (await exists(asset)) {
+          const stats = await lstat(asset);
+
+          if (stats.isFile()) {
+            assetFiles.push(asset);
+            continue;
+          }
+
+          if (stats.isDirectory()) {
+            asset = path.join(asset, '**/*');
+          }
+        }
+
+        const files = await globFiles(asset, {
+          ignore: ignorePaths,
+          cache: ngPackageNode.cache.globCache,
+          dot: true,
+          nodir: true,
+        });
+
+        if (files.length) {
+          assetFiles.push(...files);
+        }
+      }
+
       for (const file of assetFiles) {
         const relativePath = path.relative(ngPackage.src, file);
         const destination = path.resolve(ngPackage.dest, relativePath);
