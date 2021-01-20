@@ -6,11 +6,9 @@ import { compileSourceFiles } from '../../ngc/compile-source-files';
 import { NgccProcessor } from '../../ngc/ngcc-processor';
 import { setDependenciesTsConfigPaths } from '../../ts/tsconfig';
 import { isEntryPointInProgress, EntryPointNode, isEntryPoint } from '../nodes';
-import { StylesheetProcessor } from '../../styles/stylesheet-processor';
+import { StylesheetProcessor as StylesheetProcessorClass } from '../../styles/stylesheet-processor';
 
-export const compileNgcTransformFactory = (StylesheetProcessor: {
-  new (...args: any[]): StylesheetProcessor;
-}): Transform => {
+export const compileNgcTransformFactory = (StylesheetProcessor: typeof StylesheetProcessorClass): Transform => {
   return transformFromPromise(async graph => {
     const spinner = ora({
       hideCursor: false,
