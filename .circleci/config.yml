@@ -133,6 +133,9 @@ workflows:
           filters:
             tags:
               only: /v.*/
+            branches:
+              ignore:
+                - /pull\/\d+/
           requires:
             - setup
       - deploy:
