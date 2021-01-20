@@ -237,7 +237,7 @@ const writeNpmPackage = (pkgUri: string): Transform =>
   pipe(
     switchMap(async graph => {
       const { data } = graph.get(pkgUri);
-      const files = [`${data.src}/LICENSE`, `${data.src}/README.md`, `${data.src}/CHANGELOG.md`];
+      const files = [`${data.src}/LICENSE`, `${data.src}/README.md`];
 
       for (const src of files) {
         if (await exists(src)) {
