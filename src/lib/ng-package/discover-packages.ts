@@ -26,8 +26,8 @@ interface UserPackage {
 async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = false): Promise<UserPackage | undefined> {
   const readConfigFile = async (filePath: string) => ((await exists(filePath)) ? import(filePath) : undefined);
   const fullPath = path.resolve(folderPathOrFilePath);
-  const isDirectory = (await stat(fullPath)).isDirectory();
-  const basePath = isDirectory ? fullPath : path.dirname(fullPath);
+  const pathStats = await stat(fullPath);
+  const basePath = pathStats.isDirectory() ? fullPath : path.dirname(fullPath);
   const packageJson: unknown = await readConfigFile(path.join(basePath, 'package.json'));
 
   if (!packageJson && !isSecondary) {
@@ -42,7 +42,7 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
   if (packageJson && packageJson['ngPackage']) {
     // Read `ngPackage` from `package.json`
     ngPackageJson = { ...packageJson['ngPackage'] };
-  } else if (isDirectory) {
+  } else if (pathStats.isDirectory()) {
     ngPackageJson = await readConfigFile(path.join(basePath, 'ng-package.json'));
     if (!ngPackageJson) {
       ngPackageJson = await readConfigFile(path.join(basePath, 'ng-package.js'));
