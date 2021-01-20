@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [11.1.1](https://github.com/ng-packagr/ng-packagr/compare/v11.1.0...v11.1.1) (2021-01-20)
+
+
+### Bug Fixes
+
+* await async process method ([361e43b](https://github.com/ng-packagr/ng-packagr/commit/361e43ba773021ef1b63525a67011c4e514a8ea8))
+
 ## [11.1.0](https://github.com/ng-packagr/ng-packagr/compare/v11.0.3...v11.1.0) (2021-01-20)
 
 
