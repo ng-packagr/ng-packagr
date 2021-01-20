@@ -1,20 +1,16 @@
-const copyfiles = require('copyfiles');
+const { readFileSync, copyFileSync, writeFileSync, constants, mkdirSync } = require('fs');
 
-const copy = (paths, opts) => {
-  return new Promise((resolve, reject) => {
-    copyfiles(paths, opts || {}, function(err) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
-  });
-};
+copyFileSync('LICENSE', 'dist/LICENSE', constants.COPYFILE_FICLONE);
+copyFileSync('README.md', 'dist/README.md', constants.COPYFILE_FICLONE);
+copyFileSync('src/package.schema.json', 'dist/package.schema.json', constants.COPYFILE_FICLONE);
+copyFileSync('src/ng-package.schema.json', 'dist/ng-package.schema.json', constants.COPYFILE_FICLONE);
 
-copy(['src/**.schema.json', 'dist'], { up: 1 })
-  .then(() => copy(['src/lib/ts/conf/**/*.json', 'dist'], { up: 1 }))
-  .catch(err => {
-    console.error('Cannot copy files', err);
-    process.exit(1);
-  });
+mkdirSync('dist/lib/ts/conf', { recursive: true });
+copyFileSync('src/lib/ts/conf/tsconfig.ngc.json', 'dist/lib/ts/conf/tsconfig.ngc.json', constants.COPYFILE_FICLONE);
+
+const packageJson = JSON.parse(readFileSync('package.json'));
+delete packageJson['devDependencies'];
+delete packageJson['scripts'];
+delete packageJson['private'];
+delete packageJson['husky'];
+writeFileSync('dist/package.json', JSON.stringify(packageJson, undefined, 2));
