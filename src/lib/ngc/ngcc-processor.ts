@@ -15,7 +15,7 @@ export class NgccProcessor {
   private _nodeModulesDirectory: string;
   private _entryPointsUrl: string[];
   private readonly propertiesToConsider = ['es2015', 'browser', 'module', 'main'];
-  private skipProcessing = true;
+  private skipProcessing = false;
 
   constructor(
     private readonly ngccProcessingCache: NgccProcessingCache,
