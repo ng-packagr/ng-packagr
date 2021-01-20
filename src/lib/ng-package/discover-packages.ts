@@ -5,7 +5,7 @@ import { NgEntryPoint } from './entry-point/entry-point';
 import { NgPackage } from './package';
 import { globFiles } from '../utils/glob';
 import { validateNgPackageSchema } from './schema';
-import { exists, lstat } from '../utils/fs';
+import { exists, stat } from '../utils/fs';
 
 interface UserPackage {
   /** Values from the `package.json` file of this user package. */
@@ -26,8 +26,8 @@ interface UserPackage {
 async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = false): Promise<UserPackage | undefined> {
   const readConfigFile = async (filePath: string) => ((await exists(filePath)) ? import(filePath) : undefined);
   const fullPath = path.resolve(folderPathOrFilePath);
-  const pathStats = await lstat(fullPath);
-  const basePath = pathStats.isDirectory() ? fullPath : path.dirname(fullPath);
+  const isDirectory = (await stat(fullPath)).isDirectory();
+  const basePath = isDirectory ? fullPath : path.dirname(fullPath);
   const packageJson: unknown = await readConfigFile(path.join(basePath, 'package.json'));
 
   if (!packageJson && !isSecondary) {
@@ -42,7 +42,7 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
   if (packageJson && packageJson['ngPackage']) {
     // Read `ngPackage` from `package.json`
     ngPackageJson = { ...packageJson['ngPackage'] };
-  } else if (pathStats.isDirectory()) {
+  } else if (isDirectory) {
     ngPackageJson = await readConfigFile(path.join(basePath, 'ng-package.json'));
     if (!ngPackageJson) {
       ngPackageJson = await readConfigFile(path.join(basePath, 'ng-package.js'));
