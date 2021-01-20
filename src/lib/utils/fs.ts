@@ -8,7 +8,7 @@ export const readFile = promisify(fs.readFile);
 export const writeFile = promisify(fs.writeFile);
 export const access = promisify(fs.access);
 export const mkdir = promisify(fs.mkdir);
-export const lstat = promisify(fs.lstat);
+export const stat = promisify(fs.stat);
 
 export async function exists(path: fs.PathLike): Promise<boolean> {
   try {

@@ -5,7 +5,7 @@ import { colors } from '../../utils/color';
 import { NgEntryPoint } from './entry-point';
 import { NgPackage } from '../package';
 import { ensureUnixPath } from '../../utils/path';
-import { copyFile, exists, lstat, rimraf, writeFile } from '../../utils/fs';
+import { copyFile, exists, stat, rimraf, writeFile } from '../../utils/fs';
 import * as log from '../../utils/log';
 import { globFiles } from '../../utils/glob';
 import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode, fileUrl } from '../nodes';
@@ -40,8 +40,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
         asset = path.join(ngPackage.src, asset);
 
         if (await exists(asset)) {
-          const stats = await lstat(asset);
-
+          const stats = await stat(asset);
           if (stats.isFile()) {
             assetFiles.push(asset);
             continue;
