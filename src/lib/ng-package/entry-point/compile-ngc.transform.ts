@@ -30,6 +30,11 @@ export const compileNgcTransform: Transform = transformFromPromise(async graph =
       ? new NgccProcessor(ngccProcessingCache, tsConfig.project, tsConfig.options, entryPoints)
       : undefined;
 
+    if (ngccProcessor && !entryPoint.data.entryPoint.isSecondaryEntryPoint) {
+      // Only run the async version of NGCC during the primary entrypoint processing.
+      ngccProcessor.process();
+    }
+
     await compileSourceFiles(
       graph,
       tsConfig,
