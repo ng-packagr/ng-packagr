@@ -33,7 +33,7 @@ export const compileNgcTransformFactory = (StylesheetProcessor: typeof Styleshee
 
       if (ngccProcessor && !entryPoint.data.entryPoint.isSecondaryEntryPoint) {
         // Only run the async version of NGCC during the primary entrypoint processing.
-        ngccProcessor.process();
+        await ngccProcessor.process();
       }
 
       await compileSourceFiles(
