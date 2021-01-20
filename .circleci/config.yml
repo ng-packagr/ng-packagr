@@ -135,7 +135,7 @@ workflows:
               only: /v.*/
             branches:
               ignore:
-                - /pull\/\d+/
+                - /renovate\/.*
           requires:
             - setup
       - deploy:
