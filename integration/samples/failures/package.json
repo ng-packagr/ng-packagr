@@ -6,6 +6,7 @@
   },
   "ngPackage": {
     "dest": "./dist",
+    "deleteDestPath": true,
     "lib": {
       "entryFile": "index.ts"
     }
