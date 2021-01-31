@@ -83,7 +83,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
   const potentialDependencies = new Set<string>();
   program
     .getSourceFiles()
-    .filter(x => !x.fileName.endsWith('.d.ts'))
+    .filter(sf => !sf.isDeclarationFile)
     .forEach(sourceFile => {
       sourceFile.statements
         .filter(x => ts.isImportDeclaration(x) || ts.isExportDeclaration(x))
