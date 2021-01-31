@@ -14,7 +14,17 @@ describe('@sample/apf', () => {
       // this is a safe guard / alternative to snapshots in order to
       // protect ourselves from doing a change that will emit unexpected files.
       const files = glob.sync(path.join(DIST, '**/*'));
-      expect(files.length).to.equals(82);
+      expect(files.length).to.equals(83);
+    });
+
+    it(`should contain a README.md file`, () => {
+      const file = fs.existsSync(path.join(DIST, 'README.md'));
+      expect(file).to.be.true;
+    });
+
+    it(`should contain a LICENSE life`, () => {
+      const file = fs.existsSync(path.join(DIST, 'LICENSE'));
+      expect(file).to.be.true;
     });
 
     it(`should not have a nested 'dist' folder`, () => {

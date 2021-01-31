@@ -18,7 +18,7 @@ import { DepthBuilder } from '../graph/depth';
 import { STATE_IN_PROGESS } from '../graph/node';
 import { Transform } from '../graph/transform';
 import * as log from '../utils/log';
-import { copyFile, exists, rimraf } from '../utils/fs';
+import { copyFile, exists, rimraf, stat } from '../utils/fs';
 import {
   PackageNode,
   EntryPointNode,
@@ -237,11 +237,14 @@ const writeNpmPackage = (pkgUri: string): Transform =>
   pipe(
     switchMap(async graph => {
       const { data } = graph.get(pkgUri);
-      const files = [`${data.src}/LICENSE`, `${data.src}/README.md`];
+      const srcFiles = [`${data.src}/LICENSE`, `${data.src}/README.md`];
 
-      for (const src of files) {
-        if (await exists(src)) {
-          await copyFile(src, path.join(data.dest, path.basename(src)));
+      for (const srcFile of srcFiles) {
+        if (await exists(srcFile)) {
+          const srcFileStats = await stat(srcFile);
+          if (srcFileStats.isFile()) {
+            await copyFile(srcFile, path.join(data.dest, path.basename(srcFile)));
+          }
         }
       }
 
