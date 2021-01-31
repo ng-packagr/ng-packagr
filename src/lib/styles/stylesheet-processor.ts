@@ -25,11 +25,11 @@ export enum CssUrl {
  *   Yarn:
  *     `yarn add node-sass --dev`
  */
-let sassComplier: any | undefined;
+let sassCompiler: any | undefined;
 try {
-  sassComplier = require('node-sass'); // Check if node-sass is explicitly included.
+  sassCompiler = require('node-sass'); // Check if node-sass is explicitly included.
 } catch {
-  sassComplier = require('sass');
+  sassCompiler = require('sass');
 }
 
 export class StylesheetProcessor {
@@ -63,7 +63,7 @@ export class StylesheetProcessor {
     switch (ext) {
       case '.sass':
       case '.scss':
-        return sassComplier
+        return sassCompiler
           .renderSync({
             file: filePath,
             data: content,
