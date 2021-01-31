@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { NgPackageConfig } from '../../../ng-package.schema';
 import { CssUrl } from '../../styles/stylesheet-processor';
+import { ensureUnixPath } from '../../utils/path';
 
 /** A list of output absolute paths for various formats */
 export interface DestinationFiles {
@@ -48,15 +49,17 @@ export interface DestinationFiles {
  * The parent package of an entry point is reflected by `NgPackage`.
  */
 export class NgEntryPoint {
+  /**
+   * @param packageJson Values from the `package.json` file of this entry point.
+   * @param ngPackageJson Values from either the `ngPackage` option (from `package.json`) or values from `ng-package.json`.
+   * @param basePath Absolute directory path of this entry point's `package.json` location.
+   * @param parent The parent entry point, if any.
+   */
   constructor(
-    /** Values from the `package.json` file of this entry point. */
     public readonly packageJson: Record<string, any>,
-    /** Values from either the `ngPackage` option (from `package.json`) or values from `ng-package.json`. */
     public readonly ngPackageJson: NgPackageConfig,
-    /** Absolute directory path of this entry point's `package.json` location. */
     public readonly basePath: string,
-    /** XX: additional auto-configured data passed for secondary entry point's. Needs better docs. */
-    private readonly secondaryData?: { [key: string]: any },
+    private readonly parent?: NgEntryPoint,
   ) {}
 
   /** Absolute file path of the entry point's source code entry file. */
@@ -66,35 +69,33 @@ export class NgEntryPoint {
 
   /** Whether or not the entrypoint is secondary */
   public get isSecondaryEntryPoint(): boolean {
-    return !!this.secondaryData;
+    return !!this.parent;
   }
 
-  /** Absolute directory path of this entry point's 'package.json'. */
+  /** Absolute directory path of the entrypoint package.json. */
   public get destinationPath(): string {
-    if (this.secondaryData) {
-      return this.secondaryData.destinationPath;
+    if (this.parent) {
+      return path.join(this.libraryDestinationPath, this.sourceRelativePath);
     } else {
-      return path.resolve(this.basePath, this.$get('dest'));
+      return this.libraryDestinationPath;
     }
   }
 
   /** Absolute directory path of the library output directory. */
   public get libraryDestinationPath(): string {
-    if (this.secondaryData) {
-      return this.secondaryData.primaryDestinationPath;
+    if (this.parent) {
+      return this.parent.libraryDestinationPath;
     } else {
-      return this.destinationPath;
+      return path.resolve(this.basePath, this.$get('dest'));
     }
   }
 
   /**
-   * The entry source path relative to the primary entry point source path.
-   *
-   * TODO: Use base paths to determine the entry point source relative path.
+   * The entry source path relative to the parent entry point source path.
    */
   private get sourceRelativePath(): string {
-    if (this.secondaryData) {
-      return path.relative(this.secondaryData.primaryDestinationPath, this.secondaryData.destinationPath);
+    if (this.parent) {
+      return path.relative(this.parent.basePath, this.basePath);
     } else {
       return '';
     }
@@ -157,8 +158,8 @@ export class NgEntryPoint {
    * is not always the case due to various module resolution strategies."
    */
   public get moduleId(): string {
-    if (this.secondaryData) {
-      return this.secondaryData.moduleId;
+    if (this.parent) {
+      return ensureUnixPath(`${this.parent.moduleId}/${this.sourceRelativePath}`);
     } else {
       return this.packageJson['name'];
     }

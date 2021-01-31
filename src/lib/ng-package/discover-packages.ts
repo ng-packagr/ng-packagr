@@ -1,6 +1,5 @@
 import * as path from 'path';
 import * as log from '../utils/log';
-import { ensureUnixPath } from '../utils/path';
 import { NgEntryPoint } from './entry-point/entry-point';
 import { NgPackage } from './package';
 import { globFiles } from '../utils/glob';
@@ -115,15 +114,7 @@ function secondaryEntryPoint(primary: NgEntryPoint, userPackage: UserPackage): N
     log.error(`Cannot read secondary entry point. It's already a primary entry point. Path: ${basePath}`);
     throw new Error(`Secondary entry point is already a primary.`);
   }
-
-  const relativeSourcePath = path.relative(primary.basePath, basePath);
-  const secondaryModuleId = ensureUnixPath(`${primary.moduleId}/${relativeSourcePath}`);
-
-  return new NgEntryPoint(packageJson, ngPackageJson, basePath, {
-    moduleId: secondaryModuleId,
-    primaryDestinationPath: primary.destinationPath,
-    destinationPath: path.join(primary.destinationPath, relativeSourcePath),
-  });
+  return new NgEntryPoint(packageJson, ngPackageJson, basePath, primary);
 }
 
 export async function discoverPackages({ project }: { project: string }): Promise<NgPackage> {
