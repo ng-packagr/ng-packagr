@@ -1,7 +1,7 @@
 export type NodeState = '' | 'dirty' | 'in-progress' | 'pending' | 'done';
 
 export const STATE_DIRTY: NodeState = 'dirty';
-export const STATE_IN_PROGESS: NodeState = 'in-progress';
+export const STATE_IN_PROGRESS: NodeState = 'in-progress';
 export const STATE_PENDING: NodeState = 'pending';
 export const STATE_DONE: NodeState = 'done';
 

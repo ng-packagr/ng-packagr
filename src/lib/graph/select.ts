@@ -1,4 +1,4 @@
-import { Node, STATE_IN_PROGESS, STATE_PENDING, STATE_DIRTY, STATE_DONE } from './node';
+import { Node, STATE_IN_PROGRESS, STATE_PENDING, STATE_DIRTY, STATE_DONE } from './node';
 
 export function and(...criteria: ((node: Node) => boolean)[]) {
   return (node: Node) => criteria.every(c => c(node));
@@ -13,7 +13,7 @@ export function by(
   function fn(args) {
     return criteria(args);
   }
-  fn['and'] = function(args) {
+  fn['and'] = function (args) {
     return and(criteria, args);
   };
 
@@ -21,7 +21,7 @@ export function by(
 }
 
 export function isInProgress(node: Node): boolean {
-  return node.state === STATE_IN_PROGESS;
+  return node.state === STATE_IN_PROGRESS;
 }
 
 export function isPending(node: Node): boolean {
