@@ -78,25 +78,39 @@ export class NgEntryPoint {
     }
   }
 
-  public get destinationFiles(): DestinationFiles {
-    let primaryDestPath = this.destinationPath;
-    let secondaryDir = '';
-
+  /** Absolute directory path of the library output directory. */
+  public get libraryDestinationPath(): string {
     if (this.secondaryData) {
-      primaryDestPath = this.secondaryData.primaryDestinationPath;
-      secondaryDir = path.relative(primaryDestPath, this.secondaryData.destinationPath);
+      return this.secondaryData.primaryDestinationPath;
+    } else {
+      return this.destinationPath;
     }
+  }
 
-    const flatModuleFile = this.flatModuleFile;
-    const pathJoinWithDest = (...paths: string[]) => path.join(primaryDestPath, ...paths);
+  /**
+   * The entry source path relative to the primary entry point source path.
+   *
+   * TODO: Use base paths to determine the entry point source relative path.
+   */
+  private get sourceRelativePath(): string {
+    if (this.secondaryData) {
+      return path.relative(this.secondaryData.primaryDestinationPath, this.secondaryData.destinationPath);
+    } else {
+      return '';
+    }
+  }
 
+  public get destinationFiles(): DestinationFiles {
+    const libDest = this.libraryDestinationPath;
+    const entryPointDest = this.destinationPath;
+    const moduleFileName = this.flatModuleFile;
     return {
-      metadata: pathJoinWithDest(secondaryDir, `${flatModuleFile}.metadata.json`),
-      declarations: pathJoinWithDest(secondaryDir, `${flatModuleFile}.d.ts`),
-      esm2015: pathJoinWithDest('esm2015', secondaryDir, `${flatModuleFile}.js`),
-      fesm2015: pathJoinWithDest('fesm2015', `${flatModuleFile}.js`),
-      umd: pathJoinWithDest('bundles', `${flatModuleFile}.umd.js`),
-      umdMinified: pathJoinWithDest('bundles', `${flatModuleFile}.umd.min.js`),
+      metadata: path.join(entryPointDest, `${moduleFileName}.metadata.json`),
+      declarations: path.join(entryPointDest, `${moduleFileName}.d.ts`),
+      esm2015: path.join(libDest, 'esm2015', this.sourceRelativePath, `${moduleFileName}.js`),
+      fesm2015: path.join(libDest, 'fesm2015', `${moduleFileName}.js`),
+      umd: path.join(libDest, 'bundles', `${moduleFileName}.umd.js`),
+      umdMinified: path.join(libDest, 'bundles', `${moduleFileName}.umd.min.js`),
     };
   }
 
@@ -132,7 +146,7 @@ export class NgEntryPoint {
 
   public get styleIncludePaths(): string[] {
     const includePaths = this.$get('lib.styleIncludePaths') || [];
-    return includePaths.map((includePath) =>
+    return includePaths.map(includePath =>
       path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath),
     );
   }

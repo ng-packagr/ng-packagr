@@ -4,8 +4,8 @@ import { NgPackageConfig } from '../../../ng-package.schema';
 import { NgEntryPoint } from './entry-point';
 
 describe(`NgEntryPoint`, () => {
-  const testDestinationPath = '/example/entry-point/dest'
-  const testSourcePath = '/example/entry-point/src'
+  const testSourcePath: string = resolve('/example/entry-point/src');
+  const testDestinationPath: string = resolve('/example/entry-point/dest');
   let primaryEntryPoint: NgEntryPoint;
   let secondaryEntryPoint: NgEntryPoint;
   let packageJson: Record<string, any>;
@@ -31,9 +31,10 @@ describe(`NgEntryPoint`, () => {
     expect(primaryEntryPoint.basePath).to.equal(testSourcePath);
 
     // Test readonly getters:
-    expect(primaryEntryPoint.entryFilePath).to.equal(resolve(testSourcePath, 'public-api.ts'));
+    expect(primaryEntryPoint.entryFilePath).to.equal(join(testSourcePath, 'public-api.ts'));
     expect(primaryEntryPoint.isSecondaryEntryPoint).to.be.false;
-    expect(primaryEntryPoint.destinationPath).to.equal(resolve(testDestinationPath));
+    expect(primaryEntryPoint.destinationPath).to.equal(testDestinationPath);
+    expect(primaryEntryPoint.libraryDestinationPath).to.equal(testDestinationPath);
     expect(Object.keys(primaryEntryPoint.destinationFiles).length).to.equal(6);
     expect(primaryEntryPoint.entryFile).to.equal('public-api.ts');
     expect(primaryEntryPoint.cssUrl).to.be.undefined;  // TODO: should default to 'inline'.
@@ -72,12 +73,12 @@ describe(`NgEntryPoint`, () => {
     };
     primaryEntryPoint = new NgEntryPoint(packageJson, primaryNgPackageJson, testSourcePath);
 
-    expect(primaryEntryPoint.entryFilePath).to.equal(resolve(testSourcePath, 'test-api.ts'));
+    expect(primaryEntryPoint.entryFilePath).to.equal(join(testSourcePath, 'test-api.ts'));
     expect(primaryEntryPoint.entryFile).to.equal('test-api.ts');
     expect(primaryEntryPoint.cssUrl).to.equal('inline');
     expect(Object.entries(primaryEntryPoint.umdModuleIds)).to.deep.equal([['@example/test-module', 'example.testModule']]);
     expect(primaryEntryPoint.flatModuleFile).to.equal('exampleTestEntryPoint');
-    expect(primaryEntryPoint.styleIncludePaths).to.deep.equal([resolve(testSourcePath, './style-includes')]);
+    expect(primaryEntryPoint.styleIncludePaths).to.deep.equal([join(testSourcePath, './style-includes')]);
     expect(primaryEntryPoint.umdId).to.equal('example.testEntryPoint');
     expect(primaryEntryPoint.amdId).to.equal('@example/testEntryPoint');
     expect(primaryEntryPoint.sideEffects).to.be.true;
@@ -101,17 +102,19 @@ describe(`NgEntryPoint`, () => {
       },
     };
     const secondaryEntryPointRelativeSourcePath = 'extra';
-    const secondaryEntryPointBasePath = join(testSourcePath, secondaryEntryPointRelativeSourcePath);
+    const secondaryEntryPointSourcePath = join(testSourcePath, secondaryEntryPointRelativeSourcePath);
+    const secondaryEntryPointDestinationPath = join(testDestinationPath, secondaryEntryPointRelativeSourcePath);
     secondaryData = {
       moduleId: `@example/test-entry-point/${ secondaryEntryPointRelativeSourcePath }`,
       primaryDestinationPath: primaryEntryPoint.destinationPath,
       destinationPath: join(primaryEntryPoint.destinationPath, secondaryEntryPointRelativeSourcePath),
     };
-    secondaryEntryPoint = new NgEntryPoint(packageJson, secondaryNgPackageJson, secondaryEntryPointBasePath, secondaryData);
+    secondaryEntryPoint = new NgEntryPoint(packageJson, secondaryNgPackageJson, secondaryEntryPointSourcePath, secondaryData);
 
-    expect(secondaryEntryPoint.entryFilePath).to.equal(resolve(secondaryEntryPointBasePath, 'public-api.ts'));
+    expect(secondaryEntryPoint.entryFilePath).to.equal(join(secondaryEntryPointSourcePath, 'public-api.ts'));
     expect(secondaryEntryPoint.isSecondaryEntryPoint).to.be.true;
-    expect(secondaryEntryPoint.destinationPath).to.equal(resolve(secondaryData.destinationPath));
+    expect(secondaryEntryPoint.destinationPath).to.equal(secondaryEntryPointDestinationPath);
+    expect(secondaryEntryPoint.libraryDestinationPath).to.equal(testDestinationPath);
     expect(Object.keys(secondaryEntryPoint.destinationFiles).length).to.equal(6);
     expect(secondaryEntryPoint.entryFile).to.equal('public-api.ts');
     expect(secondaryEntryPoint.cssUrl).to.be.undefined;  // TODO: should default to 'inline'.
@@ -159,12 +162,12 @@ describe(`NgEntryPoint`, () => {
     };
     secondaryEntryPoint = new NgEntryPoint(packageJson, secondaryNgPackageJson, secondaryEntryPointBasePath, secondaryData);
 
-    expect(secondaryEntryPoint.entryFilePath).to.equal(resolve(secondaryEntryPointBasePath, 'demo-api.ts'));
+    expect(secondaryEntryPoint.entryFilePath).to.equal(join(secondaryEntryPointBasePath, 'demo-api.ts'));
     expect(secondaryEntryPoint.entryFile).to.equal('demo-api.ts');
     expect(secondaryEntryPoint.cssUrl).to.equal('none');
     expect(Object.entries(secondaryEntryPoint.umdModuleIds)).to.deep.equal([['@example/test-module/extra', 'example.testModuleExtra']]);
     expect(secondaryEntryPoint.flatModuleFile).to.equal('exampleTestEntryPointExtra');
-    expect(secondaryEntryPoint.styleIncludePaths).to.deep.equal([resolve(secondaryEntryPointBasePath, './style-includes')]);
+    expect(secondaryEntryPoint.styleIncludePaths).to.deep.equal([join(secondaryEntryPointBasePath, './style-includes')]);
     expect(secondaryEntryPoint.umdId).to.equal('example.testEntryPointExtra');
     expect(secondaryEntryPoint.amdId).to.equal('@example/testEntryPointExtra');
     expect(secondaryEntryPoint.sideEffects).to.be.true;
