@@ -58,8 +58,7 @@ jobs:
       - run: yarn build
       - run: yarn test:specs
       - run: yarn integration:samples
-      - run: yarn integration:specs
-      - run: yarn integration:watch:specs
+      - run: yarn integration:watch
       - run: yarn integration:consumers
       - persist_to_workspace:
           root: ~/repo
@@ -108,7 +107,6 @@ jobs:
       - run: yarn build
       - run: yarn test:specs
       - run: yarn integration:samples
-      - run: yarn integration:specs
       - save_cache:
           key: v6-dependencies-win-{{ checksum "yarn.lock" }}
           paths:
