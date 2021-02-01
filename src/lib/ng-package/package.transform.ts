@@ -18,7 +18,7 @@ import { DepthBuilder } from '../graph/depth';
 import { STATE_IN_PROGESS } from '../graph/node';
 import { Transform } from '../graph/transform';
 import * as log from '../utils/log';
-import { copyFile, exists, rimraf, stat } from '../utils/fs';
+import { copyFile, rimraf, stat } from '../utils/fs';
 import {
   PackageNode,
   EntryPointNode,
@@ -240,11 +240,13 @@ const writeNpmPackage = (pkgUri: string): Transform =>
       const srcFiles = [`${data.src}/LICENSE`, `${data.src}/README.md`];
 
       for (const srcFile of srcFiles) {
-        if (await exists(srcFile)) {
-          const srcFileStats = await stat(srcFile);
-          if (srcFileStats.isFile()) {
-            await copyFile(srcFile, path.join(data.dest, path.basename(srcFile)));
-          }
+        let isFile = false;
+        try {
+          isFile = (await stat(srcFile)).isFile();
+        } catch { }
+
+        if (isFile) {
+          await copyFile(srcFile, path.join(data.dest, path.basename(srcFile)));
         }
       }
 
