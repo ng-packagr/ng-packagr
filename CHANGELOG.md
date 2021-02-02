@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [11.1.3](https://github.com/ng-packagr/ng-packagr/compare/v11.1.2...v11.1.3) (2021-02-02)
+
+
+### Bug Fixes
+
+* ensure license entry point is properly built ([#1849](https://github.com/ng-packagr/ng-packagr/issues/1849)) ([ed6b15a](https://github.com/ng-packagr/ng-packagr/commit/ed6b15a1d009d5a9597a186417ece37018176c59))
+
 ### [11.1.2](https://github.com/ng-packagr/ng-packagr/compare/v11.1.1...v11.1.2) (2021-01-20)
 
 ### [11.1.1](https://github.com/ng-packagr/ng-packagr/compare/v11.1.0...v11.1.1) (2021-01-20)
