@@ -112,7 +112,7 @@
     "schema": "json2ts --input src/ng-package.schema.json --output src/ng-package.schema.ts",
     "release": "standard-version --releaseCommitMessageFormat 'release: cut v{{currentTag}}' --no-verify",
     "publish:ci": "yarn build",
-    "integration:consumers": "integration/consumers.sh",
+    "integration:consumers": "node integration/consumers.js",
     "integration:samples": "node integration/samples.js",
     "integration:watch": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json mocha --timeout 25000 --require ts-node/register \"integration/watch/*.spec.ts\"",
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json mocha --require ts-node/register \"src/**/*.spec.ts\"",
