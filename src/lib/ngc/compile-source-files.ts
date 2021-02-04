@@ -7,7 +7,6 @@ import { BuildGraph } from '../graph/build-graph';
 import { EntryPointNode, isEntryPointInProgress } from '../ng-package/nodes';
 import { NgccProcessor } from './ngcc-processor';
 import { ngccTransformCompilerHost } from '../ts/ngcc-transform-compiler-host';
-import { createEmitCallback } from './create-emit-callback';
 
 export async function compileSourceFiles(
   graph: BuildGraph,
@@ -79,8 +78,6 @@ export async function compileSourceFiles(
     // certain errors are only emitted by a compilation hence append to previous diagnostics
     const { diagnostics } = ngProgram.emit({
       emitFlags,
-      // For Ivy we don't need a custom emitCallback to have tsickle transforms
-      emitCallback: tsConfigOptions.enableIvy ? undefined : createEmitCallback(tsConfigOptions),
     });
 
     allDiagnostics.push(...diagnostics);
