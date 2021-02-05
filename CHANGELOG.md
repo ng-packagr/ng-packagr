@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [11.1.4](https://github.com/ng-packagr/ng-packagr/compare/v11.1.3...v11.1.4) (2021-02-05)
+
+
+### Bug Fixes
+
+* remove optional dependency on tsickle ([d3e46ce](https://github.com/ng-packagr/ng-packagr/commit/d3e46ce87d599fe5d2bb3ff57a3c3802277c3f35))
+
 ### [11.1.3](https://github.com/ng-packagr/ng-packagr/compare/v11.1.2...v11.1.3) (2021-02-02)
 
 
