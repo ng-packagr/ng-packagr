@@ -1,6 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "allowJs": true
   },
   "include": ["**/specs/*.ts"]

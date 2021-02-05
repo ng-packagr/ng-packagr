@@ -1,10 +1,10 @@
 import * as fs from 'fs-extra';
 import * as sinon from 'sinon';
 import * as path from 'path';
-import * as log from '../../src/lib/utils/log';
+import * as log from '../../dist/lib/utils/log';
 import { expect } from 'chai';
 import { Subscription } from 'rxjs';
-import { ngPackagr } from '../../src/public_api';
+import { ngPackagr } from '../../dist';
 import { tap } from 'rxjs/operators';
 
 /**
@@ -106,7 +106,7 @@ export class TestHarness {
   }
 
   private setUpNgPackagr(): Promise<void> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       this.ngPackagr$$ = ngPackagr()
         .forProject(path.join(this.testTempPath, 'package.json'))
         .watch()
