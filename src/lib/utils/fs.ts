@@ -4,11 +4,11 @@ import * as fs from 'fs';
 import { dirname } from 'path';
 
 export const rimraf = promisify(rm);
-export const readFile = promisify(fs.readFile);
-export const writeFile = promisify(fs.writeFile);
-export const access = promisify(fs.access);
-export const mkdir = promisify(fs.mkdir);
-export const stat = promisify(fs.stat);
+export const readFile = fs.promises.readFile;
+export const writeFile = fs.promises.writeFile;
+export const access = fs.promises.access;
+export const mkdir = fs.promises.mkdir;
+export const stat = fs.promises.stat;
 
 export async function exists(path: fs.PathLike): Promise<boolean> {
   try {
