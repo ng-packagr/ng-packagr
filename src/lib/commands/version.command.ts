@@ -8,17 +8,9 @@ import { Command } from './command';
  *
  * @stable
  */
-export const version: Command<any, void> = (pkg: any) => {
-  let TSICKLE_VERSION = '';
-  try {
-    TSICKLE_VERSION = require('tsickle/package.json').version;
-  } catch {}
-
-  const NG_PACKAGR_VERSION = pkg ? pkg.version : 'unknown';
-
-  console.log(`ng-packagr:            ` + NG_PACKAGR_VERSION);
+export const version: Command<any, void> = () => {
+  console.log(`ng-packagr:            ` + require('../../package.json').version);
   console.log(`@angular/compiler:     ` + COMPILER_VERSION.full);
   console.log(`rollup:                ` + ROLLUP_VERSION);
-  console.log(`tsickle:               ` + TSICKLE_VERSION);
   console.log(`typescript:            ` + TS_VERSION);
 };
