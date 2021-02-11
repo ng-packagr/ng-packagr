@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/v11.2.0...v12.0.0-next.0) (2021-02-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* Node.js version 10 will become EOL on 2021-04-30.
+Angular CLI 12 will require Node.js 12.13+ or 14.15+. Node.js 12.13 and 14.15 are the first LTS releases for their respective majors.
+
+* update to use Node 12 APIs ([69ec8e2](https://github.com/ng-packagr/ng-packagr/commit/69ec8e2e4ff7466a91ef3ff64c14c2809f8ebb46))
+
 ## [11.2.0](https://github.com/ng-packagr/ng-packagr/compare/v11.1.4...v11.2.0) (2021-02-10)
 
 ### [11.1.4](https://github.com/ng-packagr/ng-packagr/compare/v11.1.3...v11.1.4) (2021-02-05)
