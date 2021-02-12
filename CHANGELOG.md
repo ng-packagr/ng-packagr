@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [11.2.1](https://github.com/ng-packagr/ng-packagr/compare/v11.2.0...v11.2.1) (2021-02-12)
+
+
+### Bug Fixes
+
+* use `path.join` instead of `require.resolve` to resolve worker ([784d340](https://github.com/ng-packagr/ng-packagr/commit/784d3406b7687a4940d3c388979b3b54bfa8385d)), closes [#1867](https://github.com/ng-packagr/ng-packagr/issues/1867)
+
+
+### Performance
+
+* use sync-rcp instead of execFileSync to transform async function to sync functions [#1872](https://github.com/ng-packagr/ng-packagr/issues/1872) ([b9b25b5](https://github.com/ng-packagr/ng-packagr/commit/b9b25b51e4a0dd64b9a55e3186254891f7d339d1))
+
 ## [11.2.0](https://github.com/ng-packagr/ng-packagr/compare/v11.1.4...v11.2.0) (2021-02-10)
 
 ### [11.1.4](https://github.com/ng-packagr/ng-packagr/compare/v11.1.3...v11.1.4) (2021-02-05)
