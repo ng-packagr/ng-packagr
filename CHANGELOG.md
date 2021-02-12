@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.0...v12.0.0-next.1) (2021-02-12)
+
+
+### Features
+
+* add support for Angular version 12 ([5fc70d0](https://github.com/ng-packagr/ng-packagr/commit/5fc70d0e8c7924a1e6687589a2c854b190165a09))
+
+
+### Bug Fixes
+
+* update @angular/cdk to version ~11.2.0 ([d96dbab](https://github.com/ng-packagr/ng-packagr/commit/d96dbab73594e107ca3ecb9c13c99a82158f4e5e))
+* use `path.join` instead of `require.resolve` to resolve worker ([6a9a23d](https://github.com/ng-packagr/ng-packagr/commit/6a9a23d9c4ce7f43656c00a5746b088150b7003f)), closes [#1867](https://github.com/ng-packagr/ng-packagr/issues/1867)
+
+
+### Performance
+
+* use sync-rcp instead of execFileSync to transform async function to sync functions [#1872](https://github.com/ng-packagr/ng-packagr/issues/1872) ([9ccafb0](https://github.com/ng-packagr/ng-packagr/commit/9ccafb0156e9e9ff4ea1b3b4038f0bbb012eba54))
+
 ## [12.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/v11.2.0...v12.0.0-next.0) (2021-02-11)
 
 
