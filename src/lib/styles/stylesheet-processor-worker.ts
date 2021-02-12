@@ -5,24 +5,20 @@ import postcss, { LazyResult } from 'postcss';
 import * as postcssUrl from 'postcss-url';
 import * as cssnano from 'cssnano';
 
-import { CssUrl, WorkerOptions } from './stylesheet-processor';
+import { CssUrl, WorkerOptions, WorkerResult } from './stylesheet-processor';
 import { readFile } from '../utils/fs';
 
-async function processCss(): Promise<string> {
-  const { filePath, browserslistData, cssUrl, styleIncludePaths, basePath } = JSON.parse(
-    process.argv[2],
-  ) as WorkerOptions;
-
+async function processCss({ filePath, browserslistData, cssUrl, styleIncludePaths, basePath }: WorkerOptions): Promise<WorkerResult> {
   // Render pre-processor language (sass, styl, less)
   const renderedCss = await renderCss(filePath, basePath, styleIncludePaths);
 
   // Render postcss (autoprefixing and friends)
   const result = await optimizeCss(filePath, renderedCss, browserslistData, cssUrl);
 
-  return JSON.stringify({
+  return {
     css: result.css,
     warnings: result.warnings().map(w => w.toString()),
-  });
+  };
 }
 
 async function renderCss(filePath: string, basePath, styleIncludePaths?: string[]): Promise<string> {
@@ -119,11 +115,8 @@ function optimizeCss(filePath: string, css: string, browsers: string[], cssUrl?:
   });
 }
 
-if (require.main === module) {
-  processCss()
-    .then(result => process.stdout.write(result))
-    .catch(e => {
-      process.stderr.write(`${e}`);
-      process.exitCode = 1;
-    });
+// default export for sync-rpc to recognize the function https://github.com/ForbesLindesay/sync-rpc#workerjs
+export default function getStyleSheetProcessor(_connection: string) {
+  // you can setup any connections you need here
+  return processCss
 }
