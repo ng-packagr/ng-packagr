@@ -1,4 +1,5 @@
 import * as browserslist from 'browserslist';
+import { join } from 'path';
 import * as rpc from 'sync-rpc';
 
 import * as log from '../utils/log';
@@ -22,7 +23,10 @@ export interface WorkerResult {
 
 export class StylesheetProcessor {
   private readonly browserslistData: string[];
-  private readonly styleSheetProcessorWorker: (options: WorkerOptions) => WorkerResult= rpc(require.resolve('./stylesheet-processor-worker'), StylesheetProcessor.name);
+  private readonly styleSheetProcessorWorker: (options: WorkerOptions) => WorkerResult = rpc(
+    join(__dirname, './stylesheet-processor-worker.js'),
+    StylesheetProcessor.name
+  );
 
   constructor(readonly basePath: string, readonly cssUrl?: CssUrl, readonly styleIncludePaths?: string[]) {
     log.debug(`determine browserslist for ${basePath}`);
@@ -38,7 +42,7 @@ export class StylesheetProcessor {
       browserslistData: this.browserslistData,
     };
 
-    const { css, warnings }: WorkerResult = this.styleSheetProcessorWorker(workerOptions);
+    const { css, warnings } = this.styleSheetProcessorWorker(workerOptions);
 
     warnings.forEach(msg => log.warn(msg));
 

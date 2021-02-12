@@ -1,6 +1,5 @@
 import * as path from 'path';
 import * as autoprefixer from 'autoprefixer';
-import * as nodeSassTildeImporter from 'node-sass-tilde-importer';
 import postcss, { LazyResult } from 'postcss';
 import * as postcssUrl from 'postcss-url';
 import * as cssnano from 'cssnano';
@@ -49,7 +48,7 @@ async function renderCss(filePath: string, basePath, styleIncludePaths?: string[
           file: filePath,
           data: content,
           indentedSyntax: '.sass' === ext,
-          importer: nodeSassTildeImporter,
+          importer: await import('node-sass-tilde-importer'),
           includePaths: styleIncludePaths,
         })
         .css.toString();
@@ -116,7 +115,4 @@ function optimizeCss(filePath: string, css: string, browsers: string[], cssUrl?:
 }
 
 // default export for sync-rpc to recognize the function https://github.com/ForbesLindesay/sync-rpc#workerjs
-export default function getStyleSheetProcessor(_connection: string) {
-  // you can setup any connections you need here
-  return processCss
-}
+export default () => processCss
