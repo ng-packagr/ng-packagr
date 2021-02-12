@@ -1,5 +1,6 @@
-import { execFileSync } from 'child_process';
 import * as browserslist from 'browserslist';
+import * as rpc from 'sync-rpc';
+
 import * as log from '../utils/log';
 
 export enum CssUrl {
@@ -16,12 +17,12 @@ export interface WorkerOptions {
 
 export interface WorkerResult {
   css: string;
-  warnings: [];
+  warnings: string[];
 }
 
 export class StylesheetProcessor {
   private readonly browserslistData: string[];
-  private readonly workerPath = require.resolve('./stylesheet-processor-worker');
+  private readonly styleSheetProcessorWorker: (options: WorkerOptions) => WorkerResult= rpc(require.resolve('./stylesheet-processor-worker'), StylesheetProcessor.name);
 
   constructor(readonly basePath: string, readonly cssUrl?: CssUrl, readonly styleIncludePaths?: string[]) {
     log.debug(`determine browserslist for ${basePath}`);
@@ -37,11 +38,8 @@ export class StylesheetProcessor {
       browserslistData: this.browserslistData,
     };
 
-    const stdout = execFileSync(process.argv[0], [this.workerPath, JSON.stringify(workerOptions)], {
-      windowsHide: true,
-    });
+    const { css, warnings }: WorkerResult = this.styleSheetProcessorWorker(workerOptions);
 
-    const { css, warnings }: WorkerResult = JSON.parse(stdout.toString());
     warnings.forEach(msg => log.warn(msg));
 
     return css;
