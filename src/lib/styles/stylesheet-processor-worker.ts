@@ -3,6 +3,7 @@ import * as autoprefixer from 'autoprefixer';
 import postcss, { LazyResult } from 'postcss';
 import * as postcssUrl from 'postcss-url';
 import * as cssnano from 'cssnano';
+import { parentPort } from 'worker_threads';
 
 import { CssUrl, WorkerOptions, WorkerResult } from './stylesheet-processor';
 import { readFile } from '../utils/fs';
@@ -114,5 +115,12 @@ function optimizeCss(filePath: string, css: string, browsers: string[], cssUrl?:
   });
 }
 
-// default export for sync-rpc to recognize the function https://github.com/ForbesLindesay/sync-rpc#workerjs
-export default () => processCss
+parentPort.on("message", async ({ signal, port, workerOptions }) => {
+  const result = await processCss(workerOptions);
+  port.postMessage({ ...result });
+  port.close();
+  // Change the value of signal[0] to 1
+  Atomics.add(signal, 0, 1);
+  // UInlock the main thread
+  Atomics.notify(signal, 0);
+});

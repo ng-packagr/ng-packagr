@@ -1,6 +1,6 @@
 import * as browserslist from 'browserslist';
 import { join } from 'path';
-import * as rpc from 'sync-rpc';
+import { MessageChannel, receiveMessageOnPort, Worker } from 'worker_threads';
 
 import * as log from '../utils/log';
 
@@ -23,14 +23,13 @@ export interface WorkerResult {
 
 export class StylesheetProcessor {
   private readonly browserslistData: string[];
-  private readonly styleSheetProcessorWorker: (options: WorkerOptions) => WorkerResult = rpc(
-    join(__dirname, './stylesheet-processor-worker.js'),
-    StylesheetProcessor.name
-  );
+  private readonly worker: Worker;
 
   constructor(readonly basePath: string, readonly cssUrl?: CssUrl, readonly styleIncludePaths?: string[]) {
     log.debug(`determine browserslist for ${basePath}`);
     this.browserslistData = browserslist(undefined, { path: basePath });
+    this.worker = new Worker(join(__dirname, './stylesheet-processor-worker.js'));
+    this.worker.unref();
   }
 
   process(filePath: string) {
@@ -42,10 +41,24 @@ export class StylesheetProcessor {
       browserslistData: this.browserslistData,
     };
 
-    const { css, warnings } = this.styleSheetProcessorWorker(workerOptions);
+    const ioChannel = new MessageChannel();
 
-    warnings.forEach(msg => log.warn(msg));
+    try {
+      const signal = new Int32Array(new SharedArrayBuffer(4));
+      this.worker.postMessage({ signal, port: ioChannel.port1, workerOptions }, [
+        ioChannel.port1
+      ]);
 
-    return css;
+      // Sleep until signal[0] is 0
+      Atomics.wait(signal, 0, 0);
+
+      const { css, warnings } = receiveMessageOnPort(ioChannel.port2).message;
+
+      warnings.forEach(msg => log.warn(msg));
+      return css;
+    } finally {
+      ioChannel.port1.close();
+      ioChannel.port2.close();
+    }
   }
 }
