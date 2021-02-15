@@ -1,9 +1,9 @@
 import * as path from 'path';
-import * as autoprefixer from 'autoprefixer';
 import postcss, { LazyResult } from 'postcss';
 import * as postcssUrl from 'postcss-url';
 import * as cssnano from 'cssnano';
 import { parentPort } from 'worker_threads';
+import * as postcssPresetEnv from 'postcss-preset-env';
 
 import { CssUrl, WorkerOptions, WorkerResult } from './stylesheet-processor';
 import { readFile } from '../utils/fs';
@@ -92,10 +92,12 @@ function optimizeCss(filePath: string, css: string, browsers: string[], cssUrl?:
     postCssPlugins.push(postcssUrl({ url: cssUrl }));
   }
 
-  // this is important to be executed post running `postcssUrl`
-  postCssPlugins.push(autoprefixer(browsers));
-
   postCssPlugins.push(
+    postcssPresetEnv({
+      browsers: browsers as any, // Typings only allow a string
+      autoprefixer: true,
+      stage: 3,
+    }),
     cssnano({
       preset: [
         'default',
