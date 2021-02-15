@@ -121,6 +121,6 @@ parentPort.on("message", async ({ signal, port, workerOptions }) => {
   port.close();
   // Change the value of signal[0] to 1
   Atomics.add(signal, 0, 1);
-  // UInlock the main thread
+  // Unlock the main thread
   Atomics.notify(signal, 0);
 });
