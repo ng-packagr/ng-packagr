@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.1...v12.0.0-next.2) (2021-02-18)
+
+
+### Features
+
+* add `postcss-preset-env` with stage 3 features ([0caf3db](https://github.com/ng-packagr/ng-packagr/commit/0caf3dbc2f88b759ecbca0fd3dbf06184e05388d)), closes [/preset-env.cssdb.org/features#stage-3](https://github.com/ng-packagr//preset-env.cssdb.org/features/issues/stage-3)
+
+
+### Bug Fixes
+
+* show error when template file is unreadable ([c0ba153](https://github.com/ng-packagr/ng-packagr/commit/c0ba1538f1665b8c5f8285795bf7df18f896f537))
+
 ## [12.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.0...v12.0.0-next.1) (2021-02-12)
 
 
