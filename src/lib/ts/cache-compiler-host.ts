@@ -136,6 +136,10 @@ export function cacheCompilerHost(
           cache.content = stylesheetProcessor.process(fileName);
         }
 
+        if (cache.content === undefined) {
+          throw new Error(`Cannot read file ${fileName}.`);
+        };
+
         cache.exists = true;
       }
 
