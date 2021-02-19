@@ -23,7 +23,7 @@ export interface WorkerResult {
 
 export class StylesheetProcessor {
   private readonly browserslistData: string[];
-  private readonly worker: Worker | undefined;
+  private worker: Worker | undefined;
 
   constructor(readonly basePath: string, readonly cssUrl?: CssUrl, readonly styleIncludePaths?: string[]) {
     log.debug(`determine browserslist for ${basePath}`);
