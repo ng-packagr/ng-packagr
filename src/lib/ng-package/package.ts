@@ -67,10 +67,22 @@ export class NgPackage {
     return this.primary.$get('assets');
   }
 
+  /**
+   * @deprecated Use allowedNonPeerDependencies instead.
+   */
   public get whitelistedNonPeerDependencies(): string[] {
+    return this.primary.$get('whitelistedNonPeerDependencies') as string[];
+  }
+
+  public get allowedNonPeerDependencies(): string[] {
     // XX: default array values from JSON schema not recognized
     const defValue = ['tslib'];
-    const value = (this.primary.$get('whitelistedNonPeerDependencies') as string[]) || defValue;
+
+    // deprecated name
+    const deprecatedPropList = this.primary.$get('whitelistedNonPeerDependencies') as string[];
+
+    const allowed = this.primary.$get('allowedNonPeerDependencies') as string[];
+    const value = (deprecatedPropList ? deprecatedPropList : allowed) || defValue;
 
     // Always append 'tslib' and dedupe
     return value.concat('tslib').filter((value, index, self) => self.indexOf(value) === index);

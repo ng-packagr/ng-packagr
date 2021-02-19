@@ -23,8 +23,16 @@
       "type": "boolean",
       "default": false
     },
-    "whitelistedNonPeerDependencies": {
+    "allowedNonPeerDependencies": {
       "description": "A list of dependencies that are allowed in the 'dependencies' and 'devDependencies' section of package.json. Values in the list are regular expressions matched against npm package names.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": ["tslib"]
+    },
+    "whitelistedNonPeerDependencies": {
+      "description": "A deprecated alias for 'allowedNonPeerDependencies'",
       "type": "array",
       "items": {
         "type": "string"
