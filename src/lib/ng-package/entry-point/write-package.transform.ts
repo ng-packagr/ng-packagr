@@ -114,7 +114,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     throw error;
   }
   spinner.succeed();
-  spinner.info(`Built ${ngEntryPoint.moduleId}`);
+  spinner.succeed(`Built ${ngEntryPoint.moduleId}`);
 
   return graph;
 });
