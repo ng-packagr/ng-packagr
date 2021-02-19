@@ -24,6 +24,7 @@ export interface WorkerResult {
 export class StylesheetProcessor {
   private readonly browserslistData: string[];
   private worker: Worker | undefined;
+  private messageChannel: MessageChannel | undefined;
 
   constructor(readonly basePath: string, readonly cssUrl?: CssUrl, readonly styleIncludePaths?: string[]) {
     log.debug(`determine browserslist for ${basePath}`);
@@ -39,28 +40,30 @@ export class StylesheetProcessor {
       browserslistData: this.browserslistData,
     };
 
-    const ioChannel = new MessageChannel();
+    if(!this.messageChannel) {
+      this.messageChannel = new MessageChannel();
+    }
+
+    if(!this.worker) {
+      this.worker = new Worker(join(__dirname, './stylesheet-processor-worker.js'));
+    }
 
     try {
-      if(!this.worker) {
-        this.worker = new Worker(join(__dirname, './stylesheet-processor-worker.js'));
-      }
-
       const signal = new Int32Array(new SharedArrayBuffer(4));
-      this.worker.postMessage({ signal, port: ioChannel.port1, workerOptions }, [
-        ioChannel.port1
+      this.worker.postMessage({ signal, port: this.messageChannel.port1, workerOptions }, [
+        this.messageChannel.port1
       ]);
 
       // Sleep until signal[0] is 0
       Atomics.wait(signal, 0, 0);
 
-      const { css, warnings } = receiveMessageOnPort(ioChannel.port2).message;
+      const { css, warnings } = receiveMessageOnPort(this.messageChannel.port2).message;
 
       warnings.forEach(msg => log.warn(msg));
       return css;
     } finally {
-      ioChannel.port1.close();
-      ioChannel.port2.close();
+      this.messageChannel.port1.unref();
+      this.messageChannel.port2.unref();
       this.worker.unref();
     }
   }
