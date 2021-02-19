@@ -23,13 +23,11 @@ export interface WorkerResult {
 
 export class StylesheetProcessor {
   private readonly browserslistData: string[];
-  private readonly worker: Worker;
+  private readonly worker: Worker | undefined;
 
   constructor(readonly basePath: string, readonly cssUrl?: CssUrl, readonly styleIncludePaths?: string[]) {
     log.debug(`determine browserslist for ${basePath}`);
     this.browserslistData = browserslist(undefined, { path: basePath });
-    this.worker = new Worker(join(__dirname, './stylesheet-processor-worker.js'));
-    this.worker.unref();
   }
 
   process(filePath: string) {
@@ -44,6 +42,10 @@ export class StylesheetProcessor {
     const ioChannel = new MessageChannel();
 
     try {
+      if(!this.worker) {
+        this.worker = new Worker(join(__dirname, './stylesheet-processor-worker.js'));
+      }
+
       const signal = new Int32Array(new SharedArrayBuffer(4));
       this.worker.postMessage({ signal, port: ioChannel.port1, workerOptions }, [
         ioChannel.port1
@@ -59,6 +61,7 @@ export class StylesheetProcessor {
     } finally {
       ioChannel.port1.close();
       ioChannel.port2.close();
+      this.worker.unref();
     }
   }
 }
