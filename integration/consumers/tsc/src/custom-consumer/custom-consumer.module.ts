@@ -8,4 +8,4 @@ import { CustomConsumerComponent } from './custom-consumer.component';
   declarations: [CustomConsumerComponent],
   exports: [CustomConsumerComponent],
 })
-export class CustomConsulerModule {}
+export class CustomConsumerModule {}

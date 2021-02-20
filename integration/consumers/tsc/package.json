@@ -1,0 +1,12 @@
+{
+  "name": "consumer-tsc",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "4.1.3"
+  }
+}

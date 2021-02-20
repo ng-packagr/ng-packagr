@@ -67,62 +67,62 @@
       "type": "node",
       "request": "launch",
       "name": "Samples (all)",
-      "program": "${workspaceRoot}/integration/samples.dev.js"
+      "program": "${workspaceRoot}/integration/samples.js"
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: APF",
-      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "program": "${workspaceRoot}/integration/samples.js",
       "args": ["apf"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: core",
-      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "program": "${workspaceRoot}/integration/samples.js",
       "args": ["core"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: custom",
-      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "program": "${workspaceRoot}/integration/samples.js",
       "args": ["custom"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: scss-paths",
-      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "program": "${workspaceRoot}/integration/samples.js",
       "args": ["scss-paths"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: embed-assets",
-      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "program": "${workspaceRoot}/integration/samples.js",
       "args": ["embed-assets"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: issue-852",
-      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "program": "${workspaceRoot}/integration/samples.js",
       "args": ["issue-852"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: externals",
-      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "program": "${workspaceRoot}/integration/samples.js",
       "args": ["externals"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: material",
-      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "program": "${workspaceRoot}/integration/samples.js",
       "args": ["material"]
     },
     {
@@ -135,21 +135,21 @@
       "type": "node",
       "request": "launch",
       "name": "Sample: same-name",
-      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "program": "${workspaceRoot}/integration/samples.js",
       "args": ["same-name"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: secondary",
-      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "program": "${workspaceRoot}/integration/samples.js",
       "args": ["secondary"]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Sample: typings",
-      "program": "${workspaceRoot}/integration/samples.dev.js",
+      "program": "${workspaceRoot}/integration/samples.js",
       "args": ["typings"]
     }
   ],
