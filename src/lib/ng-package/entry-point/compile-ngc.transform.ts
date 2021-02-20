@@ -23,9 +23,9 @@ export const compileNgcTransformFactory = (StylesheetProcessor: typeof Styleshee
 
       // Compile TypeScript sources
       const { esm2015, declarations } = entryPoint.data.destinationFiles;
-      const { moduleResolutionCache, ngccProcessingCache } = entryPoint.cache;
       const { basePath, cssUrl, styleIncludePaths } = entryPoint.data.entryPoint;
-      const stylesheetProcessor = new StylesheetProcessor(basePath, cssUrl, styleIncludePaths);
+      const { moduleResolutionCache, ngccProcessingCache, stylesheetProcessor = new StylesheetProcessor(basePath, cssUrl, styleIncludePaths) } = entryPoint.cache;
+      entryPoint.cache.stylesheetProcessor = stylesheetProcessor;
 
       const ngccProcessor = tsConfig.options.enableIvy
         ? new NgccProcessor(ngccProcessingCache, tsConfig.project, tsConfig.options, entryPoints)
