@@ -8,6 +8,7 @@ import { NgccProcessingCache } from './ngcc-cache';
 import { NgPackage } from './package';
 import { FileCache } from '../file-system/file-cache';
 import { ComplexPredicate } from '../graph/build-graph';
+import { StylesheetProcessor } from '../styles/stylesheet-processor';
 
 export const TYPE_NG_PACKAGE = 'application/ng-package';
 export const TYPE_NG_ENTRY_POINT = 'application/ng-entry-point';
@@ -85,6 +86,7 @@ export class EntryPointNode extends Node {
     moduleResolutionCache: ts.ModuleResolutionCache;
     rollupFESMCache?: RollupCache;
     rollupUMDCache?: RollupCache;
+    stylesheetProcessor?: StylesheetProcessor;
   };
 
   data: {

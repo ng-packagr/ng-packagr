@@ -22,15 +22,10 @@ export interface WorkerResult {
 }
 
 export class StylesheetProcessor {
-  private readonly browserslistData: string[];
-  private readonly worker: Worker;
+  private browserslistData: string[] | undefined;
+  private worker: Worker | undefined;
 
-  constructor(readonly basePath: string, readonly cssUrl?: CssUrl, readonly styleIncludePaths?: string[]) {
-    log.debug(`determine browserslist for ${basePath}`);
-    this.browserslistData = browserslist(undefined, { path: basePath });
-    this.worker = new Worker(join(__dirname, './stylesheet-processor-worker.js'));
-    this.worker.unref();
-  }
+  constructor(private readonly basePath: string, private readonly cssUrl?: CssUrl, private readonly styleIncludePaths?: string[]) { }
 
   process(filePath: string) {
     const workerOptions: WorkerOptions = {
@@ -40,6 +35,15 @@ export class StylesheetProcessor {
       styleIncludePaths: this.styleIncludePaths,
       browserslistData: this.browserslistData,
     };
+
+    if (!this.worker) {
+      this.worker = new Worker(join(__dirname, './stylesheet-processor-worker.js'));
+    }
+
+    if (!this.browserslistData) {
+      log.debug(`determine browserslist for ${this.basePath}`);
+      this.browserslistData = browserslist(undefined, { path: this.basePath });
+    }
 
     const ioChannel = new MessageChannel();
 
@@ -59,6 +63,7 @@ export class StylesheetProcessor {
     } finally {
       ioChannel.port1.close();
       ioChannel.port2.close();
+      this.worker.unref();
     }
   }
 }
