@@ -77,14 +77,22 @@ export class NgPackage {
   public get allowedNonPeerDependencies(): string[] {
     const alwaysInclude = ['tslib'];
 
-    const allowedNonPeerDependencies = this.primary.$get('allowedNonPeerDependencies') as string[];
-    
     // remove in the future, after deprecation phase
     const deprecatedPropList = this.whitelistedNonPeerDependencies;
 
-    return Array.from(
+    if(deprecatedPropList.length) {
+      return Array.from(
+        new Set([
+          ...deprecatedPropList,
+          ...alwaysInclude,
+        ])
+      );
+    }
+
+    const allowedNonPeerDependencies = this.primary.$get('allowedNonPeerDependencies') as string[];
+    
+    Array.from(
       new Set([
-        ...deprecatedPropList,
         ...allowedNonPeerDependencies,
         ...alwaysInclude,
       ])
