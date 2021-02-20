@@ -28,7 +28,8 @@
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "default": []
     },
     "whitelistedNonPeerDependencies": {
       "x-deprecated": "Use \"allowedNonPeerDependencies\" instead.",
@@ -37,7 +38,7 @@
       "items": {
         "type": "string"
       },
-      "default": ["tslib"]
+      "default": []
     },
     "assets": {
       "type": "array",

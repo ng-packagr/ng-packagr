@@ -79,13 +79,13 @@ export class NgPackage {
 
     const allowedNonPeerDependencies = this.primary.$get('allowedNonPeerDependencies') as string[];
     
-    // deprecated prop list
-    const deprecated = this.whitelistedNonPeerDependencies;
+    // remove in the future, after deprecation phase
+    const deprecatedPropList = this.whitelistedNonPeerDependencies;
 
     return Array.from(
       new Set([
-        ...(deprecated ? deprecated : []),
-        ...(allowedNonPeerDependencies ? allowedNonPeerDependencies : []) ,
+        ...deprecatedPropList,
+        ...allowedNonPeerDependencies,
         ...alwaysInclude,
       ])
     );
