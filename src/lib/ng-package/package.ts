@@ -91,7 +91,7 @@ export class NgPackage {
 
     const allowedNonPeerDependencies = this.primary.$get('allowedNonPeerDependencies') as string[];
     
-    Array.from(
+    return Array.from(
       new Set([
         ...allowedNonPeerDependencies,
         ...alwaysInclude,
