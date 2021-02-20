@@ -28,8 +28,7 @@
       "type": "array",
       "items": {
         "type": "string"
-      },
-      "default": ["tslib"]
+      }
     },
     "whitelistedNonPeerDependencies": {
       "x-deprecated": "Use \"allowedNonPeerDependencies\" instead.",

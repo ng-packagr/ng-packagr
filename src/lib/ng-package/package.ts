@@ -75,17 +75,20 @@ export class NgPackage {
   }
 
   public get allowedNonPeerDependencies(): string[] {
-    // XX: default array values from JSON schema not recognized
-    const defValue = ['tslib'];
+    const alwaysInclude = ['tslib'];
 
-    // deprecated name
-    const deprecatedPropList = this.primary.$get('whitelistedNonPeerDependencies') as string[];
+    const allowedNonPeerDependencies = this.primary.$get('allowedNonPeerDependencies') as string[];
+    
+    // deprecated prop list
+    const deprecated = this.whitelistedNonPeerDependencies;
 
-    const allowed = this.primary.$get('allowedNonPeerDependencies') as string[];
-    const value = (deprecatedPropList ? deprecatedPropList : allowed) || defValue;
-
-    // Always append 'tslib' and dedupe
-    return value.concat('tslib').filter((value, index, self) => self.indexOf(value) === index);
+    return Array.from(
+      new Set([
+        ...(deprecated ? deprecated : []),
+        ...(allowedNonPeerDependencies ? allowedNonPeerDependencies : []) ,
+        ...alwaysInclude,
+      ])
+    );
   }
 
   private absolutePathFromPrimary(key: string) {

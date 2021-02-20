@@ -183,12 +183,6 @@ async function writePackageJson(
   // in the node_modules folder of an application
   const allowedList = pkg.allowedNonPeerDependencies.map(value => new RegExp(value));
   try {
-    if(pkg.whitelistedNonPeerDependencies) {
-      spinner.warn(
-        colors.yellow(`'whitelistedNonPeerDependencies' is being deprecated, use 'allowedNonPeerDependencies' instead.`)
-      );
-    }
-    
     checkNonPeerDependencies(packageJson, 'dependencies', allowedList, spinner);
   } catch (e) {
     await rimraf(entryPoint.destinationPath);
@@ -255,7 +249,7 @@ function checkNonPeerDependencies(
   }
 
   for (const dep of Object.keys(packageJson[property])) {
-    if (allowed.find(regex => regex.test(dep))) {
+    if (allowed.some(regex => regex.test(dep))) {
       log.debug(`Dependency ${dep} is allowed in '${property}'`);
     } else {
       spinner.warn(
@@ -263,7 +257,7 @@ function checkNonPeerDependencies(
           `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep} to 'peerDependencies' or remove it from '${property}'.`,
         ),
       );
-      throw new Error(`Dependency ${dep} must be explicitly allowed.`);
+      throw new Error(`Dependency ${dep} must be explicitly allowed using the "allowedNonPeerDependencies" option.`);
     }
   }
 }
