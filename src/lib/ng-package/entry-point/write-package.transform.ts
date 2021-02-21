@@ -132,7 +132,10 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
  * flattened JavaScript bundles, type definitions, (...).
  *
  * @param entryPoint An entry point of an Angular package / library
+ * @param pkg The package for which the entry point is being built.
  * @param additionalProperties Additional properties, e.g. binary artefacts (bundle files), to merge into `package.json`
+ * @param isIvy Whether or not the build is an Ivy build.
+ * @param spinner A reference to the terminal spinner.
  */
 async function writePackageJson(
   entryPoint: NgEntryPoint,
@@ -177,16 +180,16 @@ async function writePackageJson(
 
       delete packageJson.peerDependencies.tslib;
     }
-  }
 
-  // Verify non-peerDependencies as they can easily lead to duplicate installs or version conflicts
-  // in the node_modules folder of an application
-  const whitelist = pkg.whitelistedNonPeerDependencies.map(value => new RegExp(value));
-  try {
-    checkNonPeerDependencies(packageJson, 'dependencies', whitelist, spinner);
-  } catch (e) {
-    await rimraf(entryPoint.destinationPath);
-    throw e;
+    // Verify non-peerDependencies as they can easily lead to duplicate installs or version conflicts
+    // in the node_modules folder of an application
+    const whitelist = pkg.whitelistedNonPeerDependencies.map(value => new RegExp(value));
+    try {
+      checkNonPeerDependencies(packageJson, 'dependencies', whitelist, spinner);
+    } catch (e) {
+      await rimraf(entryPoint.libraryDestinationPath);
+      throw e;
+    }
   }
 
   // Removes scripts from package.json after build
