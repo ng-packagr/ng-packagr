@@ -181,9 +181,9 @@ async function writePackageJson(
 
   // Verify non-peerDependencies as they can easily lead to duplicate installs or version conflicts
   // in the node_modules folder of an application
-  const whitelist = pkg.whitelistedNonPeerDependencies.map(value => new RegExp(value));
+  const allowedList = pkg.allowedNonPeerDependencies.map(value => new RegExp(value));
   try {
-    checkNonPeerDependencies(packageJson, 'dependencies', whitelist, spinner);
+    checkNonPeerDependencies(packageJson, 'dependencies', allowedList, spinner);
   } catch (e) {
     await rimraf(entryPoint.destinationPath);
     throw e;
@@ -241,7 +241,7 @@ async function writePackageJson(
 function checkNonPeerDependencies(
   packageJson: Record<string, unknown>,
   property: string,
-  whitelist: RegExp[],
+  allowed: RegExp[],
   spinner: ora.Ora,
 ) {
   if (!packageJson[property]) {
@@ -249,15 +249,15 @@ function checkNonPeerDependencies(
   }
 
   for (const dep of Object.keys(packageJson[property])) {
-    if (whitelist.find(regex => regex.test(dep))) {
-      log.debug(`Dependency ${dep} is whitelisted in '${property}'`);
+    if (allowed.some(regex => regex.test(dep))) {
+      log.debug(`Dependency ${dep} is allowed in '${property}'`);
     } else {
       spinner.warn(
         colors.yellow(
           `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep} to 'peerDependencies' or remove it from '${property}'.`,
         ),
       );
-      throw new Error(`Dependency ${dep} must be explicitly whitelisted.`);
+      throw new Error(`Dependency ${dep} must be explicitly allowed using the "allowedNonPeerDependencies" option.`);
     }
   }
 }

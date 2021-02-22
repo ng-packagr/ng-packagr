@@ -12,20 +12,20 @@ While this is a desirable solution on server-side or standalone programs, it's a
 
 A motivation why `peerDependencies` are the preferred solution for libraries can be found on the [Hidden Variables blog](https://blog.domenic.me/peer-dependencies).
 
-## Whitelisting the `dependencies` Section
+## Allowing in the `dependencies` Section
 
 To mitigate the risk of accidentally publishing libraries with `dependencies`, ng-packagr verifies `dependencies` at build time.
-It will fail the build, if a dependency is not whitelisted explicitly.
+It will fail the build, if a dependency is not allowed explicitly.
 It is a safety net to keep the ecosystem of Angular libraries healthy.
 
-Whitelisting can be done using the `whitelistedNonPeerDependencies` option in the ng-packagr configuration. Each entry will be matched as a RegExp.
+Allowing can be done using the `allowedNonPeerDependencies` option in the ng-packagr configuration. Each entry will be matched as a RegExp.
 a
 In `ng-package.json`:
 
 ```json
 {
   "$schema": "./node_modules/ng-packagr/package.schema.json",
-  "whitelistedNonPeerDependencies": ["moment"]
+  "allowedNonPeerDependencies": ["moment"]
 }
 ```
 
@@ -35,7 +35,7 @@ in `package.json`:
 {
   "$schema": "./node_modules/ng-packagr/package.schema.json",
   "ngPackage": {
-    "whitelistedNonPeerDependencies": ["moment"]
+    "allowedNonPeerDependencies": ["moment"]
   }
 }
 ```
@@ -46,7 +46,7 @@ If you'd like to turn off this feature completely, you can do so by providing a 
 {
   "$schema": "./node_modules/ng-packagr/package.schema.json",
   "ngPackage": {
-    "whitelistedNonPeerDependencies": ["."]
+    "allowedNonPeerDependencies": ["."]
   }
 }
 ```
