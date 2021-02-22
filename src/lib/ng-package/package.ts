@@ -78,9 +78,9 @@ export class NgPackage {
     const alwaysInclude = ['tslib'];
 
     // remove in the future, after deprecation phase
-    const deprecatedPropList = this.whitelistedNonPeerDependencies ?? [];
+    const deprecatedPropList = this.whitelistedNonPeerDependencies;
 
-    if(deprecatedPropList.length) {
+    if(deprecatedPropList?.length) {
       return Array.from(
         new Set([
           ...deprecatedPropList,
