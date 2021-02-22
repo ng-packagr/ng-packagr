@@ -83,7 +83,7 @@ export class NgPackage {
     if(deprecatedPropList.length) {
       return Array.from(
         new Set([
-          ...deprecatedPropList,
+          ...(deprecatedPropList ? deprecatedPropList : []),
           ...alwaysInclude,
         ])
       );
