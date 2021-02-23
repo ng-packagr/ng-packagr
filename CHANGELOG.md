@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.2...v12.0.0-next.3) (2021-02-23)
+
+
+### Bug Fixes
+
+* deprecate whitelistedNonPeerDependencies in favor of allowedNonPeerDependencies ([e7fc214](https://github.com/ng-packagr/ng-packagr/commit/e7fc2149f190fb131f3d21625c6c9eb253ede84a)), closes [#1884](https://github.com/ng-packagr/ng-packagr/issues/1884)
+* removed default value from whitelistedNonPeerDependencies in json schema ([f0d38fc](https://github.com/ng-packagr/ng-packagr/commit/f0d38fc2185d0e9f4120565988b0dd70cda1de5b)), closes [#1892](https://github.com/ng-packagr/ng-packagr/issues/1892)
+* replace `i` with checkmark when displaying a built entrypoint ([54b8968](https://github.com/ng-packagr/ng-packagr/commit/54b89684e751ba7b01d6ef4df2d2d4a203076a93)), closes [#1883](https://github.com/ng-packagr/ng-packagr/issues/1883)
+
+
+### Performance
+
+* reuse stylesheet processor ([2c6bb7d](https://github.com/ng-packagr/ng-packagr/commit/2c6bb7de7920b9f8597a6c4aff22958f796d87e5))
+
 ## [12.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.1...v12.0.0-next.2) (2021-02-18)
 
 
