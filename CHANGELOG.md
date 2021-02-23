@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [11.2.4](https://github.com/ng-packagr/ng-packagr/compare/v11.2.3...v11.2.4) (2021-02-23)
+
+
+### Bug Fixes
+
+* removed default value from whitelistedNonPeerDependencies in json schema ([4229231](https://github.com/ng-packagr/ng-packagr/commit/422923145cff3a1f3ddd06a7966835a1c557fefb)), closes [#1892](https://github.com/ng-packagr/ng-packagr/issues/1892)
+
 ### [11.2.3](https://github.com/ng-packagr/ng-packagr/compare/v11.2.2...v11.2.3) (2021-02-22)
 
 
