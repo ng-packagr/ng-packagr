@@ -1,8 +1,9 @@
 {
   "$schema": "../../../src/ng-package.schema.json",
   "keepLifecycleScripts": true,
+  // "keepLifecycleScripts": true,
   "lib": {
     "entryFile": "src/public_api.ts",
-    "cssUrl": "none"
+    "cssUrl": "none",
   }
 }

@@ -1,3 +1,4 @@
+import { parse as parseJson } from 'jsonc-parser';
 import * as path from 'path';
 import * as log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
@@ -5,7 +6,7 @@ import { NgEntryPoint } from './entry-point/entry-point';
 import { NgPackage } from './package';
 import { globFiles } from '../utils/glob';
 import { validateNgPackageSchema } from './schema';
-import { exists, stat } from '../utils/fs';
+import { exists, readFile, stat } from '../utils/fs';
 
 interface UserPackage {
   /** Values from the `package.json` file of this user package. */
@@ -16,6 +17,19 @@ interface UserPackage {
   basePath: string;
 }
 
+async function readConfigFile(filePath: string): Promise<any> {
+  if (!(await exists(filePath))) {
+    return undefined;
+  }
+
+  if (filePath.endsWith('.js')) {
+    return import(filePath);
+  }
+
+  const data = await readFile(filePath, 'utf-8');
+  return parseJson(data, undefined, { allowTrailingComma: true });
+};
+
 /**
  * Resolves a user's package by testing for 'package.json', 'ng-package.json', or 'ng-package.js'.
  *
@@ -24,7 +38,6 @@ interface UserPackage {
  * @return The user's package
  */
 async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = false): Promise<UserPackage | undefined> {
-  const readConfigFile = async (filePath: string) => ((await exists(filePath)) ? import(filePath) : undefined);
   const fullPath = path.resolve(folderPathOrFilePath);
   const pathStats = await stat(fullPath);
   const basePath = pathStats.isDirectory() ? fullPath : path.dirname(fullPath);
