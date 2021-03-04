@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.3...v12.0.0-next.4) (2021-03-04)
+
+
+### Features
+
+* add support for comments in JSON configuration file ([eb909bc](https://github.com/ng-packagr/ng-packagr/commit/eb909bc57c1b7c7e38726edc0849c1cf612a2ab0)), closes [#1896](https://github.com/ng-packagr/ng-packagr/issues/1896)
+
 ## [12.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.2...v12.0.0-next.3) (2021-02-23)
 
 
