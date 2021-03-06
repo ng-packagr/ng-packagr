@@ -110,7 +110,6 @@ export class NgccProcessor {
         '--tsconfig' /** tsConfigPath */,
         this.projectPath,
         '--use-program-dependencies',
-        '--typings-only',/** typingsOnly */
       ],
       {
         stdio: ['inherit', process.stderr, process.stderr],
@@ -171,7 +170,6 @@ export class NgccProcessor {
       basePath: this._nodeModulesDirectory,
       targetEntryPointPath: path.dirname(packageJsonPath),
       compileAllFormats: false,
-      typingsOnly: true,
       propertiesToConsider: this.propertiesToConsider,
       createNewEntryPointFormats: true,
       logger: this._logger,
