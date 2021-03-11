@@ -3,7 +3,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2018",
+    "target": "es2019",
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "noUnusedLocals": true,
@@ -14,7 +14,7 @@
     "sourceMap": true,
     "inlineSourceMap": false,
     "inlineSources": true,
-    "lib": ["es2018"],
+    "lib": ["es2019"],
     "types": ["chai", "mocha", "node", "sinon"]
   },
   "exclude": ["dist", "integration"]
