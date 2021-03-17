@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.4...v12.0.0-next.5) (2021-03-17)
+
+
+### Features
+
+* support TypeScript 4.2 ([82c173c](https://github.com/ng-packagr/ng-packagr/commit/82c173cd2e0a2f315ee1b7d4b4037e866f1ff768))
+
+
+### Bug Fixes
+
+* process only the typings files of packages with NGCC ([9122e7f](https://github.com/ng-packagr/ng-packagr/commit/9122e7ffdfec64e7418791f88fbb42a318f8aa4e))
+
+## [12.0.0](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.4...v12.0.0) (2021-03-17)
+
+
+### Features
+
+* support TypeScript 4.2 ([82c173c](https://github.com/ng-packagr/ng-packagr/commit/82c173cd2e0a2f315ee1b7d4b4037e866f1ff768))
+
+
+### Bug Fixes
+
+* process only the typings files of packages with NGCC ([9122e7f](https://github.com/ng-packagr/ng-packagr/commit/9122e7ffdfec64e7418791f88fbb42a318f8aa4e))
+
 ## [12.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.3...v12.0.0-next.4) (2021-03-04)
 
 
