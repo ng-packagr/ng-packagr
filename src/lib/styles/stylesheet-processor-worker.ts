@@ -118,11 +118,17 @@ function optimizeCss(filePath: string, css: string, browsers: string[], cssUrl?:
 }
 
 parentPort.on("message", async ({ signal, port, workerOptions }) => {
-  const result = await processCss(workerOptions);
-  port.postMessage({ ...result });
-  port.close();
-  // Change the value of signal[0] to 1
-  Atomics.add(signal, 0, 1);
-  // Unlock the main thread
-  Atomics.notify(signal, 0);
+  try {
+    const result = await processCss(workerOptions);
+    port.postMessage({ ...result });
+
+  } catch (error) {
+    port.postMessage({ error: error.message });
+  } finally {
+    // Change the value of signal[0] to 1
+    Atomics.add(signal, 0, 1);
+    // Unlock the main thread
+    Atomics.notify(signal, 0);
+    port.close();
+  }
 });
