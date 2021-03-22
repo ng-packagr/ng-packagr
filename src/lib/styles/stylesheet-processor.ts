@@ -19,6 +19,7 @@ export interface WorkerOptions {
 export interface WorkerResult {
   css: string;
   warnings: string[];
+  error?: string;
 }
 
 export class StylesheetProcessor {
@@ -56,7 +57,10 @@ export class StylesheetProcessor {
       // Sleep until signal[0] is 0
       Atomics.wait(signal, 0, 0);
 
-      const { css, warnings } = receiveMessageOnPort(ioChannel.port2).message;
+      const { css, warnings, error } = receiveMessageOnPort(ioChannel.port2).message;
+      if (error) {
+        throw new Error(error);
+      }
 
       warnings.forEach(msg => log.warn(msg));
       return css;
