@@ -57,7 +57,6 @@ export const writeBundlesTransform = (options: NgPackagrOptions) => transformFro
 
     if (options.watch) {
       cache.rollupFESMCache = rollupFESMCache;
-      spinner.succeed();
 
       return;
     }
