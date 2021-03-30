@@ -24,7 +24,7 @@ export function validateNgPackageSchema(ngPackageJson: unknown): asserts ngPacka
 function formatSchemaValidationErrors(errors: ErrorObject[]): string {
   return errors
     .map(err => {
-      let message = `Data path ${JSON.stringify(err.dataPath)} ${err.message}`;
+      let message = `Data path ${JSON.stringify(err.instancePath)} ${err.message}`;
       if (err.keyword === 'additionalProperties') {
         message += ` (${(err.params as any).additionalProperty})`;
       }
