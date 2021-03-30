@@ -1,5 +1,5 @@
 import * as ora from 'ora';
-import { Transform, transformFromPromise } from '../../graph/transform';
+import { transformFromPromise } from '../../graph/transform';
 import { NgEntryPoint } from './entry-point';
 import { isEntryPoint, isEntryPointInProgress, EntryPointNode } from '../nodes';
 import * as log from '../../utils/log';
@@ -9,8 +9,9 @@ import { unique } from '../../utils/array';
 import { downlevelCodeWithTsc } from '../../flatten/downlevel-plugin';
 import { rollupBundleFile } from '../../flatten/rollup';
 import { minifyJsFile } from '../../flatten/uglify';
+import { NgPackagrOptions } from '../options.di';
 
-export const writeBundlesTransform: Transform = transformFromPromise(async graph => {
+export const writeBundlesTransform = (options: NgPackagrOptions) => transformFromPromise(async graph => {
   const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
   const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
   const cache = entryPoint.cache;
@@ -45,7 +46,7 @@ export const writeBundlesTransform: Transform = transformFromPromise(async graph
 
   try {
     spinner.start('Bundling to FESM2015');
-    cache.rollupFESMCache = await rollupBundleFile({
+    const rollupFESMCache = await rollupBundleFile({
       ...opts,
       moduleName: ngEntryPoint.moduleId,
       format: 'es',
@@ -54,14 +55,18 @@ export const writeBundlesTransform: Transform = transformFromPromise(async graph
     });
     spinner.succeed();
 
+    if (options.watch) {
+      cache.rollupFESMCache = rollupFESMCache;
+      return;
+    }
+
     spinner.start('Bundling to UMD');
-    cache.rollupUMDCache = await rollupBundleFile({
+    await rollupBundleFile({
       ...opts,
       moduleName: ngEntryPoint.umdId,
       entry: esm2015,
       format: 'umd',
       dest: umd,
-      cache: cache.rollupUMDCache,
       transform: downlevelCodeWithTsc,
     });
     spinner.succeed();
@@ -101,8 +106,8 @@ function getDependencyListForGraph(graph: BuildGraph): DependencyList {
   if (dependencyList.bundledDependencies.length) {
     log.warn(
       `Inlining of 'bundledDependencies' has been deprecated in version 5 and will be removed in future versions.` +
-        '\n' +
-        `List the dependency in the 'peerDependencies' section instead.`,
+      '\n' +
+      `List the dependency in the 'peerDependencies' section instead.`,
     );
   }
 
