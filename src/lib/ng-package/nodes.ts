@@ -85,7 +85,6 @@ export class EntryPointNode extends Node {
     analysesSourcesFileCache: FileCache;
     moduleResolutionCache: ts.ModuleResolutionCache;
     rollupFESMCache?: RollupCache;
-    rollupUMDCache?: RollupCache;
     stylesheetProcessor?: StylesheetProcessor;
   };
 
