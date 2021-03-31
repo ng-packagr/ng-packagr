@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0-next.7](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.6...v12.0.0-next.7) (2021-03-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* During `watch` mode we no longer generate UMD bundles.
+
+### Features
+
+* speed up incremental mode by not generating UMD ([0af0ce0](https://github.com/ng-packagr/ng-packagr/commit/0af0ce05cf98791f6d0a90e56552cdcd56746238))
+
+
+### Bug Fixes
+
+* update @rollup/plugin-commonjs to version 18.0.0 ([76f6f43](https://github.com/ng-packagr/ng-packagr/commit/76f6f43d468d0cae576c533e5e9be3a04aa32aa9))
+* update ajv to version 8.0.0 ([8d24c20](https://github.com/ng-packagr/ng-packagr/commit/8d24c207bd2485a2196d20ecb22ebd6bb84d78e6))
+
 ## [12.0.0-next.6](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.5...v12.0.0-next.6) (2021-03-22)
 
 
