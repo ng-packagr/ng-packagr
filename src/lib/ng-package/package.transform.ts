@@ -163,7 +163,7 @@ const watchTransformFactory = (
               // this is mainly done for resources such as html and css
               ...nodesToClean
                 .filter(node => !node.url.endsWith('.ts'))
-                .map(node => node.dependees.map(dependee => dependee.url)),
+                .map(node => [...node.dependees.keys()]),
             ]),
           );
 
@@ -174,7 +174,7 @@ const watchTransformFactory = (
 
           const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
           entryPoints.forEach(entryPoint => {
-            const isDirty = entryPoint.dependents.some(dependent => allUrlsToClean.has(dependent.url));
+            const isDirty = [...allUrlsToClean.keys()].some(dependent => entryPoint.dependents.has(dependent))
             if (isDirty) {
               entryPoint.state = 'dirty';
               const { metadata } = entryPoint.data.destinationFiles;
