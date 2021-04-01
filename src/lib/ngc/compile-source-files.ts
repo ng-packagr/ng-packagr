@@ -52,11 +52,9 @@ export async function compileSourceFiles(
 
   await ngProgram.loadNgStructureAsync();
 
-  // TS 4.1+ stores the reuse state in the new program
-  const checkReuseProgram = (ts.versionMajorMinor as string) === '4.0' ? oldProgram : ngProgram;
   log.debug(
     `ngc program structure is reused: ${
-      checkReuseProgram ? (checkReuseProgram.getTsProgram() as any).structureIsReused : 'No old program'
+      ngProgram ? (ngProgram.getTsProgram() as any).structureIsReused : 'No old program'
     }`,
   );
 
