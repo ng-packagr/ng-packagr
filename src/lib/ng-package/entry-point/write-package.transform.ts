@@ -11,6 +11,8 @@ import { globFiles } from '../../utils/glob';
 import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode, fileUrl } from '../nodes';
 import { Node } from '../../graph/node';
 
+type CompilationMode =  'partial' | 'full' | undefined;
+
 export const writePackageTransform: Transform = transformFromPromise(async graph => {
   const spinner = ora({
     hideCursor: false,
@@ -89,7 +91,7 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
     const relativeUnixFromDestPath = (filePath: string) =>
       ensureUnixPath(path.relative(ngEntryPoint.destinationPath, filePath));
 
-    const isIvy = !!entryPoint.data.tsConfig.options.enableIvy;
+    const { enableIvy, compilationMode } = entryPoint.data.tsConfig.options;
 
     await writePackageJson(
       ngEntryPoint,
@@ -102,11 +104,12 @@ export const writePackageTransform: Transform = transformFromPromise(async graph
         fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
         typings: relativeUnixFromDestPath(destinationFiles.declarations),
         // Ivy doesn't generate metadata files
-        metadata: isIvy ? undefined : relativeUnixFromDestPath(destinationFiles.metadata),
+        metadata: enableIvy ? undefined : relativeUnixFromDestPath(destinationFiles.metadata),
         // webpack v4+ specific flag to enable advanced optimizations and code splitting
         sideEffects: ngEntryPoint.sideEffects,
       },
-      isIvy,
+      !!enableIvy,
+      compilationMode as CompilationMode,
       spinner,
     );
   } catch (error) {
@@ -139,6 +142,7 @@ async function writePackageJson(
   pkg: NgPackage,
   additionalProperties: { [key: string]: string | boolean | string[] },
   isIvy: boolean,
+  compilationMode: CompilationMode,
   spinner: ora.Ora,
 ): Promise<void> {
   log.debug('Writing package.json');
@@ -203,12 +207,12 @@ async function writePackageJson(
     }
   }
 
-  if (isIvy && !entryPoint.isSecondaryEntryPoint) {
+  if (isIvy && !entryPoint.isSecondaryEntryPoint && compilationMode !== 'partial') {
     const scripts = packageJson.scripts || (packageJson.scripts = {});
     scripts.prepublishOnly =
       'node --eval "console.error(\'' +
-      'ERROR: Trying to publish a package that has been compiled by Ivy. This is not allowed.\\n' +
-      'Please delete and rebuild the package, without compiling with Ivy, before attempting to publish.\\n' +
+      'ERROR: Trying to publish a package that has been compiled by Ivy in full compilation mode. This is not allowed.\\n' +
+      'Please delete and rebuild the package with Ivy partial compilation mode, before attempting to publish.\\n' +
       '\')" ' +
       '&& exit 1';
   }
