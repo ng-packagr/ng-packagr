@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0-next.8](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.7...v12.0.0-next.8) (2021-04-06)
+
+
+### Features
+
+* allow publishing of Ivy library in partial mode. ([c7040e8](https://github.com/ng-packagr/ng-packagr/commit/c7040e88939b8d316dcc55c3ce654abab7cd49cf)), closes [#1901](https://github.com/ng-packagr/ng-packagr/issues/1901)
+
 ## [12.0.0-next.7](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.6...v12.0.0-next.7) (2021-03-31)
 
 
