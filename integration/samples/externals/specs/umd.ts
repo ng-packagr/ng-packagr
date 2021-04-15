@@ -11,7 +11,7 @@ describe(`@sample/externals`, () => {
       BUNDLE = fs.readFileSync(path.resolve(__dirname, '../dist/bundles/sample-externals.umd.js'), {
         encoding: 'utf-8',
       });
-      API = require('../dist/bundles/sample-externals.umd.min.js');
+      API = require('../dist/bundles/sample-externals.umd.js');
     });
 
     it(`should export 'target$'`, () => {

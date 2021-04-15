@@ -10,11 +10,11 @@ describe('@sample/apf', () => {
   });
 
   describe('dist', () => {
-    it('should contain a total of 82 files', () => {
+    it('should contain a total of 75 files', () => {
       // this is a safe guard / alternative to snapshots in order to
       // protect ourselves from doing a change that will emit unexpected files.
       const files = glob.sync(path.join(DIST, '**/*'));
-      expect(files.length).to.equals(83);
+      expect(files.length).to.equals(75);
     });
 
     it(`should contain a README.md file`, () => {
@@ -44,12 +44,12 @@ describe('@sample/apf', () => {
   });
 
   describe('UMD', () => {
-    it(`should contain 8 '.js.map' files`, () => {
-      expect(glob.sync(`${DIST}/bundles/**/*.js.map`).length).equal(8);
+    it(`should contain 4 '.js.map' files`, () => {
+      expect(glob.sync(`${DIST}/bundles/**/*.js.map`).length).equal(4);
     });
 
-    it(`should contain 8 '.js' files`, () => {
-      expect(glob.sync(`${DIST}/bundles/**/*.js`).length).equal(8);
+    it(`should contain 4 '.js' files`, () => {
+      expect(glob.sync(`${DIST}/bundles/**/*.js`).length).equal(4);
     });
   });
 

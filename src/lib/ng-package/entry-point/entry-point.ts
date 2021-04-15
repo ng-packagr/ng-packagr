@@ -14,8 +14,6 @@ export interface DestinationFiles {
   esm2015: string;
   /** Absolute path of this entry point `UMD` bundle */
   umd: string;
-  /** Absolute path of this entry point `UMD` minified bundle */
-  umdMinified: string;
 }
 
 /**
@@ -96,7 +94,6 @@ export class NgEntryPoint {
       esm2015: pathJoinWithDest('esm2015', secondaryDir, `${flatModuleFile}.js`),
       fesm2015: pathJoinWithDest('fesm2015', `${flatModuleFile}.js`),
       umd: pathJoinWithDest('bundles', `${flatModuleFile}.umd.js`),
-      umdMinified: pathJoinWithDest('bundles', `${flatModuleFile}.umd.min.js`),
     };
   }
 
