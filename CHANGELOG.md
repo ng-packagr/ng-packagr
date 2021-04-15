@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0-next.9](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.8...v12.0.0-next.9) (2021-04-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* Minified UMD bundles are no longer generated.
+
+### Bug Fixes
+
+* don't generate minified UMD bundles. ([cf56f3b](https://github.com/ng-packagr/ng-packagr/commit/cf56f3bd3449affb63761530f6b1670a096e5538))
+* update cssnano to version 5.0.0 ([1ad8fe6](https://github.com/ng-packagr/ng-packagr/commit/1ad8fe67fca8d7e0bf9211e1383de1f2ae311de1))
+* update supported range of node versions ([3800679](https://github.com/ng-packagr/ng-packagr/commit/3800679130d4d860d0b00f35bb1a7337c93c9b4d))
+
 ## [12.0.0-next.8](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.7...v12.0.0-next.8) (2021-04-06)
 
 
