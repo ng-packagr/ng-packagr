@@ -16,8 +16,8 @@ commands:
           at: ~/repo
   setup_windows:
     steps:
-      - run: nvm install 12.18.0
-      - run: nvm use 12.18.0
+      - run: nvm install 14.15.0
+      - run: nvm use 14.15.0
       - run: npm install -g yarn@1.17.3
       - run: node --version
       - run: yarn --version
@@ -27,7 +27,7 @@ commands:
 executors:
   linux-executor:
     docker:
-      - image: cimg/node:12.18-browsers
+      - image: cimg/node:14.15-browsers
     working_directory: ~/repo
 
 jobs:
@@ -38,12 +38,12 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v6-dependencies-linux{{ checksum "yarn.lock" }}
-            - v6-dependencies-linux
+            - v7-dependencies-linux-{{ checksum "yarn.lock" }}
+            - v7-dependencies-linux
       # Install dependencies
       - run: yarn install --frozen-lockfile --non-interactive
       - save_cache:
-          key: v6-dependencies-linux-{{ checksum "yarn.lock" }}
+          key: v7-dependencies-linux-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - persist_to_workspace:
@@ -101,8 +101,8 @@ jobs:
       - setup_windows
       - restore_cache:
           keys:
-            - v6-dependencies-win-{{ checksum "yarn.lock" }}
-            - v6-dependencies-win
+            - v7-dependencies-win-{{ checksum "yarn.lock" }}
+            - v7-dependencies-win
       # Install dependencies
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn build
@@ -110,7 +110,7 @@ jobs:
       - run: yarn integration:samples
       - run: yarn integration:specs
       - save_cache:
-          key: v6-dependencies-win-{{ checksum "yarn.lock" }}
+          key: v7-dependencies-win-{{ checksum "yarn.lock" }}
           paths:
             # Get cache dir on windows via `yarn cache dir`
             - C:\Users\circleci\AppData\Local\Yarn\Cache\v4
