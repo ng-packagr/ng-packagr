@@ -13,7 +13,7 @@ DIR_NAME_LIST=""
 if [ "${OSTYPE:-}" = "win32" ]; then
     DIR_NAME_LIST=$(dir /b /o:n /ad "integration/samples/")
 else
-    DIR_NAME_LIST=$(dir --format=vertical --escape "integration/samples/")
+    DIR_NAME_LIST=$(ls integration/samples)
 fi
 printf "Processing integration/samples:\n%s" "${DIR_NAME_LIST}"
 PACKAGE_FILE_CANDIDATES="ng-packagr-api.js  ng-package.js  ng-package.json  package.json"
