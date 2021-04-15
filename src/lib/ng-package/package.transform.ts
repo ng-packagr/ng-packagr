@@ -18,7 +18,7 @@ import { DepthBuilder } from '../graph/depth';
 import { STATE_IN_PROGRESS } from '../graph/node';
 import { Transform } from '../graph/transform';
 import * as log from '../utils/log';
-import { copyFile, rimraf, stat } from '../utils/fs';
+import { copyFile, rmdir, stat } from '../utils/fs';
 import {
   PackageNode,
   EntryPointNode,
@@ -84,9 +84,14 @@ export const packageTransformFactory = (
     }),
     // Clean the primary dest folder (should clean all secondary sub-directory, as well)
     switchMap(
-      graph => {
+      async graph => {
         const { dest, deleteDestPath } = graph.get(pkgUri).data;
-        return from(deleteDestPath ? rimraf(dest) : Promise.resolve());
+
+        if (deleteDestPath) {
+          try {
+            await rmdir(dest, { recursive: true });
+          } catch { }
+        }
       },
       (graph, _) => graph,
     ),

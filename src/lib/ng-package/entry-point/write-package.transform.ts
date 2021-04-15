@@ -5,7 +5,7 @@ import { colors } from '../../utils/color';
 import { NgEntryPoint } from './entry-point';
 import { NgPackage } from '../package';
 import { ensureUnixPath } from '../../utils/path';
-import { copyFile, exists, stat, rimraf, writeFile } from '../../utils/fs';
+import { copyFile, exists, stat, rmdir, writeFile } from '../../utils/fs';
 import * as log from '../../utils/log';
 import { globFiles } from '../../utils/glob';
 import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode, fileUrl } from '../nodes';
@@ -189,7 +189,7 @@ async function writePackageJson(
   try {
     checkNonPeerDependencies(packageJson, 'dependencies', allowedList, spinner);
   } catch (e) {
-    await rimraf(entryPoint.destinationPath);
+    await rmdir(entryPoint.destinationPath, { recursive: true });
     throw e;
   }
 

@@ -1,14 +1,13 @@
 import { promisify } from 'util';
-import * as rm from 'rimraf';
 import * as fs from 'fs';
 import { dirname } from 'path';
 
-export const rimraf = promisify(rm);
 export const readFile = fs.promises.readFile;
 export const writeFile = fs.promises.writeFile;
 export const access = fs.promises.access;
 export const mkdir = fs.promises.mkdir;
 export const stat = fs.promises.stat;
+export const rmdir = fs.promises.rmdir;
 
 export async function exists(path: fs.PathLike): Promise<boolean> {
   try {
