@@ -8,7 +8,6 @@ import { DependencyList } from '../../flatten/external-module-id-strategy';
 import { unique } from '../../utils/array';
 import { downlevelCodeWithTsc } from '../../flatten/downlevel-plugin';
 import { rollupBundleFile } from '../../flatten/rollup';
-import { minifyJsFile } from '../../flatten/uglify';
 import { NgPackagrOptions } from '../options.di';
 
 export const writeBundlesTransform = (options: NgPackagrOptions) => transformFromPromise(async graph => {
@@ -26,7 +25,7 @@ export const writeBundlesTransform = (options: NgPackagrOptions) => transformFro
       return prev;
     }, {});
 
-  const { fesm2015, esm2015, umd, umdMinified } = destinationFiles;
+  const { fesm2015, esm2015, umd } = destinationFiles;
 
   const opts = {
     sourceRoot: tsConfig.options.sourceRoot,
@@ -70,10 +69,6 @@ export const writeBundlesTransform = (options: NgPackagrOptions) => transformFro
       dest: umd,
       transform: downlevelCodeWithTsc,
     });
-    spinner.succeed();
-
-    spinner.start('Minifying UMD bundle');
-    await minifyJsFile(umd, umdMinified);
     spinner.succeed();
   } catch (error) {
     spinner.fail();
