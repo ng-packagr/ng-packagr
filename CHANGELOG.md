@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.9...v12.0.0-rc.0) (2021-04-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* Bundling of dependencies has been removed without replacement. In many cases this was used incorrectly which drastically increase in size. This was also mainly used for UMD bundles which will be removed in future.
+
+### Features
+
+* remove bundled dependencies ([6576b9a](https://github.com/ng-packagr/ng-packagr/commit/6576b9a3db69c158409550c1abbf03b484070a08)), closes [#1432](https://github.com/ng-packagr/ng-packagr/issues/1432)
+
+
+### Bug Fixes
+
+* update rollup to version 2.45.2 ([fcf62fa](https://github.com/ng-packagr/ng-packagr/commit/fcf62faaf0f2f9fc40a93cf15742ece1f7bb6625))
+* update sass to version 1.32.10 ([7dec58c](https://github.com/ng-packagr/ng-packagr/commit/7dec58c4cafef1068a9060731e3e060fde878cb8))
+
 ## [12.0.0-next.9](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-next.8...v12.0.0-next.9) (2021-04-15)
 
 
