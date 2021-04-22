@@ -1,3 +1,0 @@
-interface Mocked {
-  foo: string;
-}

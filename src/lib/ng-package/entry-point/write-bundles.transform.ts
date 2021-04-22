@@ -2,10 +2,6 @@ import * as ora from 'ora';
 import { transformFromPromise } from '../../graph/transform';
 import { NgEntryPoint } from './entry-point';
 import { isEntryPoint, isEntryPointInProgress, EntryPointNode } from '../nodes';
-import * as log from '../../utils/log';
-import { BuildGraph } from '../../graph/build-graph';
-import { DependencyList } from '../../flatten/external-module-id-strategy';
-import { unique } from '../../utils/array';
 import { downlevelCodeWithTsc } from '../../flatten/downlevel-plugin';
 import { rollupBundleFile } from '../../flatten/rollup';
 import { NgPackagrOptions } from '../options.di';
@@ -35,7 +31,6 @@ export const writeBundlesTransform = (options: NgPackagrOptions) => transformFro
       ...dependencyUmdIds,
     },
     entry: esm2015,
-    dependencyList: getDependencyListForGraph(graph),
   };
 
   const spinner = ora({
@@ -75,37 +70,3 @@ export const writeBundlesTransform = (options: NgPackagrOptions) => transformFro
     throw error;
   }
 });
-
-/** Get all list of dependencies for the entire 'BuildGraph' */
-function getDependencyListForGraph(graph: BuildGraph): DependencyList {
-  // We need to do this because if A dependency on bundled B
-  // And A has a secondary entry point A/1 we want only to bundle B if it's used.
-  // Also if A/1 depends on A we don't want to bundle A thus we mark this a dependency.
-
-  const dependencyList: DependencyList = {
-    dependencies: [],
-    bundledDependencies: [],
-  };
-
-  for (const entry of graph.filter(isEntryPoint)) {
-    const { bundledDependencies = [], dependencies = {}, peerDependencies = {} } = entry.data.entryPoint.packageJson;
-    dependencyList.bundledDependencies = unique(dependencyList.bundledDependencies.concat(bundledDependencies));
-    dependencyList.dependencies = unique(
-      dependencyList.dependencies.concat(
-        Object.keys(dependencies),
-        Object.keys(peerDependencies),
-        entry.data.entryPoint.moduleId,
-      ),
-    );
-  }
-
-  if (dependencyList.bundledDependencies.length) {
-    log.warn(
-      `Inlining of 'bundledDependencies' has been deprecated in version 5 and will be removed in future versions.` +
-      '\n' +
-      `List the dependency in the 'peerDependencies' section instead.`,
-    );
-  }
-
-  return dependencyList;
-}
