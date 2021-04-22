@@ -4,9 +4,9 @@ import * as sourcemaps from 'rollup-plugin-sourcemaps';
 import * as commonJs from '@rollup/plugin-commonjs';
 import * as rollupJson from '@rollup/plugin-json';
 import * as log from '../utils/log';
-import { ExternalModuleIdStrategy, DependencyList } from './external-module-id-strategy';
 import { umdModuleIdStrategy } from './umd-module-id-strategy';
 import { TransformHook } from 'rollup';
+import * as path from 'path';
 
 /**
  * Options used in `ng-packagr` for writing flat bundle files.
@@ -22,7 +22,6 @@ export interface RollupOptions {
   umdModuleIds?: { [key: string]: string };
   amd?: { id: string };
   transform?: TransformHook;
-  dependencyList?: DependencyList;
   cache?: rollup.RollupCache;
 }
 
@@ -30,12 +29,10 @@ export interface RollupOptions {
 export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.RollupCache> {
   log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dest} (${opts.format})`);
 
-  const externalModuleIdStrategy = new ExternalModuleIdStrategy(opts.format, opts.dependencyList);
-
   // Create the bundle
   const bundle = await rollup.rollup({
     context: 'this',
-    external: moduleId => externalModuleIdStrategy.isExternalDependency(moduleId),
+    external: moduleId => isExternalDependency(moduleId, opts.format),
     inlineDynamicImports: false,
     cache: opts.cache,
     input: opts.entry,
@@ -79,4 +76,19 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.Roll
   });
 
   return bundle.cache;
+}
+
+function isExternalDependency(moduleId: string, format: rollup.ModuleFormat): boolean {
+  // more information about why we don't check for 'node_modules' path
+  // https://github.com/rollup/rollup-plugin-node-resolve/issues/110#issuecomment-350353632
+  if (path.isAbsolute(moduleId) || moduleId.startsWith('.') || moduleId.startsWith('/')) {
+    // if it's either 'absolute', marked to embed, starts with a '.' or '/' or is the umd bundle and is tslib
+    return false;
+  }
+
+  if (format === 'umd' && moduleId.startsWith('tslib')) {
+    return false;
+  }
+
+  return true;
 }
