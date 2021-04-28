@@ -1,14 +1,10 @@
 {
   "pinVersions": false,
   "semanticCommits": true,
-  "semanticPrefix": "build:",
-  "commitMessage": "{{semanticPrefix}}update {{depName}} to version {{newVersion}}",
+  "semanticPrefix": "build",
   "separateMajorMinor": false,
   "lockFileMaintenance": {
     "enabled": true
-  },
-  "dependencies": {
-    "semanticPrefix": "fix:"
   },
   "packageFiles": ["package.json", "integration/consumers/ng-cli/package.json"],
   "packageRules": [
@@ -18,13 +14,8 @@
       "pinVersions": false
     },
     {
-      "packagePatterns": ["^@commitlint\/.*"],
+      "packagePatterns": ["^@commitlint/.*"],
       "groupName": "commitlint",
-      "pinVersions": false
-    },
-    {
-      "packagePatterns": ["^@types\/.*"],
-      "groupName": "type definitions",
       "pinVersions": false
     },
     {
@@ -35,11 +26,6 @@
     {
       "packagePatterns": ["^karma.*"],
       "groupName": "karma",
-      "pinVersions": false
-    },
-    {
-      "packagePatterns": ["^protractor.*"],
-      "groupName": "protractor",
       "pinVersions": false
     }
   ]
