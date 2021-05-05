@@ -8,7 +8,13 @@ import * as postcssPresetEnv from 'postcss-preset-env';
 import { CssUrl, WorkerOptions, WorkerResult } from './stylesheet-processor';
 import { readFile } from '../utils/fs';
 
-async function processCss({ filePath, browserslistData, cssUrl, styleIncludePaths, basePath }: WorkerOptions): Promise<WorkerResult> {
+async function processCss({
+  filePath,
+  browserslistData,
+  cssUrl,
+  styleIncludePaths,
+  basePath,
+}: WorkerOptions): Promise<WorkerResult> {
   // Render pre-processor language (sass, styl, less)
   const renderedCss = await renderCss(filePath, basePath, styleIncludePaths);
 
@@ -106,6 +112,8 @@ function optimizeCss(filePath: string, css: string, browsers: string[], cssUrl?:
           svgo: false,
           // Disable `calc` optimizations, due to several issues. #16910, #16875, #17890
           calc: false,
+          // Disable CSS rules sorted due to several issues #20693, https://github.com/ionic-team/ionic-framework/issues/23266 and https://github.com/cssnano/cssnano/issues/1054
+          cssDeclarationSorter: false,
         },
       ],
     }),
@@ -117,11 +125,10 @@ function optimizeCss(filePath: string, css: string, browsers: string[], cssUrl?:
   });
 }
 
-parentPort.on("message", async ({ signal, port, workerOptions }) => {
+parentPort.on('message', async ({ signal, port, workerOptions }) => {
   try {
     const result = await processCss(workerOptions);
     port.postMessage({ ...result });
-
   } catch (error) {
     port.postMessage({ error: error.message });
   } finally {
