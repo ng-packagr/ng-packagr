@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0-rc.1](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-rc.0...v12.0.0-rc.1) (2021-05-05)
+
+
+### Bug Fixes
+
+* disable CSS declaration sorting optimizations ([4f06939](https://github.com/ng-packagr/ng-packagr/commit/4f06939bab2d15e84d2737fe91d37605edfc8d6c))
+
+
+### Performance
+
+* remove double iteration over source files ([5e6afb1](https://github.com/ng-packagr/ng-packagr/commit/5e6afb1011870d8e3c8a15e2e37f82f9e5f4ee31))
+
 ## [12.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-rc.0...v12.0.0-next.0) (2021-05-05)
 
 
