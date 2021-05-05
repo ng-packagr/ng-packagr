@@ -18,40 +18,40 @@ export class Node {
   public state: NodeState = '';
 
   public filter(by: (value: Node, index: number) => boolean): Node[] {
-    return this._dependents.filter(by);
+    return [...this._dependents].filter(by);
   }
 
   public find(by: (value: Node, index: number) => boolean): Node | undefined {
-    return this._dependents.find(by);
+    return [...this._dependents].find(by);
   }
 
   public some(by: (value: Node, index: number) => boolean): boolean {
-    return this._dependents.some(by);
+    return [...this._dependents].some(by);
   }
 
-  public get dependents(): Node[] {
+  public get dependents(): Set<Node> {
     return this._dependents;
   }
 
-  public get dependees(): Node[] {
+  public get dependees(): Set<Node> {
     return this._dependees;
   }
 
-  private _dependents: Node[] = [];
-  private _dependees: Node[] = [];
+  private _dependents = new Set<Node>();
+  private _dependees = new Set<Node>();
 
   /** @experimental DO NOT USE. For time being, dirty checking is for `type=entryPoint && state !== 'done'` (full rebuild of entry point). */
   public dependsOn(dependent: Node | Node[]) {
-    const newDeps = dependent instanceof Array ? dependent : [dependent];
+    const newDeps = Array.isArray(dependent) ? dependent : [dependent];
 
     for (const newDep of newDeps) {
-      if (newDep._dependees.some(x => x.url === this.url)) {
+      if (newDep._dependees.has(this)) {
         // nodes already depends on each other
         continue;
       }
 
-      newDep._dependees.push(this);
-      this._dependents.push(newDep);
+      newDep._dependees.add(this);
+      this._dependents.add(newDep);
     }
   }
 }
