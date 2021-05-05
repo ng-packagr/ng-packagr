@@ -100,7 +100,7 @@ function optimizeCss(filePath: string, css: string, browsers: string[], cssUrl?:
 
   postCssPlugins.push(
     postcssPresetEnv({
-      browsers: browsers as any, // Typings only allow a string
+      browsers,
       autoprefixer: true,
       stage: 3,
     }),
