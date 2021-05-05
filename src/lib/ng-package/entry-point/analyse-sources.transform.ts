@@ -40,7 +40,11 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     ...entryPoint.data.tsConfig.options,
     skipLibCheck: true,
     noLib: true,
+    allowJs: false,
+    resolveJsonModule: false,
     types: [],
+    target: ts.ScriptTarget.Latest,
+    strict: false,
   };
 
   const compilerHost = cacheCompilerHost(
@@ -53,9 +57,15 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     false,
   );
 
+  const potentialDependencies = new Set<string>();
+
   compilerHost.resolveModuleNames = (moduleNames: string[], containingFile: string) => {
     return moduleNames.map(moduleName => {
       if (!moduleName.startsWith('.')) {
+        if (moduleName === primaryModuleId || moduleName.startsWith(`${primaryModuleId}/`)) {
+          potentialDependencies.add(moduleName);
+        }
+
         return undefined;
       }
 
@@ -77,28 +87,6 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     compilerHost,
     oldProgram,
   );
-
-  // this is a workaround due to the below
-  // https://github.com/angular/angular/issues/24010
-  const potentialDependencies = new Set<string>();
-  program
-    .getSourceFiles()
-    .filter(sf => !sf.isDeclarationFile)
-    .forEach(sourceFile => {
-      sourceFile.statements
-        .filter(x => ts.isImportDeclaration(x) || ts.isExportDeclaration(x))
-        .forEach((node: ts.ImportDeclaration | ts.ExportDeclaration) => {
-          const { moduleSpecifier } = node;
-          if (!moduleSpecifier || !ts.isStringLiteral(moduleSpecifier)) {
-            return;
-          }
-
-          const moduleName = moduleSpecifier.text;
-          if (moduleName === primaryModuleId || moduleName.startsWith(`${primaryModuleId}/`)) {
-            potentialDependencies.add(moduleName);
-          }
-        });
-    });
 
   debug(`tsc program structure is reused: ${oldProgram ? (oldProgram as any).structureIsReused : 'No old program'}`);
 
