@@ -39,7 +39,7 @@ export class BuildGraph implements Traversable<Node> {
     if (this.store.has(node.url)) {
       // Clean up dependee references
       const oldNode = this.store.get(node.url);
-      oldNode['_dependees'] = oldNode['_dependees'].filter(node => node !== oldNode);
+      oldNode['_dependees'].delete(oldNode);
     }
 
     this.store.set(node.url, node);

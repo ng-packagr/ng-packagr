@@ -33,7 +33,6 @@ import {
 import { discoverPackages } from './discover-packages';
 import { createFileWatch } from '../file-system/file-watcher';
 import { NgPackagrOptions } from './options.di';
-import { flatten } from '../utils/array';
 import { ensureUnixPath } from '../utils/path';
 import { FileCache } from '../file-system/file-cache';
 
@@ -90,7 +89,7 @@ export const packageTransformFactory = (
         if (deleteDestPath) {
           try {
             await rmdir(dest, { recursive: true });
-          } catch { }
+          } catch {}
         }
       },
       (graph, _) => graph,
@@ -143,13 +142,11 @@ const watchTransformFactory = (
       return createFileWatch(data.src, [data.dest]).pipe(
         tap(fileChange => {
           const { filePath, event } = fileChange;
-          const { sourcesFileCache, ngccProcessingCache } = cache;
+          const { sourcesFileCache } = cache;
           const cachedSourceFile = sourcesFileCache.get(filePath);
           const { declarationFileName } = cachedSourceFile || {};
           const uriToClean = [filePath, declarationFileName].map(x => fileUrl(ensureUnixPath(x)));
           const nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
-
-          ngccProcessingCache.clear();
 
           if (!cachedSourceFile) {
             if (event === 'unlink' || event === 'add') {
@@ -161,25 +158,20 @@ const watchTransformFactory = (
             }
           }
 
-          const allUrlsToClean = new Set<string>(
-            flatten([
-              ...nodesToClean.map(node => node.url),
-              // if a non ts file changes we need to clean up its direct dependees
-              // this is mainly done for resources such as html and css
-              ...nodesToClean
-                .filter(node => !node.url.endsWith('.ts'))
-                .map(node => node.dependees.map(dependee => dependee.url)),
-            ]),
-          );
+          const allNodesToClean = [
+            ...nodesToClean,
+            // if a non ts file changes we need to clean up its direct dependees
+            // this is mainly done for resources such as html and css
+            ...nodesToClean.filter(node => !node.url.endsWith('.ts')).flatMap(node => [...node.dependees]),
+          ];
 
           // delete node that changes
-          allUrlsToClean.forEach(url => {
+          for (const { url } of allNodesToClean) {
             sourcesFileCache.delete(fileUrlPath(url));
-          });
+          }
 
-          const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
-          entryPoints.forEach(entryPoint => {
-            const isDirty = entryPoint.dependents.some(dependent => allUrlsToClean.has(dependent.url));
+          for (const entryPoint of graph.filter(isEntryPoint)) {
+            const isDirty = [...allNodesToClean].some(dependent => entryPoint.dependents.has(dependent));
             if (isDirty) {
               entryPoint.state = 'dirty';
               const { metadata } = entryPoint.data.destinationFiles;
@@ -189,7 +181,7 @@ const watchTransformFactory = (
                 entryPoint.cache.analysesSourcesFileCache.delete(fileUrlPath(url));
               });
             }
-          });
+          }
 
           // Regenerate glob cache
           if (event === 'unlink' || event === 'add') {
@@ -248,7 +240,7 @@ const writeNpmPackage = (pkgUri: string): Transform =>
         let isFile = false;
         try {
           isFile = (await stat(srcFile)).isFile();
-        } catch { }
+        } catch {}
 
         if (isFile) {
           await copyFile(srcFile, path.join(data.dest, path.basename(srcFile)));
@@ -271,10 +263,10 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
       });
 
       // The array index is the depth.
-      const groups = depthBuilder.build();
+      const groups = depthBuilder.build().flatMap(x => x);
 
       // Build entry points with lower depth values first.
-      return from(flatten(groups)).pipe(
+      return from(groups).pipe(
         map((epUrl: string): EntryPointNode => graph.find(byEntryPoint().and(ep => ep.url === epUrl))),
         filter((entryPoint: EntryPointNode): boolean => entryPoint.state !== 'done'),
         concatMap(ep =>
