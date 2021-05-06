@@ -34,6 +34,7 @@ import { discoverPackages } from './discover-packages';
 import { createFileWatch } from '../file-system/file-watcher';
 import { NgPackagrOptions } from './options.di';
 import { ensureUnixPath } from '../utils/path';
+import { colors } from '../utils/color';
 import { FileCache } from '../file-system/file-cache';
 
 /**
@@ -211,6 +212,8 @@ const watchTransformFactory = (
 const buildTransformFactory = (project: string, analyseSourcesTransform: Transform, entryPointTransform: Transform) => (
   source$: Observable<BuildGraph>,
 ): Observable<BuildGraph> => {
+  const startTime = Date.now();
+
   const pkgUri = ngUrl(project);
   return source$.pipe(
     // Analyse dependencies and external resources for each entry point
@@ -226,6 +229,9 @@ const buildTransformFactory = (project: string, analyseSourcesTransform: Transfo
  - from: ${ngPkg.data.src}
  - to:   ${ngPkg.data.dest}`);
       log.success('------------------------------------------------------------------------------');
+      const b = colors.bold;
+      const w = colors.white;
+      log.msg(w(`\nBuild at: ${b(new Date().toISOString())} - Time: ${b('' + (Date.now() - startTime))}ms\n`));
     }),
   );
 };
