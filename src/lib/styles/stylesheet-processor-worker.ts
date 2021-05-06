@@ -1,3 +1,5 @@
+import * as cacache from 'cacache';
+import { createHash } from 'crypto';
 import * as path from 'path';
 import postcss, { LazyResult } from 'postcss';
 import * as postcssUrl from 'postcss-url';
@@ -8,18 +10,42 @@ import * as postcssPresetEnv from 'postcss-preset-env';
 import { CssUrl, WorkerOptions, WorkerResult } from './stylesheet-processor';
 import { readFile } from '../utils/fs';
 
+const ngPackagrVersion = require('../../../package.json').version;
+
 async function processCss({
   filePath,
   browserslistData,
   cssUrl,
   styleIncludePaths,
   basePath,
+  cachePath,
 }: WorkerOptions): Promise<WorkerResult> {
+  const content = await readFile(filePath, 'utf8');
+
   // Render pre-processor language (sass, styl, less)
-  const renderedCss = await renderCss(filePath, basePath, styleIncludePaths);
+  const renderedCss = await renderCss(filePath, content, basePath, styleIncludePaths);
 
   // Render postcss (autoprefixing and friends)
   const result = await optimizeCss(filePath, renderedCss, browserslistData, cssUrl);
+
+  // We cannot cache CSS re-rendering phase, because a transitive dependency via (@import) can case different CSS output.
+  // Example a change in a mixin or SCSS variable.
+  const key = createHash('sha1')
+    .update(ngPackagrVersion)
+    .update(result.css)
+    .update(browserslistData.join(''))
+    .digest('base64');
+
+  const entry = await cacache.get.info(cachePath, key);
+  if (entry) {
+    return {
+      css: await readFile(entry.path, 'utf8'),
+      warnings: [],
+    };
+  }
+
+  // Add to cache
+  await cacache.put(cachePath, key, result.css);
 
   return {
     css: result.css,
@@ -27,9 +53,8 @@ async function processCss({
   };
 }
 
-async function renderCss(filePath: string, basePath, styleIncludePaths?: string[]): Promise<string> {
+async function renderCss(filePath: string, css: string, basePath, styleIncludePaths?: string[]): Promise<string> {
   const ext = path.extname(filePath);
-  const content = await readFile(filePath, 'utf8');
 
   switch (ext) {
     case '.sass':
@@ -53,7 +78,7 @@ async function renderCss(filePath: string, basePath, styleIncludePaths?: string[
       return sassCompiler
         .renderSync({
           file: filePath,
-          data: content,
+          data: css,
           indentedSyntax: '.sass' === ext,
           importer: await import('node-sass-tilde-importer'),
           includePaths: styleIncludePaths,
@@ -61,20 +86,20 @@ async function renderCss(filePath: string, basePath, styleIncludePaths?: string[
         .css.toString();
     }
     case '.less': {
-      const { css } = await (await import('less')).render(content, {
+      const { css: content } = await (await import('less')).render(css, {
         filename: filePath,
         javascriptEnabled: true,
         paths: styleIncludePaths,
       });
 
-      return css;
+      return content;
     }
     case '.styl':
     case '.stylus': {
       const stylus = await import('stylus');
 
       return (
-        stylus(content)
+        stylus(css)
           // add paths for resolve
           .set('paths', [basePath, '.', ...styleIncludePaths, 'node_modules'])
           // add support for resolving plugins from node_modules
@@ -87,7 +112,7 @@ async function renderCss(filePath: string, basePath, styleIncludePaths?: string[
     }
     case '.css':
     default:
-      return content;
+      return css;
   }
 }
 
