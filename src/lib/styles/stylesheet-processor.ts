@@ -29,14 +29,6 @@ export class StylesheetProcessor {
   constructor(private readonly basePath: string, private readonly cssUrl?: CssUrl, private readonly styleIncludePaths?: string[]) { }
 
   process(filePath: string) {
-    const workerOptions: WorkerOptions = {
-      filePath,
-      basePath: this.basePath,
-      cssUrl: this.cssUrl,
-      styleIncludePaths: this.styleIncludePaths,
-      browserslistData: this.browserslistData,
-    };
-
     if (!this.worker) {
       this.worker = new Worker(join(__dirname, './stylesheet-processor-worker.js'));
     }
@@ -45,6 +37,14 @@ export class StylesheetProcessor {
       log.debug(`determine browserslist for ${this.basePath}`);
       this.browserslistData = browserslist(undefined, { path: this.basePath });
     }
+
+    const workerOptions: WorkerOptions = {
+      filePath,
+      basePath: this.basePath,
+      cssUrl: this.cssUrl,
+      styleIncludePaths: this.styleIncludePaths,
+      browserslistData: this.browserslistData,
+    };
 
     const ioChannel = new MessageChannel();
 
