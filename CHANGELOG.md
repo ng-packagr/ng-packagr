@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0-rc.2](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-rc.1...v12.0.0-rc.2) (2021-05-06)
+
+
+### Bug Fixes
+
+* add `built at` and `time` to console output ([50639dc](https://github.com/ng-packagr/ng-packagr/commit/50639dcbb97add89fcda2570aa5a55892a9b0d2c))
+* initialize worker options post browserlist setup ([ff90621](https://github.com/ng-packagr/ng-packagr/commit/ff906218cb198b0e4653528fac7df184294b70f4))
+
+
+### Performance
+
+* cache processed stylesheets ([b791429](https://github.com/ng-packagr/ng-packagr/commit/b7914293dd424b4bc30d4123f3ef6642eabdb1dc))
+
 ## [12.0.0-rc.1](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-rc.0...v12.0.0-rc.1) (2021-05-05)
 
 
