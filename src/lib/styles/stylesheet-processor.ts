@@ -1,5 +1,7 @@
 import * as browserslist from 'browserslist';
 import { join } from 'path';
+import * as findCacheDirectory from 'find-cache-dir';
+import { tmpdir } from 'os';
 import { MessageChannel, receiveMessageOnPort, Worker } from 'worker_threads';
 
 import * as log from '../utils/log';
@@ -14,6 +16,7 @@ export interface WorkerOptions {
   browserslistData: string[];
   cssUrl?: CssUrl;
   styleIncludePaths?: string[];
+  cachePath: string;
 }
 
 export interface WorkerResult {
@@ -25,8 +28,15 @@ export interface WorkerResult {
 export class StylesheetProcessor {
   private browserslistData: string[] | undefined;
   private worker: Worker | undefined;
+  private readonly cachePath: string;
 
-  constructor(private readonly basePath: string, private readonly cssUrl?: CssUrl, private readonly styleIncludePaths?: string[]) { }
+  constructor(
+    private readonly basePath: string,
+    private readonly cssUrl?: CssUrl,
+    private readonly styleIncludePaths?: string[],
+  ) {
+    this.cachePath = findCacheDirectory({ name: 'ng-packagr-styles' }) || tmpdir();
+  }
 
   process(filePath: string) {
     if (!this.worker) {
@@ -44,15 +54,14 @@ export class StylesheetProcessor {
       cssUrl: this.cssUrl,
       styleIncludePaths: this.styleIncludePaths,
       browserslistData: this.browserslistData,
+      cachePath: this.cachePath,
     };
 
     const ioChannel = new MessageChannel();
 
     try {
       const signal = new Int32Array(new SharedArrayBuffer(4));
-      this.worker.postMessage({ signal, port: ioChannel.port1, workerOptions }, [
-        ioChannel.port1
-      ]);
+      this.worker.postMessage({ signal, port: ioChannel.port1, workerOptions }, [ioChannel.port1]);
 
       // Sleep until signal[0] is 0
       Atomics.wait(signal, 0, 0);
