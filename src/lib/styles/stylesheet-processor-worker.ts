@@ -10,7 +10,7 @@ import * as postcssPresetEnv from 'postcss-preset-env';
 import { CssUrl, WorkerOptions, WorkerResult } from './stylesheet-processor';
 import { readFile } from '../utils/fs';
 
-const ngPackagrVersion = require('../../../package.json').version;
+const ngPackagrVersion = require('../../package.json').version;
 
 async function processCss({
   filePath,
@@ -21,28 +21,33 @@ async function processCss({
   cachePath,
 }: WorkerOptions): Promise<WorkerResult> {
   const content = await readFile(filePath, 'utf8');
+  let key: string | undefined;
+
+  if (!content.includes('@import') && !content.includes('@use')) {
+    // No transitive deps, we can cache more aggressively.
+    key = generateKey(content, browserslistData);
+    const result = await readCacheEntry(cachePath, key);
+    if (result) {
+      return result;
+    }
+  }
 
   // Render pre-processor language (sass, styl, less)
   const renderedCss = await renderCss(filePath, content, basePath, styleIncludePaths);
 
-  // Render postcss (autoprefixing and friends)
-  const result = await optimizeCss(filePath, renderedCss, browserslistData, cssUrl);
-
   // We cannot cache CSS re-rendering phase, because a transitive dependency via (@import) can case different CSS output.
   // Example a change in a mixin or SCSS variable.
-  const key = createHash('sha1')
-    .update(ngPackagrVersion)
-    .update(result.css)
-    .update(browserslistData.join(''))
-    .digest('base64');
-
-  const entry = await cacache.get.info(cachePath, key);
-  if (entry) {
-    return {
-      css: await readFile(entry.path, 'utf8'),
-      warnings: [],
-    };
+  if (!key) {
+    key = generateKey(renderedCss, browserslistData);
   }
+
+  const cachedResult = await readCacheEntry(cachePath, key);
+  if (cachedResult) {
+    return cachedResult;
+  }
+
+  // Render postcss (autoprefixing and friends)
+  const result = await optimizeCss(filePath, renderedCss, browserslistData, cssUrl);
 
   // Add to cache
   await cacache.put(cachePath, key, result.css);
@@ -53,7 +58,12 @@ async function processCss({
   };
 }
 
-async function renderCss(filePath: string, css: string, basePath, styleIncludePaths?: string[]): Promise<string> {
+async function renderCss(
+  filePath: string,
+  css: string,
+  basePath: string,
+  styleIncludePaths?: string[],
+): Promise<string> {
   const ext = path.extname(filePath);
 
   switch (ext) {
@@ -148,6 +158,22 @@ function optimizeCss(filePath: string, css: string, browsers: string[], cssUrl?:
     from: filePath,
     to: filePath.replace(path.extname(filePath), '.css'),
   });
+}
+
+function generateKey(content: string, browserslistData: string[]): string {
+  return createHash('sha1').update(ngPackagrVersion).update(content).update(browserslistData.join('')).digest('base64');
+}
+
+async function readCacheEntry(cachePath: string, key: string): Promise<WorkerResult | undefined> {
+  const entry = await cacache.get.info(cachePath, key);
+  if (entry) {
+    return {
+      css: await readFile(entry.path, 'utf8'),
+      warnings: [],
+    };
+  }
+
+  return undefined;
 }
 
 parentPort.on('message', async ({ signal, port, workerOptions }) => {
