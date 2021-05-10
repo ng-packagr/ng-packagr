@@ -41,7 +41,6 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     skipLibCheck: true,
     noLib: true,
     noEmit: true,
-    allowJs: false,
     types: [],
     target: ts.ScriptTarget.Latest,
     strict: false,
