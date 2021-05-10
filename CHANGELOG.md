@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0-rc.3](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-rc.2...v12.0.0-rc.3) (2021-05-10)
+
+
+### Bug Fixes
+
+* improve stylesheet caching mechanism ([b4b44c8](https://github.com/ng-packagr/ng-packagr/commit/b4b44c8879e69eba06bd41da180cd6c2414acc0d))
+
 ## [12.0.0-rc.2](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-rc.1...v12.0.0-rc.2) (2021-05-06)
 
 
