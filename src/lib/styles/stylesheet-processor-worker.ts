@@ -39,11 +39,11 @@ async function processCss({
   // Example a change in a mixin or SCSS variable.
   if (!key) {
     key = generateKey(renderedCss, browserslistData);
-  }
 
-  const cachedResult = await readCacheEntry(cachePath, key);
-  if (cachedResult) {
-    return cachedResult;
+    const cachedResult = await readCacheEntry(cachePath, key);
+    if (cachedResult) {
+      return cachedResult;
+    }
   }
 
   // Render postcss (autoprefixing and friends)
