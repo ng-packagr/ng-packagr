@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [12.0.1](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0...v12.0.1) (2021-05-25)
+
+
+### Bug Fixes
+
+* ignore type definitions when building entry-point dependency graph ([9a7dccb](https://github.com/ng-packagr/ng-packagr/commit/9a7dccb6e9068775a26c79d1ab1e2aee5571012a)), closes [#1982](https://github.com/ng-packagr/ng-packagr/issues/1982)
+* log error from stylesheet pre-processor ([077fc65](https://github.com/ng-packagr/ng-packagr/commit/077fc65f20364636db8dca1fb3e9106a887cb7ec)), closes [#1983](https://github.com/ng-packagr/ng-packagr/issues/1983)
+
 ## [12.0.0](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-rc.3...v12.0.0) (2021-05-12)
 
 ## [12.0.0](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0-rc.3...v12.0.0) (2021-05-12)
