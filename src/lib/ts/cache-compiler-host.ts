@@ -137,7 +137,7 @@ export function cacheCompilerHost(
           try {
             cache.content = stylesheetProcessor.process(fileName);
           } catch (err) {
-            error('\n' + err.message + ` in stylesheet file ${fileName}`);
+            error('\n' + err.message + ` in stylesheet file ${fileName}.`);
             throw err;
           }
         }
