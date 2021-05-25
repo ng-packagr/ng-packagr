@@ -59,6 +59,10 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
   const potentialDependencies = new Set<string>();
 
   compilerHost.resolveModuleNames = (moduleNames: string[], containingFile: string) => {
+    if (containingFile.endsWith('.d.ts')) {
+      return [].fill(undefined, 0, moduleNames.length);
+    }
+
     return moduleNames.map(moduleName => {
       if (!moduleName.startsWith('.')) {
         if (moduleName === primaryModuleId || moduleName.startsWith(`${primaryModuleId}/`)) {
