@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [12.0.2](https://github.com/ng-packagr/ng-packagr/compare/v12.0.1...v12.0.2) (2021-05-25)
+
+
+### Bug Fixes
+
+* display file stylesheet file path when there is an error ([698de4e](https://github.com/ng-packagr/ng-packagr/commit/698de4e0dc9f917ee147ec115cb36b0c1b7c59bf))
+
 ### [12.0.1](https://github.com/ng-packagr/ng-packagr/compare/v12.0.0...v12.0.1) (2021-05-25)
 
 
