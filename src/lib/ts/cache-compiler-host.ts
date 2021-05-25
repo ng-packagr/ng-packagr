@@ -2,6 +2,7 @@ import * as ts from 'typescript';
 import * as ng from '@angular/compiler-cli';
 import * as path from 'path';
 import { ensureUnixPath } from '../utils/path';
+import { error } from '../utils/log';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { EntryPointNode, fileUrl } from '../ng-package/nodes';
 import { BuildGraph } from '../graph/build-graph';
@@ -133,7 +134,12 @@ export function cacheCompilerHost(
           cache.content = compilerHost.readFile.call(this, fileName);
         } else {
           // stylesheet
-          cache.content = stylesheetProcessor.process(fileName);
+          try {
+            cache.content = stylesheetProcessor.process(fileName);
+          } catch (err) {
+            error('\n' + err.message);
+            throw err;
+          }
         }
 
         if (cache.content === undefined) {
