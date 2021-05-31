@@ -45,7 +45,7 @@ describe(`@sample/scss-paths`, () => {
 
     it(`should resolve the styles from the SASS theme`, () => {
       const scssStyles = METADATA['metadata']['BazComponent']['decorators'][0]['arguments'][0]['styles'][0];
-      expect(scssStyles).to.contain(`color:#00f`);
+      expect(scssStyles).to.contain(`color:red`);
       expect(scssStyles).to.contain(`background-color:#ff0`);
     });
 
