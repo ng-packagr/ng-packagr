@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [12.0.3](https://github.com/ng-packagr/ng-packagr/compare/v12.0.2...v12.0.3) (2021-06-03)
+
+
+### Bug Fixes
+
+* update supported range of node versions ([#1996](https://github.com/ng-packagr/ng-packagr/issues/1996)) ([1064bea](https://github.com/ng-packagr/ng-packagr/commit/1064bea620c4650b5c4ad7f87a53f6c4ef7b0259))
+
 ### [12.0.2](https://github.com/ng-packagr/ng-packagr/compare/v12.0.1...v12.0.2) (2021-05-25)
 
 
