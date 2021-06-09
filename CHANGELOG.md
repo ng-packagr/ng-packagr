@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [12.0.4](https://github.com/ng-packagr/ng-packagr/compare/v12.0.3...v12.0.4) (2021-06-09)
+
+
+### Bug Fixes
+
+* show error message on nested circular dependency ([06e6700](https://github.com/ng-packagr/ng-packagr/commit/06e67004dc9310c67c7f9d36d16165be32779145)), closes [#2001](https://github.com/ng-packagr/ng-packagr/issues/2001)
+
 ### [12.0.3](https://github.com/ng-packagr/ng-packagr/compare/v12.0.2...v12.0.3) (2021-06-03)
 
 
