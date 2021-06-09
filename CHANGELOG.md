@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [12.0.5](https://github.com/ng-packagr/ng-packagr/compare/v12.0.4...v12.0.5) (2021-06-09)
+
+
+### Bug Fixes
+
+* Debug Failure. False expression when using triple slash reference directive ([043c53b](https://github.com/ng-packagr/ng-packagr/commit/043c53b9f811fc4e604b51d5660c061271c2ad03))
+
 ### [12.0.4](https://github.com/ng-packagr/ng-packagr/compare/v12.0.3...v12.0.4) (2021-06-09)
 
 
