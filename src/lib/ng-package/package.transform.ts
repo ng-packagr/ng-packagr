@@ -14,7 +14,7 @@ import {
   defaultIfEmpty,
 } from 'rxjs/operators';
 import { BuildGraph } from '../graph/build-graph';
-import { DepthBuilder } from '../graph/depth';
+import { DepGraph } from 'dependency-graph';
 import { STATE_IN_PROGRESS } from '../graph/node';
 import { Transform } from '../graph/transform';
 import * as log from '../utils/log';
@@ -261,15 +261,23 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
   pipe(
     concatMap(graph => {
       // Calculate node/dependency depth and determine build order
-      const depthBuilder = new DepthBuilder();
+      const depGraph = new DepGraph({ circular: false });
       const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
-      entryPoints.forEach(entryPoint => {
-        const deps = entryPoint.filter(isEntryPoint).map(ep => ep.url);
-        depthBuilder.add(entryPoint.url, deps);
-      });
+
+      for (const entryPoint of entryPoints) {
+        // Remove `ng://` prefix for better error messages
+        const from = entryPoint.url.substring(5);
+        depGraph.addNode(from);
+
+        for (let to of entryPoint.filter(isEntryPoint).map(ep => ep.url)) {
+          to = to.substring(5);
+          depGraph.addNode(to);
+          depGraph.addDependency(from, to);
+        }
+      }
 
       // The array index is the depth.
-      const groups = depthBuilder.build().flatMap(x => x);
+      const groups = depGraph.overallOrder().map(ngUrl);
 
       // Build entry points with lower depth values first.
       return from(groups).pipe(
