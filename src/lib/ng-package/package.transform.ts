@@ -269,8 +269,8 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
         const from = entryPoint.url.substring(5);
         depGraph.addNode(from);
 
-        for (let to of entryPoint.filter(isEntryPoint).map(ep => ep.url)) {
-          to = to.substring(5);
+        for (const { url } of entryPoint.filter(isEntryPoint)) {
+          const to = url.substring(5);
           depGraph.addNode(to);
           depGraph.addDependency(from, to);
         }
