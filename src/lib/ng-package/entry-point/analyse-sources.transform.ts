@@ -58,11 +58,40 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
 
   const potentialDependencies = new Set<string>();
 
-  compilerHost.resolveModuleNames = (moduleNames: string[], containingFile: string) => {
-    if (containingFile.endsWith('.d.ts')) {
-      return [].fill(undefined, 0, moduleNames.length);
-    }
+  compilerHost.resolveTypeReferenceDirectives = (
+    moduleNames: string[],
+    containingFile: string,
+    redirectedReference: ts.ResolvedProjectReference | undefined,
+    options: ts.CompilerOptions,
+  ) => {
+    return moduleNames.map(moduleName => {
+      if (!moduleName.startsWith('.')) {
+        if (moduleName === primaryModuleId || moduleName.startsWith(`${primaryModuleId}/`)) {
+          potentialDependencies.add(moduleName);
+        }
 
+        return undefined;
+      }
+
+      const result = ts.resolveTypeReferenceDirective(
+        moduleName,
+        ensureUnixPath(containingFile),
+        options,
+        compilerHost,
+        redirectedReference,
+      ).resolvedTypeReferenceDirective;
+
+      return result;
+    });
+  };
+
+  compilerHost.resolveModuleNames = (
+    moduleNames: string[],
+    containingFile: string,
+    _reusedNames: string[] | undefined,
+    redirectedReference: ts.ResolvedProjectReference | undefined,
+    options: ts.CompilerOptions,
+  ) => {
     return moduleNames.map(moduleName => {
       if (!moduleName.startsWith('.')) {
         if (moduleName === primaryModuleId || moduleName.startsWith(`${primaryModuleId}/`)) {
@@ -75,9 +104,10 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
       const { resolvedModule } = ts.resolveModuleName(
         moduleName,
         ensureUnixPath(containingFile),
-        tsConfigOptions,
+        options,
         compilerHost,
         moduleResolutionCache,
+        redirectedReference,
       );
 
       return resolvedModule;
