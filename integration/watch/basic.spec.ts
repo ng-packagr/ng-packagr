@@ -17,6 +17,10 @@ describe('basic', () => {
   });
 
   describe('primary entrypoint', () => {
+    it("should set a `0.0.0-watch+...` as version number", () => {
+      harness.expectPackageManifestToMatch(/"version": "0\.0\.0-watch\+\d+"/);
+    });
+
     it("should perform initial compilation when 'watch' is started", () => {
       harness.expectDtsToMatch('public_api', /title = "hello world"/);
       harness.expectFesm2015ToMatch('basic', /hello world/);
