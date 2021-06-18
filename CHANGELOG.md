@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [12.0.6](https://github.com/ng-packagr/ng-packagr/compare/v12.0.5...v12.0.6) (2021-06-18)
+
+
+### Bug Fixes
+
+* add version stamping during watch builds ([4e13041](https://github.com/ng-packagr/ng-packagr/commit/4e13041a7cc47918dcecd4dd94f2f57edc0e747c))
+
 ### [12.0.5](https://github.com/ng-packagr/ng-packagr/compare/v12.0.4...v12.0.5) (2021-06-09)
 
 
