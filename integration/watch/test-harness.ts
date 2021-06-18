@@ -75,6 +75,10 @@ export class TestHarness {
     return expect(this.readFileSync(`${fileName}.d.ts`)).to.match(regexp);
   }
 
+  expectPackageManifestToMatch(regexp: RegExp): Chai.Assertion {
+    return expect(this.readFileSync('package.json')).to.match(regexp);
+  }
+
   expectMetadataToContain(fileName: string, path: string, value: any): Chai.Assertion {
     const data = this.readFileSync(`${fileName}.metadata.json`, true);
     return expect(data).to.have.nested.property(path, value);
