@@ -1,10 +1,9 @@
 import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
 import { ParsedConfiguration } from '@angular/compiler-cli';
-import { of as observableOf, Observable, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { of as observableOf, Observable } from 'rxjs';
+import { mapTo } from 'rxjs/operators';
 import { BuildGraph } from './graph/build-graph';
 import { Transform } from './graph/transform';
-import * as log from './utils/log';
 import { provideTsConfig } from './ng-package/entry-point/init-tsconfig.di';
 import { ENTRY_POINT_PROVIDERS } from './ng-package/entry-point/entry-point.di';
 import { PACKAGE_TRANSFORM, PACKAGE_PROVIDERS } from './ng-package/package.di';
@@ -115,12 +114,7 @@ export class NgPackagr {
 
     return observableOf(new BuildGraph()).pipe(
       buildTransformOperator,
-      catchError(err => {
-        // Report error and re-throw to subscribers
-        log.error(err);
-        return throwError(err);
-      }),
-      map(() => undefined),
+      mapTo(undefined),
     );
   }
 }
