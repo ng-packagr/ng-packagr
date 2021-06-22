@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import { RollupCache } from 'rollup';
-import { ParsedConfiguration, Program } from '@angular/compiler-cli';
+import { NgtscProgram, ParsedConfiguration, Program } from '@angular/compiler-cli';
 import { Node } from '../graph/node';
 import { by, isInProgress, isDirty } from '../graph/select';
 import { NgEntryPoint, DestinationFiles } from './entry-point/entry-point';
@@ -8,6 +8,7 @@ import { NgccProcessingCache } from './ngcc-cache';
 import { NgPackage } from './package';
 import { FileCache } from '../file-system/file-cache';
 import { ComplexPredicate } from '../graph/build-graph';
+import * as ivy from '../ivy';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 
 export const TYPE_NG_PACKAGE = 'application/ng-package';
@@ -85,7 +86,9 @@ export class EntryPointNode extends Node {
     analysesSourcesFileCache: FileCache;
     moduleResolutionCache: ts.ModuleResolutionCache;
     rollupFESMCache?: RollupCache;
-    stylesheetProcessor?: StylesheetProcessor;
+    stylesheetProcessor?: StylesheetProcessor | ivy.StylesheetProcessor;
+    oldNgtscProgram?: NgtscProgram;
+    oldBuilder?: ts.EmitAndSemanticDiagnosticsBuilderProgram;
   };
 
   data: {

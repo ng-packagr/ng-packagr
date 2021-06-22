@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import jsonData from './angular.component.json';
+import jsonData from './angular.component2.json';
 
 @Component({
   selector: 'ng-component',

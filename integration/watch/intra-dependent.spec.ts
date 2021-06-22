@@ -19,7 +19,6 @@ describe('intra-dependent', () => {
 
   it("should perform initial compilation when 'watch' is started", () => {
     harness.expectDtsToMatch('src/primary.component', /count: number/);
-    harness.expectFesm2015ToMatch('intra-dependent-secondary', /count = 100/);
   });
 
   it('should throw error component inputs is changed without updating usages', done => {

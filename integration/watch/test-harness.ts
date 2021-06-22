@@ -79,11 +79,6 @@ export class TestHarness {
     return expect(this.readFileSync('package.json')).to.match(regexp);
   }
 
-  expectMetadataToContain(fileName: string, path: string, value: any): Chai.Assertion {
-    const data = this.readFileSync(`${fileName}.metadata.json`, true);
-    return expect(data).to.have.nested.property(path, value);
-  }
-
   /**
    * Gets invoked when a compilation completes succesfully.
    */
@@ -113,6 +108,7 @@ export class TestHarness {
     return new Promise(resolve => {
       this.ngPackagr$$ = ngPackagr()
         .forProject(path.join(this.testTempPath, 'package.json'))
+        .withTsConfig(path.join(this.testTempPath, 'tsconfig.ngc.json'))
         .watch()
         .pipe(
           tap(() => resolve()), // we are only interested when in the first builds, that's why we are resolving it

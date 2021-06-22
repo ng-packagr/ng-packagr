@@ -6,15 +6,14 @@ export interface CacheEntry {
   sourceFile?: ts.SourceFile;
   content?: string;
   declarationFileName?: string;
+  angularDiagnostics?: ts.Diagnostic[];
 }
 
 export class FileCache {
   private cache: Map<string, CacheEntry> = new Map();
 
-  forEach: (
-    callbackfn: (value: CacheEntry, key: string, map: Map<string, CacheEntry>) => void,
-    thisArg?: any,
-  ) => void = this.cache.forEach.bind(this.cache);
+  forEach: (callbackfn: (value: CacheEntry, key: string, map: Map<string, CacheEntry>) => void, thisArg?: any) => void =
+    this.cache.forEach.bind(this.cache);
   clear: () => void = this.cache.clear.bind(this.cache);
 
   size(): number {
@@ -47,5 +46,15 @@ export class FileCache {
     }
 
     return entry;
+  }
+
+  updateAngularDiagnostics(sourceFile: ts.SourceFile, diagnostics: ts.Diagnostic[]): void {
+    if (this.has(sourceFile.fileName)) {
+      this.get(sourceFile.fileName).angularDiagnostics = diagnostics;
+    }
+  }
+
+  getAngularDiagnostics(sourceFile: ts.SourceFile): ts.Diagnostic[] | undefined {
+    return this.get(sourceFile.fileName)?.angularDiagnostics;
   }
 }

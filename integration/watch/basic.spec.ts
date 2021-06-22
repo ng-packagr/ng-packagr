@@ -24,7 +24,6 @@ describe('basic', () => {
     it("should perform initial compilation when 'watch' is started", () => {
       harness.expectDtsToMatch('public_api', /title = "hello world"/);
       harness.expectFesm2015ToMatch('basic', /hello world/);
-      harness.expectMetadataToContain('basic', 'metadata.title', 'hello world');
     });
 
     describe('when file changes', () => {
@@ -34,7 +33,6 @@ describe('basic', () => {
         harness.onComplete(() => {
           harness.expectDtsToMatch('public_api', /title = "foo bar"/);
           harness.expectFesm2015ToMatch('basic', /foo bar/);
-          harness.expectMetadataToContain('basic', 'metadata.title', 'foo bar');
           done();
         });
       });
@@ -45,7 +43,6 @@ describe('basic', () => {
         harness.onComplete(() => {
           harness.expectDtsToMatch('public_api', /title = "foo bar"/);
           harness.expectFesm2015ToMatch('basic', /foo bar/);
-          harness.expectMetadataToContain('basic', 'metadata.title', 'foo bar');
           done();
         });
 
@@ -72,11 +69,6 @@ describe('basic', () => {
 
         harness.onComplete(() => {
           harness.expectFesm2015ToMatch('basic-secondary', /Hello Angular/);
-          harness.expectMetadataToContain(
-            'secondary/basic-secondary',
-            'metadata.ɵa.decorators[0].arguments[0].template',
-            'Hello Angular',
-          );
           done();
         });
       });
