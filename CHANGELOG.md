@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [12.0.8](https://github.com/ng-packagr/ng-packagr/compare/v12.0.6...v12.0.8) (2021-06-22)
+
+
+### Bug Fixes
+
+* error shown multiple times in terminal ([22322e8](https://github.com/ng-packagr/ng-packagr/commit/22322e8b3233597831cea8e02ad06a621d5a0b64))
+
 ### [12.0.7](https://github.com/ng-packagr/ng-packagr/compare/v12.0.6...v12.0.7) (2021-06-22)
 
 
