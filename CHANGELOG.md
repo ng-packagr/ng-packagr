@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.1.0](https://github.com/ng-packagr/ng-packagr/compare/v12.0.6...v12.1.0) (2021-06-22)
+
+
+### Features
+
+* add support for TypeScript 4.3 ([d6cabcf](https://github.com/ng-packagr/ng-packagr/commit/d6cabcf4f9ca2a320ee7998d2116be68d00b9c49))
+* update Ivy compilation pipeline to use faster NGTSC program ([9f17304](https://github.com/ng-packagr/ng-packagr/commit/9f1730467bc6c599306e16c1583b26c305b33e53))
+
+
+### Bug Fixes
+
+* error shown multiple times in terminal ([22322e8](https://github.com/ng-packagr/ng-packagr/commit/22322e8b3233597831cea8e02ad06a621d5a0b64))
+
 ### [12.0.6](https://github.com/ng-packagr/ng-packagr/compare/v12.0.5...v12.0.6) (2021-06-18)
 
 
