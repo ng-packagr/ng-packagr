@@ -22,7 +22,7 @@ export const compileNgcTransformFactory = (
     const spinner = ora({
       hideCursor: false,
       discardStdin: false,
-    }).start(`Compiling TypeScript sources through NGC`);
+    });
 
     try {
       const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
@@ -37,11 +37,14 @@ export const compileNgcTransformFactory = (
 
       let ngccProcessor: NgccProcessor | undefined;
       if (tsConfig.options.enableIvy !== false) {
+        spinner.start(`Compiling with Angular sources in Ivy ${tsConfig.options.compilationMode || 'full'} compilation mode.`);
         ngccProcessor = new NgccProcessor(ngccProcessingCache, tsConfig.project, tsConfig.options, entryPoints);
         if (!entryPoint.data.entryPoint.isSecondaryEntryPoint) {
           // Only run the async version of NGCC during the primary entrypoint processing.
           await ngccProcessor.process();
         }
+      } else {
+        spinner.start(`Compiling with Angular in legacy View Engine compilation mode.`);
       }
 
       if (tsConfig.options.enableIvy !== false && !isEnabled(process.env['NG_BUILD_LIB_LEGACY'])) {
