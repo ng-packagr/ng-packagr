@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.1.0](https://github.com/ng-packagr/ng-packagr/compare/v12.1.0-next.0...v12.1.0) (2021-06-25)
+
+
+### Features
+
+* add compilation mode in build logs ([4959f8b](https://github.com/ng-packagr/ng-packagr/commit/4959f8b6b9856d5a3939cddb49523a1d74a6d1ff)), closes [#1991](https://github.com/ng-packagr/ng-packagr/issues/1991)
+
 ## [12.1.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/v12.0.6...v12.1.0-next.0) (2021-06-22)
 
 
