@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file. See [standa
 ### Features
 
 * add compilation mode in build logs ([4959f8b](https://github.com/ng-packagr/ng-packagr/commit/4959f8b6b9856d5a3939cddb49523a1d74a6d1ff)), closes [#1991](https://github.com/ng-packagr/ng-packagr/issues/1991)
+* add support for TypeScript 4.3 ([d6cabcf](https://github.com/ng-packagr/ng-packagr/commit/d6cabcf4f9ca2a320ee7998d2116be68d00b9c49))
+* update Ivy compilation pipeline to use faster NGTSC program ([9f17304](https://github.com/ng-packagr/ng-packagr/commit/9f1730467bc6c599306e16c1583b26c305b33e53))
 
 ## [12.1.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/v12.0.6...v12.1.0-next.0) (2021-06-22)
 
