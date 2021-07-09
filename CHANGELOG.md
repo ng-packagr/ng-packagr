@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [12.1.1](https://github.com/ng-packagr/ng-packagr/compare/v12.1.0...v12.1.1) (2021-07-09)
 
+### Bug Fixes
+
+* avoid non-actionable template type-checker syntax diagnostics ([63598d0](https://github.com/ng-packagr/ng-packagr/commit/63598d0))
+
 ## [12.1.0](https://github.com/ng-packagr/ng-packagr/compare/v12.1.0-next.0...v12.1.0) (2021-06-25)
 
 
