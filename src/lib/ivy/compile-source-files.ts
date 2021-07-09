@@ -94,21 +94,24 @@ export async function compileSourceFiles(
     }
   }
 
-  // Collect non-semantic diagnostics
+  // Collect program level diagnostics
   const allDiagnostics: ts.Diagnostic[] = [
     ...angularCompiler.getOptionDiagnostics(),
     ...builder.getOptionsDiagnostics(),
     ...builder.getGlobalDiagnostics(),
-    ...builder.getSyntacticDiagnostics(),
   ];
 
   // Required to support asynchronous resource loading
   // Must be done before creating transformers or getting template diagnostics
   await angularCompiler.analyzeAsync();
 
+  // Collect source file specific diagnostics
   for (const sourceFile of builder.getSourceFiles()) {
     if (!ignoreForDiagnostics.has(sourceFile)) {
-      allDiagnostics.push(...builder.getSemanticDiagnostics(sourceFile));
+      allDiagnostics.push(
+        ...builder.getSyntacticDiagnostics(sourceFile),
+        ...builder.getSemanticDiagnostics(sourceFile),
+      );
     }
 
     if (sourceFile.isDeclarationFile) {
