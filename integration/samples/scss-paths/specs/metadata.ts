@@ -77,7 +77,7 @@ describe(`@sample/scss-paths`, () => {
 
     it(`should resolve the SCSS styles from the sub-module common utilities`, () => {
       const scssStyles = METADATA['metadata']['BarComponent']['decorators'][0]['arguments'][0]['styles'][0];
-      expect(scssStyles).to.contain(`border:10px solid #ff0`);
+      expect(scssStyles).to.contain(`border:10px solid yellow`);
     });
 
     it(`should resolve the Less styles from the parent theme`, () => {
@@ -87,7 +87,7 @@ describe(`@sample/scss-paths`, () => {
 
     it(`should resolve the Less styles from the sub-module common utilities`, () => {
       const lessStyles = METADATA['metadata']['BarComponent']['decorators'][0]['arguments'][0]['styles'][1];
-      expect(lessStyles).to.contain(`font-weight:700`);
+      expect(lessStyles).to.contain(`font-weight:bold`);
     });
 
     it(`should resolve the Stylus styles from the parent theme`, () => {
@@ -107,7 +107,7 @@ describe(`@sample/scss-paths`, () => {
 
     it(`should resolve the SASS styles from the sub-module common utilities`, () => {
       const scssStyles = METADATA['metadata']['BarComponent']['decorators'][0]['arguments'][0]['styles'][3];
-      expect(scssStyles).to.contain(`border:10px solid #ff0`);
+      expect(scssStyles).to.contain(`border:10px solid yellow`);
     });
   });
 });
