@@ -4,7 +4,7 @@ import { tmpdir } from 'os';
 import * as cacache from 'cacache';
 import postcss from 'postcss';
 import * as postcssUrl from 'postcss-url';
-import * as cssnano from 'cssnano';
+import { transform, formatMessages } from 'esbuild';
 import * as postcssPresetEnv from 'postcss-preset-env';
 import * as log from '../../utils/log';
 import { readFile } from '../../utils/fs';
@@ -81,18 +81,29 @@ export class StylesheetProcessor {
     });
 
     const warnings = result.warnings().map(w => w.toString());
+    const { code, warnings: esBuildWarnings } = await transform(result.css, {
+      loader: 'css',
+      minify: true,
+      sourcefile: filePath,
+    });
+
+    if (esBuildWarnings.length > 0) {
+      warnings.push(...(await formatMessages(esBuildWarnings, { kind: 'warning' })));
+    }
+
     // Add to cache
     await cacache.put(
       cachePath,
       key,
       JSON.stringify({
-        css: result.css,
+        css: code,
         warnings,
       }),
     );
 
     warnings.forEach(msg => log.warn(msg));
-    return result.css;
+
+    return code;
   }
 
   private createPostCssPlugins(): ReturnType<typeof postcss> {
@@ -106,19 +117,6 @@ export class StylesheetProcessor {
         browsers: this.browserslistData,
         autoprefixer: true,
         stage: 3,
-      }),
-      cssnano({
-        preset: [
-          'default',
-          {
-            // Disable SVG optimizations, as this can cause optimizations which are not compatible in all browsers.
-            svgo: false,
-            // Disable `calc` optimizations, due to several issues. #16910, #16875, #17890
-            calc: false,
-            // Disable CSS rules sorted due to several issues #20693, https://github.com/ionic-team/ionic-framework/issues/23266 and https://github.com/cssnano/cssnano/issues/1054
-            cssDeclarationSorter: false,
-          },
-        ],
       }),
     );
 
