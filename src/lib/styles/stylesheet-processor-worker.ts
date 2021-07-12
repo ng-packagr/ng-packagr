@@ -3,7 +3,7 @@ import { createHash } from 'crypto';
 import * as path from 'path';
 import postcss, { LazyResult } from 'postcss';
 import * as postcssUrl from 'postcss-url';
-import * as cssnano from 'cssnano';
+import { formatMessages, transform } from 'esbuild';
 import { parentPort } from 'worker_threads';
 import * as postcssPresetEnv from 'postcss-preset-env';
 
@@ -50,18 +50,28 @@ async function processCss({
   const result = await optimizeCss(filePath, renderedCss, browserslistData, cssUrl);
   const warnings = result.warnings().map(w => w.toString());
 
+  const { code, warnings: esBuildWarnings } = await transform(result.css, {
+    loader: 'css',
+    minify: true,
+    sourcefile: filePath,
+  });
+
+  if (esBuildWarnings.length > 0) {
+    warnings.push(...(await formatMessages(esBuildWarnings, { kind: 'warning' })));
+  }
+
   // Add to cache
   await cacache.put(
     cachePath,
     key,
     JSON.stringify({
-      css: result.css,
+      css: code,
       warnings,
     }),
   );
 
   return {
-    css: result.css,
+    css: code,
     warnings,
   };
 }
@@ -148,19 +158,6 @@ function optimizeCss(filePath: string, css: string, browsers: string[], cssUrl?:
       browsers,
       autoprefixer: true,
       stage: 3,
-    }),
-    cssnano({
-      preset: [
-        'default',
-        {
-          // Disable SVG optimizations, as this can cause optimizations which are not compatible in all browsers.
-          svgo: false,
-          // Disable `calc` optimizations, due to several issues. #16910, #16875, #17890
-          calc: false,
-          // Disable CSS rules sorted due to several issues #20693, https://github.com/ionic-team/ionic-framework/issues/23266 and https://github.com/cssnano/cssnano/issues/1054
-          cssDeclarationSorter: false,
-        },
-      ],
     }),
   );
 

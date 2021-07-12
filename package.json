@@ -38,8 +38,8 @@
     "cacache": "^15.0.6",
     "chokidar": "^3.5.1",
     "commander": "^8.0.0",
-    "cssnano": "^5.0.0",
     "dependency-graph": "^0.11.0",
+    "esbuild": "^0.12.15",
     "find-cache-dir": "^3.3.1",
     "glob": "^7.1.6",
     "injection-js": "^2.4.0",
@@ -57,7 +57,7 @@
     "stylus": "^0.54.8"
   },
   "peerDependencies": {
-    "@angular/compiler-cli": "^12.0.0 || ^12.1.0-next.0",
+    "@angular/compiler-cli": "^12.0.0 || ^12.2.0-next.0",
     "tslib": "^2.1.0",
     "typescript": "~4.2.3 || ~4.3.2"
   },
@@ -76,7 +76,6 @@
     "@types/cacache": "^15.0.0",
     "@types/chai": "^4.0.0",
     "@types/chokidar": "^1.7.5",
-    "@types/cssnano": "^4.0.0",
     "@types/find-cache-dir": "^3.2.0",
     "@types/fs-extra": "^9.0.10",
     "@types/glob": "^7.0.0",
