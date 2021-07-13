@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [12.1.2](https://github.com/ng-packagr/ng-packagr/compare/v12.1.1...v12.1.2) (2021-07-13)
+
+
+### Bug Fixes
+
+* parse styles cache as JSON ([f778b92](https://github.com/ng-packagr/ng-packagr/commit/f778b92f9562d248a337b5177cdeaa22a8f7ab74))
+
 ### [12.1.1](https://github.com/ng-packagr/ng-packagr/compare/v12.1.0...v12.1.1) (2021-07-09)
 
 ### Bug Fixes
