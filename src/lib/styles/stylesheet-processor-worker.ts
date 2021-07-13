@@ -48,13 +48,21 @@ async function processCss({
 
   // Render postcss (autoprefixing and friends)
   const result = await optimizeCss(filePath, renderedCss, browserslistData, cssUrl);
+  const warnings = result.warnings().map(w => w.toString());
 
   // Add to cache
-  await cacache.put(cachePath, key, result.css);
+  await cacache.put(
+    cachePath,
+    key,
+    JSON.stringify({
+      css: result.css,
+      warnings,
+    }),
+  );
 
   return {
     css: result.css,
-    warnings: result.warnings().map(w => w.toString()),
+    warnings,
   };
 }
 
@@ -96,7 +104,9 @@ async function renderCss(
         .css.toString();
     }
     case '.less': {
-      const { css: content } = await (await import('less')).render(css, {
+      const { css: content } = await (
+        await import('less')
+      ).render(css, {
         filename: filePath,
         javascriptEnabled: true,
         paths: styleIncludePaths,
@@ -167,10 +177,7 @@ function generateKey(content: string, browserslistData: string[]): string {
 async function readCacheEntry(cachePath: string, key: string): Promise<WorkerResult | undefined> {
   const entry = await cacache.get.info(cachePath, key);
   if (entry) {
-    return {
-      css: await readFile(entry.path, 'utf8'),
-      warnings: [],
-    };
+    return JSON.parse(await readFile(entry.path, 'utf8'));
   }
 
   return undefined;

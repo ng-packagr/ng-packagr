@@ -56,6 +56,5 @@ export const entryPointTransformFactory = (
       const entryPoint = graph.find(byEntryPoint().and(isInProgress));
       entryPoint.state = STATE_DONE;
     }),
-
     //tap(() => log.info(`Built.`))
   );
