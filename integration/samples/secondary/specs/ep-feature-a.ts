@@ -39,6 +39,6 @@ describe(`@sample/secondary/feature-a`, () => {
   });
 
   it(`should 'import .. from '@sample/secondary/shared';' (FESM2015)`, () => {
-    expect(ESM2015_CONTENTS).to.contain(`import { SHARED_FEATURE } from '@sample/secondary/shared';`);
+    expect(ESM2015_CONTENTS).to.contain(`import { SHARED_FEATURE } from "@sample/secondary/shared";`);
   });
 });
