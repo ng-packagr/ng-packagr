@@ -1,5 +1,4 @@
 import * as ts from 'typescript';
-import { RollupCache } from 'rollup';
 import { NgtscProgram, ParsedConfiguration, Program } from '@angular/compiler-cli';
 import { Node } from '../graph/node';
 import { by, isInProgress, isDirty } from '../graph/select';
@@ -10,6 +9,7 @@ import { FileCache } from '../file-system/file-cache';
 import { ComplexPredicate } from '../graph/build-graph';
 import * as ivy from '../ivy';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
+import { BuildResult } from 'esbuild';
 
 export const TYPE_NG_PACKAGE = 'application/ng-package';
 export const TYPE_NG_ENTRY_POINT = 'application/ng-entry-point';
@@ -85,7 +85,7 @@ export class EntryPointNode extends Node {
     ngccProcessingCache: NgccProcessingCache;
     analysesSourcesFileCache: FileCache;
     moduleResolutionCache: ts.ModuleResolutionCache;
-    rollupFESMCache?: RollupCache;
+    FESMCache?: BuildResult;
     stylesheetProcessor?: StylesheetProcessor | ivy.StylesheetProcessor;
     oldNgtscProgram?: NgtscProgram;
     oldBuilder?: ts.EmitAndSemanticDiagnosticsBuilderProgram;

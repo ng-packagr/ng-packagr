@@ -43,7 +43,7 @@ describe(`@sample/secondary/feature-b`, () => {
   });
 
   it(`should 'import .. from '@sample/secondary/feature-a';' (FESM2015)`, () => {
-    expect(ESM2015_CONTENTS).to.contain(`import { FEATURE_A } from '@sample/secondary/feature-a';`);
+    expect(ESM2015_CONTENTS).to.contain(`import { FEATURE_A } from "@sample/secondary/feature-a";`);
   });
 
   it(`should 'export { .. }' (FESM2015)`, () => {
@@ -51,6 +51,6 @@ describe(`@sample/secondary/feature-b`, () => {
   });
 
   it(`should 'import .. from '@sample/secondary/feature-a';' (FESM2015)`, () => {
-    expect(ESM2015_CONTENTS).to.contain(`import { FEATURE_A } from '@sample/secondary/feature-a';`);
+    expect(ESM2015_CONTENTS).to.contain(`import { FEATURE_A } from "@sample/secondary/feature-a";`);
   });
 });
