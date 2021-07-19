@@ -63,6 +63,11 @@ export class NgPackage {
   public get keepLifecycleScripts(): boolean {
     return this.primary.$get('keepLifecycleScripts') === true;
   }
+
+  public get keepPackageScripts(): boolean {
+    return this.primary.$get('keepPackageScripts') === true;
+  }
+
   public get assets(): string[] {
     return this.primary.$get('assets');
   }

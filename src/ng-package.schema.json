@@ -19,6 +19,12 @@
       "default": "dist"
     },
     "keepLifecycleScripts": {
+      "description": "A deprecated alias for 'keepPackageScripts'.",
+      "type": "boolean",
+      "default": false,
+      "x-deprecated": "Use 'keepPackageScripts' option instead."
+    },
+    "keepPackageScripts": {
       "description": "Enable this to keep the 'scripts' section in package.json. Read the NPM Blog on 'Package install scripts vulnerability' – http://blog.npmjs.org/post/141702881055/package-install-scripts-vulnerability",
       "type": "boolean",
       "default": false

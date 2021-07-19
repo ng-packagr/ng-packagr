@@ -114,6 +114,7 @@
     "postbuild": "node ./scripts/postbuild.js",
     "schema": "json2ts --input src/ng-package.schema.json --output src/ng-package.schema.ts",
     "release": "standard-version --releaseCommitMessageFormat 'release: cut v{{currentTag}}' --no-verify",
+    "postinstall": "yarn schema",
     "publish:ci": "yarn build",
     "integration:samples": "integration/samples.sh",
     "integration:samples:dev": "ts-node --project src/tsconfig.packagr.json ./integration/samples.dev.ts",
