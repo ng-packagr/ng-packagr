@@ -41,4 +41,3 @@ When built, the primary entry point is imported by `import {..} from '@my/librar
 ### Alternative to `package.json`
 
 Alternatively, you could create `ng-package.json` instead of `package.json`.
-This is particularly useful in conjunction with `no-implicit-dependencies` TSLint rule, which will complain if `package.json` does not contain the dependencies used in the secondary entry point, which is misleading since all the dependencies should be mentioned in the primary `package.json`.
