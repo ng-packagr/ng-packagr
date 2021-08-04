@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [12.2.0](https://github.com/ng-packagr/ng-packagr/compare/v12.2.0-next.0...v12.2.0) (2021-08-04)
 
+### Performance
+
+* use esbuild as a CSS optimizer for component styles ([ceb81f9](https://github.com/ng-packagr/ng-packagr/commit/ceb81f9a2533369320a1b9890fa02440a73380a9))
+
+
+
 ## [12.2.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/v12.1.2...v12.2.0-next.0) (2021-07-23)
 
 
