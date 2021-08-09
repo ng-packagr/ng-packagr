@@ -8,7 +8,7 @@ import { provideTsConfig } from './ng-package/entry-point/init-tsconfig.di';
 import { ENTRY_POINT_PROVIDERS } from './ng-package/entry-point/entry-point.di';
 import { PACKAGE_TRANSFORM, PACKAGE_PROVIDERS } from './ng-package/package.di';
 import { provideProject } from './project.di';
-import { provideOptions, NgPackagrOptions } from './ng-package/options.di';
+import { provideOptions, NgPackagrOptions, NgPackagrWatchOptions } from './ng-package/options.di';
 
 /**
  * The original ng-packagr implemented on top of a rxjs-ified and di-jectable transformation pipeline.
@@ -20,7 +20,7 @@ import { provideOptions, NgPackagrOptions } from './ng-package/options.di';
 export class NgPackagr {
   private buildTransform: InjectionToken<Transform> = PACKAGE_TRANSFORM.provide;
 
-  constructor(private providers: Provider[]) {}
+  constructor(private providers: Provider[]) { }
 
   /**
    * Adds options to ng-packagr
@@ -97,8 +97,8 @@ export class NgPackagr {
    *
    * @return An observable result of the transformation pipeline.
    */
-  public watch(): Observable<void> {
-    this.providers.push(provideOptions({ watch: true }));
+  public watch(watchOptions?: NgPackagrWatchOptions): Observable<void> {
+    this.providers.push(provideOptions({ watch: true, watchOptions }));
 
     return this.buildAsObservable();
   }

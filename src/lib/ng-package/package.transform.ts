@@ -140,7 +140,7 @@ const watchTransformFactory = (
   return source$.pipe(
     switchMap(graph => {
       const { data, cache } = graph.find(isPackage);
-      const ignoredPaths = [data.dest];
+      const ignoredPaths: (RegExp | string)[] = [data.dest];
       const watchOptionsIgnored = options?.watchOptions?.ignored;
       if (watchOptionsIgnored) {
         ignoredPaths.push(...Array.isArray(watchOptionsIgnored) ? watchOptionsIgnored : [watchOptionsIgnored]);
