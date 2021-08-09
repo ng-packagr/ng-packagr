@@ -6,7 +6,7 @@ export interface NgPackagrOptions {
   watch?: boolean;
   watchOptions?: {
     /** ng-packagr will ignore watching these file changes */
-    ignored?: string[];
+    ignored?: string | string[];
   }
 }
 

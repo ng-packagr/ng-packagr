@@ -141,8 +141,9 @@ const watchTransformFactory = (
     switchMap(graph => {
       const { data, cache } = graph.find(isPackage);
       const ignoredPaths = [data.dest];
-      if (options?.watchOptions?.ignored) {
-        ignoredPaths.push(...options?.watchOptions?.ignored);
+      const watchOptionsIgnored = options?.watchOptions?.ignored;
+      if (watchOptionsIgnored) {
+        ignoredPaths.push(...Array.isArray(watchOptionsIgnored) ? watchOptionsIgnored : [watchOptionsIgnored]);
       }
       return createFileWatch(data.src, ignoredPaths).pipe(
         tap(fileChange => {
