@@ -4,6 +4,10 @@ export const OPTIONS_TOKEN = new InjectionToken<NgPackagrOptions>(`ng.v5.options
 export interface NgPackagrOptions {
   /** Whether or not ng-packagr will watch for file changes and perform an incremental build. */
   watch?: boolean;
+  watchOptions?: {
+    /** ng-packagr will ignore watching these file changes */
+    ignored?: string[];
+  }
 }
 
 export const provideOptions = (options: NgPackagrOptions = {}): ValueProvider => ({

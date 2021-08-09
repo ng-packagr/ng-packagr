@@ -43,7 +43,7 @@ export class NgPackage {
      * An array of secondary entry points.
      */
     public readonly secondaries: NgEntryPoint[] = [],
-  ) {}
+  ) { }
 
   /** Absolute path of the package's source folder, derived from the user's (primary) package location. */
   public get src(): string {
@@ -80,7 +80,7 @@ export class NgPackage {
     // remove in the future, after deprecation phase
     const deprecatedPropList = this.whitelistedNonPeerDependencies;
 
-    if(deprecatedPropList?.length) {
+    if (deprecatedPropList?.length) {
       return Array.from(
         new Set([
           ...deprecatedPropList,
@@ -90,7 +90,7 @@ export class NgPackage {
     }
 
     const allowedNonPeerDependencies = this.primary.$get('allowedNonPeerDependencies') as string[];
-    
+
     return Array.from(
       new Set([
         ...allowedNonPeerDependencies,

@@ -90,7 +90,7 @@ export const packageTransformFactory = (
         if (deleteDestPath) {
           try {
             await rmdir(dest, { recursive: true });
-          } catch {}
+          } catch { }
         }
       },
       (graph, _) => graph,
@@ -129,7 +129,7 @@ export const packageTransformFactory = (
 
 const watchTransformFactory = (
   project: string,
-  _options: NgPackagrOptions,
+  options: NgPackagrOptions,
   analyseSourcesTransform: Transform,
   entryPointTransform: Transform,
 ) => (source$: Observable<BuildGraph>): Observable<BuildGraph> => {
@@ -140,7 +140,11 @@ const watchTransformFactory = (
   return source$.pipe(
     switchMap(graph => {
       const { data, cache } = graph.find(isPackage);
-      return createFileWatch(data.src, [data.dest]).pipe(
+      const ignoredPaths = [data.dest];
+      if (options?.watchOptions?.ignored) {
+        ignoredPaths.push(...options?.watchOptions?.ignored);
+      }
+      return createFileWatch(data.src, ignoredPaths).pipe(
         tap(fileChange => {
           const { filePath, event } = fileChange;
           const { sourcesFileCache } = cache;
@@ -246,7 +250,7 @@ const writeNpmPackage = (pkgUri: string): Transform =>
         let isFile = false;
         try {
           isFile = (await stat(srcFile)).isFile();
-        } catch {}
+        } catch { }
 
         if (isFile) {
           await copyFile(srcFile, path.join(data.dest, path.basename(srcFile)));
