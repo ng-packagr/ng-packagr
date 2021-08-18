@@ -33,6 +33,7 @@ try {
 
 export class StylesheetProcessor {
   private browserslistData: string[];
+  private targets: string[];
   private postCssProcessor: ReturnType<typeof postcss>;
 
   constructor(
@@ -42,6 +43,7 @@ export class StylesheetProcessor {
   ) {
     log.debug(`determine browserslist for ${this.basePath}`);
     this.browserslistData = browserslist(undefined, { path: this.basePath });
+    this.targets = transformSupportedBrowsersToTargets(this.browserslistData);
     this.postCssProcessor = this.createPostCssPlugins();
   }
 
@@ -84,6 +86,7 @@ export class StylesheetProcessor {
     const { code, warnings: esBuildWarnings } = await transform(result.css, {
       loader: 'css',
       minify: true,
+      target: this.targets,
       sourcefile: filePath,
     });
 
@@ -200,4 +203,20 @@ async function readCacheEntry(cachePath: string, key: string): Promise<Result | 
   }
 
   return undefined;
+}
+
+function transformSupportedBrowsersToTargets(supportedBrowsers: string[]): string[] {
+  const transformed: string[] = [];
+
+  // https://esbuild.github.io/api/#target
+  const esBuildSupportedBrowsers = new Set(['safari', 'firefox', 'edge', 'chrome', 'ios']);
+
+  for (const browser of supportedBrowsers) {
+    const [browserName, version] = browser.split(' ');
+    if (esBuildSupportedBrowsers.has(browserName)) {
+      transformed.push(browserName + version);
+    }
+  }
+
+  return transformed.length ? transformed : undefined;
 }
