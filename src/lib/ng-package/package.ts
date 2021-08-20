@@ -67,36 +67,11 @@ export class NgPackage {
     return this.primary.$get('assets');
   }
 
-  /**
-   * @deprecated Use allowedNonPeerDependencies instead.
-   */
-  public get whitelistedNonPeerDependencies(): string[] {
-    return this.primary.$get('whitelistedNonPeerDependencies') as string[];
-  }
-
   public get allowedNonPeerDependencies(): string[] {
     const alwaysInclude = ['tslib'];
-
-    // remove in the future, after deprecation phase
-    const deprecatedPropList = this.whitelistedNonPeerDependencies;
-
-    if(deprecatedPropList?.length) {
-      return Array.from(
-        new Set([
-          ...deprecatedPropList,
-          ...alwaysInclude,
-        ])
-      );
-    }
-
     const allowedNonPeerDependencies = this.primary.$get('allowedNonPeerDependencies') as string[];
-    
-    return Array.from(
-      new Set([
-        ...allowedNonPeerDependencies,
-        ...alwaysInclude,
-      ])
-    );
+
+    return Array.from(new Set([...allowedNonPeerDependencies, ...alwaysInclude]));
   }
 
   private absolutePathFromPrimary(key: string) {

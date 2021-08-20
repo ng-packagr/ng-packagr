@@ -21,10 +21,6 @@ describe(`sample-custom`, () => {
       expect(PACKAGE['peerDependencies']['@angular/common']).to.equal('^4.1.3');
     });
 
-    it(`should reference "main" bundle (UMD)`, () => {
-      expect(PACKAGE['main']).to.equal('bundles/sample-custom.umd.js');
-    });
-
     it(`should reference "es2015" bundle (FESM2015)`, () => {
       expect(PACKAGE['es2015']).to.equal('fesm2015/sample-custom.js');
     });

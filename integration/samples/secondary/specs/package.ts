@@ -21,10 +21,6 @@ describe(`@sample/secondary`, () => {
       expect(PACKAGE['name']).to.equal('@sample/secondary');
     });
 
-    it(`should reference "main" bundle (UMD)`, () => {
-      expect(PACKAGE['main']).to.equal('bundles/sample-secondary.umd.js');
-    });
-
     it(`should reference "typings" files`, () => {
       expect(PACKAGE['typings']).to.equal('sample-secondary.d.ts');
     });
@@ -50,10 +46,6 @@ describe(`@sample/secondary`, () => {
 
     it(`should be named '@sample/secondary/sub-module'`, () => {
       expect(PACKAGE['name']).to.equal('@sample/secondary/sub-module');
-    });
-
-    it(`should reference "main" bundle (UMD)`, () => {
-      expect(PACKAGE['main']).to.equal('../bundles/sample-secondary-sub-module.umd.js');
     });
 
     it(`should reference "typings" files`, () => {

@@ -99,7 +99,6 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
         ngEntryPoint,
         ngPackage,
         {
-          main: relativeUnixFromDestPath(destinationFiles.umd),
           module: relativeUnixFromDestPath(destinationFiles.fesm2015),
           es2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
           esm2015: relativeUnixFromDestPath(destinationFiles.esm2015),

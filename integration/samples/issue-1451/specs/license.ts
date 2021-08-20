@@ -13,7 +13,6 @@ describe(`issue-1451-license`, () => {
   describe(`license entry point`, () => {
     [
       'license/package.json',
-      'bundles/example-issue-1451-license.umd.js',
       'esm2015/license/example-issue-1451-license.js',
       'esm2015/license/public-api.js',
       'fesm2015/example-issue-1451-license.js',

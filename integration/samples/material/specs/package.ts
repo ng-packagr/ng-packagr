@@ -15,10 +15,6 @@ describe(`@sample/material`, () => {
       expect(PACKAGE['name']).to.equal('@sample/material');
     });
 
-    it(`should reference "main" bundle (UMD)`, () => {
-      expect(PACKAGE['main']).to.equal('bundles/sample-material.umd.js');
-    });
-
     it(`should reference "module" bundle (FESM2015)`, () => {
       expect(PACKAGE['module']).to.equal('fesm2015/sample-material.js');
     });
