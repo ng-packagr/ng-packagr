@@ -2,13 +2,13 @@ import * as ts from 'typescript';
 import * as ng from '@angular/compiler-cli';
 import * as path from 'path';
 import { ensureUnixPath } from '../utils/path';
-import { error } from '../utils/log';
-import { StylesheetProcessor } from '../styles/stylesheet-processor';
+
 import { EntryPointNode, fileUrl } from '../ng-package/nodes';
 import { BuildGraph } from '../graph/build-graph';
 import { FileCache } from '../file-system/file-cache';
 import { Node } from '../graph/node';
 import { createHash } from 'crypto';
+import { StylesheetProcessor } from '../styles/stylesheet-processor';
 
 export function cacheCompilerHost(
   graph: BuildGraph,
@@ -17,10 +17,8 @@ export function cacheCompilerHost(
   moduleResolutionCache: ts.ModuleResolutionCache,
   stylesheetProcessor?: StylesheetProcessor,
   sourcesFileCache: FileCache = entryPoint.cache.sourcesFileCache,
-  setParentNodes = true,
 ): ng.CompilerHost {
-  const tsHost = ts.createCompilerHost(compilerOptions, setParentNodes);
-  const compilerHost = ng.createCompilerHost({ options: compilerOptions, tsHost });
+  const compilerHost = ts.createIncrementalCompilerHost(compilerOptions);
 
   const getNode = (fileName: string) => {
     const nodeUri = fileUrl(ensureUnixPath(fileName));
@@ -103,19 +101,6 @@ export function cacheCompilerHost(
       });
     },
 
-    // ng specific
-    moduleNameToFileName: (moduleName: string, containingFile: string) => {
-      const { resolvedModule } = ts.resolveModuleName(
-        moduleName,
-        ensureUnixPath(containingFile),
-        compilerOptions,
-        compilerHost,
-        moduleResolutionCache,
-      );
-
-      return resolvedModule && resolvedModule.resolvedFileName;
-    },
-
     resourceNameToFileName: (resourceName: string, containingFilePath: string) => {
       const resourcePath = path.resolve(path.dirname(containingFilePath), resourceName);
       const containingNode = getNode(containingFilePath);
@@ -125,7 +110,7 @@ export function cacheCompilerHost(
       return resourcePath;
     },
 
-    readResource: (fileName: string) => {
+    readResource: async (fileName: string) => {
       addDependee(fileName);
 
       const cache = sourcesFileCache.getOrCreate(fileName);
@@ -135,17 +120,12 @@ export function cacheCompilerHost(
           cache.content = compilerHost.readFile.call(this, fileName);
         } else {
           // stylesheet
-          try {
-            cache.content = stylesheetProcessor.process(fileName);
-          } catch (err) {
-            error('\n' + err.message + ` in stylesheet file ${fileName}.`);
-            throw err;
-          }
+          cache.content = await stylesheetProcessor.process(fileName);
         }
 
         if (cache.content === undefined) {
           throw new Error(`Cannot read file ${fileName}.`);
-        }
+        };
 
         cache.exists = true;
       }
@@ -158,7 +138,9 @@ export function cacheCompilerHost(
 export function augmentProgramWithVersioning(program: ts.Program): void {
   const baseGetSourceFiles = program.getSourceFiles;
   program.getSourceFiles = function (...parameters) {
-    const files: readonly (ts.SourceFile & { version?: string })[] = baseGetSourceFiles(...parameters);
+    const files: readonly (ts.SourceFile & { version?: string })[] = baseGetSourceFiles(
+      ...parameters,
+    );
 
     for (const file of files) {
       if (file.version === undefined) {

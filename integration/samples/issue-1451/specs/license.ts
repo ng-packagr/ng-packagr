@@ -24,7 +24,7 @@ describe(`issue-1451-license`, () => {
     });
 
     it(`license directory should contain 4 files`, () => {
-      expect(glob.sync(`${DIST}/license/**/*`).length).equal(4);
+      expect(glob.sync(`${DIST}/license/**/*`).length).equal(3);
     });
   });
 

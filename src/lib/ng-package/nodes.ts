@@ -8,7 +8,6 @@ import { NgccProcessingCache } from './ngcc-cache';
 import { NgPackage } from './package';
 import { FileCache } from '../file-system/file-cache';
 import { ComplexPredicate } from '../graph/build-graph';
-import * as ivy from '../ivy';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 
 export const TYPE_NG_PACKAGE = 'application/ng-package';
@@ -86,7 +85,7 @@ export class EntryPointNode extends Node {
     analysesSourcesFileCache: FileCache;
     moduleResolutionCache: ts.ModuleResolutionCache;
     rollupFESMCache?: RollupCache;
-    stylesheetProcessor?: StylesheetProcessor | ivy.StylesheetProcessor;
+    stylesheetProcessor?: StylesheetProcessor;
     oldNgtscProgram?: NgtscProgram;
     oldBuilder?: ts.EmitAndSemanticDiagnosticsBuilderProgram;
   };

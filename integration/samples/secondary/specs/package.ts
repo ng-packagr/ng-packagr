@@ -24,10 +24,6 @@ describe(`@sample/secondary`, () => {
     it(`should reference "typings" files`, () => {
       expect(PACKAGE['typings']).to.equal('sample-secondary.d.ts');
     });
-
-    it(`should reference "metadata" file`, () => {
-      expect(PACKAGE['metadata']).to.equal('sample-secondary.metadata.json');
-    });
   });
 
   describe(`sub-module/package.json`, () => {
@@ -50,10 +46,6 @@ describe(`@sample/secondary`, () => {
 
     it(`should reference "typings" files`, () => {
       expect(PACKAGE['typings']).to.equal('sample-secondary-sub-module.d.ts');
-    });
-
-    it(`should reference "metadata" file`, () => {
-      expect(PACKAGE['metadata']).to.equal('sample-secondary-sub-module.metadata.json');
     });
   });
 

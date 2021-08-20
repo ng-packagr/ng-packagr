@@ -22,8 +22,4 @@ describe(`@sample/secondary/feature-d`, () => {
   it(`should reference "typings" files`, () => {
     expect(PACKAGE['typings']).to.equal('sample-secondary-feature-d.d.ts');
   });
-
-  it(`should reference "metadata" file`, () => {
-    expect(PACKAGE['metadata']).to.equal('sample-secondary-feature-d.metadata.json');
-  });
 });

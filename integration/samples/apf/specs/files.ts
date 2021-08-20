@@ -10,11 +10,11 @@ describe('@sample/apf', () => {
   });
 
   describe('dist', () => {
-    it('should contain a total of 66 files', () => {
+    it('should contain a total of 62 files', () => {
       // this is a safe guard / alternative to snapshots in order to
       // protect ourselves from doing a change that will emit unexpected files.
       const files = glob.sync(path.join(DIST, '**/*'));
-      expect(files.length).to.equals(66);
+      expect(files.length).to.equals(62);
     });
 
     it(`should contain a README.md file`, () => {
@@ -60,34 +60,6 @@ describe('@sample/apf', () => {
       it(`should contain 8 '.js' files`, () => {
         expect(glob.sync(`${DIST}/esm2015/secondary/**/*.js`).length).equal(8);
       });
-    });
-  });
-
-  describe('sample-apf.metadata.json', () => {
-    it(`should exist`, () => {
-      const file = fs.existsSync(path.join(DIST, 'sample-apf.metadata.json'));
-      expect(file).to.be.true;
-    });
-  });
-
-  describe('sample-apf-secondary.metadata.json', () => {
-    it(`should exist`, () => {
-      const file = fs.existsSync(path.join(DIST, 'secondary', 'sample-apf-secondary.metadata.json'));
-      expect(file).to.be.true;
-    });
-  });
-
-  describe('sample-apf-secondary-testing.metadata.json', () => {
-    it(`should exist`, () => {
-      const file = fs.existsSync(path.join(DIST, 'secondary', 'testing', 'sample-apf-secondary-testing.metadata.json'));
-      expect(file).to.be.true;
-    });
-  });
-
-  describe('sample-apf-testing.metadata.json', () => {
-    it(`should exist`, () => {
-      const file = fs.existsSync(path.join(DIST, 'testing', 'sample-apf-testing.metadata.json'));
-      expect(file).to.be.true;
     });
   });
 
