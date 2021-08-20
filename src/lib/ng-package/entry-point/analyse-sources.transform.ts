@@ -53,7 +53,6 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     moduleResolutionCache,
     undefined,
     analysesSourcesFileCache,
-    false,
   );
 
   const potentialDependencies = new Set<string>();

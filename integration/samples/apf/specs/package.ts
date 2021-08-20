@@ -33,7 +33,6 @@ describe(`@sample/apf`, () => {
       esm2015: 'esm2015/sample-apf.js',
       fesm2015: 'fesm2015/sample-apf.js',
       typings: 'sample-apf.d.ts',
-      metadata: 'sample-apf.metadata.json',
     }).forEach(([key, value]: [string, string]): void => {
       it(`should reference "${key}" file`, () => {
         expect(PACKAGE[key]).to.equal(value);
@@ -77,7 +76,6 @@ describe(`@sample/apf`, () => {
       esm2015: '../esm2015/secondary/sample-apf-secondary.js',
       fesm2015: '../fesm2015/sample-apf-secondary.js',
       typings: 'sample-apf-secondary.d.ts',
-      metadata: 'sample-apf-secondary.metadata.json',
     }).forEach(([key, value]: [string, string]): void => {
       it(`should reference "${key}" file`, () => {
         expect(PACKAGE[key]).to.equal(value);
@@ -121,7 +119,6 @@ describe(`@sample/apf`, () => {
       esm2015: '../../esm2015/secondary/testing/sample-apf-secondary-testing.js',
       fesm2015: '../../fesm2015/sample-apf-secondary-testing.js',
       typings: 'sample-apf-secondary-testing.d.ts',
-      metadata: 'sample-apf-secondary-testing.metadata.json',
     }).forEach(([key, value]: [string, string]): void => {
       it(`should reference "${key}" file`, () => {
         expect(PACKAGE[key]).to.equal(value);
@@ -165,7 +162,6 @@ describe(`@sample/apf`, () => {
       esm2015: '../esm2015/testing/sample-apf-testing.js',
       fesm2015: '../fesm2015/sample-apf-testing.js',
       typings: 'sample-apf-testing.d.ts',
-      metadata: 'sample-apf-testing.metadata.json',
     }).forEach(([key, value]: [string, string]): void => {
       it(`should reference "${key}" file`, () => {
         expect(PACKAGE[key]).to.equal(value);

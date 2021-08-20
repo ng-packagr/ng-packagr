@@ -18,11 +18,9 @@ import { byEntryPoint } from '../nodes';
  *  - downlevelTs
  *  - writeBundles
  *    - bundleToFesm15
- *    - bundleToUmd
- *    - bundleToUmdMin
  *  - relocateSourceMaps
  *  - writePackage
- *   - copyStagedFiles (bundles, esm, dts, metadata, sourcemaps)
+ *   - copyStagedFiles (bundles, esm, dts, sourcemaps)
  *   - writePackageJson
  *
  * The transformation pipeline is pluggable through the dependency injection system.

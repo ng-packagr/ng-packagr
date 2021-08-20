@@ -8,6 +8,7 @@ import { EntryPointNode, ngUrl } from '../ng-package/nodes';
 import { spawnSync } from 'child_process';
 import { createHash } from 'crypto';
 import { exists, readFile, writeFile, mkdir } from '../utils/fs';
+import { defaultTsConfigPath } from '../ts/tsconfig';
 
 // Transform a package and its typings when NGTSC is resolving a module.
 export class NgccProcessor {
@@ -108,7 +109,7 @@ export class NgccProcessor {
         '--create-ivy-entry-points' /** createNewEntryPointFormats */,
         '--async',
         '--tsconfig' /** tsConfigPath */,
-        this.projectPath,
+        this.projectPath === defaultTsConfigPath ? '' : this.projectPath,
         '--use-program-dependencies',
         '--typings-only' /** typingsOnly */,
       ],
@@ -175,7 +176,7 @@ export class NgccProcessor {
       propertiesToConsider: this.propertiesToConsider,
       createNewEntryPointFormats: true,
       logger: this._logger,
-      tsConfigPath: this.projectPath,
+      tsConfigPath: this.projectPath === defaultTsConfigPath ? undefined : this.projectPath,
     });
 
     this.ngccProcessingCache.markProcessed(moduleName);

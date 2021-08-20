@@ -3,15 +3,13 @@ import * as path from 'path';
 import * as ts from 'typescript';
 import { EntryPointNode } from '../ng-package/nodes';
 import * as log from '../utils/log';
+import { warn } from '../utils/log';
 
+export const defaultTsConfigPath = path.join(__dirname, 'conf', 'tsconfig.ngc.json');
 /**
  * Reads the default TypeScript configuration.
  */
-export function readDefaultTsConfig(fileName?: string): ng.ParsedConfiguration {
-  if (!fileName) {
-    fileName = path.resolve(__dirname, 'conf', 'tsconfig.ngc.json');
-  }
-
+export function readDefaultTsConfig(fileName = defaultTsConfigPath): ng.ParsedConfiguration {
   // these options are mandatory
   const extraOptions: ng.CompilerOptions = {
     moduleResolution: ts.ModuleResolutionKind.NodeJs,
@@ -35,18 +33,6 @@ export function readDefaultTsConfig(fileName?: string): ng.ParsedConfiguration {
   };
 
   const config = ng.readConfiguration(fileName, extraOptions);
-  const options = config.options;
-
-  // todo: alanagius4 - the below shouldn't be needed but it seems that setting it only in create-emit-callback.ts
-  // is not working correctly
-  const transformDecorators = !options.enableIvy && options.annotationsAs !== 'decorators';
-  if ((options.annotateForClosureCompiler || options.annotationsAs === 'static fields') && transformDecorators) {
-    // This is needed as a workaround for https://github.com/angular/tsickle/issues/635
-    // Otherwise tsickle might emit references to non imported values
-    // as TypeScript elided the import.
-    options.emitDecoratorMetadata = true;
-  }
-
   return config;
 }
 
@@ -72,6 +58,18 @@ export function createDefaultTsConfig(values?: ng.ParsedConfiguration | string):
 export const initializeTsConfig = (defaultTsConfig: ng.ParsedConfiguration, entryPoints: EntryPointNode[]) => {
   if (defaultTsConfig.errors.length > 0) {
     throw ng.formatDiagnostics(defaultTsConfig.errors);
+  }
+
+  if (defaultTsConfig.options.enableIvy === false) {
+    warn(
+      'Project is attempting to disable the Ivy compiler. ' +
+        'Angular versions 13 and higher do not support View Engine compiler for libraries. ' +
+        'The Ivy compiler will be used to build this project. ' +
+        '\nFor additional information or if the build fails, please see https://angular.io/guide/ivy',
+    );
+
+    defaultTsConfig.options.enableIvy = true;
+    defaultTsConfig.options.compilationMode = 'partial';
   }
 
   entryPoints.forEach(currentEntryPoint => {

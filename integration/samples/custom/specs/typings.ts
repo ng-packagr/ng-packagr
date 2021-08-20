@@ -12,9 +12,5 @@ describe(`sample-custom`, () => {
     it(`should exist`, () => {
       expect(TYPINGS).to.be.ok;
     });
-
-    it(`should re-export 'InternalService' with an alias`, () => {
-      expect(TYPINGS).to.contain(`export { InternalService as ɵa } from './internal.service';`);
-    });
   });
 });

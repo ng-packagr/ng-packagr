@@ -175,8 +175,6 @@ const watchTransformFactory = (
             const isDirty = [...allNodesToClean].some(dependent => entryPoint.dependents.has(dependent));
             if (isDirty) {
               entryPoint.state = 'dirty';
-              const { metadata } = entryPoint.data.destinationFiles;
-              sourcesFileCache.delete(metadata);
 
               uriToClean.forEach(url => {
                 entryPoint.cache.analysesSourcesFileCache.delete(fileUrlPath(url));

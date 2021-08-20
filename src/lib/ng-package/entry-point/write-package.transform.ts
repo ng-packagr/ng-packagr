@@ -89,11 +89,11 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
 
     // 6. WRITE PACKAGE.JSON
     try {
-      spinner.start('Writing package metadata');
+      spinner.start('Writing package manifest');
       const relativeUnixFromDestPath = (filePath: string) =>
         ensureUnixPath(path.relative(ngEntryPoint.destinationPath, filePath));
 
-      const { enableIvy, compilationMode } = entryPoint.data.tsConfig.options;
+      const { compilationMode } = entryPoint.data.tsConfig.options;
 
       await writePackageJson(
         ngEntryPoint,
@@ -104,12 +104,9 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
           esm2015: relativeUnixFromDestPath(destinationFiles.esm2015),
           fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
           typings: relativeUnixFromDestPath(destinationFiles.declarations),
-          // Ivy doesn't generate metadata files
-          metadata: enableIvy ? undefined : relativeUnixFromDestPath(destinationFiles.metadata),
           // webpack v4+ specific flag to enable advanced optimizations and code splitting
           sideEffects: ngEntryPoint.sideEffects,
         },
-        !!enableIvy,
         !!options.watch,
         compilationMode as CompilationMode,
         spinner,
@@ -143,7 +140,6 @@ async function writePackageJson(
   entryPoint: NgEntryPoint,
   pkg: NgPackage,
   additionalProperties: { [key: string]: string | boolean | string[] },
-  isIvy: boolean,
   isWatchMode: boolean,
   compilationMode: CompilationMode,
   spinner: ora.Ora,
@@ -216,7 +212,7 @@ async function writePackageJson(
     }
   }
 
-  if (isIvy && !entryPoint.isSecondaryEntryPoint && compilationMode !== 'partial') {
+  if (!entryPoint.isSecondaryEntryPoint && compilationMode !== 'partial') {
     const scripts = packageJson.scripts || (packageJson.scripts = {});
     scripts.prepublishOnly =
       'node --eval "console.error(\'' +

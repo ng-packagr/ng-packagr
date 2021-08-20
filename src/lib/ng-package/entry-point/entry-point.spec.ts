@@ -34,7 +34,7 @@ describe(`NgEntryPoint`, () => {
     expect(primaryEntryPoint.entryFilePath).to.equal(resolve(testSourcePath, 'public-api.ts'));
     expect(primaryEntryPoint.isSecondaryEntryPoint).to.be.false;
     expect(primaryEntryPoint.destinationPath).to.equal(resolve(testDestinationPath));
-    expect(Object.keys(primaryEntryPoint.destinationFiles).length).to.equal(4);
+    expect(Object.keys(primaryEntryPoint.destinationFiles).length).to.equal(3);
     expect(primaryEntryPoint.entryFile).to.equal('public-api.ts');
     expect(primaryEntryPoint.cssUrl).to.be.undefined; // TODO: should default to 'inline'.
     expect(primaryEntryPoint.flatModuleFile).to.equal('example-test-entry-point');
@@ -104,7 +104,7 @@ describe(`NgEntryPoint`, () => {
     expect(secondaryEntryPoint.entryFilePath).to.equal(resolve(secondaryEntryPointBasePath, 'public-api.ts'));
     expect(secondaryEntryPoint.isSecondaryEntryPoint).to.be.true;
     expect(secondaryEntryPoint.destinationPath).to.equal(resolve(secondaryData.destinationPath));
-    expect(Object.keys(secondaryEntryPoint.destinationFiles).length).to.equal(4);
+    expect(Object.keys(secondaryEntryPoint.destinationFiles).length).to.equal(3);
     expect(secondaryEntryPoint.entryFile).to.equal('public-api.ts');
     expect(secondaryEntryPoint.cssUrl).to.be.undefined; // TODO: should default to 'inline'.
     expect(secondaryEntryPoint.flatModuleFile).to.equal('example-test-entry-point-extra');
