@@ -28,7 +28,6 @@ describe(`@sample/apf`, () => {
     });
 
     Object.entries({
-      main: 'bundles/sample-apf.umd.js',
       module: 'fesm2015/sample-apf.js',
       es2015: 'fesm2015/sample-apf.js',
       esm2015: 'esm2015/sample-apf.js',
@@ -73,7 +72,6 @@ describe(`@sample/apf`, () => {
     });
 
     Object.entries({
-      main: '../bundles/sample-apf-secondary.umd.js',
       module: '../fesm2015/sample-apf-secondary.js',
       es2015: '../fesm2015/sample-apf-secondary.js',
       esm2015: '../esm2015/secondary/sample-apf-secondary.js',
@@ -118,7 +116,6 @@ describe(`@sample/apf`, () => {
     });
 
     Object.entries({
-      main: '../../bundles/sample-apf-secondary-testing.umd.js',
       module: '../../fesm2015/sample-apf-secondary-testing.js',
       es2015: '../../fesm2015/sample-apf-secondary-testing.js',
       esm2015: '../../esm2015/secondary/testing/sample-apf-secondary-testing.js',
@@ -163,7 +160,6 @@ describe(`@sample/apf`, () => {
     });
 
     Object.entries({
-      main: '../bundles/sample-apf-testing.umd.js',
       module: '../fesm2015/sample-apf-testing.js',
       es2015: '../fesm2015/sample-apf-testing.js',
       esm2015: '../esm2015/testing/sample-apf-testing.js',

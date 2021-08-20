@@ -15,10 +15,6 @@ describe(`@sample/core`, () => {
       expect(PACKAGE['name']).to.equal('@sample/core');
     });
 
-    it(`should reference "main" bundle (UMD)`, () => {
-      expect(PACKAGE['main']).to.equal('bundles/sample-core.umd.js');
-    });
-
     it(`should reference "module" bundle (FESM2015)`, () => {
       expect(PACKAGE['module']).to.equal('fesm2015/sample-core.js');
     });

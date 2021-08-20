@@ -31,14 +31,6 @@
       },
       "default": []
     },
-    "whitelistedNonPeerDependencies": {
-      "x-deprecated": "Use \"allowedNonPeerDependencies\" instead.",
-      "description": "A list of dependencies that are allowed in the 'dependencies' and 'devDependencies' section of package.json. Values in the list are regular expressions matched against npm package names.",
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
     "assets": {
       "type": "array",
       "description": "A list of files which are simply copied into the package.",
@@ -62,11 +54,6 @@
           "description": "Filename of the auto-generated flat module file (if empty, defaults to the package name as given in `package.json`).",
           "type": "string"
         },
-        "umdModuleIds": {
-          "description": "A map of external dependencies and their correspondent UMD module identifiers. Map keys are TypeScript / EcmaScript module identifiers. Map values are UMD module ids. The purpose of this map is to correctly bundle an UMD module file (with `rollup`). By default, `rxjs`, `tslib` and `@angular/*` dependency symbols are supported.",
-          "type": "object",
-          "additionalProperties": true
-        },
         "cssUrl": {
           "description": "Embed assets in css file using data URIs - see https://css-tricks.com/data-uris",
           "type": "string",
@@ -79,14 +66,6 @@
           "items": {
             "type": "string"
           }
-        },
-        "amdId": {
-          "description": "ID for AMD module. By default, uses a value derived from the entry point's module ID (i.e., name property in package.json)",
-          "type": "string"
-        },
-        "umdId": {
-          "description": "ID for the UMD bundle. By default, uses a value derived from the entry point's module ID (i.e., name property in package.json)",
-          "type": "string"
         }
       }
     }

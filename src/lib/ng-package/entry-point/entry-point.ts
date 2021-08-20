@@ -12,8 +12,6 @@ export interface DestinationFiles {
   fesm2015: string;
   /** Absolute path of this entry point `ESM2015` module */
   esm2015: string;
-  /** Absolute path of this entry point `UMD` bundle */
-  umd: string;
 }
 
 /**
@@ -93,7 +91,6 @@ export class NgEntryPoint {
       declarations: pathJoinWithDest(secondaryDir, `${flatModuleFile}.d.ts`),
       esm2015: pathJoinWithDest('esm2015', secondaryDir, `${flatModuleFile}.js`),
       fesm2015: pathJoinWithDest('fesm2015', `${flatModuleFile}.js`),
-      umd: pathJoinWithDest('bundles', `${flatModuleFile}.umd.js`),
     };
   }
 
@@ -119,17 +116,13 @@ export class NgEntryPoint {
     return this.$get('lib.cssUrl');
   }
 
-  public get umdModuleIds(): { [key: string]: string } {
-    return this.$get('lib.umdModuleIds');
-  }
-
   public get flatModuleFile(): string {
     return this.$get('lib.flatModuleFile') || this.flattenModuleId('-');
   }
 
   public get styleIncludePaths(): string[] {
     const includePaths = this.$get('lib.styleIncludePaths') || [];
-    return includePaths.map((includePath) =>
+    return includePaths.map(includePath =>
       path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath),
     );
   }
@@ -145,23 +138,6 @@ export class NgEntryPoint {
     } else {
       return this.packageJson['name'];
     }
-  }
-
-  /**
-   * The UMD module ID registers a module on the old-fashioned JavaScript global scope.
-   * Used by UMD bundles only.
-   * Example: `@my/foo/bar` registers as `global['my']['foo']['bar']`.
-   */
-  public get umdId(): string {
-    return this.$get('lib.umdId') || this.flattenModuleId();
-  }
-
-  /**
-   * The AMD ID reflects a named module that is distributed in the UMD bundles.
-   * @link http://requirejs.org/docs/whyamd.html#namedmodules
-   */
-  public get amdId(): string {
-    return this.$get('lib.amdId') || this.moduleId;
   }
 
   private flattenModuleId(separator: string = '.') {
