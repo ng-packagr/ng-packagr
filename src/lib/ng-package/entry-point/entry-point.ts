@@ -6,10 +6,10 @@ import { CssUrl } from '../../styles/stylesheet-processor';
 export interface DestinationFiles {
   /** Absolute path of this entry point `declarations` */
   declarations: string;
-  /** Absolute path of this entry point `FESM2015` module */
-  fesm2015: string;
-  /** Absolute path of this entry point `ESM2015` module */
-  esm2015: string;
+  /** Absolute path of this entry point `FESM2020` module */
+  fesm2020: string;
+  /** Absolute path of this entry point `ESM2020` module */
+  esm2020: string;
 }
 
 /**
@@ -86,8 +86,8 @@ export class NgEntryPoint {
 
     return {
       declarations: pathJoinWithDest(secondaryDir, `${flatModuleFile}.d.ts`),
-      esm2015: pathJoinWithDest('esm2015', secondaryDir, `${flatModuleFile}.js`),
-      fesm2015: pathJoinWithDest('fesm2015', `${flatModuleFile}.js`),
+      esm2020: pathJoinWithDest('esm2020', secondaryDir, `${flatModuleFile}.js`),
+      fesm2020: pathJoinWithDest('fesm2020', `${flatModuleFile}.js`),
     };
   }
 

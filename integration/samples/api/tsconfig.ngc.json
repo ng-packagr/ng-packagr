@@ -6,8 +6,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "es2015",
-    "module": "es2015",
+    "target": "es2020",
+    "module": "es2020",
     "moduleResolution": "node",
     "outDir": "",
     "resolveJsonModule": true,
@@ -21,7 +21,7 @@
     "emitDecoratorMetadata": false,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "lib": ["dom", "es2015"]
+    "lib": ["dom", "es2020"]
   },
   "exclude": ["node_modules", "dist", "**/*.ngfactory.ts", "**/*.shim.ts", "**/*.spec.ts"]
 }

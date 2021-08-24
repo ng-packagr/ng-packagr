@@ -23,7 +23,7 @@ describe('basic', () => {
 
     it("should perform initial compilation when 'watch' is started", () => {
       harness.expectDtsToMatch('public_api', /title = "hello world"/);
-      harness.expectFesm2015ToMatch('basic', /hello world/);
+      harness.expectFesm2020ToMatch('basic', /hello world/);
     });
 
     describe('when file changes', () => {
@@ -32,7 +32,7 @@ describe('basic', () => {
 
         harness.onComplete(() => {
           harness.expectDtsToMatch('public_api', /title = "foo bar"/);
-          harness.expectFesm2015ToMatch('basic', /foo bar/);
+          harness.expectFesm2020ToMatch('basic', /foo bar/);
           done();
         });
       });
@@ -42,7 +42,7 @@ describe('basic', () => {
 
         harness.onComplete(() => {
           harness.expectDtsToMatch('public_api', /title = "foo bar"/);
-          harness.expectFesm2015ToMatch('basic', /foo bar/);
+          harness.expectFesm2020ToMatch('basic', /foo bar/);
           done();
         });
 
@@ -68,7 +68,7 @@ describe('basic', () => {
         harness.copyTestCase('secondary-valid');
 
         harness.onComplete(() => {
-          harness.expectFesm2015ToMatch('basic-secondary', /Hello Angular/);
+          harness.expectFesm2020ToMatch('basic-secondary', /Hello Angular/);
           done();
         });
       });

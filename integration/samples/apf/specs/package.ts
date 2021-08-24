@@ -28,10 +28,10 @@ describe(`@sample/apf`, () => {
     });
 
     Object.entries({
-      module: 'fesm2015/sample-apf.js',
-      es2015: 'fesm2015/sample-apf.js',
-      esm2015: 'esm2015/sample-apf.js',
-      fesm2015: 'fesm2015/sample-apf.js',
+      module: 'fesm2020/sample-apf.js',
+      es2020: 'fesm2020/sample-apf.js',
+      esm2020: 'esm2020/sample-apf.js',
+      fesm2020: 'fesm2020/sample-apf.js',
       typings: 'sample-apf.d.ts',
     }).forEach(([key, value]: [string, string]): void => {
       it(`should reference "${key}" file`, () => {
@@ -71,10 +71,10 @@ describe(`@sample/apf`, () => {
     });
 
     Object.entries({
-      module: '../fesm2015/sample-apf-secondary.js',
-      es2015: '../fesm2015/sample-apf-secondary.js',
-      esm2015: '../esm2015/secondary/sample-apf-secondary.js',
-      fesm2015: '../fesm2015/sample-apf-secondary.js',
+      module: '../fesm2020/sample-apf-secondary.js',
+      es2020: '../fesm2020/sample-apf-secondary.js',
+      esm2020: '../esm2020/secondary/sample-apf-secondary.js',
+      fesm2020: '../fesm2020/sample-apf-secondary.js',
       typings: 'sample-apf-secondary.d.ts',
     }).forEach(([key, value]: [string, string]): void => {
       it(`should reference "${key}" file`, () => {
@@ -114,10 +114,10 @@ describe(`@sample/apf`, () => {
     });
 
     Object.entries({
-      module: '../../fesm2015/sample-apf-secondary-testing.js',
-      es2015: '../../fesm2015/sample-apf-secondary-testing.js',
-      esm2015: '../../esm2015/secondary/testing/sample-apf-secondary-testing.js',
-      fesm2015: '../../fesm2015/sample-apf-secondary-testing.js',
+      module: '../../fesm2020/sample-apf-secondary-testing.js',
+      es2020: '../../fesm2020/sample-apf-secondary-testing.js',
+      esm2020: '../../esm2020/secondary/testing/sample-apf-secondary-testing.js',
+      fesm2020: '../../fesm2020/sample-apf-secondary-testing.js',
       typings: 'sample-apf-secondary-testing.d.ts',
     }).forEach(([key, value]: [string, string]): void => {
       it(`should reference "${key}" file`, () => {
@@ -157,10 +157,10 @@ describe(`@sample/apf`, () => {
     });
 
     Object.entries({
-      module: '../fesm2015/sample-apf-testing.js',
-      es2015: '../fesm2015/sample-apf-testing.js',
-      esm2015: '../esm2015/testing/sample-apf-testing.js',
-      fesm2015: '../fesm2015/sample-apf-testing.js',
+      module: '../fesm2020/sample-apf-testing.js',
+      es2020: '../fesm2020/sample-apf-testing.js',
+      esm2020: '../esm2020/testing/sample-apf-testing.js',
+      fesm2020: '../fesm2020/sample-apf-testing.js',
       typings: 'sample-apf-testing.d.ts',
     }).forEach(([key, value]: [string, string]): void => {
       it(`should reference "${key}" file`, () => {

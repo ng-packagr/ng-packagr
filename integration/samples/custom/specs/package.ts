@@ -21,8 +21,8 @@ describe(`sample-custom`, () => {
       expect(PACKAGE['peerDependencies']['@angular/common']).to.equal('^4.1.3');
     });
 
-    it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('fesm2015/sample-custom.js');
+    it(`should reference "es2020" bundle (FESM2020)`, () => {
+      expect(PACKAGE['es2020']).to.equal('fesm2020/sample-custom.js');
     });
 
     it(`should reference "typings" files`, () => {
