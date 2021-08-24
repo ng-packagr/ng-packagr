@@ -100,31 +100,6 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
 - [Add Style Include Paths](docs/style-include-paths.md)
 - [Package Secondary Entrypoints (sub packages)](docs/secondary-entrypoints.md)
 
-## Advanced Use Cases
-
-#### Examples and Tutorials
-
-A great step-by-step [example of making an Angular CLI project with a library distributed separate from the app](https://github.com/jasonaden/angular-cli-lib-example), by Jason Aden
-
-Nikolas LeBlanc wrote a tutorial on [building an Angular 4 Component Library with the Angular CLI and ng-packagr](https://medium.com/@ngl817/building-an-angular-4-component-library-with-the-angular-cli-and-ng-packagr-53b2ade0701e)
-
-Here is a [demo repository showing ng-packagr and Angular CLI](https://github.com/ng-packagr/ng-packaged) in action.
-
-What about [ng-packagr alongside Nx Workspace](https://github.com/ng-packagr/nx-packaged)? Well, they work well together!
-
-#### Further user questions and issue-driven documentation
-
-We keep track of user questions in GitHub's issue tracker and try to build a documentation from it.
-[Explore issues w/ label documentation](https://github.com/ng-packagr/ng-packagr/issues?q=label%3Adocumentation%20).
-
-#### Contributing to ng-packagr
-
-[General contribution guidelines](./CONTRIBUTING.md)
-
-If you like to submit a pull request, you'll find it helpful to take a look at the [initial design document where it all started](./docs/DESIGN.md).
-
-To orchestrate the different tools, ng-packagr features a [custom transformation pipeline](docs/transformation-pipeline.md#a-transformation-pipeline). The transformation pipeline is built on top of RxJS and Angular Dependency Injection concepts.
-
 ## Knowledge
 
 [Angular Package Format v12.0](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview), design document at Google Docs
@@ -143,3 +118,11 @@ Packaging Angular - Jason Aden at ng-conf 2017 ([28min talk](https://youtu.be/un
 Create and publish Angular libs like a Pro - Juri Strumpflohner at ngVikings, this time demoing building Angular libraries with ng-packagr, with NX as well as Bazel ([March 2018, 30min talk](https://youtu.be/Tw8TCgeqotg))
 
 [![Juri Strumpflohner - Create & Publish Angular Libs like a PRO at ngVikings](https://img.youtube.com/vi/Tw8TCgeqotg/0.jpg)](https://youtu.be/Tw8TCgeqotg)
+
+## Contributing to ng-packagr
+
+[General contribution guidelines](./CONTRIBUTING.md)
+
+If you like to submit a pull request, you'll find it helpful to take a look at the [initial design document where it all started](./docs/DESIGN.md).
+
+To orchestrate the different tools, ng-packagr features a [custom transformation pipeline](docs/transformation-pipeline.md#a-transformation-pipeline). The transformation pipeline is built on top of RxJS and Angular Dependency Injection concepts.
