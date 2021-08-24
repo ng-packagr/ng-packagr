@@ -17,8 +17,8 @@ describe('resources', () => {
 
   describe('primary entrypoint', () => {
     it("should perform initial compilation when 'watch' is started", () => {
-      harness.expectFesm2015ToMatch('resources', /Angular!/);
-      harness.expectFesm2015ToMatch('resources', /a\[_ngcontent-%COMP%\]{color:#000}"/);
+      harness.expectFesm2020ToMatch('resources', /Angular!/);
+      harness.expectFesm2020ToMatch('resources', /a\[_ngcontent-%COMP%\]{color:#000}"/);
     });
 
     describe('when file changes', () => {
@@ -26,7 +26,7 @@ describe('resources', () => {
         harness.copyTestCase('html-template');
 
         harness.onComplete(() => {
-          harness.expectFesm2015ToMatch('resources', /Hello World!/);
+          harness.expectFesm2020ToMatch('resources', /Hello World!/);
           done();
         });
       });
@@ -35,7 +35,7 @@ describe('resources', () => {
         harness.copyTestCase('scss-file');
 
         harness.onComplete(() => {
-          harness.expectFesm2015ToMatch('resources', /a\[_ngcontent-%COMP%\]{color:#fff}"/);
+          harness.expectFesm2020ToMatch('resources', /a\[_ngcontent-%COMP%\]{color:#fff}"/);
           done();
         });
       });

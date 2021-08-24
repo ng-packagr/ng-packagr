@@ -15,8 +15,8 @@ describe(`@sample/same-name`, () => {
       expect(PACKAGE['name']).to.equal('@sample/testing');
     });
 
-    it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('fesm2015/sample-testing.js');
+    it(`should reference "es2020" bundle (FESM2020)`, () => {
+      expect(PACKAGE['es2020']).to.equal('fesm2020/sample-testing.js');
     });
 
     it(`should reference "typings" files`, () => {
@@ -38,8 +38,8 @@ describe(`@sample/same-name`, () => {
       expect(PACKAGE['name']).to.equal('@sample/testing/testing');
     });
 
-    it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('../fesm2015/sample-testing-testing.js');
+    it(`should reference "es2020" bundle (FESM2020)`, () => {
+      expect(PACKAGE['es2020']).to.equal('../fesm2020/sample-testing-testing.js');
     });
 
     it(`should reference "typings" files`, () => {

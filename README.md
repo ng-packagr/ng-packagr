@@ -77,7 +77,7 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
 ## Features
 
 * :gift: Implements [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview)
-  * :checkered_flag: Bundles your library in FESM2015
+  * :checkered_flag: Bundles your library in FESM2020
   * :school_satchel: npm package can be consumed by [Angular CLI](https://github.com/angular/angular-cli), [Webpack](https://github.com/webpack/webpack), or [SystemJS](https://github.com/systemjs/systemjs)
   * :dancer: Creates type definitions (`.d.ts`)
   * :trophy: Auto-discovers and bundles secondary entry points such as `@my/foo`, `@my/foo/testing`, `@my/foo/bar`

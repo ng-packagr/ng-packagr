@@ -9,7 +9,7 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
     const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
     const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
     const cache = entryPoint.cache;
-    const { fesm2015, esm2015 } = destinationFiles;
+    const { fesm2020, esm2020 } = destinationFiles;
 
     const spinner = ora({
       hideCursor: false,
@@ -17,13 +17,13 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
     });
 
     try {
-      spinner.start('Bundling to FESM2015');
+      spinner.start('Bundling to FESM2020');
       const rollupFESMCache = await rollupBundleFile({
         sourceRoot: tsConfig.options.sourceRoot,
-        entry: esm2015,
+        entry: esm2020,
         moduleName: ngEntryPoint.moduleId,
         format: 'es',
-        dest: fesm2015,
+        dest: fesm2020,
         cache: cache.rollupFESMCache,
       });
       spinner.succeed();

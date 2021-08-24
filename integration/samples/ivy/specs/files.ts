@@ -15,15 +15,15 @@ describe('@sample/ivy', () => {
     });
   });
 
-  describe('fesm2015/sample-ivy.js', () => {
+  describe('fesm2020/sample-ivy.js', () => {
     it(`should contain Ivy generated code`, () => {
-      const content = fs.readFileSync(path.join(DIST, 'fesm2015/sample-ivy.js'), { encoding: 'utf-8' });
+      const content = fs.readFileSync(path.join(DIST, 'fesm2020/sample-ivy.js'), { encoding: 'utf-8' });
       expect(content).to.contain('ɵcmp');
       expect(content).to.contain('ɵɵelementStart(0, "h1")');
     });
 
     it(`should contain tsickle transformed code`, () => {
-      const content = fs.readFileSync(path.join(DIST, 'fesm2015/sample-ivy.js'), { encoding: 'utf-8' });
+      const content = fs.readFileSync(path.join(DIST, 'fesm2020/sample-ivy.js'), { encoding: 'utf-8' });
       expect(content).to.contain('/** @nocollapse */');
     });
   });

@@ -13,7 +13,7 @@ export function readDefaultTsConfig(fileName = defaultTsConfigPath): ng.ParsedCo
   // these options are mandatory
   const extraOptions: ng.CompilerOptions = {
     moduleResolution: ts.ModuleResolutionKind.NodeJs,
-    target: ts.ScriptTarget.ES2015,
+    target: ts.ScriptTarget.ES2020,
     experimentalDecorators: true,
 
     // sourcemaps

@@ -8,8 +8,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "es2015",
-    "module": "es2015",
+    "target": "es2020",
+    "module": "es2020",
     "moduleResolution": "node",
     "outDir": "",
     "declaration": true,
@@ -19,7 +19,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "lib": ["dom", "es2015"]
+    "lib": ["dom", "es2020"]
   },
   "exclude": ["node_modules", "dist"]
 }

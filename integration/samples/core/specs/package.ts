@@ -15,12 +15,12 @@ describe(`@sample/core`, () => {
       expect(PACKAGE['name']).to.equal('@sample/core');
     });
 
-    it(`should reference "module" bundle (FESM2015)`, () => {
-      expect(PACKAGE['module']).to.equal('fesm2015/sample-core.js');
+    it(`should reference "module" bundle (FESM2020)`, () => {
+      expect(PACKAGE['module']).to.equal('fesm2020/sample-core.js');
     });
 
-    it(`should reference "es2015" bundle (FESM2015)`, () => {
-      expect(PACKAGE['es2015']).to.equal('fesm2015/sample-core.js');
+    it(`should reference "es2020" bundle (FESM2020)`, () => {
+      expect(PACKAGE['es2020']).to.equal('fesm2020/sample-core.js');
     });
 
     it(`should reference "typings" files`, () => {

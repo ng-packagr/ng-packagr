@@ -33,32 +33,32 @@ describe('@sample/apf', () => {
     });
   });
 
-  describe('FESM2015', () => {
+  describe('FESM2020', () => {
     it(`should contain 4 '.js.map' files`, () => {
-      expect(glob.sync(`${DIST}/fesm2015/**/*.js.map`).length).equal(4);
+      expect(glob.sync(`${DIST}/fesm2020/**/*.js.map`).length).equal(4);
     });
 
     it(`should contain 4 '.js' files`, () => {
-      expect(glob.sync(`${DIST}/fesm2015/**/*.js`).length).equal(4);
+      expect(glob.sync(`${DIST}/fesm2020/**/*.js`).length).equal(4);
     });
   });
 
-  describe('ESM2015', () => {
+  describe('ESM2020', () => {
     it(`should contain 0 '.js.map' files`, () => {
-      expect(glob.sync(`${DIST}/esm2015/**/*.js.map`).length).equal(0);
+      expect(glob.sync(`${DIST}/esm2020/**/*.js.map`).length).equal(0);
     });
 
     it(`should contain 16 '.js' files`, () => {
-      expect(glob.sync(`${DIST}/esm2015/**/*.js`).length).equal(16);
+      expect(glob.sync(`${DIST}/esm2020/**/*.js`).length).equal(16);
     });
 
     describe('secondary', () => {
       it(`should contain 0 '.js.map' files`, () => {
-        expect(glob.sync(`${DIST}/esm2015/secondary/**/*.js.map`).length).equal(0);
+        expect(glob.sync(`${DIST}/esm2020/secondary/**/*.js.map`).length).equal(0);
       });
 
       it(`should contain 8 '.js' files`, () => {
-        expect(glob.sync(`${DIST}/esm2015/secondary/**/*.js`).length).equal(8);
+        expect(glob.sync(`${DIST}/esm2020/secondary/**/*.js`).length).equal(8);
       });
     });
   });
