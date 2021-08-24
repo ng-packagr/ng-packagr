@@ -134,8 +134,8 @@ workflows:
             tags:
               only: /v.*/
             branches:
-              ignore:
-                - /renovate\/.*/
+              only:
+                - master
           requires:
             - setup
       - deploy:
