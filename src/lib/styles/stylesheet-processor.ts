@@ -193,7 +193,7 @@ export class StylesheetProcessor {
 }
 
 function generateKey(content: string, browserslistData: string[]): string {
-  return createHash('sha1').update(ngPackagrVersion).update(content).update(browserslistData.join('')).digest('base64');
+  return createHash('sha1').update(ngPackagrVersion).update(content).update(browserslistData.join('')).digest('hex');
 }
 
 async function readCacheEntry(cachePath: string, key: string): Promise<Result | undefined> {
