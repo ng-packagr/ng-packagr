@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [12.2.1](https://github.com/ng-packagr/ng-packagr/compare/v12.2.0...v12.2.1) (2021-08-25)
+
+
+### Bug Fixes
+
+* make cache paths safe for windows ([480bbb4](https://github.com/ng-packagr/ng-packagr/commit/480bbb40aec4b62f2fd80c3e8929f1ffcf7489af))
+
 ## [12.2.0](https://github.com/ng-packagr/ng-packagr/compare/v12.2.0-next.0...v12.2.0) (2021-08-04)
 
 ### Performance
