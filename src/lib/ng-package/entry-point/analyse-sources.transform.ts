@@ -52,6 +52,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     tsConfigOptions,
     moduleResolutionCache,
     undefined,
+    undefined,
     analysesSourcesFileCache,
   );
 

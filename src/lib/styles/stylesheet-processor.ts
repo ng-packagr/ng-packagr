@@ -16,6 +16,13 @@ export enum CssUrl {
   none = 'none',
 }
 
+export enum InlineStyleLanguage {
+  sass = 'sass',
+  scss = 'scss',
+  css = 'css',
+  less = 'less',
+}
+
 export interface Result {
   css: string;
   warnings: string[];
@@ -61,8 +68,7 @@ export class StylesheetProcessor {
     this.postCssProcessor = this.createPostCssPlugins();
   }
 
-  async process(filePath: string): Promise<string> {
-    const content = await readFile(filePath, 'utf8');
+  async process({ filePath, content }: { filePath: string; content: string }): Promise<string> {
     let key: string | undefined;
 
     if (!content.includes('@import') && !content.includes('@use')) {
