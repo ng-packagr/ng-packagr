@@ -8,7 +8,7 @@ import { BuildGraph } from '../graph/build-graph';
 import { FileCache } from '../file-system/file-cache';
 import { Node } from '../graph/node';
 import { createHash } from 'crypto';
-import { StylesheetProcessor } from '../styles/stylesheet-processor';
+import { InlineStyleLanguage, StylesheetProcessor } from '../styles/stylesheet-processor';
 
 export function cacheCompilerHost(
   graph: BuildGraph,
@@ -16,6 +16,7 @@ export function cacheCompilerHost(
   compilerOptions: ng.CompilerOptions,
   moduleResolutionCache: ts.ModuleResolutionCache,
   stylesheetProcessor?: StylesheetProcessor,
+  inlineStyleLanguage?: InlineStyleLanguage,
   sourcesFileCache: FileCache = entryPoint.cache.sourcesFileCache,
 ): ng.CompilerHost {
   const compilerHost = ts.createIncrementalCompilerHost(compilerOptions);
@@ -79,7 +80,6 @@ export function cacheCompilerHost(
 
     readFile: (fileName: string) => {
       addDependee(fileName);
-
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.content === undefined) {
         cache.content = compilerHost.readFile.call(this, fileName);
@@ -120,17 +120,47 @@ export function cacheCompilerHost(
           cache.content = compilerHost.readFile.call(this, fileName);
         } else {
           // stylesheet
-          cache.content = await stylesheetProcessor.process(fileName);
+          cache.content = await stylesheetProcessor.process({
+            filePath: fileName,
+            content: compilerHost.readFile.call(this, fileName),
+          });
         }
 
         if (cache.content === undefined) {
           throw new Error(`Cannot read file ${fileName}.`);
-        };
+        }
 
         cache.exists = true;
       }
 
       return cache.content;
+    },
+    transformResource: async (data, context) => {
+      if (context.resourceFile || context.type !== 'style') {
+        return null;
+      }
+
+      if (inlineStyleLanguage) {
+        const key = createHash('sha1').update(data).digest('hex');
+        const fileName = `${context.containingFile}-${key}.${inlineStyleLanguage}`;
+        const cache = sourcesFileCache.getOrCreate(fileName);
+        if (cache.content === undefined) {
+          cache.content = await stylesheetProcessor.process({
+            filePath: fileName,
+            content: data,
+          });
+
+          const virtualFileNode = getNode(fileName);
+          const containingFileNode = getNode(context.containingFile);
+          virtualFileNode.dependsOn(containingFileNode);
+        }
+
+        cache.exists = true;
+
+        return { content: cache.content };
+      }
+
+      return null;
     },
   };
 }
@@ -138,9 +168,7 @@ export function cacheCompilerHost(
 export function augmentProgramWithVersioning(program: ts.Program): void {
   const baseGetSourceFiles = program.getSourceFiles;
   program.getSourceFiles = function (...parameters) {
-    const files: readonly (ts.SourceFile & { version?: string })[] = baseGetSourceFiles(
-      ...parameters,
-    );
+    const files: readonly (ts.SourceFile & { version?: string })[] = baseGetSourceFiles(...parameters);
 
     for (const file of files) {
       if (file.version === undefined) {

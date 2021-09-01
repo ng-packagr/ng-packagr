@@ -39,6 +39,12 @@
       },
       "default": []
     },
+    "inlineStyleLanguage": {
+      "description": "The stylesheet language to use for the library's inline component styles.",
+      "type": "string",
+      "default": "css",
+      "enum": ["css", "less", "sass", "scss"]
+    },
     "lib": {
       "description": "Description of the library's entry point.",
       "type": "object",
