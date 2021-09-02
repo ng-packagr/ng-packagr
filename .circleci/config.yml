@@ -27,7 +27,7 @@ commands:
 executors:
   linux-executor:
     docker:
-      - image: cimg/node:14.15-browsers
+      - image: cimg/node:14.15
     working_directory: ~/repo
 
 jobs:
