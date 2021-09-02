@@ -3,7 +3,7 @@
 # @see https://github.com/koalaman/shellcheck
 
 # Exit script on error.
-set -o errexit
+# set -o errexit
 # Disable pathname expansion.
 set -o noglob
 # Error on unset (non-special) parameter expansion.
