@@ -15,7 +15,6 @@ import * as path from 'path';
 export interface RollupOptions {
   moduleName: string;
   entry: string;
-  format: rollup.ModuleFormat;
   dest: string;
   sourceRoot: string;
   transform?: TransformHook;
@@ -24,7 +23,7 @@ export interface RollupOptions {
 
 /** Runs rollup over the given entry file, writes a bundle file. */
 export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.RollupCache> {
-  log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dest} (${opts.format})`);
+  log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dest}`);
 
   // Create the bundle
   const bundle = await rollup.rollup({
@@ -63,8 +62,9 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.Roll
 
   // Output the bundle to disk
   await bundle.write({
+    
     name: opts.moduleName,
-    format: opts.format,
+    format: 'es',
     file: opts.dest,
     banner: '',
     sourcemap: true,

@@ -15,8 +15,8 @@ describe(`@sample/material`, () => {
       expect(PACKAGE['name']).to.equal('@sample/material');
     });
 
-    it(`should reference "module" bundle (FESM2020)`, () => {
-      expect(PACKAGE['module']).to.equal('fesm2020/sample-material.js');
+    it(`should reference "module" bundle (FESM2015)`, () => {
+      expect(PACKAGE['module']).to.equal('fesm2015/sample-material.js');
     });
 
     it(`should reference "es2020" bundle (FESM2020)`, () => {
