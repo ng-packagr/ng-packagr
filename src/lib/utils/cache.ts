@@ -8,10 +8,10 @@ const cachePath = findCacheDirectory({ name: 'ng-packagr' }) || tmpdir();
 
 let ngPackagrVersion: string | undefined;
 try {
-  ngPackagrVersion = require('../../../package.json').version;
+  ngPackagrVersion = require('../../package.json').version;
 } catch {
   // dev path
-  ngPackagrVersion = require('../../../../package.json').version;
+  ngPackagrVersion = require('../../../package.json').version;
 }
 
 export function generateKey(...valuesToConsider: string[]): string {
