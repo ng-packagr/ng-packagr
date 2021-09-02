@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/v12.2.0...v13.0.0-next.0) (2021-09-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* Compilation of libraries using VIew Engine is no longer supported.
+* We no longer generate UMD bundles. The below options which were used for UMD bundle generation has also been removed;
+
+- `umdModuleIds`
+- `amdId`
+- `umdId`
+
+### Features
+
+* do not generate UMDs ([cc59146](https://github.com/ng-packagr/ng-packagr/commit/cc5914659973a3c9e6dc04e2c038457923afae82)), closes [#2023](https://github.com/ng-packagr/ng-packagr/issues/2023) [#2000](https://github.com/ng-packagr/ng-packagr/issues/2000) [#1757](https://github.com/ng-packagr/ng-packagr/issues/1757) [#1674](https://github.com/ng-packagr/ng-packagr/issues/1674)
+* downlevel es2020 bundle to generate FESM2015 ([6cf2514](https://github.com/ng-packagr/ng-packagr/commit/6cf251460e58dc430416922429d2f2dcb6a48a9c))
+* enable Ivy partial compilations by default ([46133d9](https://github.com/ng-packagr/ng-packagr/commit/46133d98630e137764e0daf8a4eddaf98ac159e1)), closes [#1087](https://github.com/ng-packagr/ng-packagr/issues/1087) [#382](https://github.com/ng-packagr/ng-packagr/issues/382) [#285](https://github.com/ng-packagr/ng-packagr/issues/285) [#317](https://github.com/ng-packagr/ng-packagr/issues/317) [#355](https://github.com/ng-packagr/ng-packagr/issues/355) [#656](https://github.com/ng-packagr/ng-packagr/issues/656) [#917](https://github.com/ng-packagr/ng-packagr/issues/917)
+* replace es2015 with es2020 ([9e37a56](https://github.com/ng-packagr/ng-packagr/commit/9e37a56a43d1bcd34e9f6264b3cc6f5590c2d1d1))
+* support specifying stylesheet language for inline component styles ([61cd015](https://github.com/ng-packagr/ng-packagr/commit/61cd015e174a3e1db0507e63005704a7f49b9952))
+
+
+### Bug Fixes
+
+* make cache paths safe for windows ([5b58731](https://github.com/ng-packagr/ng-packagr/commit/5b5873188d09af862aa756741b2d0857e1308c7b))
+* provide supported browsers to esbuild ([4ed2e08](https://github.com/ng-packagr/ng-packagr/commit/4ed2e089d17ac19b0608012c8e509d643fc6e8ca))
+* set browserslist defaults ([8223a47](https://github.com/ng-packagr/ng-packagr/commit/8223a476e816e9548ec945e22e04902712fcab4b)), closes [/github.com/browserslist/browserslist/blob/83764ea81ffaa39111c204b02c371afa44a4ff07/index.js#L516-L522](https://github.com/ng-packagr//github.com/browserslist/browserslist/blob/83764ea81ffaa39111c204b02c371afa44a4ff07/index.js/issues/L516-L522)
+
 ## [12.2.0](https://github.com/ng-packagr/ng-packagr/compare/v12.2.0-next.0...v12.2.0) (2021-08-04)
 
 ### Performance
