@@ -1,15 +1,11 @@
 import * as browserslist from 'browserslist';
-import * as findCacheDirectory from 'find-cache-dir';
-import { tmpdir } from 'os';
-import * as cacache from 'cacache';
 import postcss from 'postcss';
 import * as postcssUrl from 'postcss-url';
 import { transform, formatMessages } from 'esbuild';
 import * as postcssPresetEnv from 'postcss-preset-env';
 import * as log from '../utils/log';
-import { readFile } from '../utils/fs';
-import { createHash } from 'crypto';
 import { extname } from 'path';
+import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
 
 export enum CssUrl {
   inline = 'inline',
@@ -28,16 +24,6 @@ export interface Result {
   warnings: string[];
   error?: string;
 }
-
-const cachePath = findCacheDirectory({ name: 'ng-packagr-styles' }) || tmpdir();
-let ngPackagrVersion: string | undefined;
-try {
-  ngPackagrVersion = require('../../../package.json').version;
-} catch {
-  // dev path
-  ngPackagrVersion = require('../../../../package.json').version;
-}
-
 export class StylesheetProcessor {
   private browserslistData: string[];
   private targets: string[];
@@ -73,8 +59,8 @@ export class StylesheetProcessor {
 
     if (!content.includes('@import') && !content.includes('@use')) {
       // No transitive deps, we can cache more aggressively.
-      key = generateKey(content, this.browserslistData);
-      const result = await readCacheEntry(cachePath, key);
+      key = generateKey(content, ...this.browserslistData);
+      const result = await readCacheEntry(key);
       if (result) {
         result.warnings.forEach(msg => log.warn(msg));
         return result.css;
@@ -87,10 +73,10 @@ export class StylesheetProcessor {
     // We cannot cache CSS re-rendering phase, because a transitive dependency via (@import) can case different CSS output.
     // Example a change in a mixin or SCSS variable.
     if (!key) {
-      key = generateKey(renderedCss, this.browserslistData);
+      key = generateKey(renderedCss, ...this.browserslistData);
     }
 
-    const cachedResult = await readCacheEntry(cachePath, key);
+    const cachedResult = await readCacheEntry(key);
     if (cachedResult) {
       cachedResult.warnings.forEach(msg => log.warn(msg));
       return cachedResult.css;
@@ -114,9 +100,7 @@ export class StylesheetProcessor {
       warnings.push(...(await formatMessages(esBuildWarnings, { kind: 'warning' })));
     }
 
-    // Add to cache
-    await cacache.put(
-      cachePath,
+    saveCacheEntry(
       key,
       JSON.stringify({
         css: code,
@@ -210,19 +194,6 @@ export class StylesheetProcessor {
         return css;
     }
   }
-}
-
-function generateKey(content: string, browserslistData: string[]): string {
-  return createHash('sha1').update(ngPackagrVersion).update(content).update(browserslistData.join('')).digest('hex');
-}
-
-async function readCacheEntry(cachePath: string, key: string): Promise<Result | undefined> {
-  const entry = await cacache.get.info(cachePath, key);
-  if (entry) {
-    return JSON.parse(await readFile(entry.path, 'utf8'));
-  }
-
-  return undefined;
 }
 
 function transformSupportedBrowsersToTargets(supportedBrowsers: string[]): string[] {

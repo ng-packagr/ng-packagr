@@ -8,6 +8,8 @@ export interface DestinationFiles {
   declarations: string;
   /** Absolute path of this entry point `FESM2020` module */
   fesm2020: string;
+  /** Absolute path of this entry point `FESM2015` module */
+  fesm2015: string;
   /** Absolute path of this entry point `ESM2020` module */
   esm2020: string;
 }
@@ -88,6 +90,7 @@ export class NgEntryPoint {
       declarations: pathJoinWithDest(secondaryDir, `${flatModuleFile}.d.ts`),
       esm2020: pathJoinWithDest('esm2020', secondaryDir, `${flatModuleFile}.js`),
       fesm2020: pathJoinWithDest('fesm2020', `${flatModuleFile}.js`),
+      fesm2015: pathJoinWithDest('fesm2015', `${flatModuleFile}.js`),
     };
   }
 

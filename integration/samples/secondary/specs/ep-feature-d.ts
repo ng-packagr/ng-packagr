@@ -15,8 +15,8 @@ describe(`@sample/secondary/feature-d`, () => {
     expect(PACKAGE['name']).to.equal('@sample/secondary/feature-d');
   });
 
-  it(`should reference "module" bundle (fesm2020)`, () => {
-    expect(PACKAGE['module']).to.equal('../fesm2020/sample-secondary-feature-d.js');
+  it(`should reference "fesm2020" bundle (fesm2020)`, () => {
+    expect(PACKAGE['fesm2020']).to.equal('../fesm2020/sample-secondary-feature-d.js');
   });
 
   it(`should reference "typings" files`, () => {

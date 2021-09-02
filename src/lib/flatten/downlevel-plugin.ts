@@ -3,13 +3,14 @@ import { TransformResult } from 'rollup';
 import * as path from 'path';
 
 import * as log from '../utils/log';
+import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
 
 /**
  * Base `tsc` `CompilerOptions` shared among various downleveling methods.
  */
 const COMPILER_OPTIONS: CompilerOptions = {
-  target: ScriptTarget.ES5,
-  module: ModuleKind.ES2015,
+  target: ScriptTarget.ES2015,
+  module: ModuleKind.ESNext,
   allowJs: true,
   sourceMap: true,
   importHelpers: true,
@@ -18,12 +19,16 @@ const COMPILER_OPTIONS: CompilerOptions = {
 };
 
 /**
- * Downlevels a .js file from `ES2015` to `ES5`. Internally, uses `tsc`.
- *
- * Required for some external as they contains `ES2015` syntax such as `const` and `let`
+ * Downlevels a .js file from `ES2015` to `ES2015`. Internally, uses `tsc`.
  */
-export function downlevelCodeWithTsc(code: string, filePath: string): TransformResult {
+export async function downlevelCodeWithTsc(code: string, filePath: string): Promise<TransformResult> {
   log.debug(`tsc ${filePath}`);
+  const key = generateKey(code);
+
+  const result = await readCacheEntry(key);
+  if (result) {
+    return result;
+  }
 
   const compilerOptions: CompilerOptions = {
     ...COMPILER_OPTIONS,
@@ -33,6 +38,14 @@ export function downlevelCodeWithTsc(code: string, filePath: string): TransformR
   const { outputText, sourceMapText } = transpileModule(code, {
     compilerOptions,
   });
+
+  saveCacheEntry(
+    key,
+    JSON.stringify({
+      code: outputText,
+      map: sourceMapText,
+    }),
+  );
 
   return {
     code: outputText,

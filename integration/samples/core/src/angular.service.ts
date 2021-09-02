@@ -15,3 +15,7 @@ export class AngularService {
     return [...iterable];
   }
 }
+
+export async function foo(): Promise<void> {
+ return undefined;
+}

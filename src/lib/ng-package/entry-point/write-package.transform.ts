@@ -99,10 +99,11 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
         ngEntryPoint,
         ngPackage,
         {
-          module: relativeUnixFromDestPath(destinationFiles.fesm2020),
+          module: relativeUnixFromDestPath(destinationFiles.fesm2015),
           es2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
           esm2020: relativeUnixFromDestPath(destinationFiles.esm2020),
           fesm2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
+          fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
           typings: relativeUnixFromDestPath(destinationFiles.declarations),
           // webpack v4+ specific flag to enable advanced optimizations and code splitting
           sideEffects: ngEntryPoint.sideEffects,
