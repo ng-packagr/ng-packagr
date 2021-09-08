@@ -8,7 +8,6 @@ All notable changes to this project will be documented in this file. See [standa
 ### Bug Fixes
 
 * improve Safari browserslist to esbuild target conversion ([23b4776](https://github.com/ng-packagr/ng-packagr/commit/23b47761dd60ac83af2a053d866c6ece9ab38330))
-* incorrect cache path ([66a947c](https://github.com/ng-packagr/ng-packagr/commit/66a947cdc367ed0833edef44b4db9fe536b3081b))
 
 ## [13.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.0...v13.0.0-next.1) (2021-09-02)
 
