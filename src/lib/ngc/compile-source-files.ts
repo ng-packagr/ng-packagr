@@ -1,6 +1,4 @@
-import * as ng from '@angular/compiler-cli';
-import { OptimizeFor } from '@angular/compiler-cli/src/ngtsc/typecheck/api';
-import { NgtscProgram } from '@angular/compiler-cli/src/ngtsc/program';
+import type { ParsedConfiguration, CompilerOptions } from '@angular/compiler-cli';
 import * as ts from 'typescript';
 import * as log from '../utils/log';
 import { augmentProgramWithVersioning, cacheCompilerHost } from '../ts/cache-compiler-host';
@@ -9,26 +7,33 @@ import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode } from '
 import { NgccProcessor } from './ngcc-processor';
 import { ngccTransformCompilerHost } from '../ts/ngcc-transform-compiler-host';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
+import { ngCompilerCli } from '../utils/ng-compiler-cli';
 
 export async function compileSourceFiles(
   graph: BuildGraph,
-  tsConfig: ng.ParsedConfiguration,
+  tsConfig: ParsedConfiguration,
   moduleResolutionCache: ts.ModuleResolutionCache,
-  extraOptions?: Partial<ng.CompilerOptions>,
+  extraOptions?: Partial<CompilerOptions>,
   stylesheetProcessor?: StylesheetProcessor,
   ngccProcessor?: NgccProcessor,
   watch?: boolean,
 ) {
-  log.debug(`ngc (v${ng.VERSION.full})`);
+  const { NgtscProgram, exitCodeFromResult, formatDiagnostics } = await ngCompilerCli();
 
-  const tsConfigOptions: ng.CompilerOptions = { ...tsConfig.options, ...extraOptions };
+  const tsConfigOptions: CompilerOptions = { ...tsConfig.options, ...extraOptions };
   const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
   const ngPackageNode: PackageNode = graph.find(isPackage);
   const inlineStyleLanguage = ngPackageNode.data.inlineStyleLanguage;
-  
 
   const tsCompilerHost = ngccTransformCompilerHost(
-    cacheCompilerHost(graph, entryPoint, tsConfigOptions, moduleResolutionCache, stylesheetProcessor, inlineStyleLanguage),
+    cacheCompilerHost(
+      graph,
+      entryPoint,
+      tsConfigOptions,
+      moduleResolutionCache,
+      stylesheetProcessor,
+      inlineStyleLanguage,
+    ),
     tsConfigOptions,
     ngccProcessor,
     moduleResolutionCache,
@@ -138,15 +143,15 @@ export async function compileSourceFiles(
 
   // Collect new Angular diagnostics for files affected by changes
   for (const affectedFile of affectedFiles) {
-    const angularDiagnostics = angularCompiler.getDiagnosticsForFile(affectedFile, OptimizeFor.WholeProgram);
+    const angularDiagnostics = angularCompiler.getDiagnosticsForFile(affectedFile, /** OptimizeFor.WholeProgram */ 1);
 
     allDiagnostics.push(...angularDiagnostics);
     sourceFileCache.updateAngularDiagnostics(affectedFile, angularDiagnostics);
   }
 
   // if we have an error we don't want to transpile.
-  const exitCode = ng.exitCodeFromResult(allDiagnostics);
-  const formattedDiagnostics = ng.formatDiagnostics(allDiagnostics);
+  const exitCode = exitCodeFromResult(allDiagnostics);
+  const formattedDiagnostics = formatDiagnostics(allDiagnostics);
   if (exitCode === 0) {
     if (formattedDiagnostics.length) {
       log.msg(formattedDiagnostics);
