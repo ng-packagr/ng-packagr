@@ -1,8 +1,6 @@
-import { ParsedConfiguration } from '@angular/compiler-cli/src/perform_compile';
 import { expect } from 'chai';
 import { ngPackagr, NgPackagr } from './packagr';
 import { provideProject, PROJECT_TOKEN } from './project.di';
-import { DEFAULT_TS_CONFIG_TOKEN } from './ng-package/entry-point/init-tsconfig.di';
 
 describe(`ngPackagr()`, () => {
   let packager: NgPackagr;
@@ -11,11 +9,6 @@ describe(`ngPackagr()`, () => {
   });
   it(`should return a NgPackagr instance`, () => {
     expect(packager).to.be.an.instanceOf(NgPackagr);
-  });
-
-  it(`should have a default tsconfig`, () => {
-    const defaultTsConfigProvider = packager['providers'].filter(p => (p as any).provide === DEFAULT_TS_CONFIG_TOKEN);
-    expect(defaultTsConfigProvider).to.have.length(1);
   });
 
   describe(`forProject()`, () => {
@@ -28,24 +21,6 @@ describe(`ngPackagr()`, () => {
 
       expect(providers).to.have.length(1);
       expect((providers[0] as any).useValue).to.equal('foobar');
-    });
-  });
-
-  describe(`withTsConfig()`, () => {
-    it(`should return self instance for chaining`, () => {
-      const mockConfig = ({ project: 'foo' } as any) as ParsedConfiguration;
-      expect(packager.withTsConfig(mockConfig)).to.equal(packager);
-    });
-
-    it(`should override the default tsconfig provider`, () => {
-      const mockConfig = ({ project: 'foo' } as any) as ParsedConfiguration;
-      const providers = packager
-        .withTsConfig(mockConfig)
-        ['providers'].filter(p => (p as any).provide === DEFAULT_TS_CONFIG_TOKEN);
-
-      expect(providers).to.have.length(2);
-      expect((providers[1] as any).useFactory).to.be.a('function');
-      expect((providers[1] as any).useFactory()).to.satisfy(val => val.project === 'foo');
     });
   });
 });

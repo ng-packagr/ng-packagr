@@ -1,5 +1,5 @@
 import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
-import { ParsedConfiguration } from '@angular/compiler-cli';
+import type { ParsedConfiguration } from '@angular/compiler-cli';
 import { of as observableOf, Observable } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 import { BuildGraph } from './graph/build-graph';

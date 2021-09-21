@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import { RollupCache } from 'rollup';
-import { NgtscProgram, ParsedConfiguration, Program } from '@angular/compiler-cli';
+import type { NgtscProgram, ParsedConfiguration, Program } from '@angular/compiler-cli';
 import { Node } from '../graph/node';
 import { by, isInProgress, isDirty } from '../graph/select';
 import { NgEntryPoint, DestinationFiles } from './entry-point/entry-point';

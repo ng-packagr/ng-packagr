@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import * as ng from '@angular/compiler-cli';
+import type { CompilerOptions, CompilerHost } from '@angular/compiler-cli';
 import * as path from 'path';
 import { ensureUnixPath } from '../utils/path';
 
@@ -13,12 +13,12 @@ import { InlineStyleLanguage, StylesheetProcessor } from '../styles/stylesheet-p
 export function cacheCompilerHost(
   graph: BuildGraph,
   entryPoint: EntryPointNode,
-  compilerOptions: ng.CompilerOptions,
+  compilerOptions: CompilerOptions,
   moduleResolutionCache: ts.ModuleResolutionCache,
   stylesheetProcessor?: StylesheetProcessor,
   inlineStyleLanguage?: InlineStyleLanguage,
   sourcesFileCache: FileCache = entryPoint.cache.sourcesFileCache,
-): ng.CompilerHost {
+): CompilerHost {
   const compilerHost = ts.createIncrementalCompilerHost(compilerOptions);
 
   const getNode = (fileName: string) => {
