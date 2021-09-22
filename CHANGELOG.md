@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* support WASM-based esbuild optimizer fallback ([68b5f0b](https://github.com/ng-packagr/ng-packagr/commit/68b5f0b7c1798a7f79a4c3acf1415842b9973bce)), closes [angular/angular-cli#21687](https://github.com/angular/angular-cli/issues/21687)
+* support WASM-based esbuild optimizer fallback ([68b5f0b](https://github.com/ng-packagr/ng-packagr/commit/68b5f0b7c1798a7f79a4c3acf1415842b9973bce))
 
 ## [13.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.0...v13.0.0-next.2) (2021-09-08)
 
