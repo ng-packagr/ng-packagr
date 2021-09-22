@@ -5,6 +5,7 @@ import { tmpdir } from 'os';
 import { MessageChannel, receiveMessageOnPort, Worker } from 'worker_threads';
 
 import * as log from '../utils/log';
+import { EsbuildExecutor } from '../esbuild/esbuild-executor';
 
 export enum CssUrl {
   inline = 'inline',
@@ -17,6 +18,7 @@ export interface WorkerOptions {
   cssUrl?: CssUrl;
   styleIncludePaths?: string[];
   cachePath: string;
+  alwaysUseWasm: boolean;
 }
 
 export interface WorkerResult {
@@ -29,6 +31,7 @@ export class StylesheetProcessor {
   private browserslistData: string[] | undefined;
   private worker: Worker | undefined;
   private readonly cachePath: string;
+  private alwaysUseWasm = !EsbuildExecutor.hasNativeSupport();
 
   constructor(
     private readonly basePath: string,
@@ -55,6 +58,7 @@ export class StylesheetProcessor {
       styleIncludePaths: this.styleIncludePaths,
       browserslistData: this.browserslistData,
       cachePath: this.cachePath,
+      alwaysUseWasm: this.alwaysUseWasm,
     };
 
     const ioChannel = new MessageChannel();

@@ -4,12 +4,12 @@ import { tmpdir } from 'os';
 import * as cacache from 'cacache';
 import postcss from 'postcss';
 import * as postcssUrl from 'postcss-url';
-import { transform, formatMessages } from 'esbuild';
 import * as postcssPresetEnv from 'postcss-preset-env';
 import * as log from '../../utils/log';
 import { readFile } from '../../utils/fs';
 import { createHash } from 'crypto';
 import { extname } from 'path';
+import { EsbuildExecutor } from '../../esbuild/esbuild-executor';
 
 export enum CssUrl {
   inline = 'inline',
@@ -30,10 +30,10 @@ try {
   // dev path
   ngPackagrVersion = require('../../../../package.json').version;
 }
-
 export class StylesheetProcessor {
   private browserslistData: string[];
   private postCssProcessor: ReturnType<typeof postcss>;
+  private esbuild = new EsbuildExecutor();
 
   constructor(
     private readonly basePath: string,
@@ -81,14 +81,14 @@ export class StylesheetProcessor {
     });
 
     const warnings = result.warnings().map(w => w.toString());
-    const { code, warnings: esBuildWarnings } = await transform(result.css, {
+    const { code, warnings: esBuildWarnings } = await this.esbuild.transform(result.css, {
       loader: 'css',
       minify: true,
       sourcefile: filePath,
     });
 
     if (esBuildWarnings.length > 0) {
-      warnings.push(...(await formatMessages(esBuildWarnings, { kind: 'warning' })));
+      warnings.push(...(await this.esbuild.formatMessages(esBuildWarnings, { kind: 'warning' })));
     }
 
     // Add to cache

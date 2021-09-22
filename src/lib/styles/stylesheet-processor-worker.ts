@@ -3,9 +3,9 @@ import { createHash } from 'crypto';
 import * as path from 'path';
 import postcss, { LazyResult } from 'postcss';
 import * as postcssUrl from 'postcss-url';
-import { formatMessages, transform } from 'esbuild';
 import { parentPort } from 'worker_threads';
 import * as postcssPresetEnv from 'postcss-preset-env';
+import { EsbuildExecutor } from '../esbuild/esbuild-executor';
 
 import { CssUrl, WorkerOptions, WorkerResult } from './stylesheet-processor';
 import { readFile } from '../utils/fs';
@@ -19,7 +19,9 @@ async function processCss({
   styleIncludePaths,
   basePath,
   cachePath,
+  alwaysUseWasm,
 }: WorkerOptions): Promise<WorkerResult> {
+  const esbuild = new EsbuildExecutor(alwaysUseWasm);
   const content = await readFile(filePath, 'utf8');
   let key: string | undefined;
 
@@ -50,14 +52,14 @@ async function processCss({
   const result = await optimizeCss(filePath, renderedCss, browserslistData, cssUrl);
   const warnings = result.warnings().map(w => w.toString());
 
-  const { code, warnings: esBuildWarnings } = await transform(result.css, {
+  const { code, warnings: esBuildWarnings } = await esbuild.transform(result.css, {
     loader: 'css',
     minify: true,
     sourcefile: filePath,
   });
 
   if (esBuildWarnings.length > 0) {
-    warnings.push(...(await formatMessages(esBuildWarnings, { kind: 'warning' })));
+    warnings.push(...(await esbuild.formatMessages(esBuildWarnings, { kind: 'warning' })));
   }
 
   // Add to cache
