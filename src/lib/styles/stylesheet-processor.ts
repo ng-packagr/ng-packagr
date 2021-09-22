@@ -1,11 +1,11 @@
 import * as browserslist from 'browserslist';
 import postcss from 'postcss';
 import * as postcssUrl from 'postcss-url';
-import { transform, formatMessages } from 'esbuild';
 import * as postcssPresetEnv from 'postcss-preset-env';
 import * as log from '../utils/log';
 import { extname } from 'path';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
+import { EsbuildExecutor } from '../esbuild/esbuild-executor';
 
 export enum CssUrl {
   inline = 'inline',
@@ -28,6 +28,7 @@ export class StylesheetProcessor {
   private browserslistData: string[];
   private targets: string[];
   private postCssProcessor: ReturnType<typeof postcss>;
+  private esbuild = new EsbuildExecutor();
 
   constructor(
     private readonly basePath: string,
@@ -89,7 +90,7 @@ export class StylesheetProcessor {
     });
 
     const warnings = result.warnings().map(w => w.toString());
-    const { code, warnings: esBuildWarnings } = await transform(result.css, {
+    const { code, warnings: esBuildWarnings } = await this.esbuild.transform(result.css, {
       loader: 'css',
       minify: true,
       target: this.targets,
@@ -97,7 +98,7 @@ export class StylesheetProcessor {
     });
 
     if (esBuildWarnings.length > 0) {
-      warnings.push(...(await formatMessages(esBuildWarnings, { kind: 'warning' })));
+      warnings.push(...(await this.esbuild.formatMessages(esBuildWarnings, { kind: 'warning' })));
     }
 
     saveCacheEntry(
