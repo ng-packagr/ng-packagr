@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [12.2.2](https://github.com/ng-packagr/ng-packagr/compare/v12.2.1...v12.2.2) (2021-09-22)
+
+
+### Bug Fixes
+
+* support WASM-based esbuild optimizer fallback ([9ee6bee](https://github.com/ng-packagr/ng-packagr/commit/9ee6bee992ac17f7ce383891164694640d427db0))
+
 ### [12.2.1](https://github.com/ng-packagr/ng-packagr/compare/v12.2.0...v12.2.1) (2021-08-25)
 
 
