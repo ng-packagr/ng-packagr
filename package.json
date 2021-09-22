@@ -39,7 +39,7 @@
     "chokidar": "^3.5.1",
     "commander": "^8.0.0",
     "dependency-graph": "^0.11.0",
-    "esbuild": "^0.12.15",
+    "esbuild-wasm": "^0.12.15",
     "find-cache-dir": "^3.3.1",
     "glob": "^7.1.6",
     "injection-js": "^2.4.0",
@@ -55,6 +55,9 @@
     "rxjs": "^6.5.0",
     "sass": "^1.32.8",
     "stylus": "^0.55.0"
+  },
+  "optionalDependencies": {
+    "esbuild": "^0.12.15"
   },
   "peerDependencies": {
     "@angular/compiler-cli": "^13.0.0-next.0",
