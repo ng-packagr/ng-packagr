@@ -24,7 +24,9 @@ for (const testDirectory of testDirectories) {
     args.push('dist/cli/main.js', '-p', `${testPath}/${configFile}`);
   }
 
-  const { status, error } = spawnSync(process.execPath, args);
+  const { status, error } = spawnSync(process.execPath, args, {
+    stdio: 'inherit',
+  });
   const exptectedToFail = testDirectory.startsWith('fail-');
 
   if (status === 0 && exptectedToFail) {
