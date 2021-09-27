@@ -18,7 +18,7 @@ export async function compileSourceFiles(
   ngccProcessor?: NgccProcessor,
   watch?: boolean,
 ) {
-  const { NgtscProgram, exitCodeFromResult, formatDiagnostics } = await ngCompilerCli();
+  const { NgtscProgram, formatDiagnostics } = await ngCompilerCli();
 
   const tsConfigOptions: CompilerOptions = { ...tsConfig.options, ...extraOptions };
   const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
@@ -149,21 +149,28 @@ export async function compileSourceFiles(
     sourceFileCache.updateAngularDiagnostics(affectedFile, angularDiagnostics);
   }
 
-  // if we have an error we don't want to transpile.
-  const exitCode = exitCodeFromResult(allDiagnostics);
-  const formattedDiagnostics = formatDiagnostics(allDiagnostics);
-  if (exitCode === 0) {
-    if (formattedDiagnostics.length) {
-      log.msg(formattedDiagnostics);
+  const otherDiagnostics = [];
+  const errorDiagnostics = [];
+  for (const diagnostic of allDiagnostics) {
+    if (diagnostic.category === ts.DiagnosticCategory.Error) {
+      errorDiagnostics.push(diagnostic);
+    } else {
+      otherDiagnostics.push(diagnostic);
     }
+  }
 
-    const transformers = angularCompiler.prepareEmit().transformers;
-    for (const sourceFile of builder.getSourceFiles()) {
-      if (!ignoreForEmit.has(sourceFile)) {
-        builder.emit(sourceFile, undefined, undefined, undefined, transformers);
-      }
+  if (otherDiagnostics.length) {
+    log.msg(formatDiagnostics(errorDiagnostics));
+  }
+
+  if (errorDiagnostics.length) {
+    throw new Error(formatDiagnostics(errorDiagnostics));
+  }
+
+  const transformers = angularCompiler.prepareEmit().transformers;
+  for (const sourceFile of builder.getSourceFiles()) {
+    if (!ignoreForEmit.has(sourceFile)) {
+      builder.emit(sourceFile, undefined, undefined, undefined, transformers);
     }
-  } else {
-    throw new Error(formattedDiagnostics);
   }
 }
