@@ -109,7 +109,7 @@ export class NgccProcessor {
         '--create-ivy-entry-points' /** createNewEntryPointFormats */,
         '--async',
         '--tsconfig' /** tsConfigPath */,
-        this.projectPath === defaultTsConfigPath ? '' : this.projectPath,
+        path.normalize(this.projectPath) === defaultTsConfigPath ? '' : this.projectPath,
         '--use-program-dependencies',
         '--typings-only' /** typingsOnly */,
       ],
