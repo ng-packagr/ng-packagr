@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.3...v13.0.0-next.4) (2021-09-27)
+
+
+### Features
+
+* enable providing cache directory and disabling caching via options ([7d6ee38](https://github.com/ng-packagr/ng-packagr/commit/7d6ee382daa5963a1e2e9f14670a657a53e363a5))
+
 ## [13.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.2...v13.0.0-next.3) (2021-09-22)
 
 
