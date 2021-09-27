@@ -40,7 +40,7 @@ export const compileNgcTransformFactory = (
         await ngccProcessor.process();
       }
 
-      entryPoint.cache.stylesheetProcessor ??= new StylesheetProcessor(basePath, cssUrl, styleIncludePaths);
+      entryPoint.cache.stylesheetProcessor ??= new StylesheetProcessor(basePath, cssUrl, styleIncludePaths, options.cacheEnabled && options.cacheDirectory);
 
       await compileSourceFiles(
         graph,

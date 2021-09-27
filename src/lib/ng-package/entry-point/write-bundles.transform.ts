@@ -36,7 +36,6 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
       throw error;
     }
 
-
     try {
       spinner.start('Generating FESM2015');
       const rollupFESMCache = await rollupBundleFile({
@@ -44,7 +43,7 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
         entry: esm2020,
         moduleName: ngEntryPoint.moduleId,
         dest: fesm2015,
-        transform: downlevelCodeWithTsc,
+        transform: (code, id) => downlevelCodeWithTsc(code, id, options.cacheEnabled && options.cacheDirectory),
         cache: cache.rollupFESM2015Cache,
       });
       spinner.succeed();

@@ -21,13 +21,19 @@ const COMPILER_OPTIONS: CompilerOptions = {
 /**
  * Downlevels a .js file from `ES2015` to `ES2015`. Internally, uses `tsc`.
  */
-export async function downlevelCodeWithTsc(code: string, filePath: string): Promise<TransformResult> {
+export async function downlevelCodeWithTsc(
+  code: string,
+  filePath: string,
+  cacheDirectory?: false | string,
+): Promise<TransformResult> {
   log.debug(`tsc ${filePath}`);
-  const key = generateKey(code);
 
-  const result = await readCacheEntry(key);
-  if (result) {
-    return result;
+  const key = generateKey(code);
+  if (cacheDirectory) {
+    const result = await readCacheEntry(cacheDirectory, key);
+    if (result) {
+      return result;
+    }
   }
 
   const compilerOptions: CompilerOptions = {
@@ -39,14 +45,16 @@ export async function downlevelCodeWithTsc(code: string, filePath: string): Prom
     compilerOptions,
   });
 
-  saveCacheEntry(
-    key,
-    JSON.stringify({
-      code: outputText,
-      map: sourceMapText,
-    }),
-  );
-
+  if (cacheDirectory) {
+    saveCacheEntry(
+      cacheDirectory,
+      key,
+      JSON.stringify({
+        code: outputText,
+        map: sourceMapText,
+      }),
+    );
+  }
   return {
     code: outputText,
     map: JSON.parse(sourceMapText),

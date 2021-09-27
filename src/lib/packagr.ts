@@ -27,6 +27,7 @@ export class NgPackagr {
    *
    * @param options Ng Packagr Options
    * @return Self instance for fluent API
+   * @deprecated use the options parameter in 'build' and 'watch' methods
    */
   public withOptions(options: NgPackagrOptions): NgPackagr {
     this.providers.push(provideOptions(options));
@@ -88,7 +89,8 @@ export class NgPackagr {
    *
    * @return A promisified result of the transformation pipeline.
    */
-  public build(): Promise<void> {
+  public build(options: NgPackagrOptions = {}): Promise<void> {
+    this.providers.push(provideOptions({ ...options, watch: false }));
     return this.buildAsObservable().toPromise();
   }
 
@@ -97,8 +99,8 @@ export class NgPackagr {
    *
    * @return An observable result of the transformation pipeline.
    */
-  public watch(): Observable<void> {
-    this.providers.push(provideOptions({ watch: true }));
+  public watch(options: NgPackagrOptions = {}): Observable<void> {
+    this.providers.push(provideOptions({ ...options, watch: true }));
 
     return this.buildAsObservable();
   }
@@ -112,10 +114,7 @@ export class NgPackagr {
     const injector = ReflectiveInjector.resolveAndCreate(this.providers);
     const buildTransformOperator = injector.get(this.buildTransform);
 
-    return observableOf(new BuildGraph()).pipe(
-      buildTransformOperator,
-      mapTo(undefined),
-    );
+    return observableOf(new BuildGraph()).pipe(buildTransformOperator, mapTo(undefined));
   }
 }
 
