@@ -34,6 +34,7 @@ export class StylesheetProcessor {
     private readonly basePath: string,
     private readonly cssUrl?: CssUrl,
     private readonly styleIncludePaths?: string[],
+    private readonly cacheDirectory?: string | false,
   ) {
     log.debug(`determine browserslist for ${this.basePath}`);
     // By default, browserslist defaults are too inclusive
@@ -58,10 +59,10 @@ export class StylesheetProcessor {
   async process({ filePath, content }: { filePath: string; content: string }): Promise<string> {
     let key: string | undefined;
 
-    if (!content.includes('@import') && !content.includes('@use')) {
+    if (!content.includes('@import') && !content.includes('@use') && this.cacheDirectory) {
       // No transitive deps, we can cache more aggressively.
       key = generateKey(content, ...this.browserslistData);
-      const result = await readCacheEntry(key);
+      const result = await readCacheEntry(this.cacheDirectory, key);
       if (result) {
         result.warnings.forEach(msg => log.warn(msg));
         return result.css;
@@ -77,12 +78,13 @@ export class StylesheetProcessor {
       key = generateKey(renderedCss, ...this.browserslistData);
     }
 
-    const cachedResult = await readCacheEntry(key);
-    if (cachedResult) {
-      cachedResult.warnings.forEach(msg => log.warn(msg));
-      return cachedResult.css;
+    if (this.cacheDirectory) {
+      const cachedResult = await readCacheEntry(this.cacheDirectory, key);
+      if (cachedResult) {
+        cachedResult.warnings.forEach(msg => log.warn(msg));
+        return cachedResult.css;
+      }
     }
-
     // Render postcss (autoprefixing and friends)
     const result = await this.postCssProcessor.process(renderedCss, {
       from: filePath,
@@ -101,14 +103,16 @@ export class StylesheetProcessor {
       warnings.push(...(await this.esbuild.formatMessages(esBuildWarnings, { kind: 'warning' })));
     }
 
-    saveCacheEntry(
-      key,
-      JSON.stringify({
-        css: code,
-        warnings,
-      }),
-    );
-
+    if (this.cacheDirectory) {
+      saveCacheEntry(
+        this.cacheDirectory,
+        key,
+        JSON.stringify({
+          css: code,
+          warnings,
+        }),
+      );
+    }
     warnings.forEach(msg => log.warn(msg));
 
     return code;

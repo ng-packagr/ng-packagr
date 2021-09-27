@@ -1,10 +1,6 @@
-import * as findCacheDirectory from 'find-cache-dir';
-import { tmpdir } from 'os';
 import * as cacache from 'cacache';
 import { readFile } from '../utils/fs';
 import { createHash } from 'crypto';
-
-const cachePath = findCacheDirectory({ name: 'ng-packagr' }) || tmpdir();
 
 let ngPackagrVersion: string | undefined;
 try {
@@ -18,7 +14,7 @@ export function generateKey(...valuesToConsider: string[]): string {
   return createHash('sha1').update(ngPackagrVersion).update(valuesToConsider.join(':')).digest('hex');
 }
 
-export async function readCacheEntry(key: string): Promise<any | undefined> {
+export async function readCacheEntry(cachePath: string, key: string): Promise<any | undefined> {
   const entry = await cacache.get.info(cachePath, key);
   if (entry) {
     return JSON.parse(await readFile(entry.path, 'utf8'));
@@ -27,6 +23,6 @@ export async function readCacheEntry(key: string): Promise<any | undefined> {
   return undefined;
 }
 
-export async function saveCacheEntry(key: string, content: string): Promise<void> {
+export async function saveCacheEntry(cachePath: string, key: string, content: string): Promise<void> {
   await cacache.put(cachePath, key, content);
 }
