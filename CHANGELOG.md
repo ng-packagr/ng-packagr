@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.0.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.4...v13.0.0-next.5) (2021-09-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* TypeScript versions prior to 4.4 are no longer supported.
+
+### Features
+
+* support TypeScript to 4.4 ([40f7316](https://github.com/ng-packagr/ng-packagr/commit/40f73161a3b5fdefcd672a9b5ce325fcb208c0c4))
+* update `tslib`peerDependencies to `^2.3.0` ([12dc21e](https://github.com/ng-packagr/ng-packagr/commit/12dc21e747382aff183e5c678c3aa580fd67608e))
+
+
+### Bug Fixes
+
+* don't exit with non zero error code on non error compiler diagnostics ([0daa33e](https://github.com/ng-packagr/ng-packagr/commit/0daa33e826795d5b1ecd91f3c67a42996de2b20f))
+* normalize NGCC tsconfig path ([3846b40](https://github.com/ng-packagr/ng-packagr/commit/3846b40102b3cd8b48188fa08203961552700523))
+
 ## [13.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.3...v13.0.0-next.4) (2021-09-27)
 
 
