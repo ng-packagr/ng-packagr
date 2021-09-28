@@ -1,14 +1,13 @@
 import { spawnSync } from 'child_process';
-import { existsSync } from 'fs';
+import { existsSync, readdirSync } from 'fs';
 import { join, resolve } from 'path';
-import { ls } from 'shelljs';
 const PACKAGE_FILE_CANDIDATES = ['ng-packagr-api.js', 'ng-package.js', 'ng-package.json', 'package.json'];
-const testDirectories = ls('integration/samples');
+const testDirectories = readdirSync('integration/samples');
 console.log(`Processing integration samples: ${testDirectories.join('\n')}`);
 
 for (const testDirectory of testDirectories) {
-  console.log(`\nProcessing integration sample: ${testDirectory}.`);
   const testPath = resolve('integration/samples', testDirectory);
+  console.log(`\nProcessing integration sample: ${testDirectory}.`);
   const configFile = PACKAGE_FILE_CANDIDATES.find(f => existsSync(join(testPath, f)));
 
   if (!configFile) {
