@@ -7,7 +7,6 @@
 [![npm License](https://img.shields.io/npm/l/ng-packagr.svg?style=flat-square)](https://github.com/ng-packagr/ng-packagr/blob/master/LICENSE)
 [![CircleCI](https://img.shields.io/circleci/project/github/ng-packagr/ng-packagr/master.svg?label=Circle%20CI&style=flat-square)](https://circleci.com/gh/ng-packagr/ng-packagr)
 
-[![GitHub contributors](https://img.shields.io/github/contributors/ng-packagr/ng-packagr.svg?style=flat-square)](https://github.com/ng-packagr/ng-packagr)
 [![GitHub stars](https://img.shields.io/github/stars/ng-packagr/ng-packagr.svg?label=GitHub%20Stars&style=flat-square)](https://github.com/ng-packagr/ng-packagr)
 [![npm Downloads](https://img.shields.io/npm/dw/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg?style=flat-square)](https://renovateapp.com/)
