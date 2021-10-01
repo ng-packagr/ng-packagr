@@ -42,6 +42,30 @@ describe(`@sample/apf`, () => {
     it(`should apply the 'sideEffects: false' flag by default`, () => {
       expect(PACKAGE['sideEffects']).to.be.false;
     });
+
+    it(`should add package 'exports'`, () => {
+      expect(PACKAGE['exports']).to.deep.equal({
+        './package.json': {
+          default: './package.json',
+        },
+        '.': {
+          types: './sample-apf.d.ts',
+          default: './fesm2020/sample-apf.js',
+        },
+        './secondary': {
+          types: './secondary/sample-apf-secondary.d.ts',
+          default: './fesm2020/sample-apf-secondary.js',
+        },
+        './secondary/testing': {
+          types: './secondary/testing/sample-apf-secondary-testing.d.ts',
+          default: './fesm2020/sample-apf-secondary-testing.js',
+        },
+        './testing': {
+          types: './testing/sample-apf-testing.d.ts',
+          default: './fesm2020/sample-apf-testing.js',
+        },
+      });
+    });
   });
 
   describe(`secondary/package.json`, () => {
@@ -85,6 +109,10 @@ describe(`@sample/apf`, () => {
 
     it(`should apply the 'sideEffects: false' flag by default`, () => {
       expect(PACKAGE['sideEffects']).to.be.false;
+    });
+
+    it(`should not add package 'exports'`, () => {
+      expect(PACKAGE['exports']).to.be.undefined;
     });
   });
 
@@ -172,6 +200,10 @@ describe(`@sample/apf`, () => {
 
     it(`should apply the 'sideEffects: false' flag by default`, () => {
       expect(PACKAGE['sideEffects']).to.be.false;
+    });
+
+    it(`should not add package 'exports'`, () => {
+      expect(PACKAGE['exports']).to.be.undefined;
     });
   });
 });
