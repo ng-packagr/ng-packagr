@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { NgPackageConfig } from '../../../ng-package.schema';
 import { CssUrl } from '../../styles/stylesheet-processor';
+import { ensureUnixPath } from '../../utils/path';
 
 /** A list of output absolute paths for various formats */
 export interface DestinationFiles {
@@ -12,6 +13,8 @@ export interface DestinationFiles {
   fesm2015: string;
   /** Absolute path of this entry point `ESM2020` module */
   esm2020: string;
+  /** Sub path of entrypoint distributable. */
+  directory: string;
 }
 
 /**
@@ -87,6 +90,7 @@ export class NgEntryPoint {
     const pathJoinWithDest = (...paths: string[]) => path.join(primaryDestPath, ...paths);
 
     return {
+      directory: ensureUnixPath(secondaryDir),
       declarations: pathJoinWithDest(secondaryDir, `${flatModuleFile}.d.ts`),
       esm2020: pathJoinWithDest('esm2020', secondaryDir, `${flatModuleFile}.js`),
       fesm2020: pathJoinWithDest('fesm2020', `${flatModuleFile}.js`),

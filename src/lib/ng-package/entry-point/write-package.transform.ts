@@ -8,9 +8,10 @@ import { ensureUnixPath } from '../../utils/path';
 import { copyFile, exists, stat, rmdir, writeFile } from '../../utils/fs';
 import * as log from '../../utils/log';
 import { globFiles } from '../../utils/glob';
-import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode, fileUrl } from '../nodes';
+import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode, fileUrl, isEntryPoint } from '../nodes';
 import { Node } from '../../graph/node';
 import { NgPackagrOptions } from '../options.di';
+import { BuildGraph } from '../../graph/build-graph';
 
 type CompilationMode = 'partial' | 'full' | undefined;
 
@@ -99,12 +100,14 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
         ngEntryPoint,
         ngPackage,
         {
+          type: 'module',
           module: relativeUnixFromDestPath(destinationFiles.fesm2015),
           es2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
           esm2020: relativeUnixFromDestPath(destinationFiles.esm2020),
           fesm2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
           fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
           typings: relativeUnixFromDestPath(destinationFiles.declarations),
+          exports: ngEntryPoint.packageJson.exports || generatePackageExports(ngEntryPoint, graph),
           // webpack v4+ specific flag to enable advanced optimizations and code splitting
           sideEffects: ngEntryPoint.sideEffects,
         },
@@ -270,4 +273,35 @@ function checkNonPeerDependencies(
       throw new Error(`Dependency ${dep} must be explicitly allowed using the "allowedNonPeerDependencies" option.`);
     }
   }
+}
+
+type PackageExports = Record<string, { default: string; types?: string }>;
+function generatePackageExports(
+  { isSecondaryEntryPoint, destinationPath }: NgEntryPoint,
+  graph: BuildGraph,
+): PackageExports | undefined {
+  if (isSecondaryEntryPoint) {
+    // Package exports are only available in the primary entrypoint.
+    return undefined;
+  }
+
+  const entryPoints = graph.filter(isEntryPoint);
+  const exports: PackageExports = {
+    './package.json': {
+      default: './package.json',
+    },
+  };
+
+  const relativeUnixFromDestPath = (filePath: string) =>
+    './' + ensureUnixPath(path.relative(destinationPath, filePath));
+
+  for (const entryPoint of entryPoints) {
+    const { destinationFiles, isSecondaryEntryPoint } = entryPoint.data.entryPoint;
+    exports[isSecondaryEntryPoint ? `./${destinationFiles.directory}` : '.'] = {
+      types: relativeUnixFromDestPath(destinationFiles.declarations),
+      default: relativeUnixFromDestPath(destinationFiles.fesm2020),
+    };
+  }
+
+  return exports;
 }
