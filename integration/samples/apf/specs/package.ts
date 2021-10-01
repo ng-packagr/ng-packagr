@@ -54,15 +54,15 @@ describe(`@sample/apf`, () => {
         },
         './secondary': {
           types: './secondary/sample-apf-secondary.d.ts',
-          default: './fesm2020/sample-apf-secondary.js',
+          default: './fesm2020/sample-apf-secondary.mjs',
         },
         './secondary/testing': {
           types: './secondary/testing/sample-apf-secondary-testing.d.ts',
-          default: './fesm2020/sample-apf-secondary-testing.js',
+          default: './fesm2020/sample-apf-secondary-testing.mjs',
         },
         './testing': {
           types: './testing/sample-apf-testing.d.ts',
-          default: './fesm2020/sample-apf-testing.js',
+          default: './fesm2020/sample-apf-testing.mjs',
         },
       });
     });
