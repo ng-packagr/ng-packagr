@@ -107,9 +107,9 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
           fesm2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
           fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
           typings: relativeUnixFromDestPath(destinationFiles.declarations),
-          exports: ngEntryPoint.packageJson.exports || generatePackageExports(ngEntryPoint, graph),
+          exports: ngEntryPoint.packageJson.exports ?? generatePackageExports(ngEntryPoint, graph),
           // webpack v4+ specific flag to enable advanced optimizations and code splitting
-          sideEffects: ngEntryPoint.sideEffects,
+          sideEffects: ngEntryPoint.packageJson.sideEffects ?? false,
         },
         !!options.watch,
         compilationMode as CompilationMode,

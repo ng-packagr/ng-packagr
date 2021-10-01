@@ -39,7 +39,6 @@ describe(`NgEntryPoint`, () => {
     expect(primaryEntryPoint.flatModuleFile).to.equal('example-test-entry-point');
     expect(primaryEntryPoint.styleIncludePaths).to.be.empty;
     expect(primaryEntryPoint.moduleId).to.equal('@example/test-entry-point');
-    expect(primaryEntryPoint.sideEffects).to.be.false;
 
     // Other:
     expect(primaryEntryPoint.$get('lib.entryFile')).to.equal('public-api.ts');
@@ -67,7 +66,6 @@ describe(`NgEntryPoint`, () => {
     expect(primaryEntryPoint.cssUrl).to.equal('inline');
     expect(primaryEntryPoint.flatModuleFile).to.equal('exampleTestEntryPoint');
     expect(primaryEntryPoint.styleIncludePaths).to.deep.equal([resolve(testSourcePath, './style-includes')]);
-    expect(primaryEntryPoint.sideEffects).to.be.true;
   });
 
   it(`check secondary entry point defaults`, () => {
@@ -108,7 +106,6 @@ describe(`NgEntryPoint`, () => {
     expect(secondaryEntryPoint.flatModuleFile).to.equal('example-test-entry-point-extra');
     expect(secondaryEntryPoint.styleIncludePaths).to.be.empty;
     expect(secondaryEntryPoint.moduleId).to.equal('@example/test-entry-point/extra');
-    expect(secondaryEntryPoint.sideEffects).to.be.false;
   });
 
   it(`check secondary entry point overrides`, () => {
@@ -153,6 +150,5 @@ describe(`NgEntryPoint`, () => {
     expect(secondaryEntryPoint.styleIncludePaths).to.deep.equal([
       resolve(secondaryEntryPointBasePath, './style-includes'),
     ]);
-    expect(secondaryEntryPoint.sideEffects).to.be.true;
   });
 });
