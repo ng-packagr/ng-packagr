@@ -68,7 +68,7 @@ export class TestHarness {
   }
 
   expectFesm2020ToMatch(fileName: string, regexp: RegExp): Chai.Assertion {
-    return expect(this.readFileSync(`fesm2020/${fileName}.js`)).to.match(regexp);
+    return expect(this.readFileSync(`fesm2020/${fileName}.mjs`)).to.match(regexp);
   }
 
   expectDtsToMatch(fileName: string, regexp: RegExp): Chai.Assertion {
@@ -76,7 +76,7 @@ export class TestHarness {
   }
 
   expectPackageManifestToMatch(regexp: RegExp): Chai.Assertion {
-    return expect(this.readFileSync('package.json')).to.match(regexp);
+    return expect(this.readFileSync('package.mjson')).to.match(regexp);
   }
 
   /**
@@ -107,8 +107,8 @@ export class TestHarness {
   private setUpNgPackagr(): Promise<void> {
     return new Promise(resolve => {
       this.ngPackagr$$ = ngPackagr()
-        .forProject(path.join(this.testTempPath, 'package.json'))
-        .withTsConfig(path.join(this.testTempPath, 'tsconfig.ngc.json'))
+        .forProject(path.join(this.testTempPath, 'package.mjson'))
+        .withTsConfig(path.join(this.testTempPath, 'tsconfig.ngc.mjson'))
         .watch()
         .pipe(
           tap(() => resolve()), // we are only interested when in the first builds, that's why we are resolving it

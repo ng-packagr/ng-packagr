@@ -8,7 +8,7 @@ describe(`@sample/secondary/feature-a`, () => {
   let ESM2020_CONTENTS: string;
 
   before(() => {
-    ESM2020_CONTENTS = fs.readFileSync(path.resolve(DIST, 'fesm2020', 'sample-secondary-feature-a.js'), {
+    ESM2020_CONTENTS = fs.readFileSync(path.resolve(DIST, 'fesm2020', 'sample-secondary-feature-a.mjs'), {
       encoding: 'utf-8',
     });
   });
