@@ -32,20 +32,4 @@ $ yarn build:prod:jit
 $ yarn build:prod:aot
 ```
 
-Note: `ng` (and `webpack` under the hood) will resolve dependencies through symlinks in the local `node_modules` folder.
-
-
-##### TypeScript Consumer
-
-Build a plain `tsc` consumer app:
-
-```bash
-$ cd integration/consumer-tsc
-$ tsc
-$ tsc --target es2015 --module es2015
-$ tsc --target es5 --module es2015
-$ tsc --target es5 --module umd
-$ tsc --target es5 --module commonjs
-```
-
-Note: through `tsconfig.json`, this project resolves dependencies through a `paths` mapping.
+Note: `ng` (and `webpack` under the hood) will resolve dependencies through symlinks in the local `node_modules` 
