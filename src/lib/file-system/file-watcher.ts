@@ -20,7 +20,7 @@ export function createFileWatch(
 
   const watch = chokidar.watch(projectPath, {
     ignoreInitial: true,
-    ignored: [...ignoredPaths, /((^[\/\\])\..)|(\.mjs$)|(\.map$)|(\.metadata\.mjson|node_modules)/],
+    ignored: [...ignoredPaths, /((^[\/\\])\..)|(\.mjs$)|(\.map$)|(\.metadata\.json|node_modules)/],
     persistent: true,
   });
 
