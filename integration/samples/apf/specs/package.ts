@@ -50,7 +50,7 @@ describe(`@sample/apf`, () => {
         },
         '.': {
           types: './sample-apf.d.ts',
-          default: './fesm2020/sample-apf.js',
+          default: './fesm2020/sample-apf.mjs',
         },
         './secondary': {
           types: './secondary/sample-apf-secondary.d.ts',
