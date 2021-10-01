@@ -73,6 +73,8 @@ export function cacheCompilerHost(
             cache.declarationFileName = ensureUnixPath(fileName);
           }
         });
+      } else {
+        fileName = fileName.replace(/\.js(\.map)?$/, '.mjs$1');
       }
 
       compilerHost.writeFile.call(this, fileName, data, writeByteOrderMark, onError, sourceFiles);

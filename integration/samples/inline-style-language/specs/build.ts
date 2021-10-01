@@ -9,7 +9,7 @@ describe('@sample/inline-style-language', () => {
   });
 
   it(`should contain processed inline css`, () => {
-    const content = fs.readFileSync(path.join(DIST, 'fesm2020/sample-inline-style-language.js'), { encoding: 'utf-8' });
+    const content = fs.readFileSync(path.join(DIST, 'fesm2020/sample-inline-style-language.mjs'), { encoding: 'utf-8' });
     expect(content).to.contain('color:green');
   });
 });

@@ -8,7 +8,7 @@ describe(`@sample/secondary/shared`, () => {
   let ESM2020_CONTENTS: string;
 
   before(() => {
-    ESM2020_CONTENTS = fs.readFileSync(path.resolve(DIST, 'fesm2020', 'sample-secondary-shared.js'), {
+    ESM2020_CONTENTS = fs.readFileSync(path.resolve(DIST, 'fesm2020', 'sample-secondary-shared.mjs'), {
       encoding: 'utf-8',
     });
   });

@@ -22,7 +22,7 @@ describe(`sample-custom`, () => {
     });
 
     it(`should reference "es2020" bundle (FESM2020)`, () => {
-      expect(PACKAGE['es2020']).to.equal('fesm2020/sample-custom.js');
+      expect(PACKAGE['es2020']).to.equal('fesm2020/sample-custom.mjs');
     });
 
     it(`should reference "typings" files`, () => {
