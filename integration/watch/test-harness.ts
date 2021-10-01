@@ -76,7 +76,7 @@ export class TestHarness {
   }
 
   expectPackageManifestToMatch(regexp: RegExp): Chai.Assertion {
-    return expect(this.readFileSync('package.mjson')).to.match(regexp);
+    return expect(this.readFileSync('package.json')).to.match(regexp);
   }
 
   /**
