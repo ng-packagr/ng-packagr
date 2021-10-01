@@ -151,15 +151,4 @@ export class NgEntryPoint {
       return this.moduleId.split('/').join(separator);
     }
   }
-
-  /**
-   * Enables the `"sideEffects": false` flag in `package.json`.
-   * The flag is enabled and set to `false` by default which results in more aggressive optimizations applied by webpack v4 builds consuming the library.
-   * To override the default behaviour, you need to set `"sideEffects": true` explicitly in your `package.json`.
-   *
-   * @link https://github.com/webpack/webpack/tree/master/examples/side-effects
-   */
-  public get sideEffects(): boolean | string[] {
-    return this.packageJson['sideEffects'] || false;
-  }
 }
