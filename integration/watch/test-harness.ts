@@ -46,8 +46,9 @@ export class TestHarness {
     this.emptyTestDirectory();
   }
 
-  reset(): void {
+  reset(): Promise<void> {
     this.completeHandler = () => undefined;
+    return new Promise(resolve => setTimeout(resolve, 500));
   }
 
   readFileSync(filePath: string, isJson = false): string | object {
