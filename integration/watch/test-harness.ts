@@ -36,11 +36,8 @@ export class TestHarness {
   }
 
   dispose(): void {
-    this.reset();
-
-    for (const key in this.loggerStubs) {
-      this.loggerStubs[key].and.callThrough();
-    }
+    this.completeHandler = () => undefined;
+    this.loggerStubs = {};
 
     if (this.ngPackagr$$) {
       this.ngPackagr$$.unsubscribe();
@@ -50,7 +47,6 @@ export class TestHarness {
   }
 
   reset(): void {
-    this.loggerStubs['error'].and.callThrough();
     this.completeHandler = () => undefined;
   }
 
