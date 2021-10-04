@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.0.0-next.6](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.5...v13.0.0-next.6) (2021-10-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* Support for `node-sass`  has been removed. sass will be used by default to compile SASS and SCSS files.
+
+### Features
+
+* add package exports for node and es2015 ([bd986f6](https://github.com/ng-packagr/ng-packagr/commit/bd986f6e737239a82b934f4f88b9d648fb496d29))
+* add support for package.json exports ([047e3ca](https://github.com/ng-packagr/ng-packagr/commit/047e3cac2beb15d5b62e016e3c0b64f26bba43aa))
+* drop support for node-sass ([34d805d](https://github.com/ng-packagr/ng-packagr/commit/34d805d9e96bd05888043010eb874986d7820feb))
+* emit Javascript files with `.mjs` extension ([95166f3](https://github.com/ng-packagr/ng-packagr/commit/95166f3917e9674b5fd17d4868df71e497646c7f))
+
 ## [13.0.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.4...v13.0.0-next.5) (2021-09-28)
 
 
