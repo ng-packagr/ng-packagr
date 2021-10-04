@@ -4,7 +4,7 @@ import { TestHarness } from './test-harness';
 describe('basic', () => {
   const harness = new TestHarness('basic');
 
-  before(async () => {
+  beforeAll(async () => {
     await harness.initialize();
   });
 
@@ -12,7 +12,7 @@ describe('basic', () => {
     harness.reset();
   });
 
-  after(() => {
+  afterAll(() => {
     harness.dispose();
   });
 

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 describe('@sample/ivy', () => {
   describe(`package.json`, () => {
     let PACKAGE;
-    before(() => {
+    beforeAll(() => {
       PACKAGE = require('../dist/package.json');
     });
 
@@ -18,7 +18,7 @@ describe('@sample/ivy', () => {
 
   describe(`secondary/package.json`, () => {
     let PACKAGE;
-    before(() => {
+    beforeAll(() => {
       PACKAGE = require('../dist/secondary/package.json');
     });
 

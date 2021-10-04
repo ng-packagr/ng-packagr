@@ -3,7 +3,7 @@ import { expect } from 'chai';
 describe(`@sample/apf`, () => {
   describe(`package.json`, () => {
     let PACKAGE;
-    before(() => {
+    beforeAll(() => {
       PACKAGE = require('../dist/package.json');
     });
 
@@ -70,7 +70,7 @@ describe(`@sample/apf`, () => {
 
   describe(`secondary/package.json`, () => {
     let PACKAGE;
-    before(() => {
+    beforeAll(() => {
       PACKAGE = require('../dist/secondary/package.json');
     });
 
@@ -118,7 +118,7 @@ describe(`@sample/apf`, () => {
 
   describe(`secondary/testing/package.json`, () => {
     let PACKAGE;
-    before(() => {
+    beforeAll(() => {
       PACKAGE = require('../dist/secondary/testing/package.json');
     });
 
@@ -162,7 +162,7 @@ describe(`@sample/apf`, () => {
 
   describe(`testing/package.json`, () => {
     let PACKAGE;
-    before(() => {
+    beforeAll(() => {
       PACKAGE = require('../dist/testing/package.json');
     });
 

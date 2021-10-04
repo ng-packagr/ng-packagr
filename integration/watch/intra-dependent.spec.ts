@@ -5,7 +5,7 @@ import { TestHarness } from './test-harness';
 describe('intra-dependent', () => {
   const harness = new TestHarness('intra-dependent');
 
-  before(async () => {
+  beforeAll(async () => {
     await harness.initialize();
   });
 
@@ -13,7 +13,7 @@ describe('intra-dependent', () => {
     harness.reset();
   });
 
-  after(() => {
+  afterAll(() => {
     harness.dispose();
   });
 

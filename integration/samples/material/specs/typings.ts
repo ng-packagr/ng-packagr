@@ -5,7 +5,7 @@ import * as path from 'path';
 describe(`@sample/material`, () => {
   describe(`material.d.ts`, () => {
     let TYPINGS;
-    before(() => {
+    beforeAll(() => {
       TYPINGS = fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'sample-material.d.ts'), 'utf-8');
     });
 

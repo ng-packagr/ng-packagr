@@ -5,7 +5,7 @@ import * as path from 'path';
 describe(`@sample/api`, () => {
   describe('angular.component.d.ts.map', () => {
     let sourceMap;
-    before(() => {
+    beforeAll(() => {
       sourceMap = fs.readJsonSync(path.resolve(__dirname, '../dist/src/angular.component.d.ts.map'));
     });
 

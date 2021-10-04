@@ -6,7 +6,7 @@ import { resolve } from 'path';
 describe(`issue-1451-license`, () => {
   let DIST: string;
 
-  before(() => {
+  beforeAll(() => {
     DIST = resolve(__dirname, '../dist');
   });
 
@@ -27,5 +27,4 @@ describe(`issue-1451-license`, () => {
       expect(glob.sync(`${DIST}/license/**/*`).length).equal(3);
     });
   });
-
 });

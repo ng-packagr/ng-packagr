@@ -5,7 +5,7 @@ import * as fs from 'fs';
 
 describe('@sample/apf', () => {
   let DIST: string;
-  before(() => {
+  beforeAll(() => {
     DIST = path.resolve(__dirname, '../dist');
   });
 

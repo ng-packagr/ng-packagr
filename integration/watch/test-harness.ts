@@ -1,11 +1,10 @@
 import * as fs from 'fs-extra';
-import * as sinon from 'sinon';
 import * as path from 'path';
 import * as log from '../../dist/lib/utils/log';
 import { expect } from 'chai';
 import { Subscription } from 'rxjs';
 import { ngPackagr } from '../../dist';
-import { tap } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
 
 /**
  * A testing harness class to setup the enviroment andtest the incremental builds.
@@ -18,7 +17,7 @@ export class TestHarness {
   private testSrc = path.join(__dirname, this.testName);
   private testDistPath = path.join(this.testTempPath, 'dist');
   private ngPackagr$$: Subscription;
-  private loggerStubs: { [key: string]: sinon.SinonStub } = {};
+  private loggerStubs: Record<string, jasmine.Spy> = {};
 
   constructor(private testName: string) {}
 
@@ -26,7 +25,7 @@ export class TestHarness {
     // the below is done in order to avoid poluting the test reporter with build logs
     for (const key in log) {
       if (log.hasOwnProperty(key)) {
-        this.loggerStubs[key] = sinon.stub(log, key as keyof typeof log);
+        this.loggerStubs[key] = spyOn(log, key as keyof typeof log).and.callFake(() => null);
       }
     }
 
@@ -40,7 +39,7 @@ export class TestHarness {
     this.reset();
 
     for (const key in this.loggerStubs) {
-      this.loggerStubs[key].restore();
+      this.loggerStubs[key].and.callThrough();
     }
 
     if (this.ngPackagr$$) {
@@ -51,7 +50,7 @@ export class TestHarness {
   }
 
   reset(): void {
-    this.loggerStubs['error'].resetBehavior();
+    this.loggerStubs['error'].and.callThrough();
     this.completeHandler = () => undefined;
   }
 
@@ -90,7 +89,7 @@ export class TestHarness {
    * Gets invoked when a compilation error occuries.
    */
   onFailure(done: (error: Error) => void): void {
-    this.loggerStubs['error'].callsFake(done);
+    this.loggerStubs['error'].and.callFake(done);
   }
 
   /**
@@ -111,6 +110,7 @@ export class TestHarness {
         .withTsConfig(path.join(this.testTempPath, 'tsconfig.ngc.json'))
         .watch()
         .pipe(
+          debounceTime(1000),
           tap(() => resolve()), // we are only interested when in the first builds, that's why we are resolving it
           tap(() => this.completeHandler()),
         )

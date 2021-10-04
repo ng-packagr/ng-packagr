@@ -7,7 +7,7 @@ const DIST = path.resolve(__dirname, '..', 'dist');
 describe(`@sample/secondary/feature-b`, () => {
   let ESM2020_CONTENTS: string;
 
-  before(() => {
+  beforeAll(() => {
     ESM2020_CONTENTS = fs.readFileSync(path.resolve(DIST, 'fesm2020', 'sample-secondary-feature-b.mjs'), {
       encoding: 'utf-8',
     });

@@ -4,7 +4,7 @@ import * as fs from 'fs';
 
 describe('@sample/ivy', () => {
   let DIST: string;
-  before(() => {
+  beforeAll(() => {
     DIST = path.resolve(__dirname, '../dist');
   });
 
