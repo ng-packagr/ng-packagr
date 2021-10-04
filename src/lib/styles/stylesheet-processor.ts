@@ -141,23 +141,7 @@ export class StylesheetProcessor {
     switch (ext) {
       case '.sass':
       case '.scss': {
-        /*
-         * Please be aware of the few differences in behaviour https://github.com/sass/dart-sass/blob/master/README.md#behavioral-differences-from-ruby-sass
-         * By default `npm install` will install sass.
-         * To use node-sass you need to use:
-         *   Npm:
-         *     `npm install node-sass --save-dev`
-         *   Yarn:
-         *     `yarn add node-sass --dev`
-         */
-        let sassCompiler: any | undefined;
-        try {
-          sassCompiler = require('node-sass'); // Check if node-sass is explicitly included.
-        } catch {
-          sassCompiler = await import('sass');
-        }
-
-        return sassCompiler
+        return (await import('sass'))
           .renderSync({
             file: filePath,
             data: css,
