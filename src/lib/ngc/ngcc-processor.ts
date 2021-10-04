@@ -1,7 +1,7 @@
-import { Logger, process as mainNgcc, LogLevel } from '@angular/compiler-cli/ngcc';
+import type { Logger } from '@angular/compiler-cli/ngcc';
 import { existsSync, constants, accessSync } from 'fs';
 import * as path from 'path';
-import * as ts from 'typescript';
+import ts from 'typescript';
 import { NgccProcessingCache } from '../ng-package/ngcc-cache';
 import * as log from '../utils/log';
 import { EntryPointNode, ngUrl } from '../ng-package/nodes';
@@ -19,6 +19,7 @@ export class NgccProcessor {
   private skipProcessing = false;
 
   constructor(
+    private readonly compilerNgcc: typeof import('@angular/compiler-cli/ngcc'),
     private readonly ngccProcessingCache: NgccProcessingCache,
     private readonly projectPath: string,
     private readonly compilerOptions: ts.CompilerOptions,
@@ -100,7 +101,7 @@ export class NgccProcessor {
     const { status, error } = spawnSync(
       process.execPath,
       [
-        require.resolve('@angular/compiler-cli/ngcc/main-ngcc.js'),
+        this.compilerNgcc.ngccMainFilePath,
         '--source' /** basePath */,
         this._nodeModulesDirectory,
         '--properties' /** propertiesToConsider */,
@@ -168,7 +169,7 @@ export class NgccProcessor {
       return;
     }
 
-    mainNgcc({
+    this.compilerNgcc.process({
       basePath: this._nodeModulesDirectory,
       targetEntryPointPath: path.dirname(packageJsonPath),
       compileAllFormats: false,
@@ -216,7 +217,7 @@ export class NgccProcessor {
 }
 
 class NgccLogger implements Logger {
-  level = LogLevel.info;
+  level = /**LogLevel.info**/ 1;
 
   debug(...args: string[]) {
     log.debug(args.join(' '));

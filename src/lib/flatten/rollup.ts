@@ -1,10 +1,10 @@
 import * as rollup from 'rollup';
-import nodeResolve from '@rollup/plugin-node-resolve';
-import * as sourcemaps from 'rollup-plugin-sourcemaps';
-import * as commonJs from '@rollup/plugin-commonjs';
-import * as rollupJson from '@rollup/plugin-json';
-import * as log from '../utils/log';
 import { TransformHook } from 'rollup';
+import nodeResolve from '@rollup/plugin-node-resolve';
+import sourcemaps from 'rollup-plugin-sourcemaps';
+import commonJs from '@rollup/plugin-commonjs';
+import rollupJson from '@rollup/plugin-json';
+import * as log from '../utils/log';
 import * as path from 'path';
 
 /**
@@ -33,15 +33,11 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.Roll
     cache: opts.cache,
     input: opts.entry,
     plugins: [
-      // @ts-ignore
       rollupJson(),
-      // @ts-ignore
       nodeResolve(),
-      // @ts-ignore
       commonJs(),
-      // @ts-ignore
       sourcemaps(),
-      { transform: opts.transform },
+      opts.transform ? { transform: opts.transform, name: 'downlevel-ts' } : undefined,
     ],
     onwarn: warning => {
       if (typeof warning === 'string') {
@@ -62,7 +58,6 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.Roll
 
   // Output the bundle to disk
   await bundle.write({
-    
     name: opts.moduleName,
     format: 'es',
     file: opts.dest,

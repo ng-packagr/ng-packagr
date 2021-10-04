@@ -1,5 +1,5 @@
 import type { ParsedConfiguration, CompilerOptions } from '@angular/compiler-cli';
-import * as ts from 'typescript';
+import ts from 'typescript';
 import * as log from '../utils/log';
 import { augmentProgramWithVersioning, cacheCompilerHost } from '../ts/cache-compiler-host';
 import { BuildGraph } from '../graph/build-graph';

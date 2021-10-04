@@ -1,5 +1,5 @@
 import * as path from 'path';
-import * as ora from 'ora';
+import ora from 'ora';
 import { transformFromPromise } from '../../graph/transform';
 import { colors } from '../../utils/color';
 import { NgEntryPoint } from './entry-point';

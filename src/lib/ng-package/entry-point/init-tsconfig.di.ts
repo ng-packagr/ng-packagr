@@ -1,4 +1,4 @@
-import { ParsedConfiguration } from '@angular/compiler-cli';
+import type { ParsedConfiguration } from '@angular/compiler-cli';
 import { InjectionToken, Provider } from 'injection-js';
 import { Transform } from '../../graph/transform';
 import { TransformProvider, provideTransform } from '../../graph/transform.di';

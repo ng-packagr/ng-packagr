@@ -1,4 +1,4 @@
-import * as ts from 'typescript';
+import ts from 'typescript';
 import { NgccProcessor } from '../ngc/ngcc-processor';
 
 export function ngccTransformCompilerHost(
