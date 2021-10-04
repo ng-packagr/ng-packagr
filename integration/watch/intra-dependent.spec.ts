@@ -9,8 +9,8 @@ describe('intra-dependent', () => {
     await harness.initialize();
   });
 
-  afterEach(() => {
-    harness.reset();
+  afterEach(async () => {
+    await harness.reset();
   });
 
   afterAll(() => {
