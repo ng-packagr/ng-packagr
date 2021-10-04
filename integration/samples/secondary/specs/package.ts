@@ -5,7 +5,7 @@ import * as fs from 'fs';
 describe(`@sample/secondary`, () => {
   describe(`secondary/package.json`, () => {
     let PACKAGE;
-    before(() => {
+    beforeAll(() => {
       PACKAGE = require('../dist/package.json');
     });
 
@@ -28,7 +28,7 @@ describe(`@sample/secondary`, () => {
 
   describe(`sub-module/package.json`, () => {
     let PACKAGE;
-    before(() => {
+    beforeAll(() => {
       PACKAGE = require('../dist/sub-module/package.json');
     });
 

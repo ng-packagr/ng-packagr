@@ -5,7 +5,7 @@ import * as path from 'path';
 describe(`@sample/core`, () => {
   describe(`fesm2020/sample-core.mjs.map`, () => {
     let sourceMap;
-    before(() => {
+    beforeAll(() => {
       sourceMap = fs.readJsonSync(path.resolve(__dirname, '../dist/fesm2020/sample-core.mjs.map'));
     });
 

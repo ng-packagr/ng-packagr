@@ -3,7 +3,7 @@ import { expect } from 'chai';
 describe(`@sample/same-name`, () => {
   describe(`package.json`, () => {
     let PACKAGE;
-    before(() => {
+    beforeAll(() => {
       PACKAGE = require('../dist/package.json');
     });
 
@@ -26,7 +26,7 @@ describe(`@sample/same-name`, () => {
 
   describe(`testing/package.json`, () => {
     let PACKAGE;
-    before(() => {
+    beforeAll(() => {
       PACKAGE = require('../dist/testing/package.json');
     });
 

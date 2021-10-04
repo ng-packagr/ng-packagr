@@ -17,7 +17,7 @@
     "inlineSources": true,
     "esModuleInterop": true,
     "lib": ["es2019"],
-    "types": ["chai", "mocha", "node", "sinon"]
+    "types": ["chai", "jasmine", "node"]
   },
   "exclude": ["dist", "integration"]
 }

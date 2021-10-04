@@ -3,7 +3,7 @@ import { TestHarness } from './test-harness';
 describe('resources', () => {
   const harness = new TestHarness('resources');
 
-  before(async () => {
+  beforeAll(async () => {
     await harness.initialize();
   });
 
@@ -11,7 +11,7 @@ describe('resources', () => {
     harness.reset();
   });
 
-  after(() => {
+  afterAll(() => {
     harness.dispose();
   });
 
