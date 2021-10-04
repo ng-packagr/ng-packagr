@@ -105,16 +105,20 @@ export class TestHarness {
 
   private setUpNgPackagr(): Promise<void> {
     return new Promise(resolve => {
-      this.ngPackagr$$ = ngPackagr()
-        .forProject(path.join(this.testTempPath, 'package.json'))
-        .withTsConfig(path.join(this.testTempPath, 'tsconfig.ngc.json'))
-        .watch()
-        .pipe(
-          debounceTime(1000),
-          tap(() => resolve()), // we are only interested when in the first builds, that's why we are resolving it
-          tap(() => this.completeHandler()),
-        )
-        .subscribe();
+      setTimeout(
+        () =>
+          (this.ngPackagr$$ = ngPackagr()
+            .forProject(path.join(this.testTempPath, 'package.json'))
+            .withTsConfig(path.join(this.testTempPath, 'tsconfig.ngc.json'))
+            .watch()
+            .pipe(
+              debounceTime(1000),
+              tap(() => resolve()), // we are only interested when in the first builds, that's why we are resolving it
+              tap(() => this.completeHandler()),
+            )
+            .subscribe()),
+        1000,
+      );
     });
   }
 }
