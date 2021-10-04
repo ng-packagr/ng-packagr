@@ -106,10 +106,12 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
           fesm2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
           fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
           typings: relativeUnixFromDestPath(destinationFiles.declarations),
-          exports: {
-            ...ngEntryPoint.packageJson.exports,
-            ...generatePackageExports(ngEntryPoint, graph),
-          },
+          exports: ngEntryPoint.isSecondaryEntryPoint
+            ? undefined
+            : {
+                ...ngEntryPoint.packageJson.exports,
+                ...generatePackageExports(ngEntryPoint, graph),
+              },
           // webpack v4+ specific flag to enable advanced optimizations and code splitting
           sideEffects: ngEntryPoint.packageJson.sideEffects ?? false,
         },
@@ -278,15 +280,7 @@ function checkNonPeerDependencies(
 }
 
 type PackageExports = Record<string, Record<string, string>>;
-function generatePackageExports(
-  { isSecondaryEntryPoint, destinationPath }: NgEntryPoint,
-  graph: BuildGraph,
-): PackageExports | undefined {
-  if (isSecondaryEntryPoint) {
-    // Package exports are only available in the primary entrypoint.
-    return undefined;
-  }
-
+function generatePackageExports({ destinationPath }: NgEntryPoint, graph: BuildGraph): PackageExports | undefined {
   const entryPoints = graph.filter(isEntryPoint);
   const exports: PackageExports = {
     './package.json': {
