@@ -180,7 +180,7 @@ export class StylesheetProcessor {
       }
       case '.styl':
       case '.stylus': {
-        const stylus = await import('stylus');
+        const stylus = (await import('stylus')).default;
 
         return (
           stylus(css)
