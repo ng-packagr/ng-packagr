@@ -274,7 +274,7 @@ function checkNonPeerDependencies(
   }
 }
 
-type PackageExports = Record<string, { default: string; types?: string }>;
+type PackageExports = Record<string, Record<string, string>>;
 function generatePackageExports(
   { isSecondaryEntryPoint, destinationPath }: NgEntryPoint,
   graph: BuildGraph,
@@ -298,6 +298,8 @@ function generatePackageExports(
     const { destinationFiles, isSecondaryEntryPoint } = entryPoint.data.entryPoint;
     exports[isSecondaryEntryPoint ? `./${destinationFiles.directory}` : '.'] = {
       types: relativeUnixFromDestPath(destinationFiles.declarations),
+      es2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
+      node: relativeUnixFromDestPath(destinationFiles.fesm2015),
       default: relativeUnixFromDestPath(destinationFiles.fesm2020),
     };
   }
