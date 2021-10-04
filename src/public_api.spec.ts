@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 // Public API imports the way of user's: 'import {..} from 'ng-packagr'';
-import { ngPackagr, NgPackagr, build, version, execute } from './public_api';
+import { ngPackagr, NgPackagr, build, execute } from './public_api';
 
 describe("Public API Surface: import {..} from 'ng-packagr';", () => {
   describe('NgPackagr', () => {
@@ -13,10 +13,6 @@ describe("Public API Surface: import {..} from 'ng-packagr';", () => {
   describe('Command API', () => {
     it('should export the `build` command', () => {
       expect(build).to.be.a('function');
-    });
-
-    it('should export the `version` command', () => {
-      expect(version).to.be.a('function');
     });
 
     it(`should export the command runner 'execute'`, () => {

@@ -1,4 +1,4 @@
-import * as ts from 'typescript';
+import ts from 'typescript';
 import { RollupCache } from 'rollup';
 import type { NgtscProgram, ParsedConfiguration, Program } from '@angular/compiler-cli';
 import { Node } from '../graph/node';

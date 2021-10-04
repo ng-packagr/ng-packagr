@@ -1,7 +1,7 @@
-import * as browserslist from 'browserslist';
+import browserslist from 'browserslist';
 import postcss from 'postcss';
-import * as postcssUrl from 'postcss-url';
-import * as postcssPresetEnv from 'postcss-preset-env';
+import postcssUrl from 'postcss-url';
+import postcssPresetEnv from 'postcss-preset-env';
 import * as log from '../utils/log';
 import { extname } from 'path';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
@@ -162,7 +162,7 @@ export class StylesheetProcessor {
             file: filePath,
             data: css,
             indentedSyntax: '.sass' === ext,
-            importer: await import('node-sass-tilde-importer'),
+            importer: (await import('node-sass-tilde-importer')).default,
             includePaths: this.styleIncludePaths,
           })
           .css.toString();
@@ -170,7 +170,7 @@ export class StylesheetProcessor {
       case '.less': {
         const { css: content } = await (
           await import('less')
-        ).render(css, {
+        ).default.render(css, {
           filename: filePath,
           javascriptEnabled: true,
           paths: this.styleIncludePaths,

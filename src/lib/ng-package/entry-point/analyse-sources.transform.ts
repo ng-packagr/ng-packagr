@@ -1,4 +1,4 @@
-import * as ts from 'typescript';
+import ts from 'typescript';
 import { pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isEntryPoint, EntryPointNode, isPackage, PackageNode } from '../nodes';

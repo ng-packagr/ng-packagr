@@ -1,6 +1,6 @@
 import * as path from 'path';
-import * as ts from 'typescript';
-import * as ora from 'ora';
+import ts from 'typescript';
+import ora from 'ora';
 import { Transform, transformFromPromise } from '../../graph/transform';
 import { NgccProcessor } from '../../ngc/ngcc-processor';
 import { setDependenciesTsConfigPaths } from '../../ts/tsconfig';
@@ -8,6 +8,7 @@ import { isEntryPointInProgress, EntryPointNode, isEntryPoint } from '../nodes';
 import { StylesheetProcessor as StylesheetProcessorClass } from '../../styles/stylesheet-processor';
 import { NgPackagrOptions } from '../options.di';
 import { compileSourceFiles } from '../../ngc/compile-source-files';
+import { ngccCompilerCli } from '../../utils/ng-compiler-cli';
 
 export const compileNgcTransformFactory = (
   StylesheetProcessor: typeof StylesheetProcessorClass,
@@ -34,13 +35,24 @@ export const compileNgcTransformFactory = (
       spinner.start(
         `Compiling with Angular sources in Ivy ${tsConfig.options.compilationMode || 'full'} compilation mode.`,
       );
-      ngccProcessor = new NgccProcessor(ngccProcessingCache, tsConfig.project, tsConfig.options, entryPoints);
+      ngccProcessor = new NgccProcessor(
+        await ngccCompilerCli(),
+        ngccProcessingCache,
+        tsConfig.project,
+        tsConfig.options,
+        entryPoints,
+      );
       if (!entryPoint.data.entryPoint.isSecondaryEntryPoint) {
         // Only run the async version of NGCC during the primary entrypoint processing.
         await ngccProcessor.process();
       }
 
-      entryPoint.cache.stylesheetProcessor ??= new StylesheetProcessor(basePath, cssUrl, styleIncludePaths, options.cacheEnabled && options.cacheDirectory);
+      entryPoint.cache.stylesheetProcessor ??= new StylesheetProcessor(
+        basePath,
+        cssUrl,
+        styleIncludePaths,
+        options.cacheEnabled && options.cacheDirectory,
+      );
 
       await compileSourceFiles(
         graph,

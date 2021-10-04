@@ -15,6 +15,7 @@
     "inlineSourceMap": false,
     "allowSyntheticDefaultImports": true,
     "inlineSources": true,
+    "esModuleInterop": true,
     "lib": ["es2019"],
     "types": ["chai", "mocha", "node", "sinon"]
   },

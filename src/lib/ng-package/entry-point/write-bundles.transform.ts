@@ -1,4 +1,4 @@
-import * as ora from 'ora';
+import ora from 'ora';
 import { transformFromPromise } from '../../graph/transform';
 import { isEntryPointInProgress, EntryPointNode } from '../nodes';
 import { rollupBundleFile } from '../../flatten/rollup';

@@ -1,4 +1,4 @@
-import * as ts from 'typescript';
+import ts from 'typescript';
 import { ensureUnixPath } from '../utils/path';
 
 export interface CacheEntry {

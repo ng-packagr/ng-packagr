@@ -28,7 +28,7 @@ async function readConfigFile(filePath: string): Promise<any> {
 
   const data = await readFile(filePath, 'utf-8');
   return parseJson(data, undefined, { allowTrailingComma: true });
-};
+}
 
 /**
  * Resolves a user's package by testing for 'package.json', 'ng-package.json', or 'ng-package.js'.
@@ -65,6 +65,8 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
   }
 
   if (ngPackageJson) {
+    ngPackageJson = ngPackageJson['default'] ?? ngPackageJson;
+
     validateNgPackageSchema(ngPackageJson);
 
     return {
