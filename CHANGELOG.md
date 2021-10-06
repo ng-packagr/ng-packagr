@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.0.0-next.7](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.6...v13.0.0-next.7) (2021-10-06)
+
+
+### Features
+
+* add es2020 conditional export ([e5d4296](https://github.com/ng-packagr/ng-packagr/commit/e5d4296f7b755f6805270eb3b6100dcf66003333))
+
+
+### Bug Fixes
+
+* error when a finding a conflicting package export ([bf3a0b9](https://github.com/ng-packagr/ng-packagr/commit/bf3a0b9c729668174e1df1e5de88393f8294a796))
+* merge instead of overriding package exports ([f238118](https://github.com/ng-packagr/ng-packagr/commit/f2381189b53bb7b067b95279d76a767908d4be1f))
+
 ## [13.0.0-next.6](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.5...v13.0.0-next.6) (2021-10-04)
 
 
