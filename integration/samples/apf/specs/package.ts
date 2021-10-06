@@ -51,24 +51,28 @@ describe(`@sample/apf`, () => {
         '.': {
           types: './sample-apf.d.ts',
           es2015: './fesm2015/sample-apf.mjs',
+          es2020: './fesm2020/sample-apf.mjs',
           node: './fesm2015/sample-apf.mjs',
           default: './fesm2020/sample-apf.mjs',
         },
         './secondary': {
           types: './secondary/sample-apf-secondary.d.ts',
           es2015: './fesm2015/sample-apf-secondary.mjs',
+          es2020: './fesm2020/sample-apf-secondary.mjs',
           node: './fesm2015/sample-apf-secondary.mjs',
           default: './fesm2020/sample-apf-secondary.mjs',
         },
         './secondary/testing': {
           types: './secondary/testing/sample-apf-secondary-testing.d.ts',
           es2015: './fesm2015/sample-apf-secondary-testing.mjs',
+          es2020: './fesm2020/sample-apf-secondary-testing.mjs',
           node: './fesm2015/sample-apf-secondary-testing.mjs',
           default: './fesm2020/sample-apf-secondary-testing.mjs',
         },
         './testing': {
           types: './testing/sample-apf-testing.d.ts',
           es2015: './fesm2015/sample-apf-testing.mjs',
+          es2020: './fesm2020/sample-apf-testing.mjs',
           node: './fesm2015/sample-apf-testing.mjs',
           default: './fesm2020/sample-apf-testing.mjs',
         },

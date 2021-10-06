@@ -293,7 +293,6 @@ function generatePackageExports(
     }
   };
 
-  const entryPoints = graph.filter(isEntryPoint);
   verifyNonConflictingExport('./package.json');
   const exports: PackageExports = {
     './package.json': {
@@ -304,6 +303,7 @@ function generatePackageExports(
   const relativeUnixFromDestPath = (filePath: string) =>
     './' + ensureUnixPath(path.relative(destinationPath, filePath));
 
+  const entryPoints = graph.filter(isEntryPoint);
   for (const entryPoint of entryPoints) {
     const { destinationFiles, isSecondaryEntryPoint } = entryPoint.data.entryPoint;
     const subpath = isSecondaryEntryPoint ? `./${destinationFiles.directory}` : '.';
@@ -313,6 +313,7 @@ function generatePackageExports(
     exports[subpath] = {
       types: relativeUnixFromDestPath(destinationFiles.declarations),
       es2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
+      es2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
       node: relativeUnixFromDestPath(destinationFiles.fesm2015),
       default: relativeUnixFromDestPath(destinationFiles.fesm2020),
     };
