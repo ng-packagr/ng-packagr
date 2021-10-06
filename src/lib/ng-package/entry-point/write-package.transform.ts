@@ -280,8 +280,21 @@ function checkNonPeerDependencies(
 }
 
 type PackageExports = Record<string, Record<string, string>>;
-function generatePackageExports({ destinationPath }: NgEntryPoint, graph: BuildGraph): PackageExports | undefined {
+function generatePackageExports(
+  { destinationPath, packageJson }: NgEntryPoint,
+  graph: BuildGraph,
+): PackageExports | undefined {
+  const verifyNonConflictingExport = (subpath: string) => {
+    if (packageJson.exports?.[subpath] !== undefined) {
+      throw Error(
+        'Found a conflicting subpath export in the `package.json` file that would be overridden by the ' +
+          `packager. Please unset the mapping for: "${subpath}".`,
+      );
+    }
+  };
+
   const entryPoints = graph.filter(isEntryPoint);
+  verifyNonConflictingExport('./package.json');
   const exports: PackageExports = {
     './package.json': {
       default: './package.json',
@@ -293,7 +306,11 @@ function generatePackageExports({ destinationPath }: NgEntryPoint, graph: BuildG
 
   for (const entryPoint of entryPoints) {
     const { destinationFiles, isSecondaryEntryPoint } = entryPoint.data.entryPoint;
-    exports[isSecondaryEntryPoint ? `./${destinationFiles.directory}` : '.'] = {
+    const subpath = isSecondaryEntryPoint ? `./${destinationFiles.directory}` : '.';
+
+    verifyNonConflictingExport(subpath);
+
+    exports[subpath] = {
       types: relativeUnixFromDestPath(destinationFiles.declarations),
       es2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
       node: relativeUnixFromDestPath(destinationFiles.fesm2015),
