@@ -312,8 +312,9 @@ function generatePackageExports(
 
     exports[subpath] = {
       types: relativeUnixFromDestPath(destinationFiles.declarations),
-      es2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
+      esm2020: relativeUnixFromDestPath(destinationFiles.esm2020),
       es2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
+      es2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
       node: relativeUnixFromDestPath(destinationFiles.fesm2015),
       default: relativeUnixFromDestPath(destinationFiles.fesm2020),
     };
