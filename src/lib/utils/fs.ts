@@ -7,7 +7,7 @@ export const writeFile = fs.promises.writeFile;
 export const access = fs.promises.access;
 export const mkdir = fs.promises.mkdir;
 export const stat = fs.promises.stat;
-export const rmdir = fs.promises.rmdir;
+export const rmdir = fs.promises.rm ?? fs.promises.rmdir;
 
 export async function exists(path: fs.PathLike): Promise<boolean> {
   try {
