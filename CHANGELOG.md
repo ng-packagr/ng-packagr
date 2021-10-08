@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.0.0-next.8](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.7...v13.0.0-next.8) (2021-10-08)
+
+
+### Features
+
+* add esm2020 conditions in APF package exports ([ed79b27](https://github.com/ng-packagr/ng-packagr/commit/ed79b27ff69378fa2796d81626969292c27d1da9))
+
+
+### Bug Fixes
+
+* include `esbuild-check` in the dist package ([eda7f04](https://github.com/ng-packagr/ng-packagr/commit/eda7f04e36cd6ca7451e71806b6a408127ba3ddb))
+
 ## [13.0.0-next.7](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.6...v13.0.0-next.7) (2021-10-06)
 
 
