@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [12.2.3](https://github.com/ng-packagr/ng-packagr/compare/v12.2.2...v12.2.3) (2021-10-08)
+
+
+### Bug Fixes
+
+* include `esbuild-check` in the dist package ([b2ba979](https://github.com/ng-packagr/ng-packagr/commit/b2ba979e07d3e194987a94b7cb7a8034ad1f6760))
+
 ### [12.2.2](https://github.com/ng-packagr/ng-packagr/compare/v12.2.1...v12.2.2) (2021-09-22)
 
 
