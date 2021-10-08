@@ -4,6 +4,7 @@ copyFileSync('LICENSE', 'dist/LICENSE', constants.COPYFILE_FICLONE);
 copyFileSync('README.md', 'dist/README.md', constants.COPYFILE_FICLONE);
 copyFileSync('src/package.schema.json', 'dist/package.schema.json', constants.COPYFILE_FICLONE);
 copyFileSync('src/ng-package.schema.json', 'dist/ng-package.schema.json', constants.COPYFILE_FICLONE);
+copyFileSync('src/lib/esbuild/esbuild-check.js', 'dist/lib/esbuild/esbuild-check.js', constants.COPYFILE_FICLONE);
 
 mkdirSync('dist/lib/ts/conf', { recursive: true });
 copyFileSync('src/lib/ts/conf/tsconfig.ngc.json', 'dist/lib/ts/conf/tsconfig.ngc.json', constants.COPYFILE_FICLONE);
