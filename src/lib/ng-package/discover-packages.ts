@@ -1,12 +1,12 @@
 import { parse as parseJson } from 'jsonc-parser';
 import * as path from 'path';
+import { exists, readFile, stat } from '../utils/fs';
+import { globFiles } from '../utils/glob';
 import * as log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 import { NgEntryPoint } from './entry-point/entry-point';
 import { NgPackage } from './package';
-import { globFiles } from '../utils/glob';
 import { validateNgPackageSchema } from './schema';
-import { exists, readFile, stat } from '../utils/fs';
 
 interface UserPackage {
   /** Values from the `package.json` file of this user package. */
@@ -27,6 +27,7 @@ async function readConfigFile(filePath: string): Promise<any> {
   }
 
   const data = await readFile(filePath, 'utf-8');
+
   return parseJson(data, undefined, { allowTrailingComma: true });
 }
 

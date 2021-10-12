@@ -1,8 +1,8 @@
-import * as path from 'path';
 import * as chokidar from 'chokidar';
-import { Observer, Observable } from 'rxjs';
-import { ensureUnixPath } from '../utils/path';
+import * as path from 'path';
+import { Observable, Observer } from 'rxjs';
 import * as log from '../utils/log';
+import { ensureUnixPath } from '../utils/path';
 
 type AllFileWatchEvents = 'change' | 'unlink' | 'add' | 'unlinkDir' | 'addDir';
 export type FileWatchEvent = Exclude<AllFileWatchEvents, 'unlinkDir' | 'addDir'>;
@@ -20,7 +20,7 @@ export function createFileWatch(
 
   const watch = chokidar.watch(projectPath, {
     ignoreInitial: true,
-    ignored: [...ignoredPaths, /((^[\/\\])\..)|(\.mjs$)|(\.map$)|(\.metadata\.json|node_modules)/],
+    ignored: [...ignoredPaths, /((^[/\\])\..)|(\.mjs$)|(\.map$)|(\.metadata\.json|node_modules)/],
     persistent: true,
   });
 
@@ -40,6 +40,7 @@ export function createFileWatch(
 
   return Observable.create((observer) => {
     watch.on('all', (event: AllFileWatchEvents, filePath: string) => handleFileChange(event, filePath, observer));
+
     return () => watch.close();
   });
 }

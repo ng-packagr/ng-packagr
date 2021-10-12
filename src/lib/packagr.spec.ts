@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { ngPackagr, NgPackagr } from './packagr';
-import { provideProject, PROJECT_TOKEN } from './project.di';
+import { NgPackagr, ngPackagr } from './packagr';
+import { PROJECT_TOKEN, provideProject } from './project.di';
 
 describe(`ngPackagr()`, () => {
   let packager: NgPackagr;

@@ -1,7 +1,7 @@
 import type { ParsedConfiguration } from '@angular/compiler-cli';
 import { Transform, transformFromPromise } from '../../graph/transform';
-import { isEntryPoint, EntryPointNode } from '../nodes';
 import { initializeTsConfig } from '../../ts/tsconfig';
+import { EntryPointNode, isEntryPoint } from '../nodes';
 
 export const initTsConfigTransformFactory = (defaultTsConfig: ParsedConfiguration | string | undefined): Transform =>
   transformFromPromise(async graph => {

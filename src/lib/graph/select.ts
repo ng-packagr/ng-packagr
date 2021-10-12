@@ -1,4 +1,4 @@
-import { Node, STATE_IN_PROGRESS, STATE_PENDING, STATE_DIRTY, STATE_DONE } from './node';
+import { Node, STATE_DIRTY, STATE_DONE, STATE_IN_PROGRESS, STATE_PENDING } from './node';
 
 export function and(...criteria: ((node: Node) => boolean)[]) {
   return (node: Node) => criteria.every(c => c(node));

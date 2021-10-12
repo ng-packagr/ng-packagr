@@ -1,41 +1,41 @@
-import * as path from 'path';
-import { Observable, of as observableOf, pipe, NEVER, from } from 'rxjs';
-import {
-  concatMap,
-  map,
-  switchMap,
-  tap,
-  mapTo,
-  catchError,
-  startWith,
-  debounceTime,
-  filter,
-  takeLast,
-  defaultIfEmpty,
-} from 'rxjs/operators';
-import { BuildGraph } from '../graph/build-graph';
 import { DepGraph } from 'dependency-graph';
+import * as path from 'path';
+import { NEVER, Observable, from, of as observableOf, pipe } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  debounceTime,
+  defaultIfEmpty,
+  filter,
+  map,
+  mapTo,
+  startWith,
+  switchMap,
+  takeLast,
+  tap,
+} from 'rxjs/operators';
+import { FileCache } from '../file-system/file-cache';
+import { createFileWatch } from '../file-system/file-watcher';
+import { BuildGraph } from '../graph/build-graph';
 import { STATE_IN_PROGRESS } from '../graph/node';
 import { Transform } from '../graph/transform';
-import * as log from '../utils/log';
+import { colors } from '../utils/color';
 import { copyFile, rmdir, stat } from '../utils/fs';
+import * as log from '../utils/log';
+import { ensureUnixPath } from '../utils/path';
+import { discoverPackages } from './discover-packages';
 import {
-  PackageNode,
   EntryPointNode,
-  ngUrl,
-  isEntryPoint,
+  GlobCache,
+  PackageNode,
   byEntryPoint,
-  isPackage,
   fileUrl,
   fileUrlPath,
-  GlobCache,
+  isEntryPoint,
+  isPackage,
+  ngUrl,
 } from './nodes';
-import { discoverPackages } from './discover-packages';
-import { createFileWatch } from '../file-system/file-watcher';
 import { NgPackagrOptions } from './options.di';
-import { ensureUnixPath } from '../utils/path';
-import { colors } from '../utils/color';
-import { FileCache } from '../file-system/file-cache';
 
 /**
  * A transformation for building an npm package:
@@ -140,6 +140,7 @@ const watchTransformFactory = (
   return source$.pipe(
     switchMap(graph => {
       const { data, cache } = graph.find(isPackage);
+
       return createFileWatch(data.src, [data.dest]).pipe(
         tap(fileChange => {
           const { filePath, event } = fileChange;
@@ -200,6 +201,7 @@ const watchTransformFactory = (
         catchError(error => {
           log.error(error);
           log.msg(FailedWaitingForFileChange);
+
           return NEVER;
         }),
       );
@@ -213,6 +215,7 @@ const buildTransformFactory = (project: string, analyseSourcesTransform: Transfo
   const startTime = Date.now();
 
   const pkgUri = ngUrl(project);
+
   return source$.pipe(
     // Analyse dependencies and external resources for each entry point
     analyseSourcesTransform,

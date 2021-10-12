@@ -1,14 +1,14 @@
-import ts from 'typescript';
-import { RollupCache } from 'rollup';
 import type { NgtscProgram, ParsedConfiguration, Program } from '@angular/compiler-cli';
-import { Node } from '../graph/node';
-import { by, isInProgress, isDirty } from '../graph/select';
-import { NgEntryPoint, DestinationFiles } from './entry-point/entry-point';
-import { NgccProcessingCache } from './ngcc-cache';
-import { NgPackage } from './package';
+import { RollupCache } from 'rollup';
+import ts from 'typescript';
 import { FileCache } from '../file-system/file-cache';
 import { ComplexPredicate } from '../graph/build-graph';
+import { Node } from '../graph/node';
+import { by, isDirty, isInProgress } from '../graph/select';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
+import { DestinationFiles, NgEntryPoint } from './entry-point/entry-point';
+import { NgccProcessingCache } from './ngcc-cache';
+import { NgPackage } from './package';
 
 export const TYPE_NG_PACKAGE = 'application/ng-package';
 export const TYPE_NG_ENTRY_POINT = 'application/ng-entry-point';

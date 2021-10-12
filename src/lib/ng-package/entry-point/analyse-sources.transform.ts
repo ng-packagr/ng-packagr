@@ -1,12 +1,12 @@
-import ts from 'typescript';
 import { pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isEntryPoint, EntryPointNode, isPackage, PackageNode } from '../nodes';
-import { cacheCompilerHost } from '../../ts/cache-compiler-host';
+import ts from 'typescript';
 import { BuildGraph } from '../../graph/build-graph';
 import { Transform } from '../../graph/transform';
+import { cacheCompilerHost } from '../../ts/cache-compiler-host';
 import { debug } from '../../utils/log';
 import { ensureUnixPath } from '../../utils/path';
+import { EntryPointNode, PackageNode, isEntryPoint, isPackage } from '../nodes';
 
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {

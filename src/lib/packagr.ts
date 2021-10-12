@@ -1,14 +1,14 @@
-import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
 import type { ParsedConfiguration } from '@angular/compiler-cli';
-import { of as observableOf, Observable } from 'rxjs';
+import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
+import { Observable, of as observableOf } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 import { BuildGraph } from './graph/build-graph';
 import { Transform } from './graph/transform';
-import { provideTsConfig } from './ng-package/entry-point/init-tsconfig.di';
 import { ENTRY_POINT_PROVIDERS } from './ng-package/entry-point/entry-point.di';
-import { PACKAGE_TRANSFORM, PACKAGE_PROVIDERS } from './ng-package/package.di';
+import { provideTsConfig } from './ng-package/entry-point/init-tsconfig.di';
+import { NgPackagrOptions, provideOptions } from './ng-package/options.di';
+import { PACKAGE_PROVIDERS, PACKAGE_TRANSFORM } from './ng-package/package.di';
 import { provideProject } from './project.di';
-import { provideOptions, NgPackagrOptions } from './ng-package/options.di';
 
 /**
  * The original ng-packagr implemented on top of a rxjs-ified and di-jectable transformation pipeline.
@@ -91,6 +91,7 @@ export class NgPackagr {
    */
   public build(options: NgPackagrOptions = {}): Promise<void> {
     this.providers.push(provideOptions({ ...options, watch: false }));
+
     return this.buildAsObservable().toPromise();
   }
 

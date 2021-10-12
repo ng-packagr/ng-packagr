@@ -1,4 +1,4 @@
-import type { ParsedConfiguration, CompilerOptions } from '@angular/compiler-cli';
+import type { CompilerOptions, ParsedConfiguration } from '@angular/compiler-cli';
 import * as path from 'path';
 import ts from 'typescript';
 import { EntryPointNode } from '../ng-package/nodes';
@@ -34,6 +34,7 @@ async function readDefaultTsConfig(fileName = defaultTsConfigPath): Promise<Pars
   };
 
   const { readConfiguration } = await ngCompilerCli();
+
   return readConfiguration(fileName, extraOptions);
 }
 
@@ -84,7 +85,7 @@ export async function initializeTsConfig(
     const basePath = path.dirname(entryPoint.entryFilePath);
 
     // Resolve defaults from DI token and create a deep copy of the defaults
-    let tsConfig: ParsedConfiguration = JSON.parse(JSON.stringify(defaultTsConfigParsed));
+    const tsConfig: ParsedConfiguration = JSON.parse(JSON.stringify(defaultTsConfigParsed));
     const overrideOptions: CompilerOptions = {
       flatModuleId: entryPoint.moduleId,
       flatModuleOutFile: `${entryPoint.flatModuleFile}.js`,
@@ -121,7 +122,7 @@ export function setDependenciesTsConfigPaths(
     tsConfig.options.paths = {};
   }
 
-  for (let dep of entryPoints) {
+  for (const dep of entryPoints) {
     const { entryPoint } = dep.data;
     const { moduleId, destinationFiles, entryFilePath } = entryPoint;
     const mappedPath = [pointToSource ? entryFilePath : destinationFiles.declarations];

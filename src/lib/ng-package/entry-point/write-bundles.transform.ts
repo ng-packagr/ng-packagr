@@ -1,9 +1,9 @@
 import ora from 'ora';
-import { transformFromPromise } from '../../graph/transform';
-import { isEntryPointInProgress, EntryPointNode } from '../nodes';
-import { rollupBundleFile } from '../../flatten/rollup';
-import { NgPackagrOptions } from '../options.di';
 import { downlevelCodeWithTsc } from '../../flatten/downlevel-plugin';
+import { rollupBundleFile } from '../../flatten/rollup';
+import { transformFromPromise } from '../../graph/transform';
+import { EntryPointNode, isEntryPointInProgress } from '../nodes';
+import { NgPackagrOptions } from '../options.di';
 
 export const writeBundlesTransform = (options: NgPackagrOptions) =>
   transformFromPromise(async graph => {

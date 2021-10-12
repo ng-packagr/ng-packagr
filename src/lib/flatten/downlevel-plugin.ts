@@ -1,9 +1,9 @@
-import { ModuleKind, ScriptTarget, CompilerOptions, transpileModule, ModuleResolutionKind } from 'typescript';
-import { TransformResult } from 'rollup';
 import * as path from 'path';
+import { TransformResult } from 'rollup';
+import { CompilerOptions, ModuleKind, ModuleResolutionKind, ScriptTarget, transpileModule } from 'typescript';
 
-import * as log from '../utils/log';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
+import * as log from '../utils/log';
 
 /**
  * Base `tsc` `CompilerOptions` shared among various downleveling methods.
@@ -46,7 +46,7 @@ export async function downlevelCodeWithTsc(
   });
 
   if (cacheDirectory) {
-    saveCacheEntry(
+    await saveCacheEntry(
       cacheDirectory,
       key,
       JSON.stringify({
@@ -55,6 +55,7 @@ export async function downlevelCodeWithTsc(
       }),
     );
   }
+
   return {
     code: outputText,
     map: JSON.parse(sourceMapText),

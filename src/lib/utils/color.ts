@@ -11,4 +11,3 @@ const colors = (ansiColors as AnsiColors & { create: () => AnsiColors }).create(
 colors.enabled = supportsColor;
 
 export { colors };
-``;
