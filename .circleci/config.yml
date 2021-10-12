@@ -16,8 +16,8 @@ commands:
           at: ~/repo
   setup_windows:
     steps:
-      - run: nvm install 14.15.0
-      - run: nvm use 14.15.0
+      - run: nvm install 14.17
+      - run: nvm use 14.17
       - run: npm install -g yarn@1.17.3
       - run: node --version
       - run: yarn --version
@@ -27,7 +27,7 @@ commands:
 executors:
   linux-executor:
     docker:
-      - image: cimg/node:14.15
+      - image: cimg/node:14.17
     working_directory: ~/repo
 
 jobs:
@@ -55,6 +55,7 @@ jobs:
     steps:
       - custom_attach_workspace
       # Build and run tests
+      - run: yarn lint
       - run: yarn build
       - run: yarn test:specs
       - run: yarn integration:samples
