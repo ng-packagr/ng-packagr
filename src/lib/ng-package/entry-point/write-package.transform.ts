@@ -1,17 +1,17 @@
-import * as path from 'path';
 import ora from 'ora';
+import * as path from 'path';
+import { BuildGraph } from '../../graph/build-graph';
+import { Node } from '../../graph/node';
 import { transformFromPromise } from '../../graph/transform';
 import { colors } from '../../utils/color';
-import { NgEntryPoint } from './entry-point';
-import { NgPackage } from '../package';
-import { ensureUnixPath } from '../../utils/path';
-import { copyFile, exists, stat, rmdir, writeFile } from '../../utils/fs';
-import * as log from '../../utils/log';
+import { copyFile, exists, rmdir, stat, writeFile } from '../../utils/fs';
 import { globFiles } from '../../utils/glob';
-import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode, fileUrl, isEntryPoint } from '../nodes';
-import { Node } from '../../graph/node';
+import * as log from '../../utils/log';
+import { ensureUnixPath } from '../../utils/path';
+import { EntryPointNode, PackageNode, fileUrl, isEntryPoint, isEntryPointInProgress, isPackage } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
-import { BuildGraph } from '../../graph/build-graph';
+import { NgPackage } from '../package';
+import { NgEntryPoint } from './entry-point';
 
 type CompilationMode = 'partial' | 'full' | undefined;
 
@@ -271,7 +271,8 @@ function checkNonPeerDependencies(
     } else {
       spinner.warn(
         colors.yellow(
-          `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep} to 'peerDependencies' or remove it from '${property}'.`,
+          `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep}` +
+            `to 'peerDependencies' or remove it from '${property}'.`,
         ),
       );
       throw new Error(`Dependency ${dep} must be explicitly allowed using the "allowedNonPeerDependencies" option.`);

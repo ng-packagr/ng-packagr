@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { colors } from './color';
 
 export const error = (err: string | Error) => {

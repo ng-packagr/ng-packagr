@@ -1,9 +1,9 @@
 import { InjectionToken, Provider } from 'injection-js';
 import { Transform } from '../../graph/transform';
 import { TransformProvider, provideTransform } from '../../graph/transform.di';
-import { compileNgcTransformFactory } from './compile-ngc.transform';
-import { STYLESHEET_PROCESSOR_TOKEN, STYLESHEET_PROCESSOR } from '../../styles/stylesheet-processor.di';
+import { STYLESHEET_PROCESSOR, STYLESHEET_PROCESSOR_TOKEN } from '../../styles/stylesheet-processor.di';
 import { OPTIONS_TOKEN } from '../options.di';
+import { compileNgcTransformFactory } from './compile-ngc.transform';
 
 export const COMPILE_NGC_TOKEN = new InjectionToken<Transform>(`ng.v5.compileNgcTransform`);
 

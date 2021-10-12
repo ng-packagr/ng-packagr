@@ -27,7 +27,7 @@ program
   );
 
 program.on('option:version', () => {
-  version().then(() => process.exit(0));
+  void version().then(() => process.exit(0));
 });
 
 program.parse(process.argv);

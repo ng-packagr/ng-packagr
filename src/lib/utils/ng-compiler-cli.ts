@@ -7,6 +7,7 @@ export async function ngCompilerCli(): Promise<typeof import('@angular/compiler-
   // Once TypeScript provides support for keeping the dynamic import this workaround can
   // be dropped.
   const compilerCliModule = await new Function(`return import('@angular/compiler-cli');`)();
+
   // If it is not ESM then the functions needed will be stored in the `default` property.
   // This conditional can be removed when `@angular/compiler-cli` is ESM only.
   return compilerCliModule.readConfiguration ? compilerCliModule : compilerCliModule.default;
@@ -14,5 +15,6 @@ export async function ngCompilerCli(): Promise<typeof import('@angular/compiler-
 
 export async function ngccCompilerCli(): Promise<typeof import('@angular/compiler-cli/ngcc')> {
   const compilerCliModule = await new Function(`return import('@angular/compiler-cli/ngcc');`)();
+
   return compilerCliModule.process ? compilerCliModule : compilerCliModule.default;
 }

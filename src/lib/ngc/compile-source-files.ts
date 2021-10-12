@@ -1,13 +1,13 @@
-import type { ParsedConfiguration, CompilerOptions } from '@angular/compiler-cli';
+import type { CompilerOptions, ParsedConfiguration } from '@angular/compiler-cli';
 import ts from 'typescript';
-import * as log from '../utils/log';
-import { augmentProgramWithVersioning, cacheCompilerHost } from '../ts/cache-compiler-host';
 import { BuildGraph } from '../graph/build-graph';
-import { EntryPointNode, isEntryPointInProgress, isPackage, PackageNode } from '../ng-package/nodes';
-import { NgccProcessor } from './ngcc-processor';
-import { ngccTransformCompilerHost } from '../ts/ngcc-transform-compiler-host';
+import { EntryPointNode, PackageNode, isEntryPointInProgress, isPackage } from '../ng-package/nodes';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
+import { augmentProgramWithVersioning, cacheCompilerHost } from '../ts/cache-compiler-host';
+import { ngccTransformCompilerHost } from '../ts/ngcc-transform-compiler-host';
+import * as log from '../utils/log';
 import { ngCompilerCli } from '../utils/ng-compiler-cli';
+import { NgccProcessor } from './ngcc-processor';
 
 export async function compileSourceFiles(
   graph: BuildGraph,
@@ -71,7 +71,8 @@ export async function compileSourceFiles(
   const affectedFiles = new Set<ts.SourceFile>();
 
   // Analyze affected files when in watch mode for incremental type checking
-  if ('getSemanticDiagnosticsOfNextAffectedFile' in builder) {
+  if ('getSemanticDiagnostcsOfNextAffectedFile' in builder) {
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       const result = builder.getSemanticDiagnosticsOfNextAffectedFile(undefined, sourceFile => {
         // If the affected file is a TTC shim, add the shim's original source file.

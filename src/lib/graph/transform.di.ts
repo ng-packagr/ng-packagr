@@ -1,4 +1,4 @@
-import { InjectionToken, FactoryProvider } from 'injection-js';
+import { FactoryProvider, InjectionToken } from 'injection-js';
 import { Transform } from './transform';
 
 /**

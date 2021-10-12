@@ -1,14 +1,14 @@
-import ts from 'typescript';
-import type { CompilerOptions, CompilerHost } from '@angular/compiler-cli';
-import * as path from 'path';
-import { ensureUnixPath } from '../utils/path';
+import type { CompilerHost, CompilerOptions } from '@angular/compiler-cli';
 
-import { EntryPointNode, fileUrl } from '../ng-package/nodes';
-import { BuildGraph } from '../graph/build-graph';
-import { FileCache } from '../file-system/file-cache';
-import { Node } from '../graph/node';
 import { createHash } from 'crypto';
+import * as path from 'path';
+import ts from 'typescript';
+import { FileCache } from '../file-system/file-cache';
+import { BuildGraph } from '../graph/build-graph';
+import { Node } from '../graph/node';
+import { EntryPointNode, fileUrl } from '../ng-package/nodes';
 import { InlineStyleLanguage, StylesheetProcessor } from '../styles/stylesheet-processor';
+import { ensureUnixPath } from '../utils/path';
 
 export function cacheCompilerHost(
   graph: BuildGraph,
@@ -47,6 +47,7 @@ export function cacheCompilerHost(
       if (cache.exists === undefined) {
         cache.exists = compilerHost.fileExists.call(this, fileName);
       }
+
       return cache.exists;
     },
 
@@ -56,6 +57,7 @@ export function cacheCompilerHost(
       if (!cache.sourceFile) {
         cache.sourceFile = compilerHost.getSourceFile.call(this, fileName, languageVersion);
       }
+
       return cache.sourceFile;
     },
 
@@ -86,6 +88,7 @@ export function cacheCompilerHost(
       if (cache.content === undefined) {
         cache.content = compilerHost.readFile.call(this, fileName);
       }
+
       return cache.content;
     },
 

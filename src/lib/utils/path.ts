@@ -19,6 +19,7 @@ export const ensureUnixPath = IS_WINDOWS
       // the path separator needs to be preceded by an escape character
       const normalizedPath = path.replace(PATH_REGEXP, nodePath.posix.sep);
       ensureUnixPathCache.set(path, normalizedPath);
+
       return normalizedPath;
     }
   : (path?: string) => path;

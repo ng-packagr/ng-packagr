@@ -1,7 +1,8 @@
 import { VERSION as ROLLUP_VERSION } from 'rollup';
 import { version as TS_VERSION } from 'typescript';
-import { Command } from './command';
+import { msg } from '../utils/log';
 import { ngCompilerCli } from '../utils/ng-compiler-cli';
+import { Command } from './command';
 
 /**
  * Prints version information.
@@ -9,8 +10,8 @@ import { ngCompilerCli } from '../utils/ng-compiler-cli';
  * @stable
  */
 export const version: Command<any, Promise<void>> = async () => {
-  console.log(`ng-packagr:            ` + require('../../package.json').version);
-  console.log(`@angular/compiler:     ` + (await ngCompilerCli()).VERSION);
-  console.log(`rollup:                ` + ROLLUP_VERSION);
-  console.log(`typescript:            ` + TS_VERSION);
+  msg(`ng-packagr:            ` + require('../../package.json').version);
+  msg(`@angular/compiler:     ` + (await ngCompilerCli()).VERSION);
+  msg(`rollup:                ` + ROLLUP_VERSION);
+  msg(`typescript:            ` + TS_VERSION);
 };

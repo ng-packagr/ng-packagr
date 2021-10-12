@@ -36,7 +36,7 @@ export const entryPointTransformFactory = (
   writePackage: Transform,
 ): Transform =>
   pipe(
-    //tap(() => log.info(`Building from sources for entry point`)),
+    // tap(() => log.info(`Building from sources for entry point`)),
 
     transformFromPromise(async (graph) => {
       // Peek the first entry point from the graph
@@ -54,5 +54,5 @@ export const entryPointTransformFactory = (
       const entryPoint = graph.find(byEntryPoint().and(isInProgress));
       entryPoint.state = STATE_DONE;
     }),
-    //tap(() => log.info(`Built.`))
+    // tap(() => log.info(`Built.`))
   );

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { expect } from 'chai';
 import { join, resolve } from 'path';
 import { NgPackageConfig } from '../../../ng-package.schema';

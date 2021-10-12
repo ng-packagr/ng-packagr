@@ -102,7 +102,7 @@ export class NgEntryPoint {
     const parts = key.split('.');
     let value = this.ngPackageJson as unknown;
     for (const key of parts) {
-      if (typeof value === 'object' && value.hasOwnProperty(key)) {
+      if (typeof value === 'object' && key in value) {
         value = value[key];
       } else {
         return undefined;
@@ -126,6 +126,7 @@ export class NgEntryPoint {
 
   public get styleIncludePaths(): string[] {
     const includePaths = this.$get('lib.styleIncludePaths') || [];
+
     return includePaths.map(includePath =>
       path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath),
     );
@@ -144,7 +145,7 @@ export class NgEntryPoint {
     }
   }
 
-  private flattenModuleId(separator: string = '.') {
+  private flattenModuleId(separator = '.') {
     if (this.moduleId.startsWith('@')) {
       return this.moduleId.substring(1).split('/').join(separator);
     } else {

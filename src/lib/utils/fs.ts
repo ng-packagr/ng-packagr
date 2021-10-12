@@ -1,6 +1,6 @@
-import { promisify } from 'util';
 import * as fs from 'fs';
 import { dirname } from 'path';
+import { promisify } from 'util';
 
 export const readFile = fs.promises.readFile;
 export const writeFile = fs.promises.writeFile;

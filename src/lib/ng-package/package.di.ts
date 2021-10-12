@@ -1,15 +1,15 @@
 import { InjectionToken, Provider } from 'injection-js';
 import { Transform } from '../graph/transform';
-import { provideTransform, TransformProvider } from '../graph/transform.di';
+import { TransformProvider, provideTransform } from '../graph/transform.di';
 import { PROJECT_TOKEN } from '../project.di';
-import { ENTRY_POINT_TRANSFORM_TOKEN } from './entry-point/entry-point.di';
-import { packageTransformFactory } from './package.transform';
 import { ANALYSE_SOURCES_TOKEN, ANALYSE_SOURCES_TRANSFORM } from './entry-point/analyse-sources.di';
+import { ENTRY_POINT_TRANSFORM_TOKEN } from './entry-point/entry-point.di';
 import {
-  INIT_TS_CONFIG_TRANSFORM,
   INIT_TS_CONFIG_TOKEN,
+  INIT_TS_CONFIG_TRANSFORM,
 } from './entry-point/init-tsconfig.di';
-import { OPTIONS_TOKEN, DEFAULT_OPTIONS_PROVIDER } from './options.di';
+import { DEFAULT_OPTIONS_PROVIDER, OPTIONS_TOKEN } from './options.di';
+import { packageTransformFactory } from './package.transform';
 
 export const PACKAGE_TRANSFORM_TOKEN = new InjectionToken<Transform>(`ng.v5.packageTransform`);
 

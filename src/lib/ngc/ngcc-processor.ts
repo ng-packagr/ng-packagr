@@ -1,14 +1,14 @@
 import type { Logger } from '@angular/compiler-cli/ngcc';
-import { existsSync, constants, accessSync } from 'fs';
+import { spawnSync } from 'child_process';
+import { createHash } from 'crypto';
+import { accessSync, constants, existsSync } from 'fs';
 import * as path from 'path';
 import ts from 'typescript';
 import { NgccProcessingCache } from '../ng-package/ngcc-cache';
-import * as log from '../utils/log';
 import { EntryPointNode, ngUrl } from '../ng-package/nodes';
-import { spawnSync } from 'child_process';
-import { createHash } from 'crypto';
-import { exists, readFile, writeFile, mkdir } from '../utils/fs';
 import { defaultTsConfigPath } from '../ts/tsconfig';
+import { exists, mkdir, readFile, writeFile } from '../utils/fs';
+import * as log from '../utils/log';
 
 // Transform a package and its typings when NGTSC is resolving a module.
 export class NgccProcessor {
@@ -217,7 +217,7 @@ export class NgccProcessor {
 }
 
 class NgccLogger implements Logger {
-  level = /**LogLevel.info**/ 1;
+  level = /** LogLevel.info**/ 1;
 
   debug(...args: string[]) {
     log.debug(args.join(' '));

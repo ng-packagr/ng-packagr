@@ -1,5 +1,5 @@
 import findCacheDirectory from 'find-cache-dir';
-import { InjectionToken, ValueProvider, Provider } from 'injection-js';
+import { InjectionToken, Provider, ValueProvider } from 'injection-js';
 import { tmpdir } from 'os';
 import { resolve } from 'path';
 

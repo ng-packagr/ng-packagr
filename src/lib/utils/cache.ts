@@ -1,6 +1,6 @@
 import * as cacache from 'cacache';
-import { readFile } from '../utils/fs';
 import { createHash } from 'crypto';
+import { readFile } from '../utils/fs';
 
 let ngPackagrVersion: string | undefined;
 try {

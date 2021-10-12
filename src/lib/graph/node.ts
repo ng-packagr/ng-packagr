@@ -40,7 +40,6 @@ export class Node {
   private _dependents = new Set<Node>();
   private _dependees = new Set<Node>();
 
-  /** @experimental DO NOT USE. For time being, dirty checking is for `type=entryPoint && state !== 'done'` (full rebuild of entry point). */
   public dependsOn(dependent: Node | Node[]) {
     const newDeps = Array.isArray(dependent) ? dependent : [dependent];
 

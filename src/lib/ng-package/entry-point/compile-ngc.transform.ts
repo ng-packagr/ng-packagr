@@ -1,14 +1,14 @@
+import ora from 'ora';
 import * as path from 'path';
 import ts from 'typescript';
-import ora from 'ora';
 import { Transform, transformFromPromise } from '../../graph/transform';
-import { NgccProcessor } from '../../ngc/ngcc-processor';
-import { setDependenciesTsConfigPaths } from '../../ts/tsconfig';
-import { isEntryPointInProgress, EntryPointNode, isEntryPoint } from '../nodes';
-import { StylesheetProcessor as StylesheetProcessorClass } from '../../styles/stylesheet-processor';
-import { NgPackagrOptions } from '../options.di';
 import { compileSourceFiles } from '../../ngc/compile-source-files';
+import { NgccProcessor } from '../../ngc/ngcc-processor';
+import { StylesheetProcessor as StylesheetProcessorClass } from '../../styles/stylesheet-processor';
+import { setDependenciesTsConfigPaths } from '../../ts/tsconfig';
 import { ngccCompilerCli } from '../../utils/ng-compiler-cli';
+import { EntryPointNode, isEntryPoint, isEntryPointInProgress } from '../nodes';
+import { NgPackagrOptions } from '../options.di';
 
 export const compileNgcTransformFactory = (
   StylesheetProcessor: typeof StylesheetProcessorClass,
@@ -31,11 +31,10 @@ export const compileNgcTransformFactory = (
       const { basePath, cssUrl, styleIncludePaths } = entryPoint.data.entryPoint;
       const { moduleResolutionCache, ngccProcessingCache } = entryPoint.cache;
 
-      let ngccProcessor: NgccProcessor | undefined;
       spinner.start(
         `Compiling with Angular sources in Ivy ${tsConfig.options.compilationMode || 'full'} compilation mode.`,
       );
-      ngccProcessor = new NgccProcessor(
+      const ngccProcessor = new NgccProcessor(
         await ngccCompilerCli(),
         ngccProcessingCache,
         tsConfig.project,
@@ -74,6 +73,7 @@ export const compileNgcTransformFactory = (
     }
 
     spinner.succeed();
+
     return graph;
   });
 };

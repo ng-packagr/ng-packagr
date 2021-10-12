@@ -1,11 +1,11 @@
 import browserslist from 'browserslist';
-import postcss from 'postcss';
-import postcssUrl from 'postcss-url';
-import postcssPresetEnv from 'postcss-preset-env';
-import * as log from '../utils/log';
 import { extname } from 'path';
-import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
+import postcss from 'postcss';
+import postcssPresetEnv from 'postcss-preset-env';
+import postcssUrl from 'postcss-url';
 import { EsbuildExecutor } from '../esbuild/esbuild-executor';
+import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
+import * as log from '../utils/log';
 
 export enum CssUrl {
   inline = 'inline',
@@ -65,6 +65,7 @@ export class StylesheetProcessor {
       const result = await readCacheEntry(this.cacheDirectory, key);
       if (result) {
         result.warnings.forEach(msg => log.warn(msg));
+
         return result.css;
       }
     }
@@ -82,6 +83,7 @@ export class StylesheetProcessor {
       const cachedResult = await readCacheEntry(this.cacheDirectory, key);
       if (cachedResult) {
         cachedResult.warnings.forEach(msg => log.warn(msg));
+
         return cachedResult.css;
       }
     }
@@ -104,7 +106,7 @@ export class StylesheetProcessor {
     }
 
     if (this.cacheDirectory) {
-      saveCacheEntry(
+      await saveCacheEntry(
         this.cacheDirectory,
         key,
         JSON.stringify({

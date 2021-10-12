@@ -1,11 +1,11 @@
-import * as rollup from 'rollup';
-import { TransformHook } from 'rollup';
-import nodeResolve from '@rollup/plugin-node-resolve';
-import sourcemaps from 'rollup-plugin-sourcemaps';
 import commonJs from '@rollup/plugin-commonjs';
 import rollupJson from '@rollup/plugin-json';
-import * as log from '../utils/log';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import * as path from 'path';
+import * as rollup from 'rollup';
+import { TransformHook } from 'rollup';
+import sourcemaps from 'rollup-plugin-sourcemaps';
+import * as log from '../utils/log';
 
 /**
  * Options used in `ng-packagr` for writing flat bundle files.
