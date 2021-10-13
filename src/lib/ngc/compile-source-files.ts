@@ -71,7 +71,7 @@ export async function compileSourceFiles(
   const affectedFiles = new Set<ts.SourceFile>();
 
   // Analyze affected files when in watch mode for incremental type checking
-  if ('getSemanticDiagnostcsOfNextAffectedFile' in builder) {
+  if ('getSemanticDiagnosticsOfNextAffectedFile' in builder) {
     // eslint-disable-next-line no-constant-condition
     while (true) {
       const result = builder.getSemanticDiagnosticsOfNextAffectedFile(undefined, sourceFile => {
