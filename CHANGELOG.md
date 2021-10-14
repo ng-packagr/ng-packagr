@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.8...v13.0.0-rc.0) (2021-10-14)
+
+
+### Features
+
+* support Node.js version 16 ([5c8ce22](https://github.com/ng-packagr/ng-packagr/commit/5c8ce225c3a7c4243e3fc0522509a683f5a7535e))
+
 ## [13.0.0-next.8](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.7...v13.0.0-next.8) (2021-10-08)
 
 
