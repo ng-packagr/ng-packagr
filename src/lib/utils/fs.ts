@@ -8,6 +8,7 @@ export const access = fs.promises.access;
 export const mkdir = fs.promises.mkdir;
 export const stat = fs.promises.stat;
 export const rmdir = fs.promises.rm ?? fs.promises.rmdir;
+export const readdir = fs.promises.readdir;
 
 export async function exists(path: fs.PathLike): Promise<boolean> {
   try {

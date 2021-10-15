@@ -19,9 +19,11 @@ export class TestHarness {
   private ngPackagr$$: Subscription;
   private loggerStubs: Record<string, jasmine.Spy> = {};
 
-  constructor(private testName: string) {}
+  constructor(private testName: string) {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+  }
 
-  initialize(): Promise<void> {
+  async initialize(): Promise<void> {
     // the below is done in order to avoid poluting the test reporter with build logs
     for (const key in log) {
       if (log.hasOwnProperty(key)) {
@@ -30,8 +32,8 @@ export class TestHarness {
     }
 
     this.emptyTestDirectory();
-    fs.copySync(this.testSrc, this.testTempPath);
-
+    await fs.copy(this.testSrc, this.testTempPath);
+    await new Promise(resolve => setTimeout(resolve, 1000));
     return this.setUpNgPackagr();
   }
 
@@ -48,7 +50,7 @@ export class TestHarness {
 
   reset(): Promise<void> {
     this.completeHandler = () => undefined;
-    return new Promise(resolve => setTimeout(resolve, 500));
+    return new Promise(resolve => setTimeout(resolve, 1000));
   }
 
   readFileSync(filePath: string, isJson = false): string | object {

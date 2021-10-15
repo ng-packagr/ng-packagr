@@ -22,7 +22,9 @@ export interface RollupOptions {
 }
 
 /** Runs rollup over the given entry file, writes a bundle file. */
-export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.RollupCache> {
+export async function rollupBundleFile(
+  opts: RollupOptions,
+): Promise<{ cache: rollup.RollupCache; code: string; map: rollup.SourceMap }> {
   log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dest}`);
 
   // Create the bundle
@@ -57,7 +59,7 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.Roll
   });
 
   // Output the bundle to disk
-  await bundle.write({
+  const output = await bundle.write({
     name: opts.moduleName,
     format: 'es',
     file: opts.dest,
@@ -65,7 +67,13 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.Roll
     sourcemap: true,
   });
 
-  return bundle.cache;
+  const { code, map } = output.output[0];
+
+  return {
+    code,
+    map,
+    cache: bundle.cache,
+  };
 }
 
 function isExternalDependency(moduleId: string): boolean {

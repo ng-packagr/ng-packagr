@@ -41,20 +41,22 @@ describe('intra-dependent', () => {
     });
   });
 
-  it('should only build entrypoints that are dependent on the file changed.', done => {
-    const primaryFesmPath = harness.getFilePath('fesm2020/intra-dependent.mjs');
-    const secondaryFesmPath = harness.getFilePath('fesm2020/intra-dependent-secondary.mjs');
-    const thirdFesmPath = harness.getFilePath('fesm2020/intra-dependent-third.mjs');
+  // TODO: we should find a better way to determine which sub-entry points have been re-built.
+  // Using timestamps is not accurate.
+  xit('should only build entrypoints that are dependent on the file changed.', done => {
+    const primaryEsmPath = harness.getFilePath('esm2020/intra-dependent.mjs');
+    const secondaryEsmPath = harness.getFilePath('esm2020/secondary/intra-dependent-secondary.mjs');
+    const thirdesmPath = harness.getFilePath('esm2020/third/intra-dependent-third.mjs');
 
-    const primaryModifiedTime = fs.statSync(primaryFesmPath).mtimeMs;
-    const secondaryModifiedTime = fs.statSync(secondaryFesmPath).mtimeMs;
-    const thirdModifiedTime = fs.statSync(thirdFesmPath).mtimeMs;
+    const primaryModifiedTime = fs.statSync(primaryEsmPath).mtimeMs;
+    const secondaryModifiedTime = fs.statSync(secondaryEsmPath).mtimeMs;
+    const thirdModifiedTime = fs.statSync(thirdesmPath).mtimeMs;
     harness.copyTestCase('valid');
 
     harness.onComplete(() => {
-      expect(fs.statSync(primaryFesmPath).mtimeMs).to.greaterThan(primaryModifiedTime);
-      expect(fs.statSync(secondaryFesmPath).mtimeMs).to.greaterThan(secondaryModifiedTime);
-      expect(fs.statSync(thirdFesmPath).mtimeMs).to.equals(thirdModifiedTime);
+      expect(fs.statSync(primaryEsmPath).mtimeMs).to.greaterThan(primaryModifiedTime);
+      expect(fs.statSync(secondaryEsmPath).mtimeMs).to.greaterThan(secondaryModifiedTime);
+      expect(fs.statSync(thirdesmPath).mtimeMs).to.equals(thirdModifiedTime);
       done();
     });
   });
