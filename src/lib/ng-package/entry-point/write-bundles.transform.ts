@@ -25,9 +25,9 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
         moduleName: ngEntryPoint.moduleId,
         dest: fesm2020,
         cache: cache.rollupFESM2020Cache,
+        cacheDirectory: options.cacheEnabled && options.cacheDirectory,
       });
       spinner.succeed();
-
       if (options.watch) {
         cache.rollupFESM2020Cache = rollupFESMCache;
       }
@@ -43,8 +43,9 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
         entry: esm2020,
         moduleName: ngEntryPoint.moduleId,
         dest: fesm2015,
-        transform: (code, id) => downlevelCodeWithTsc(code, id, options.cacheEnabled && options.cacheDirectory),
+        transform: downlevelCodeWithTsc,
         cache: cache.rollupFESM2015Cache,
+        cacheDirectory: options.cacheEnabled && options.cacheDirectory,
       });
       spinner.succeed();
 
