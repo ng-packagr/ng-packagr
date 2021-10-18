@@ -122,6 +122,7 @@ async function renderCss(
         filename: filePath,
         javascriptEnabled: true,
         paths: styleIncludePaths,
+        math: 'always',
       });
 
       return content;

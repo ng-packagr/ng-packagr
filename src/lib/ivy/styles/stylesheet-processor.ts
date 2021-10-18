@@ -162,6 +162,7 @@ export class StylesheetProcessor {
           filename: filePath,
           javascriptEnabled: true,
           paths: this.styleIncludePaths,
+          math: 'always',
         });
 
         return content;
