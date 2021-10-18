@@ -158,6 +158,7 @@ export class StylesheetProcessor {
           await import('less')
         ).default.render(css, {
           filename: filePath,
+          math: 'always',
           javascriptEnabled: true,
           paths: this.styleIncludePaths,
         });
