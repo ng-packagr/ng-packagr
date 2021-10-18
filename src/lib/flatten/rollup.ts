@@ -5,6 +5,7 @@ import * as path from 'path';
 import * as rollup from 'rollup';
 import { TransformHook } from 'rollup';
 import sourcemaps from 'rollup-plugin-sourcemaps';
+import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
 
 /**
@@ -19,18 +20,22 @@ export interface RollupOptions {
   sourceRoot: string;
   transform?: TransformHook;
   cache?: rollup.RollupCache;
+  cacheDirectory?: string | false;
 }
 
 /** Runs rollup over the given entry file, writes a bundle file. */
 export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.RollupCache> {
   log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dest}`);
 
+  const key = generateKey(opts.entry, opts.moduleName, opts.dest);
+  const cacheDirectory = opts.cacheDirectory;
+
   // Create the bundle
   const bundle = await rollup.rollup({
     context: 'this',
     external: moduleId => isExternalDependency(moduleId),
     inlineDynamicImports: false,
-    cache: opts.cache,
+    cache: opts.cache ?? (cacheDirectory ? await readCacheEntry(cacheDirectory, key) : undefined),
     input: opts.entry,
     plugins: [
       rollupJson(),
@@ -64,6 +69,10 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.Roll
     banner: '',
     sourcemap: true,
   });
+
+  if (cacheDirectory) {
+    await saveCacheEntry(cacheDirectory, key, JSON.stringify(bundle.cache));
+  }
 
   return bundle.cache;
 }
