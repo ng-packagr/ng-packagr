@@ -1,4 +1,3 @@
-import commonJs from '@rollup/plugin-commonjs';
 import rollupJson from '@rollup/plugin-json';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import * as path from 'path';
@@ -40,19 +39,18 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.Roll
     plugins: [
       rollupJson(),
       nodeResolve(),
-      commonJs(),
       sourcemaps(),
       opts.transform ? { transform: opts.transform, name: 'downlevel-ts' } : undefined,
     ],
     onwarn: warning => {
-      if (typeof warning === 'string') {
-        log.warn(warning);
-      } else {
-        if (warning.code === 'THIS_IS_UNDEFINED') {
-          return;
-        }
+      switch (warning.code) {
+        case 'UNUSED_EXTERNAL_IMPORT':
+        case 'THIS_IS_UNDEFINED':
+          break;
 
-        log.warn(warning.message);
+        default:
+          log.warn(warning.message);
+          break;
       }
     },
     preserveSymlinks: true,
