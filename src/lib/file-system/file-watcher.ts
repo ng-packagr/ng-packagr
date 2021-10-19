@@ -1,4 +1,5 @@
 import * as chokidar from 'chokidar';
+import { platform } from 'os';
 import * as path from 'path';
 import { Observable, Observer } from 'rxjs';
 import * as log from '../utils/log';
@@ -13,19 +14,30 @@ export interface FileChangedEvent {
 }
 
 export function createFileWatch(
-  projectPath: string,
+  basePaths: string | string[],
   ignoredPaths: (RegExp | string)[] = [],
-): Observable<FileChangedEvent> {
-  log.debug(`Watching for changes: projectPath: ${projectPath}, ignoredPaths: ${ignoredPaths}`);
+): {
+  watcher: chokidar.FSWatcher;
+  onFileChange: Observable<FileChangedEvent>;
+} {
+  log.debug(`Watching for changes: basePath: ${basePaths}, ignoredPaths: ${ignoredPaths}`);
 
-  const watch = chokidar.watch(projectPath, {
+  const watch = chokidar.watch([], {
     ignoreInitial: true,
-    ignored: [...ignoredPaths, /((^[/\\])\..)|(\.mjs$)|(\.map$)|(\.metadata\.json|node_modules)/],
+    ignored: [...ignoredPaths, /\.map$/],
     persistent: true,
   });
 
+  const isLinux = platform() === 'linux';
   const handleFileChange = (event: AllFileWatchEvents, filePath: string, observer: Observer<FileChangedEvent>) => {
     log.debug(`Watch: Path changed. Event: ${event}, Path: ${filePath}`);
+
+    if (isLinux) {
+      // Workaround for Linux where chokidar will not handle future events
+      // for files that were unlinked and immediately recreated.
+      watch.unwatch(filePath);
+      watch.add(filePath);
+    }
 
     if (event === 'unlinkDir' || event === 'addDir') {
       // we don't need to trigger on directory removed or renamed as chokidar will fire the changes for each file
@@ -38,9 +50,12 @@ export function createFileWatch(
     });
   };
 
-  return Observable.create((observer) => {
-    watch.on('all', (event: AllFileWatchEvents, filePath: string) => handleFileChange(event, filePath, observer));
+  return {
+    watcher: watch,
+    onFileChange: new Observable(observer => {
+      watch.on('all', (event: AllFileWatchEvents, filePath: string) => handleFileChange(event, filePath, observer));
 
-    return () => watch.close();
-  });
+      return () => watch.close();
+    }),
+  };
 }

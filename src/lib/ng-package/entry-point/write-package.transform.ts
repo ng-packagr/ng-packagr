@@ -4,7 +4,7 @@ import { BuildGraph } from '../../graph/build-graph';
 import { Node } from '../../graph/node';
 import { transformFromPromise } from '../../graph/transform';
 import { colors } from '../../utils/color';
-import { copyFile, exists, rmdir, stat, writeFile } from '../../utils/fs';
+import { copyFile, rmdir, stat, writeFile } from '../../utils/fs';
 import { globFiles } from '../../utils/glob';
 import * as log from '../../utils/log';
 import { ensureUnixPath } from '../../utils/path';
@@ -34,29 +34,33 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
       `${ngPackage.dest}/**`,
     ];
 
-    if (ngPackage.assets.length && !ngEntryPoint.isSecondaryEntryPoint) {
+    if (!ngEntryPoint.isSecondaryEntryPoint) {
       const assetFiles: string[] = [];
 
       // COPY ASSET FILES TO DESTINATION
       spinner.start('Copying assets');
 
       try {
-        for (let asset of ngPackage.assets) {
-          asset = path.join(ngPackage.src, asset);
+        for (const asset of [...ngPackage.assets, 'LICENSE', '**/README.md']) {
+          let assetFullPath = path.join(ngPackage.src, asset);
 
-          if (await exists(asset)) {
-            const stats = await stat(asset);
+          try {
+            const stats = await stat(assetFullPath);
             if (stats.isFile()) {
-              assetFiles.push(asset);
+              assetFiles.push(assetFullPath);
               continue;
             }
 
             if (stats.isDirectory()) {
-              asset = path.join(asset, '**/*');
+              assetFullPath = path.join(assetFullPath, '**/*');
             }
+          } catch {}
+
+          if (asset === 'LICENSE') {
+            continue;
           }
 
-          const files = await globFiles(asset, {
+          const files = await globFiles(assetFullPath, {
             ignore: ignorePaths,
             cache: ngPackageNode.cache.globCache,
             dot: true,

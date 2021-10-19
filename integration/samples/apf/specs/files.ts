@@ -10,11 +10,11 @@ describe('@sample/apf', () => {
   });
 
   describe('dist', () => {
-    it('should contain a total of 71 files', () => {
+    it('should contain a total of 72 files', () => {
       // this is a safe guard / alternative to snapshots in order to
       // protect ourselves from doing a change that will emit unexpected files.
       const files = glob.sync(path.join(DIST, '**/*'));
-      expect(files.length).to.equals(71);
+      expect(files.length).to.equals(72);
     });
 
     it(`should contain a README.md file`, () => {
