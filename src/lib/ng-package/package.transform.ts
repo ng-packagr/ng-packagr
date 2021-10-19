@@ -140,8 +140,10 @@ const watchTransformFactory = (
   return source$.pipe(
     switchMap(graph => {
       const { data, cache } = graph.find(isPackage);
+      const { onFileChange, watcher } = createFileWatch([], [data.dest]);
+      graph.watcher = watcher;
 
-      return createFileWatch(data.src, [data.dest]).pipe(
+      return onFileChange.pipe(
         tap(fileChange => {
           const { filePath, event } = fileChange;
           const { sourcesFileCache } = cache;

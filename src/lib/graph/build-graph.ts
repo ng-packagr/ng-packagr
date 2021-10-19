@@ -1,3 +1,5 @@
+import { FSWatcher } from 'chokidar';
+import { URL_PROTOCOL_FILE } from '../ng-package/nodes';
 import { Node } from './node';
 
 export type SimplePredicate<T = Node> = {
@@ -24,6 +26,7 @@ export interface Traversable<T> {
  */
 export class BuildGraph implements Traversable<Node> {
   private store = new Map<string, Node>();
+  watcher?: FSWatcher;
 
   public put(value: Node | Node[]) {
     if (value instanceof Array) {
@@ -40,6 +43,10 @@ export class BuildGraph implements Traversable<Node> {
       // Clean up dependee references
       const oldNode = this.store.get(node.url);
       oldNode['_dependees'].delete(oldNode);
+    }
+
+    if (this.watcher && node.url.startsWith(URL_PROTOCOL_FILE)) {
+      this.watcher.add(node.url.substr(URL_PROTOCOL_FILE.length));
     }
 
     this.store.set(node.url, node);

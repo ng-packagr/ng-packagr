@@ -17,7 +17,7 @@ describe('basic', () => {
   });
 
   describe('primary entrypoint', () => {
-    it("should set a `0.0.0-watch+...` as version number", () => {
+    it('should set a `0.0.0-watch+...` as version number', () => {
       harness.expectPackageManifestToMatch(/"version": "0\.0\.0-watch\+\d+"/);
     });
 
@@ -27,7 +27,7 @@ describe('basic', () => {
     });
 
     describe('when file changes', () => {
-      it('should perform a partial compilation and emit the updated files', (done) => {
+      it('should perform a partial compilation and emit the updated files', done => {
         harness.copyTestCase('valid-text');
 
         harness.onComplete(() => {
@@ -37,7 +37,7 @@ describe('basic', () => {
         });
       });
 
-      it('should recover from errors', (done) => {
+      it('should recover from errors', done => {
         harness.copyTestCase('invalid-type');
 
         harness.onComplete(() => {
@@ -46,17 +46,9 @@ describe('basic', () => {
           done();
         });
 
-        harness.onFailure((error) => {
+        harness.onFailure(error => {
           harness.copyTestCase('valid-text');
           expect(error.message).to.match(/is not assignable to type 'boolean'/);
-        });
-      });
-
-      it('should emit complete when a file changes outside of the compilation', (done) => {
-        harness.copyTestCase('new-file');
-
-        harness.onComplete(() => {
-          done();
         });
       });
     });
@@ -64,7 +56,7 @@ describe('basic', () => {
 
   describe('secondary entrypoint', () => {
     describe('when file changes', () => {
-      it('should emit updated files', (done) => {
+      it('should emit updated files', done => {
         harness.copyTestCase('secondary-valid');
 
         harness.onComplete(() => {
