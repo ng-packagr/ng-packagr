@@ -4,8 +4,10 @@ import * as path from 'path';
 import * as rollup from 'rollup';
 import { TransformHook } from 'rollup';
 import sourcemaps from 'rollup-plugin-sourcemaps';
+import { FileCache } from '../file-system/file-cache';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
+import { ensureUnixPath } from '../utils/path';
 
 /**
  * Options used in `ng-packagr` for writing flat bundle files.
@@ -20,6 +22,7 @@ export interface RollupOptions {
   transform?: TransformHook;
   cache?: rollup.RollupCache;
   cacheDirectory?: string | false;
+  fileCache: FileCache;
 }
 
 /** Runs rollup over the given entry file, writes a bundle file. */
@@ -37,9 +40,14 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.Roll
     cache: opts.cache ?? (cacheDirectory ? await readCacheEntry(cacheDirectory, key) : undefined),
     input: opts.entry,
     plugins: [
-      rollupJson(),
       nodeResolve(),
-      sourcemaps(),
+      sourcemaps({
+        readFile: (path: string, callback: (error: Error | null, data: Buffer | string) => void) => {
+          const fileData = opts.fileCache.get(ensureUnixPath(path));
+          callback(fileData ? null : new Error(`Could not load '${path}' from memory.`), fileData?.content);
+        },
+      }),
+      rollupJson(),
       opts.transform ? { transform: opts.transform, name: 'downlevel-ts' } : undefined,
     ],
     onwarn: warning => {

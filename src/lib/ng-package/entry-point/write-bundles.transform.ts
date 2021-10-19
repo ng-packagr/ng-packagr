@@ -26,6 +26,7 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
         dest: fesm2020,
         cache: cache.rollupFESM2020Cache,
         cacheDirectory: options.cacheEnabled && options.cacheDirectory,
+        fileCache: cache.sourcesFileCache,
       });
       spinner.succeed();
       if (options.watch) {
@@ -46,6 +47,7 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
         transform: downlevelCodeWithTsc,
         cache: cache.rollupFESM2015Cache,
         cacheDirectory: options.cacheEnabled && options.cacheDirectory,
+        fileCache: cache.sourcesFileCache,
       });
       spinner.succeed();
 

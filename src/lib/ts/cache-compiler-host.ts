@@ -77,6 +77,7 @@ export function cacheCompilerHost(
         });
       } else {
         fileName = fileName.replace(/\.js(\.map)?$/, '.mjs$1');
+        sourcesFileCache.getOrCreate(fileName).content = data;
       }
 
       compilerHost.writeFile.call(this, fileName, data, writeByteOrderMark, onError, sourceFiles);
