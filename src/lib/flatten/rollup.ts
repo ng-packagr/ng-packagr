@@ -1,5 +1,4 @@
 import rollupJson from '@rollup/plugin-json';
-import nodeResolve from '@rollup/plugin-node-resolve';
 import * as path from 'path';
 import * as rollup from 'rollup';
 import { TransformHook } from 'rollup';
@@ -38,7 +37,6 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.Roll
     input: opts.entry,
     plugins: [
       rollupJson(),
-      nodeResolve(),
       sourcemaps(),
       opts.transform ? { transform: opts.transform, name: 'downlevel-ts' } : undefined,
     ],
