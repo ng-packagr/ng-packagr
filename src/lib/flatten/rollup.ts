@@ -4,8 +4,8 @@ import * as path from 'path';
 import * as rollup from 'rollup';
 import { TransformHook } from 'rollup';
 import sourcemaps from 'rollup-plugin-sourcemaps';
-import { FileCache } from '../file-system/file-cache';
-import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
+import { OutputFileCache } from '../ng-package/nodes';
+import { readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 
@@ -22,14 +22,16 @@ export interface RollupOptions {
   transform?: TransformHook;
   cache?: rollup.RollupCache;
   cacheDirectory?: string | false;
-  fileCache: FileCache;
+  fileCache: OutputFileCache;
+  cacheKey: string;
 }
 
 /** Runs rollup over the given entry file, writes a bundle file. */
-export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.RollupCache> {
+export async function rollupBundleFile(
+  opts: RollupOptions,
+): Promise<{ cache: rollup.RollupCache; code: string; map: rollup.SourceMap }> {
   log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dest}`);
 
-  const key = generateKey(opts.entry, opts.moduleName, opts.dest);
   const cacheDirectory = opts.cacheDirectory;
 
   // Create the bundle
@@ -37,7 +39,7 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.Roll
     context: 'this',
     external: moduleId => isExternalDependency(moduleId),
     inlineDynamicImports: false,
-    cache: opts.cache ?? (cacheDirectory ? await readCacheEntry(cacheDirectory, key) : undefined),
+    cache: opts.cache ?? (cacheDirectory ? await readCacheEntry(cacheDirectory, opts.cacheKey) : undefined),
     input: opts.entry,
     plugins: [
       nodeResolve(),
@@ -68,7 +70,7 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.Roll
   });
 
   // Output the bundle to disk
-  await bundle.write({
+  const output = await bundle.write({
     name: opts.moduleName,
     format: 'es',
     file: opts.dest,
@@ -77,10 +79,16 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<rollup.Roll
   });
 
   if (cacheDirectory) {
-    await saveCacheEntry(cacheDirectory, key, JSON.stringify(bundle.cache));
+    await saveCacheEntry(cacheDirectory, opts.cacheKey, JSON.stringify(bundle.cache));
   }
 
-  return bundle.cache;
+  const { code, map } = output.output[0];
+
+  return {
+    code,
+    map,
+    cache: bundle.cache,
+  };
 }
 
 function isExternalDependency(moduleId: string): boolean {

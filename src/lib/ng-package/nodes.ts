@@ -59,6 +59,8 @@ export function ngUrl(path: string): string {
   return `${URL_PROTOCOL_NG}${path}`;
 }
 
+export type OutputFileCache = Map<string, { version: string; content: string }>;
+
 export class EntryPointNode extends Node {
   readonly type = TYPE_NG_ENTRY_POINT;
 
@@ -75,10 +77,12 @@ export class EntryPointNode extends Node {
       ngccProcessingCache,
       analysesSourcesFileCache: new FileCache(),
       moduleResolutionCache,
+      outputCache: new Map(),
     };
   }
 
   cache: {
+    outputCache: OutputFileCache;
     oldPrograms?: Record<ts.ScriptTarget | 'analysis', Program | ts.Program>;
     sourcesFileCache: FileCache;
     ngccProcessingCache: NgccProcessingCache;

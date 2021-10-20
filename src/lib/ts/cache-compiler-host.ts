@@ -77,7 +77,12 @@ export function cacheCompilerHost(
         });
       } else {
         fileName = fileName.replace(/\.js(\.map)?$/, '.mjs$1');
-        sourcesFileCache.getOrCreate(fileName).content = data;
+        const outputCache = entryPoint.cache.outputCache;
+
+        outputCache.set(fileName, {
+          content: data,
+          version: createHash('sha256').update(data).digest('hex'),
+        });
       }
 
       compilerHost.writeFile.call(this, fileName, data, writeByteOrderMark, onError, sourceFiles);

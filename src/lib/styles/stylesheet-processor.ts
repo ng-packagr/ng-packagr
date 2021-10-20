@@ -61,7 +61,7 @@ export class StylesheetProcessor {
 
     if (!content.includes('@import') && !content.includes('@use') && this.cacheDirectory) {
       // No transitive deps, we can cache more aggressively.
-      key = generateKey(content, ...this.browserslistData);
+      key = await generateKey(content, ...this.browserslistData);
       const result = await readCacheEntry(this.cacheDirectory, key);
       if (result) {
         result.warnings.forEach(msg => log.warn(msg));
@@ -76,7 +76,7 @@ export class StylesheetProcessor {
     // We cannot cache CSS re-rendering phase, because a transitive dependency via (@import) can case different CSS output.
     // Example a change in a mixin or SCSS variable.
     if (!key) {
-      key = generateKey(renderedCss, ...this.browserslistData);
+      key = await generateKey(renderedCss, ...this.browserslistData);
     }
 
     if (this.cacheDirectory) {
