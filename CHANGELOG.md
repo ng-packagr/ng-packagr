@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.0.0-rc.1](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-rc.0...v13.0.0-rc.1) (2021-10-20)
+
+
+### Bug Fixes
+
+* display package versions correctly when using the version command ([141fd65](https://github.com/ng-packagr/ng-packagr/commit/141fd655d7b080a9211596ed2a8110fdc06ba7d5))
+* force less version 3.5 math behaviour ([a491faf](https://github.com/ng-packagr/ng-packagr/commit/a491faf0a37ea884f0714396b6e38a950d6a4563)), closes [#2113](https://github.com/ng-packagr/ng-packagr/issues/2113)
+* only watch dependent files ([5bf477d](https://github.com/ng-packagr/ng-packagr/commit/5bf477dc1df72b053830aed659c94108027ce25a)), closes [#1829](https://github.com/ng-packagr/ng-packagr/issues/1829) [#2042](https://github.com/ng-packagr/ng-packagr/issues/2042) [#1723](https://github.com/ng-packagr/ng-packagr/issues/1723)
+* remove `@rollup/plugin-commonjs` ([0d306a3](https://github.com/ng-packagr/ng-packagr/commit/0d306a309e8d1ce3574f1bc2185b442c60149d4f))
+
+
+### Performance
+
+* only re-generate FESMs when ESM has changed ([2a02a89](https://github.com/ng-packagr/ng-packagr/commit/2a02a896c7a100e1538892fd6ab66974a52af3fe))
+* read esm files from memory ([51ba534](https://github.com/ng-packagr/ng-packagr/commit/51ba5346818294e831e70393f41aed09bc8ba18c))
+* store fesm generation state on disk ([4565a8b](https://github.com/ng-packagr/ng-packagr/commit/4565a8bd95d61c30e835f97a408f62da28e523ba))
+
 ## [13.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-next.8...v13.0.0-rc.0) (2021-10-14)
 
 
