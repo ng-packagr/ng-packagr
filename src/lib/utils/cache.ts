@@ -1,6 +1,7 @@
 import * as cacache from 'cacache';
 import { createHash } from 'crypto';
 import { readFile } from '../utils/fs';
+import { ngCompilerCli } from './ng-compiler-cli';
 
 let ngPackagrVersion: string | undefined;
 try {
@@ -10,8 +11,18 @@ try {
   ngPackagrVersion = require('../../../package.json').version;
 }
 
-export function generateKey(...valuesToConsider: string[]): string {
-  return createHash('sha1').update(ngPackagrVersion).update(valuesToConsider.join(':')).digest('hex');
+let compilerCliVersion: string | undefined;
+
+export async function generateKey(...valuesToConsider: string[]): Promise<string> {
+  if (compilerCliVersion === undefined) {
+    compilerCliVersion = (await ngCompilerCli()).VERSION.full;
+  }
+
+  return createHash('sha1')
+    .update(ngPackagrVersion)
+    .update(compilerCliVersion)
+    .update(valuesToConsider.join(':'))
+    .digest('hex');
 }
 
 export async function readCacheEntry(cachePath: string, key: string): Promise<any | undefined> {
