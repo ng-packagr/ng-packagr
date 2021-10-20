@@ -11,7 +11,7 @@ import { Command } from './command';
  */
 export const version: Command<any, Promise<void>> = async () => {
   msg(`ng-packagr:            ` + require('../../package.json').version);
-  msg(`@angular/compiler:     ` + (await ngCompilerCli()).VERSION);
+  msg(`@angular/compiler:     ` + (await ngCompilerCli()).VERSION.full);
   msg(`rollup:                ` + ROLLUP_VERSION);
   msg(`typescript:            ` + TS_VERSION);
 };

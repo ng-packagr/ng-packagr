@@ -3,7 +3,7 @@
 import { program } from 'commander';
 import * as path from 'path';
 import { error } from '../lib/utils/log';
-import { build, execute, version } from '../public_api';
+import { build, execute } from '../public_api';
 
 const DEFAULT_PROJECT_PATH = path.resolve(process.cwd(), 'ng-package.json');
 
@@ -32,8 +32,11 @@ program.on('option:version', () => {
 
 program.parse(process.argv);
 
-const { config, project, watch } = program.opts();
-execute(build, { config, project, watch: !!watch }).catch(err => {
-  error(err.message);
-  process.exit(1);
-});
+const { config, project, watch, version } = program.opts();
+
+if (!version) {
+  execute(build, { config, project, watch: !!watch }).catch(err => {
+    error(err.message);
+    process.exit(1);
+  });
+}
