@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [12.2.4](https://github.com/ng-packagr/ng-packagr/compare/v12.2.3...v12.2.4) (2021-10-20)
+
+
+### Bug Fixes
+
+* force less version 3.5 math behaviour ([2221e08](https://github.com/ng-packagr/ng-packagr/commit/2221e08b57ed9f5968783b2ac326a84fface1325)), closes [#2113](https://github.com/ng-packagr/ng-packagr/issues/2113)
+
 ### [12.2.3](https://github.com/ng-packagr/ng-packagr/compare/v12.2.2...v12.2.3) (2021-10-08)
 
 
