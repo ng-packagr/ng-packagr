@@ -11,6 +11,19 @@
 export class NgccProcessingCache {
   private readonly processedModuleNames = new Set<string>();
 
+  constructor() {
+    this.populate();
+  }
+
+  private populate() {
+    // Workaround for
+    // [DEP0148] DeprecationWarning: Use of deprecated folder mapping "./" in the "exports"
+    // field module resolution of the package at /Users/alanagius/git/ng-packagr/node_modules/chai/package.json.
+    // Update this package.json to use a subpath pattern like "./*".
+    for (const lib of ['chai', 'tslib']) {
+      this.processedModuleNames.add(lib);
+    }
+  }
   hasProcessed(moduleName: string): boolean {
     return this.processedModuleNames.has(moduleName);
   }
@@ -21,5 +34,6 @@ export class NgccProcessingCache {
 
   clear(): void {
     this.processedModuleNames.clear();
+    this.populate();
   }
 }
