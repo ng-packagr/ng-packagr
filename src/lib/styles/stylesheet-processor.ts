@@ -1,5 +1,7 @@
 import browserslist from 'browserslist';
-import { extname } from 'path';
+import { sync } from 'find-parent-dir';
+import { existsSync } from 'fs';
+import { dirname, extname, resolve } from 'path';
 import postcss from 'postcss';
 import postcssPresetEnv from 'postcss-preset-env';
 import postcssUrl from 'postcss-url';
@@ -148,7 +150,7 @@ export class StylesheetProcessor {
             file: filePath,
             data: css,
             indentedSyntax: '.sass' === ext,
-            importer: (await import('node-sass-tilde-importer')).default,
+            importer: customSassImporter,
             includePaths: this.styleIncludePaths,
           })
           .css.toString();
@@ -219,4 +221,36 @@ function transformSupportedBrowsersToTargets(supportedBrowsers: string[]): strin
   }
 
   return transformed.length ? transformed : undefined;
+}
+
+function customSassImporter(url: string, prev: string): { file: string; prev: string } | undefined {
+  // NB: Sass importer should always be sync as otherwise it will cause
+  // sass to go in the async path which is slower.
+  if (url[0] !== '~') {
+    return undefined;
+  }
+
+  const result = resolveImport(url.substr(1), prev);
+  if (!result) {
+    return undefined;
+  }
+
+  return {
+    file: result,
+    prev,
+  };
+}
+
+function resolveImport(target: string, basePath: string): string | undefined {
+  const root = sync(basePath, 'node_modules');
+  if (!root) {
+    return undefined;
+  }
+
+  const filePath = resolve(root, 'node_modules', target);
+  if (existsSync(filePath) || existsSync(dirname(filePath))) {
+    return filePath;
+  }
+
+  return resolveImport(target, dirname(root));
 }
