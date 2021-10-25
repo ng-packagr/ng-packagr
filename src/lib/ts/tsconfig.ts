@@ -64,7 +64,7 @@ export async function initializeTsConfig(
   const defaultTsConfigParsed = await createDefaultTsConfig(defaultTsConfig);
   if (defaultTsConfigParsed.errors.length > 0) {
     const { formatDiagnostics } = await ngCompilerCli();
-    throw formatDiagnostics(defaultTsConfigParsed.errors);
+    throw new Error(formatDiagnostics(defaultTsConfigParsed.errors));
   }
 
   if (defaultTsConfigParsed.options.enableIvy === false) {
