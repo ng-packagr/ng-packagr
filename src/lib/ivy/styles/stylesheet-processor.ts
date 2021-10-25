@@ -31,6 +31,7 @@ try {
   ngPackagrVersion = require('../../../../package.json').version;
 }
 export class StylesheetProcessor {
+  private targets: string[];
   private browserslistData: string[];
   private postCssProcessor: ReturnType<typeof postcss>;
   private esbuild = new EsbuildExecutor();
@@ -41,7 +42,23 @@ export class StylesheetProcessor {
     private readonly styleIncludePaths?: string[],
   ) {
     log.debug(`determine browserslist for ${this.basePath}`);
+
+    // By default, browserslist defaults are too inclusive
+    // https://github.com/browserslist/browserslist/blob/83764ea81ffaa39111c204b02c371afa44a4ff07/index.js#L516-L522
+
+    // We change the default query to browsers that Angular support.
+    // https://angular.io/guide/browser-support
+    (browserslist.defaults as string[]) = [
+      'last 1 Chrome version',
+      'last 1 Firefox version',
+      'last 2 Edge major versions',
+      'last 2 Safari major versions',
+      'last 2 iOS major versions',
+      'Firefox ESR',
+    ];
+
     this.browserslistData = browserslist(undefined, { path: this.basePath });
+    this.targets = transformSupportedBrowsersToTargets(this.browserslistData);
     this.postCssProcessor = this.createPostCssPlugins();
   }
 
@@ -84,6 +101,7 @@ export class StylesheetProcessor {
     const { code, warnings: esBuildWarnings } = await this.esbuild.transform(result.css, {
       loader: 'css',
       minify: true,
+      target: this.targets,
       sourcefile: filePath,
     });
 
@@ -201,4 +219,37 @@ async function readCacheEntry(cachePath: string, key: string): Promise<Result | 
   }
 
   return undefined;
+}
+
+function transformSupportedBrowsersToTargets(supportedBrowsers: string[]): string[] {
+  const transformed: string[] = [];
+
+  // https://esbuild.github.io/api/#target
+  const esBuildSupportedBrowsers = new Set(['safari', 'firefox', 'edge', 'chrome', 'ios']);
+
+  for (const browser of supportedBrowsers) {
+    let [browserName, version] = browser.split(' ');
+
+    // browserslist uses the name `ios_saf` for iOS Safari whereas esbuild uses `ios`
+    if (browserName === 'ios_saf') {
+      browserName = 'ios';
+      // browserslist also uses ranges for iOS Safari versions but only the lowest is required
+      // to perform minimum supported feature checks. esbuild also expects a single version.
+      [version] = version.split('-');
+    }
+
+    if (browserName === 'ie') {
+      transformed.push('edge12');
+    } else if (esBuildSupportedBrowsers.has(browserName)) {
+      if (browserName === 'safari' && version === 'TP') {
+        // esbuild only supports numeric versions so `TP` is converted to a high number (999) since
+        // a Technology Preview (TP) of Safari is assumed to support all currently known features.
+        version = '999';
+      }
+
+      transformed.push(browserName + version);
+    }
+  }
+
+  return transformed.length ? transformed : undefined;
 }
