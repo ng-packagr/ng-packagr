@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [12.2.5](https://github.com/ng-packagr/ng-packagr/compare/v12.2.4...v12.2.5) (2021-10-25)
+
+
+### Bug Fixes
+
+* RGBA converted to hex notation in component styles breaks IE11 ([b14d7e2](https://github.com/ng-packagr/ng-packagr/commit/b14d7e2272ccf427b6308af4314c1a2021d9a572))
+
 ### [12.2.4](https://github.com/ng-packagr/ng-packagr/compare/v12.2.3...v12.2.4) (2021-10-20)
 
 
