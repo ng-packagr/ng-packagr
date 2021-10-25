@@ -19,6 +19,7 @@ async function processCss({
   styleIncludePaths,
   basePath,
   cachePath,
+  targets,
   alwaysUseWasm,
 }: WorkerOptions): Promise<WorkerResult> {
   const esbuild = new EsbuildExecutor(alwaysUseWasm);
@@ -55,6 +56,7 @@ async function processCss({
   const { code, warnings: esBuildWarnings } = await esbuild.transform(result.css, {
     loader: 'css',
     minify: true,
+    target: targets,
     sourcefile: filePath,
   });
 
