@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.0.0-rc.3](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-rc.2...v13.0.0-rc.3) (2021-10-26)
+
+
+### Bug Fixes
+
+* report typescript configuration errors ([31b508d](https://github.com/ng-packagr/ng-packagr/commit/31b508d4d8373ec460e0395cb255c7dac2d086bc))
+
 ## [13.0.0-rc.2](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-rc.1...v13.0.0-rc.2) (2021-10-21)
 
 
