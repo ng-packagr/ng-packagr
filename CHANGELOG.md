@@ -4,6 +4,72 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [13.0.0](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-rc.3...v13.0.0) (2021-11-03)
 
+### ⚠ BREAKING CHANGES
+
+* TypeScript versions prior to 4.4 are no longer supported.
+* Compilation of libraries using VIew Engine is no longer supported.
+* We no longer generate UMD bundles. The below options which were used for UMD bundle generation has also been removed;
+
+- `umdModuleIds`
+- `amdId`
+- `umdId`
+
+* Support for `node-sass`  has been removed. sass will be used by default to compile SASS and SCSS files.
+
+### Features
+
+* add package exports for node and es2015 ([bd986f6](https://github.com/ng-packagr/ng-packagr/commit/bd986f6e737239a82b934f4f88b9d648fb496d29))
+* add support for package.json exports ([047e3ca](https://github.com/ng-packagr/ng-packagr/commit/047e3cac2beb15d5b62e016e3c0b64f26bba43aa))
+* drop support for node-sass ([34d805d](https://github.com/ng-packagr/ng-packagr/commit/34d805d9e96bd05888043010eb874986d7820feb))
+* emit Javascript files with `.mjs` extension ([95166f3](https://github.com/ng-packagr/ng-packagr/commit/95166f3917e9674b5fd17d4868df71e497646c7f))
+
+* support TypeScript to 4.4 ([40f7316](https://github.com/ng-packagr/ng-packagr/commit/40f73161a3b5fdefcd672a9b5ce325fcb208c0c4))
+* update `tslib`peerDependencies to `^2.3.0` ([12dc21e](https://github.com/ng-packagr/ng-packagr/commit/12dc21e747382aff183e5c678c3aa580fd67608e))
+* add package exports for node and es2015 ([bd986f6](https://github.com/ng-packagr/ng-packagr/commit/bd986f6e737239a82b934f4f88b9d648fb496d29))
+* add support for package.json exports ([047e3ca](https://github.com/ng-packagr/ng-packagr/commit/047e3cac2beb15d5b62e016e3c0b64f26bba43aa))
+* drop support for node-sass ([34d805d](https://github.com/ng-packagr/ng-packagr/commit/34d805d9e96bd05888043010eb874986d7820feb))
+* emit Javascript files with `.mjs` extension ([95166f3](https://github.com/ng-packagr/ng-packagr/commit/95166f3917e9674b5fd17d4868df71e497646c7f))
+* support Node.js version 16 ([5c8ce22](https://github.com/ng-packagr/ng-packagr/commit/5c8ce225c3a7c4243e3fc0522509a683f5a7535e))
+* add esm2020 conditions in APF package exports ([ed79b27](https://github.com/ng-packagr/ng-packagr/commit/ed79b27ff69378fa2796d81626969292c27d1da9))
+* add es2020 conditional export ([e5d4296](https://github.com/ng-packagr/ng-packagr/commit/e5d4296f7b755f6805270eb3b6100dcf66003333))
+* do not generate UMDs ([cc59146](https://github.com/ng-packagr/ng-packagr/commit/cc5914659973a3c9e6dc04e2c038457923afae82)), closes [#2023](https://github.com/ng-packagr/ng-packagr/issues/2023) [#2000](https://github.com/ng-packagr/ng-packagr/issues/2000) [#1757](https://github.com/ng-packagr/ng-packagr/issues/1757) [#1674](https://github.com/ng-packagr/ng-packagr/issues/1674)
+* downlevel es2020 bundle to generate FESM2015 ([6cf2514](https://github.com/ng-packagr/ng-packagr/commit/6cf251460e58dc430416922429d2f2dcb6a48a9c))
+* enable Ivy partial compilations by default ([46133d9](https://github.com/ng-packagr/ng-packagr/commit/46133d98630e137764e0daf8a4eddaf98ac159e1)), closes [#1087](https://github.com/ng-packagr/ng-packagr/issues/1087) [#382](https://github.com/ng-packagr/ng-packagr/issues/382) [#285](https://github.com/ng-packagr/ng-packagr/issues/285) [#317](https://github.com/ng-packagr/ng-packagr/issues/317) [#355](https://github.com/ng-packagr/ng-packagr/issues/355) [#656](https://github.com/ng-packagr/ng-packagr/issues/656) [#917](https://github.com/ng-packagr/ng-packagr/issues/917)
+* replace es2015 with es2020 ([9e37a56](https://github.com/ng-packagr/ng-packagr/commit/9e37a56a43d1bcd34e9f6264b3cc6f5590c2d1d1))
+* support specifying stylesheet language for inline component styles ([61cd015](https://github.com/ng-packagr/ng-packagr/commit/61cd015e174a3e1db0507e63005704a7f49b9952))
+* enable providing cache directory and disabling caching via options ([7d6ee38](https://github.com/ng-packagr/ng-packagr/commit/7d6ee382daa5963a1e2e9f14670a657a53e363a5))
+
+### Bug Fixes
+
+* error when a finding a conflicting package export ([bf3a0b9](https://github.com/ng-packagr/ng-packagr/commit/bf3a0b9c729668174e1df1e5de88393f8294a796))
+* merge instead of overriding package exports ([f238118](https://github.com/ng-packagr/ng-packagr/commit/f2381189b53bb7b067b95279d76a767908d4be1f))
+* improve Safari browserslist to esbuild target conversion ([23b4776](https://github.com/ng-packagr/ng-packagr/commit/23b47761dd60ac83af2a053d866c6ece9ab38330))
+* incorrect cache path ([2c0121a](https://github.com/ng-packagr/ng-packagr/commit/2c0121aced903de87c4303735b2654472e12bea4))
+* make cache paths safe for windows ([5b58731](https://github.com/ng-packagr/ng-packagr/commit/5b5873188d09af862aa756741b2d0857e1308c7b))
+* provide supported browsers to esbuild ([4ed2e08](https://github.com/ng-packagr/ng-packagr/commit/4ed2e089d17ac19b0608012c8e509d643fc6e8ca))
+* set browserslist defaults ([8223a47](https://github.com/ng-packagr/ng-packagr/commit/8223a476e816e9548ec945e22e04902712fcab4b)), closes [/github.com/browserslist/browserslist/blob/83764ea81ffaa39111c204b02c371afa44a4ff07/index.js#L516-L522](https://github.com/ng-packagr//github.com/browserslist/browserslist/blob/83764ea81ffaa39111c204b02c371afa44a4ff07/index.js/issues/L516-L522)
+
+* error when a finding a conflicting package export ([bf3a0b9](https://github.com/ng-packagr/ng-packagr/commit/bf3a0b9c729668174e1df1e5de88393f8294a796))
+* merge instead of overriding package exports ([f238118](https://github.com/ng-packagr/ng-packagr/commit/f2381189b53bb7b067b95279d76a767908d4be1f))
+* report typescript configuration errors ([31b508d](https://github.com/ng-packagr/ng-packagr/commit/31b508d4d8373ec460e0395cb255c7dac2d086bc))
+* don't process tslib with ngcc ([925b427](https://github.com/ng-packagr/ng-packagr/commit/925b427fe0a8b39b5fb87d7dfd259455cb5f3248))
+* replace `node-sass-tilde-importer` with custom sass importer ([5cf363b](https://github.com/ng-packagr/ng-packagr/commit/5cf363b35fa33a7bf1aa979463b3ea6cb9814ab5)), closes [#2125](https://github.com/ng-packagr/ng-packagr/issues/2125)
+* display package versions correctly when using the version command ([141fd65](https://github.com/ng-packagr/ng-packagr/commit/141fd655d7b080a9211596ed2a8110fdc06ba7d5))
+* force less version 3.5 math behaviour ([a491faf](https://github.com/ng-packagr/ng-packagr/commit/a491faf0a37ea884f0714396b6e38a950d6a4563)), closes [#2113](https://github.com/ng-packagr/ng-packagr/issues/2113)
+* only watch dependent files ([5bf477d](https://github.com/ng-packagr/ng-packagr/commit/5bf477dc1df72b053830aed659c94108027ce25a)), closes [#1829](https://github.com/ng-packagr/ng-packagr/issues/1829) [#2042](https://github.com/ng-packagr/ng-packagr/issues/2042) [#1723](https://github.com/ng-packagr/ng-packagr/issues/1723)
+* remove `@rollup/plugin-commonjs` ([0d306a3](https://github.com/ng-packagr/ng-packagr/commit/0d306a309e8d1ce3574f1bc2185b442c60149d4f))
+* include `esbuild-check` in the dist package ([eda7f04](https://github.com/ng-packagr/ng-packagr/commit/eda7f04e36cd6ca7451e71806b6a408127ba3ddb))
+* support WASM-based esbuild optimizer fallback ([68b5f0b](https://github.com/ng-packagr/ng-packagr/commit/68b5f0b7c1798a7f79a4c3acf1415842b9973bce))
+
+* don't exit with non zero error code on non error compiler diagnostics ([0daa33e](https://github.com/ng-packagr/ng-packagr/commit/0daa33e826795d5b1ecd91f3c67a42996de2b20f))
+* normalize NGCC tsconfig path ([3846b40](https://github.com/ng-packagr/ng-packagr/commit/3846b40102b3cd8b48188fa08203961552700523))
+
+### Performance
+
+* only re-generate FESMs when ESM has changed ([2a02a89](https://github.com/ng-packagr/ng-packagr/commit/2a02a896c7a100e1538892fd6ab66974a52af3fe))
+* read esm files from memory ([51ba534](https://github.com/ng-packagr/ng-packagr/commit/51ba5346818294e831e70393f41aed09bc8ba18c))
+* store fesm generation state on disk ([4565a8b](https://github.com/ng-packagr/ng-packagr/commit/4565a8bd95d61c30e835f97a408f62da28e523ba))
+
 ## [13.0.0-rc.3](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-rc.2...v13.0.0-rc.3) (2021-10-26)
 
 
