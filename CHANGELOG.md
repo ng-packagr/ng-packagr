@@ -9,11 +9,9 @@ All notable changes to this project will be documented in this file. See [standa
 * TypeScript versions prior to 4.4 are no longer supported.
 * Compilation of libraries using VIew Engine is no longer supported.
 * We no longer generate UMD bundles. The below options which were used for UMD bundle generation has also been removed;
-
-- `umdModuleIds`
-- `amdId`
-- `umdId`
-
+  - `umdModuleIds`
+  - `amdId`
+  - `umdId`
 * Support for `node-sass`  has been removed. sass will be used by default to compile SASS and SCSS files.
 
 ### Features
@@ -22,7 +20,6 @@ All notable changes to this project will be documented in this file. See [standa
 * add support for package.json exports ([047e3ca](https://github.com/ng-packagr/ng-packagr/commit/047e3cac2beb15d5b62e016e3c0b64f26bba43aa))
 * drop support for node-sass ([34d805d](https://github.com/ng-packagr/ng-packagr/commit/34d805d9e96bd05888043010eb874986d7820feb))
 * emit Javascript files with `.mjs` extension ([95166f3](https://github.com/ng-packagr/ng-packagr/commit/95166f3917e9674b5fd17d4868df71e497646c7f))
-
 * support TypeScript to 4.4 ([40f7316](https://github.com/ng-packagr/ng-packagr/commit/40f73161a3b5fdefcd672a9b5ce325fcb208c0c4))
 * update `tslib`peerDependencies to `^2.3.0` ([12dc21e](https://github.com/ng-packagr/ng-packagr/commit/12dc21e747382aff183e5c678c3aa580fd67608e))
 * add package exports for node and es2015 ([bd986f6](https://github.com/ng-packagr/ng-packagr/commit/bd986f6e737239a82b934f4f88b9d648fb496d29))
@@ -48,7 +45,6 @@ All notable changes to this project will be documented in this file. See [standa
 * make cache paths safe for windows ([5b58731](https://github.com/ng-packagr/ng-packagr/commit/5b5873188d09af862aa756741b2d0857e1308c7b))
 * provide supported browsers to esbuild ([4ed2e08](https://github.com/ng-packagr/ng-packagr/commit/4ed2e089d17ac19b0608012c8e509d643fc6e8ca))
 * set browserslist defaults ([8223a47](https://github.com/ng-packagr/ng-packagr/commit/8223a476e816e9548ec945e22e04902712fcab4b)), closes [/github.com/browserslist/browserslist/blob/83764ea81ffaa39111c204b02c371afa44a4ff07/index.js#L516-L522](https://github.com/ng-packagr//github.com/browserslist/browserslist/blob/83764ea81ffaa39111c204b02c371afa44a4ff07/index.js/issues/L516-L522)
-
 * error when a finding a conflicting package export ([bf3a0b9](https://github.com/ng-packagr/ng-packagr/commit/bf3a0b9c729668174e1df1e5de88393f8294a796))
 * merge instead of overriding package exports ([f238118](https://github.com/ng-packagr/ng-packagr/commit/f2381189b53bb7b067b95279d76a767908d4be1f))
 * report typescript configuration errors ([31b508d](https://github.com/ng-packagr/ng-packagr/commit/31b508d4d8373ec460e0395cb255c7dac2d086bc))
@@ -60,7 +56,6 @@ All notable changes to this project will be documented in this file. See [standa
 * remove `@rollup/plugin-commonjs` ([0d306a3](https://github.com/ng-packagr/ng-packagr/commit/0d306a309e8d1ce3574f1bc2185b442c60149d4f))
 * include `esbuild-check` in the dist package ([eda7f04](https://github.com/ng-packagr/ng-packagr/commit/eda7f04e36cd6ca7451e71806b6a408127ba3ddb))
 * support WASM-based esbuild optimizer fallback ([68b5f0b](https://github.com/ng-packagr/ng-packagr/commit/68b5f0b7c1798a7f79a4c3acf1415842b9973bce))
-
 * don't exit with non zero error code on non error compiler diagnostics ([0daa33e](https://github.com/ng-packagr/ng-packagr/commit/0daa33e826795d5b1ecd91f3c67a42996de2b20f))
 * normalize NGCC tsconfig path ([3846b40](https://github.com/ng-packagr/ng-packagr/commit/3846b40102b3cd8b48188fa08203961552700523))
 
