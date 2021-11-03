@@ -74,7 +74,7 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
 
 ## Features
 
-* :gift: Implements [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview)
+* :gift: Implements [Angular Package Format](https://angular.io/guide/angular-package-format)
   * :checkered_flag: Bundles your library in FESM2020
   * :school_satchel: npm package can be consumed by [Angular CLI](https://github.com/angular/angular-cli), [Webpack](https://github.com/webpack/webpack), or [SystemJS](https://github.com/systemjs/systemjs)
   * :dancer: Creates type definitions (`.d.ts`)
@@ -100,7 +100,7 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
 
 ## Knowledge
 
-[Angular Package Format v12.0](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview), design document at Google Docs
+[Angular Package Format documentation](https://angular.io/guide/angular-package-format)
 
 Packaging Angular Libraries - Jason Aden at Angular Mountain View Meetup ([Jan 2018, 45min talk](https://www.youtube.com/watch?v=QfvwQEJVOig&t=3612s))
 
