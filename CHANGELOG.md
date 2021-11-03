@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.0.0](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-rc.3...v13.0.0) (2021-11-03)
+
 ## [13.0.0-rc.3](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0-rc.2...v13.0.0-rc.3) (2021-10-26)
 
 
