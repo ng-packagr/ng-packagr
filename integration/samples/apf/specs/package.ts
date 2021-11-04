@@ -45,16 +45,20 @@ describe(`@sample/apf`, () => {
 
     it(`should add package 'exports'`, () => {
       expect(PACKAGE['exports']).to.deep.equal({
-        './package.json': {
-          default: './package.json',
-        },
         '.': {
+          sass: './theming.scss',
           types: './sample-apf.d.ts',
           esm2020: './esm2020/sample-apf.mjs',
           es2020: './fesm2020/sample-apf.mjs',
           es2015: './fesm2015/sample-apf.mjs',
           node: './fesm2015/sample-apf.mjs',
           default: './fesm2020/sample-apf.mjs',
+        },
+        './theming': {
+          sass: './theming.scss',
+        },
+        './package.json': {
+          default: './package.json',
         },
         './secondary': {
           types: './secondary/sample-apf-secondary.d.ts',

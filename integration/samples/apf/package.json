@@ -15,11 +15,20 @@
       "../../../node_modules/.bin/cross-env TS_NODE_PROJECT=../../../integration/tsconfig.specs.json ../../../node_modules/.bin/mocha --compilers ts:ts-node/register specs/**/*.ts"
   },
   "ngPackage": {
+    "assets": ["./*.scss"],
     "lib": {
       "entryFile": "public_api.ts"
     }
   },
   "devDependencies": {
     "@angular/compiler-cli": "^4.1.2"
+  },
+  "exports": {
+    ".": {
+      "sass": "./theming.scss"
+    },
+    "./theming": {
+      "sass": "./theming.scss"
+    }
   }
 }
