@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [13.0.2](https://github.com/ng-packagr/ng-packagr/compare/v13.0.1...v13.0.2) (2021-11-04)
+
+
+### Bug Fixes
+
+* handle imports of node packages without tilda ([a60ff99](https://github.com/ng-packagr/ng-packagr/commit/a60ff999aeb44449ee7f1fe3b469888a2397469f)), closes [#2142](https://github.com/ng-packagr/ng-packagr/issues/2142)
+
 ### [13.0.1](https://github.com/ng-packagr/ng-packagr/compare/v13.0.0...v13.0.1) (2021-11-04)
 
 
