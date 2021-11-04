@@ -1,7 +1,7 @@
 import browserslist from 'browserslist';
 import { sync } from 'find-parent-dir';
 import { existsSync } from 'fs';
-import { dirname, extname, resolve } from 'path';
+import { dirname, extname, join, resolve } from 'path';
 import postcss from 'postcss';
 import postcssPresetEnv from 'postcss-preset-env';
 import postcssUrl from 'postcss-url';
@@ -31,11 +31,12 @@ export class StylesheetProcessor {
   private targets: string[];
   private postCssProcessor: ReturnType<typeof postcss>;
   private esbuild = new EsbuildExecutor();
+  private styleIncludePaths: string[];
 
   constructor(
     private readonly basePath: string,
     private readonly cssUrl?: CssUrl,
-    private readonly styleIncludePaths?: string[],
+    private readonly includePaths?: string[],
     private readonly cacheDirectory?: string | false,
   ) {
     log.debug(`determine browserslist for ${this.basePath}`);
@@ -52,6 +53,9 @@ export class StylesheetProcessor {
       'last 2 iOS major versions',
       'Firefox ESR',
     ];
+
+    const rootNodeModules = sync(basePath, 'node_modules');
+    this.styleIncludePaths = [...this.includePaths, join(rootNodeModules, 'node_modules')];
 
     this.browserslistData = browserslist(undefined, { path: this.basePath });
     this.targets = transformSupportedBrowsersToTargets(this.browserslistData);
