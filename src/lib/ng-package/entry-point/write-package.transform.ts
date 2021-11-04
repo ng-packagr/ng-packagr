@@ -110,12 +110,7 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
           fesm2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
           fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
           typings: relativeUnixFromDestPath(destinationFiles.declarations),
-          exports: ngEntryPoint.isSecondaryEntryPoint
-            ? undefined
-            : {
-                ...ngEntryPoint.packageJson.exports,
-                ...generatePackageExports(ngEntryPoint, graph),
-              },
+          exports: ngEntryPoint.isSecondaryEntryPoint ? undefined : generatePackageExports(ngEntryPoint, graph),
           // webpack v4+ specific flag to enable advanced optimizations and code splitting
           sideEffects: ngEntryPoint.packageJson.sideEffects ?? false,
         },
@@ -151,7 +146,7 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
 async function writePackageJson(
   entryPoint: NgEntryPoint,
   pkg: NgPackage,
-  additionalProperties: { [key: string]: string | boolean | string[] },
+  additionalProperties: { [key: string]: string | boolean | string[] | ConditionalExport },
   isWatchMode: boolean,
   compilationMode: CompilationMode,
   spinner: ora.Ora,
@@ -284,45 +279,70 @@ function checkNonPeerDependencies(
   }
 }
 
-type PackageExports = Record<string, Record<string, string>>;
-function generatePackageExports(
-  { destinationPath, packageJson }: NgEntryPoint,
-  graph: BuildGraph,
-): PackageExports | undefined {
-  const verifyNonConflictingExport = (subpath: string) => {
-    if (packageJson.exports?.[subpath] !== undefined) {
-      throw Error(
-        'Found a conflicting subpath export in the `package.json` file that would be overridden by the ' +
-          `packager. Please unset the mapping for: "${subpath}".`,
-      );
-    }
-  };
+type PackageExports = Record<string, ConditionalExport>;
 
-  verifyNonConflictingExport('./package.json');
-  const exports: PackageExports = {
-    './package.json': {
-      default: './package.json',
-    },
+/**
+ * Type describing the conditional exports descriptor for an entry-point.
+ * https://nodejs.org/api/packages.html#packages_conditional_exports
+ */
+type ConditionalExport = {
+  node?: string;
+  types?: string;
+  esm2020?: string;
+  es2020?: string;
+  es2015?: string;
+  default?: string;
+};
+
+/**
+ * Generates the `package.json` package exports following APF v13.
+ * This is supposed to match with: https://github.com/angular/angular/blob/e0667efa6eada64d1fb8b143840689090fc82e52/packages/bazel/src/ng_package/packager.ts#L415.
+ */
+function generatePackageExports({ destinationPath, packageJson }: NgEntryPoint, graph: BuildGraph): PackageExports {
+  const exports: PackageExports = packageJson.exports ?? {};
+
+  const insertMappingOrError = (subpath: string, mapping: ConditionalExport) => {
+    if (exports[subpath] === undefined) {
+      exports[subpath] = {};
+    }
+
+    const subpathExport = exports[subpath];
+
+    // Go through all conditions that should be inserted. If the condition is already
+    // manually set of the subpath export, we throw an error. In general, we allow for
+    // additional conditions to be set. These will always precede the generated ones.
+    for (const conditionName of Object.keys(mapping) as [keyof ConditionalExport]) {
+      if (subpathExport[conditionName] !== undefined) {
+        throw Error(
+          `Found a conflicting export condition for "${subpath}". The "${conditionName}" ` +
+            `condition would be overridden by ng-packagr. Please unset it.`,
+        );
+      }
+
+      // **Note**: The order of the conditions is preserved even though we are setting
+      // the conditions once at a time (the latest assignment will be at the end).
+      subpathExport[conditionName] = mapping[conditionName];
+    }
   };
 
   const relativeUnixFromDestPath = (filePath: string) =>
     './' + ensureUnixPath(path.relative(destinationPath, filePath));
+
+  insertMappingOrError('./package.json', { default: './package.json' });
 
   const entryPoints = graph.filter(isEntryPoint);
   for (const entryPoint of entryPoints) {
     const { destinationFiles, isSecondaryEntryPoint } = entryPoint.data.entryPoint;
     const subpath = isSecondaryEntryPoint ? `./${destinationFiles.directory}` : '.';
 
-    verifyNonConflictingExport(subpath);
-
-    exports[subpath] = {
+    insertMappingOrError(subpath, {
       types: relativeUnixFromDestPath(destinationFiles.declarations),
       esm2020: relativeUnixFromDestPath(destinationFiles.esm2020),
       es2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
       es2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
       node: relativeUnixFromDestPath(destinationFiles.fesm2015),
       default: relativeUnixFromDestPath(destinationFiles.fesm2020),
-    };
+    });
   }
 
   return exports;
