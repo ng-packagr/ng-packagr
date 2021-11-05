@@ -1,7 +1,6 @@
 import browserslist from 'browserslist';
-import { sync } from 'find-parent-dir';
 import { existsSync } from 'fs';
-import { dirname, extname, join, resolve } from 'path';
+import { dirname, extname, join } from 'path';
 import postcss from 'postcss';
 import postcssPresetEnv from 'postcss-preset-env';
 import postcssUrl from 'postcss-url';
@@ -54,8 +53,19 @@ export class StylesheetProcessor {
       'Firefox ESR',
     ];
 
-    const rootNodeModules = sync(basePath, 'node_modules');
-    this.styleIncludePaths = [...this.includePaths, join(rootNodeModules, 'node_modules')];
+    this.styleIncludePaths = [...this.includePaths];
+    let prevDir = null;
+    let currentDir = this.basePath;
+
+    while (currentDir !== prevDir) {
+      const p = join(currentDir, 'node_modules');
+      if (existsSync(p)) {
+        this.styleIncludePaths.push(p);
+      }
+
+      prevDir = currentDir;
+      currentDir = dirname(prevDir);
+    }
 
     this.browserslistData = browserslist(undefined, { path: this.basePath });
     this.targets = transformSupportedBrowsersToTargets(this.browserslistData);
@@ -234,27 +244,8 @@ function customSassImporter(url: string, prev: string): { file: string; prev: st
     return undefined;
   }
 
-  const result = resolveImport(url.substr(1), prev);
-  if (!result) {
-    return undefined;
-  }
-
   return {
-    file: result,
+    file: url.substr(1),
     prev,
   };
-}
-
-function resolveImport(target: string, basePath: string): string | undefined {
-  const root = sync(basePath, 'node_modules');
-  if (!root) {
-    return undefined;
-  }
-
-  const filePath = resolve(root, 'node_modules', target);
-  if (existsSync(filePath) || existsSync(dirname(filePath))) {
-    return filePath;
-  }
-
-  return resolveImport(target, dirname(root));
 }
