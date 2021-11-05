@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [13.0.3](https://github.com/ng-packagr/ng-packagr/compare/v13.0.2...v13.0.3) (2021-11-05)
+
+
+### Bug Fixes
+
+* handle multiple node_modules when resolving Sass ([c7c51a3](https://github.com/ng-packagr/ng-packagr/commit/c7c51a34b016cbff07441c59e5a18a211ec1d729))
+
 ### [13.0.2](https://github.com/ng-packagr/ng-packagr/compare/v13.0.1...v13.0.2) (2021-11-04)
 
 
