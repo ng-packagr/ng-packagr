@@ -42,7 +42,8 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
   const fullPath = path.resolve(folderPathOrFilePath);
   const pathStats = await stat(fullPath);
   const basePath = pathStats.isDirectory() ? fullPath : path.dirname(fullPath);
-  const packageJson: unknown = await readConfigFile(path.join(basePath, 'package.json'));
+  const pkgJsonPath = path.join(basePath, 'package.json');
+  const packageJson: unknown = await readConfigFile(pkgJsonPath);
 
   if (!packageJson && !isSecondary) {
     throw new Error(`Cannot discover package sources at ${folderPathOrFilePath} as 'package.json' was not found.`);
@@ -56,6 +57,9 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
   if (packageJson && packageJson['ngPackage']) {
     // Read `ngPackage` from `package.json`
     ngPackageJson = { ...packageJson['ngPackage'] };
+    log.warn(
+      `Found configuration in ${pkgJsonPath}.\nConfiguring ng-packagr in "package.json" is deprecated. Use "ng-package.json" instead.`,
+    );
   } else if (pathStats.isDirectory()) {
     ngPackageJson = await readConfigFile(path.join(basePath, 'ng-package.json'));
     if (!ngPackageJson) {
