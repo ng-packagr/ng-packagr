@@ -97,6 +97,7 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
 - [Override tsconfig](docs/override-tsconfig.md)
 - [Add Style Include Paths](docs/style-include-paths.md)
 - [Package Secondary Entrypoints (sub packages)](docs/secondary-entrypoints.md)
+- [Export Styles (APF v13+)](docs/export-styles.md)
 
 ## Knowledge
 

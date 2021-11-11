@@ -21,3 +21,6 @@ You can copy these assets by using the `assets` option.
   }
 }
 ```
+
+## Angular Package Format 13
+If your copied assets include styles that should be made available for importing/using, please see the guidance on how to [export styles](export-styles) in a way that's compatible with APF version 13.
