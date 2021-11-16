@@ -23,11 +23,11 @@ You can copy these assets by using the `assets` option.
 ```
 
 ## Exporting Styles
-If your copied assets include styles that should be part of your library's public API, they need to be represented in the [`exports`](https://angular.io/guide/angular-package-format#exports) of its `package.json`.
+When including additional assets like Sass mixins or pre-compiled CSS, you need to add these manually to the conditional "exports" in the `package.json` of the primary entry point.
 
-To do this, you can enumerate all such exports in an `"exports"` object in your base `package.json`.  `ng-packagr` will augment this and merge the additional exports generated from the build.
+ng-packagr will merge the manually-added "exports" with auto-generated ones, allowing for library authors to configure additional export sub-paths, or custom conditions.
 
-### Example `package.json`
+### Example package.json
 ```json
 {
   "name": "your-library",
@@ -54,22 +54,6 @@ To do this, you can enumerate all such exports in an `"exports"` object in your 
   },
   "dependencies": {
     ...
-  }
-}
-```
-
-### Example ngPackage Config
-```json
-{
-  "ngPackage": {
-    "assets": [
-      "CHANGELOG.md",
-      "./styles",
-      "_index.scss"
-    ],
-    "lib": {
-      ...
-    }
   }
 }
 ```
