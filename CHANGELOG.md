@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [13.0.4](https://github.com/ng-packagr/ng-packagr/compare/v13.0.3...v13.0.4) (2021-11-17)
+
+
+### Bug Fixes
+
+* `--version` doesn't work ([ba835bb](https://github.com/ng-packagr/ng-packagr/commit/ba835bbfe39725085fdaec4fae7e93d355d68f59)), closes [#2157](https://github.com/ng-packagr/ng-packagr/issues/2157)
+* remove `files` property from default tsconfig ([c4cd3a7](https://github.com/ng-packagr/ng-packagr/commit/c4cd3a7bf482e1732d25afeaa76cc9d9c41a6efc)), closes [#2156](https://github.com/ng-packagr/ng-packagr/issues/2156)
+* show warning when configuring ng-packagr in `package.json` ([037ccf5](https://github.com/ng-packagr/ng-packagr/commit/037ccf5cf30c1680251199b6affb7ecb0c89ee01))
+
 ### [13.0.3](https://github.com/ng-packagr/ng-packagr/compare/v13.0.2...v13.0.3) (2021-11-05)
 
 
