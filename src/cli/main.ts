@@ -3,7 +3,7 @@
 import { program } from 'commander';
 import * as path from 'path';
 import { error } from '../lib/utils/log';
-import { build, execute } from '../public_api';
+import { build, execute, version as versionCommand } from '../public_api';
 
 const DEFAULT_PROJECT_PATH = path.resolve(process.cwd(), 'ng-package.json');
 
@@ -27,7 +27,7 @@ program
   );
 
 program.on('option:version', () => {
-  void version().then(() => process.exit(0));
+  void versionCommand().then(() => process.exit(0));
 });
 
 program.parse(process.argv);
