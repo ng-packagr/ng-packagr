@@ -39,13 +39,7 @@ ng-packagr will merge the manually-added "exports" with auto-generated ones, all
     "./styles/dark-theme": {
       "sass": "./styles/_dark-theme.scss"
     },
-    "./styles/_dark-theme": {
-      "sass": "./styles/_dark-theme.scss"
-    },
     "./styles/light-theme": {
-      "sass": "./styles/_light-theme.scss"
-    },
-    "./styles/_light-theme": {
       "sass": "./styles/_light-theme.scss"
     }
   },
