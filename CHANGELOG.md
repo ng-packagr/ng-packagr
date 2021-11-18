@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 ### [13.0.6](https://github.com/ng-packagr/ng-packagr/compare/v13.0.5...v13.0.6) (2021-11-18)
+### Bug Fixes
+*  Revert "build: update dependency postcss-preset-env to v7", due to licensing issues of `postcss-values-parser`. https://github.com/shellscape/postcss-values-parser/issues/115
 
 ### [13.0.5](https://github.com/ng-packagr/ng-packagr/compare/v13.0.4...v13.0.5) (2021-11-17)
 ### Bug Fixes
