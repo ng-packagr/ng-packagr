@@ -299,7 +299,7 @@ type ConditionalExport = {
  * This is supposed to match with: https://github.com/angular/angular/blob/e0667efa6eada64d1fb8b143840689090fc82e52/packages/bazel/src/ng_package/packager.ts#L415.
  */
 function generatePackageExports({ destinationPath, packageJson }: NgEntryPoint, graph: BuildGraph): PackageExports {
-  const exports: PackageExports = packageJson.exports ?? {};
+  const exports: PackageExports = packageJson.exports ? JSON.parse(JSON.stringify(packageJson.exports)) : {};
 
   const insertMappingOrError = (subpath: string, mapping: ConditionalExport) => {
     if (exports[subpath] === undefined) {
