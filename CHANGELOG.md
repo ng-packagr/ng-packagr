@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [13.0.7](https://github.com/ng-packagr/ng-packagr/compare/v13.0.6...v13.0.7) (2021-11-23)
+
+
+### Bug Fixes
+
+* package exports merging during watch mode ([af36c3a](https://github.com/ng-packagr/ng-packagr/commit/af36c3ac3c7b952923424b798518d27ccac6c132)), closes [#2168](https://github.com/ng-packagr/ng-packagr/issues/2168)
+
 ### [13.0.6](https://github.com/ng-packagr/ng-packagr/compare/v13.0.5...v13.0.6) (2021-11-18)
 ### Bug Fixes
 *  Revert "build: update dependency postcss-preset-env to v7", due to licensing issues of `postcss-values-parser`. https://github.com/shellscape/postcss-values-parser/issues/115
