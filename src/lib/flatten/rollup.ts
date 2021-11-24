@@ -85,7 +85,7 @@ export async function rollupBundleFile(
   const { code, map } = output.output[0];
 
   return {
-    code,
+    code: code + '//# sourceMapping' + `URL=${path.basename(opts.dest)}.map\n`,
     map,
     cache: bundle.cache,
   };
