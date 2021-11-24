@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [13.0.8](https://github.com/ng-packagr/ng-packagr/compare/v13.0.7...v13.0.8) (2021-11-24)
+
+
+### Bug Fixes
+
+* correctly append `sourceMappingUrl` when saving FESMs into cache ([657eacd](https://github.com/ng-packagr/ng-packagr/commit/657eacd863aa989f11b8cbb2da2e485a7e42ca11)), closes [#2172](https://github.com/ng-packagr/ng-packagr/issues/2172)
+
 ### [13.0.7](https://github.com/ng-packagr/ng-packagr/compare/v13.0.6...v13.0.7) (2021-11-23)
 
 
