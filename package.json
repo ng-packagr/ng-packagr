@@ -58,19 +58,19 @@
     "esbuild": "^0.14.0"
   },
   "peerDependencies": {
-    "@angular/compiler-cli": "^13.0.0 || ^13.1.0-next",
+    "@angular/compiler-cli": "^13.0.0 || ^13.2.0-next",
     "tslib": "^2.3.0",
-    "typescript": "~4.4.0"
+    "typescript": ">=4.4.0 <4.6"
   },
   "devDependencies": {
-    "@angular/cdk": "^13.0.0",
-    "@angular/common": "~13.0.0",
-    "@angular/compiler": "~13.0.0",
-    "@angular/compiler-cli": "~13.0.0",
-    "@angular/core": "~13.0.0",
-    "@angular/material": "^13.0.0",
-    "@angular/platform-browser": "~13.0.0",
-    "@angular/router": "~13.0.0",
+    "@angular/cdk": "~13.1.0-next",
+    "@angular/common": "~13.1.0-next",
+    "@angular/compiler": "~13.1.0-next",
+    "@angular/compiler-cli": "~13.1.0-next",
+    "@angular/core": "~13.1.0-next",
+    "@angular/material": "~13.1.0-next",
+    "@angular/platform-browser": "~13.1.0-next",
+    "@angular/router": "~13.1.0-next",
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-angular": "^15.0.0",
     "@types/cacache": "^15.0.0",
@@ -104,7 +104,7 @@
     "standard-version": "^9.0.0",
     "ts-node": "^10.2.1",
     "tslib": "^2.0.0",
-    "typescript": "~4.4.0",
+    "typescript": "~4.5.2",
     "zone.js": "^0.11.0"
   },
   "private": true,
