@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [12.2.6](https://github.com/ng-packagr/ng-packagr/compare/v12.2.5...v12.2.6) (2021-12-08)
+
+
+### Bug Fixes
+
+* update `esbuild` to `0.13.8` ([7da5496](https://github.com/ng-packagr/ng-packagr/commit/7da5496b822e40ecc577b152e45d7489250c78ac)), closes [#2182](https://github.com/ng-packagr/ng-packagr/issues/2182)
+
 ### [12.2.5](https://github.com/ng-packagr/ng-packagr/compare/v12.2.4...v12.2.5) (2021-10-25)
 
 
