@@ -84,6 +84,9 @@ export async function rollupBundleFile(
 
   const { code, map } = output.output[0];
 
+  // Close the bundle to let plugins clean up their external processes or services
+  await bundle.close();
+
   return {
     code: code + '//# sourceMapping' + `URL=${path.basename(opts.dest)}.map\n`,
     map,
