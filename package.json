@@ -18,7 +18,10 @@
   },
   "author": "David Herges <david@spektrakel.de>",
   "license": "MIT",
-  "repository": "https://github.com/ng-packagr/ng-packagr.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ng-packagr/ng-packagr.git"
+  },
   "homepage": "https://github.com/ng-packagr/ng-packagr",
   "bugs": {
     "url": "https://github.com/ng-packagr/ng-packagr/issues"
