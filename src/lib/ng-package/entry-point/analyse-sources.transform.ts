@@ -37,7 +37,8 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
 
   debug(`Analysing sources for ${moduleId}`);
   const tsConfigOptions: ts.CompilerOptions = {
-    ...entryPoint.data.tsConfig.options,
+    // Needed because of `Property 'extendedDiagnostics' is incompatible with index signature.`
+    ...(entryPoint.data.tsConfig.options as ts.CompilerOptions),
     skipLibCheck: true,
     noLib: true,
     noEmit: true,
