@@ -72,7 +72,7 @@ export async function initializeTsConfig(
       'Project is attempting to disable the Ivy compiler. ' +
         'Angular versions 13 and higher do not support View Engine compiler for libraries. ' +
         'The Ivy compiler will be used to build this project. ' +
-        '\nFor additional information or if the build fails, please see https://angular.io/guide/ivy',
+        '\nFor additional information or if the build fails, please see https://v12.angular.io/guide/ivy',
     );
 
     defaultTsConfigParsed.options.enableIvy = true;
