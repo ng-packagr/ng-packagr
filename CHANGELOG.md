@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.2.0](https://github.com/ng-packagr/ng-packagr/compare/v13.1.3...v13.2.0) (2022-01-26)
+
+
+### Bug Fixes
+
+* link to angular 12 ivy docs ([be4c280](https://github.com/ng-packagr/ng-packagr/commit/be4c280bc1e6da1b8af3631b292444980063de80)), closes [#2228](https://github.com/ng-packagr/ng-packagr/issues/2228)
+
 ### [13.1.3](https://github.com/ng-packagr/ng-packagr/compare/v13.1.2...v13.1.3) (2022-01-13)
 
 ### Bug Fixes
