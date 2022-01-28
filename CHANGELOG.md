@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/v13.2.0...v14.0.0-next.0) (2022-01-28)
+
+
+### Features
+
+* support Angular 14 ([c153c4d](https://github.com/ng-packagr/ng-packagr/commit/c153c4d822bb4441fb7819a8c1d66548f34dfb35))
+
 ## [13.2.0](https://github.com/ng-packagr/ng-packagr/compare/v13.1.3...v13.2.0) (2022-01-26)
 
 
