@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.0...v14.0.0-next.1) (2022-01-31)
+
+
+### Bug Fixes
+
+* invalid browsers version ranges ([547a11f](https://github.com/ng-packagr/ng-packagr/commit/547a11f166e9b6347fee25ea66e3801ee4e11564))
+
 ## [14.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/v13.2.0...v14.0.0-next.0) (2022-01-28)
 
 
