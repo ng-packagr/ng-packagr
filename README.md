@@ -11,14 +11,6 @@
 [![npm Downloads](https://img.shields.io/npm/dw/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg?style=flat-square)](https://renovateapp.com/)
 
-## Credits
-
-### Contributors
-
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-
-<a href="https://github.com/ng-packagr/ng-packagr/graphs/contributors"><img src="https://opencollective.com/ng-packagr/contributors.svg?width=890&button=false" /></a>
-
 ## Installation
 
 ```bash
