@@ -270,7 +270,7 @@ function checkNonPeerDependencies(
     } else {
       spinner.warn(
         colors.yellow(
-          `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep}` +
+          `Distributing npm packages with '${property}' is not recommended. Please consider adding ${dep} ` +
             `to 'peerDependencies' or remove it from '${property}'.`,
         ),
       );
