@@ -39,7 +39,6 @@ jobs:
       - restore_cache:
           keys:
             - v7-dependencies-linux-{{ checksum "yarn.lock" }}
-            - v7-dependencies-linux
       # Install dependencies
       - run: yarn install --frozen-lockfile --non-interactive
       - save_cache:
@@ -103,7 +102,6 @@ jobs:
       - restore_cache:
           keys:
             - v7-dependencies-win-{{ checksum "yarn.lock" }}
-            - v7-dependencies-win
       # Install dependencies
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn build
