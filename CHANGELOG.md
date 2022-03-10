@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.1...v14.0.0-next.2) (2022-03-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* Support for TypeScript 4.4 and 4.5 has been removed. Please update to TypeScript 4.6.
+* Support for Node.js v12 has been removed as it will become EOL on 2022-04-30. Please use Node.js v14.15 or later.
+
+### Features
+
+* drop support for Node.js 12 ([181ac25](https://github.com/ng-packagr/ng-packagr/commit/181ac25f831e5e56c2eda357f72c2a46ab0abff2))
+* support TypeScript 4.6.2 ([9faef17](https://github.com/ng-packagr/ng-packagr/commit/9faef173ce4949c6993d32127c97d35fe0ce3bb5))
+
 ## [14.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.0...v14.0.0-next.1) (2022-01-31)
 
 
