@@ -46,7 +46,7 @@ export class BuildGraph implements Traversable<Node> {
     }
 
     if (this.watcher && node.url.startsWith(URL_PROTOCOL_FILE)) {
-      this.watcher.add(node.url.substr(URL_PROTOCOL_FILE.length));
+      this.watcher.add(node.url.slice(URL_PROTOCOL_FILE.length));
     }
 
     this.store.set(node.url, node);

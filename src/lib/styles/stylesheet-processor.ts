@@ -244,7 +244,7 @@ function customSassImporter(url: string, prev: string): { file: string; prev: st
   }
 
   return {
-    file: url.substr(1),
+    file: url.slice(1),
     prev,
   };
 }
