@@ -65,7 +65,7 @@ export class NgPackage {
     return this.primary.$get('keepLifecycleScripts');
   }
 
-  public get assets(): string[] {
+  public get assets(): (string | AssetEntry)[] {
     return this.primary.$get('assets');
   }
 
@@ -84,3 +84,5 @@ export class NgPackage {
     return [this.primary, ...this.secondaries].find(entryPoint => entryPoint.moduleId === moduleId);
   }
 }
+
+export type AssetEntry = { glob: string; input: string; ignore?: string[]; output: string };

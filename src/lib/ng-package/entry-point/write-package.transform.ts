@@ -10,7 +10,7 @@ import * as log from '../../utils/log';
 import { ensureUnixPath } from '../../utils/path';
 import { EntryPointNode, PackageNode, fileUrl, isEntryPoint, isEntryPointInProgress, isPackage } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
-import { NgPackage } from '../package';
+import { AssetEntry, NgPackage } from '../package';
 import { NgEntryPoint } from './entry-point';
 
 type CompilationMode = 'partial' | 'full' | undefined;
@@ -35,47 +35,73 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
     ];
 
     if (!ngEntryPoint.isSecondaryEntryPoint) {
-      const assetFiles: string[] = [];
-
       // COPY ASSET FILES TO DESTINATION
       spinner.start('Copying assets');
 
       try {
-        for (const asset of [...ngPackage.assets, 'LICENSE', '**/README.md']) {
-          let assetFullPath = path.join(ngPackage.src, asset);
+        type AssetCopyTask = [srcPath: string, destPath: string];
+        const assetCopyTasks: AssetCopyTask[] = [];
 
+        // Parse string assets and add to tasks
+        const assetGlobs = ngPackage.assets
+          .filter((asset): asset is string => typeof asset === 'string')
+          .concat('LICENSE', '**/README.md');
+        for (const assetGlob of assetGlobs) {
+          const assetFullGlob = path.join(ngPackage.src, assetGlob);
+          let assetFullGlobIs: 'file' | 'dir' | null = null;
           try {
-            const stats = await stat(assetFullPath);
-            if (stats.isFile()) {
-              assetFiles.push(assetFullPath);
-              continue;
-            }
-
-            if (stats.isDirectory()) {
-              assetFullPath = path.join(assetFullPath, '**/*');
-            }
+            const stats = await stat(assetFullGlob);
+            const isFile = stats.isFile() || assetGlob === 'LICENSE';
+            const isDir = stats.isDirectory();
+            assetFullGlobIs = isFile ? 'file' : isDir ? 'dir' : null;
           } catch {}
 
-          if (asset === 'LICENSE') {
-            continue;
+          const assetFilePaths: string[] = [];
+          if (assetFullGlobIs == 'file') {
+            assetFilePaths.push(assetFullGlob);
+          } else {
+            const glob = assetFullGlobIs == 'dir' ? path.join(assetFullGlob, '**/*') : assetFullGlob;
+            const paths = await globFiles(glob, {
+              ignore: ignorePaths,
+              cache: ngPackageNode.cache.globCache,
+              dot: true,
+              nodir: true,
+            });
+            assetFilePaths.push(...paths);
           }
 
-          const files = await globFiles(assetFullPath, {
-            ignore: ignorePaths,
+          const tasks: AssetCopyTask[] = assetFilePaths.map(filePath => [
+            filePath,
+            path.resolve(ngPackage.dest, path.relative(ngPackage.src, filePath)),
+          ]);
+          assetCopyTasks.push(...tasks);
+        }
+
+        // Parse object assets and add to tasks
+        const assetEntries = ngPackage.assets.filter((item): item is AssetEntry => typeof item !== 'string');
+        for (const assetEntry of assetEntries) {
+          const srcDirAbsPath = path.join(ngPackage.src, assetEntry.input);
+          const destDirAbsPath = path.join(ngPackage.dest, assetEntry.output);
+          const srcFileRelativePaths = await globFiles(assetEntry.glob, {
+            cwd: srcDirAbsPath,
+            ignore: [...ignorePaths, ...(assetEntry.ignore ?? [])],
             cache: ngPackageNode.cache.globCache,
             dot: true,
             nodir: true,
           });
-
-          if (files.length) {
-            assetFiles.push(...files);
-          }
+          assetCopyTasks.push(
+            ...srcFileRelativePaths.map(
+              (srcFileRelativePath): AssetCopyTask => [
+                path.join(srcDirAbsPath, srcFileRelativePath),
+                path.join(destDirAbsPath, srcFileRelativePath),
+              ],
+            ),
+          );
         }
 
-        for (const file of assetFiles) {
-          const relativePath = path.relative(ngPackage.src, file);
-          const destination = path.resolve(ngPackage.dest, relativePath);
-          const nodeUri = fileUrl(ensureUnixPath(file));
+        // Perform tasks
+        for (const [srcPath, destPath] of assetCopyTasks) {
+          const nodeUri = fileUrl(ensureUnixPath(srcPath));
           let node = graph.get(nodeUri);
           if (!node) {
             node = new Node(nodeUri);
@@ -83,7 +109,7 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
           }
 
           entryPoint.dependsOn(node);
-          await copyFile(file, destination);
+          await copyFile(srcPath, destPath);
         }
       } catch (error) {
         spinner.fail();
