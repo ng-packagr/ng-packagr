@@ -74,8 +74,6 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
     return graph;
   });
 
-type AssetCopyTask = [srcPath: string, destPath: string];
-
 async function copyAssets(
   graph: BuildGraph,
   entryPointNode: EntryPointNode,
@@ -91,76 +89,45 @@ async function copyAssets(
     `${ngPackage.dest}/**`,
   ];
 
-  const assetCopyTasks: AssetCopyTask[] = [];
+  const assets: AssetEntry[] = [];
 
-  // Parse string assets and add to tasks
-  const assetGlobs = ngPackage.assets
-    .filter((asset): asset is string => typeof asset === 'string')
-    .concat('LICENSE', '**/README.md');
-  for (const assetGlob of assetGlobs) {
-    const assetFullGlob = path.join(ngPackage.src, assetGlob);
-    let assetFullGlobIs: 'file' | 'dir' | null = null;
-    try {
-      const stats = await stat(assetFullGlob);
-      const isFile = stats.isFile() || assetGlob === 'LICENSE';
-      const isDir = stats.isDirectory();
-      assetFullGlobIs = isFile ? 'file' : isDir ? 'dir' : null;
-    } catch {}
-
-    const assetFilePaths: string[] = [];
-    if (assetFullGlobIs == 'file') {
-      assetFilePaths.push(assetFullGlob);
+  for (const item of ngPackage.assets.concat('LICENSE', '**/README.md')) {
+    let asset: AssetEntry;
+    if (typeof item == 'object') {
+      asset = item;
     } else {
-      const glob = assetFullGlobIs == 'dir' ? path.join(assetFullGlob, '**/*') : assetFullGlob;
-      const paths = await globFiles(glob, {
-        ignore: pathsIgnored,
-        cache: ngPackageNode.cache.globCache,
-        dot: true,
-        nodir: true,
-      });
-      assetFilePaths.push(...paths);
+      const glob = item;
+      const isDir = await stat(glob)
+        .then(stats => stats.isDirectory())
+        .catch(() => false);
+      asset = { glob: isDir ? path.join(glob, '**/*') : glob, input: '.', output: '/' };
     }
-
-    const tasks: AssetCopyTask[] = assetFilePaths.map(filePath => [
-      filePath,
-      path.resolve(ngPackage.dest, path.relative(ngPackage.src, filePath)),
-    ]);
-    assetCopyTasks.push(...tasks);
+    asset.input = path.join(ngPackage.src, asset.input);
+    asset.output = path.join(ngPackage.dest, asset.output);
+    asset.ignore = [...(asset.ignore ?? []), ...pathsIgnored];
+    // TODO: validate input and output paths
+    assets.push(asset);
   }
 
-  // Parse object assets and add to tasks
-  const assetEntries = ngPackage.assets.filter((item): item is AssetEntry => typeof item !== 'string');
-  for (const assetEntry of assetEntries) {
-    const srcDirAbsPath = path.join(ngPackage.src, assetEntry.input);
-    const destDirAbsPath = path.join(ngPackage.dest, assetEntry.output);
-    const srcFileRelativePaths = await globFiles(assetEntry.glob, {
-      cwd: srcDirAbsPath,
-      ignore: [...pathsIgnored, ...(assetEntry.ignore ?? [])],
+  for (const asset of assets) {
+    const fileSrcPathsRelative = await globFiles(asset.glob, {
+      cwd: asset.input,
       cache: ngPackageNode.cache.globCache,
       dot: true,
       nodir: true,
     });
-    assetCopyTasks.push(
-      ...srcFileRelativePaths.map(
-        (srcFileRelativePath): AssetCopyTask => [
-          path.join(srcDirAbsPath, srcFileRelativePath),
-          path.join(destDirAbsPath, srcFileRelativePath),
-        ],
-      ),
-    );
-  }
-
-  // Perform tasks
-  for (const [srcPath, destPath] of assetCopyTasks) {
-    const nodeUri = fileUrl(ensureUnixPath(srcPath));
-    let node = graph.get(nodeUri);
-    if (!node) {
-      node = new Node(nodeUri);
-      graph.put(node);
+    for (const fileSrcPathRelative of fileSrcPathsRelative) {
+      const fileSrcPath = path.join(asset.input, fileSrcPathRelative);
+      const fileDestPath = path.join(asset.output, fileSrcPathRelative);
+      const nodeUri = fileUrl(ensureUnixPath(fileSrcPath));
+      let node = graph.get(nodeUri);
+      if (!node) {
+        node = new Node(nodeUri);
+        graph.put(node);
+      }
+      entryPointNode.dependsOn(node);
+      await copyFile(fileSrcPath, fileDestPath);
     }
-
-    entryPointNode.dependsOn(node);
-    await copyFile(srcPath, destPath);
   }
 }
 
