@@ -102,10 +102,16 @@ async function copyAssets(
         .catch(() => false);
       asset = { glob: isDir ? path.join(glob, '**/*') : glob, input: '.', output: '/' };
     }
+
     asset.input = path.join(ngPackage.src, asset.input);
     asset.output = path.join(ngPackage.dest, asset.output);
     asset.ignore = [...(asset.ignore ?? []), ...pathsIgnored];
-    // TODO: validate input and output paths
+
+    const isOutputValid = !path.relative(ngPackage.dest, asset.output).startsWith('..');
+    if (!isOutputValid) {
+      throw new Error('Cannot write assets to a location outside of the output path.');
+    }
+
     assets.push(asset);
   }
 
