@@ -85,4 +85,9 @@ export class NgPackage {
   }
 }
 
-export type AssetEntry = { glob: string; input: string; ignore?: string[]; output: string };
+export interface AssetEntry {
+  glob: string;
+  input: string;
+  ignore?: string[];
+  output: string;
+}
