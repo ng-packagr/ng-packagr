@@ -95,8 +95,9 @@ async function copyAssets(
     let asset: AssetEntry;
     if (typeof item == 'object') {
       asset = item;
+      asset.glob = path.join(ngPackage.src, asset.input, asset.glob);
     } else {
-      const glob = item;
+      const glob = path.join(ngPackage.src, item);
       const isDir = await stat(glob)
         .then(stats => stats.isDirectory())
         .catch(() => false);
@@ -105,7 +106,7 @@ async function copyAssets(
 
     asset.input = path.join(ngPackage.src, asset.input);
     asset.output = path.join(ngPackage.dest, asset.output);
-    asset.ignore = [...(asset.ignore ?? []), ...pathsIgnored];
+    asset.ignore = [...(asset.ignore ?? []), ...pathsIgnored].map(glob => path.join(asset.input, glob));
 
     const isOutputValid = !path.relative(ngPackage.dest, asset.output).startsWith('..');
     if (!isOutputValid) {
@@ -116,15 +117,15 @@ async function copyAssets(
   }
 
   for (const asset of assets) {
-    const fileSrcPathsRelative = await globFiles(asset.glob, {
+    const fileSrcPaths = await globFiles(asset.glob, {
       cwd: asset.input,
+      ignore: asset.ignore,
       cache: ngPackageNode.cache.globCache,
       dot: true,
       nodir: true,
     });
-    for (const fileSrcPathRelative of fileSrcPathsRelative) {
-      const fileSrcPath = path.join(asset.input, fileSrcPathRelative);
-      const fileDestPath = path.join(asset.output, fileSrcPathRelative);
+    for (const fileSrcPath of fileSrcPaths) {
+      const fileDestPath = path.join(asset.output, path.relative(asset.input, fileSrcPath));
       const nodeUri = fileUrl(ensureUnixPath(fileSrcPath));
       let node = graph.get(nodeUri);
       if (!node) {

@@ -1,12 +1,12 @@
 {
   "$schema": "../../../src/ng-package.schema.json",
   "assets": [
-    "./assets/**/*.png",
+    "./assets-1/**/*.png",
     "./assets-2",
     {
       "glob": "**/*",
-      "input": "./assets-glob",
-      "output": "custom-assets/assets-3",
+      "input": "./assets-3",
+      "output": "assets-3",
       "ignore": ["*.svg"]
     }
   ],
