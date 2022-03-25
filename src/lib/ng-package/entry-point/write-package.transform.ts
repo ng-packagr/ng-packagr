@@ -81,7 +81,7 @@ async function copyAssets(
 ): Promise<void> {
   const ngPackage = ngPackageNode.data;
 
-  const pathsIgnored: string[] = [
+  const pathsForceIgnored: string[] = [
     '.gitkeep',
     '**/.DS_Store',
     '**/Thumbs.db',
@@ -91,8 +91,8 @@ async function copyAssets(
 
   const assets: AssetEntry[] = [];
 
-  for (const item of ngPackage.assets.concat('LICENSE', '**/README.md')) {
-    let asset: AssetEntry;
+  for (const item of [...ngPackage.assets, 'LICENSE', '**/README.md']) {
+    let asset: AssetEntry; // all paths/globs will be absolute after the normalization
     if (typeof item == 'object') {
       asset = item;
       asset.glob = path.join(ngPackage.src, asset.input, asset.glob);
@@ -103,13 +103,15 @@ async function copyAssets(
         .catch(() => false);
       asset = { glob: isDir ? path.join(glob, '**/*') : glob, input: '.', output: '/' };
     }
-
     asset.input = path.join(ngPackage.src, asset.input);
     asset.output = path.join(ngPackage.dest, asset.output);
-    asset.ignore = [...(asset.ignore ?? []), ...pathsIgnored].map(glob => path.join(asset.input, glob));
+    asset.ignore = [...(asset.ignore ?? []), ...pathsForceIgnored].map(glob => path.join(asset.input, glob));
 
-    const isOutputValid = !path.relative(ngPackage.dest, asset.output).startsWith('..');
-    if (!isOutputValid) {
+    const isAncestorPath = (target: string, datum: string) => path.relative(datum, target).startsWith('..');
+    if (isAncestorPath(asset.input, ngPackage.src)) {
+      throw new Error('Cannot read assets from a location outside of the project root.');
+    }
+    if (isAncestorPath(asset.output, ngPackage.dest)) {
       throw new Error('Cannot write assets to a location outside of the output path.');
     }
 
