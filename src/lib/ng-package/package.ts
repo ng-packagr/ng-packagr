@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { NgPackageConfig } from '../../ng-package.schema';
+import { AssetPattern, NgPackageConfig } from '../../ng-package.schema';
 import { NgEntryPoint } from './entry-point/entry-point';
 
 /**
@@ -65,7 +65,7 @@ export class NgPackage {
     return this.primary.$get('keepLifecycleScripts');
   }
 
-  public get assets(): (string | AssetEntry)[] {
+  public get assets(): AssetPattern[] {
     return this.primary.$get('assets');
   }
 
@@ -83,11 +83,4 @@ export class NgPackage {
   public entryPoint(moduleId: string): NgEntryPoint {
     return [this.primary, ...this.secondaries].find(entryPoint => entryPoint.moduleId === moduleId);
   }
-}
-
-export interface AssetEntry {
-  glob: string;
-  input: string;
-  ignore?: string[];
-  output: string;
 }

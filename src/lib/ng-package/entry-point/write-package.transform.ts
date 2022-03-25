@@ -1,5 +1,6 @@
 import ora from 'ora';
 import * as path from 'path';
+import { AssetPattern } from '../../../ng-package.schema';
 import { BuildGraph } from '../../graph/build-graph';
 import { Node } from '../../graph/node';
 import { transformFromPromise } from '../../graph/transform';
@@ -10,7 +11,7 @@ import * as log from '../../utils/log';
 import { ensureUnixPath } from '../../utils/path';
 import { EntryPointNode, PackageNode, fileUrl, isEntryPoint, isEntryPointInProgress, isPackage } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
-import { AssetEntry, NgPackage } from '../package';
+import { NgPackage } from '../package';
 import { NgEntryPoint } from './entry-point';
 
 type CompilationMode = 'partial' | 'full' | undefined;
@@ -73,6 +74,8 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
 
     return graph;
   });
+
+type AssetEntry = Exclude<AssetPattern, string>;
 
 async function copyAssets(
   graph: BuildGraph,
