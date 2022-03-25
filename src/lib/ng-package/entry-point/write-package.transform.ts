@@ -128,6 +128,7 @@ async function copyAssets(
       cache: ngPackageNode.cache.globCache,
       dot: true,
       nodir: true,
+      follow: asset.followSymlinks,
     });
     for (const fileSrcPath of fileSrcPaths) {
       const fileDestPath = path.join(asset.output, path.relative(asset.input, fileSrcPath));

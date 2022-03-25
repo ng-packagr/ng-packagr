@@ -102,6 +102,10 @@
             "output": {
               "type": "string",
               "description": "Absolute path within the output."
+            },
+            "followSymlinks": {
+              "type": "boolean",
+              "description": "Allow glob patterns to follow symlink directories. This allows subdirectories of the symlink to be searched."
             }
           },
           "additionalProperties": false,
