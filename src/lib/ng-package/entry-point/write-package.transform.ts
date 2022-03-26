@@ -84,13 +84,7 @@ async function copyAssets(
 ): Promise<void> {
   const ngPackage = ngPackageNode.data;
 
-  const pathsForceIgnored: string[] = [
-    '.gitkeep',
-    '**/.DS_Store',
-    '**/Thumbs.db',
-    '**/node_modules/**',
-    `${ngPackage.dest}/**`,
-  ];
+  const pathsForceIgnored: string[] = ['.gitkeep', '**/.DS_Store', '**/Thumbs.db', `${ngPackage.dest}/**`];
 
   const assets: AssetEntry[] = [];
 
