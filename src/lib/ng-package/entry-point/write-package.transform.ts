@@ -94,11 +94,11 @@ async function copyAssets(
       asset = item;
       asset.glob = path.join(ngPackage.src, asset.input, asset.glob);
     } else {
-      const glob = path.join(ngPackage.src, item);
-      const isDir = await stat(glob)
+      const assetPath = path.join(ngPackage.src, item); // might be a glob
+      const isDir = await stat(assetPath)
         .then(stats => stats.isDirectory())
         .catch(() => false);
-      asset = { glob: isDir ? path.join(glob, '**/*') : glob, input: '.', output: '/' };
+      asset = { glob: isDir ? path.join(assetPath, '**/*') : assetPath, input: '.', output: '/' };
     }
     asset.input = path.join(ngPackage.src, asset.input);
     asset.output = path.join(ngPackage.dest, asset.output);
