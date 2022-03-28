@@ -85,36 +85,36 @@ async function copyAssets(
   const ngPackage = ngPackageNode.data;
 
   const globsForceIgnored: string[] = ['.gitkeep', '**/.DS_Store', '**/Thumbs.db', `${ngPackage.dest}/**`];
-
+  const defaultAssets: AssetEntry[] = [
+    { glob: 'LICENSE', input: '/', output: '/' },
+    { glob: '**/README.md', input: '/', output: '/' },
+  ];
   const assets: AssetEntry[] = [];
 
-  for (const item of [...ngPackage.assets, 'LICENSE', '**/README.md']) {
-    const asset: Partial<AssetEntry> = {};
-    if (typeof item == 'object') {
-      asset.glob = item.glob;
-      asset.input = path.join(ngPackage.src, item.input);
-      asset.output = path.join(ngPackage.dest, item.output);
-      asset.ignore = item.ignore;
+  for (const assetPath of [...ngPackage.assets, ...defaultAssets]) {
+    let asset: AssetEntry;
+    if (typeof assetPath === 'object') {
+      asset = assetPath;
     } else {
-      const assetPath = item; // might be a glob
-      const assetFullPath = path.join(ngPackage.src, assetPath);
-      const [isDir, isFile] = await stat(assetFullPath)
+      const [isDir, isFile] = await stat(path.join(ngPackage.src, assetPath))
         .then(stats => [stats.isDirectory(), stats.isFile()])
         .catch(() => [false, false]);
       if (isDir) {
-        asset.glob = '**/*';
-        asset.input = assetFullPath;
-        asset.output = path.join(ngPackage.dest, assetPath);
+        asset = { glob: '**/*', input: assetPath, output: assetPath };
       } else if (isFile) {
-        asset.glob = path.basename(assetFullPath); // filenames are their own glob
-        asset.input = path.dirname(assetFullPath);
-        asset.output = path.dirname(path.join(ngPackage.dest, assetPath));
+        // filenames are their own glob
+        asset = {
+          glob: path.basename(assetPath),
+          input: path.dirname(assetPath),
+          output: path.dirname(assetPath),
+        };
       } else {
-        asset.glob = assetPath;
-        asset.input = ngPackage.src;
-        asset.output = ngPackage.dest;
+        asset = { glob: assetPath, input: '/', output: '/' };
       }
     }
+
+    asset.input = path.join(ngPackage.src, asset.input);
+    asset.output = path.join(ngPackage.dest, asset.output);
 
     const isAncestorPath = (target: string, datum: string) => path.relative(datum, target).startsWith('..');
     if (isAncestorPath(asset.input, ngPackage.src)) {
@@ -124,7 +124,7 @@ async function copyAssets(
       throw new Error('Cannot write assets to a location outside of the output path.');
     }
 
-    assets.push(asset as AssetEntry);
+    assets.push(asset);
   }
 
   for (const asset of assets) {
