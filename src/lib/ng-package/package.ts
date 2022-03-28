@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { InlineStyleLanguage } from '../styles/stylesheet-processor';
+import { NgPackageConfig } from '../../ng-package.schema';
 import { NgEntryPoint } from './entry-point/entry-point';
 
 /**
@@ -62,14 +62,14 @@ export class NgPackage {
   }
 
   public get keepLifecycleScripts(): boolean {
-    return this.primary.$get('keepLifecycleScripts') === true;
+    return this.primary.$get('keepLifecycleScripts');
   }
 
   public get assets(): string[] {
     return this.primary.$get('assets');
   }
 
-  public get inlineStyleLanguage(): InlineStyleLanguage {
+  public get inlineStyleLanguage(): NgPackageConfig['inlineStyleLanguage'] {
     return this.primary.$get('inlineStyleLanguage');
   }
 

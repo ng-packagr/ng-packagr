@@ -13,13 +13,6 @@ export enum CssUrl {
   none = 'none',
 }
 
-export enum InlineStyleLanguage {
-  sass = 'sass',
-  scss = 'scss',
-  css = 'css',
-  less = 'less',
-}
-
 export interface Result {
   css: string;
   warnings: string[];
