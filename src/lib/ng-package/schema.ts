@@ -44,6 +44,7 @@ function getNgPackageSchemaValidator(): ValidateFunction {
 
   const _ajv = new Ajv({
     useDefaults: true,
+    strict: false, // strict mode is enabled by default in JSON schema type definitions, which disallows the use of `useDefaults`.
   });
 
   // Add handler for x-deprecated fields

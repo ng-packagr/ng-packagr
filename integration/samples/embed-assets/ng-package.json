@@ -1,6 +1,15 @@
 {
   "$schema": "../../../src/ng-package.schema.json",
-  "assets": ["./assets/**/*.png", "./assets-2"],
+  "assets": [
+    "./assets-1/**/*.png",
+    "./assets-2",
+    {
+      "glob": "**/*",
+      "input": "./assets-3",
+      "output": "assets-3",
+      "ignore": ["*.svg"]
+    }
+  ],
   "lib": {
     "entryFile": "public_api.ts",
     "cssUrl": "inline"

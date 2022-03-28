@@ -1,5 +1,6 @@
 import ora from 'ora';
 import * as path from 'path';
+import { AssetPattern } from '../../../ng-package.schema';
 import { BuildGraph } from '../../graph/build-graph';
 import { Node } from '../../graph/node';
 import { transformFromPromise } from '../../graph/transform';
@@ -26,65 +27,11 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
     const ngPackageNode: PackageNode = graph.find(isPackage);
     const ngPackage = ngPackageNode.data;
     const { destinationFiles } = entryPoint.data;
-    const ignorePaths: string[] = [
-      '.gitkeep',
-      '**/.DS_Store',
-      '**/Thumbs.db',
-      '**/node_modules/**',
-      `${ngPackage.dest}/**`,
-    ];
 
     if (!ngEntryPoint.isSecondaryEntryPoint) {
-      const assetFiles: string[] = [];
-
-      // COPY ASSET FILES TO DESTINATION
       spinner.start('Copying assets');
-
       try {
-        for (const asset of [...ngPackage.assets, 'LICENSE', '**/README.md']) {
-          let assetFullPath = path.join(ngPackage.src, asset);
-
-          try {
-            const stats = await stat(assetFullPath);
-            if (stats.isFile()) {
-              assetFiles.push(assetFullPath);
-              continue;
-            }
-
-            if (stats.isDirectory()) {
-              assetFullPath = path.join(assetFullPath, '**/*');
-            }
-          } catch {}
-
-          if (asset === 'LICENSE') {
-            continue;
-          }
-
-          const files = await globFiles(assetFullPath, {
-            ignore: ignorePaths,
-            cache: ngPackageNode.cache.globCache,
-            dot: true,
-            nodir: true,
-          });
-
-          if (files.length) {
-            assetFiles.push(...files);
-          }
-        }
-
-        for (const file of assetFiles) {
-          const relativePath = path.relative(ngPackage.src, file);
-          const destination = path.resolve(ngPackage.dest, relativePath);
-          const nodeUri = fileUrl(ensureUnixPath(file));
-          let node = graph.get(nodeUri);
-          if (!node) {
-            node = new Node(nodeUri);
-            graph.put(node);
-          }
-
-          entryPoint.dependsOn(node);
-          await copyFile(file, destination);
-        }
+        await copyAssets(graph, entryPoint, ngPackageNode);
       } catch (error) {
         spinner.fail();
         throw error;
@@ -127,6 +74,82 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
 
     return graph;
   });
+
+type AssetEntry = Exclude<AssetPattern, string>;
+
+async function copyAssets(
+  graph: BuildGraph,
+  entryPointNode: EntryPointNode,
+  ngPackageNode: PackageNode,
+): Promise<void> {
+  const ngPackage = ngPackageNode.data;
+
+  const globsForceIgnored: string[] = ['.gitkeep', '**/.DS_Store', '**/Thumbs.db', `${ngPackage.dest}/**`];
+
+  const assets: AssetEntry[] = [];
+
+  for (const item of [...ngPackage.assets, 'LICENSE', '**/README.md']) {
+    const asset: Partial<AssetEntry> = {};
+    if (typeof item == 'object') {
+      asset.glob = item.glob;
+      asset.input = path.join(ngPackage.src, item.input);
+      asset.output = path.join(ngPackage.dest, item.output);
+      asset.ignore = item.ignore;
+    } else {
+      const assetPath = item; // might be a glob
+      const assetFullPath = path.join(ngPackage.src, assetPath);
+      const [isDir, isFile] = await stat(assetFullPath)
+        .then(stats => [stats.isDirectory(), stats.isFile()])
+        .catch(() => [false, false]);
+      if (isDir) {
+        asset.glob = '**/*';
+        asset.input = assetFullPath;
+        asset.output = path.join(ngPackage.dest, assetPath);
+      } else if (isFile) {
+        asset.glob = path.basename(assetFullPath); // filenames are their own glob
+        asset.input = path.dirname(assetFullPath);
+        asset.output = path.dirname(path.join(ngPackage.dest, assetPath));
+      } else {
+        asset.glob = assetPath;
+        asset.input = ngPackage.src;
+        asset.output = ngPackage.dest;
+      }
+    }
+
+    const isAncestorPath = (target: string, datum: string) => path.relative(datum, target).startsWith('..');
+    if (isAncestorPath(asset.input, ngPackage.src)) {
+      throw new Error('Cannot read assets from a location outside of the project root.');
+    }
+    if (isAncestorPath(asset.output, ngPackage.dest)) {
+      throw new Error('Cannot write assets to a location outside of the output path.');
+    }
+
+    assets.push(asset as AssetEntry);
+  }
+
+  for (const asset of assets) {
+    const filePaths = await globFiles(asset.glob, {
+      cwd: asset.input,
+      ignore: [...(asset.ignore ?? []), ...globsForceIgnored],
+      cache: ngPackageNode.cache.globCache,
+      dot: true,
+      nodir: true,
+      follow: asset.followSymlinks,
+    });
+    for (const filePath of filePaths) {
+      const fileSrcFullPath = path.join(asset.input, filePath);
+      const fileDestFullPath = path.join(asset.output, filePath);
+      const nodeUri = fileUrl(ensureUnixPath(fileSrcFullPath));
+      let node = graph.get(nodeUri);
+      if (!node) {
+        node = new Node(nodeUri);
+        graph.put(node);
+      }
+      entryPointNode.dependsOn(node);
+      await copyFile(fileSrcFullPath, fileDestFullPath);
+    }
+  }
+}
 
 /**
  * Creates and writes a `package.json` file of the entry point used by the `node_module`
