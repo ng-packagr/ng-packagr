@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* support more complex `asset` configurations ([6776e17](https://github.com/ng-packagr/ng-packagr/commit/6776e17ac41458f4d196f8ea001ab649e5274952)), closes [#1497](https://github.com/ng-packagr/ng-packagr/issues/1497)
+* support more complex `assets` configurations ([6776e17](https://github.com/ng-packagr/ng-packagr/commit/6776e17ac41458f4d196f8ea001ab649e5274952)), closes [#1497](https://github.com/ng-packagr/ng-packagr/issues/1497)
 
 
 ### Bug Fixes
