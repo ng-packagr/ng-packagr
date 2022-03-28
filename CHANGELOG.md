@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.3...v14.0.0-next.4) (2022-03-28)
+
+
+### Features
+
+* support more complex `asset` configurations ([6776e17](https://github.com/ng-packagr/ng-packagr/commit/6776e17ac41458f4d196f8ea001ab649e5274952)), closes [#1497](https://github.com/ng-packagr/ng-packagr/issues/1497)
+
+
+### Bug Fixes
+
+* join paths instead of resolving ([0a54e7d](https://github.com/ng-packagr/ng-packagr/commit/0a54e7d076ce82e1e041df712fbfab569454e026)), closes [#2241](https://github.com/ng-packagr/ng-packagr/issues/2241)
+
 ## [14.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.2...v14.0.0-next.3) (2022-03-17)
 
 ## [14.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.1...v14.0.0-next.2) (2022-03-10)
