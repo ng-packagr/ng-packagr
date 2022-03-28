@@ -3,11 +3,12 @@ import type { CompilerHost, CompilerOptions } from '@angular/compiler-cli';
 import { createHash } from 'crypto';
 import * as path from 'path';
 import ts from 'typescript';
+import { NgPackageConfig } from '../../ng-package.schema';
 import { FileCache } from '../file-system/file-cache';
 import { BuildGraph } from '../graph/build-graph';
 import { Node } from '../graph/node';
 import { EntryPointNode, fileUrl } from '../ng-package/nodes';
-import { InlineStyleLanguage, StylesheetProcessor } from '../styles/stylesheet-processor';
+import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { ensureUnixPath } from '../utils/path';
 
 export function cacheCompilerHost(
@@ -16,7 +17,7 @@ export function cacheCompilerHost(
   compilerOptions: CompilerOptions,
   moduleResolutionCache: ts.ModuleResolutionCache,
   stylesheetProcessor?: StylesheetProcessor,
-  inlineStyleLanguage?: InlineStyleLanguage,
+  inlineStyleLanguage?: NgPackageConfig['inlineStyleLanguage'],
   sourcesFileCache: FileCache = entryPoint.cache.sourcesFileCache,
 ): CompilerHost {
   const compilerHost = ts.createIncrementalCompilerHost(compilerOptions);
