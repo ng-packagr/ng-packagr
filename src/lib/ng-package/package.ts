@@ -58,7 +58,7 @@ export class NgPackage {
 
   /** Absolute path of the package's destination directory. */
   public get dest(): string {
-    return this.absolutePathFromPrimary('dest');
+    return path.join(this.basePath, this.primary.$get('dest'));
   }
 
   public get keepLifecycleScripts(): boolean {
@@ -78,10 +78,6 @@ export class NgPackage {
     const allowedNonPeerDependencies = this.primary.$get('allowedNonPeerDependencies') as string[];
 
     return Array.from(new Set([...allowedNonPeerDependencies, ...alwaysInclude]));
-  }
-
-  private absolutePathFromPrimary(key: string) {
-    return path.resolve(this.basePath, this.primary.$get(key));
   }
 
   public entryPoint(moduleId: string): NgEntryPoint {
