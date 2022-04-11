@@ -21,8 +21,4 @@ export interface CliArguments {
  * @stable
  */
 export const build: Command<CliArguments, void> = opts =>
-  ngPackagr()
-    .forProject(opts.project)
-    .withOptions({ watch: opts.watch })
-    .withTsConfig(opts.config)
-    .build();
+  ngPackagr().forProject(opts.project).withTsConfig(opts.config).build({ watch: opts.watch });
