@@ -90,7 +90,7 @@ export class NgPackagr {
    * @return A promisified result of the transformation pipeline.
    */
   public build(options: NgPackagrOptions = {}): Promise<void> {
-    this.providers.push(provideOptions({ ...options, watch: false }));
+    this.providers.push(provideOptions(options));
 
     return this.buildAsObservable().toPromise();
   }
