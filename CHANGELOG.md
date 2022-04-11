@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.4...v14.0.0-next.5) (2022-04-11)
+
+
+### Bug Fixes
+
+* watch mode when using ng-packagr CLI directly ([0f8f92a](https://github.com/ng-packagr/ng-packagr/commit/0f8f92a181ca04e4bf9f26d3200fece0689945d4))
+
 ## [14.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.3...v14.0.0-next.4) (2022-03-28)
 
 
