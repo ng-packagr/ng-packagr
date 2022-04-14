@@ -5,6 +5,7 @@ import { Transform, transformFromPromise } from '../../graph/transform';
 import { compileSourceFiles } from '../../ngc/compile-source-files';
 import { NgccProcessor } from '../../ngc/ngcc-processor';
 import { StylesheetProcessor as StylesheetProcessorClass } from '../../styles/stylesheet-processor';
+import { TemplateProcessor as TemplateProcessorClass } from '../../templates/template-processor';
 import { setDependenciesTsConfigPaths } from '../../ts/tsconfig';
 import { ngccCompilerCli } from '../../utils/ng-compiler-cli';
 import { EntryPointNode, isEntryPoint, isEntryPointInProgress } from '../nodes';
@@ -12,6 +13,7 @@ import { NgPackagrOptions } from '../options.di';
 
 export const compileNgcTransformFactory = (
   StylesheetProcessor: typeof StylesheetProcessorClass,
+  TemplateProcessor: typeof TemplateProcessorClass,
   options: NgPackagrOptions,
 ): Transform => {
   return transformFromPromise(async graph => {
@@ -53,6 +55,11 @@ export const compileNgcTransformFactory = (
         options.cacheEnabled && options.cacheDirectory,
       );
 
+      entryPoint.cache.templateProcessor ??= new TemplateProcessor(
+        basePath,
+        options.cacheEnabled && options.cacheDirectory,
+      );
+
       await compileSourceFiles(
         graph,
         tsConfig,
@@ -64,6 +71,7 @@ export const compileNgcTransformFactory = (
           target: ts.ScriptTarget.ES2020,
         },
         entryPoint.cache.stylesheetProcessor,
+        entryPoint.cache.templateProcessor,
         ngccProcessor,
         options.watch,
       );

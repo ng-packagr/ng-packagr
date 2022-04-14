@@ -6,6 +6,7 @@ import { ComplexPredicate } from '../graph/build-graph';
 import { Node } from '../graph/node';
 import { by, isDirty, isInProgress } from '../graph/select';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
+import { TemplateProcessor } from '../templates/template-processor';
 import { DestinationFiles, NgEntryPoint } from './entry-point/entry-point';
 import { NgccProcessingCache } from './ngcc-cache';
 import { NgPackage } from './package';
@@ -91,6 +92,7 @@ export class EntryPointNode extends Node {
     rollupFESM2020Cache?: RollupCache;
     rollupFESM2015Cache?: RollupCache;
     stylesheetProcessor?: StylesheetProcessor;
+    templateProcessor?: TemplateProcessor;
     oldNgtscProgram?: NgtscProgram;
     oldBuilder?: ts.EmitAndSemanticDiagnosticsBuilderProgram;
   };

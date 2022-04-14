@@ -18,6 +18,7 @@ export interface Result {
   warnings: string[];
   error?: string;
 }
+
 export class StylesheetProcessor {
   private browserslistData: string[];
   private targets: string[];
@@ -71,7 +72,7 @@ export class StylesheetProcessor {
     if (!content.includes('@import') && !content.includes('@use') && this.cacheDirectory) {
       // No transitive deps, we can cache more aggressively.
       key = await generateKey(content, ...this.browserslistData);
-      const result = await readCacheEntry(this.cacheDirectory, key);
+      const result = (await readCacheEntry(this.cacheDirectory, key)) as Result;
       if (result) {
         result.warnings.forEach(msg => log.warn(msg));
 
@@ -89,7 +90,7 @@ export class StylesheetProcessor {
     }
 
     if (this.cacheDirectory) {
-      const cachedResult = await readCacheEntry(this.cacheDirectory, key);
+      const cachedResult = (await readCacheEntry(this.cacheDirectory, key)) as Result;
       if (cachedResult) {
         cachedResult.warnings.forEach(msg => log.warn(msg));
 
@@ -146,7 +147,7 @@ export class StylesheetProcessor {
     return postcss(postCssPlugins);
   }
 
-  private async renderCss(filePath: string, css: string): Promise<string> {
+  private async renderCss(filePath: string, sourceContent: string): Promise<string> {
     const ext = extname(filePath);
 
     switch (ext) {
@@ -155,7 +156,7 @@ export class StylesheetProcessor {
         return (await import('sass'))
           .renderSync({
             file: filePath,
-            data: css,
+            data: sourceContent,
             indentedSyntax: '.sass' === ext,
             importer: customSassImporter,
             includePaths: this.styleIncludePaths,
@@ -165,7 +166,7 @@ export class StylesheetProcessor {
       case '.less': {
         const { css: content } = await (
           await import('less')
-        ).default.render(css, {
+        ).default.render(sourceContent, {
           filename: filePath,
           math: 'always',
           javascriptEnabled: true,
@@ -179,7 +180,7 @@ export class StylesheetProcessor {
         const stylus = (await import('stylus')).default;
 
         return (
-          stylus(css)
+          stylus(sourceContent)
             // add paths for resolve
             .set('paths', [this.basePath, '.', ...this.styleIncludePaths, 'node_modules'])
             // add support for resolving plugins from node_modules
@@ -192,7 +193,7 @@ export class StylesheetProcessor {
       }
       case '.css':
       default:
-        return css;
+        return sourceContent;
     }
   }
 }
