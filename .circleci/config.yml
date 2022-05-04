@@ -134,7 +134,7 @@ workflows:
               only: /v.*/
             branches:
               only:
-                - master
+                - main
           requires:
             - setup
       - deploy:
