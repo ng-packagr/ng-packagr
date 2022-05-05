@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.0-next.6](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.5...v14.0.0-next.6) (2022-05-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* `entryFile` can no longer be named `index.ts` as it will conflict with the generated `index.d.ts`. Please rename
+
+### Features
+
+* update generated output to APF 14 ([c6f6e4d](https://github.com/ng-packagr/ng-packagr/commit/c6f6e4d701d31e3d9e8636703ede731c3790778b))
+
 ## [14.0.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.4...v14.0.0-next.5) (2022-04-11)
 
 
