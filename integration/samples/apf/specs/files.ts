@@ -10,11 +10,11 @@ describe('@sample/apf', () => {
   });
 
   describe('dist', () => {
-    it('should contain a total of 73 files', () => {
+    it('should contain a total of 70 files', () => {
       // this is a safe guard / alternative to snapshots in order to
       // protect ourselves from doing a change that will emit unexpected files.
       const files = glob.sync(path.join(DIST, '**/*'));
-      expect(files.length).to.equals(73);
+      expect(files.length).to.equals(70);
     });
 
     it(`should contain a README.md file`, () => {
@@ -69,16 +69,16 @@ describe('@sample/apf', () => {
   });
 
   describe('declarations', () => {
-    describe('sample-apf.d.ts', () => {
+    describe('index.d.ts', () => {
       it(`should exist`, () => {
-        const file = fs.existsSync(path.join(DIST, 'sample-apf.d.ts'));
+        const file = fs.existsSync(path.join(DIST, 'index.d.ts'));
         expect(file).to.be.true;
       });
     });
 
-    describe('sample-apf-secondary.d.ts', () => {
+    describe('secondary/index.d.ts', () => {
       it(`should exist`, () => {
-        const file = fs.existsSync(path.join(DIST, 'secondary', 'sample-apf-secondary.d.ts'));
+        const file = fs.existsSync(path.join(DIST, 'secondary', 'index.d.ts'));
         expect(file).to.be.true;
       });
     });

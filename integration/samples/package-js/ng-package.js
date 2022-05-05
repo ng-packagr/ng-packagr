@@ -1,5 +1,5 @@
 module.exports = {
   lib: {
-    entryFile: 'index.ts'
-  }
+    entryFile: 'public_api.ts',
+  },
 };

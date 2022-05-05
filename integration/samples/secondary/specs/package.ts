@@ -22,37 +22,14 @@ describe(`@sample/secondary`, () => {
     });
 
     it(`should reference "typings" files`, () => {
-      expect(PACKAGE['typings']).to.equal('sample-secondary.d.ts');
+      expect(PACKAGE['typings']).to.equal('index.d.ts');
     });
   });
 
-  describe(`sub-module/package.json`, () => {
-    let PACKAGE;
-    beforeAll(() => {
-      PACKAGE = require('../dist/sub-module/package.json');
-    });
-
-    it(`should exist`, () => {
-      expect(PACKAGE).to.be.ok;
-    });
-
-    it(`should not have ngPackage field`, () => {
-      expect(PACKAGE.ngPackage).to.be.undefined;
-    });
-
-    it(`should be named '@sample/secondary/sub-module'`, () => {
-      expect(PACKAGE['name']).to.equal('@sample/secondary/sub-module');
-    });
-
-    it(`should reference "typings" files`, () => {
-      expect(PACKAGE['typings']).to.equal('sample-secondary-sub-module.d.ts');
-    });
-  });
-
-  describe(`should-be-ignored/package.json`, () => {
+  describe(`should-be-ignored/index.d.ts`, () => {
     it(`should not exist`, () => {
       expect(() =>
-        fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'should-be-ignored', 'package.json'), 'utf-8'),
+        fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'should-be-ignored', 'index.d.ts'), 'utf-8'),
       ).throw();
     });
   });

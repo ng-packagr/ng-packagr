@@ -24,7 +24,7 @@ describe(`@sample/material`, () => {
     });
 
     it(`should reference "typings" files`, () => {
-      expect(PACKAGE['typings']).to.equal('sample-material.d.ts');
+      expect(PACKAGE['typings']).to.equal('index.d.ts');
     });
   });
 });

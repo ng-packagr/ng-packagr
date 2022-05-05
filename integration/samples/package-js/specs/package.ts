@@ -11,15 +11,4 @@ describe(`@sample/package-js`, () => {
       expect(PACKAGE).to.be.ok;
     });
   });
-
-  describe(`secondary/package.json`, () => {
-    let PACKAGE;
-    beforeAll(() => {
-      PACKAGE = require('../dist/secondary/package.json');
-    });
-
-    it(`should exist`, () => {
-      expect(PACKAGE).to.be.ok;
-    });
-  });
 });

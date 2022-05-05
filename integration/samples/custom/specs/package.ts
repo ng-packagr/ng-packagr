@@ -26,7 +26,7 @@ describe(`sample-custom`, () => {
     });
 
     it(`should reference "typings" files`, () => {
-      expect(PACKAGE['typings']).to.equal('sample-custom.d.ts');
+      expect(PACKAGE['typings']).to.equal('index.d.ts');
     });
 
     it(`should keep 'scripts' section intact`, () => {

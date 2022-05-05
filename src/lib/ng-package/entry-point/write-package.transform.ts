@@ -40,36 +40,40 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
     }
 
     // 6. WRITE PACKAGE.JSON
-    try {
-      spinner.start('Writing package manifest');
-      const relativeUnixFromDestPath = (filePath: string) =>
-        ensureUnixPath(path.relative(ngEntryPoint.destinationPath, filePath));
+    // As of APF 14 only the primary entrypoint has a package.json
+    if (!ngEntryPoint.isSecondaryEntryPoint) {
+      try {
+        spinner.start('Writing package manifest');
+        const relativeUnixFromDestPath = (filePath: string) =>
+          ensureUnixPath(path.relative(ngEntryPoint.destinationPath, filePath));
 
-      const { compilationMode } = entryPoint.data.tsConfig.options;
+        const { compilationMode } = entryPoint.data.tsConfig.options;
 
-      await writePackageJson(
-        ngEntryPoint,
-        ngPackage,
-        {
-          module: relativeUnixFromDestPath(destinationFiles.fesm2015),
-          es2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
-          esm2020: relativeUnixFromDestPath(destinationFiles.esm2020),
-          fesm2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
-          fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
-          typings: relativeUnixFromDestPath(destinationFiles.declarations),
-          exports: ngEntryPoint.isSecondaryEntryPoint ? undefined : generatePackageExports(ngEntryPoint, graph),
-          // webpack v4+ specific flag to enable advanced optimizations and code splitting
-          sideEffects: ngEntryPoint.packageJson.sideEffects ?? false,
-        },
-        !!options.watch,
-        compilationMode as CompilationMode,
-        spinner,
-      );
-    } catch (error) {
-      spinner.fail();
-      throw error;
+        await writePackageJson(
+          ngEntryPoint,
+          ngPackage,
+          {
+            module: relativeUnixFromDestPath(destinationFiles.fesm2015),
+            es2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
+            esm2020: relativeUnixFromDestPath(destinationFiles.esm2020),
+            fesm2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
+            fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
+            typings: relativeUnixFromDestPath(destinationFiles.declarations),
+            exports: generatePackageExports(ngEntryPoint, graph),
+            // webpack v4+ specific flag to enable advanced optimizations and code splitting
+            sideEffects: ngEntryPoint.packageJson.sideEffects ?? false,
+          },
+          !!options.watch,
+          compilationMode as CompilationMode,
+          spinner,
+        );
+      } catch (error) {
+        spinner.fail();
+        throw error;
+      }
+      spinner.succeed();
     }
-    spinner.succeed();
+
     spinner.succeed(`Built ${ngEntryPoint.moduleId}`);
 
     return graph;
@@ -183,39 +187,37 @@ async function writePackageJson(
   // version at least matches that of angular if we use require('tslib').version
   // it will get what installed and not the minimum version nor if it is a `~` or `^`
   // this is only required for primary
-  if (!entryPoint.isSecondaryEntryPoint) {
-    if (isWatchMode) {
-      // Needed because of Webpack's 5 `cachemanagedpaths`
-      // https://github.com/angular/angular-cli/issues/20962
-      packageJson.version = `0.0.0-watch+${Date.now()}`;
-    }
+  if (isWatchMode) {
+    // Needed because of Webpack's 5 `cachemanagedpaths`
+    // https://github.com/angular/angular-cli/issues/20962
+    packageJson.version = `0.0.0-watch+${Date.now()}`;
+  }
 
-    if (!packageJson.peerDependencies?.tslib && !packageJson.dependencies?.tslib) {
-      const {
-        peerDependencies: angularPeerDependencies = {},
-        dependencies: angularDependencies = {},
-      } = require('@angular/compiler/package.json');
-      const tsLibVersion = angularPeerDependencies.tslib || angularDependencies.tslib;
+  if (!packageJson.peerDependencies?.tslib && !packageJson.dependencies?.tslib) {
+    const {
+      peerDependencies: angularPeerDependencies = {},
+      dependencies: angularDependencies = {},
+    } = require('@angular/compiler/package.json');
+    const tsLibVersion = angularPeerDependencies.tslib || angularDependencies.tslib;
 
-      if (tsLibVersion) {
-        packageJson.dependencies = {
-          ...packageJson.dependencies,
-          tslib: tsLibVersion,
-        };
-      }
-    } else if (packageJson.peerDependencies?.tslib) {
-      spinner.warn(
-        colors.yellow(
-          `'tslib' is no longer recommended to be used as a 'peerDependencies'. Moving it to 'dependencies'.`,
-        ),
-      );
+    if (tsLibVersion) {
       packageJson.dependencies = {
-        ...(packageJson.dependencies || {}),
-        tslib: packageJson.peerDependencies.tslib,
+        ...packageJson.dependencies,
+        tslib: tsLibVersion,
       };
-
-      delete packageJson.peerDependencies.tslib;
     }
+  } else if (packageJson.peerDependencies?.tslib) {
+    spinner.warn(
+      colors.yellow(
+        `'tslib' is no longer recommended to be used as a 'peerDependencies'. Moving it to 'dependencies'.`,
+      ),
+    );
+    packageJson.dependencies = {
+      ...(packageJson.dependencies || {}),
+      tslib: packageJson.peerDependencies.tslib,
+    };
+
+    delete packageJson.peerDependencies.tslib;
   }
 
   // Verify non-peerDependencies as they can easily lead to duplicate installs or version conflicts
@@ -242,7 +244,7 @@ async function writePackageJson(
     }
   }
 
-  if (!entryPoint.isSecondaryEntryPoint && compilationMode !== 'partial') {
+  if (compilationMode !== 'partial') {
     const scripts = packageJson.scripts || (packageJson.scripts = {});
     scripts.prepublishOnly =
       'node --eval "console.error(\'' +
