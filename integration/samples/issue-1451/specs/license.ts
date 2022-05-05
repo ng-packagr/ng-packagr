@@ -12,7 +12,6 @@ describe(`issue-1451-license`, () => {
 
   describe(`license entry point`, () => {
     [
-      'license/package.json',
       'esm2020/license/example-issue-1451-license.mjs',
       'esm2020/license/public-api.mjs',
       'fesm2020/example-issue-1451-license.mjs',
@@ -23,8 +22,8 @@ describe(`issue-1451-license`, () => {
       });
     });
 
-    it(`license directory should contain 4 files`, () => {
-      expect(glob.sync(`${DIST}/license/**/*`).length).equal(3);
+    it(`license directory should contain 2 files`, () => {
+      expect(glob.sync(`${DIST}/license/**/*`).length).equal(2);
     });
   });
 });

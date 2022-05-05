@@ -3,10 +3,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`@sample/core`, () => {
-  describe(`core.d.ts`, () => {
+  describe(`index.d.ts`, () => {
     let TYPINGS;
     beforeAll(() => {
-      TYPINGS = fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'sample-core.d.ts'), 'utf-8');
+      TYPINGS = fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'index.d.ts'), 'utf-8');
     });
 
     it(`should exist`, () => {
