@@ -25,7 +25,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### ⚠ BREAKING CHANGES
 
-* `entryFile` can no longer be named `index.ts` as it will conflict with the generated `index.d.ts`. Please rename
+* ~~`entryFile` can no longer be named `index.ts` as it will conflict with the generated `index.d.ts`. Please rename~~
 
 ### Features
 

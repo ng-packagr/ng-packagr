@@ -113,7 +113,8 @@ export class NgEntryPoint {
   }
 
   public get entryFile(): string {
-    return this.$get('lib.entryFile');
+    // `./index.ts` -> `index.ts`
+    return path.posix.normalize(this.$get('lib.entryFile'));
   }
 
   public get cssUrl(): CssUrl {
