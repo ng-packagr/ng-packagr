@@ -60,12 +60,14 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
   const potentialDependencies = new Set<string>();
 
   compilerHost.resolveTypeReferenceDirectives = (
-    moduleNames: string[],
+    moduleNames: string[] | ts.FileReference[],
     containingFile: string,
     redirectedReference: ts.ResolvedProjectReference | undefined,
     options: ts.CompilerOptions,
   ) => {
-    return moduleNames.map(moduleName => {
+    return moduleNames.map(name => {
+      const moduleName = typeof name === 'string' ? name : name.fileName;
+
       if (!moduleName.startsWith('.')) {
         if (moduleName === primaryModuleId || moduleName.startsWith(`${primaryModuleId}/`)) {
           potentialDependencies.add(moduleName);
