@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.0-next.8](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.7...v14.0.0-next.8) (2022-05-06)
+
+
+### Features
+
+* support TypeScript 4.7 ([5574598](https://github.com/ng-packagr/ng-packagr/commit/5574598b8ae44adca3c734a6659e14055169264d))
+
 ## [14.0.0-next.7](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.6...v14.0.0-next.7) (2022-05-06)
 
 
