@@ -99,20 +99,15 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
  * @param excludeFolder A sub-folder of `directoryPath` that is excluded from search results.
  */
 async function findSecondaryPackagesPaths(directoryPath: string, excludeFolder: string): Promise<string[]> {
-  const ignore = [
-    '**/node_modules/**',
-    '**/.git/**',
-    `${path.resolve(directoryPath, excludeFolder)}/**`,
-    `${directoryPath}/ng-package.json`,
-  ];
+  const ignore = ['**/node_modules/**', '**/.git/**', `${excludeFolder}/**`, 'ng-package.json'];
 
-  const filePaths = await globFiles(`${directoryPath}/**/ng-package.json`, {
+  const filePaths = await globFiles(`**/ng-package.json`, {
     ignore,
     nodir: true,
     cwd: directoryPath,
   });
 
-  return filePaths.map(path.dirname);
+  return filePaths.map(subpath => path.dirname(path.join(directoryPath, subpath)));
 }
 
 /**
