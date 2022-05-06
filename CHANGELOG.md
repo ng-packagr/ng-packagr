@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.0-next.7](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.6...v14.0.0-next.7) (2022-05-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* `package.json` is not longer a valid method to configure ng-packagr. Use `ng-package.json` instead.
+
+### Features
+
+* remove handling of `package.json` as configuration ([a94bd14](https://github.com/ng-packagr/ng-packagr/commit/a94bd14b90297affadc33548ea6f1289379e5d61)), closes [#2176](https://github.com/ng-packagr/ng-packagr/issues/2176)
+
 ## [14.0.0-next.6](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.5...v14.0.0-next.6) (2022-05-05)
 
 
