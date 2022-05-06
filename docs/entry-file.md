@@ -67,8 +67,8 @@ In the library code, define an Angular module like the following one:
 
 ```ts
 @NgModule({
-  declarations: [ PublicComponent, InternalDirective ],
-  exports: [ PublicComponent ]
+  declarations: [PublicComponent, InternalDirective],
+  exports: [PublicComponent],
 })
 export class FooModule {}
 ```
@@ -77,22 +77,20 @@ In the `public_api.ts` the module and the component should be exported:
 
 ```ts
 export { FooModule } from './foo.module';
-export { PublicComponent }  from './public.component';
+export { PublicComponent } from './public.component';
 ```
 
 ## Changing the Entry File
 
 > What if I don't like `public_api.ts`?
 
-You can change the entry point file by using the `ngPackage` configuration field in `package.json` (or `ng-package.json`).
+You can change the entry point file by using the `entryFile` option in `ng-package.json`.
 For example, the following would use `index.ts` as the entry point:
 
 ```json
 {
-  "ngPackage": {
-    "lib": {
-      "entryFile": "index.ts"
-    }
+  "lib": {
+    "entryFile": "index.ts"
   }
 }
 ```

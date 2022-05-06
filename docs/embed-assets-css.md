@@ -29,10 +29,8 @@ Valid values: `none` or `inline`.
 
 ```json
 {
-  "ngPackage": {
-    "lib": {
-      "cssUrl": "inline"
-    }
+  "lib": {
+    "cssUrl": "inline"
   }
 }
 ```

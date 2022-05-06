@@ -32,7 +32,7 @@ async function readConfigFile(filePath: string): Promise<any> {
 }
 
 /**
- * Resolves a user's package by testing for 'package.json', 'ng-package.json', or 'ng-package.js'.
+ * Resolves a user's package by testing 'ng-package.json', or 'ng-package.js'.
  *
  * @param folderPathOrFilePath A path pointing either to a file or a directory
  * @param isSecondary A boolean determining if this is a secondary package
@@ -42,25 +42,9 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
   const fullPath = path.resolve(folderPathOrFilePath);
   const pathStats = await stat(fullPath);
   const basePath = pathStats.isDirectory() ? fullPath : path.dirname(fullPath);
-  const pkgJsonPath = path.join(basePath, 'package.json');
-  const packageJson: unknown = await readConfigFile(pkgJsonPath);
-
-  if (!packageJson && !isSecondary) {
-    throw new Error(`Cannot discover package sources at ${folderPathOrFilePath} as 'package.json' was not found.`);
-  }
-
-  if (packageJson && typeof packageJson !== 'object') {
-    throw new Error(`Invalid 'package.json' at ${folderPathOrFilePath}.`);
-  }
 
   let ngPackageJson: unknown;
-  if (packageJson && packageJson['ngPackage']) {
-    // Read `ngPackage` from `package.json`
-    ngPackageJson = { ...packageJson['ngPackage'] };
-    log.warn(
-      `Found configuration in ${pkgJsonPath}.\nConfiguring ng-packagr in "package.json" is deprecated. Use "ng-package.json" instead.`,
-    );
-  } else if (pathStats.isDirectory()) {
+  if (pathStats.isDirectory()) {
     ngPackageJson = await readConfigFile(path.join(basePath, 'ng-package.json'));
     if (!ngPackageJson) {
       ngPackageJson = await readConfigFile(path.join(basePath, 'ng-package.js'));
@@ -74,9 +58,23 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
 
     validateNgPackageSchema(ngPackageJson);
 
+    let packageJson: {} = {};
+    if (!isSecondary) {
+      const pkgJsonPath = path.join(basePath, 'package.json');
+      packageJson = await readConfigFile(pkgJsonPath);
+
+      if (!packageJson) {
+        throw new Error(`Cannot discover package sources at ${folderPathOrFilePath} as 'package.json' was not found.`);
+      }
+
+      if (packageJson && typeof packageJson !== 'object') {
+        throw new Error(`Invalid 'package.json' at ${folderPathOrFilePath}.`);
+      }
+    }
+
     return {
       basePath,
-      packageJson: packageJson || {},
+      packageJson,
       ngPackageJson,
     };
   }
@@ -87,11 +85,6 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
   }
 
   if (pathStats.isFile()) {
-    // a project file was specified but was in valid
-    if (path.basename(folderPathOrFilePath) === 'package.json') {
-      throw new Error(`Cannot read a package from 'package.json' without 'ngPackage' property.`);
-    }
-
     throw new Error(`Trying to read a package from unsupported file extension. Path: ${folderPathOrFilePath}`);
   }
 
@@ -99,8 +92,8 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
 }
 
 /**
- * Scans `directoryPath` and sub-folders, looking for `package.json` files.
- * Similar to `find ${directoryPath} --name package.json --exec dirname {}`.
+ * Scans `directoryPath` and sub-folders, looking for `ng-package` files.
+ * Similar to `find ${directoryPath} --name ng-package --exec dirname {}`.
  *
  * @param directoryPath Path pointing to a directory
  * @param excludeFolder A sub-folder of `directoryPath` that is excluded from search results.
@@ -110,11 +103,10 @@ async function findSecondaryPackagesPaths(directoryPath: string, excludeFolder: 
     '**/node_modules/**',
     '**/.git/**',
     `${path.resolve(directoryPath, excludeFolder)}/**`,
-    `${directoryPath}/package.json`,
     `${directoryPath}/ng-package.json`,
   ];
 
-  const filePaths = await globFiles(`${directoryPath}/**/{package,ng-package}.json`, {
+  const filePaths = await globFiles(`${directoryPath}/**/ng-package.json`, {
     ignore,
     nodir: true,
     cwd: directoryPath,

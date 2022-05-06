@@ -7,10 +7,8 @@ the additional paths may be configured through the `styleIncludePaths` option.
 
 ```json
 {
-  "ngPackage": {
-    "lib": {
-      "styleIncludePaths": ["./src/assets/styles"]
-    }
+  "lib": {
+    "styleIncludePaths": ["./src/assets/styles"]
   }
 }
 ```
