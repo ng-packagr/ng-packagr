@@ -23,7 +23,7 @@ describe(`issue-1451-license`, () => {
     });
 
     it(`license directory should contain 2 files`, () => {
-      expect(glob.sync(`${DIST}/license/**/*`).length).equal(2);
+      expect(glob.sync(`license/**/*`, { cwd: DIST }).length).equal(2);
     });
   });
 });

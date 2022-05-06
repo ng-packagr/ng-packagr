@@ -13,7 +13,7 @@ describe('@sample/apf', () => {
     it('should contain a total of 70 files', () => {
       // this is a safe guard / alternative to snapshots in order to
       // protect ourselves from doing a change that will emit unexpected files.
-      const files = glob.sync(path.join(DIST, '**/*'));
+      const files = glob.sync('**/*', { cwd: DIST });
       expect(files.length).to.equals(70);
     });
 
@@ -40,30 +40,30 @@ describe('@sample/apf', () => {
 
   describe('FESM2020', () => {
     it(`should contain 4 '.mjs.map' files`, () => {
-      expect(glob.sync(`${DIST}/fesm2020/**/*.mjs.map`).length).equal(4);
+      expect(glob.sync(`fesm2020/**/*.mjs.map`, { cwd: DIST }).length).equal(4);
     });
 
     it(`should contain 4 '.mjs' files`, () => {
-      expect(glob.sync(`${DIST}/fesm2020/**/*.mjs`).length).equal(4);
+      expect(glob.sync(`fesm2020/**/*.mjs`, { cwd: DIST }).length).equal(4);
     });
   });
 
   describe('ESM2020', () => {
     it(`should contain 0 '.mjs.map' files`, () => {
-      expect(glob.sync(`${DIST}/esm2020/**/*.mjs.map`).length).equal(0);
+      expect(glob.sync(`esm2020/**/*.mjs.map`, { cwd: DIST }).length).equal(0);
     });
 
     it(`should contain 16 '.mjs' files`, () => {
-      expect(glob.sync(`${DIST}/esm2020/**/*.mjs`).length).equal(16);
+      expect(glob.sync(`esm2020/**/*.mjs`, { cwd: DIST }).length).equal(16);
     });
 
     describe('secondary', () => {
       it(`should contain 0 '.mjs.map' files`, () => {
-        expect(glob.sync(`${DIST}/esm2020/secondary/**/*.mjs.map`).length).equal(0);
+        expect(glob.sync(`esm2020/secondary/**/*.mjs.map`, { cwd: DIST }).length).equal(0);
       });
 
       it(`should contain 8 '.mjs' files`, () => {
-        expect(glob.sync(`${DIST}/esm2020/secondary/**/*.mjs`).length).equal(8);
+        expect(glob.sync(`esm2020/secondary/**/*.mjs`, { cwd: DIST }).length).equal(8);
       });
     });
   });
