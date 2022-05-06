@@ -27,11 +27,13 @@ export function ngccTransformCompilerHost(
       });
     },
     resolveTypeReferenceDirectives: (
-      typeReferenceDirectiveNames: string[],
+      typeReferenceDirectiveNames: string[] | ts.FileReference[],
       containingFile: string,
       redirectedReference?: ts.ResolvedProjectReference,
     ) => {
-      return typeReferenceDirectiveNames.map(moduleName => {
+      return typeReferenceDirectiveNames.map(name => {
+        const moduleName = typeof name === 'string' ? name : name.fileName;
+
         const { resolvedTypeReferenceDirective } = ts.resolveTypeReferenceDirective(
           moduleName,
           containingFile,
