@@ -105,7 +105,7 @@ export class TestHarness {
   private setUpNgPackagr(): Promise<void> {
     return new Promise(resolve => {
       this.ngPackagr$$ = ngPackagr()
-        .forProject(path.join(this.testTempPath, 'package.json'))
+        .forProject(path.join(this.testTempPath, 'ng-package.json'))
         .withTsConfig(path.join(this.testTempPath, 'tsconfig.ngc.json'))
         .watch()
         .pipe(

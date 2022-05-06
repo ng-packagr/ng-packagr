@@ -20,33 +20,22 @@ npm install -D ng-packagr
 ## Usage Example
 
 Let's walk through a _getting started_ that'll build an Angular library from TypeScript sources and create a distribution-ready npm package:
-create a `package.json` file, add the custom `ngPackage` property, and eventually run `ng-packagr -p package.json`
+create a `ng-package.json` file and run `ng-packagr -p package.json`
 – Here we go:
 
 ```json
 {
-  "$schema": "./node_modules/ng-packagr/package.schema.json",
-  "name": "@my/foo",
-  "version": "1.0.0",
-  "ngPackage": {
-    "lib": {
-      "entryFile": "public_api.ts"
-    }
-  }
+  "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
+   ...
 }
 ```
-
-Note 1: Paths in the `ngPackage` section are resolved relative to the location of the `package.json` file.
-In the above example, `public_api.ts` is the entry file to the library's sources and must be placed next to `package.json` (a sibling in the same folder).
-
-Note 2: referencing the `$schema` enables JSON editing support (auto-completion for configuration) in IDEs like [VSCode](https://github.com/Microsoft/vscode).
 
 You can easily run _ng-packagr_ through a npm/yarn script:
 
 ```json
 {
   "scripts": {
-    "build": "ng-packagr -p package.json"
+    "build": "ng-packagr -p ng-package.json"
   }
 }
 ```
@@ -70,7 +59,6 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
   * :checkered_flag: Bundles your library in FESM2020
   * :school_satchel: npm package can be consumed by [Angular CLI](https://github.com/angular/angular-cli), [Webpack](https://github.com/webpack/webpack), or [SystemJS](https://github.com/systemjs/systemjs)
   * :dancer: Creates type definitions (`.d.ts`)
-  * :trophy: Auto-discovers and bundles secondary entry points such as `@my/foo`, `@my/foo/testing`, `@my/foo/bar`
 * :mag_right: Creates [scoped and non-scoped packages](https://docs.npmjs.com/misc/scope) for publishing to npm registry
 * :surfer: Inlines Templates and Stylesheets
 * :sparkles: CSS Features

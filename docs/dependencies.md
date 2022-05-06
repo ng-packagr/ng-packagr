@@ -29,24 +29,11 @@ In `ng-package.json`:
 }
 ```
 
-in `package.json`:
-
-```json
-{
-  "$schema": "./node_modules/ng-packagr/package.schema.json",
-  "ngPackage": {
-    "allowedNonPeerDependencies": ["moment"]
-  }
-}
-```
-
 If you'd like to turn off this feature completely, you can do so by providing a catch all RegExp as such;
 
 ```json
 {
   "$schema": "./node_modules/ng-packagr/package.schema.json",
-  "ngPackage": {
-    "allowedNonPeerDependencies": ["."]
-  }
+  "allowedNonPeerDependencies": ["."]
 }
 ```
