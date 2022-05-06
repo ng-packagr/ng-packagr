@@ -54,7 +54,6 @@
         "entryFile": {
           "description": "Entry file to the public API (default: `src/public_api.ts`).",
           "type": "string",
-          "pattern": "^(?!index\\.ts).*$",
           "default": "src/public_api.ts"
         },
         "flatModuleFile": {
