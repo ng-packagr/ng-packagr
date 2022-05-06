@@ -16,9 +16,9 @@ commands:
           at: ~/repo
   setup_windows:
     steps:
-      - run: nvm install 14.17
-      - run: nvm use 14.17
-      - run: npm install -g yarn@1.17.3
+      - run: nvm install 14.19
+      - run: nvm use 14.19
+      - run: npm install -g yarn@1.22.10
       - run: node --version
       - run: yarn --version
 
@@ -101,7 +101,7 @@ jobs:
       - setup_windows
       - restore_cache:
           keys:
-            - v7-dependencies-win-{{ checksum "yarn.lock" }}
+            - v8-dependencies-win-{{ checksum "yarn.lock" }}
       # Install dependencies
       - run: yarn install --frozen-lockfile --non-interactive
       - run: yarn build
@@ -109,7 +109,7 @@ jobs:
       - run: yarn integration:samples
       - run: yarn integration:specs
       - save_cache:
-          key: v7-dependencies-win-{{ checksum "yarn.lock" }}
+          key: v8-dependencies-win-{{ checksum "yarn.lock" }}
           paths:
             # Get cache dir on windows via `yarn cache dir`
             - C:\Users\circleci\AppData\Local\Yarn\Cache\v4
