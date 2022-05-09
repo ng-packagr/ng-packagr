@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.0-next.10](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.9...v14.0.0-next.10) (2022-05-09)
+
+
+### Bug Fixes
+
+* avoid a recursive export when entryfile is named `index.ts` ([4c96acb](https://github.com/ng-packagr/ng-packagr/commit/4c96acbe21bda356c6fa14ad8470bccfb4d42451))
+
 ## [14.0.0-next.9](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.8...v14.0.0-next.9) (2022-05-06)
 
 
