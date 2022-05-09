@@ -40,7 +40,8 @@ export function cacheCompilerHost(
   };
 
   const { flatModuleFile, entryFile } = entryPoint.data.entryPoint;
-  const flatModuleFileDtsFilename = `/${flatModuleFile}.d.ts`;
+  const flatModuleFileDtsFilename = `${flatModuleFile}.d.ts`;
+  const hasIndexEntryFile = path.basename(entryFile.toLowerCase()) === 'index.ts';
 
   return {
     ...compilerHost,
@@ -73,7 +74,7 @@ export function cacheCompilerHost(
       sourceFiles?: ReadonlyArray<ts.SourceFile>,
     ) => {
       if (fileName.endsWith('.d.ts')) {
-        if (entryFile.toLowerCase() === 'index.ts' && fileName.endsWith(flatModuleFileDtsFilename)) {
+        if (hasIndexEntryFile && path.basename(fileName) === flatModuleFileDtsFilename) {
           // In case the entry file is index.ts, we should not emit the `d.ts` which are a re-export of the `index.ts`.
           // Because it will cause a conflict.
           return;
@@ -81,7 +82,7 @@ export function cacheCompilerHost(
 
         // Rename file to index.d.ts so that TypeScript can resolve types without
         // them needing to be referenced in the package.json manifest.
-        fileName = fileName.replace(flatModuleFileDtsFilename, '/index.d.ts');
+        fileName = fileName.replace(flatModuleFileDtsFilename, 'index.d.ts');
         sourceFiles.forEach(source => {
           const cache = sourcesFileCache.getOrCreate(source.fileName);
           if (!cache.declarationFileName) {
