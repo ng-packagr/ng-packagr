@@ -54,6 +54,7 @@ export async function rollupBundleFile(
     ],
     onwarn: warning => {
       switch (warning.code) {
+        case 'CIRCULAR_DEPENDENCY':
         case 'UNUSED_EXTERNAL_IMPORT':
         case 'THIS_IS_UNDEFINED':
           break;
