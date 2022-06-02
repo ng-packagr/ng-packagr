@@ -4,11 +4,31 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [14.0.0](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-rc.0...v14.0.0) (2022-06-02)
 
+### ⚠ BREAKING CHANGES
+
+* Support for TypeScript 4.4 and 4.5 has been removed. Please update to TypeScript 4.6.
+* Support for Node.js v12 has been removed as it will become EOL on 2022-04-30. Please use Node.js v14.15 or later.
+* `package.json` is not longer a valid method to configure ng-packagr. Use `ng-package.json` instead.
+
+### Features
+
+* support TypeScript 4.7 ([5574598](https://github.com/ng-packagr/ng-packagr/commit/5574598b8ae44adca3c734a6659e14055169264d))
+* remove handling of `package.json` as configuration ([a94bd14](https://github.com/ng-packagr/ng-packagr/commit/a94bd14b90297affadc33548ea6f1289379e5d61)), closes [#2176](https://github.com/ng-packagr/ng-packagr/issues/2176)
+* update generated output to APF 14 ([c6f6e4d](https://github.com/ng-packagr/ng-packagr/commit/c6f6e4d701d31e3d9e8636703ede731c3790778b))
+* support more complex `assets` configurations ([6776e17](https://github.com/ng-packagr/ng-packagr/commit/6776e17ac41458f4d196f8ea001ab649e5274952)), closes [#1497](https://github.com/ng-packagr/ng-packagr/issues/1497)
+* drop support for Node.js 12 ([181ac25](https://github.com/ng-packagr/ng-packagr/commit/181ac25f831e5e56c2eda357f72c2a46ab0abff2))
+* support TypeScript 4.6.2 ([9faef17](https://github.com/ng-packagr/ng-packagr/commit/9faef173ce4949c6993d32127c97d35fe0ce3bb5))
 
 ### Bug Fixes
 
+* watch mode when using ng-packagr CLI directly ([0f8f92a](https://github.com/ng-packagr/ng-packagr/commit/0f8f92a181ca04e4bf9f26d3200fece0689945d4))
+* join paths instead of resolving ([0a54e7d](https://github.com/ng-packagr/ng-packagr/commit/0a54e7d076ce82e1e041df712fbfab569454e026)), closes [#2241](https://github.com/ng-packagr/ng-packagr/issues/2241)
+* avoid a recursive export when entryfile is named `index.ts` ([4c96acb](https://github.com/ng-packagr/ng-packagr/commit/4c96acbe21bda356c6fa14ad8470bccfb4d42451))
 * ignore circular dependency warnings ([9b93a18](https://github.com/ng-packagr/ng-packagr/commit/9b93a18d8673b6b788e35916518f241e981c302b))
 * remove hardcoded `moduleResolution` ([3f5448d](https://github.com/ng-packagr/ng-packagr/commit/3f5448dfce04e11af66fdaae25effc49f139e6ad))
+* re-allow `index.ts` as entry-files ([8c5cc4f](https://github.com/ng-packagr/ng-packagr/commit/8c5cc4fff8846bafcd7210c310d9ef0d3f812709))
+* invalid browsers version ranges ([547a11f](https://github.com/ng-packagr/ng-packagr/commit/547a11f166e9b6347fee25ea66e3801ee4e11564))
+
 
 ## [14.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-next.10...v14.0.0-rc.0) (2022-05-12)
 
