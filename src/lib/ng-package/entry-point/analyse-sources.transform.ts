@@ -1,3 +1,4 @@
+import { basename, dirname, join } from 'path';
 import { pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
 import ts from 'typescript';
@@ -123,6 +124,21 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     compilerHost,
     oldProgram,
   );
+
+  // If an index file exists parallel to the entryFilePath it is not valid as index should be reserved as an
+  // entry file of an entry-point based on node resolution strategy.
+  if (basename(entryPoint.data.entryPoint.entryFilePath) !== 'index.ts') {
+    const potentialIndexPath = join(dirname(entryPoint.data.entryPoint.entryFilePath), 'index.ts');
+    const sf = program.getSourceFile(ensureUnixPath(potentialIndexPath));
+
+    if (sf) {
+      throw new Error(
+        `Entry point '${moduleId}' has an 'index.ts' parallel to the 'entryFilePath'. ` +
+          `The 'entryFilePath' should be updated to point to the 'index.ts' file.\n` +
+          `Full path: ${potentialIndexPath}`,
+      );
+    }
+  }
 
   debug(`tsc program structure is reused: ${oldProgram ? (oldProgram as any).structureIsReused : 'No old program'}`);
 
