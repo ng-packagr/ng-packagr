@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [14.0.1](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0...v14.0.1) (2022-06-09)
+
+
+### Bug Fixes
+
+* error when index file is parallel to entry-point but is not configured as such ([ecb55b1](https://github.com/ng-packagr/ng-packagr/commit/ecb55b1d7e55a6e86cd1972ea87a88b52660d2d5))
+
 ## [14.0.0](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-rc.0...v14.0.0) (2022-06-02)
 
 ### ⚠ BREAKING CHANGES
