@@ -13,7 +13,7 @@ import * as log from '../utils/log';
 // Transform a package and its typings when NGTSC is resolving a module.
 export class NgccProcessor {
   private _logger: NgccLogger;
-  private _nodeModulesDirectory: string;
+  private _nodeModulesDirectory: string | null;
   private _entryPointsUrl: string[];
   private readonly propertiesToConsider = ['es2015', 'browser', 'module', 'main'];
   private skipProcessing = false;
@@ -33,8 +33,10 @@ export class NgccProcessor {
 
   /** Process the entire node modules tree. */
   async process(): Promise<void> {
-    // Under Bazel when running in sandbox mode parts of the filesystem is read-only.
-    if (process.env.BAZEL_TARGET) {
+    // Under Bazel when running in sandbox mode parts of the filesystem is read-only, or when using
+    // Yarn PnP there may not be a node_modules directory. ngcc can't run in those cases, so the
+    // processing is skipped.
+    if (process.env.BAZEL_TARGET || !this._nodeModulesDirectory) {
       return;
     }
 
@@ -139,16 +141,18 @@ export class NgccProcessor {
     }
   }
 
-  /** Process a module and it's depedencies. */
+  /** Process a module and its dependencies. */
   processModule(moduleName: string, resolvedModule: ts.ResolvedModule | ts.ResolvedTypeReferenceDirective): void {
     const resolvedFileName = resolvedModule.resolvedFileName;
     if (
+      !this._nodeModulesDirectory ||
       !resolvedFileName ||
       moduleName.startsWith('.') ||
       this.ngccProcessingCache.hasProcessed(moduleName) ||
       this._entryPointsUrl.includes(ngUrl(moduleName))
     ) {
-      // Skip when module is unknown, relative, an entrypoint or already processed.
+      // Skip when module_modules directory is not present, module is unknown, relative, an
+      // entrypoint or already processed.
       return;
     }
 
@@ -201,7 +205,7 @@ export class NgccProcessor {
     }
   }
 
-  private findNodeModulesDirectory(startPoint: string): string {
+  private findNodeModulesDirectory(startPoint: string): string | null {
     let current = startPoint;
     while (path.dirname(current) !== current) {
       const nodePath = path.join(current, 'node_modules');
@@ -212,7 +216,7 @@ export class NgccProcessor {
       current = path.dirname(current);
     }
 
-    throw new Error(`Cannot locate the 'node_modules' directory.`);
+    return null;
   }
 }
 
