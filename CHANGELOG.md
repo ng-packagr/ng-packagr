@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [14.0.3](https://github.com/ng-packagr/ng-packagr/compare/v14.0.2...v14.0.3) (2022-07-06)
+
+
+### Bug Fixes
+
+* address issue were dts were not emitted fully when using entrypoint name as filename ([713d940](https://github.com/ng-packagr/ng-packagr/commit/713d9408f7b9629863bdbe38a426daa453807a16)), closes [#2369](https://github.com/ng-packagr/ng-packagr/issues/2369) [#2360](https://github.com/ng-packagr/ng-packagr/issues/2360)
+* do not run ngcc when node_modules does not exist ([97beddc](https://github.com/ng-packagr/ng-packagr/commit/97beddc50000e04faf5a38a7da0fc6e9642fe0c0))
+
 ### [14.0.2](https://github.com/ng-packagr/ng-packagr/compare/v14.0.1...v14.0.2) (2022-06-10)
 ### Bug Fixes
 
