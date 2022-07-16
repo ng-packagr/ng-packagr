@@ -64,6 +64,21 @@ describe('basic', () => {
           done();
         });
       });
+
+      it('should update `package.json` watch version', done => {
+        const originalVersion = harness.readFileSync('package.json', true)['version'];
+        expect(originalVersion).to.match(/^0\.0\.0-watch\+\d+$/);
+
+        harness.copyTestCase('secondary-valid-2');
+
+        harness.onComplete(() => {
+          const updatedVersion = harness.readFileSync('package.json', true)['version'];
+          expect(updatedVersion).to.match(/^0\.0\.0-watch\+\d+$/);
+          expect(originalVersion).to.not.be.equal(updatedVersion);
+
+          done();
+        });
+      });
     });
   });
 });
