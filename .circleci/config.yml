@@ -82,7 +82,7 @@ jobs:
             GIT_TAG=$(git tag -l --points-at HEAD)
             # The npm tag for publishing this release either as "latest" or "next"
             NPM_TAG=latest
-            if [[ "${GIT_TAG}" =~ v([0-9]+)\.([0-9]+)\.([0-9]+)-([a-zA-Z]+)\..* ]]; then
+            if [[ "${GIT_TAG}" =~ ([0-9]+)\.([0-9]+)\.([0-9]+)-([a-zA-Z]+)\..* ]]; then
               NPM_TAG=next
             fi
             # Build, pack and publish to npm registry
@@ -121,17 +121,17 @@ workflows:
       - setup:
           filters:
             tags:
-              only: /v.*/
+              only: /.*/
       - build-and-test:
           filters:
             tags:
-              only: /v.*/
+              only: /.*/
           requires:
             - setup
       - setup-and-test-win:
           filters:
             tags:
-              only: /v.*/
+              only: /.*/
             branches:
               only:
                 - main
@@ -144,4 +144,4 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /v.*/
+              only: /.*/
