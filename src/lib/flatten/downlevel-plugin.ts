@@ -20,7 +20,7 @@ const COMPILER_OPTIONS: CompilerOptions = {
 /**
  * Downlevels a .js file from `ES2015` to `ES2015`. Internally, uses `tsc`.
  */
-export async function downlevelCodeWithTsc(code: string, filePath: string): Promise<TransformResult> {
+export function downlevelCodeWithTsc(code: string, filePath: string): TransformResult {
   log.debug(`tsc ${filePath}`);
   const compilerOptions: CompilerOptions = {
     ...COMPILER_OPTIONS,
