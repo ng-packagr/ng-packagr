@@ -7,6 +7,34 @@ As a library author you may want to distribute certain assets that are outside o
 ## How?
 
 You can copy these assets by using the `assets` option.
+The assets array can accept a string or an object:
+```
+  | {
+      /**
+       * The pattern to match.
+       */
+      glob: string;
+      /**
+       * The input directory path in which to apply 'glob'. Defaults to the project root.
+       */
+      input: string;
+      /**
+       * An array of globs to ignore.
+       */
+      ignore?: string[];
+      /**
+       * Absolute path within the output.
+       */
+      output: string;
+       /**
+       * Allow glob patterns to follow symlink directories. This allows subdirectories of the symlink to be searched.
+       */
+      followSymlinks: boolean;
+    }
+  | string;
+
+
+## Example strings
 
 ```json
 {
@@ -21,6 +49,24 @@ You can copy these assets by using the `assets` option.
   }
 }
 ```
+## Example complex object
+
+```
+{
+  "ngPackage": {
+    "assets": [
+      {
+      "glob": "**/*.scss",
+      "input": "./src/lib",
+      "output": "/lib"
+      },
+      ...
+    ],
+    "lib": {
+      ...
+    }
+  }
+}
 
 ## Exporting Styles
 When including additional assets like Sass mixins or pre-compiled CSS, you need to add these manually to the conditional "exports" in the `package.json` of the primary entry point.
