@@ -4,9 +4,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [15.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/14.3.0...15.0.0-next.0) (2022-08-26)
 
-## [14.3.0](https://github.com/ng-packagr/ng-packagr/compare/14.2.0...14.3.0) (2022-08-26)
-
-
 ### Features
 
 * support Angular 15 ([e3eca0a](https://github.com/ng-packagr/ng-packagr/commit/e3eca0ab8b2669eea0cb3fd5c46413ef6a3197d1))
