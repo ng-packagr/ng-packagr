@@ -32,7 +32,7 @@ The assets array can accept a string or an object:
       followSymlinks: boolean;
     }
   | string;
-
+```
 
 ## Example strings
 
