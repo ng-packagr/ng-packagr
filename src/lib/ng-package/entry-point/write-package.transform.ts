@@ -103,7 +103,7 @@ async function copyAssets(
   const globsForceIgnored: string[] = ['.gitkeep', '**/.DS_Store', '**/Thumbs.db', `${ngPackage.dest}/**`];
   const defaultAssets: AssetEntry[] = [
     { glob: 'LICENSE', input: '/', output: '/' },
-    { glob: '**/README.md', input: '/', output: '/' },
+    { glob: '**/README.md', input: '/', output: '/', ignore: ['node_modules/**'] },
   ];
   const assets: AssetEntry[] = [];
 
