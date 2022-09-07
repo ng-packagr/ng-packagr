@@ -3,7 +3,6 @@ import * as path from 'path';
 import ts from 'typescript';
 import { EntryPointNode } from '../ng-package/nodes';
 import * as log from '../utils/log';
-import { warn } from '../utils/log';
 import { ngCompilerCli } from '../utils/ng-compiler-cli';
 
 export const defaultTsConfigPath = path.join(__dirname, 'conf', 'tsconfig.ngc.json');
@@ -64,18 +63,6 @@ export async function initializeTsConfig(
   if (defaultTsConfigParsed.errors.length > 0) {
     const { formatDiagnostics } = await ngCompilerCli();
     throw new Error(formatDiagnostics(defaultTsConfigParsed.errors));
-  }
-
-  if (defaultTsConfigParsed.options.enableIvy === false) {
-    warn(
-      'Project is attempting to disable the Ivy compiler. ' +
-        'Angular versions 13 and higher do not support View Engine compiler for libraries. ' +
-        'The Ivy compiler will be used to build this project. ' +
-        '\nFor additional information or if the build fails, please see https://v12.angular.io/guide/ivy',
-    );
-
-    defaultTsConfigParsed.options.enableIvy = true;
-    defaultTsConfigParsed.options.compilationMode = 'partial';
   }
 
   entryPoints.forEach(currentEntryPoint => {
