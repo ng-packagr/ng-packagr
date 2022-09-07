@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+
+### [14.2.1](https://github.com/ng-packagr/ng-packagr/compare/14.2.0...14.2.1) (2022-09-07)
+
+
+### Bug Fixes
+
+* emit TypeScript declaration diagnostics ([2176bd9](https://github.com/ng-packagr/ng-packagr/commit/2176bd96b58dfcde17748945e6709f3387e34fba)), closes [#2405](https://github.com/ng-packagr/ng-packagr/issues/2405)
+* exclude scanning node_modules when trying to locate README.md ([90b0463](https://github.com/ng-packagr/ng-packagr/commit/90b046330592f184b5744dc89a5791ded00cf23c)), closes [#2418](https://github.com/ng-packagr/ng-packagr/issues/2418)
+
+
 ## [15.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/14.3.0...15.0.0-next.0) (2022-08-26)
 
 ### Features
