@@ -1,8 +1,8 @@
+import autoprefixer from 'autoprefixer';
 import browserslist from 'browserslist';
 import { existsSync } from 'fs';
 import { dirname, extname, join } from 'path';
 import postcss from 'postcss';
-import postcssPresetEnv from 'postcss-preset-env';
 import postcssUrl from 'postcss-url';
 import { EsbuildExecutor } from '../esbuild/esbuild-executor';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
@@ -136,10 +136,9 @@ export class StylesheetProcessor {
     }
 
     postCssPlugins.push(
-      postcssPresetEnv({
-        browsers: this.browserslistData,
-        autoprefixer: true,
-        stage: 3,
+      autoprefixer({
+        ignoreUnknownVersions: true,
+        overrideBrowserslist: this.browserslistData,
       }),
     );
 
