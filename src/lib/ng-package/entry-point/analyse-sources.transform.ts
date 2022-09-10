@@ -165,7 +165,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
 
       entryPoint.dependsOn(dep);
     } else {
-      throw new Error(`Entry point ${moduleName} which is required by ${moduleId} doesn't exists.`);
+      throw new Error(`Entry point ${moduleName} which is required by ${moduleId} doesn't exist.`);
     }
   }
 }
