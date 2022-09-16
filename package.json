@@ -54,8 +54,7 @@
     "rollup": "^2.70.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "rxjs": "^7.5.5",
-    "sass": "^1.49.9",
-    "stylus": "^0.59.0"
+    "sass": "^1.49.9"
   },
   "optionalDependencies": {
     "esbuild": "^0.15.0"
@@ -86,7 +85,6 @@
     "@types/less": "^3.0.2",
     "@types/node": "^14.14.37",
     "@types/read-pkg-up": "^3.0.1",
-    "@types/stylus": "^0.48.30",
     "@typescript-eslint/eslint-plugin": "5.37.0",
     "@typescript-eslint/parser": "5.37.0",
     "chai": "^4.0.1",
@@ -126,7 +124,6 @@
     "integration:consumers:ngc": "ngc -p integration/consumers/tsc/tsconfig.json",
     "integration:watch:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json jasmine-ts --random=false \"integration/watch/*.spec.ts\"",
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json jasmine-ts \"src/**/*.spec.ts\"",
-    "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:watch:specs && yarn integration:consumers",
-    "gh-pages": "gh-pages -d docs/ghpages"
+    "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:watch:specs && yarn integration:consumers"
   }
 }
