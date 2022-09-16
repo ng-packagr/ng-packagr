@@ -173,22 +173,7 @@ export class StylesheetProcessor {
 
         return content;
       }
-      case '.styl':
-      case '.stylus': {
-        const stylus = (await import('stylus')).default;
 
-        return (
-          stylus(css)
-            // add paths for resolve
-            .set('paths', [this.basePath, '.', ...this.styleIncludePaths, 'node_modules'])
-            // add support for resolving plugins from node_modules
-            .set('filename', filePath)
-            // turn on url resolver in stylus, same as flag --resolve-url
-            .set('resolve url', true)
-            .define('url', stylus.resolver(undefined))
-            .render()
-        );
-      }
       case '.css':
       default:
         return css;
