@@ -4,6 +4,7 @@ import { existsSync } from 'fs';
 import { dirname, extname, join } from 'path';
 import postcss from 'postcss';
 import postcssUrl from 'postcss-url';
+import { pathToFileURL } from 'url';
 import { EsbuildExecutor } from '../esbuild/esbuild-executor';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
@@ -24,6 +25,7 @@ export class StylesheetProcessor {
   private postCssProcessor: ReturnType<typeof postcss>;
   private esbuild = new EsbuildExecutor();
   private styleIncludePaths: string[];
+  private readonly nodeModulesDirs = [];
 
   constructor(
     private readonly basePath: string,
@@ -54,6 +56,7 @@ export class StylesheetProcessor {
       const p = join(currentDir, 'node_modules');
       if (existsSync(p)) {
         this.styleIncludePaths.push(p);
+        this.nodeModulesDirs.push(p);
       }
 
       prevDir = currentDir;
@@ -151,15 +154,11 @@ export class StylesheetProcessor {
     switch (ext) {
       case '.sass':
       case '.scss': {
-        return (await import('sass'))
-          .renderSync({
-            file: filePath,
-            data: css,
-            indentedSyntax: '.sass' === ext,
-            importer: customSassImporter,
-            includePaths: this.styleIncludePaths,
-          })
-          .css.toString();
+        return (await import('sass')).compileString(css, {
+          url: pathToFileURL(filePath),
+          syntax: '.sass' === ext ? 'indented' : 'scss',
+          loadPaths: this.styleIncludePaths,
+        }).css;
       }
       case '.less': {
         const { css: content } = await (
@@ -211,17 +210,4 @@ function transformSupportedBrowsersToTargets(supportedBrowsers: string[]): strin
   }
 
   return transformed.length ? transformed : undefined;
-}
-
-function customSassImporter(url: string, prev: string): { file: string; prev: string } | undefined {
-  // NB: Sass importer should always be sync as otherwise it will cause
-  // sass to go in the async path which is slower.
-  if (url[0] !== '~') {
-    return undefined;
-  }
-
-  return {
-    file: url.slice(1),
-    prev,
-  };
 }
