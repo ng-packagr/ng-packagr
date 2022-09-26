@@ -63,7 +63,6 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
 * :surfer: Inlines Templates and Stylesheets
 * :sparkles: CSS Features
   * :camel: Runs [SCSS](http://sass-lang.com/guide) preprocessor, supporting the [relative `~` import syntax](https://github.com/webpack-contrib/sass-loader#imports) and custom include paths
-  * :snake: Runs [Stylus](http://stylus-lang.com) preprocessor, resolves relative paths relative to ng-package.json
   * :monkey: Adds vendor-specific prefixes w/ [autoprefixer](https://github.com/postcss/autoprefixer#autoprefixer-) and [browserslist](https://github.com/ai/browserslist#queries) &mdash; just tell your desired `.browserslistrc`
   * :tiger: Embed assets data w/ [postcss-url](https://github.com/postcss/postcss-url#inline)
 
