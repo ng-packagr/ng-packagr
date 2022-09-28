@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [15.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/15.0.0-next.2...15.0.0-next.3) (2022-09-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* Deprecated support for Stylus has been removed. The Stylus package has never reached a stable version and it's usage in the ng-packagr is minimal. It's recommended to migrate to another CSS preprocessor that the ng-packagr supports.
+
+### Features
+
+* switch to sass modern API ([b1ebee3](https://github.com/ng-packagr/ng-packagr/commit/b1ebee34c7c89cb3d91cb49c74b9c013e84da125))
+
+
+### Bug Fixes
+
+* grammatical update error message ([6d7d2a9](https://github.com/ng-packagr/ng-packagr/commit/6d7d2a97b2c9586bce51a92d3918051be0441460))
+
+
+* remove support for Stylus ([2f92ab8](https://github.com/ng-packagr/ng-packagr/commit/2f92ab8e6dabc75d6e4f5793b7de6115848bdf6c))
+
 ## [15.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/15.0.0-next.1...15.0.0-next.2) (2022-09-08)
 
 ## [15.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/15.0.0-next.0...15.0.0-next.1) (2022-09-07)
