@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [15.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/15.0.0-next.3...15.0.0-next.4) (2022-10-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* ng-packagr no longer supports Node.js versions `14.[15-19].x` and `16.[10-12].x`. Current supported versions of Node.js are `14.20.x`, `16.13.x` and `18.10.x`.
+* TypeScript versions older than 4.8.2 are no longer supported.
+
+### Features
+
+* add support for Node.js version 18 ([e70e3a3](https://github.com/ng-packagr/ng-packagr/commit/e70e3a3547cfdb131608d6a015c528ca64bde629)), closes [angular/angular-cli#24026](https://github.com/angular/angular-cli/issues/24026)
+* drop support for TypeScript 4.6 and 4.7 ([56d9a85](https://github.com/ng-packagr/ng-packagr/commit/56d9a8558cbc4efa17e7e7e965dea046de90dba7))
+
 ## [15.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/15.0.0-next.2...15.0.0-next.3) (2022-09-28)
 
 
