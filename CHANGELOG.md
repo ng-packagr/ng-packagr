@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* add support for Node.js version 18 ([e70e3a3](https://github.com/ng-packagr/ng-packagr/commit/e70e3a3547cfdb131608d6a015c528ca64bde629)), closes [angular/angular-cli#24026](https://github.com/angular/angular-cli/issues/24026)
+* add support for Node.js version 18 ([e70e3a3](https://github.com/ng-packagr/ng-packagr/commit/e70e3a3547cfdb131608d6a015c528ca64bde629))
 * drop support for TypeScript 4.6 and 4.7 ([56d9a85](https://github.com/ng-packagr/ng-packagr/commit/56d9a8558cbc4efa17e7e7e965dea046de90dba7))
 
 ## [15.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/15.0.0-next.2...15.0.0-next.3) (2022-09-28)
