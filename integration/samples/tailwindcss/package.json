@@ -1,0 +1,12 @@
+{
+  "$schema": "../../../src/package.schema.json",
+  "name": "@sample/tailwindcss",
+  "description": "A sample library with configuration in ng-package.js",
+  "version": "1.0.0-pre.0",
+  "private": true,
+  "repository": "https://github.com/ng-packagr/ng-packagr.git",
+  "peerDependencies": {
+    "@angular/core": "^4.1.2",
+    "@angular/common": "^4.1.2"
+  }
+}
