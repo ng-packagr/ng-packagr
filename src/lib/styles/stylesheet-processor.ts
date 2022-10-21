@@ -1,7 +1,7 @@
 import autoprefixer from 'autoprefixer';
 import browserslist from 'browserslist';
 import { existsSync } from 'fs';
-import { dirname, extname, join } from 'path';
+import { dirname, extname, join, relative } from 'path';
 import postcss from 'postcss';
 import postcssUrl from 'postcss-url';
 import { pathToFileURL } from 'url';
@@ -28,10 +28,11 @@ export class StylesheetProcessor {
   private readonly nodeModulesDirs = [];
 
   constructor(
+    private readonly projectBasePath: string,
     private readonly basePath: string,
     private readonly cssUrl?: CssUrl,
     private readonly includePaths?: string[],
-    private readonly cacheDirectory?: string | false,
+    private cacheDirectory?: string | false,
   ) {
     log.debug(`determine browserslist for ${this.basePath}`);
     // By default, browserslist defaults are too inclusive
@@ -134,6 +135,12 @@ export class StylesheetProcessor {
 
   private createPostCssPlugins(): ReturnType<typeof postcss> {
     const postCssPlugins = [];
+    const tailwinds = getTailwindPlugin(this.projectBasePath);
+    if (tailwinds) {
+      postCssPlugins.push(tailwinds);
+      this.cacheDirectory = false;
+    }
+
     if (this.cssUrl !== CssUrl.none) {
       postCssPlugins.push(postcssUrl({ url: this.cssUrl }));
     }
@@ -210,4 +217,44 @@ function transformSupportedBrowsersToTargets(supportedBrowsers: string[]): strin
   }
 
   return transformed.length ? transformed : undefined;
+}
+
+function getTailwindPlugin(projectBasePath: string) {
+  // Attempt to setup Tailwind CSS
+  // Only load Tailwind CSS plugin if configuration file was found.
+  // This acts as a guard to ensure the project actually wants to use Tailwind CSS.
+  // The package may be unknowningly present due to a third-party transitive package dependency.
+  const tailwindConfigPath = getTailwindConfigPath(projectBasePath);
+  if (tailwindConfigPath) {
+    let tailwindPackagePath;
+    try {
+      tailwindPackagePath = require.resolve('tailwindcss', { paths: [projectBasePath] });
+    } catch {
+      const relativeTailwindConfigPath = relative(projectBasePath, tailwindConfigPath);
+      log.warn(
+        `Tailwind CSS configuration file found (${relativeTailwindConfigPath})` +
+          ` but the 'tailwindcss' package is not installed.` +
+          ` To enable Tailwind CSS, please install the 'tailwindcss' package.`,
+      );
+    }
+    if (tailwindPackagePath) {
+      return require(tailwindPackagePath)({ config: tailwindConfigPath });
+    }
+  }
+}
+
+function getTailwindConfigPath(projectRoot: string): string | undefined {
+  // A configuration file can exist in the project or workspace root
+  // The list of valid config files can be found:
+  // https://github.com/tailwindlabs/tailwindcss/blob/8845d112fb62d79815b50b3bae80c317450b8b92/src/util/resolveConfigPath.js#L46-L52
+  const tailwindConfigFiles = ['tailwind.config.js', 'tailwind.config.cjs'];
+  for (const configFile of tailwindConfigFiles) {
+    // Irrespective of the name project level configuration should always take precedence.
+    const fullPath = join(projectRoot, configFile);
+    if (existsSync(fullPath)) {
+      return fullPath;
+    }
+  }
+
+  return undefined;
 }

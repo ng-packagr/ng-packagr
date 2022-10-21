@@ -61,8 +61,14 @@
   },
   "peerDependencies": {
     "@angular/compiler-cli": "^15.0.0-next",
+    "tailwindcss": "^2.0.0 || ^3.0.0",
     "tslib": "^2.3.0",
     "typescript": "~4.8.2"
+  },
+  "peerDependenciesMeta": {
+    "tailwindcss": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@angular/cdk": "~14.2.0-next",
@@ -102,6 +108,7 @@
     "pretty-quick": "~3.1.0",
     "rimraf": "^3.0.2",
     "standard-version": "^9.0.0",
+    "tailwindcss": "^3.2.0",
     "ts-node": "^10.2.1",
     "tslib": "^2.0.0",
     "typescript": "4.8.4",

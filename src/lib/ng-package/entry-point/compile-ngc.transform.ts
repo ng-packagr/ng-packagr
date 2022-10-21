@@ -7,7 +7,7 @@ import { NgccProcessor } from '../../ngc/ngcc-processor';
 import { StylesheetProcessor as StylesheetProcessorClass } from '../../styles/stylesheet-processor';
 import { setDependenciesTsConfigPaths } from '../../ts/tsconfig';
 import { ngccCompilerCli } from '../../utils/ng-compiler-cli';
-import { EntryPointNode, isEntryPoint, isEntryPointInProgress } from '../nodes';
+import { EntryPointNode, PackageNode, isEntryPoint, isEntryPointInProgress, isPackage } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 
 export const compileNgcTransformFactory = (
@@ -21,8 +21,11 @@ export const compileNgcTransformFactory = (
     });
 
     try {
-      const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
       const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
+      const entryPoint: EntryPointNode = entryPoints.find(isEntryPointInProgress());
+      const ngPackageNode: PackageNode = graph.find(isPackage);
+      const projectBasePath = ngPackageNode.data.primary.basePath;
+
       // Add paths mappings for dependencies
       const tsConfig = setDependenciesTsConfigPaths(entryPoint.data.tsConfig, entryPoints);
 
@@ -47,6 +50,7 @@ export const compileNgcTransformFactory = (
       }
 
       entryPoint.cache.stylesheetProcessor ??= new StylesheetProcessor(
+        projectBasePath,
         basePath,
         cssUrl,
         styleIncludePaths,
