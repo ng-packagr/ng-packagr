@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [15.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/15.0.0-next.4...15.0.0-rc.0) (2022-10-21)
+
+
+### Features
+
+* add support for tailwindcss ([fdc0707](https://github.com/ng-packagr/ng-packagr/commit/fdc07079cb2f2f947a72176011e02c7fa2a3c2fa)), closes [#1943](https://github.com/ng-packagr/ng-packagr/issues/1943)
+
 ## [15.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/15.0.0-next.3...15.0.0-next.4) (2022-10-12)
 
 
