@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [14.2.2](https://github.com/ng-packagr/ng-packagr/compare/14.2.1...14.2.2) (2022-10-24)
+
+
+### Bug Fixes
+
+* exclude scanning nested node_modules when locating `README.md` ([3b74c0f](https://github.com/ng-packagr/ng-packagr/commit/3b74c0fcacf6cc0e4edac8ff64f09a16408bf3bd)), closes [#2459](https://github.com/ng-packagr/ng-packagr/issues/2459)
+
 ### [14.2.1](https://github.com/ng-packagr/ng-packagr/compare/14.2.0...14.2.1) (2022-09-07)
 
 
