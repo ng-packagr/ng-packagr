@@ -144,6 +144,10 @@ export function cacheCompilerHost(
 
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.content === undefined) {
+        if (!compilerHost.fileExists(fileName)) {
+          throw new Error(`Cannot read file ${fileName}.`);
+        }
+
         if (/(?:html?|svg)$/.test(path.extname(fileName))) {
           // template
           cache.content = compilerHost.readFile.call(this, fileName);
@@ -153,10 +157,6 @@ export function cacheCompilerHost(
             filePath: fileName,
             content: compilerHost.readFile.call(this, fileName),
           });
-        }
-
-        if (cache.content === undefined) {
-          throw new Error(`Cannot read file ${fileName}.`);
         }
 
         cache.exists = true;
