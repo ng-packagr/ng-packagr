@@ -13,7 +13,7 @@ You can copy these assets by using the `assets` option.
   "ngPackage": {
     "assets": [
       "CHANGELOG.md",
-      "./styles/**/*.theme.scss"
+      { "input": "src/styles", "glob": "**/*.scss", "output": "styles" }
     ],
     "lib": {
       ...
