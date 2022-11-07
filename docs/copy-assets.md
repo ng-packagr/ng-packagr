@@ -13,6 +13,7 @@ You can copy these assets by using the `assets` option.
   "ngPackage": {
     "assets": [
       "CHANGELOG.md",
+      "docs/**/*.md",
       { "input": "src/styles", "glob": "**/*.scss", "output": "styles" }
     ],
     "lib": {
@@ -21,8 +22,6 @@ You can copy these assets by using the `assets` option.
   }
 }
 ```
-
-Let's say you have a library `projects/my-lib`. With the config above, ng-packagr will copy `projects/my-lib/CHANGELOG.md` to `dist/my-lib/CHANGELOG.md` and copy all the SCSS files under `projects/my-lib/src/styles` to `dist/my-lib/styles`.
 
 Note that the advanced asset pattern, with a same syntax as Angular Builder's one, is used for SCSS files in the example above to allow a different output dir, so that we can put our styles under `projects/my-lib/src/styles` instead of `projects/my-lib/styles`.
 
