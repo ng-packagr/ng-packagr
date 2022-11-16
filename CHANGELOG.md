@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [15.0.0](https://github.com/ng-packagr/ng-packagr/compare/15.0.0-rc.0...15.0.0) (2022-11-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* ng-packagr no longer supports Node.js versions `14.[15-19].x` and `16.[10-12].x`. Current supported versions of Node.js are `14.20.x`, `16.13.x` and `18.10.x`.
+* TypeScript versions older than 4.8.2 are no longer supported.
+* Deprecated support for Stylus has been removed. The Stylus package has never reached a stable version and it's usage in the ng-packagr is minimal. It's recommended to migrate to another CSS preprocessor that the ng-packagr supports.
+
+### Features
+
+* add support for tailwindcss ([fdc0707](https://github.com/ng-packagr/ng-packagr/commit/fdc07079cb2f2f947a72176011e02c7fa2a3c2fa)), closes [#1943](https://github.com/ng-packagr/ng-packagr/issues/1943)
+* add support for Node.js version 18 ([e70e3a3](https://github.com/ng-packagr/ng-packagr/commit/e70e3a3547cfdb131608d6a015c528ca64bde629))
+* drop support for TypeScript 4.6 and 4.7 ([56d9a85](https://github.com/ng-packagr/ng-packagr/commit/56d9a8558cbc4efa17e7e7e965dea046de90dba7))
+* switch to sass modern API ([b1ebee3](https://github.com/ng-packagr/ng-packagr/commit/b1ebee34c7c89cb3d91cb49c74b9c013e84da125))
+
+### Bug Fixes
+
+* grammatical update error message ([6d7d2a9](https://github.com/ng-packagr/ng-packagr/commit/6d7d2a97b2c9586bce51a92d3918051be0441460))
+* remove support for Stylus ([2f92ab8](https://github.com/ng-packagr/ng-packagr/commit/2f92ab8e6dabc75d6e4f5793b7de6115848bdf6c))
+* emit TypeScript declaration diagnostics ([844ea6c](https://github.com/ng-packagr/ng-packagr/commit/844ea6c6c6b414c192aa0e5fcce7adfbfda0e439)), closes [#2405](https://github.com/ng-packagr/ng-packagr/issues/2405)
+* exclude scanning node_modules when trying to locate README.md ([b54159b](https://github.com/ng-packagr/ng-packagr/commit/b54159bf5f9d8fcb57126a37fdfa33443c2f58c2)), closes [#2418](https://github.com/ng-packagr/ng-packagr/issues/2418)
+* exclude scanning nested node_modules when locating `README.md` ([4e4c00b](https://github.com/ng-packagr/ng-packagr/commit/4e4c00bf67d2dcb932da5404cc36703e49556594)), closes [#2459](https://github.com/ng-packagr/ng-packagr/issues/2459)
+* show actionable error when component resource is not found ([5dcba25](https://github.com/ng-packagr/ng-packagr/commit/5dcba25c284b55f407ddd6bdc7db59ce5436bcca))
+
 ## [15.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/15.0.0-next.4...15.0.0-rc.0) (2022-10-21)
 
 
@@ -100,7 +125,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [14.0.1](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0...v14.0.1) (2022-06-08)
 
-No visible changes 
+No visible changes
 
 ## [14.0.0](https://github.com/ng-packagr/ng-packagr/compare/v14.0.0-rc.0...v14.0.0) (2022-06-02)
 
