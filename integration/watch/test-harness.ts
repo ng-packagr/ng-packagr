@@ -69,6 +69,10 @@ export class TestHarness {
     return expect(this.readFileSync(`fesm2020/${fileName}.mjs`)).to.match(regexp);
   }
 
+  expectFileToMatch(fileName: string, regexp: RegExp): Chai.Assertion {
+    return expect(this.readFileSync(fileName)).to.match(regexp);
+  }
+
   expectDtsToMatch(fileName: string, regexp: RegExp): Chai.Assertion {
     return expect(this.readFileSync(`${fileName}.d.ts`)).to.match(regexp);
   }
