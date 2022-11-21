@@ -110,7 +110,7 @@ async function copyAssets(
   for (const assetPath of [...ngPackage.assets, ...defaultAssets]) {
     let asset: AssetEntry;
     if (typeof assetPath === 'object') {
-      asset = assetPath;
+      asset = { ...assetPath };
     } else {
       const [isDir, isFile] = await stat(path.join(ngPackage.src, assetPath))
         .then(stats => [stats.isDirectory(), stats.isFile()])

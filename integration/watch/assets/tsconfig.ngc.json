@@ -1,0 +1,24 @@
+{
+  "angularCompilerOptions": {},
+  "buildOnSave": false,
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es2020",
+    "module": "es2020",
+    "moduleResolution": "node",
+    "outDir": "",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "skipLibCheck": true,
+    "declarationMap": true,
+    "emitDecoratorMetadata": false,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "lib": ["dom", "es2020"]
+  }
+}
