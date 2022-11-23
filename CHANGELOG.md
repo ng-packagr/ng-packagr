@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [15.0.1](https://github.com/ng-packagr/ng-packagr/compare/15.0.0...15.0.1) (2022-11-23)
+
+
+### Bug Fixes
+
+* copy changed file during watch mode when using advanced asset pattern ([0a11ca9](https://github.com/ng-packagr/ng-packagr/commit/0a11ca960cf8de2398bf5098210dd7677365343c)), closes [#2479](https://github.com/ng-packagr/ng-packagr/issues/2479)
+
 ## [15.0.0](https://github.com/ng-packagr/ng-packagr/compare/15.0.0-rc.0...15.0.0) (2022-11-16)
 
 
