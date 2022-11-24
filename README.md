@@ -20,7 +20,7 @@ npm install -D ng-packagr
 ## Usage Example
 
 Let's walk through a _getting started_ that'll build an Angular library from TypeScript sources and create a distribution-ready npm package:
-create a `ng-package.json` file and run `ng-packagr -p package.json`
+create a `ng-package.json` file and run `ng-packagr -p ng-package.json`
 – Here we go:
 
 ```json
