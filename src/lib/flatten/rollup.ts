@@ -2,12 +2,11 @@ import rollupJson from '@rollup/plugin-json';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import * as path from 'path';
 import * as rollup from 'rollup';
-import { TransformHook } from 'rollup';
-import sourcemaps from 'rollup-plugin-sourcemaps';
 import { OutputFileCache } from '../ng-package/nodes';
 import { readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
-import { ensureUnixPath } from '../utils/path';
+import { downlevelCodeWithTscPlugin } from './downlevel-plugin';
+import { fileLoaderPlugin } from './file-loader-plugin';
 
 /**
  * Options used in `ng-packagr` for writing flat bundle files.
@@ -19,7 +18,7 @@ export interface RollupOptions {
   entry: string;
   dest: string;
   sourceRoot: string;
-  transform?: TransformHook;
+  downlevel?: boolean;
   cache?: rollup.RollupCache;
   cacheDirectory?: string | false;
   fileCache: OutputFileCache;
@@ -43,14 +42,9 @@ export async function rollupBundleFile(
     input: opts.entry,
     plugins: [
       nodeResolve(),
-      sourcemaps({
-        readFile: (path: string, callback: (error: Error | null, data: Buffer | string) => void) => {
-          const fileData = opts.fileCache.get(ensureUnixPath(path));
-          callback(fileData ? null : new Error(`Could not load '${path}' from memory.`), fileData?.content);
-        },
-      }),
       rollupJson(),
-      opts.transform ? { transform: opts.transform, name: 'downlevel-ts' } : undefined,
+      fileLoaderPlugin(opts.fileCache),
+      opts.downlevel ? downlevelCodeWithTscPlugin() : undefined,
     ],
     onwarn: warning => {
       switch (warning.code) {

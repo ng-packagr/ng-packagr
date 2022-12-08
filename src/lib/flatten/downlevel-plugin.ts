@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { TransformResult } from 'rollup';
+import { Plugin } from 'rollup';
 import { CompilerOptions, ModuleKind, ModuleResolutionKind, ScriptTarget, transpileModule } from 'typescript';
 
 import * as log from '../utils/log';
@@ -20,19 +20,24 @@ const COMPILER_OPTIONS: CompilerOptions = {
 /**
  * Downlevels a .js file from `ES2015` to `ES2015`. Internally, uses `tsc`.
  */
-export function downlevelCodeWithTsc(code: string, filePath: string): TransformResult {
-  log.debug(`tsc ${filePath}`);
-  const compilerOptions: CompilerOptions = {
-    ...COMPILER_OPTIONS,
-    mapRoot: path.dirname(filePath),
-  };
-
-  const { outputText, sourceMapText } = transpileModule(code, {
-    compilerOptions,
-  });
-
+export function downlevelCodeWithTscPlugin(): Plugin {
   return {
-    code: outputText,
-    map: JSON.parse(sourceMapText),
+    name: 'downlevel-ts',
+    transform: function (code, id) {
+      log.debug(`tsc ${id}`);
+      const compilerOptions: CompilerOptions = {
+        ...COMPILER_OPTIONS,
+        mapRoot: path.dirname(id),
+      };
+
+      const { outputText, sourceMapText } = transpileModule(code, {
+        compilerOptions,
+      });
+
+      return {
+        code: outputText,
+        map: JSON.parse(sourceMapText),
+      };
+    },
   };
 }

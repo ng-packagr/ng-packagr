@@ -1,7 +1,6 @@
 import ora from 'ora';
 import { dirname } from 'path';
 import { SourceMap } from 'rollup';
-import { downlevelCodeWithTsc } from '../../flatten/downlevel-plugin';
 import { rollupBundleFile } from '../../flatten/rollup';
 import { transformFromPromise } from '../../graph/transform';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../../utils/cache';
@@ -111,7 +110,7 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
         entry: esm2020,
         moduleName: ngEntryPoint.moduleId,
         dest: fesm2015,
-        transform: downlevelCodeWithTsc,
+        downlevel: true,
         cache: cache.rollupFESM2015Cache,
         cacheDirectory,
         fileCache: cache.outputCache,
