@@ -1,4 +1,5 @@
 import type { CompilerHost, CompilerOptions } from '@angular/compiler-cli';
+import convertSourceMap from 'convert-source-map';
 
 import { createHash } from 'crypto';
 import * as path from 'path';
@@ -97,9 +98,18 @@ export function cacheCompilerHost(
         fileName = fileName.replace(/\.js(\.map)?$/, '.mjs$1');
         const outputCache = entryPoint.cache.outputCache;
 
+        // Extract inline sourcemap which will later be used by rolluo.
+        const version = createHash('sha256').update(data).digest('hex');
+        let map = undefined;
+        if (fileName.endsWith('.mjs')) {
+          const cachedData = outputCache.get(fileName);
+          map = cachedData?.version === version ? cachedData.map : convertSourceMap.fromComment(data).toJSON();
+        }
+
         outputCache.set(fileName, {
           content: data,
-          version: createHash('sha256').update(data).digest('hex'),
+          version,
+          map,
         });
       }
 
