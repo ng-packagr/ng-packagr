@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [15.0.2](https://github.com/ng-packagr/ng-packagr/compare/15.0.1...15.0.2) (2022-12-08)
+
+
+### Performance
+
+* reduce sourcemap loading and decoding ([3089f51](https://github.com/ng-packagr/ng-packagr/commit/3089f514356b2f9aee2d85f52b2ea97576935048)), closes [#2495](https://github.com/ng-packagr/ng-packagr/issues/2495)
+
 ### [15.0.1](https://github.com/ng-packagr/ng-packagr/compare/15.0.0...15.0.1) (2022-11-23)
 
 
