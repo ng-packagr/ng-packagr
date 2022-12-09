@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [15.0.3](https://github.com/ng-packagr/ng-packagr/compare/15.0.2...15.0.3) (2022-12-09)
+
+
+### Bug Fixes
+
+* add support for prerelease version of Angular ([632217e](https://github.com/ng-packagr/ng-packagr/commit/632217e80832f57032fd164f85e9085fdb6c427d))
+
 ### [15.0.2](https://github.com/ng-packagr/ng-packagr/compare/15.0.1...15.0.2) (2022-12-08)
 
 
