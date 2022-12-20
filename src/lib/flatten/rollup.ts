@@ -16,7 +16,8 @@ import { fileLoaderPlugin } from './file-loader-plugin';
 export interface RollupOptions {
   moduleName: string;
   entry: string;
-  dest: string;
+  entryName: string;
+  dir: string;
   sourceRoot: string;
   downlevel?: boolean;
   cache?: rollup.RollupCache;
@@ -28,8 +29,8 @@ export interface RollupOptions {
 /** Runs rollup over the given entry file, writes a bundle file. */
 export async function rollupBundleFile(
   opts: RollupOptions,
-): Promise<{ cache: rollup.RollupCache; code: string; map: rollup.SourceMap }> {
-  log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dest}`);
+): Promise<{ cache: rollup.RollupCache; files: (rollup.OutputChunk | rollup.OutputAsset)[] }> {
+  log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dir}`);
 
   const cacheDirectory = opts.cacheDirectory;
 
@@ -37,7 +38,6 @@ export async function rollupBundleFile(
   const bundle = await rollup.rollup({
     context: 'this',
     external: moduleId => isExternalDependency(moduleId),
-    inlineDynamicImports: false,
     cache: opts.cache ?? (cacheDirectory ? await readCacheEntry(cacheDirectory, opts.cacheKey) : undefined),
     input: opts.entry,
     plugins: [
@@ -68,7 +68,10 @@ export async function rollupBundleFile(
   const output = await bundle.write({
     name: opts.moduleName,
     format: 'es',
-    file: opts.dest,
+    dir: opts.dir,
+    inlineDynamicImports: false,
+    chunkFileNames: opts.entryName + '-[name]-[hash].mjs',
+    entryFileNames: opts.entryName + '.mjs',
     banner: '',
     sourcemap: true,
   });
@@ -77,14 +80,11 @@ export async function rollupBundleFile(
     await saveCacheEntry(cacheDirectory, opts.cacheKey, JSON.stringify(bundle.cache));
   }
 
-  const { code, map } = output.output[0];
-
   // Close the bundle to let plugins clean up their external processes or services
   await bundle.close();
 
   return {
-    code: code + '//# sourceMapping' + `URL=${path.basename(opts.dest)}.map\n`,
-    map,
+    files: output.output,
     cache: bundle.cache,
   };
 }

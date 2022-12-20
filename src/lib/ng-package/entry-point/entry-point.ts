@@ -15,6 +15,10 @@ export interface DestinationFiles {
   esm2020: string;
   /** Sub path of entrypoint distributable. */
   directory: string;
+  /** Absolute path of this entry point `FESM2020` directory */
+  fesm2020Dir: string;
+  /** Absolute path of this entry point `FESM2015` directory */
+  fesm2015Dir: string;
 }
 
 /**
@@ -95,6 +99,8 @@ export class NgEntryPoint {
       esm2020: pathJoinWithDest('esm2020', secondaryDir, `${flatModuleFile}.mjs`),
       fesm2020: pathJoinWithDest('fesm2020', `${flatModuleFile}.mjs`),
       fesm2015: pathJoinWithDest('fesm2015', `${flatModuleFile}.mjs`),
+      fesm2020Dir: pathJoinWithDest('fesm2020'),
+      fesm2015Dir: pathJoinWithDest('fesm2015'),
     };
   }
 
