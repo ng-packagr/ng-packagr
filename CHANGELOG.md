@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [15.1.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/15.0.3...15.1.0-next.0) (2022-12-21)
+
+
+### Features
+
+* add support for dynamic import ([7226bb1](https://github.com/ng-packagr/ng-packagr/commit/7226bb101db0e918571f375cd3b0a9a39182ffdc)), closes [#2508](https://github.com/ng-packagr/ng-packagr/issues/2508)
+
+
+### Performance
+
+* move stylesheet processing into a worker pool ([9eaa398](https://github.com/ng-packagr/ng-packagr/commit/9eaa398b4489457bada33aa7ba2cbd5280b1fe1f))
+
 ### [15.0.3](https://github.com/ng-packagr/ng-packagr/compare/15.0.2...15.0.3) (2022-12-09)
 
 
