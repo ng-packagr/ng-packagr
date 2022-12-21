@@ -20,12 +20,12 @@ export const compileNgcTransformFactory = (
       discardStdin: false,
     });
 
-    try {
-      const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
-      const entryPoint: EntryPointNode = entryPoints.find(isEntryPointInProgress());
-      const ngPackageNode: PackageNode = graph.find(isPackage);
-      const projectBasePath = ngPackageNode.data.primary.basePath;
+    const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
+    const entryPoint: EntryPointNode = entryPoints.find(isEntryPointInProgress());
+    const ngPackageNode: PackageNode = graph.find(isPackage);
+    const projectBasePath = ngPackageNode.data.primary.basePath;
 
+    try {
       // Add paths mappings for dependencies
       const tsConfig = setDependenciesTsConfigPaths(entryPoint.data.tsConfig, entryPoints);
 
@@ -74,6 +74,10 @@ export const compileNgcTransformFactory = (
     } catch (error) {
       spinner.fail();
       throw error;
+    } finally {
+      if (!options.watch) {
+        entryPoint.cache.stylesheetProcessor?.destroy();
+      }
     }
 
     spinner.succeed();
