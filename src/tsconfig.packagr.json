@@ -6,6 +6,6 @@
     "skipLibCheck": true, // due to: https://github.com/angular/angular/issues/23112
     "types": ["node"]
   },
-  "files": ["cli/main.ts", "public_api.ts"],
+  "files": ["cli/main.ts", "public_api.ts", "./lib/styles/stylesheet-processor-worker.ts"],
   "exclude": ["**/*.spec.ts"]
 }

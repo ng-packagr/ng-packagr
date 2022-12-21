@@ -1,5 +1,5 @@
 import { DepGraph } from 'dependency-graph';
-import { NEVER, Observable, from, of as observableOf, pipe } from 'rxjs';
+import { NEVER, Observable, finalize, from, of as observableOf, pipe } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -7,7 +7,6 @@ import {
   defaultIfEmpty,
   filter,
   map,
-  mapTo,
   startWith,
   switchMap,
   takeLast,
@@ -61,48 +60,30 @@ export const packageTransformFactory =
     entryPointTransform: Transform,
   ) =>
   (source$: Observable<BuildGraph>): Observable<BuildGraph> => {
-    const pkgUri = ngUrl(project);
+    log.info(`Building Angular Package`);
 
     const buildTransform = options.watch
       ? watchTransformFactory(project, options, analyseSourcesTransform, entryPointTransform)
       : buildTransformFactory(project, analyseSourcesTransform, entryPointTransform);
 
+    const pkgUri = ngUrl(project);
+    const ngPkg = new PackageNode(pkgUri);
+
     return source$.pipe(
-      tap(() => log.info(`Building Angular Package`)),
       // Discover packages and entry points
-      switchMap(graph => {
-        const pkg = discoverPackages({ project });
-
-        return from(pkg).pipe(
-          map(value => {
-            const ngPkg = new PackageNode(pkgUri);
-            ngPkg.data = value;
-
-            return graph.put(ngPkg);
-          }),
-        );
-      }),
       // Clean the primary dest folder (should clean all secondary sub-directory, as well)
-      switchMap(
-        async graph => {
-          const { dest, deleteDestPath } = graph.get(pkgUri).data;
+      switchMap(async graph => {
+        ngPkg.data = await discoverPackages({ project });
 
-          if (deleteDestPath) {
-            try {
-              await rmdir(dest, { recursive: true });
-            } catch {}
-          }
-        },
-        (graph, _) => graph,
-      ),
-      // Add entry points to graph
-      map(graph => {
-        const foundNode = graph.get(pkgUri);
-        if (!isPackage(foundNode)) {
-          return graph;
+        graph.put(ngPkg);
+        const { dest, deleteDestPath } = ngPkg.data;
+
+        if (deleteDestPath) {
+          try {
+            await rmdir(dest, { recursive: true });
+          } catch {}
         }
 
-        const ngPkg: PackageNode = foundNode;
         const entryPoints = [ngPkg.data.primary, ...ngPkg.data.secondaries].map(entryPoint => {
           const { destinationFiles, moduleId } = entryPoint;
           const node = new EntryPointNode(
@@ -118,12 +99,20 @@ export const packageTransformFactory =
           return node;
         });
 
+        // Add entry points to graph
         return graph.put(entryPoints);
       }),
       // Initialize the tsconfig for each entry point
       initTsConfigTransform,
       // perform build
       buildTransform,
+      finalize(() => {
+        for (const node of ngPkg.dependents) {
+          if (node instanceof EntryPointNode) {
+            node.cache.stylesheetProcessor?.destroy();
+          }
+        }
+      }),
     );
   };
 
@@ -190,7 +179,7 @@ const watchTransformFactory =
           debounceTime(200),
           tap(() => log.msg(FileChangeDetected)),
           startWith(undefined),
-          mapTo(graph),
+          map(() => graph),
         );
       }),
       switchMap(graph => {
@@ -264,7 +253,7 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
           observableOf(ep).pipe(
             // Mark the entry point as 'in-progress'
             tap(entryPoint => (entryPoint.state = STATE_IN_PROGRESS)),
-            mapTo(graph),
+            map(() => graph),
             epTransform,
           ),
         ),
