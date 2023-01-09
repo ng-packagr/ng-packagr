@@ -28,11 +28,13 @@ interface RenderRequest {
   filePath: string;
 }
 
+const CACHE_KEY_VALUES = [...browserslistData, ...styleIncludePaths, cssUrl].join(':');
+
 async function render({ content, filePath }: RenderRequest): Promise<string> {
   let key: string | undefined;
   if (cacheDirectory && !content.includes('@import') && !content.includes('@use')) {
     // No transitive deps, we can cache more aggressively.
-    key = await generateKey(content, ...browserslistData);
+    key = await generateKey(content, CACHE_KEY_VALUES);
     const result = await readCacheEntry(cacheDirectory, key);
     if (result) {
       result.warnings.forEach(msg => log.warn(msg));
@@ -47,7 +49,7 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
   // We cannot cache CSS re-rendering phase, because a transitive dependency via (@import) can case different CSS output.
   // Example a change in a mixin or SCSS variable.
   if (!key) {
-    key = await generateKey(renderedCss, ...browserslistData);
+    key = await generateKey(renderedCss, CACHE_KEY_VALUES);
   }
 
   if (cacheDirectory) {
