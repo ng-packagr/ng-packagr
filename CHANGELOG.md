@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [15.1.0](https://github.com/ng-packagr/ng-packagr/compare/15.1.0-next.0...15.1.0) (2023-01-11)
+
+
+### Bug Fixes
+
+* include `cssUrl` and `styleIncludePaths` in the CSS cache key ([6bb7a4a](https://github.com/ng-packagr/ng-packagr/commit/6bb7a4a35a9969c9b0619f855ff9c890ed4e2928)), closes [#2523](https://github.com/ng-packagr/ng-packagr/issues/2523)
+
 ## [15.1.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/15.0.3...15.1.0-next.0) (2022-12-21)
 
 
