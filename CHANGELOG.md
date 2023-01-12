@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [15.1.1](https://github.com/ng-packagr/ng-packagr/compare/15.1.0...15.1.1) (2023-01-12)
+
+
+### Performance
+
+* create a single stylesheet renderer worker instance ([6718f6e](https://github.com/ng-packagr/ng-packagr/commit/6718f6e892e6a4ac7364408efeee2261020033fd)), closes [#2530](https://github.com/ng-packagr/ng-packagr/issues/2530)
+
 ## [15.1.0](https://github.com/ng-packagr/ng-packagr/compare/15.1.0-next.0...15.1.0) (2023-01-11)
 
 ### Features
