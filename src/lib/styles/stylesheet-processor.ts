@@ -1,8 +1,8 @@
 import browserslist from 'browserslist';
+import { existsSync } from 'fs';
 import { dirname, join } from 'path';
 import Piscina from 'piscina';
 import { colors } from '../utils/color';
-import { exists } from '../utils/fs';
 
 const maxWorkersVariable = process.env['NG_BUILD_MAX_WORKERS'];
 const maxThreads = typeof maxWorkersVariable === 'string' && maxWorkersVariable !== '' ? +maxWorkersVariable : 4;
@@ -37,7 +37,7 @@ export class StylesheetProcessor {
   }
 
   async process({ filePath, content }: { filePath: string; content: string }): Promise<string> {
-    await this.getOrCreateRenderWorker();
+    this.createRenderWorker();
 
     return this.renderWorker.run({ content, filePath });
   }
@@ -47,7 +47,7 @@ export class StylesheetProcessor {
     void this.renderWorker?.destroy();
   }
 
-  private async getOrCreateRenderWorker(): Promise<void> {
+  private createRenderWorker(): void {
     if (this.renderWorker) {
       return;
     }
@@ -58,7 +58,7 @@ export class StylesheetProcessor {
 
     while (currentDir !== prevDir) {
       const p = join(currentDir, 'node_modules');
-      if (await exists(p)) {
+      if (existsSync(p)) {
         styleIncludePaths.push(p);
       }
 
@@ -76,13 +76,13 @@ export class StylesheetProcessor {
         FORCE_COLOR: '' + colors.enabled,
       },
       workerData: {
-        tailwindConfigPath: await getTailwindConfigPath(this.projectBasePath),
+        tailwindConfigPath: getTailwindConfigPath(this.projectBasePath),
         projectBasePath: this.projectBasePath,
         browserslistData,
         targets: transformSupportedBrowsersToTargets(browserslistData),
         cacheDirectory: this.cacheDirectory,
         cssUrl: this.cssUrl,
-        styleIncludePaths: styleIncludePaths,
+        styleIncludePaths,
       },
     });
   }
@@ -120,7 +120,7 @@ function transformSupportedBrowsersToTargets(supportedBrowsers: string[]): strin
   return transformed.length ? transformed : undefined;
 }
 
-async function getTailwindConfigPath(projectRoot: string): Promise<string | undefined> {
+function getTailwindConfigPath(projectRoot: string): string | undefined {
   // A configuration file can exist in the project or workspace root
   // The list of valid config files can be found:
   // https://github.com/tailwindlabs/tailwindcss/blob/8845d112fb62d79815b50b3bae80c317450b8b92/src/util/resolveConfigPath.js#L46-L52
@@ -128,7 +128,7 @@ async function getTailwindConfigPath(projectRoot: string): Promise<string | unde
   for (const configFile of tailwindConfigFiles) {
     // Irrespective of the name project level configuration should always take precedence.
     const fullPath = join(projectRoot, configFile);
-    if (await exists(fullPath)) {
+    if (existsSync(fullPath)) {
       return fullPath;
     }
   }
