@@ -27,7 +27,7 @@ export class StylesheetProcessor {
     // We change the default query to browsers that Angular support.
     // https://angular.io/guide/browser-support
     (browserslist.defaults as string[]) = [
-      'last 1 Chrome version',
+      'last 2 Chrome versions',
       'last 1 Firefox version',
       'last 2 Edge major versions',
       'last 2 Safari major versions',
