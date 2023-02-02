@@ -107,7 +107,7 @@ function transformSupportedBrowsersToTargets(supportedBrowsers: string[]): strin
     [version] = version.split('-');
 
     if (esBuildSupportedBrowsers.has(browserName)) {
-      if (browserName === 'safari' && version === 'TP') {
+      if (browserName === 'safari' && version === 'tp') {
         // esbuild only supports numeric versions so `TP` is converted to a high number (999) since
         // a Technology Preview (TP) of Safari is assumed to support all currently known features.
         version = '999';
