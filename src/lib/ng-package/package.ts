@@ -58,7 +58,9 @@ export class NgPackage {
 
   /** Absolute path of the package's destination directory. */
   public get dest(): string {
-    return path.join(this.basePath, this.primary.$get('dest'));
+    const dest = path.join(this.basePath, this.primary.$get('dest'));
+
+    return dest.endsWith('/') ? dest.slice(0, -1) : dest;
   }
 
   public get keepLifecycleScripts(): boolean {
