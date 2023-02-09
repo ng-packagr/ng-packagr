@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [15.1.2](https://github.com/ng-packagr/ng-packagr/compare/15.1.1...15.1.2) (2023-02-09)
+
+
+### Bug Fixes
+
+* remove trailing slash from dest ([426a081](https://github.com/ng-packagr/ng-packagr/commit/426a081abc8e076afc558586da0cf9cf3f65b78e)), closes [#2558](https://github.com/ng-packagr/ng-packagr/issues/2558)
+* support of Safari TP versions ([fa80ee0](https://github.com/ng-packagr/ng-packagr/commit/fa80ee02c6ccc0da7a35da94dc8e91d951ac6bb2))
+* update browserslist config to include last 2 Chrome versions ([1519c8d](https://github.com/ng-packagr/ng-packagr/commit/1519c8dd9828b192170fd43fa01b42b0c5ad7d4e)), closes [angular/angular#48669](https://github.com/angular/angular/issues/48669)
+
 ### [15.1.1](https://github.com/ng-packagr/ng-packagr/compare/15.1.0...15.1.1) (2023-01-12)
 
 
