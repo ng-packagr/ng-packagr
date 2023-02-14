@@ -103,8 +103,17 @@ async function copyAssets(
   const globsForceIgnored: string[] = ['.gitkeep', '**/.DS_Store', '**/Thumbs.db', `${ngPackage.dest}/**`];
   const defaultAssets: AssetEntry[] = [
     { glob: 'LICENSE', input: '/', output: '/' },
-    { glob: '**/README.md', input: '/', output: '/', ignore: ['**/node_modules/**'] },
+    ...graph.filter(isEntryPoint).map(({ data }) => {
+      const subpath = data.entryPoint.destinationFiles.directory;
+
+      return {
+        glob: 'README.md',
+        input: subpath,
+        output: subpath,
+      };
+    }),
   ];
+
   const assets: AssetEntry[] = [];
 
   for (const assetPath of [...ngPackage.assets, ...defaultAssets]) {
