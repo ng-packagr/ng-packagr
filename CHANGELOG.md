@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [15.2.2](https://github.com/ng-packagr/ng-packagr/compare/15.2.1...15.2.2) (2023-02-22)
+
+
+### Bug Fixes
+
+* always set destination directory ([4e49d12](https://github.com/ng-packagr/ng-packagr/commit/4e49d12ae485534572122606fae64f5c4237729c))
+
 ### [15.2.1](https://github.com/ng-packagr/ng-packagr/compare/15.2.0...15.2.1) (2023-02-22)
 
 ## [15.2.0](https://github.com/ng-packagr/ng-packagr/compare/15.1.2...15.2.0) (2023-02-22)
