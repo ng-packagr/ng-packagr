@@ -7,7 +7,6 @@ import { Node } from '../graph/node';
 import { by, isDirty, isInProgress } from '../graph/select';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { DestinationFiles, NgEntryPoint } from './entry-point/entry-point';
-import { NgccProcessingCache } from './ngcc-cache';
 import { NgPackage } from './package';
 
 export const TYPE_NG_PACKAGE = 'application/ng-package';
@@ -67,14 +66,12 @@ export class EntryPointNode extends Node {
   constructor(
     public readonly url: string,
     sourcesFileCache: FileCache,
-    ngccProcessingCache: NgccProcessingCache,
     moduleResolutionCache: ts.ModuleResolutionCache,
   ) {
     super(url);
 
     this.cache = {
       sourcesFileCache,
-      ngccProcessingCache,
       analysesSourcesFileCache: new FileCache(),
       moduleResolutionCache,
       outputCache: new Map(),
@@ -85,7 +82,6 @@ export class EntryPointNode extends Node {
     outputCache: OutputFileCache;
     oldPrograms?: Record<ts.ScriptTarget | 'analysis', Program | ts.Program>;
     sourcesFileCache: FileCache;
-    ngccProcessingCache: NgccProcessingCache;
     analysesSourcesFileCache: FileCache;
     moduleResolutionCache: ts.ModuleResolutionCache;
     rollupFESM2020Cache?: RollupCache;
@@ -109,7 +105,6 @@ export class PackageNode extends Node {
   cache = {
     globCache: {} as GlobCache,
     sourcesFileCache: new FileCache(),
-    ngccProcessingCache: new NgccProcessingCache(),
     moduleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
   };
 }

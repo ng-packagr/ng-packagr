@@ -94,7 +94,6 @@ export const packageTransformFactory =
           const node = new EntryPointNode(
             ngUrl(moduleId),
             ngPkg.cache.sourcesFileCache,
-            ngPkg.cache.ngccProcessingCache,
             ngPkg.cache.moduleResolutionCache,
           );
           node.data = { entryPoint, destinationFiles };
