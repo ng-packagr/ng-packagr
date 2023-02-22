@@ -4,10 +4,8 @@ import { BuildGraph } from '../graph/build-graph';
 import { EntryPointNode, PackageNode, isEntryPointInProgress, isPackage } from '../ng-package/nodes';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { augmentProgramWithVersioning, cacheCompilerHost } from '../ts/cache-compiler-host';
-import { ngccTransformCompilerHost } from '../ts/ngcc-transform-compiler-host';
 import * as log from '../utils/log';
 import { ngCompilerCli } from '../utils/ng-compiler-cli';
-import { NgccProcessor } from './ngcc-processor';
 
 export async function compileSourceFiles(
   graph: BuildGraph,
@@ -15,7 +13,6 @@ export async function compileSourceFiles(
   moduleResolutionCache: ts.ModuleResolutionCache,
   extraOptions?: Partial<CompilerOptions>,
   stylesheetProcessor?: StylesheetProcessor,
-  ngccProcessor?: NgccProcessor,
   watch?: boolean,
 ) {
   const { NgtscProgram, formatDiagnostics } = await ngCompilerCli();
@@ -25,18 +22,13 @@ export async function compileSourceFiles(
   const ngPackageNode: PackageNode = graph.find(isPackage);
   const inlineStyleLanguage = ngPackageNode.data.inlineStyleLanguage;
 
-  const tsCompilerHost = ngccTransformCompilerHost(
-    cacheCompilerHost(
-      graph,
-      entryPoint,
-      tsConfigOptions,
-      moduleResolutionCache,
-      stylesheetProcessor,
-      inlineStyleLanguage,
-    ),
+  const tsCompilerHost = cacheCompilerHost(
+    graph,
+    entryPoint,
     tsConfigOptions,
-    ngccProcessor,
     moduleResolutionCache,
+    stylesheetProcessor,
+    inlineStyleLanguage,
   );
 
   const cache = entryPoint.cache;

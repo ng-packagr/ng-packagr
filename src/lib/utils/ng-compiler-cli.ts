@@ -12,9 +12,3 @@ export async function ngCompilerCli(): Promise<typeof import('@angular/compiler-
   // This conditional can be removed when `@angular/compiler-cli` is ESM only.
   return compilerCliModule.readConfiguration ? compilerCliModule : compilerCliModule.default;
 }
-
-export async function ngccCompilerCli(): Promise<typeof import('@angular/compiler-cli/ngcc')> {
-  const compilerCliModule = await new Function(`return import('@angular/compiler-cli/ngcc');`)();
-
-  return compilerCliModule.process ? compilerCliModule : compilerCliModule.default;
-}
