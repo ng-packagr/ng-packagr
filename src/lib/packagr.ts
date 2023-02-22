@@ -1,7 +1,6 @@
 import type { ParsedConfiguration } from '@angular/compiler-cli';
 import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
-import { Observable, of as observableOf } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
+import { Observable, map, of as observableOf } from 'rxjs';
 import { BuildGraph } from './graph/build-graph';
 import { Transform } from './graph/transform';
 import { ENTRY_POINT_PROVIDERS } from './ng-package/entry-point/entry-point.di';
@@ -115,7 +114,10 @@ export class NgPackagr {
     const injector = ReflectiveInjector.resolveAndCreate(this.providers);
     const buildTransformOperator = injector.get(this.buildTransform);
 
-    return observableOf(new BuildGraph()).pipe(buildTransformOperator, mapTo(undefined));
+    return observableOf(new BuildGraph()).pipe(
+      buildTransformOperator,
+      map(() => undefined),
+    );
   }
 }
 
