@@ -16,8 +16,8 @@ commands:
           at: ~/repo
   setup_windows:
     steps:
-      - run: nvm install 14.20
-      - run: nvm use 14.20
+      - run: nvm install 16.13
+      - run: nvm use 16.13
       - run: npm install -g yarn@1.22.10
       - run: node --version
       - run: yarn --version
@@ -27,7 +27,7 @@ commands:
 executors:
   linux-executor:
     docker:
-      - image: cimg/node:14.20
+      - image: cimg/node:16.13
     working_directory: ~/repo
 
 jobs:
@@ -38,11 +38,11 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v8-dependencies-linux-{{ checksum "yarn.lock" }}
+            - v1-dependencies-linux-{{ checksum "yarn.lock" }}
       # Install dependencies
       - run: yarn install --frozen-lockfile --non-interactive
       - save_cache:
-          key: v8-dependencies-linux-{{ checksum "yarn.lock" }}
+          key: v1-dependencies-linux-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - persist_to_workspace:
