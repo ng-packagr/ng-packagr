@@ -94,7 +94,7 @@ export class NgEntryPoint {
     const pathJoinWithDest = (...paths: string[]) => path.join(primaryDestPath, ...paths);
 
     return {
-      directory: ensureUnixPath(secondaryDir),
+      directory: ensureUnixPath(secondaryDir) ?? '',
       declarations: pathJoinWithDest(secondaryDir, 'index.d.ts'),
       esm2020: pathJoinWithDest('esm2020', secondaryDir, `${flatModuleFile}.mjs`),
       fesm2020: pathJoinWithDest('fesm2020', `${flatModuleFile}.mjs`),
