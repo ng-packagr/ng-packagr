@@ -1,5 +1,4 @@
-import { MonoTypeOperatorFunction, Observable, pipe } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { MonoTypeOperatorFunction, Observable, pipe, switchMap } from 'rxjs';
 import { BuildGraph } from './build-graph';
 
 /**

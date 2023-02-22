@@ -1,17 +1,22 @@
 import { DepGraph } from 'dependency-graph';
-import { NEVER, Observable, finalize, from, of as observableOf, pipe } from 'rxjs';
 import {
+  NEVER,
+  Observable,
   catchError,
   concatMap,
   debounceTime,
   defaultIfEmpty,
   filter,
+  finalize,
+  from,
   map,
+  of as observableOf,
+  pipe,
   startWith,
   switchMap,
   takeLast,
   tap,
-} from 'rxjs/operators';
+} from 'rxjs';
 import { FileCache } from '../file-system/file-cache';
 import { createFileWatch } from '../file-system/file-watcher';
 import { BuildGraph } from '../graph/build-graph';

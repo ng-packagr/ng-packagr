@@ -1,6 +1,5 @@
 import { basename, dirname, join } from 'path';
-import { pipe } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, pipe } from 'rxjs';
 import ts from 'typescript';
 import { BuildGraph } from '../../graph/build-graph';
 import { Transform } from '../../graph/transform';

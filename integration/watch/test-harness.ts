@@ -2,9 +2,8 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as log from '../../dist/lib/utils/log';
 import { expect } from 'chai';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime, tap } from 'rxjs';
 import { ngPackagr } from '../../dist';
-import { debounceTime, tap } from 'rxjs/operators';
 
 /**
  * A testing harness class to setup the enviroment andtest the incremental builds.
