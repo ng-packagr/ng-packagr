@@ -104,7 +104,7 @@ async function copyAssets(
   const defaultAssets: AssetEntry[] = [
     { glob: 'LICENSE', input: '/', output: '/' },
     ...graph.filter(isEntryPoint).map(({ data }) => {
-      const subpath = data.entryPoint.destinationFiles.directory;
+      const subpath = data.entryPoint.destinationFiles.directory || '/';
 
       return {
         glob: 'README.md',
