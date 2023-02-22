@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [15.2.0](https://github.com/ng-packagr/ng-packagr/compare/15.1.2...15.2.0) (2023-02-22)
+
+
+### Bug Fixes
+
+* only copy README.md from entry-points ([23c718d](https://github.com/ng-packagr/ng-packagr/commit/23c718d04eea85e015b4c261310b7bd0c39e5311)), closes [#2564](https://github.com/ng-packagr/ng-packagr/issues/2564)
+
 ### [15.1.2](https://github.com/ng-packagr/ng-packagr/compare/15.1.1...15.1.2) (2023-02-09)
 
 
