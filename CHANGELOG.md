@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [16.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/15.2.0...16.0.0-next.0) (2023-02-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* Node.js v14 support has been removed
+
+Node.js v14 is planned to be End-of-Life on 2023-04-30. Angular will stop supporting Node.js v14 in Angular v16. Angular v16 will continue to officially support Node.js versions v16 and v18.
+* NGCC integration has been removed and as a result Angular View Engine libraries will no longer work.
+
+### Features
+
+* remove NGCC integration ([d9fdc89](https://github.com/ng-packagr/ng-packagr/commit/d9fdc89ab76179cb6734ab32bb784e7e3278e3cf))
+
+
+### Bug Fixes
+
+* always set destination directory ([4e89bcf](https://github.com/ng-packagr/ng-packagr/commit/4e89bcfe571c382ad0b47ae50d5d6dab5de6bef7))
+
+
+* remove Node.js v14 support ([a091d82](https://github.com/ng-packagr/ng-packagr/commit/a091d8255053537b49d4f58b084c274579bbc580))
+
 ### [15.2.1](https://github.com/ng-packagr/ng-packagr/compare/15.2.0...15.2.1) (2023-02-22)
 
 ## [15.2.0](https://github.com/ng-packagr/ng-packagr/compare/15.1.2...15.2.0) (2023-02-22)
