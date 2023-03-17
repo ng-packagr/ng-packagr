@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [16.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/16.0.0-next.0...16.0.0-next.1) (2023-03-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* * TypeScript 4.8 is no longer supported.
+
+### Features
+
+* add support for TypeScript 5 ([1d4cc04](https://github.com/ng-packagr/ng-packagr/commit/1d4cc045c643150c03913df6fc7f5df2f7506792))
+
 ## [16.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/15.2.0...16.0.0-next.0) (2023-02-22)
 
 
