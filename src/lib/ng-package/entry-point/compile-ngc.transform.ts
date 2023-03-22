@@ -28,7 +28,7 @@ export const compileNgcTransformFactory = (
       const tsConfig = setDependenciesTsConfigPaths(entryPoint.data.tsConfig, entryPoints);
 
       // Compile TypeScript sources
-      const { esm2020, declarations } = entryPoint.data.destinationFiles;
+      const { esm2022: esm2022, declarations } = entryPoint.data.destinationFiles;
       const { basePath, cssUrl, styleIncludePaths } = entryPoint.data.entryPoint;
       const { moduleResolutionCache } = entryPoint.cache;
 
@@ -49,10 +49,10 @@ export const compileNgcTransformFactory = (
         tsConfig,
         moduleResolutionCache,
         {
-          outDir: path.dirname(esm2020),
+          outDir: path.dirname(esm2022),
           declarationDir: path.dirname(declarations),
           declaration: true,
-          target: ts.ScriptTarget.ES2020,
+          target: ts.ScriptTarget.ES2022,
         },
         entryPoint.cache.stylesheetProcessor,
         options.watch,

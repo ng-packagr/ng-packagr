@@ -5,7 +5,6 @@ import * as rollup from 'rollup';
 import { OutputFileCache } from '../ng-package/nodes';
 import { readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
-import { downlevelCodeWithTscPlugin } from './downlevel-plugin';
 import { fileLoaderPlugin } from './file-loader-plugin';
 
 /**
@@ -19,7 +18,6 @@ export interface RollupOptions {
   entryName: string;
   dir: string;
   sourceRoot: string;
-  downlevel?: boolean;
   cache?: rollup.RollupCache;
   cacheDirectory?: string | false;
   fileCache: OutputFileCache;
@@ -40,12 +38,7 @@ export async function rollupBundleFile(
     external: moduleId => isExternalDependency(moduleId),
     cache: opts.cache ?? (cacheDirectory ? await readCacheEntry(cacheDirectory, opts.cacheKey) : undefined),
     input: opts.entry,
-    plugins: [
-      nodeResolve(),
-      rollupJson(),
-      fileLoaderPlugin(opts.fileCache),
-      opts.downlevel ? downlevelCodeWithTscPlugin() : undefined,
-    ],
+    plugins: [nodeResolve(), rollupJson(), fileLoaderPlugin(opts.fileCache)],
     onwarn: warning => {
       switch (warning.code) {
         case 'CIRCULAR_DEPENDENCY':

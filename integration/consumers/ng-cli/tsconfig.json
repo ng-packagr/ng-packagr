@@ -1,14 +1,14 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "module": "es2020",
+    "module": "es2022",
     "outDir": "./dist/out-tsc",
     "baseUrl": "src",
     "skipLibCheck": true,
     "declaration": false,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "target": "es2020",
+    "target": "es2022",
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2018", "dom"]
   },

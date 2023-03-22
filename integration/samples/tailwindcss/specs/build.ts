@@ -9,7 +9,7 @@ describe('@sample/tailwindcss', () => {
   });
 
   it(`should contain processed tailwinds css`, () => {
-    const content = fs.readFileSync(path.join(DIST, 'fesm2020/sample-tailwindcss.mjs'), { encoding: 'utf-8' });
+    const content = fs.readFileSync(path.join(DIST, 'fesm2022/sample-tailwindcss.mjs'), { encoding: 'utf-8' });
     expect(content).to.contain('::placeholder');
   });
 });

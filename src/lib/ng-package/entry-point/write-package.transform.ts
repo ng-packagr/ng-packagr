@@ -53,11 +53,7 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
           ngEntryPoint,
           ngPackage,
           {
-            module: relativeUnixFromDestPath(destinationFiles.fesm2015),
-            es2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
-            esm2020: relativeUnixFromDestPath(destinationFiles.esm2020),
-            fesm2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
-            fesm2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
+            module: relativeUnixFromDestPath(destinationFiles.fesm2022),
             typings: relativeUnixFromDestPath(destinationFiles.declarations),
             exports: generatePackageExports(ngEntryPoint, graph),
             // webpack v4+ specific flag to enable advanced optimizations and code splitting
@@ -332,11 +328,9 @@ type PackageExports = Record<string, ConditionalExport>;
  * https://nodejs.org/api/packages.html#packages_conditional_exports
  */
 type ConditionalExport = {
-  node?: string;
   types?: string;
-  esm2020?: string;
-  es2020?: string;
-  es2015?: string;
+  esm2022?: string;
+  esm?: string;
   default?: string;
 };
 
@@ -383,11 +377,9 @@ function generatePackageExports({ destinationPath, packageJson }: NgEntryPoint, 
 
     insertMappingOrError(subpath, {
       types: relativeUnixFromDestPath(destinationFiles.declarations),
-      esm2020: relativeUnixFromDestPath(destinationFiles.esm2020),
-      es2020: relativeUnixFromDestPath(destinationFiles.fesm2020),
-      es2015: relativeUnixFromDestPath(destinationFiles.fesm2015),
-      node: relativeUnixFromDestPath(destinationFiles.fesm2015),
-      default: relativeUnixFromDestPath(destinationFiles.fesm2020),
+      esm2022: relativeUnixFromDestPath(destinationFiles.esm2022),
+      esm: relativeUnixFromDestPath(destinationFiles.esm2022),
+      default: relativeUnixFromDestPath(destinationFiles.fesm2022),
     });
   }
 

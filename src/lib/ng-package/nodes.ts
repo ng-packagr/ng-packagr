@@ -84,8 +84,7 @@ export class EntryPointNode extends Node {
     sourcesFileCache: FileCache;
     analysesSourcesFileCache: FileCache;
     moduleResolutionCache: ts.ModuleResolutionCache;
-    rollupFESM2020Cache?: RollupCache;
-    rollupFESM2015Cache?: RollupCache;
+    rollupFESM2022Cache?: RollupCache;
     stylesheetProcessor?: StylesheetProcessor;
     oldNgtscProgram?: NgtscProgram;
     oldBuilder?: ts.EmitAndSemanticDiagnosticsBuilderProgram;

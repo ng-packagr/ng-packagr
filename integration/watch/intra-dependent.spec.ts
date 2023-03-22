@@ -43,9 +43,9 @@ describe('intra-dependent', () => {
 
   // todo we should find a better way to test this case.
   xit('should only build entrypoints that are dependent on the file changed.', done => {
-    const primaryFesmPath = harness.getFilePath('fesm2020/intra-dependent.mjs');
-    const secondaryFesmPath = harness.getFilePath('fesm2020/intra-dependent-secondary.mjs');
-    const thirdFesmPath = harness.getFilePath('fesm2020/intra-dependent-third.mjs');
+    const primaryFesmPath = harness.getFilePath('fesm2022/intra-dependent.mjs');
+    const secondaryFesmPath = harness.getFilePath('fesm2022/intra-dependent-secondary.mjs');
+    const thirdFesmPath = harness.getFilePath('fesm2022/intra-dependent-third.mjs');
 
     const primaryModifiedTime = fs.statSync(primaryFesmPath).mtimeMs;
     const secondaryModifiedTime = fs.statSync(secondaryFesmPath).mtimeMs;

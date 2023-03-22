@@ -12,9 +12,9 @@ describe(`issue-1451-license`, () => {
 
   describe(`license entry point`, () => {
     [
-      'esm2020/license/example-issue-1451-license.mjs',
-      'esm2020/license/public-api.mjs',
-      'fesm2020/example-issue-1451-license.mjs',
+      'esm2022/license/example-issue-1451-license.mjs',
+      'esm2022/license/public-api.mjs',
+      'fesm2022/example-issue-1451-license.mjs',
     ].forEach((filePath: string): void => {
       it(`should exist: "${filePath}"`, () => {
         const exists = existsSync(resolve(DIST, filePath));
