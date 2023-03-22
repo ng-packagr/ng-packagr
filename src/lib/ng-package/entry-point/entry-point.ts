@@ -7,18 +7,14 @@ import { ensureUnixPath } from '../../utils/path';
 export interface DestinationFiles {
   /** Absolute path of this entry point `declarations` */
   declarations: string;
-  /** Absolute path of this entry point `FESM2020` module */
-  fesm2020: string;
-  /** Absolute path of this entry point `FESM2015` module */
-  fesm2015: string;
-  /** Absolute path of this entry point `ESM2020` module */
-  esm2020: string;
+  /** Absolute path of this entry point `FESM2022` module */
+  fesm2022: string;
+  /** Absolute path of this entry point `ESM2022` module */
+  esm2022: string;
   /** Sub path of entrypoint distributable. */
   directory: string;
-  /** Absolute path of this entry point `FESM2020` directory */
-  fesm2020Dir: string;
-  /** Absolute path of this entry point `FESM2015` directory */
-  fesm2015Dir: string;
+  /** Absolute path of this entry point `FESM2022` directory */
+  fesm2022Dir: string;
 }
 
 /**
@@ -96,11 +92,9 @@ export class NgEntryPoint {
     return {
       directory: ensureUnixPath(secondaryDir) ?? '',
       declarations: pathJoinWithDest(secondaryDir, 'index.d.ts'),
-      esm2020: pathJoinWithDest('esm2020', secondaryDir, `${flatModuleFile}.mjs`),
-      fesm2020: pathJoinWithDest('fesm2020', `${flatModuleFile}.mjs`),
-      fesm2015: pathJoinWithDest('fesm2015', `${flatModuleFile}.mjs`),
-      fesm2020Dir: pathJoinWithDest('fesm2020'),
-      fesm2015Dir: pathJoinWithDest('fesm2015'),
+      esm2022: pathJoinWithDest('esm2022', secondaryDir, `${flatModuleFile}.mjs`),
+      fesm2022: pathJoinWithDest('fesm2022', `${flatModuleFile}.mjs`),
+      fesm2022Dir: pathJoinWithDest('fesm2022'),
     };
   }
 

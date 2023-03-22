@@ -26,8 +26,8 @@ import { byEntryPoint } from '../nodes';
  * The transformation pipeline is pluggable through the dependency injection system.
  * Sub-transformations are passed to this factory function as arguments.
  *
- * @param compileTs Transformation compiling typescript sources to ES2020 modules.
- * @param writeBundles Transformation flattening ES2020 modules to ESM2020, UMD, and minified UMD.
+ * @param compileTs Transformation compiling typescript sources to ES2022 modules.
+ * @param writeBundles Transformation flattening ES2022 modules to ESM2022, UMD, and minified UMD.
  * @param writePackage Transformation writing a distribution-ready `package.json` (for publishing to npm registry).
  */
 export const entryPointTransformFactory = (
@@ -38,7 +38,7 @@ export const entryPointTransformFactory = (
   pipe(
     // tap(() => log.info(`Building from sources for entry point`)),
 
-    transformFromPromise(async (graph) => {
+    transformFromPromise(async graph => {
       // Peek the first entry point from the graph
       const entryPoint = graph.find(byEntryPoint().and(isInProgress));
       log.msg('\n------------------------------------------------------------------------------');
@@ -50,7 +50,7 @@ export const entryPointTransformFactory = (
     // After TypeScript: bundling and write package
     writeBundles,
     writePackage,
-    transformFromPromise(async (graph) => {
+    transformFromPromise(async graph => {
       const entryPoint = graph.find(byEntryPoint().and(isInProgress));
       entryPoint.state = STATE_DONE;
     }),

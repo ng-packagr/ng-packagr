@@ -28,10 +28,7 @@ describe(`@sample/apf`, () => {
     });
 
     Object.entries({
-      module: 'fesm2015/sample-apf.mjs',
-      es2020: 'fesm2020/sample-apf.mjs',
-      esm2020: 'esm2020/sample-apf.mjs',
-      fesm2020: 'fesm2020/sample-apf.mjs',
+      module: 'fesm2022/sample-apf.mjs',
       typings: 'index.d.ts',
     }).forEach(([key, value]: [string, string]): void => {
       it(`should reference "${key}" file`, () => {
@@ -48,11 +45,9 @@ describe(`@sample/apf`, () => {
         '.': {
           sass: './theming.scss',
           types: './index.d.ts',
-          esm2020: './esm2020/sample-apf.mjs',
-          es2020: './fesm2020/sample-apf.mjs',
-          es2015: './fesm2015/sample-apf.mjs',
-          node: './fesm2015/sample-apf.mjs',
-          default: './fesm2020/sample-apf.mjs',
+          esm2022: './esm2022/sample-apf.mjs',
+          esm: './esm2022/sample-apf.mjs',
+          default: './fesm2022/sample-apf.mjs',
         },
         './theming': {
           sass: './theming.scss',
@@ -62,27 +57,21 @@ describe(`@sample/apf`, () => {
         },
         './secondary': {
           types: './secondary/index.d.ts',
-          esm2020: './esm2020/secondary/sample-apf-secondary.mjs',
-          es2020: './fesm2020/sample-apf-secondary.mjs',
-          es2015: './fesm2015/sample-apf-secondary.mjs',
-          node: './fesm2015/sample-apf-secondary.mjs',
-          default: './fesm2020/sample-apf-secondary.mjs',
+          esm2022: './esm2022/secondary/sample-apf-secondary.mjs',
+          esm: './esm2022/secondary/sample-apf-secondary.mjs',
+          default: './fesm2022/sample-apf-secondary.mjs',
         },
         './secondary/testing': {
           types: './secondary/testing/index.d.ts',
-          esm2020: './esm2020/secondary/testing/sample-apf-secondary-testing.mjs',
-          es2020: './fesm2020/sample-apf-secondary-testing.mjs',
-          es2015: './fesm2015/sample-apf-secondary-testing.mjs',
-          node: './fesm2015/sample-apf-secondary-testing.mjs',
-          default: './fesm2020/sample-apf-secondary-testing.mjs',
+          esm2022: './esm2022/secondary/testing/sample-apf-secondary-testing.mjs',
+          esm: './esm2022/secondary/testing/sample-apf-secondary-testing.mjs',
+          default: './fesm2022/sample-apf-secondary-testing.mjs',
         },
         './testing': {
           types: './testing/index.d.ts',
-          esm2020: './esm2020/testing/sample-apf-testing.mjs',
-          es2020: './fesm2020/sample-apf-testing.mjs',
-          es2015: './fesm2015/sample-apf-testing.mjs',
-          node: './fesm2015/sample-apf-testing.mjs',
-          default: './fesm2020/sample-apf-testing.mjs',
+          esm2022: './esm2022/testing/sample-apf-testing.mjs',
+          esm: './esm2022/testing/sample-apf-testing.mjs',
+          default: './fesm2022/sample-apf-testing.mjs',
         },
       });
     });

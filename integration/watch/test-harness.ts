@@ -64,8 +64,8 @@ export class TestHarness {
     fs.copySync(path.join(this.testSrc, 'test_files', caseName), this.testTempPath);
   }
 
-  expectFesm2020ToMatch(fileName: string, regexp: RegExp): Chai.Assertion {
-    return expect(this.readFileSync(`fesm2020/${fileName}.mjs`)).to.match(regexp);
+  expectFesm2022ToMatch(fileName: string, regexp: RegExp): Chai.Assertion {
+    return expect(this.readFileSync(`fesm2022/${fileName}.mjs`)).to.match(regexp);
   }
 
   expectFileToMatch(fileName: string, regexp: RegExp): Chai.Assertion {

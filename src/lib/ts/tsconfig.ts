@@ -12,7 +12,7 @@ export const defaultTsConfigPath = path.join(__dirname, 'conf', 'tsconfig.ngc.js
 async function readDefaultTsConfig(fileName = defaultTsConfigPath): Promise<ParsedConfiguration> {
   // these options are mandatory
   const extraOptions: CompilerOptions = {
-    target: ts.ScriptTarget.ES2020,
+    target: ts.ScriptTarget.ES2022,
     experimentalDecorators: true,
 
     // sourcemaps

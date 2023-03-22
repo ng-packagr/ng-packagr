@@ -4,8 +4,8 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "es2020",
-    "module": "es2020",
+    "target": "es2022",
+    "module": "es2022",
     "moduleResolution": "node",
     "outDir": "",
     "resolveJsonModule": true,
@@ -19,6 +19,6 @@
     "emitDecoratorMetadata": false,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "lib": ["dom", "es2020"]
+    "lib": ["dom", "es2022"]
   }
 }

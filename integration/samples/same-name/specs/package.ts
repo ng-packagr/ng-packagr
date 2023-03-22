@@ -15,10 +15,6 @@ describe(`@sample/same-name`, () => {
       expect(PACKAGE['name']).to.equal('@sample/testing');
     });
 
-    it(`should reference "es2020" bundle (FESM2020)`, () => {
-      expect(PACKAGE['es2020']).to.equal('fesm2020/sample-testing.mjs');
-    });
-
     it(`should reference "typings" files`, () => {
       expect(PACKAGE['typings']).to.equal('index.d.ts');
     });

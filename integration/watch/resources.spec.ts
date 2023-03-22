@@ -17,25 +17,25 @@ describe('resources', () => {
 
   describe('primary entrypoint', () => {
     it("should perform initial compilation when 'watch' is started", () => {
-      harness.expectFesm2020ToMatch('resources', /Angular!/);
-      harness.expectFesm2020ToMatch('resources', /a\[_ngcontent-%COMP%\]{color:#000}"/);
+      harness.expectFesm2022ToMatch('resources', /Angular!/);
+      harness.expectFesm2022ToMatch('resources', /a\[_ngcontent-%COMP%\]{color:#000}"/);
     });
 
     describe('when file changes', () => {
-      it('should perform a partial compilation and emit the updated template', (done) => {
+      it('should perform a partial compilation and emit the updated template', done => {
         harness.copyTestCase('html-template');
 
         harness.onComplete(() => {
-          harness.expectFesm2020ToMatch('resources', /Hello World!/);
+          harness.expectFesm2022ToMatch('resources', /Hello World!/);
           done();
         });
       });
 
-      it('should perform a partial compilation and emit the updated styles', (done) => {
+      it('should perform a partial compilation and emit the updated styles', done => {
         harness.copyTestCase('scss-file');
 
         harness.onComplete(() => {
-          harness.expectFesm2020ToMatch('resources', /a\[_ngcontent-%COMP%\]{color:#fff}"/);
+          harness.expectFesm2022ToMatch('resources', /a\[_ngcontent-%COMP%\]{color:#fff}"/);
           done();
         });
       });
