@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [16.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/16.0.0-next.1...16.0.0-next.2) (2023-03-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* Several changes to the Angular Package Format (APF)
+- Removal of FESM2015
+- Replacing ES2020 with ES2022
+- Replacing FESM2020 with FESM2022
+
+### Features
+
+* (APF) Angular Package Format updates ([4ae531c](https://github.com/ng-packagr/ng-packagr/commit/4ae531c60c122b41c12b5c57d7db0245ce751a96))
+
 ## [16.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/16.0.0-next.0...16.0.0-next.1) (2023-03-17)
 
 
