@@ -17,7 +17,6 @@ import {
   takeLast,
   tap,
 } from 'rxjs';
-import { FileCache } from '../file-system/file-cache';
 import { createFileWatch } from '../file-system/file-watcher';
 import { BuildGraph } from '../graph/build-graph';
 import { STATE_IN_PROGRESS } from '../graph/node';
@@ -29,7 +28,6 @@ import { ensureUnixPath } from '../utils/path';
 import { discoverPackages } from './discover-packages';
 import {
   EntryPointNode,
-  GlobCache,
   PackageNode,
   byEntryPoint,
   fileUrl,
@@ -135,7 +133,7 @@ const watchTransformFactory =
 
         return onFileChange.pipe(
           tap(fileChange => {
-            const { filePath, event } = fileChange;
+            const { filePath } = fileChange;
             const { sourcesFileCache } = cache;
             const cachedSourceFile = sourcesFileCache.get(filePath);
             const { declarationFileName } = cachedSourceFile || {};
@@ -143,10 +141,6 @@ const watchTransformFactory =
             const nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
 
             if (!cachedSourceFile) {
-              if (event === 'unlink' || event === 'add') {
-                cache.globCache = regenerateGlobCache(sourcesFileCache);
-              }
-
               if (!nodesToClean) {
                 return;
               }
@@ -173,11 +167,6 @@ const watchTransformFactory =
                   entryPoint.cache.analysesSourcesFileCache.delete(fileUrlPath(url));
                 });
               }
-            }
-
-            // Regenerate glob cache
-            if (event === 'unlink' || event === 'add') {
-              cache.globCache = regenerateGlobCache(sourcesFileCache);
             }
           }),
           debounceTime(200),
@@ -266,15 +255,3 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
       );
     }),
   );
-
-function regenerateGlobCache(sourcesFileCache: FileCache): GlobCache {
-  const cache: GlobCache = {};
-  sourcesFileCache.forEach((value, key) => {
-    // ignore node_modules and file which don't exists as they are not used by globbing in our case
-    if (value.exists && !key.includes('node_modules')) {
-      cache[key] = 'FILE';
-    }
-  });
-
-  return cache;
-}

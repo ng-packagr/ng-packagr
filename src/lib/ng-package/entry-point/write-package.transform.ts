@@ -152,7 +152,6 @@ async function copyAssets(
     const filePaths = await globFiles(asset.glob, {
       cwd: asset.input,
       ignore: [...(asset.ignore ?? []), ...globsForceIgnored],
-      cache: ngPackageNode.cache.globCache,
       dot: true,
       nodir: true,
       follow: asset.followSymlinks,

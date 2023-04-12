@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as path from 'path';
-import * as glob from 'glob';
+import { globSync } from 'glob';
 import * as fs from 'fs';
 
 describe('@sample/apf', () => {
@@ -13,7 +13,7 @@ describe('@sample/apf', () => {
     it('should contain a total of 61 files', () => {
       // this is a safe guard / alternative to snapshots in order to
       // protect ourselves from doing a change that will emit unexpected files.
-      const files = glob.sync('**/*', { cwd: DIST });
+      const files = globSync('**/*', { cwd: DIST });
       expect(files.length).to.equals(61);
     });
 
@@ -40,30 +40,30 @@ describe('@sample/apf', () => {
 
   describe('FESM2022', () => {
     it(`should contain 4 '.mjs.map' files`, () => {
-      expect(glob.sync(`fesm2022/**/*.mjs.map`, { cwd: DIST }).length).equal(4);
+      expect(globSync(`fesm2022/**/*.mjs.map`, { cwd: DIST }).length).equal(4);
     });
 
     it(`should contain 4 '.mjs' files`, () => {
-      expect(glob.sync(`fesm2022/**/*.mjs`, { cwd: DIST }).length).equal(4);
+      expect(globSync(`fesm2022/**/*.mjs`, { cwd: DIST }).length).equal(4);
     });
   });
 
   describe('ESM2022', () => {
     it(`should contain 0 '.mjs.map' files`, () => {
-      expect(glob.sync(`esm2022/**/*.mjs.map`, { cwd: DIST }).length).equal(0);
+      expect(globSync(`esm2022/**/*.mjs.map`, { cwd: DIST }).length).equal(0);
     });
 
     it(`should contain 16 '.mjs' files`, () => {
-      expect(glob.sync(`esm2022/**/*.mjs`, { cwd: DIST }).length).equal(16);
+      expect(globSync(`esm2022/**/*.mjs`, { cwd: DIST }).length).equal(16);
     });
 
     describe('secondary', () => {
       it(`should contain 0 '.mjs.map' files`, () => {
-        expect(glob.sync(`esm2022/secondary/**/*.mjs.map`, { cwd: DIST }).length).equal(0);
+        expect(globSync(`esm2022/secondary/**/*.mjs.map`, { cwd: DIST }).length).equal(0);
       });
 
       it(`should contain 8 '.mjs' files`, () => {
-        expect(glob.sync(`esm2022/secondary/**/*.mjs`, { cwd: DIST }).length).equal(8);
+        expect(globSync(`esm2022/secondary/**/*.mjs`, { cwd: DIST }).length).equal(8);
       });
     });
   });
