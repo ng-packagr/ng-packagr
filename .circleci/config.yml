@@ -4,7 +4,7 @@ attach_options: &attach_options
   at: ~/repo
 
 orbs:
-  win: circleci/windows@2.2.0
+  win: circleci/windows@5.0.0
 
 # Command Definitions
 # https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-commands
@@ -16,8 +16,8 @@ commands:
           at: ~/repo
   setup_windows:
     steps:
-      - run: nvm install 16.14
-      - run: nvm use 16.14
+      - run: nvm install 16.14.2
+      - run: nvm use 16.14.2
       - run: npm install -g yarn@1.22.10
       - run: node --version
       - run: yarn --version
