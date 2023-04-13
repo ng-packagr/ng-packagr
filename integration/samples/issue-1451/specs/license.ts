@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { existsSync } from 'fs';
-import { globSync } from 'glob';
+import { sync } from 'fast-glob';
 import { resolve } from 'path';
 
 describe(`issue-1451-license`, () => {
@@ -23,7 +23,7 @@ describe(`issue-1451-license`, () => {
     });
 
     it(`license directory should contain 2 files`, () => {
-      expect(globSync(`license/**/*`, { cwd: DIST }).length).equal(2);
+      expect(sync(`license/**/*`, { cwd: DIST }).length).equal(2);
     });
   });
 });

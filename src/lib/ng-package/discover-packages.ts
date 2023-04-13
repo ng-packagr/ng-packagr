@@ -103,7 +103,7 @@ async function findSecondaryPackagesPaths(directoryPath: string, excludeFolder: 
 
   const filePaths = await globFiles(`**/ng-package.json`, {
     ignore,
-    nodir: true,
+    onlyFiles: true,
     cwd: directoryPath,
   });
 
