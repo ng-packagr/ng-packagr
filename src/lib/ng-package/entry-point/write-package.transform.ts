@@ -153,8 +153,8 @@ async function copyAssets(
       cwd: asset.input,
       ignore: [...(asset.ignore ?? []), ...globsForceIgnored],
       dot: true,
-      nodir: true,
-      follow: asset.followSymlinks,
+      onlyFiles: true,
+      followSymbolicLinks: asset.followSymlinks,
     });
     for (const filePath of filePaths) {
       const fileSrcFullPath = path.join(asset.input, filePath);
