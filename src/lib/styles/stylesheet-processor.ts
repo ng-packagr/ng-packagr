@@ -120,11 +120,16 @@ function transformSupportedBrowsersToTargets(supportedBrowsers: string[]): strin
   return transformed.length ? transformed : undefined;
 }
 
+/** The list of valid config files can be found https://github.com/tailwindlabs/tailwindcss/blob/ba5454543e74a6d702ce11b410d27672c2ee4b3f/src/util/resolveConfigPath.js#L4-L9*/
+const tailwindConfigFiles = [
+  './tailwind.config.js',
+  './tailwind.config.cjs',
+  './tailwind.config.mjs',
+  './tailwind.config.ts',
+];
+
 function getTailwindConfigPath(projectRoot: string): string | undefined {
   // A configuration file can exist in the project or workspace root
-  // The list of valid config files can be found:
-  // https://github.com/tailwindlabs/tailwindcss/blob/8845d112fb62d79815b50b3bae80c317450b8b92/src/util/resolveConfigPath.js#L46-L52
-  const tailwindConfigFiles = ['tailwind.config.js', 'tailwind.config.cjs'];
   for (const configFile of tailwindConfigFiles) {
     // Irrespective of the name project level configuration should always take precedence.
     const fullPath = join(projectRoot, configFile);
