@@ -121,7 +121,7 @@ export async function compileSourceFiles(
     }
 
     // Collect sources that are required to be emitted
-    if (!ignoreForEmit.has(sourceFile) && !angularCompiler.incrementalDriver.safeToSkipEmit(sourceFile)) {
+    if (!ignoreForEmit.has(sourceFile) && !angularCompiler.incrementalCompilation.safeToSkipEmit(sourceFile)) {
       // If required to emit, diagnostics may have also changed
       if (!ignoreForDiagnostics.has(sourceFile)) {
         affectedFiles.add(sourceFile);
