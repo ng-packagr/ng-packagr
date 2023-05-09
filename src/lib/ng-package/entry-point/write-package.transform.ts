@@ -341,18 +341,15 @@ function generatePackageExports({ destinationPath, packageJson }: NgEntryPoint, 
   const exports: PackageExports = packageJson.exports ? JSON.parse(JSON.stringify(packageJson.exports)) : {};
 
   const insertMappingOrError = (subpath: string, mapping: ConditionalExport) => {
-    if (exports[subpath] === undefined) {
-      exports[subpath] = {};
-    }
-
+    exports[subpath] ??= {};
     const subpathExport = exports[subpath];
 
     // Go through all conditions that should be inserted. If the condition is already
     // manually set of the subpath export, we throw an error. In general, we allow for
     // additional conditions to be set. These will always precede the generated ones.
-    for (const conditionName of Object.keys(mapping) as [keyof ConditionalExport]) {
+    for (const conditionName of Object.keys(mapping)) {
       if (subpathExport[conditionName] !== undefined) {
-        throw Error(
+        log.warn(
           `Found a conflicting export condition for "${subpath}". The "${conditionName}" ` +
             `condition would be overridden by ng-packagr. Please unset it.`,
         );
