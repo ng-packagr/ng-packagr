@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [16.0.1](https://github.com/ng-packagr/ng-packagr/compare/16.0.0...16.0.1) (2023-05-10)
+
+
+### Bug Fixes
+
+* warn when finding conflicting package export conditions ([b08b075](https://github.com/ng-packagr/ng-packagr/commit/b08b07598ecd675a01f9fd03e9040eb469d52af1)), closes [#2609](https://github.com/ng-packagr/ng-packagr/issues/2609)
+
 ## [16.0.0](https://github.com/ng-packagr/ng-packagr/compare/16.0.0-rc.1...16.0.0) (2023-05-03)
 
 ### ⚠ BREAKING CHANGES
