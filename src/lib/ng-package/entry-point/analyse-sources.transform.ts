@@ -54,6 +54,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     moduleResolutionCache,
     undefined,
     undefined,
+    undefined,
     analysesSourcesFileCache,
   );
 

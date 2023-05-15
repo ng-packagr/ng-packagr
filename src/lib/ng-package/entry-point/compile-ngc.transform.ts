@@ -48,6 +48,7 @@ export const compileNgcTransformFactory = (
         graph,
         tsConfig,
         moduleResolutionCache,
+        options,
         {
           outDir: path.dirname(esm2022),
           declarationDir: path.dirname(declarations),
@@ -55,7 +56,6 @@ export const compileNgcTransformFactory = (
           target: ts.ScriptTarget.ES2022,
         },
         entryPoint.cache.stylesheetProcessor,
-        options.watch,
       );
     } catch (error) {
       spinner.fail();
