@@ -2,6 +2,7 @@ import type { CompilerHost, CompilerOptions } from '@angular/compiler-cli';
 import convertSourceMap from 'convert-source-map';
 
 import { createHash } from 'crypto';
+import assert from 'node:assert';
 import * as path from 'path';
 import ts from 'typescript';
 import { NgPackageConfig } from '../../ng-package.schema';
@@ -17,6 +18,7 @@ export function cacheCompilerHost(
   entryPoint: EntryPointNode,
   compilerOptions: CompilerOptions,
   moduleResolutionCache: ts.ModuleResolutionCache,
+  emittedFiles?: Set<string>,
   stylesheetProcessor?: StylesheetProcessor,
   inlineStyleLanguage?: NgPackageConfig['inlineStyleLanguage'],
   sourcesFileCache: FileCache = entryPoint.cache.sourcesFileCache,
@@ -75,6 +77,19 @@ export function cacheCompilerHost(
       onError?: (message: string) => void,
       sourceFiles?: ReadonlyArray<ts.SourceFile>,
     ) => {
+      if (fileName.includes('.ngtypecheck.')) {
+        return;
+      }
+
+      if (!sourceFiles?.length && fileName.endsWith('.tsbuildinfo')) {
+        // Save builder info contents to specified location
+        compilerHost.writeFile.call(this, fileName, data, writeByteOrderMark, onError, sourceFiles);
+
+        return;
+      }
+
+      assert(sourceFiles?.length === 1, 'Invalid TypeScript program emit for ' + fileName);
+
       if (fileName.endsWith('.d.ts')) {
         if (fileName === flatModuleFileDtsPath) {
           if (hasIndexEntryFile) {
@@ -89,6 +104,7 @@ export function cacheCompilerHost(
         }
 
         sourceFiles.forEach(source => {
+          emittedFiles?.add(source.fileName);
           const cache = sourcesFileCache.getOrCreate(source.fileName);
           if (!cache.declarationFileName) {
             cache.declarationFileName = ensureUnixPath(fileName);
@@ -110,6 +126,10 @@ export function cacheCompilerHost(
           content: data,
           version,
           map,
+        });
+
+        sourceFiles.forEach(source => {
+          emittedFiles?.add(source.fileName);
         });
       }
 

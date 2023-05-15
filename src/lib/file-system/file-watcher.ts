@@ -24,7 +24,7 @@ export function createFileWatch(
 
   const watch = chokidar.watch([], {
     ignoreInitial: true,
-    ignored: [...ignoredPaths, /\.map$/],
+    ignored: [...ignoredPaths, /\.map$/, /.tsbuildinfo$/],
     persistent: true,
   });
 

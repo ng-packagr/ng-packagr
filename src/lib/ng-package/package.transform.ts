@@ -19,7 +19,7 @@ import {
 } from 'rxjs';
 import { createFileWatch } from '../file-system/file-watcher';
 import { BuildGraph } from '../graph/build-graph';
-import { STATE_IN_PROGRESS } from '../graph/node';
+import { STATE_DIRTY, STATE_DONE, STATE_IN_PROGRESS } from '../graph/node';
 import { Transform } from '../graph/transform';
 import { colors } from '../utils/color';
 import { rmdir } from '../utils/fs';
@@ -161,7 +161,7 @@ const watchTransformFactory =
             for (const entryPoint of graph.filter(isEntryPoint)) {
               const isDirty = [...allNodesToClean].some(dependent => entryPoint.dependents.has(dependent));
               if (isDirty) {
-                entryPoint.state = 'dirty';
+                entryPoint.state = STATE_DIRTY;
 
                 uriToClean.forEach(url => {
                   entryPoint.cache.analysesSourcesFileCache.delete(fileUrlPath(url));
@@ -241,7 +241,7 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
       // Build entry points with lower depth values first.
       return from(groups).pipe(
         map((epUrl: string): EntryPointNode => graph.find(byEntryPoint().and(ep => ep.url === epUrl))),
-        filter((entryPoint: EntryPointNode): boolean => entryPoint.state !== 'done'),
+        filter((entryPoint: EntryPointNode): boolean => entryPoint.state !== STATE_DONE),
         concatMap(ep =>
           observableOf(ep).pipe(
             // Mark the entry point as 'in-progress'
