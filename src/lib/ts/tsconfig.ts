@@ -13,7 +13,6 @@ async function readDefaultTsConfig(fileName = defaultTsConfigPath): Promise<Pars
   // these options are mandatory
   const extraOptions: CompilerOptions = {
     target: ts.ScriptTarget.ES2022,
-    experimentalDecorators: true,
 
     // sourcemaps
     sourceMap: false,
@@ -23,7 +22,7 @@ async function readDefaultTsConfig(fileName = defaultTsConfigPath): Promise<Pars
     outDir: '',
     declaration: true,
 
-    // ng compiler to options
+    // ng compiler
     enableResourceInlining: true,
 
     // these are required to set the appropriate EmitFlags
