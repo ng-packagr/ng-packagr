@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [16.1.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/16.1.0-next.0...16.1.0-rc.0) (2023-06-07)
+
+
+### Features
+
+* support incremental TypeScript semantic diagnostics ([d3b9488](https://github.com/ng-packagr/ng-packagr/commit/d3b9488a4a829efc7f640a3497e16ba94308316c))
+
+
+### Bug Fixes
+
+* allow usages of ECMAScript Decorators ([9abe6a0](https://github.com/ng-packagr/ng-packagr/commit/9abe6a02bf681a67184c923f26330a358f3d48d7)), closes [#2625](https://github.com/ng-packagr/ng-packagr/issues/2625)
+
 ## [16.1.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/16.0.1...16.1.0-next.0) (2023-05-10)
 
 
