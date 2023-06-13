@@ -4,11 +4,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [16.1.0](https://github.com/ng-packagr/ng-packagr/compare/16.1.0-rc.0...16.1.0) (2023-06-13)
 
-## [16.1.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/16.1.0-next.0...16.1.0-rc.0) (2023-06-07)
-
 
 ### Features
-
+* support TypeScript 5.1 ([fcc0c6a](https://github.com/ng-packagr/ng-packagr/commit/fcc0c6a8ddba163dcf642d1cb1634ca223fa97b2))
 * support incremental TypeScript semantic diagnostics ([d3b9488](https://github.com/ng-packagr/ng-packagr/commit/d3b9488a4a829efc7f640a3497e16ba94308316c))
 
 
@@ -16,12 +14,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 * allow usages of ECMAScript Decorators ([9abe6a0](https://github.com/ng-packagr/ng-packagr/commit/9abe6a02bf681a67184c923f26330a358f3d48d7)), closes [#2625](https://github.com/ng-packagr/ng-packagr/issues/2625)
 
-## [16.1.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/16.0.1...16.1.0-next.0) (2023-05-10)
-
-
-### Features
-
-* support TypeScript 5.1 ([fcc0c6a](https://github.com/ng-packagr/ng-packagr/commit/fcc0c6a8ddba163dcf642d1cb1634ca223fa97b2))
 
 ### [16.0.1](https://github.com/ng-packagr/ng-packagr/compare/16.0.0...16.0.1) (2023-05-10)
 
