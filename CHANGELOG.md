@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [16.2.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/16.1.0...16.2.0-next.0) (2023-06-28)
+
+
+### Features
+
+* add support for Angular 16.2.0 ([3c1072e](https://github.com/ng-packagr/ng-packagr/commit/3c1072e97c163d21e75883a3aa78c922566208ee))
+
 ## [16.1.0](https://github.com/ng-packagr/ng-packagr/compare/16.1.0-rc.0...16.1.0) (2023-06-13)
 
 
