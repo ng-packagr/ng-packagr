@@ -4,7 +4,7 @@ import { Observable, map, of as observableOf } from 'rxjs';
 import { BuildGraph } from './graph/build-graph';
 import { Transform } from './graph/transform';
 import { ENTRY_POINT_PROVIDERS } from './ng-package/entry-point/entry-point.di';
-import { provideTsConfig } from './ng-package/entry-point/init-tsconfig.di';
+import { DEFAULT_TS_CONFIG_TOKEN, provideTsConfig } from './ng-package/entry-point/init-tsconfig.di';
 import { NgPackagrOptions, provideOptions } from './ng-package/options.di';
 import { PACKAGE_PROVIDERS, PACKAGE_TRANSFORM } from './ng-package/package.di';
 import { provideProject } from './project.di';
@@ -111,6 +111,10 @@ export class NgPackagr {
    * @return An observable result of the transformation pipeline.
    */
   public buildAsObservable(): Observable<void> {
+    if (!this.providers.some(p => 'provide' in p && p.provide === DEFAULT_TS_CONFIG_TOKEN)) {
+      this.withTsConfig(undefined);
+    }
+
     const injector = ReflectiveInjector.resolveAndCreate(this.providers);
     const buildTransformOperator = injector.get(this.buildTransform);
 
