@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [16.2.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/16.2.0-next.0...16.2.0-next.1) (2023-07-11)
+
+
+### Bug Fixes
+
+* no provider for `InjectionToken ng.v5.defaultTsConfig` ([6652727](https://github.com/ng-packagr/ng-packagr/commit/665272791aa54057d8583993c48a7b59bf119e1c))
+
 ## [16.2.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/16.1.0...16.2.0-next.0) (2023-06-28)
 
 
