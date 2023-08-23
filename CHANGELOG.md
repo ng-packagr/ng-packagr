@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [16.2.1](https://github.com/ng-packagr/ng-packagr/compare/16.2.0-next.1...16.2.1) (2023-08-23)
+
+
+### Bug Fixes
+
+* do not set less math option ([24fa68b](https://github.com/ng-packagr/ng-packagr/commit/24fa68bcf9db6db9a6c0707716c25806418749b3)), closes [#2675](https://github.com/ng-packagr/ng-packagr/issues/2675)
+
 ## [16.2.0](https://github.com/ng-packagr/ng-packagr/compare/16.2.0-next.1...16.2.0) (2023-08-09)
 
 ## [16.2.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/16.2.0-next.0...16.2.0-next.1) (2023-07-11)
