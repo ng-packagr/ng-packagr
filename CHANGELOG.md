@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [16.2.2](https://github.com/ng-packagr/ng-packagr/compare/16.2.1...16.2.2) (2023-08-29)
+
+
+### Bug Fixes
+
+* watch mode not emitted transformed DTS files ([a799883](https://github.com/ng-packagr/ng-packagr/commit/a79988399c49691227583d18e62f003e01b25848)), closes [#2664](https://github.com/ng-packagr/ng-packagr/issues/2664)
+
 ### [16.2.1](https://github.com/ng-packagr/ng-packagr/compare/16.2.0-next.1...16.2.1) (2023-08-23)
 
 
