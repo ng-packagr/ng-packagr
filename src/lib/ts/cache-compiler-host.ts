@@ -18,7 +18,6 @@ export function cacheCompilerHost(
   entryPoint: EntryPointNode,
   compilerOptions: CompilerOptions,
   moduleResolutionCache: ts.ModuleResolutionCache,
-  emittedFiles?: Set<string>,
   stylesheetProcessor?: StylesheetProcessor,
   inlineStyleLanguage?: NgPackageConfig['inlineStyleLanguage'],
   sourcesFileCache: FileCache = entryPoint.cache.sourcesFileCache,
@@ -104,7 +103,6 @@ export function cacheCompilerHost(
         }
 
         sourceFiles.forEach(source => {
-          emittedFiles?.add(source.fileName);
           const cache = sourcesFileCache.getOrCreate(source.fileName);
           if (!cache.declarationFileName) {
             cache.declarationFileName = ensureUnixPath(fileName);
@@ -126,10 +124,6 @@ export function cacheCompilerHost(
           content: data,
           version,
           map,
-        });
-
-        sourceFiles.forEach(source => {
-          emittedFiles?.add(source.fileName);
         });
       }
 

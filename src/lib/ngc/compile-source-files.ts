@@ -33,13 +33,11 @@ export async function compileSourceFiles(
     );
   }
 
-  const emittedFiles = new Set<string>();
   const tsCompilerHost = cacheCompilerHost(
     graph,
     entryPoint,
     tsConfigOptions,
     moduleResolutionCache,
-    emittedFiles,
     stylesheetProcessor,
     inlineStyleLanguage,
   );
@@ -188,25 +186,13 @@ export async function compileSourceFiles(
     log.msg(formatDiagnostics(errorDiagnostics));
   }
 
-  const transformers = angularCompiler.prepareEmit().transformers;
-  if ('getSemanticDiagnosticsOfNextAffectedFile' in builder) {
-    // TypeScript will loop until there are no more affected files in the program
-    while (builder.emitNextAffectedFile(undefined, undefined, undefined, transformers)) {
-      // empty
-    }
-  }
-
   if (errorDiagnostics.length) {
     throw new Error(formatDiagnostics(errorDiagnostics));
   }
 
+  const transformers = angularCompiler.prepareEmit().transformers;
   for (const sourceFile of builder.getSourceFiles()) {
     if (ignoreForEmit.has(sourceFile)) {
-      continue;
-    }
-
-    if (emittedFiles.has(sourceFile.fileName)) {
-      angularCompiler.incrementalCompilation.recordSuccessfulEmit(sourceFile);
       continue;
     }
 
