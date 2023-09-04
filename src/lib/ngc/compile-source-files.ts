@@ -191,6 +191,19 @@ export async function compileSourceFiles(
   }
 
   const transformers = angularCompiler.prepareEmit().transformers;
+
+  if ('getSemanticDiagnosticsOfNextAffectedFile' in builder) {
+    while (
+      builder.emitNextAffectedFile((fileName, data, writeByteOrderMark, onError, sourceFiles) => {
+        if (fileName.endsWith('.tsbuildinfo')) {
+          tsCompilerHost.writeFile(fileName, data, writeByteOrderMark, onError, sourceFiles);
+        }
+      })
+    ) {
+      // empty
+    }
+  }
+
   for (const sourceFile of builder.getSourceFiles()) {
     if (ignoreForEmit.has(sourceFile)) {
       continue;
