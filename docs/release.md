@@ -3,6 +3,11 @@
 `ng-packagr` releases are done through CI when a release tag (ex. `v16.1.0`) is
 pushed.
 
+## Important
+When a patch release is to be released and the `main` branch is in a pre-release state. The below commands should be performed on the patch branch.
+IE: instead of `main` use the versioned branch name (ex. `16.2.x`).
+
+## Steps
 To release `ng-packagr`:
 
 1.  Sync to the latest `main` commit.
