@@ -4,8 +4,8 @@
 pushed.
 
 ## Important
-When a patch release is to be released and the `main` branch is in a pre-release state. The below commands should be performed on the patch branch.
-IE: instead of `main` use the versioned branch name (ex. `16.2.x`).
+When a patch release is to be released and the `main` branch is in a pre-release state. 
+In the below commands the `main` branch should be replaced with versioned branch name (ex. `git checkout 16.2.x`).
 
 ## Steps
 To release `ng-packagr`:
