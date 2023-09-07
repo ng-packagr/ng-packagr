@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [16.2.3](https://github.com/ng-packagr/ng-packagr/compare/16.2.2...16.2.3) (2023-09-07)
+
+
+### Bug Fixes
+
+* emit `.tsbuildinfo` when cache mode is enabled ([2a0ee90](https://github.com/ng-packagr/ng-packagr/commit/2a0ee90289709697a745f4d0589292d058767888)), closes [#2682](https://github.com/ng-packagr/ng-packagr/issues/2682)
+
 ### [16.2.2](https://github.com/ng-packagr/ng-packagr/compare/16.2.1...16.2.2) (2023-08-29)
 
 
