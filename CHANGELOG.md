@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/17.0.0-next.0...17.0.0-next.2) (2023-09-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* TypeScript versions before 5.2 are no longer supported.
+
+### Features
+
+* drop support for TypeScript versions before 5.2 ([72500c3](https://github.com/ng-packagr/ng-packagr/commit/72500c32dbef977d347022fbe6898ec829143bb1))
+* support TypeScript 5.2 ([0acd2c4](https://github.com/ng-packagr/ng-packagr/commit/0acd2c473db9a3b4510e28b2e384a0e0e0bdee4c))
+
+
+### Bug Fixes
+
+* emit `.tsbuildinfo` when cache mode is enabled ([5f32591](https://github.com/ng-packagr/ng-packagr/commit/5f32591e9613d971d6d7608af3e27c30ee14aa3a)), closes [#2682](https://github.com/ng-packagr/ng-packagr/issues/2682)
+
 ## [17.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/17.0.0-next.0...17.0.0-next.1) (2023-09-07)
 
 
