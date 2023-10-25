@@ -6,19 +6,18 @@ As a library author you may want to distribute certain assets that are outside o
 
 ## How?
 
-You can copy these assets by using the `assets` option.
+You can copy these assets by using the `assets` option in ng-package.json.
 
 ```json
 {
-  "ngPackage": {
-    "assets": [
-      "CHANGELOG.md",
-      "docs/**/*.md",
-      { "input": "src/styles", "glob": "**/*.scss", "output": "styles" }
-    ],
-    "lib": {
-      ...
-    }
+  "$schema": "...",
+  "assets": [
+    "CHANGELOG.md",
+    "docs/**/*.md",
+    { "input": "src/styles", "glob": "**/*.scss", "output": "styles" }
+  ],
+  "lib": {
+    ...
   }
 }
 ```
