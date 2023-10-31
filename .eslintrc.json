@@ -29,7 +29,7 @@
     "import/no-absolute-path": "error",
     "import/no-duplicates": "error",
     "import/no-extraneous-dependencies": ["off", { "devDependencies": false }],
-    "import/no-unassigned-import": ["error", { "allow": ["symbol-observable"] }],
+    "import/no-unassigned-import": ["error"],
     "import/order": [
       "error",
       {
@@ -95,7 +95,8 @@
     {
       "files": ["!modules/**", "**/*.spec.ts"],
       "rules": {
-        "max-lines-per-function": "off"
+        "max-lines-per-function": "off",
+        "no-console": "off"
       }
     }
   ]

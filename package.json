@@ -122,7 +122,7 @@
     "schema": "json2ts --input src/ng-package.schema.json --output src/ng-package.schema.ts",
     "release": "standard-version --releaseCommitMessageFormat 'release: cut {{currentTag}}' --no-verify --tag-prefix=\"\"",
     "publish:ci": "yarn build",
-    "lint": "eslint --cache --max-warnings=0 \"**/*.ts\"",
+    "lint": "eslint --cache --format=visualstudio --max-warnings=0 \"**/*.ts\"",
     "integration:samples": "ts-node integration/samples.ts",
     "integration:samples:dev": "ts-node --project src/tsconfig.packagr.json ./integration/samples.dev.ts",
     "integration:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json jasmine-ts \"integration/samples/*/specs/**/*.ts\"",
