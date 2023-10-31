@@ -112,7 +112,7 @@ jobs:
           key: v9-dependencies-win-{{ checksum "yarn.lock" }}
           paths:
             # Get cache dir on windows via `yarn cache dir`
-            - C:\Users\circleci\AppData\Local\Yarn\Cache\v4
+            - C:\Users\circleci\AppData\Local\Yarn\Cache
 
 workflows:
   version: 2.1
