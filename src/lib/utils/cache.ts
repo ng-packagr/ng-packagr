@@ -25,7 +25,7 @@ export async function generateKey(...valuesToConsider: string[]): Promise<string
     .digest('hex');
 }
 
-export async function readCacheEntry(cachePath: string, key: string): Promise<any | undefined> {
+export async function readCacheEntry(cachePath: string, key: string): Promise<any> {
   const entry = await cacache.get.info(cachePath, key);
   if (entry) {
     return JSON.parse(await readFile(entry.path, 'utf8'));
