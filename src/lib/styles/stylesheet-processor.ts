@@ -44,7 +44,12 @@ export class StylesheetProcessor {
 
   /** Destory workers in pool. */
   destroy(): void {
-    void this.renderWorker?.destroy();
+    if (this.renderWorker) {
+      // Workaround piscina bug where a worker thread will be recreated after destroy to meet the minimum.
+      this.renderWorker.options.minThreads = 0;
+
+      void this.renderWorker.destroy();
+    }
   }
 
   private createRenderWorker(): void {
