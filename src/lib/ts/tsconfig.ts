@@ -2,8 +2,8 @@ import type { CompilerOptions, ParsedConfiguration } from '@angular/compiler-cli
 import * as path from 'path';
 import ts from 'typescript';
 import { EntryPointNode } from '../ng-package/nodes';
+import { ngCompilerCli } from '../utils/load-esm';
 import * as log from '../utils/log';
-import { ngCompilerCli } from '../utils/ng-compiler-cli';
 
 export const defaultTsConfigPath = path.join(__dirname, 'conf', 'tsconfig.ngc.json');
 /**

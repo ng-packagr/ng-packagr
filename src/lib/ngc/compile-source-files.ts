@@ -6,8 +6,8 @@ import { EntryPointNode, PackageNode, isEntryPointInProgress, isPackage } from '
 import { NgPackagrOptions } from '../ng-package/options.di';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { augmentProgramWithVersioning, cacheCompilerHost } from '../ts/cache-compiler-host';
+import { ngCompilerCli } from '../utils/load-esm';
 import * as log from '../utils/log';
-import { ngCompilerCli } from '../utils/ng-compiler-cli';
 
 export async function compileSourceFiles(
   graph: BuildGraph,

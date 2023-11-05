@@ -1,7 +1,7 @@
 import { VERSION as ROLLUP_VERSION } from 'rollup';
 import { version as TS_VERSION } from 'typescript';
+import { ngCompilerCli } from '../utils/load-esm';
 import { msg } from '../utils/log';
-import { ngCompilerCli } from '../utils/ng-compiler-cli';
 import { Command } from './command';
 
 /**

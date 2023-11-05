@@ -1,7 +1,7 @@
 import * as cacache from 'cacache';
 import { createHash } from 'crypto';
 import { readFile } from '../utils/fs';
-import { ngCompilerCli } from './ng-compiler-cli';
+import { ngCompilerCli } from './load-esm';
 
 let ngPackagrVersion: string | undefined;
 try {
