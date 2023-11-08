@@ -2,11 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [17.0.0](https://github.com/ng-packagr/ng-packagr/compare/17.0.0-rc.1...17.0.0) (2023-11-08)
 
+### ⚠ BREAKING CHANGES
+
+* TypeScript versions before 5.2 are no longer supported.
+
+### Features
+
+* esbuild can't resolve secondary entry point from library ([29f417e](https://github.com/ng-packagr/ng-packagr/commit/29f417eecddfc79d894e362da1524be3be6ee6ce))
+* drop support for TypeScript versions before 5.2 ([72500c3](https://github.com/ng-packagr/ng-packagr/commit/72500c32dbef977d347022fbe6898ec829143bb1))
+* add support for Angular 17 ([cbb06ee](https://github.com/ng-packagr/ng-packagr/commit/cbb06eeffa1ab36cbf9a22ed55a6ddcdcb57a33a))
+* support TypeScript 5.2 ([0acd2c4](https://github.com/ng-packagr/ng-packagr/commit/0acd2c473db9a3b4510e28b2e384a0e0e0bdee4c))
 
 ### Bug Fixes
 
+* emit `.tsbuildinfo` when cache mode is enabled ([5f32591](https://github.com/ng-packagr/ng-packagr/commit/5f32591e9613d971d6d7608af3e27c30ee14aa3a)), closes [#2682](https://github.com/ng-packagr/ng-packagr/issues/2682)
 * add workaround to terminate workers on destroy ([7252f53](https://github.com/ng-packagr/ng-packagr/commit/7252f53fda8bf87db5554724a0bf501b93ef5cbc)), closes [#2688](https://github.com/ng-packagr/ng-packagr/issues/2688)
 
 ## [17.0.0-rc.1](https://github.com/ng-packagr/ng-packagr/compare/17.0.0-rc.0...17.0.0-rc.1) (2023-11-01)
