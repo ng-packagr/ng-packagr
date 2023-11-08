@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.0.0](https://github.com/ng-packagr/ng-packagr/compare/17.0.0-rc.1...17.0.0) (2023-11-08)
+
+
+### Bug Fixes
+
+* add workaround to terminate workers on destroy ([7252f53](https://github.com/ng-packagr/ng-packagr/commit/7252f53fda8bf87db5554724a0bf501b93ef5cbc)), closes [#2688](https://github.com/ng-packagr/ng-packagr/issues/2688)
+
 ## [17.0.0-rc.1](https://github.com/ng-packagr/ng-packagr/compare/17.0.0-rc.0...17.0.0-rc.1) (2023-11-01)
 
 ## [17.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/17.0.0-next.2...17.0.0-rc.0) (2023-10-26)
