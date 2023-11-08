@@ -2,6 +2,7 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.0.0](https://github.com/ng-packagr/ng-packagr/compare/16.2.2...17.0.0) (2023-11-08)
 
 ### ⚠ BREAKING CHANGES
 
