@@ -72,9 +72,7 @@ export async function compileSourceFiles(
     );
     cache.oldNgtscProgram = angularProgram;
   } else {
-    // When not in watch mode, the startup cost of the incremental analysis can be avoided by
-    // using an abstract builder that only wraps a TypeScript program.
-    builder = ts.createAbstractBuilder(typeScriptProgram, tsCompilerHost);
+    builder = ts.createEmitAndSemanticDiagnosticsBuilderProgram(typeScriptProgram, tsCompilerHost);
   }
 
   // Update semantic diagnostics cache
