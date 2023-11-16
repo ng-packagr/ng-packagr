@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.0.1](https://github.com/ng-packagr/ng-packagr/compare/17.0.0...17.0.1) (2023-11-16)
+
+
+### Bug Fixes
+
+* display template error when cache is disabled ([0698929](https://github.com/ng-packagr/ng-packagr/commit/0698929aa8583204d4b6a203824c0af27770f0eb)), closes [#2705](https://github.com/ng-packagr/ng-packagr/issues/2705)
+
 ## [17.0.0](https://github.com/ng-packagr/ng-packagr/compare/16.2.2...17.0.0) (2023-11-08)
 
 ### ⚠ BREAKING CHANGES
