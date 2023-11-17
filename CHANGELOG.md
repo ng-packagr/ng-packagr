@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* app support for Angular 17.1 ([ce11810](https://github.com/ng-packagr/ng-packagr/commit/ce118106650ada305df86256260d38425ff1381c))
+* add support for Angular 17.1 ([ce11810](https://github.com/ng-packagr/ng-packagr/commit/ce118106650ada305df86256260d38425ff1381c))
 
 ### [17.0.1](https://github.com/ng-packagr/ng-packagr/compare/17.0.0...17.0.1) (2023-11-16)
 
