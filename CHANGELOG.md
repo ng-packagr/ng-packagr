@@ -2,10 +2,7 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [17.1.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/17.1.0-next...17.1.0-next.0) (2023-11-17)
-
-## [17.1.0-next](https://github.com/ng-packagr/ng-packagr/compare/17.0.1...17.1.0-next) (2023-11-17)
-
+## [17.1.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/17.0.1...17.1.0-next.0) (2023-11-17)
 
 ### Features
 
