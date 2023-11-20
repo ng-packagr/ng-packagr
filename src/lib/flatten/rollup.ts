@@ -1,7 +1,7 @@
 import rollupJson from '@rollup/plugin-json';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import * as path from 'path';
-import * as rollup from 'rollup';
+import type { OutputAsset, OutputChunk, RollupCache } from 'rollup';
 import { OutputFileCache } from '../ng-package/nodes';
 import { readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
@@ -18,16 +18,20 @@ export interface RollupOptions {
   entryName: string;
   dir: string;
   sourceRoot: string;
-  cache?: rollup.RollupCache;
+  cache?: RollupCache;
   cacheDirectory?: string | false;
   fileCache: OutputFileCache;
   cacheKey: string;
 }
 
+let rollup: typeof import('rollup') | undefined;
+
 /** Runs rollup over the given entry file, writes a bundle file. */
 export async function rollupBundleFile(
   opts: RollupOptions,
-): Promise<{ cache: rollup.RollupCache; files: (rollup.OutputChunk | rollup.OutputAsset)[] }> {
+): Promise<{ cache: RollupCache; files: (OutputChunk | OutputAsset)[] }> {
+  await ensureRollup();
+
   log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dir}`);
 
   const cacheDirectory = opts.cacheDirectory;
@@ -80,6 +84,20 @@ export async function rollupBundleFile(
     files: output.output,
     cache: bundle.cache,
   };
+}
+
+async function ensureRollup(): Promise<void> {
+  if (rollup) {
+    return;
+  }
+
+  try {
+    rollup = await import('rollup');
+    log.debug(`rollup using native version.`);
+  } catch {
+    rollup = await import('@rollup/wasm-node');
+    log.debug(`rollup using wasm version.`);
+  }
 }
 
 function isExternalDependency(moduleId: string): boolean {
