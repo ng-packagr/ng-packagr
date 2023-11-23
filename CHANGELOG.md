@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.1.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/17.1.0-next...17.1.0-next.1) (2023-11-23)
+
+
+### Bug Fixes
+
+* use rollup wasm version when rollup fails to load ([1ed0dc9](https://github.com/ng-packagr/ng-packagr/commit/1ed0dc962275ec8f8dfbd4d658024bbafbdb9277)), closes [#2722](https://github.com/ng-packagr/ng-packagr/issues/2722)
+
 ### [17.0.2](https://github.com/ng-packagr/ng-packagr/compare/17.0.1...17.0.2) (2023-11-20)
 
 
