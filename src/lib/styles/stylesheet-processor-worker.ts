@@ -1,8 +1,7 @@
-import { extname, relative } from 'node:path';
+import { dirname, extname, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { workerData } from 'node:worker_threads';
 import postcss from 'postcss';
-import postcssUrl from 'postcss-url';
 import { EsbuildExecutor } from '../esbuild/esbuild-executor';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
@@ -68,7 +67,7 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
   }
 
   const warnings: string[] = [];
-  if (shouldProcessWithPostCSS(renderedCss)) {
+  if (hasTailwindKeywords(renderedCss)) {
     const result = await postCssProcessor.process(renderedCss, {
       from: filePath,
       to: filePath.replace(extname(filePath), '.css'),
@@ -78,13 +77,35 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
     renderedCss = result.css;
   }
 
-  const { code, warnings: esBuildWarnings } = await esbuild.transform(renderedCss, {
-    loader: 'css',
+  const loader = cssUrl === CssUrl.none ? 'empty' : 'dataurl';
+
+  const { outputFiles, warnings: esBuildWarnings } = await esbuild.build({
+    stdin: {
+      contents: renderedCss,
+      loader: 'css',
+      resolveDir: dirname(filePath),
+    },
+    loader: {
+      '.svg': loader,
+      '.jpg': loader,
+      '.jpeg': loader,
+      '.png': loader,
+      '.apng': loader,
+      '.webp': loader,
+      '.avif': loader,
+      '.gif': loader,
+      '.otf': loader,
+      '.ttf': loader,
+      '.woff': loader,
+      '.woff2': loader,
+    },
+    write: false,
+    sourcemap: false,
     minify: true,
     target: targets,
-    sourcefile: filePath,
   });
 
+  const code = outputFiles[0].text;
   if (esBuildWarnings.length > 0) {
     warnings.push(...(await esbuild.formatMessages(esBuildWarnings, { kind: 'warning' })));
   }
@@ -169,10 +190,6 @@ async function initialize() {
     cacheDirectory = undefined;
   }
 
-  if (cssUrl !== CssUrl.none) {
-    postCssPlugins.push(postcssUrl({ url: cssUrl }));
-  }
-
   postCssProcessor = postcss(postCssPlugins);
 
   esbuild = new EsbuildExecutor();
@@ -192,10 +209,6 @@ function hasTailwindKeywords(contents: string): boolean {
 
   // TODO: use better search algorithm for keywords
   return TAILWIND_KEYWORDS.some(keyword => contents.includes(keyword));
-}
-
-function shouldProcessWithPostCSS(contents: string): boolean {
-  return (cssUrl !== CssUrl.none && contents.includes('url(')) || hasTailwindKeywords(contents);
 }
 
 /**
