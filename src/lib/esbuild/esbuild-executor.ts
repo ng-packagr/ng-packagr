@@ -6,7 +6,14 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import type { FormatMessagesOptions, PartialMessage, TransformOptions, TransformResult } from 'esbuild';
+import type {
+  BuildOptions,
+  BuildResult,
+  FormatMessagesOptions,
+  PartialMessage,
+  TransformOptions,
+  TransformResult,
+} from 'esbuild';
 
 /**
  * Provides the ability to execute esbuild regardless of the current platform's support
@@ -17,6 +24,7 @@ import type { FormatMessagesOptions, PartialMessage, TransformOptions, Transform
  */
 export class EsbuildExecutor implements Pick<typeof import('esbuild'), 'transform' | 'formatMessages'> {
   private esbuildTransform: this['transform'];
+  private esbuildBuild: this['build'];
   private esbuildFormatMessages: this['formatMessages'];
   private initialized = false;
 
@@ -27,9 +35,12 @@ export class EsbuildExecutor implements Pick<typeof import('esbuild'), 'transfor
    * performed; if false (default), the native variant will be preferred.
    */
   constructor(private alwaysUseWasm = false) {
-    this.esbuildTransform = this.esbuildFormatMessages = () => {
-      throw new Error('esbuild implementation missing');
-    };
+    this.esbuildBuild =
+      this.esbuildTransform =
+      this.esbuildFormatMessages =
+        () => {
+          throw new Error('esbuild implementation missing');
+        };
   }
 
   /**
@@ -68,10 +79,11 @@ export class EsbuildExecutor implements Pick<typeof import('esbuild'), 'transfor
 
     try {
       // Use the faster native variant if available.
-      const { transform, formatMessages } = await import('esbuild');
+      const { transform, build, formatMessages } = await import('esbuild');
 
       this.esbuildTransform = transform;
       this.esbuildFormatMessages = formatMessages;
+      this.esbuildBuild = build;
     } catch {
       // If the native variant is not installed then use the WASM-based variant
       await this.useWasm();
@@ -84,9 +96,10 @@ export class EsbuildExecutor implements Pick<typeof import('esbuild'), 'transfor
    * Transitions an executor instance to use the WASM-variant of esbuild.
    */
   private async useWasm(): Promise<void> {
-    const { transform, formatMessages } = await import('esbuild-wasm');
+    const { transform, build, formatMessages } = await import('esbuild-wasm');
     this.esbuildTransform = transform;
     this.esbuildFormatMessages = formatMessages;
+    this.esbuildBuild = build;
 
     // The ESBUILD_BINARY_PATH environment variable cannot exist when attempting to use the
     // WASM variant. If it is then the binary located at the specified path will be used instead
@@ -100,6 +113,12 @@ export class EsbuildExecutor implements Pick<typeof import('esbuild'), 'transfor
     await this.ensureEsbuild();
 
     return this.esbuildTransform(input, options);
+  }
+
+  async build(options: BuildOptions): Promise<BuildResult> {
+    await this.ensureEsbuild();
+
+    return this.esbuildBuild(options);
   }
 
   async formatMessages(messages: PartialMessage[], options: FormatMessagesOptions): Promise<string[]> {
