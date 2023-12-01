@@ -1,4 +1,3 @@
-import autoprefixer from 'autoprefixer';
 import { extname, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { workerData } from 'node:worker_threads';
@@ -30,6 +29,13 @@ interface RenderRequest {
 
 const CACHE_KEY_VALUES = [...browserslistData, ...styleIncludePaths, cssUrl].join(':');
 
+/**
+ * An array of keywords that indicate Tailwind CSS processing is required for a stylesheet.
+ *
+ * Based on https://tailwindcss.com/docs/functions-and-directives
+ */
+const TAILWIND_KEYWORDS = ['@tailwind', '@layer', '@apply', '@config', 'theme(', 'screen('];
+
 async function render({ content, filePath }: RenderRequest): Promise<string> {
   let key: string | undefined;
   if (cacheDirectory && !content.includes('@import') && !content.includes('@use')) {
@@ -44,7 +50,7 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
   }
 
   // Render pre-processor language (sass, styl, less)
-  const renderedCss = await renderCss(filePath, content);
+  let renderedCss = await renderCss(filePath, content);
 
   // We cannot cache CSS re-rendering phase, because a transitive dependency via (@import) can case different CSS output.
   // Example a change in a mixin or SCSS variable.
@@ -61,14 +67,18 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
     }
   }
 
-  // Render postcss (autoprefixing and friends)
-  const result = await postCssProcessor.process(renderedCss, {
-    from: filePath,
-    to: filePath.replace(extname(filePath), '.css'),
-  });
+  const warnings: string[] = [];
+  if (shouldProcessWithPostCSS(renderedCss)) {
+    const result = await postCssProcessor.process(renderedCss, {
+      from: filePath,
+      to: filePath.replace(extname(filePath), '.css'),
+    });
 
-  const warnings = result.warnings().map(w => w.toString());
-  const { code, warnings: esBuildWarnings } = await esbuild.transform(result.css, {
+    warnings.push(...result.warnings().map(w => w.toString()));
+    renderedCss = result.css;
+  }
+
+  const { code, warnings: esBuildWarnings } = await esbuild.transform(renderedCss, {
     loader: 'css',
     minify: true,
     target: targets,
@@ -149,10 +159,12 @@ function getTailwindPlugin() {
   }
 }
 
+let usesTailwind = false;
 async function initialize() {
   const postCssPlugins = [];
   const tailwinds = getTailwindPlugin();
   if (tailwinds) {
+    usesTailwind = true;
     postCssPlugins.push(tailwinds);
     cacheDirectory = undefined;
   }
@@ -161,19 +173,29 @@ async function initialize() {
     postCssPlugins.push(postcssUrl({ url: cssUrl }));
   }
 
-  postCssPlugins.push(
-    autoprefixer({
-      ignoreUnknownVersions: true,
-      overrideBrowserslist: browserslistData,
-    }),
-  );
-
   postCssProcessor = postcss(postCssPlugins);
 
   esbuild = new EsbuildExecutor();
 
   // Return the render function for use
   return render;
+}
+
+/**
+ * Searches the provided contents for keywords that indicate Tailwind is used
+ * within a stylesheet.
+ */
+function hasTailwindKeywords(contents: string): boolean {
+  if (!usesTailwind) {
+    return false;
+  }
+
+  // TODO: use better search algorithm for keywords
+  return TAILWIND_KEYWORDS.some(keyword => contents.includes(keyword));
+}
+
+function shouldProcessWithPostCSS(contents: string): boolean {
+  return (cssUrl !== CssUrl.none && contents.includes('url(')) || hasTailwindKeywords(contents);
 }
 
 /**
