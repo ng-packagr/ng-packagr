@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.1.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/17.1.0-next.1...17.1.0-next.2) (2023-12-05)
+
+
+### Performance
+
+* do not update package.json version on watch mode ([1225a24](https://github.com/ng-packagr/ng-packagr/commit/1225a241e765b4e37a55958268725d13da5e8e30))
+* embeed assets in css using esbuild instead of postcss ([fe3e052](https://github.com/ng-packagr/ng-packagr/commit/fe3e0521099c53d769ca690ebcefdf1178b1cf2f))
+* only process component styles with postcss when needed ([84cf578](https://github.com/ng-packagr/ng-packagr/commit/84cf578001ef2a8ef2ef15047cb78aea7c098a65))
+
 ## [17.1.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/17.1.0-next...17.1.0-next.1) (2023-11-23)
 
 
