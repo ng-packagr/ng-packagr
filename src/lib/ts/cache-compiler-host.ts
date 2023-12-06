@@ -88,6 +88,7 @@ export function cacheCompilerHost(
       }
 
       assert(sourceFiles?.length === 1, 'Invalid TypeScript program emit for ' + fileName);
+      const outputCache = entryPoint.cache.outputCache;
 
       if (fileName.endsWith('.d.ts')) {
         if (fileName === flatModuleFileDtsPath) {
@@ -108,16 +109,32 @@ export function cacheCompilerHost(
             cache.declarationFileName = ensureUnixPath(fileName);
           }
         });
+
+        if (outputCache.get(fileName)?.content === data) {
+          // Only emit files that changed content.
+          return;
+        }
+
+        outputCache.set(fileName, {
+          content: data,
+        });
       } else {
         fileName = fileName.replace(/\.js(\.map)?$/, '.mjs$1');
-        const outputCache = entryPoint.cache.outputCache;
+        if (outputCache.get(fileName)?.content === data) {
+          return;
+        }
 
-        // Extract inline sourcemap which will later be used by rolluo.
-        const version = createHash('sha256').update(data).digest('hex');
+        // Extract inline sourcemap which will later be used by rollup.
         let map = undefined;
+        const version = createHash('sha256').update(data).digest('hex');
+
         if (fileName.endsWith('.mjs')) {
-          const cachedData = outputCache.get(fileName);
-          map = cachedData?.version === version ? cachedData.map : convertSourceMap.fromComment(data).toJSON();
+          if (outputCache.get(fileName)?.version === version) {
+            // Only emit changed files
+            return;
+          }
+
+          map = convertSourceMap.fromComment(data).toJSON();
         }
 
         outputCache.set(fileName, {
