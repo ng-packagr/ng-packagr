@@ -4,7 +4,7 @@ import { OutputAsset, OutputChunk, RollupCache } from 'rollup';
 import { rollupBundleFile } from '../../flatten/rollup';
 import { transformFromPromise } from '../../graph/transform';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../../utils/cache';
-import { mkdir, writeFile } from '../../utils/fs';
+import { exists, mkdir, writeFile } from '../../utils/fs';
 import { EntryPointNode, isEntryPointInProgress } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 
@@ -30,18 +30,33 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
     const cacheDirectory = options.cacheEnabled && options.cacheDirectory;
     if (cacheDirectory) {
       const cacheResult: BundlesCache = await readCacheEntry(options.cacheDirectory, key);
+      let writing = false;
 
       if (cacheResult?.hash === hash) {
         try {
-          spinner.start('Writing FESM bundles');
-          await mkdir(fesm2022Dir, { recursive: true });
-
           for (const file of cacheResult.fesm2022) {
-            await writeFile(join(fesm2022Dir, file.fileName), file.type === 'asset' ? file.source : file.code);
+            const filePath = join(fesm2022Dir, file.fileName);
+            if (options.watch && await exists(filePath)) {
+              continue;
+            }
+
+            if (!writing) {
+              writing = true;
+              spinner.start('Writing FESM bundles');
+              await mkdir(fesm2022Dir, { recursive: true });
+            }
+
+            await writeFile(filePath, file.type === 'asset' ? file.source : file.code);
           }
 
-          spinner.succeed('Writing FESM bundles');
+          if (writing) {
+            spinner.succeed('Writing FESM bundles');
+          }
         } catch (error) {
+          if (!writing) {
+            spinner.start('Writing FESM bundles');
+          }
+
           spinner.fail();
           throw error;
         }
@@ -84,7 +99,6 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
     };
 
     try {
-      spinner.start('Generating FESM bundles');
       const { rollupCache, files } = await generateFESM(cache.rollupFESM2022Cache, fesm2022Dir);
 
       cache.rollupFESM2022Cache = rollupCache;
