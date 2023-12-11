@@ -1,6 +1,5 @@
 import type { CompilerHost, CompilerOptions } from '@angular/compiler-cli';
 import convertSourceMap from 'convert-source-map';
-
 import { createHash } from 'crypto';
 import assert from 'node:assert';
 import * as path from 'path';
@@ -23,6 +22,13 @@ export function cacheCompilerHost(
   sourcesFileCache: FileCache = entryPoint.cache.sourcesFileCache,
 ): CompilerHost {
   const compilerHost = ts.createIncrementalCompilerHost(compilerOptions);
+
+  // Set the parsing mode to the same as TS 5.3 default for tsc. This provides a parse
+  // performance improvement by skipping non-type related JSDoc parsing.
+  // NOTE: The check for this enum can be removed when TS 5.3 support is the minimum.
+  if (ts.JSDocParsingMode) {
+    compilerHost.jsDocParsingMode = ts.JSDocParsingMode.ParseForTypeErrors;
+  }
 
   const getNode = (fileName: string) => {
     const nodeUri = fileUrl(ensureUnixPath(fileName));
