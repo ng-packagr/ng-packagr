@@ -1,4 +1,4 @@
-import { Plugin } from 'rollup';
+import type { Plugin } from 'rollup';
 import { OutputFileCache } from '../ng-package/nodes';
 
 import * as log from '../utils/log';

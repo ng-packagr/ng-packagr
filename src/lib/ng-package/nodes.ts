@@ -1,5 +1,5 @@
 import type { NgtscProgram, ParsedConfiguration, Program } from '@angular/compiler-cli';
-import { RollupCache } from 'rollup';
+import type { RollupCache } from 'rollup';
 import ts from 'typescript';
 import { FileCache } from '../file-system/file-cache';
 import { ComplexPredicate } from '../graph/build-graph';
