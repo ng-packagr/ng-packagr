@@ -1,6 +1,6 @@
 import ora from 'ora';
 import { join } from 'path';
-import { OutputAsset, OutputChunk, RollupCache } from 'rollup';
+import type { OutputAsset, OutputChunk, RollupCache } from 'rollup';
 import { rollupBundleFile } from '../../flatten/rollup';
 import { transformFromPromise } from '../../graph/transform';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../../utils/cache';
