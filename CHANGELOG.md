@@ -4,14 +4,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [17.1.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/17.1.0-next.3...17.1.0-next.4) (2023-12-20)
 
-## [17.1.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/17.1.0-next.2...17.1.0-next.3) (2023-12-20)
-
 
 ### Bug Fixes
 
 * add missing tailwind `[@screen](https://github.com/screen)` directive in matcher ([ad1bd50](https://github.com/ng-packagr/ng-packagr/commit/ad1bd50efb9eadccf5f80abbf8c24e03551f2081))
 * remove direct imports to `rollup` ([45336ae](https://github.com/ng-packagr/ng-packagr/commit/45336ae69a22c95825e85afccf40ad526275f31b)), closes [#2749](https://github.com/ng-packagr/ng-packagr/issues/2749)
 
+## [17.1.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/17.1.0-next.2...17.1.0-next.3) (2023-12-13)
 
 ### Performance
 
