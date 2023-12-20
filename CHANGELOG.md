@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.1.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/17.1.0-next.2...17.1.0-next.3) (2023-12-20)
+
+
+### Bug Fixes
+
+* add missing tailwind `[@screen](https://github.com/screen)` directive in matcher ([ad1bd50](https://github.com/ng-packagr/ng-packagr/commit/ad1bd50efb9eadccf5f80abbf8c24e03551f2081))
+* remove direct imports to `rollup` ([45336ae](https://github.com/ng-packagr/ng-packagr/commit/45336ae69a22c95825e85afccf40ad526275f31b)), closes [#2749](https://github.com/ng-packagr/ng-packagr/issues/2749)
+
+
+### Performance
+
+* only emit changed DTS and JS from NG compiler ([cd0f508](https://github.com/ng-packagr/ng-packagr/commit/cd0f508a80e94b877acab177b57fd68170f80318))
+* only write FESM files when content changes during watch mode ([fb096a0](https://github.com/ng-packagr/ng-packagr/commit/fb096a065d5cb4a358463ce4640f2da7a04b34c5))
+* reduce TypeScript JSDoc parsing ([8228740](https://github.com/ng-packagr/ng-packagr/commit/822874098e6b52bca6165efad635f9ec1d6ee7c3))
+
 ## [17.1.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/17.1.0-next.1...17.1.0-next.2) (2023-12-05)
 
 
