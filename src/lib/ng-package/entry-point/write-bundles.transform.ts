@@ -104,7 +104,7 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
       cache.rollupFESM2022Cache = rollupCache;
       fesmCache.fesm2022 = files;
 
-      spinner.succeed();
+      spinner.succeed(`Generating FESM bundles`);
     } catch (error) {
       spinner.fail();
       throw error;
