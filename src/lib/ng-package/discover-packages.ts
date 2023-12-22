@@ -6,7 +6,7 @@ import * as log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 import { NgEntryPoint } from './entry-point/entry-point';
 import { NgPackage } from './package';
-import { validateNgPackageSchema } from './schema';
+import { validateNgPackageEntryPointSchema, validateNgPackageSchema } from './schema';
 
 interface UserPackage {
   /** Values from the `package.json` file of this user package. */
@@ -55,8 +55,16 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
 
   if (ngPackageJson) {
     ngPackageJson = ngPackageJson['default'] ?? ngPackageJson;
-
-    validateNgPackageSchema(ngPackageJson);
+    try {
+      if (isSecondary) {
+        validateNgPackageEntryPointSchema(ngPackageJson);
+      } else {
+        validateNgPackageSchema(ngPackageJson);
+      }
+    } catch (e) {
+      log.error(`An error has occurred while validating config at ${folderPathOrFilePath}`);
+      throw e;
+    }
 
     let packageJson: {} = {};
     if (!isSecondary) {

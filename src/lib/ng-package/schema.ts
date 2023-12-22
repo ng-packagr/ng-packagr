@@ -1,9 +1,11 @@
 import Ajv, { ErrorObject, ValidateFunction } from 'ajv';
+import { NgPackageEntryConfig } from '../../ng-entrypoint.schema';
 import { NgPackageConfig } from '../../ng-package.schema';
 import * as log from '../utils/log';
 
 /** Lazily initialized ajv validator instance. */
-let ajvValidator: ValidateFunction | null = null;
+let ajvNgPackageSchemaValidator: ValidateFunction | undefined;
+let ajvNgPackageEntryPointSchemaValidator: ValidateFunction | undefined;
 
 /**
  * Validates the `ngPackageJson` value against the JSON schema using ajv. An error is thrown if
@@ -12,7 +14,27 @@ let ajvValidator: ValidateFunction | null = null;
  * @param ngPackageJson The value to validate.
  */
 export function validateNgPackageSchema(ngPackageJson: unknown): asserts ngPackageJson is NgPackageConfig {
-  const validate = getNgPackageSchemaValidator();
+  const validate = (ajvNgPackageSchemaValidator ??= getSchemaValidator(require('../../ng-package.schema.json')));
+  const isValid = validate(ngPackageJson);
+  if (!isValid) {
+    throw new Error(
+      `Configuration doesn't match the required schema.\n${formatSchemaValidationErrors(validate.errors)}`,
+    );
+  }
+}
+
+/**
+ * Validates the `ngPackageJson` value against the JSON schema using ajv. An error is thrown if
+ * schema errors are found.
+ *
+ * @param ngPackageJson The value to validate.
+ */
+export function validateNgPackageEntryPointSchema(
+  ngPackageJson: unknown,
+): asserts ngPackageJson is NgPackageEntryConfig {
+  const validate = (ajvNgPackageEntryPointSchemaValidator ??= getSchemaValidator(
+    require('../../ng-entrypoint.schema.json'),
+  ));
   const isValid = validate(ngPackageJson);
   if (!isValid) {
     throw new Error(
@@ -37,11 +59,7 @@ function formatSchemaValidationErrors(errors: ErrorObject[]): string {
 /**
  * Returns an initialized ajv validator for the ng-package JSON schema.
  */
-function getNgPackageSchemaValidator(): ValidateFunction {
-  if (ajvValidator !== null) {
-    return ajvValidator;
-  }
-
+function getSchemaValidator(schema: unknown): ValidateFunction {
   const _ajv = new Ajv({
     useDefaults: true,
     strict: false, // strict mode is enabled by default in JSON schema type definitions, which disallows the use of `useDefaults`.
@@ -62,8 +80,5 @@ function getNgPackageSchemaValidator(): ValidateFunction {
     errors: false,
   });
 
-  const ngPackageSchemaJson = require('../../ng-package.schema.json');
-  ajvValidator = _ajv.compile(ngPackageSchemaJson);
-
-  return ajvValidator;
+  return _ajv.compile(schema);
 }
