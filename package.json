@@ -118,7 +118,7 @@
     "prebuild": "rimraf dist && yarn schema",
     "build": "tsc -p src/tsconfig.packagr.json",
     "postbuild": "node ./scripts/postbuild.js",
-    "schema": "json2ts --input src/ng-package.schema.json --output src/ng-package.schema.ts",
+    "schema": "json2ts --input src/ng-package.schema.json --output src/ng-package.schema.ts && json2ts --input src/ng-entrypoint.schema.json --output src/ng-entrypoint.schema.ts",
     "release": "standard-version --releaseCommitMessageFormat 'release: cut {{currentTag}}' --no-verify --tag-prefix=\"\"",
     "publish:ci": "yarn build",
     "lint": "eslint --cache --max-warnings=0 \"**/*.ts\"",

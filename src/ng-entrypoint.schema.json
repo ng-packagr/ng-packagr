@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://github.com/ng-packagr/ng-packagr/blob/master/src/ng-entrypoint.schema.json",
+  "title": "NgPackageEntryConfig",
+  "description": "JSON Schema for secondary entrypoint `ng-package.json` description file",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "lib": {
+      "description": "Description of the library's entry point.",
+      "type": "object",
+      "additionalProperties": false,
+      "default": {},
+      "properties": {
+        "entryFile": {
+          "description": "Entry file to the public API (default: `src/public_api.ts`).",
+          "type": "string",
+          "default": "src/public_api.ts"
+        },
+        "flatModuleFile": {
+          "description": "Filename of the auto-generated flat module file (if empty, defaults to the package name as given in `package.json`).",
+          "type": "string"
+        },
+        "cssUrl": {
+          "description": "Embed assets in css file using data URIs - see https://css-tricks.com/data-uris",
+          "type": "string",
+          "enum": ["none", "inline"],
+          "default": "inline"
+        },
+        "styleIncludePaths": {
+          "description": "Any additional paths that should be used to resolve style imports",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}
