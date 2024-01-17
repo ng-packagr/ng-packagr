@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [17.1.0](https://github.com/ng-packagr/ng-packagr/compare/17.1.0-next.5...17.1.0) (2024-01-17)
 
+### Bug Fixes
+
+* add missing tailwind `@screen` directive in matcher ([ad1bd50](https://github.com/ng-packagr/ng-packagr/commit/ad1bd50efb9eadccf5f80abbf8c24e03551f2081))
+* remove direct imports to `rollup` ([45336ae](https://github.com/ng-packagr/ng-packagr/commit/45336ae69a22c95825e85afccf40ad526275f31b)), closes [#2749](https://github.com/ng-packagr/ng-packagr/issues/2749)
+* correctly validate secondary entry-points config ([5ff4afd](https://github.com/ng-packagr/ng-packagr/commit/5ff4afde43b4984bf7f64ce991dfe255b1fb9373))
+* use rollup wasm version when rollup fails to load ([1ed0dc9](https://github.com/ng-packagr/ng-packagr/commit/1ed0dc962275ec8f8dfbd4d658024bbafbdb9277)), closes [#2722](https://github.com/ng-packagr/ng-packagr/issues/2722)
+
+### Performance
+
+* do not update package.json version on watch mode ([1225a24](https://github.com/ng-packagr/ng-packagr/commit/1225a241e765b4e37a55958268725d13da5e8e30))
+* embeed assets in css using esbuild instead of postcss ([fe3e052](https://github.com/ng-packagr/ng-packagr/commit/fe3e0521099c53d769ca690ebcefdf1178b1cf2f))
+* only process component styles with postcss when needed ([84cf578](https://github.com/ng-packagr/ng-packagr/commit/84cf578001ef2a8ef2ef15047cb78aea7c098a65))
+* only emit changed DTS and JS from NG compiler ([cd0f508](https://github.com/ng-packagr/ng-packagr/commit/cd0f508a80e94b877acab177b57fd68170f80318))
+* only write FESM files when content changes during watch mode ([fb096a0](https://github.com/ng-packagr/ng-packagr/commit/fb096a065d5cb4a358463ce4640f2da7a04b34c5))
+* reduce TypeScript JSDoc parsing ([8228740](https://github.com/ng-packagr/ng-packagr/commit/822874098e6b52bca6165efad635f9ec1d6ee7c3))
+
 ## [17.1.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/17.1.0-next.4...17.1.0-next.5) (2023-12-22)
 
 
