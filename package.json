@@ -1,6 +1,6 @@
 {
   "name": "ng-packagr",
-  "version": "17.1.0-next.5",
+  "version": "17.1.0",
   "description": "Compile and package Angular libraries in Angular Package Format (APF)",
   "keywords": [
     "apf",
@@ -60,7 +60,7 @@
     "rollup": "^4.5.0"
   },
   "peerDependencies": {
-    "@angular/compiler-cli": "^17.0.0 || ^17.1.0-next.0",
+    "@angular/compiler-cli": "^17.0.0 || ^17.1.0-next.0 || ^17.2.0-next.0",
     "tailwindcss": "^2.0.0 || ^3.0.0",
     "tslib": "^2.3.0",
     "typescript": ">=5.2 <5.4"
