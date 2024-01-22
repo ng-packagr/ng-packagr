@@ -110,6 +110,7 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
     write: false,
     sourcemap: false,
     minify: true,
+    bundle: true,
     target: targets,
   });
 
