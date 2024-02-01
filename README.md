@@ -74,6 +74,7 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
 - [Change the Entry File of a Library](docs/entry-file.md)
 - [Change Configuration Locations](docs/configuration-locations.md)
 - [Override tsconfig](docs/override-tsconfig.md)
+- [Use PostCSS](docs/postcss-config.md)
 - [Add Style Include Paths](docs/style-include-paths.md)
 - [Package Secondary Entrypoints (sub packages)](docs/secondary-entrypoints.md)
 
