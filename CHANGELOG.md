@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.2.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/17.1.2...17.2.0-next.0) (2024-02-01)
+
+
+### Features
+
+* support using custom postcss configuration ([bcb80fa](https://github.com/ng-packagr/ng-packagr/commit/bcb80fa0dc14e78697e1c76cd9c336ac3e70c57c)), closes [#2765](https://github.com/ng-packagr/ng-packagr/issues/2765) [#643](https://github.com/ng-packagr/ng-packagr/issues/643)
+
 ### [17.1.2](https://github.com/ng-packagr/ng-packagr/compare/17.1.1...17.1.2) (2024-01-24)
 
 ### [17.1.1](https://github.com/ng-packagr/ng-packagr/compare/17.1.0...17.1.1) (2024-01-22)
