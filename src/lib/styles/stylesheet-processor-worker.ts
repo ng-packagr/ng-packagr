@@ -5,10 +5,20 @@ import postcss from 'postcss';
 import { EsbuildExecutor } from '../esbuild/esbuild-executor';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
+import { PostcssConfiguration } from './postcss-configuration';
 import { CssUrl } from './stylesheet-processor';
 
-const { tailwindConfigPath, projectBasePath, browserslistData, targets, cssUrl, styleIncludePaths } = workerData as {
+const {
+  tailwindConfigPath,
+  projectBasePath,
+  browserslistData,
+  targets,
+  cssUrl,
+  styleIncludePaths,
+  postcssConfiguration,
+} = workerData as {
   tailwindConfigPath: string | undefined;
+  postcssConfiguration: PostcssConfiguration | undefined;
   browserslistData: string;
   targets: string[];
   projectBasePath: string;
@@ -18,7 +28,7 @@ const { tailwindConfigPath, projectBasePath, browserslistData, targets, cssUrl, 
 };
 
 let cacheDirectory = workerData.cacheDirectory;
-let postCssProcessor: ReturnType<typeof postcss>;
+let postCssProcessor: ReturnType<typeof postcss> | undefined;
 let esbuild: EsbuildExecutor;
 
 interface RenderRequest {
@@ -75,7 +85,7 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
   }
 
   const warnings: string[] = [];
-  if (hasTailwindKeywords(renderedCss)) {
+  if (postCssProcessor && (postcssConfiguration || (tailwindConfigPath && hasTailwindKeywords(renderedCss)))) {
     const result = await postCssProcessor.process(renderedCss, {
       from: filePath,
       to: filePath.replace(extname(filePath), '.css'),
@@ -87,7 +97,11 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
 
   const loader = cssUrl === CssUrl.none ? 'empty' : 'dataurl';
 
-  const { outputFiles, warnings: esBuildWarnings } = await esbuild.build({
+  const {
+    outputFiles,
+    warnings: esBuildWarnings,
+    errors: esbuildErrors,
+  } = await esbuild.build({
     stdin: {
       contents: renderedCss,
       loader: 'css',
@@ -117,6 +131,14 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
   const code = outputFiles[0].text;
   if (esBuildWarnings.length > 0) {
     warnings.push(...(await esbuild.formatMessages(esBuildWarnings, { kind: 'warning' })));
+    warnings.forEach(msg => log.warn(msg));
+  }
+
+  if (esbuildErrors.length > 0) {
+    const errors = await esbuild.formatMessages(esBuildWarnings, { kind: 'error' });
+    errors.forEach(msg => log.error(msg));
+
+    throw new Error(`An error has occuried while processing ${filePath}.`);
   }
 
   if (cacheDirectory) {
@@ -129,8 +151,6 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
       }),
     );
   }
-
-  warnings.forEach(msg => log.warn(msg));
 
   return code;
 }
@@ -189,17 +209,29 @@ function getTailwindPlugin() {
   }
 }
 
-let usesTailwind = false;
 async function initialize() {
   const postCssPlugins = [];
-  const tailwinds = getTailwindPlugin();
-  if (tailwinds) {
-    usesTailwind = true;
-    postCssPlugins.push(tailwinds);
-    cacheDirectory = undefined;
+  if (postcssConfiguration) {
+    for (const [pluginName, pluginOptions] of postcssConfiguration.plugins) {
+      const { default: plugin } = await import(pluginName);
+
+      if (typeof plugin !== 'function' || plugin.postcss !== true) {
+        throw new Error(`Attempted to load invalid Postcss plugin: "${pluginName}"`);
+      }
+
+      postCssPlugins.push(plugin(pluginOptions));
+    }
+  } else {
+    const tailwinds = getTailwindPlugin();
+    if (tailwinds) {
+      postCssPlugins.push(tailwinds);
+      cacheDirectory = undefined;
+    }
   }
 
-  postCssProcessor = postcss(postCssPlugins);
+  if (postCssPlugins.length) {
+    postCssProcessor = postcss(postCssPlugins);
+  }
 
   esbuild = new EsbuildExecutor();
 
@@ -212,10 +244,6 @@ async function initialize() {
  * within a stylesheet.
  */
 function hasTailwindKeywords(contents: string): boolean {
-  if (!usesTailwind) {
-    return false;
-  }
-
   // TODO: use better search algorithm for keywords
   return TAILWIND_KEYWORDS.some(keyword => contents.includes(keyword));
 }
