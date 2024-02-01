@@ -3,6 +3,7 @@ import { existsSync } from 'fs';
 import { dirname, join } from 'path';
 import Piscina from 'piscina';
 import { colors } from '../utils/color';
+import { loadPostcssConfiguration } from './postcss-configuration';
 
 const maxWorkersVariable = process.env['NG_BUILD_MAX_WORKERS'];
 const maxThreads = typeof maxWorkersVariable === 'string' && maxWorkersVariable !== '' ? +maxWorkersVariable : 4;
@@ -37,7 +38,7 @@ export class StylesheetProcessor {
   }
 
   async process({ filePath, content }: { filePath: string; content: string }): Promise<string> {
-    this.createRenderWorker();
+    await this.createRenderWorker();
 
     return this.renderWorker.run({ content, filePath });
   }
@@ -47,7 +48,7 @@ export class StylesheetProcessor {
     void this.renderWorker?.destroy();
   }
 
-  private createRenderWorker(): void {
+  private async createRenderWorker(): Promise<void> {
     if (this.renderWorker) {
       return;
     }
@@ -76,6 +77,7 @@ export class StylesheetProcessor {
         FORCE_COLOR: '' + colors.enabled,
       },
       workerData: {
+        postcssConfiguration: await loadPostcssConfiguration(this.projectBasePath),
         tailwindConfigPath: getTailwindConfigPath(this.projectBasePath),
         projectBasePath: this.projectBasePath,
         browserslistData,
