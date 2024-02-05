@@ -5,6 +5,7 @@ import postcss from 'postcss';
 import { EsbuildExecutor } from '../esbuild/esbuild-executor';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
+import {createCssResourcePlugin} from './css-resource-plugin';
 import { PostcssConfiguration } from './postcss-configuration';
 import { CssUrl } from './stylesheet-processor';
 
@@ -95,8 +96,6 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
     renderedCss = result.css;
   }
 
-  const loader = cssUrl === CssUrl.none ? 'empty' : 'dataurl';
-
   const {
     outputFiles,
     warnings: esBuildWarnings,
@@ -107,24 +106,12 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
       loader: 'css',
       resolveDir: dirname(filePath),
     },
-    loader: {
-      '.svg': loader,
-      '.jpg': loader,
-      '.jpeg': loader,
-      '.png': loader,
-      '.apng': loader,
-      '.webp': loader,
-      '.avif': loader,
-      '.gif': loader,
-      '.otf': loader,
-      '.ttf': loader,
-      '.woff': loader,
-      '.woff2': loader,
-    },
+    plugins: [createCssResourcePlugin(cssUrl)],
     write: false,
     sourcemap: false,
     minify: true,
     bundle: true,
+    absWorkingDir: projectBasePath,
     target: targets,
   });
 
