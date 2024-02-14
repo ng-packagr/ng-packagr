@@ -2,11 +2,11 @@ import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
 export interface PostcssConfiguration {
-  plugins: [name: string, options?: object][];
+  plugins: [name: string, options?: object | string][];
 }
 
 interface RawPostcssConfiguration {
-  plugins?: Record<string, object | boolean> | (string | [string, object])[];
+  plugins?: Record<string, object | string | boolean> | (string | [string, object])[];
 }
 
 const postcssConfigurationFiles: string[] = ['postcss.config.json', '.postcssrc.json'];
@@ -46,9 +46,7 @@ async function readPostcssConfiguration(configurationFile: string): Promise<RawP
   return config;
 }
 
-export async function loadPostcssConfiguration(
-  projectRoot: string,
-): Promise<PostcssConfiguration | undefined> {
+export async function loadPostcssConfiguration(projectRoot: string): Promise<PostcssConfiguration | undefined> {
   // A configuration file can exist in the project or workspace root
   const searchDirectories = await generateSearchDirectories([projectRoot]);
 
@@ -90,7 +88,7 @@ export async function loadPostcssConfiguration(
 
   const config: PostcssConfiguration = { plugins: [] };
   for (const [name, options] of entries) {
-    if (!options || typeof options !== 'object') {
+    if (!options || (typeof options !== 'object' && typeof options !== 'string')) {
       continue;
     }
 
