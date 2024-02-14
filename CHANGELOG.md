@@ -4,10 +4,14 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [17.2.0](https://github.com/ng-packagr/ng-packagr/compare/17.2.0-rc.0...17.2.0) (2024-02-14)
 
+### Features
+
+* support using custom postcss configuration ([bcb80fa](https://github.com/ng-packagr/ng-packagr/commit/bcb80fa0dc14e78697e1c76cd9c336ac3e70c57c)), closes [#2765](https://github.com/ng-packagr/ng-packagr/issues/2765) [#643](https://github.com/ng-packagr/ng-packagr/issues/643)
 
 ### Bug Fixes
 
 * support string as plugin option in custom postcss plugin config ([bb67204](https://github.com/ng-packagr/ng-packagr/commit/bb67204aca396a214cf5b7c2a679bc1aefdb7f87))
+* handle absolute `url` reference in CSS files ([3d96591](https://github.com/ng-packagr/ng-packagr/commit/3d96591c932886cd5f62668909989879f3d63aac))
 
 ## [17.2.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/17.2.0-next.0...17.2.0-rc.0) (2024-02-07)
 
