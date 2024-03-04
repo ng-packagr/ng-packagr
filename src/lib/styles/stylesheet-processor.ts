@@ -38,7 +38,7 @@ export class StylesheetProcessor {
   }
 
   async process({ filePath, content }: { filePath: string; content: string }): Promise<string> {
-    await this.createRenderWorker();
+    this.createRenderWorker();
 
     return this.renderWorker.run({ content, filePath });
   }
@@ -48,7 +48,8 @@ export class StylesheetProcessor {
     void this.renderWorker?.destroy();
   }
 
-  private async createRenderWorker(): Promise<void> {
+  private createRenderWorker(): void {
+    // Do not use async FS calls in here as otherwise a race will be created which causes multiple FS calls to be done.
     if (this.renderWorker) {
       return;
     }
@@ -78,7 +79,7 @@ export class StylesheetProcessor {
         FORCE_COLOR: '' + colors.enabled,
       },
       workerData: {
-        postcssConfiguration: await loadPostcssConfiguration(this.projectBasePath),
+        postcssConfiguration: loadPostcssConfiguration(this.projectBasePath),
         tailwindConfigPath: getTailwindConfigPath(this.projectBasePath),
         projectBasePath: this.projectBasePath,
         browserslistData,

@@ -1,4 +1,4 @@
-import { readFile, readdir } from 'node:fs/promises';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 export interface PostcssConfiguration {
@@ -16,15 +16,15 @@ interface SearchDirectory {
   files: Set<string>;
 }
 
-async function generateSearchDirectories(roots: string[]): Promise<SearchDirectory[]> {
-  return await Promise.all(
-    roots.map(root =>
-      readdir(root, { withFileTypes: true }).then(entries => ({
-        root,
-        files: new Set(entries.filter(entry => entry.isFile()).map(entry => entry.name)),
-      })),
-    ),
-  );
+function generateSearchDirectories(roots: string[]): SearchDirectory[] {
+  return roots.map(root => {
+    const entries = readdirSync(root, { withFileTypes: true });
+
+    return {
+      root,
+      files: new Set(entries.filter(entry => entry.isFile()).map(entry => entry.name)),
+    };
+  });
 }
 
 function findFile(searchDirectories: SearchDirectory[], potentialFiles: string[]): string | undefined {
@@ -39,23 +39,23 @@ function findFile(searchDirectories: SearchDirectory[], potentialFiles: string[]
   return undefined;
 }
 
-async function readPostcssConfiguration(configurationFile: string): Promise<RawPostcssConfiguration> {
-  const data = await readFile(configurationFile, 'utf-8');
+function readPostcssConfiguration(configurationFile: string): RawPostcssConfiguration {
+  const data = readFileSync(configurationFile, 'utf-8');
   const config = JSON.parse(data) as RawPostcssConfiguration;
 
   return config;
 }
 
-export async function loadPostcssConfiguration(projectRoot: string): Promise<PostcssConfiguration | undefined> {
+export function loadPostcssConfiguration(projectRoot: string): PostcssConfiguration | undefined {
   // A configuration file can exist in the project or workspace root
-  const searchDirectories = await generateSearchDirectories([projectRoot]);
+  const searchDirectories = generateSearchDirectories([projectRoot]);
 
   const configPath = findFile(searchDirectories, postcssConfigurationFiles);
   if (!configPath) {
     return undefined;
   }
 
-  const raw = await readPostcssConfiguration(configPath);
+  const raw = readPostcssConfiguration(configPath);
 
   // If no plugins are defined, consider it equivalent to no configuration
   if (!raw.plugins || typeof raw.plugins !== 'object') {
