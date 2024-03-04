@@ -72,6 +72,7 @@ export class StylesheetProcessor {
     this.renderWorker = new Piscina({
       filename: require.resolve('./stylesheet-processor-worker'),
       maxThreads,
+      recordTiming: false,
       env: {
         ...process.env,
         FORCE_COLOR: '' + colors.enabled,
