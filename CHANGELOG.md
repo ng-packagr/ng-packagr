@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.2.1](https://github.com/ng-packagr/ng-packagr/compare/17.2.0...17.2.1) (2024-03-04)
+
+
+### Performance
+
+* remove FS async calls during stylesheet worker creation ([3c27869](https://github.com/ng-packagr/ng-packagr/commit/3c27869ea499064b5362e736ff9fed9f2ed84ba9)), closes [#2797](https://github.com/ng-packagr/ng-packagr/issues/2797) [#2796](https://github.com/ng-packagr/ng-packagr/issues/2796)
+
 ## [17.2.0](https://github.com/ng-packagr/ng-packagr/compare/17.2.0-rc.0...17.2.0) (2024-02-14)
 
 ### Features
