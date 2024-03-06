@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.3.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/17.2.1...17.3.0-rc.0) (2024-03-06)
+
+
+### Features
+
+* support TypeScript 5.4 ([07d5cea](https://github.com/ng-packagr/ng-packagr/commit/07d5cea0d79e1e9453c33dadd4b29122f764d949))
+
 ### [17.2.1](https://github.com/ng-packagr/ng-packagr/compare/17.2.0...17.2.1) (2024-03-04)
 
 
