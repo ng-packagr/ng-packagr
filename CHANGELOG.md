@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [18.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/17.3.0...18.0.0-next.0) (2024-03-15)
+
+
+### Features
+
+* add support for Angular 18 ([9bef232](https://github.com/ng-packagr/ng-packagr/commit/9bef232ff24d0de5a47977b30a3c66af6f8eb6f9))
+
 ## [17.3.0](https://github.com/ng-packagr/ng-packagr/compare/17.3.0-rc.0...17.3.0) (2024-03-13)
 
 ## [17.3.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/17.2.1...17.3.0-rc.0) (2024-03-06)
