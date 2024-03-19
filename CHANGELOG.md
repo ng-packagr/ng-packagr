@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [18.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-next.0...18.0.0-next.1) (2024-03-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* Node.js support for versions <18.19.1 and <20.11.1 has been removed.
+
+* remove support for Node.js versions <18.19.1 and <20.11.1 ([3af4e3f](https://github.com/ng-packagr/ng-packagr/commit/3af4e3f8d8c869f52a7d3f3e43dc194a9b17f48d))
+
+
+### Performance
+
+* use esbuild instead of rollup to generate FESM ([9c23827](https://github.com/ng-packagr/ng-packagr/commit/9c238273c9057108744c9f9ef8c7d9e62225c0f1)), closes [#2759](https://github.com/ng-packagr/ng-packagr/issues/2759)
+
 ## [18.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/17.3.0...18.0.0-next.0) (2024-03-15)
 
 
