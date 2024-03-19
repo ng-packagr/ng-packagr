@@ -1,11 +1,11 @@
+import { build, formatMessages } from 'esbuild';
 import { dirname, extname, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { workerData } from 'node:worker_threads';
 import postcss from 'postcss';
-import { EsbuildExecutor } from '../esbuild/esbuild-executor';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
-import {createCssResourcePlugin} from './css-resource-plugin';
+import { createCssResourcePlugin } from './css-resource-plugin';
 import { PostcssConfiguration } from './postcss-configuration';
 import { CssUrl } from './stylesheet-processor';
 
@@ -30,7 +30,6 @@ const {
 
 let cacheDirectory = workerData.cacheDirectory;
 let postCssProcessor: ReturnType<typeof postcss> | undefined;
-let esbuild: EsbuildExecutor;
 
 interface RenderRequest {
   content: string;
@@ -100,7 +99,7 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
     outputFiles,
     warnings: esBuildWarnings,
     errors: esbuildErrors,
-  } = await esbuild.build({
+  } = await build({
     stdin: {
       contents: renderedCss,
       loader: 'css',
@@ -117,12 +116,12 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
 
   const code = outputFiles[0].text;
   if (esBuildWarnings.length > 0) {
-    warnings.push(...(await esbuild.formatMessages(esBuildWarnings, { kind: 'warning' })));
+    warnings.push(...(await formatMessages(esBuildWarnings, { kind: 'warning' })));
     warnings.forEach(msg => log.warn(msg));
   }
 
   if (esbuildErrors.length > 0) {
-    const errors = await esbuild.formatMessages(esBuildWarnings, { kind: 'error' });
+    const errors = await formatMessages(esBuildWarnings, { kind: 'error' });
     errors.forEach(msg => log.error(msg));
 
     throw new Error(`An error has occuried while processing ${filePath}.`);
@@ -219,8 +218,6 @@ async function initialize() {
   if (postCssPlugins.length) {
     postCssProcessor = postcss(postCssPlugins);
   }
-
-  esbuild = new EsbuildExecutor();
 
   // Return the render function for use
   return render;

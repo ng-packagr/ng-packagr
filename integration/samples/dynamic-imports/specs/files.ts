@@ -22,7 +22,7 @@ describe('@sample/dynamic-imports', () => {
   describe('fesm2022/sample-dynamic-imports.mjs', () => {
     it(`should lazy import`, () => {
       const content = fs.readFileSync(path.join(DIST, 'fesm2022/sample-dynamic-imports.mjs'), { encoding: 'utf-8' });
-      expect(content).to.match(/import\('\.\/sample-dynamic-imports-lazy-import-\w+\.mjs'\)/);
+      expect(content).to.match(/import\("\.\/sample-dynamic-imports-lazy-import-\w+\.mjs"\)/);
     });
   });
 });
