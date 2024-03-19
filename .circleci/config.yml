@@ -16,8 +16,8 @@ commands:
           at: ~/repo
   setup_windows:
     steps:
-      - run: nvm install 18.19
-      - run: nvm use 18.19
+      - run: nvm install 18.19.1
+      - run: nvm use 18.19.1
       - run: npm install -g yarn@1.22.19
       - run: node --version
       - run: yarn --version
