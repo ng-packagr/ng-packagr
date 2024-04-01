@@ -6,23 +6,31 @@ export interface PostcssConfiguration {
 }
 
 interface RawPostcssConfiguration {
-  plugins?: Record<string, object | string | boolean> | (string | [string, object])[];
+  plugins?: Record<string, object | boolean | string> | (string | [string, object])[];
 }
 
 const postcssConfigurationFiles: string[] = ['postcss.config.json', '.postcssrc.json'];
+const tailwindConfigFiles: string[] = [
+  'tailwind.config.js',
+  'tailwind.config.cjs',
+  'tailwind.config.mjs',
+  'tailwind.config.ts',
+];
 
-interface SearchDirectory {
+export interface SearchDirectory {
   root: string;
   files: Set<string>;
 }
 
-function generateSearchDirectories(roots: string[]): SearchDirectory[] {
+export function generateSearchDirectories(roots: string[]): SearchDirectory[] {
   return roots.map(root => {
-    const entries = readdirSync(root, { withFileTypes: true });
-
     return {
       root,
-      files: new Set(entries.filter(entry => entry.isFile()).map(entry => entry.name)),
+      files: new Set(
+        readdirSync(root, { withFileTypes: true })
+          .filter(entry => entry.isFile())
+          .map(entry => entry.name),
+      ),
     };
   });
 }
@@ -39,6 +47,10 @@ function findFile(searchDirectories: SearchDirectory[], potentialFiles: string[]
   return undefined;
 }
 
+export function findTailwindConfiguration(searchDirectories: SearchDirectory[]): string | undefined {
+  return findFile(searchDirectories, tailwindConfigFiles);
+}
+
 function readPostcssConfiguration(configurationFile: string): RawPostcssConfiguration {
   const data = readFileSync(configurationFile, 'utf-8');
   const config = JSON.parse(data) as RawPostcssConfiguration;
@@ -46,10 +58,7 @@ function readPostcssConfiguration(configurationFile: string): RawPostcssConfigur
   return config;
 }
 
-export function loadPostcssConfiguration(projectRoot: string): PostcssConfiguration | undefined {
-  // A configuration file can exist in the project or workspace root
-  const searchDirectories = generateSearchDirectories([projectRoot]);
-
+export function loadPostcssConfiguration(searchDirectories: SearchDirectory[]): PostcssConfiguration | undefined {
   const configPath = findFile(searchDirectories, postcssConfigurationFiles);
   if (!configPath) {
     return undefined;

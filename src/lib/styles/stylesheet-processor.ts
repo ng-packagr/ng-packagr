@@ -3,7 +3,11 @@ import { existsSync } from 'fs';
 import { dirname, join } from 'path';
 import Piscina from 'piscina';
 import { colors } from '../utils/color';
-import { loadPostcssConfiguration } from './postcss-configuration';
+import {
+  findTailwindConfiguration,
+  generateSearchDirectories,
+  loadPostcssConfiguration,
+} from './postcss-configuration';
 
 const maxWorkersVariable = process.env['NG_BUILD_MAX_WORKERS'];
 const maxThreads = typeof maxWorkersVariable === 'string' && maxWorkersVariable !== '' ? +maxWorkersVariable : 4;
@@ -69,6 +73,7 @@ export class StylesheetProcessor {
     }
 
     const browserslistData = browserslist(undefined, { path: this.basePath });
+    const searchDirs = generateSearchDirectories([this.projectBasePath]);
 
     this.renderWorker = new Piscina({
       filename: require.resolve('./stylesheet-processor-worker'),
@@ -79,8 +84,8 @@ export class StylesheetProcessor {
         FORCE_COLOR: '' + colors.enabled,
       },
       workerData: {
-        postcssConfiguration: loadPostcssConfiguration(this.projectBasePath),
-        tailwindConfigPath: getTailwindConfigPath(this.projectBasePath),
+        postcssConfiguration: loadPostcssConfiguration(searchDirs),
+        tailwindConfigPath: findTailwindConfiguration(searchDirs),
         projectBasePath: this.projectBasePath,
         browserslistData,
         targets: transformSupportedBrowsersToTargets(browserslistData),
@@ -122,25 +127,4 @@ function transformSupportedBrowsersToTargets(supportedBrowsers: string[]): strin
   }
 
   return transformed.length ? transformed : undefined;
-}
-
-/** The list of valid config files can be found https://github.com/tailwindlabs/tailwindcss/blob/ba5454543e74a6d702ce11b410d27672c2ee4b3f/src/util/resolveConfigPath.js#L4-L9*/
-const tailwindConfigFiles = [
-  './tailwind.config.js',
-  './tailwind.config.cjs',
-  './tailwind.config.mjs',
-  './tailwind.config.ts',
-];
-
-function getTailwindConfigPath(projectRoot: string): string | undefined {
-  // A configuration file can exist in the project or workspace root
-  for (const configFile of tailwindConfigFiles) {
-    // Irrespective of the name project level configuration should always take precedence.
-    const fullPath = join(projectRoot, configFile);
-    if (existsSync(fullPath)) {
-      return fullPath;
-    }
-  }
-
-  return undefined;
 }
