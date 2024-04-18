@@ -13,6 +13,8 @@ export interface CliArguments {
   watch?: boolean;
   /** Path to a tsconfig file. */
   config?: string;
+  /** Enable and define the file watching poll time period in milliseconds */
+  poll? : number;
 }
 
 /**
@@ -21,4 +23,4 @@ export interface CliArguments {
  * @stable
  */
 export const build: Command<CliArguments, void> = opts =>
-  ngPackagr().forProject(opts.project).withTsConfig(opts.config).build({ watch: opts.watch });
+  ngPackagr().forProject(opts.project).withTsConfig(opts.config).build({ watch: opts.watch, poll: opts.poll });

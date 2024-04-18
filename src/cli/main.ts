@@ -16,13 +16,14 @@ program
   .storeOptionsAsProperties(false)
   .option('-v, --version', 'Prints version info')
   .option('-w, --watch', 'Watch for file changes')
+  .option('--poll <interval>', 'Enable and define the file watching poll time period in milliseconds', x => +x)
   .option(
-    '-p, --project [path]',
+    '-p, --project <path>',
     "Path to the 'ng-package.json' or 'package.json' file.",
     parseProjectPath,
     DEFAULT_PROJECT_PATH,
   )
-  .option('-c, --config [config]', 'Path to a tsconfig file.', (value: string | undefined) =>
+  .option('-c, --config <config>', 'Path to a tsconfig file.', (value: string | undefined) =>
     value ? path.resolve(value) : undefined,
   );
 
@@ -32,10 +33,10 @@ program.on('option:version', () => {
 
 program.parse(process.argv);
 
-const { config, project, watch, version } = program.opts();
+const { config, project, watch, version, poll } = program.opts();
 
 if (!version) {
-  execute(build, { config, project, watch: !!watch }).catch(err => {
+  execute(build, { config, project, watch: !!watch, poll }).catch(err => {
     error(err.message);
     process.exit(1);
   });

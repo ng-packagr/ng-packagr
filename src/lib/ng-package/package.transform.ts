@@ -120,7 +120,7 @@ export const packageTransformFactory =
   };
 
 const watchTransformFactory =
-  (project: string, _options: NgPackagrOptions, analyseSourcesTransform: Transform, entryPointTransform: Transform) =>
+  (project: string, options: NgPackagrOptions, analyseSourcesTransform: Transform, entryPointTransform: Transform) =>
   (source$: Observable<BuildGraph>): Observable<BuildGraph> => {
     const CompleteWaitingForFileChange = '\nCompilation complete. Watching for file changes...';
     const FileChangeDetected = '\nFile change detected. Starting incremental compilation...';
@@ -129,7 +129,7 @@ const watchTransformFactory =
     return source$.pipe(
       switchMap(graph => {
         const { data, cache } = graph.find(isPackage);
-        const { onFileChange, watcher } = createFileWatch([], [data.dest]);
+        const { onFileChange, watcher } = createFileWatch([], [data.dest], options.poll);
         graph.watcher = watcher;
 
         return onFileChange.pipe(

@@ -16,6 +16,7 @@ export interface FileChangedEvent {
 export function createFileWatch(
   basePaths: string | string[],
   ignoredPaths: (RegExp | string)[] = [],
+  poll?: number,
 ): {
   watcher: chokidar.FSWatcher;
   onFileChange: Observable<FileChangedEvent>;
@@ -26,6 +27,8 @@ export function createFileWatch(
     ignoreInitial: true,
     ignored: [...ignoredPaths, /\.map$/, /.tsbuildinfo$/],
     persistent: true,
+    usePolling: typeof poll === 'number' ? true : false,
+    interval: typeof poll === 'number' ? poll : undefined,
   });
 
   const isLinux = platform() === 'linux';

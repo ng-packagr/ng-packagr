@@ -9,6 +9,7 @@ export interface NgPackagrOptions {
   watch?: boolean;
   cacheEnabled?: boolean;
   cacheDirectory?: string;
+  poll?: number;
 }
 
 export const provideOptions = (options: NgPackagrOptions = {}): ValueProvider => ({
