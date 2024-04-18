@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [18.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-next.1...18.0.0-next.2) (2024-04-18)
+
+
+### Features
+
+* add support for polling ([2c7f75b](https://github.com/ng-packagr/ng-packagr/commit/2c7f75bec709c870398d332cf3af9285f079f9d1))
+
 ## [18.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-next.0...18.0.0-next.1) (2024-03-19)
 
 
