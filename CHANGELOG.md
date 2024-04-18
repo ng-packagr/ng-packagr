@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [18.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-next.2...18.0.0-next.3) (2024-04-18)
+
+
+### Bug Fixes
+
+* add `NgPackagrOptions` to public api ([ffc512e](https://github.com/ng-packagr/ng-packagr/commit/ffc512ee9a2c30e1528189d20b4a18d7e19cf473))
+
 ## [18.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-next.1...18.0.0-next.2) (2024-04-18)
 
 
