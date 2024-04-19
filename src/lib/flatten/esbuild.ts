@@ -21,6 +21,9 @@ export interface BundleOptions {
 export async function bundle({ entryName, entry, watch, buildContext, outdir }: BundleOptions) {
   const dir = path.dirname(entry);
   const esbuildOptions: BuildOptions = {
+    // Esbuild will try to locate a tsconfig from the project root.
+    // Provide an empty one since we don't want to handle TS code here.
+    tsconfigRaw: {},
     format: 'esm',
     outdir,
     bundle: true,
