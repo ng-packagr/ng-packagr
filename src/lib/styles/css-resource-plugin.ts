@@ -71,9 +71,7 @@ export function createCssResourcePlugin(url: CssUrl): Plugin {
             error.notes = [
               {
                 location: null,
-                text:
-                  'You can remove the caret and add the path to the `externalDependencies` build option,' +
-                  ' which should remove this error.',
+                text: 'You can remove the caret and use a relative path to reference it, which should remove this error.',
               },
             ];
           }
