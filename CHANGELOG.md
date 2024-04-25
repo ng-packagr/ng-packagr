@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [18.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-next.3...18.0.0-next.4) (2024-04-25)
+
+
+### Bug Fixes
+
+* incorrect path resolution for entry-points when generating FESM ([f2cd914](https://github.com/ng-packagr/ng-packagr/commit/f2cd914dfbb597357c8dce0d1f5f41fd76b210b9)), closes [#2838](https://github.com/ng-packagr/ng-packagr/issues/2838)
+
 ## [18.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-next.2...18.0.0-next.3) (2024-04-18)
 
 
