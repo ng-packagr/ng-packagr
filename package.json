@@ -37,6 +37,9 @@
   "main": "./public_api.js",
   "typings": "./public_api.d.ts",
   "dependencies": {
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/wasm-node": "^4.18.0",
     "ajv": "^8.12.0",
     "ansi-colors": "^4.1.3",
     "browserslist": "^4.22.1",
@@ -45,7 +48,7 @@
     "commander": "^12.0.0",
     "convert-source-map": "^2.0.0",
     "dependency-graph": "^1.0.0",
-    "esbuild": "^0.21.0",
+    "esbuild": "^0.21.3",
     "fast-glob": "^3.3.1",
     "find-cache-dir": "^3.3.2",
     "injection-js": "^2.4.0",
@@ -56,6 +59,9 @@
     "postcss": "^8.4.31",
     "rxjs": "^7.8.1",
     "sass": "^1.69.5"
+  },
+  "optionalDependencies": {
+    "rollup": "^4.18.0"
   },
   "peerDependencies": {
     "@angular/compiler-cli": "^18.0.0-next.0",

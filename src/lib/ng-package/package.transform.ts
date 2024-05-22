@@ -112,7 +112,6 @@ export const packageTransformFactory =
         for (const node of ngPkg.dependents) {
           if (node instanceof EntryPointNode) {
             node.cache.stylesheetProcessor?.destroy();
-            void node.cache.esbuildBuildContext?.dispose();
           }
         }
       }),
