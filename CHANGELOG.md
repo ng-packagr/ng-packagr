@@ -19,14 +19,6 @@ All notable changes to this project will be documented in this file. See [standa
 * add support for polling ([2c7f75b](https://github.com/ng-packagr/ng-packagr/commit/2c7f75bec709c870398d332cf3af9285f079f9d1))
 * support TypeScript 5.4 ([07d5cea](https://github.com/ng-packagr/ng-packagr/commit/07d5cea0d79e1e9453c33dadd4b29122f764d949))
 
-## [18.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-next.0...18.0.0-next.1) (2024-03-19)
-
-
-### ⚠ BREAKING CHANGES
-
-* Node.js support for versions <18.19.1 and <20.11.1 has been removed.
-
-
 ## [18.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-next.4...18.0.0-rc.0) (2024-05-02)
 
 ## [18.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-next.3...18.0.0-next.4) (2024-04-25)
