@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [18.0.0](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-rc.0...18.0.0) (2024-05-22)
 
+### ⚠ BREAKING CHANGES
+
+* Node.js support for versions <18.19.1 and <20.11.1 has been removed.
+
+### Bug Fixes
+
+* incorrect path resolution for entry-points when generating FESM ([f2cd914](https://github.com/ng-packagr/ng-packagr/commit/f2cd914dfbb597357c8dce0d1f5f41fd76b210b9)), closes [#2838](https://github.com/ng-packagr/ng-packagr/issues/2838)
+
+### Features
+
+* add support for Angular 18 ([9bef232](https://github.com/ng-packagr/ng-packagr/commit/9bef232ff24d0de5a47977b30a3c66af6f8eb6f9))
+* add `NgPackagrOptions` to public api ([ffc512e](https://github.com/ng-packagr/ng-packagr/commit/ffc512ee9a2c30e1528189d20b4a18d7e19cf473))
+* add support for polling ([2c7f75b](https://github.com/ng-packagr/ng-packagr/commit/2c7f75bec709c870398d332cf3af9285f079f9d1))
+* support TypeScript 5.4 ([07d5cea](https://github.com/ng-packagr/ng-packagr/commit/07d5cea0d79e1e9453c33dadd4b29122f764d949))
+
+## [18.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-next.0...18.0.0-next.1) (2024-03-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* Node.js support for versions <18.19.1 and <20.11.1 has been removed.
+
+
 ## [18.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-next.4...18.0.0-rc.0) (2024-05-02)
 
 ## [18.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-next.3...18.0.0-next.4) (2024-04-25)
