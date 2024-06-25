@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [18.1.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/18.0.0...18.1.0-next.0) (2024-06-25)
+
+
+### Features
+
+* add support for TypeScript 5.5 ([ae2a698](https://github.com/ng-packagr/ng-packagr/commit/ae2a698fa51f9c69824ec8a4e125f67bfe358ff0))
+
 ## [18.0.0](https://github.com/ng-packagr/ng-packagr/compare/18.0.0-rc.0...18.0.0) (2024-05-22)
 
 ### ⚠ BREAKING CHANGES
