@@ -1,8 +1,10 @@
 import { build, formatMessages } from 'esbuild';
-import { dirname, extname, relative } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { existsSync, realpathSync } from 'node:fs';
+import { dirname, extname, join, parse, relative, resolve } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { workerData } from 'node:worker_threads';
 import postcss from 'postcss';
+import type { CanonicalizeContext, FileImporter } from 'sass';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
 import { createCssResourcePlugin } from './css-resource-plugin';
@@ -141,6 +143,91 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
   return code;
 }
 
+interface ParsedRequestUrl {
+  readonly packageName: string;
+  readonly remainingPath: string;
+}
+
+/**
+ * Parses a importName to extract package name and remaining path.
+ *
+ * @param {string} request - The request to parse.
+ * @returns {ParsedRequestUrl} The parsed package name and remaining path.
+ */
+function parseRequestUrl(request: string): ParsedRequestUrl {
+  const parts = request.split('/');
+  const packageName = parts[0].startsWith('@') ? `${parts[0]}/${parts[1]}` : parts[0];
+  const remainingPath = parts.slice(packageName.startsWith('@') ? 2 : 1).join('/');
+
+  return { packageName, remainingPath };
+}
+
+class NodeResolutionImporter implements FileImporter<'sync'> {
+  public findFileUrl(url: string, context: CanonicalizeContext): URL | null {
+    if (!context.containingUrl) {
+      return undefined;
+    }
+
+    // Get the real path of the containing URL and extract the directory
+    const baseDir = dirname(realpathSync(fileURLToPath(context.containingUrl)));
+
+    // Attempt to resolve the file path relative to the base directory
+    const resolvedPath = resolve(baseDir, url);
+
+    if (existsSync(resolvedPath)) {
+      return pathToFileURL(resolvedPath);
+    }
+
+    let currentDir = baseDir;
+
+    const { packageName, remainingPath } = parseRequestUrl(url);
+
+    const possibleLocations: string[] = [];
+
+    // Traverse the directory structure upwards until we reach the root directory
+    while (currentDir !== parse(currentDir).root) {
+      const nodeModulesDir = join(currentDir, 'node_modules');
+
+      if (remainingPath) {
+        // If there is a remaining path, construct possible locations for the file
+        const { dir, base, ext } = parse(remainingPath);
+
+        const prefixes = ['', '_'];
+        const extensions = ['.scss', '.sass'];
+
+        // Add the base location (package name + remaining path)
+        possibleLocations.push(join(nodeModulesDir, packageName, remainingPath));
+
+        // Add locations with different prefixes and extensions
+        for (const prefix of prefixes) {
+          for (const extension of extensions) {
+            if (extension !== ext) {
+              possibleLocations.push(join(nodeModulesDir, packageName, dir, `${prefix}${base}${extension}`));
+            }
+          }
+        }
+      } else {
+        // If there is no remaining path, add the package directory as a possible location
+        possibleLocations.push(join(nodeModulesDir, packageName));
+      }
+
+      // Check if any of the possible locations exist
+      for (const location of possibleLocations) {
+        if (existsSync(location)) {
+          // If a location exists, return the file URL
+          return pathToFileURL(location);
+        }
+      }
+
+      // Move up the directory structure
+      currentDir = dirname(currentDir);
+    }
+
+    // If no valid location was found, return null
+    return null;
+  }
+}
+
 async function renderCss(filePath: string, css: string): Promise<string> {
   const ext = extname(filePath);
 
@@ -151,6 +238,7 @@ async function renderCss(filePath: string, css: string): Promise<string> {
         url: pathToFileURL(filePath),
         syntax: '.sass' === ext ? 'indented' : 'scss',
         loadPaths: styleIncludePaths,
+        importers: [new NodeResolutionImporter()],
       }).css;
     }
     case '.less': {
