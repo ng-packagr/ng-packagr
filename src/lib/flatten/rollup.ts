@@ -67,6 +67,7 @@ export async function rollupBundleFile(
     format: 'es',
     dir: opts.dir,
     inlineDynamicImports: false,
+    hoistTransitiveImports: false,
     chunkFileNames: opts.entryName + '-[name]-[hash].mjs',
     entryFileNames: opts.entryName + '.mjs',
     banner: '',
