@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [18.2.1](https://github.com/ng-packagr/ng-packagr/compare/18.2.0...18.2.1) (2024-08-21)
+
+
+### Bug Fixes
+
+* disable rollups hoistTransitiveImports ([87fd814](https://github.com/ng-packagr/ng-packagr/commit/87fd814a203cb4e09ebb0a62de37628f37821abf))
+
 ## [18.2.0](https://github.com/ng-packagr/ng-packagr/compare/18.2.0-next.0...18.2.0) (2024-08-14)
 
 ## [18.2.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/18.1.0...18.2.0-next.0) (2024-07-10)
