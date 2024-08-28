@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [19.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/19.0.0-next.2...19.0.0-next.3) (2024-08-28)
+
+
+### Bug Fixes
+
+* resolve ESM files correctly on windows ([e476c7b](https://github.com/ng-packagr/ng-packagr/commit/e476c7bef530f87010d8da6320b5a507b73be996))
+
 ## [19.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/19.0.0-next.1...19.0.0-next.2) (2024-08-28)
 
 
