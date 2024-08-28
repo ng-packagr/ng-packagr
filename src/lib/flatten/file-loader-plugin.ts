@@ -1,4 +1,4 @@
-import { dirname, resolve } from 'node:path/posix';
+import { dirname, resolve } from 'node:path';
 import type { Plugin } from 'rollup';
 import { OutputFileCache } from '../ng-package/nodes';
 
