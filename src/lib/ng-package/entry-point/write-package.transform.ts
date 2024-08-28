@@ -347,8 +347,6 @@ type PackageExports = Record<string, ConditionalExport>;
  */
 type ConditionalExport = {
   types?: string;
-  esm2022?: string;
-  esm?: string;
   default?: string;
 };
 
@@ -392,8 +390,6 @@ function generatePackageExports({ destinationPath, packageJson }: NgEntryPoint, 
 
     insertMappingOrError(subpath, {
       types: relativeUnixFromDestPath(destinationFiles.declarations),
-      esm2022: relativeUnixFromDestPath(destinationFiles.esm2022),
-      esm: relativeUnixFromDestPath(destinationFiles.esm2022),
       default: relativeUnixFromDestPath(destinationFiles.fesm2022),
     });
   }

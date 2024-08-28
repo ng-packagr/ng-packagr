@@ -36,7 +36,7 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
         try {
           for (const file of cacheResult.fesm2022) {
             const filePath = join(fesm2022Dir, file.fileName);
-            if (options.watch && await exists(filePath)) {
+            if (options.watch && (await exists(filePath))) {
               continue;
             }
 
@@ -70,7 +70,6 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
       dir: string,
     ): Promise<{ files: (OutputChunk | OutputAsset)[]; rollupCache: RollupCache }> {
       const { cache: rollupFESMCache, files } = await rollupBundleFile({
-        sourceRoot: tsConfig.options.sourceRoot,
         entry: esm2022,
         entryName: ngEntryPoint.flatModuleFile,
         moduleName: ngEntryPoint.moduleId,

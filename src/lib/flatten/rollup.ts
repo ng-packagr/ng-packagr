@@ -1,5 +1,4 @@
 import rollupJson from '@rollup/plugin-json';
-import nodeResolve from '@rollup/plugin-node-resolve';
 import * as path from 'path';
 import type { OutputAsset, OutputChunk, RollupCache } from 'rollup';
 import { OutputFileCache } from '../ng-package/nodes';
@@ -17,7 +16,6 @@ export interface RollupOptions {
   entry: string;
   entryName: string;
   dir: string;
-  sourceRoot: string;
   cache?: RollupCache;
   cacheDirectory?: string | false;
   fileCache: OutputFileCache;
@@ -42,7 +40,7 @@ export async function rollupBundleFile(
     external: moduleId => isExternalDependency(moduleId),
     cache: opts.cache ?? (cacheDirectory ? await readCacheEntry(cacheDirectory, opts.cacheKey) : undefined),
     input: opts.entry,
-    plugins: [nodeResolve(), rollupJson(), fileLoaderPlugin(opts.fileCache)],
+    plugins: [fileLoaderPlugin(opts.fileCache), rollupJson()],
     onwarn: warning => {
       switch (warning.code) {
         case 'CIRCULAR_DEPENDENCY':
@@ -104,7 +102,7 @@ async function ensureRollup(): Promise<void> {
 function isExternalDependency(moduleId: string): boolean {
   // more information about why we don't check for 'node_modules' path
   // https://github.com/rollup/rollup-plugin-node-resolve/issues/110#issuecomment-350353632
-  if (moduleId.startsWith('.') || moduleId.startsWith('/') || path.isAbsolute(moduleId)) {
+  if (moduleId[0] === '.' || moduleId[0] === '/' || path.isAbsolute(moduleId)) {
     // if it's either 'absolute', marked to embed, starts with a '.' or '/' or is the umd bundle and is tslib
     return false;
   }
