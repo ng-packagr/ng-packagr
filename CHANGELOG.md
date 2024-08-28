@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [19.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/19.0.0-next.1...19.0.0-next.2) (2024-08-28)
+
+
+### Features
+
+* remove unused ESM2022 from APF ([0be95f7](https://github.com/ng-packagr/ng-packagr/commit/0be95f7a3b993ddc5b565a0beedbd7f38b6c37be))
+
 ## [19.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/18.2.0...19.0.0-next.1) (2024-08-21)
 
 
