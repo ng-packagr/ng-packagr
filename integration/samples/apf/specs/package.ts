@@ -45,8 +45,6 @@ describe(`@sample/apf`, () => {
         '.': {
           sass: './theming.scss',
           types: './index.d.ts',
-          esm2022: './esm2022/sample-apf.mjs',
-          esm: './esm2022/sample-apf.mjs',
           default: './fesm2022/sample-apf.mjs',
         },
         './theming': {
@@ -57,20 +55,14 @@ describe(`@sample/apf`, () => {
         },
         './secondary': {
           types: './secondary/index.d.ts',
-          esm2022: './esm2022/secondary/sample-apf-secondary.mjs',
-          esm: './esm2022/secondary/sample-apf-secondary.mjs',
           default: './fesm2022/sample-apf-secondary.mjs',
         },
         './secondary/testing': {
           types: './secondary/testing/index.d.ts',
-          esm2022: './esm2022/secondary/testing/sample-apf-secondary-testing.mjs',
-          esm: './esm2022/secondary/testing/sample-apf-secondary-testing.mjs',
           default: './fesm2022/sample-apf-secondary-testing.mjs',
         },
         './testing': {
           types: './testing/index.d.ts',
-          esm2022: './esm2022/testing/sample-apf-testing.mjs',
-          esm: './esm2022/testing/sample-apf-testing.mjs',
           default: './fesm2022/sample-apf-testing.mjs',
         },
       });

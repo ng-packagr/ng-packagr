@@ -86,7 +86,9 @@ export function cacheCompilerHost(
         return;
       }
 
-      if (!sourceFiles?.length && fileName.endsWith('.tsbuildinfo')) {
+      const extension = path.extname(fileName);
+
+      if (!sourceFiles?.length && extension === '.tsbuildinfo') {
         // Save builder info contents to specified location
         compilerHost.writeFile.call(this, fileName, data, writeByteOrderMark, onError, sourceFiles);
 
@@ -96,7 +98,7 @@ export function cacheCompilerHost(
       assert(sourceFiles?.length === 1, 'Invalid TypeScript program emit for ' + fileName);
       const outputCache = entryPoint.cache.outputCache;
 
-      if (fileName.endsWith('.d.ts')) {
+      if (extension === '.ts') {
         if (fileName === flatModuleFileDtsPath) {
           if (hasIndexEntryFile) {
             // In case the entry file is index.ts, we should not emit the `d.ts` which are a re-export of the `index.ts`.
@@ -150,7 +152,10 @@ export function cacheCompilerHost(
         });
       }
 
-      compilerHost.writeFile.call(this, fileName, data, writeByteOrderMark, onError, sourceFiles);
+      if (extension === '.ts' || (extension === '.map' && fileName.endsWith('.d.ts.map'))) {
+        // Only write .d.ts and .d.ts.map files to disk.
+        compilerHost.writeFile.call(this, fileName, data, writeByteOrderMark, onError, sourceFiles);
+      }
     },
 
     readFile: (fileName: string) => {
