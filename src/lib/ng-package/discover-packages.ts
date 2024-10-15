@@ -162,5 +162,5 @@ export async function discoverPackages({ project }: { project: string }): Promis
     log.debug(`Found secondary entry points: ${secondaries.map(e => e.moduleId).join(', ')}`);
   }
 
-  return new NgPackage(basePath, primary, secondaries);
+  return new NgPackage(ensureUnixPath(basePath), primary, secondaries);
 }
