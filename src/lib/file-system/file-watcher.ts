@@ -15,7 +15,7 @@ export interface FileChangedEvent {
 
 export function createFileWatch(
   basePaths: string | string[],
-  ignoredPaths: (RegExp | string)[] = [],
+  ignoredPaths: string[] = [],
   poll?: number,
 ): {
   watcher: chokidar.FSWatcher;
@@ -25,7 +25,15 @@ export function createFileWatch(
 
   const watch = chokidar.watch([], {
     ignoreInitial: true,
-    ignored: [...ignoredPaths, /\.map$/, /.tsbuildinfo$/],
+    ignored: [
+      /\.map$/,
+      /.tsbuildinfo$/,
+      file => {
+        const normalizedPath = ensureUnixPath(file);
+
+        return ignoredPaths.some(f => normalizedPath.startsWith(f));
+      },
+    ],
     persistent: true,
     usePolling: typeof poll === 'number' ? true : false,
     interval: typeof poll === 'number' ? poll : undefined,

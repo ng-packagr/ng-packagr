@@ -55,7 +55,7 @@ export class NgEntryPoint {
     /** Absolute directory path of this entry point's `package.json` location. */
     public readonly basePath: string,
     /** XX: additional auto-configured data passed for secondary entry point's. Needs better docs. */
-    private readonly secondaryData?: { [key: string]: any },
+    private readonly secondaryData?: Record<string, any>,
   ) {}
 
   /** Absolute file path of the entry point's source code entry file. */
@@ -70,11 +70,7 @@ export class NgEntryPoint {
 
   /** Absolute directory path of this entry point's 'package.json'. */
   public get destinationPath(): string {
-    if (this.secondaryData) {
-      return this.secondaryData.destinationPath;
-    } else {
-      return path.resolve(this.basePath, this.$get('dest'));
-    }
+    return this.secondaryData ? this.secondaryData.destinationPath : path.resolve(this.basePath, this.$get('dest'));
   }
 
   public get destinationFiles(): DestinationFiles {
@@ -139,18 +135,12 @@ export class NgEntryPoint {
    * is not always the case due to various module resolution strategies."
    */
   public get moduleId(): string {
-    if (this.secondaryData) {
-      return this.secondaryData.moduleId;
-    } else {
-      return this.packageJson['name'];
-    }
+    return this.secondaryData ? this.secondaryData.moduleId : this.packageJson['name'];
   }
 
-  private flattenModuleId(separator = '.') {
-    if (this.moduleId.startsWith('@')) {
-      return this.moduleId.substring(1).split('/').join(separator);
-    } else {
-      return this.moduleId.split('/').join(separator);
-    }
+  private flattenModuleId(separator = '.'): string {
+    const moduleId = this.moduleId[0] === '@' ? this.moduleId.slice(1) : this.moduleId;
+
+    return moduleId.split('/').join(separator);
   }
 }

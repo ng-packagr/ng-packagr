@@ -128,7 +128,7 @@ const watchTransformFactory =
     return source$.pipe(
       switchMap(graph => {
         const { data, cache } = graph.find(isPackage);
-        const { onFileChange, watcher } = createFileWatch([], [data.dest], options.poll);
+        const { onFileChange, watcher } = createFileWatch([], [data.dest + '/'], options.poll);
         graph.watcher = watcher;
 
         return onFileChange.pipe(

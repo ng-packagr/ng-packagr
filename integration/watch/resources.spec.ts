@@ -7,10 +7,6 @@ describe('resources', () => {
     await harness.initialize();
   });
 
-  afterEach(async () => {
-    await harness.reset();
-  });
-
   afterAll(() => {
     harness.dispose();
   });
