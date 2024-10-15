@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [19.0.0-next.6](https://github.com/ng-packagr/ng-packagr/compare/19.0.0-next.5...19.0.0-next.6) (2024-10-15)
+* Internal refactors
 ## [19.0.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/19.0.0-next.4...19.0.0-next.5) (2024-10-15)
 
 ## [19.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/19.0.0-next.3...19.0.0-next.4) (2024-10-15)
@@ -36,7 +38,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### Bug Fixes
 
 * disable rollups hoistTransitiveImports ([87fd814](https://github.com/ng-packagr/ng-packagr/commit/87fd814a203cb4e09ebb0a62de37628f37821abf))
- 
+
 ## [19.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/18.2.0...19.0.0-next.0) (2024-08-14)
 
 ## [18.2.0](https://github.com/ng-packagr/ng-packagr/compare/18.2.0-next.0...18.2.0) (2024-08-14)
