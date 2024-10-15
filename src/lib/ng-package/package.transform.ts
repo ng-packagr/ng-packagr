@@ -163,9 +163,9 @@ const watchTransformFactory =
               if (isDirty) {
                 entryPoint.state = STATE_DIRTY;
 
-                uriToClean.forEach(url => {
+                for (const url of uriToClean) {
                   entryPoint.cache.analysesSourcesFileCache.delete(fileUrlPath(url));
-                });
+                }
               }
             }
           }),
@@ -221,15 +221,21 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
     concatMap(graph => {
       // Calculate node/dependency depth and determine build order
       const depGraph = new DepGraph({ circular: false });
-      const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
+      for (const node of graph.entries()) {
+        if (!isEntryPoint(node)) {
+          continue;
+        }
 
-      for (const entryPoint of entryPoints) {
         // Remove `ng://` prefix for better error messages
-        const from = entryPoint.url.substring(5);
+        const from = node.url.substring(5);
         depGraph.addNode(from);
 
-        for (const { url } of entryPoint.filter(isEntryPoint)) {
-          const to = url.substring(5);
+        for (const dep of node.dependents) {
+          if (!isEntryPoint(dep)) {
+            continue;
+          }
+
+          const to = dep.url.substring(5);
           depGraph.addNode(to);
           depGraph.addDependency(from, to);
         }

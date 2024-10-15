@@ -1,11 +1,12 @@
 import ora from 'ora';
 import * as path from 'path';
 import ts from 'typescript';
+import { isInProgress } from '../../graph/select';
 import { Transform, transformFromPromise } from '../../graph/transform';
 import { compileSourceFiles } from '../../ngc/compile-source-files';
 import { StylesheetProcessor as StylesheetProcessorClass } from '../../styles/stylesheet-processor';
 import { setDependenciesTsConfigPaths } from '../../ts/tsconfig';
-import { EntryPointNode, PackageNode, isEntryPoint, isEntryPointInProgress, isPackage } from '../nodes';
+import { EntryPointNode, PackageNode, isEntryPoint, isPackage } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 
 export const compileNgcTransformFactory = (
@@ -18,9 +19,22 @@ export const compileNgcTransformFactory = (
       discardStdin: false,
     });
 
-    const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
-    const entryPoint: EntryPointNode = entryPoints.find(isEntryPointInProgress());
-    const ngPackageNode: PackageNode = graph.find(isPackage);
+    const entryPoints: EntryPointNode[] = [];
+    let entryPoint: EntryPointNode;
+    let ngPackageNode: PackageNode;
+
+    for (const node of graph.entries()) {
+      if (isEntryPoint(node)) {
+        entryPoints.push(node);
+
+        if (isInProgress(node)) {
+          entryPoint = node;
+        }
+      } else if (isPackage(node)) {
+        ngPackageNode = node;
+      }
+    }
+
     const projectBasePath = ngPackageNode.data.primary.basePath;
 
     try {
