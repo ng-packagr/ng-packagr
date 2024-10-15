@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [19.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/19.0.0-next.3...19.0.0-next.4) (2024-10-15)
+
+
+### Bug Fixes
+
+* improve cache logic to handle BigInt ([72f57b8](https://github.com/ng-packagr/ng-packagr/commit/72f57b8b64cdbdedf4429face0587429459427f8)), closes [#2375](https://github.com/ng-packagr/ng-packagr/issues/2375)
+
 ## [19.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/19.0.0-next.2...19.0.0-next.3) (2024-08-28)
 
 
