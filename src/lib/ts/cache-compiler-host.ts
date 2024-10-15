@@ -111,12 +111,12 @@ export function cacheCompilerHost(
           }
         }
 
-        sourceFiles.forEach(source => {
+        for (const source of sourceFiles) {
           const cache = sourcesFileCache.getOrCreate(source.fileName);
           if (!cache.declarationFileName) {
             cache.declarationFileName = ensureUnixPath(fileName);
           }
-        });
+        }
 
         if (outputCache.get(fileName)?.content === data) {
           // Only emit files that changed content.

@@ -2,6 +2,7 @@ import { basename, dirname, join } from 'path';
 import { map, pipe } from 'rxjs';
 import ts from 'typescript';
 import { BuildGraph } from '../../graph/build-graph';
+import { STATE_DONE } from '../../graph/node';
 import { Transform } from '../../graph/transform';
 import { cacheCompilerHost } from '../../ts/cache-compiler-host';
 import { debug } from '../../utils/log';
@@ -11,10 +12,11 @@ import { EntryPointNode, PackageNode, isEntryPoint, isPackage } from '../nodes';
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {
     const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
-    const dirtyEntryPoints: EntryPointNode[] = entryPoints.filter(x => x.state !== 'done');
 
-    for (const entryPoint of dirtyEntryPoints) {
-      analyseEntryPoint(graph, entryPoint, entryPoints);
+    for (const entryPoint of entryPoints) {
+      if (entryPoint.state !== STATE_DONE) {
+        analyseEntryPoint(graph, entryPoint, entryPoints);
+      }
     }
 
     return graph;

@@ -30,7 +30,9 @@ export class BuildGraph implements Traversable<Node> {
 
   public put(value: Node | Node[]) {
     if (value instanceof Array) {
-      value.forEach(node => this.insert(node));
+      for (const node of value) {
+        this.insert(node);
+      }
     } else {
       this.insert(value);
     }

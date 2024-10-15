@@ -64,7 +64,7 @@ export async function initializeTsConfig(
     throw new Error(formatDiagnostics(defaultTsConfigParsed.errors));
   }
 
-  entryPoints.forEach(currentEntryPoint => {
+  for (const currentEntryPoint of entryPoints) {
     const { entryPoint } = currentEntryPoint.data;
     log.debug(`Initializing tsconfig for ${entryPoint.moduleId}`);
     const basePath = path.dirname(entryPoint.entryFilePath);
@@ -82,7 +82,7 @@ export async function initializeTsConfig(
     tsConfig.rootNames = [entryPoint.entryFilePath];
     tsConfig.options = { ...tsConfig.options, ...overrideOptions };
     currentEntryPoint.data.tsConfig = tsConfig;
-  });
+  }
 }
 
 /**
