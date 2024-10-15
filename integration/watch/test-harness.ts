@@ -2,15 +2,13 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as log from '../../dist/lib/utils/log';
 import { expect } from 'chai';
-import { Subscription, debounceTime, tap } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import { ngPackagr } from '../../dist';
 
 /**
  * A testing harness class to setup the enviroment andtest the incremental builds.
  */
 export class TestHarness {
-  private completeHandler = () => undefined;
-
   private harnessTempDir = path.join(__dirname, '.tmp');
   private testTempPath = path.join(this.harnessTempDir, this.testName);
   private testSrc = path.join(__dirname, this.testName);
@@ -32,12 +30,10 @@ export class TestHarness {
 
     this.emptyTestDirectory();
     await fs.copy(this.testSrc, this.testTempPath);
-    await new Promise(resolve => setTimeout(resolve, 1000));
     return this.setUpNgPackagr();
   }
 
   dispose(): void {
-    this.completeHandler = () => undefined;
     this.loggerStubs = {};
 
     if (this.ngPackagr$$) {
@@ -45,11 +41,6 @@ export class TestHarness {
     }
 
     this.emptyTestDirectory();
-  }
-
-  reset(): Promise<void> {
-    this.completeHandler = () => undefined;
-    return new Promise(resolve => setTimeout(resolve, 1000));
   }
 
   readFileSync(filePath: string, isJson = false): string | object {
@@ -84,7 +75,11 @@ export class TestHarness {
    * Gets invoked when a compilation completes succesfully.
    */
   onComplete(done: () => void): void {
-    this.completeHandler = done;
+    this.loggerStubs['success'].and.callFake(msg => {
+      if (msg.includes('Built Angular Package')) {
+        done();
+      }
+    });
   }
 
   /**
@@ -112,9 +107,7 @@ export class TestHarness {
         .withTsConfig(path.join(this.testTempPath, 'tsconfig.ngc.json'))
         .watch()
         .pipe(
-          debounceTime(1000),
           tap(() => resolve()), // we are only interested when in the first builds, that's why we are resolving it
-          tap(() => this.completeHandler()),
         )
         .subscribe();
     });

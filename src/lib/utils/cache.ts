@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { version as tsVersion } from 'typescript';
 import { ngCompilerCli } from './load-esm';
 
 let ngPackagrVersion: string | undefined;
@@ -23,6 +24,7 @@ export async function generateKey(...valuesToConsider: string[]): Promise<string
   return createHash('sha256')
     .update(ngPackagrVersion)
     .update(compilerCliVersion)
+    .update(tsVersion)
     .update(valuesToConsider.join(':'))
     .digest('hex');
 }

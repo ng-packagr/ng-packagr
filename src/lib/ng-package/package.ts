@@ -1,5 +1,6 @@
 import * as path from 'path';
 import { AssetPattern, NgPackageConfig } from '../../ng-package.schema';
+import { ensureUnixPath } from '../utils/path';
 import { NgEntryPoint } from './entry-point/entry-point';
 
 /**
@@ -60,7 +61,7 @@ export class NgPackage {
   public get dest(): string {
     const dest = path.join(this.basePath, this.primary.$get('dest'));
 
-    return dest.endsWith('/') ? dest.slice(0, -1) : dest;
+    return ensureUnixPath(dest[dest.length - 1] === '/' ? dest.slice(0, -1) : dest);
   }
 
   public get keepLifecycleScripts(): boolean {

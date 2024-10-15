@@ -9,16 +9,22 @@ describe('intra-dependent', () => {
     await harness.initialize();
   });
 
-  afterEach(async () => {
-    await harness.reset();
-  });
-
   afterAll(() => {
     harness.dispose();
   });
 
   it("should perform initial compilation when 'watch' is started", () => {
     harness.expectDtsToMatch('src/primary.component', /count: number/);
+  });
+
+  it('should fail when introducing a circular import.', done => {
+    harness.copyTestCase('circular');
+
+    harness.onFailure(error => {
+      expect(error.message).to.contain('Entry point intra-dependent has a circular dependency on itself.');
+      harness.copyTestCase('valid');
+      done();
+    });
   });
 
   it('should throw error component inputs is changed without updating usages', done => {
@@ -56,15 +62,6 @@ describe('intra-dependent', () => {
       expect(fs.statSync(primaryFesmPath).mtimeMs).to.greaterThan(primaryModifiedTime);
       expect(fs.statSync(secondaryFesmPath).mtimeMs).to.greaterThan(secondaryModifiedTime);
       expect(fs.statSync(thirdFesmPath).mtimeMs).to.equals(thirdModifiedTime);
-      done();
-    });
-  });
-
-  it('should fail when introducing a circular import.', done => {
-    harness.copyTestCase('circular');
-
-    harness.onFailure(error => {
-      expect(error.message).to.contain('Entry point intra-dependent has a circular dependency on itself.');
       done();
     });
   });
