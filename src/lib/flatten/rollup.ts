@@ -73,7 +73,7 @@ export async function rollupBundleFile(
   });
 
   if (cacheDirectory) {
-    await saveCacheEntry(cacheDirectory, opts.cacheKey, JSON.stringify(bundle.cache));
+    await saveCacheEntry(cacheDirectory, opts.cacheKey, bundle.cache);
   }
 
   // Close the bundle to let plugins clean up their external processes or services

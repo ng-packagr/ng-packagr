@@ -110,6 +110,6 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
     }
 
     if (cacheDirectory) {
-      await saveCacheEntry(cacheDirectory, key, JSON.stringify(fesmCache));
+      await saveCacheEntry(cacheDirectory, key, fesmCache);
     }
   });
