@@ -131,10 +131,10 @@ async function render({ content, filePath }: RenderRequest): Promise<string> {
     await saveCacheEntry(
       cacheDirectory,
       key,
-      JSON.stringify({
+      {
         css: code,
         warnings,
-      }),
+      },
     );
   }
 
