@@ -2,6 +2,7 @@ import browserslist from 'browserslist';
 import { existsSync } from 'fs';
 import { dirname, join } from 'path';
 import Piscina from 'piscina';
+import { NgPackageEntryConfig } from '../../ng-entrypoint.schema';
 import { colors } from '../utils/color';
 import {
   findTailwindConfiguration,
@@ -25,6 +26,7 @@ export class StylesheetProcessor {
     private readonly basePath: string,
     private readonly cssUrl?: CssUrl,
     private readonly includePaths?: string[],
+    private readonly sass?: NgPackageEntryConfig['lib']['sass'],
     private readonly cacheDirectory?: string | false,
   ) {
     // By default, browserslist defaults are too inclusive
@@ -92,6 +94,7 @@ export class StylesheetProcessor {
         cacheDirectory: this.cacheDirectory,
         cssUrl: this.cssUrl,
         styleIncludePaths,
+        sass: this.sass,
       },
     });
   }

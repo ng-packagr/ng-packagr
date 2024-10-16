@@ -3,6 +3,7 @@ import { dirname, extname, relative } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { workerData } from 'node:worker_threads';
 import postcss from 'postcss';
+import { NgPackageEntryConfig } from '../../ng-entrypoint.schema';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
 import { createCssResourcePlugin } from './css-resource-plugin';
@@ -17,6 +18,7 @@ const {
   cssUrl,
   styleIncludePaths,
   postcssConfiguration,
+  sass = {},
 } = workerData as {
   tailwindConfigPath: string | undefined;
   postcssConfiguration: PostcssConfiguration | undefined;
@@ -24,6 +26,7 @@ const {
   targets: string[];
   projectBasePath: string;
   cssUrl: CssUrl;
+  sass?: NgPackageEntryConfig['lib']['sass'];
   styleIncludePaths: string[];
   cacheDirectory: string | undefined;
 };
@@ -151,6 +154,9 @@ async function renderCss(filePath: string, css: string): Promise<string> {
         url: pathToFileURL(filePath),
         syntax: '.sass' === ext ? 'indented' : 'scss',
         loadPaths: styleIncludePaths,
+        fatalDeprecations: sass.fatalDeprecations as any,
+        silenceDeprecations: sass.silenceDeprecations as any,
+        futureDeprecations: sass.futureDeprecations as any,
       }).css;
     }
     case '.less': {
