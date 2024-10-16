@@ -43,7 +43,7 @@ export const compileNgcTransformFactory = (
 
       // Compile TypeScript sources
       const { esm2022: esm2022, declarations } = entryPoint.data.destinationFiles;
-      const { basePath, cssUrl, styleIncludePaths } = entryPoint.data.entryPoint;
+      const { basePath, cssUrl, styleIncludePaths, sass } = entryPoint.data.entryPoint;
       const { moduleResolutionCache } = entryPoint.cache;
 
       spinner.start(
@@ -55,6 +55,7 @@ export const compileNgcTransformFactory = (
         basePath,
         cssUrl,
         styleIncludePaths,
+        sass,
         options.cacheEnabled && options.cacheDirectory,
       );
 

@@ -1,4 +1,5 @@
 import * as path from 'path';
+import { NgPackageEntryConfig } from '../../../ng-entrypoint.schema';
 import { NgPackageConfig } from '../../../ng-package.schema';
 import { CssUrl } from '../../styles/stylesheet-processor';
 import { ensureUnixPath } from '../../utils/path';
@@ -127,6 +128,10 @@ export class NgEntryPoint {
     return includePaths.map(includePath =>
       path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath),
     );
+  }
+
+  public get sass(): NgPackageEntryConfig['lib']['sass'] {
+    return this.$get('lib.sass');
   }
 
   /**
