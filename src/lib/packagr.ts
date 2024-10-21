@@ -1,6 +1,6 @@
 import type { ParsedConfiguration } from '@angular/compiler-cli';
 import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
-import { Observable, map, of as observableOf } from 'rxjs';
+import { Observable, lastValueFrom, map, of as observableOf } from 'rxjs';
 import { BuildGraph } from './graph/build-graph';
 import { Transform } from './graph/transform';
 import { ENTRY_POINT_PROVIDERS } from './ng-package/entry-point/entry-point.di';
@@ -91,7 +91,7 @@ export class NgPackagr {
   public build(options: NgPackagrOptions = {}): Promise<void> {
     this.providers.push(provideOptions(options));
 
-    return this.buildAsObservable().toPromise();
+    return lastValueFrom(this.buildAsObservable());
   }
 
   /**

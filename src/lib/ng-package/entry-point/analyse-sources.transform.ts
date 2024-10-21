@@ -61,13 +61,13 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
 
   const potentialDependencies = new Set<string>();
 
-  compilerHost.resolveTypeReferenceDirectives = (
-    moduleNames: string[] | ts.FileReference[],
+  compilerHost.resolveTypeReferenceDirectiveReferences = (
+    typeDirectiveReferences: readonly (string | ts.FileReference)[],
     containingFile: string,
     redirectedReference: ts.ResolvedProjectReference | undefined,
     options: ts.CompilerOptions,
   ) => {
-    return moduleNames.map(name => {
+    return typeDirectiveReferences.map(name => {
       const moduleName = typeof name === 'string' ? name : name.fileName;
 
       if (!moduleName.startsWith('.')) {
@@ -75,38 +75,41 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
           potentialDependencies.add(moduleName);
         }
 
-        return undefined;
+        return {
+          resolvedTypeReferenceDirective: undefined,
+        };
       }
 
-      const result = ts.resolveTypeReferenceDirective(
+      return ts.resolveTypeReferenceDirective(
         moduleName,
         ensureUnixPath(containingFile),
         options,
         compilerHost,
         redirectedReference,
-      ).resolvedTypeReferenceDirective;
-
-      return result;
+      );
     });
   };
 
-  compilerHost.resolveModuleNames = (
-    moduleNames: string[],
+  compilerHost.resolveModuleNameLiterals = (
+    moduleLiterals: readonly ts.StringLiteralLike[],
     containingFile: string,
-    _reusedNames: string[] | undefined,
     redirectedReference: ts.ResolvedProjectReference | undefined,
     options: ts.CompilerOptions,
   ) => {
-    return moduleNames.map(moduleName => {
+    return moduleLiterals.map(moduleLiteral => {
+      const moduleName = moduleLiteral.text;
+
       if (!moduleName.startsWith('.')) {
         if (moduleName === primaryModuleId || moduleName.startsWith(`${primaryModuleId}/`)) {
           potentialDependencies.add(moduleName);
         }
 
-        return undefined;
+        return {
+          resolvedModule: undefined,
+        };
       }
 
-      const { resolvedModule } = ts.resolveModuleName(
+      return ts.resolveModuleName(
         moduleName,
         ensureUnixPath(containingFile),
         options,
@@ -114,8 +117,6 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
         moduleResolutionCache,
         redirectedReference,
       );
-
-      return resolvedModule;
     });
   };
 

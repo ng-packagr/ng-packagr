@@ -33,6 +33,7 @@ import {
   fileUrl,
   fileUrlPath,
   isEntryPoint,
+  isEntryPointInProgress,
   isPackage,
   ngUrl,
 } from './nodes';
@@ -127,8 +128,8 @@ const watchTransformFactory =
 
     return source$.pipe(
       switchMap(graph => {
-        const { data, cache } = graph.find(isPackage);
-        const { onFileChange, watcher } = createFileWatch([], [data.dest + '/'], options.poll);
+        const { cache } = graph.find(isPackage);
+        const { onFileChange, watcher } = createFileWatch([], [], options.poll);
         graph.watcher = watcher;
 
         return onFileChange.pipe(
@@ -136,8 +137,7 @@ const watchTransformFactory =
             const { filePath } = fileChange;
             const { sourcesFileCache } = cache;
             const cachedSourceFile = sourcesFileCache.get(filePath);
-            const { declarationFileName } = cachedSourceFile || {};
-            const uriToClean = [filePath, declarationFileName].map(x => fileUrl(ensureUnixPath(x)));
+            const uriToClean = [filePath].map(x => fileUrl(ensureUnixPath(x)));
             const nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
 
             if (!cachedSourceFile) {
@@ -150,7 +150,9 @@ const watchTransformFactory =
               ...nodesToClean,
               // if a non ts file changes we need to clean up its direct dependees
               // this is mainly done for resources such as html and css
-              ...nodesToClean.filter(node => !node.url.endsWith('.ts')).flatMap(node => [...node.dependees]),
+              ...nodesToClean
+                .filter(node => !node.url.endsWith('.ts'))
+                .flatMap(node => [...node.dependees].filter(dependee => dependee.url.endsWith('.ts'))),
             ];
 
             // delete node that changes
@@ -182,6 +184,10 @@ const watchTransformFactory =
           catchError(error => {
             log.error(error);
             log.msg(FailedWaitingForFileChange);
+            const entryPoint = graph.find(isEntryPointInProgress());
+            if (entryPoint) {
+              entryPoint.state = STATE_DONE;
+            }
 
             return NEVER;
           }),
