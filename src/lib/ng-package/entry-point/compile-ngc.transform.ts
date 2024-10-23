@@ -23,7 +23,7 @@ export const compileNgcTransformFactory = (
     let entryPoint: EntryPointNode;
     let ngPackageNode: PackageNode;
 
-    for (const node of graph.entries()) {
+    for (const node of graph.values()) {
       if (isEntryPoint(node)) {
         entryPoints.push(node);
 

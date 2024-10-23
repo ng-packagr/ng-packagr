@@ -68,7 +68,11 @@ export class BuildGraph implements Traversable<Node> {
     return Array.from(values);
   }
 
-  public some(by: SimplePredicate): boolean {
+  public values(): IterableIterator<Node> {
+    return this.store.values();
+  }
+
+  public some<T extends Node = Node>(by: ComplexPredicate<Node, T>): boolean {
     return this.entries().some(by);
   }
 
