@@ -33,6 +33,7 @@ import {
   fileUrl,
   fileUrlPath,
   isEntryPoint,
+  isFileUrl,
   isPackage,
   ngUrl,
 } from './nodes';
@@ -140,10 +141,8 @@ const watchTransformFactory =
             const uriToClean = [filePath, declarationFileName].map(x => fileUrl(ensureUnixPath(x)));
             const nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
 
-            if (!cachedSourceFile) {
-              if (!nodesToClean) {
-                return;
-              }
+            if (!nodesToClean.length) {
+              return;
             }
 
             const allNodesToClean = [
@@ -158,8 +157,17 @@ const watchTransformFactory =
               sourcesFileCache.delete(fileUrlPath(url));
             }
 
+            const potentialStylesResources = new Set<string>();
+            for (const { url } of allNodesToClean) {
+              if (isFileUrl(url)) {
+                potentialStylesResources.add(fileUrlPath(url));
+              }
+            }
+
             for (const entryPoint of graph.filter(isEntryPoint)) {
-              const isDirty = [...allNodesToClean].some(dependent => entryPoint.dependents.has(dependent));
+              let isDirty = !!entryPoint.cache.stylesheetProcessor.invalidate(potentialStylesResources)?.length;
+              isDirty ||= allNodesToClean.some(dependent => entryPoint.dependents.has(dependent));
+
               if (isDirty) {
                 entryPoint.state = STATE_DIRTY;
 
@@ -169,7 +177,7 @@ const watchTransformFactory =
               }
             }
           }),
-          debounceTime(200),
+          debounceTime(100),
           tap(() => log.msg(FileChangeDetected)),
           startWith(undefined),
           map(() => graph),

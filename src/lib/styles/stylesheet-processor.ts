@@ -1,33 +1,22 @@
 import browserslist from 'browserslist';
-import { existsSync } from 'fs';
-import { dirname, join } from 'path';
-import Piscina from 'piscina';
 import { NgPackageEntryConfig } from '../../ng-entrypoint.schema';
-import { colors } from '../utils/color';
-import {
-  findTailwindConfiguration,
-  generateSearchDirectories,
-  loadPostcssConfiguration,
-} from './postcss-configuration';
-
-const maxWorkersVariable = process.env['NG_BUILD_MAX_WORKERS'];
-const maxThreads = typeof maxWorkersVariable === 'string' && maxWorkersVariable !== '' ? +maxWorkersVariable : 4;
+import { ComponentStylesheetBundler } from './component-stylesheets';
+import { generateSearchDirectories, getTailwindConfig, loadPostcssConfiguration } from './postcss-configuration';
 
 export enum CssUrl {
   inline = 'inline',
   none = 'none',
 }
 
-export class StylesheetProcessor {
-  private renderWorker: Piscina | undefined;
-
+export class StylesheetProcessor extends ComponentStylesheetBundler {
   constructor(
-    private readonly projectBasePath: string,
-    private readonly basePath: string,
-    private readonly cssUrl?: CssUrl,
-    private readonly includePaths?: string[],
-    private readonly sass?: NgPackageEntryConfig['lib']['sass'],
-    private readonly cacheDirectory?: string | false,
+    protected readonly projectBasePath: string,
+    protected readonly basePath: string,
+    protected readonly cssUrl?: CssUrl,
+    protected readonly includePaths?: string[],
+    protected readonly sass?: NgPackageEntryConfig['lib']['sass'],
+    protected readonly cacheDirectory?: string | false,
+    protected readonly watch?: boolean,
   ) {
     // By default, browserslist defaults are too inclusive
     // https://github.com/browserslist/browserslist/blob/83764ea81ffaa39111c204b02c371afa44a4ff07/index.js#L516-L522
@@ -41,62 +30,29 @@ export class StylesheetProcessor {
       'last 2 iOS major versions',
       'Firefox ESR',
     ];
+
+    const browserslistData = browserslist(undefined, { path: basePath });
+    const searchDirs = generateSearchDirectories([projectBasePath]);
+    const postcssConfiguration = loadPostcssConfiguration(searchDirs);
+
+    super(
+      {
+        cacheDirectory: cacheDirectory,
+        postcssConfiguration: postcssConfiguration,
+        tailwindConfiguration: postcssConfiguration ? undefined : getTailwindConfig(searchDirs, projectBasePath),
+        sass: sass as any,
+        workspaceRoot: projectBasePath,
+        cssUrl: cssUrl,
+        target: transformSupportedBrowsersToTargets(browserslistData),
+        includePaths: includePaths,
+      },
+      'css',
+      watch,
+    );
   }
 
-  async process({ filePath, content }: { filePath: string; content: string }): Promise<string> {
-    this.createRenderWorker();
-
-    return this.renderWorker.run({ content, filePath });
-  }
-
-  /** Destory workers in pool. */
   destroy(): void {
-    void this.renderWorker?.destroy();
-  }
-
-  private createRenderWorker(): void {
-    // Do not use async FS calls in here as otherwise a race will be created which causes multiple FS calls to be done.
-    if (this.renderWorker) {
-      return;
-    }
-
-    const styleIncludePaths = [...this.includePaths];
-    let prevDir = null;
-    let currentDir = this.basePath;
-
-    while (currentDir !== prevDir) {
-      const p = join(currentDir, 'node_modules');
-      if (existsSync(p)) {
-        styleIncludePaths.push(p);
-      }
-
-      prevDir = currentDir;
-      currentDir = dirname(prevDir);
-    }
-
-    const browserslistData = browserslist(undefined, { path: this.basePath });
-    const searchDirs = generateSearchDirectories([this.projectBasePath]);
-
-    this.renderWorker = new Piscina({
-      filename: require.resolve('./stylesheet-processor-worker'),
-      maxThreads,
-      recordTiming: false,
-      env: {
-        ...process.env,
-        FORCE_COLOR: '' + colors.enabled,
-      },
-      workerData: {
-        postcssConfiguration: loadPostcssConfiguration(searchDirs),
-        tailwindConfigPath: findTailwindConfiguration(searchDirs),
-        projectBasePath: this.projectBasePath,
-        browserslistData,
-        targets: transformSupportedBrowsersToTargets(browserslistData),
-        cacheDirectory: this.cacheDirectory,
-        cssUrl: this.cssUrl,
-        styleIncludePaths,
-        sass: this.sass,
-      },
-    });
+    void super.dispose();
   }
 }
 
