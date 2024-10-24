@@ -145,7 +145,6 @@ const watchTransformFactory =
           tap(fileChange => {
             const { filePath } = fileChange;
             const { sourcesFileCache } = cache;
-            const cachedSourceFile = sourcesFileCache.get(filePath);
             const uriToClean = [filePath].map(x => fileUrl(ensureUnixPath(x)));
             const nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
 

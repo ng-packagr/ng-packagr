@@ -185,6 +185,8 @@ export async function compileSourceFiles(
   }
 
   if (errorDiagnostics.length) {
+    delete cache.oldBuilder;
+
     throw new Error(formatDiagnostics(errorDiagnostics));
   }
 
