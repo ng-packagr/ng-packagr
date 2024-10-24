@@ -18,8 +18,17 @@ export const compileNgcTransformFactory = (
       discardStdin: false,
     });
 
-    const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
-    const ngPackageNode: PackageNode = graph.find(isPackage);
+    const entryPoints: EntryPointNode[] = [];
+    let ngPackageNode: PackageNode;
+
+    for (const node of graph.values()) {
+      if (isEntryPoint(node)) {
+        entryPoints.push(node);
+      } else if (isPackage(node)) {
+        ngPackageNode = node;
+      }
+    }
+
     const projectBasePath = ngPackageNode.data.primary.basePath;
 
     try {

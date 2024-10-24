@@ -234,7 +234,7 @@ const scheduleEntryPoints = (epTransform: EntryPointTransform): Transform =>
     concatMap(graph => {
       // Calculate node/dependency depth and determine build order
       const depGraph = new DepGraph({ circular: false });
-      for (const node of graph.entries()) {
+      for (const node of graph.values()) {
         if (!isEntryPoint(node)) {
           continue;
         }

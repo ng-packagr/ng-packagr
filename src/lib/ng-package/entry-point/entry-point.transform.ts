@@ -34,9 +34,7 @@ export const entryPointTransformFactory = (
   writePackage: EntryPointTransform,
 ): EntryPointTransform =>
   pipe(
-    // tap(() => log.info(`Building from sources for entry point`)),
-
-    transformEntryPointFromPromise(async entryPoint => {
+    transformEntryPointFromPromise(entryPoint => {
       // Peek the first entry point from the graph
       log.msg('\n------------------------------------------------------------------------------');
       log.msg(`Building entry point '${entryPoint.data.entryPoint.moduleId}'`);
@@ -47,8 +45,7 @@ export const entryPointTransformFactory = (
     // After TypeScript: bundling and write package
     writeBundles,
     writePackage,
-    transformEntryPointFromPromise(async entryPoint => {
+    transformEntryPointFromPromise(entryPoint => {
       entryPoint.state = STATE_DONE;
     }),
-    // tap(() => log.info(`Built.`))
   );
