@@ -2,10 +2,9 @@ import ora from 'ora';
 import { join } from 'path';
 import type { OutputAsset, OutputChunk, RollupCache } from 'rollup';
 import { rollupBundleFile } from '../../flatten/rollup';
-import { transformFromPromise } from '../../graph/transform';
+import { transformEntryPointFromPromise } from '../../graph/entry-point-transform';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../../utils/cache';
 import { exists, mkdir, writeFile } from '../../utils/fs';
-import { EntryPointNode, isEntryPointInProgress } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 
 interface BundlesCache {
@@ -14,8 +13,7 @@ interface BundlesCache {
 }
 
 export const writeBundlesTransform = (options: NgPackagrOptions) =>
-  transformFromPromise(async graph => {
-    const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
+  transformEntryPointFromPromise(async entryPoint => {
     const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
     const cache = entryPoint.cache;
     const { fesm2022Dir, esm2022 } = destinationFiles;

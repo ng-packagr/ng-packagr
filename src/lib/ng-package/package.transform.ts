@@ -15,11 +15,15 @@ import {
   startWith,
   switchMap,
   takeLast,
+  takeUntil,
   tap,
+  throwError,
 } from 'rxjs';
 import { createFileWatch } from '../file-system/file-watcher';
 import { BuildGraph } from '../graph/build-graph';
+import { EntryPointTransform } from '../graph/entry-point-transform';
 import { STATE_DIRTY, STATE_DONE, STATE_IN_PROGRESS } from '../graph/node';
+import { isInProgress } from '../graph/select';
 import { Transform } from '../graph/transform';
 import { colors } from '../utils/color';
 import { rmdir } from '../utils/fs';
@@ -33,7 +37,6 @@ import {
   fileUrl,
   fileUrlPath,
   isEntryPoint,
-  isEntryPointInProgress,
   isPackage,
   ngUrl,
 } from './nodes';
@@ -61,7 +64,7 @@ export const packageTransformFactory =
     options: NgPackagrOptions,
     initTsConfigTransform: Transform,
     analyseSourcesTransform: Transform,
-    entryPointTransform: Transform,
+    entryPointTransform: EntryPointTransform,
   ) =>
   (source$: Observable<BuildGraph>): Observable<BuildGraph> => {
     log.info(`Building Angular Package`);
@@ -120,7 +123,12 @@ export const packageTransformFactory =
   };
 
 const watchTransformFactory =
-  (project: string, options: NgPackagrOptions, analyseSourcesTransform: Transform, entryPointTransform: Transform) =>
+  (
+    project: string,
+    options: NgPackagrOptions,
+    analyseSourcesTransform: Transform,
+    entryPointTransform: EntryPointTransform,
+  ) =>
   (source$: Observable<BuildGraph>): Observable<BuildGraph> => {
     const CompleteWaitingForFileChange = '\nCompilation complete. Watching for file changes...';
     const FileChangeDetected = '\nFile change detected. Starting incremental compilation...';
@@ -163,6 +171,9 @@ const watchTransformFactory =
             for (const entryPoint of graph.filter(isEntryPoint)) {
               const isDirty = [...allNodesToClean].some(dependent => entryPoint.dependents.has(dependent));
               if (isDirty) {
+                if (isInProgress(entryPoint)) {
+                  entryPoint.abort$.next();
+                }
                 entryPoint.state = STATE_DIRTY;
 
                 for (const url of uriToClean) {
@@ -184,10 +195,6 @@ const watchTransformFactory =
           catchError(error => {
             log.error(error);
             log.msg(FailedWaitingForFileChange);
-            const entryPoint = graph.find(isEntryPointInProgress());
-            if (entryPoint) {
-              entryPoint.state = STATE_DONE;
-            }
 
             return NEVER;
           }),
@@ -197,7 +204,7 @@ const watchTransformFactory =
   };
 
 const buildTransformFactory =
-  (project: string, analyseSourcesTransform: Transform, entryPointTransform: Transform) =>
+  (project: string, analyseSourcesTransform: Transform, entryPointTransform: EntryPointTransform) =>
   (source$: Observable<BuildGraph>): Observable<BuildGraph> => {
     const startTime = Date.now();
 
@@ -222,7 +229,7 @@ const buildTransformFactory =
     );
   };
 
-const scheduleEntryPoints = (epTransform: Transform): Transform =>
+const scheduleEntryPoints = (epTransform: EntryPointTransform): Transform =>
   pipe(
     concatMap(graph => {
       // Calculate node/dependency depth and determine build order
@@ -258,8 +265,15 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
           observableOf(ep).pipe(
             // Mark the entry point as 'in-progress'
             tap(entryPoint => (entryPoint.state = STATE_IN_PROGRESS)),
-            map(() => graph),
+            map(entryPoint => ({ graph, entryPoint })),
             epTransform,
+            catchError(error => {
+              ep.state = STATE_DIRTY;
+
+              return throwError(() => error);
+            }),
+            map(() => graph),
+            takeUntil(ep.abort$)
           ),
         ),
         takeLast(1), // don't use last as sometimes it this will cause 'no elements in sequence',

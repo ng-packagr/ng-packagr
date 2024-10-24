@@ -1,9 +1,7 @@
 import { pipe } from 'rxjs';
+import { EntryPointTransform, transformEntryPointFromPromise } from '../../graph/entry-point-transform';
 import { STATE_DONE } from '../../graph/node';
-import { isInProgress } from '../../graph/select';
-import { Transform, transformFromPromise } from '../../graph/transform';
 import * as log from '../../utils/log';
-import { byEntryPoint } from '../nodes';
 
 /**
  * A re-write of the `transformSources()` script that transforms an entry point from sources to distributable format.
@@ -31,16 +29,15 @@ import { byEntryPoint } from '../nodes';
  * @param writePackage Transformation writing a distribution-ready `package.json` (for publishing to npm registry).
  */
 export const entryPointTransformFactory = (
-  compileTs: Transform,
-  writeBundles: Transform,
-  writePackage: Transform,
-): Transform =>
+  compileTs: EntryPointTransform,
+  writeBundles: EntryPointTransform,
+  writePackage: EntryPointTransform,
+): EntryPointTransform =>
   pipe(
     // tap(() => log.info(`Building from sources for entry point`)),
 
-    transformFromPromise(async graph => {
+    transformEntryPointFromPromise(async entryPoint => {
       // Peek the first entry point from the graph
-      const entryPoint = graph.find(byEntryPoint().and(isInProgress));
       log.msg('\n------------------------------------------------------------------------------');
       log.msg(`Building entry point '${entryPoint.data.entryPoint.moduleId}'`);
       log.msg('------------------------------------------------------------------------------');
@@ -50,8 +47,7 @@ export const entryPointTransformFactory = (
     // After TypeScript: bundling and write package
     writeBundles,
     writePackage,
-    transformFromPromise(async graph => {
-      const entryPoint = graph.find(byEntryPoint().and(isInProgress));
+    transformEntryPointFromPromise(async entryPoint => {
       entryPoint.state = STATE_DONE;
     }),
     // tap(() => log.info(`Built.`))

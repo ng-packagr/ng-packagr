@@ -2,7 +2,7 @@ import { CompilerOptions, ParsedConfiguration } from '@angular/compiler-cli';
 import { join } from 'node:path';
 import ts from 'typescript';
 import { BuildGraph } from '../graph/build-graph';
-import { EntryPointNode, PackageNode, isEntryPointInProgress, isPackage } from '../ng-package/nodes';
+import { EntryPointNode, PackageNode, isPackage } from '../ng-package/nodes';
 import { NgPackagrOptions } from '../ng-package/options.di';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { augmentProgramWithVersioning, cacheCompilerHost } from '../ts/cache-compiler-host';
@@ -11,6 +11,7 @@ import * as log from '../utils/log';
 
 export async function compileSourceFiles(
   graph: BuildGraph,
+  entryPoint: EntryPointNode,
   tsConfig: ParsedConfiguration,
   moduleResolutionCache: ts.ModuleResolutionCache,
   options: NgPackagrOptions,
@@ -20,7 +21,6 @@ export async function compileSourceFiles(
   const { NgtscProgram, formatDiagnostics } = await ngCompilerCli();
   const { cacheDirectory, watch, cacheEnabled } = options;
   const tsConfigOptions: CompilerOptions = { ...tsConfig.options, ...extraOptions };
-  const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
   const ngPackageNode: PackageNode = graph.find(isPackage);
   const inlineStyleLanguage = ngPackageNode.data.inlineStyleLanguage;
 
