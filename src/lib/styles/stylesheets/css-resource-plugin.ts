@@ -1,15 +1,8 @@
-/**
- * @license
- * Copyright Google LLC All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
-
 import type { Plugin, PluginBuild } from 'esbuild';
 import { readFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
-import { CssUrl } from './stylesheet-processor';
+import { LoadResultCache, createCachedLoad } from '../load-result-cache';
+import { CssUrl } from '../stylesheet-processor';
 
 const CSS_RESOURCE_NAMESPACE = 'angular:css-resource';
 
@@ -27,7 +20,7 @@ const CSS_RESOURCE_RESOLUTION = Symbol('CSS_RESOURCE_RESOLUTION');
  *
  * @returns An esbuild {@link Plugin} instance.
  */
-export function createCssResourcePlugin(url: CssUrl): Plugin {
+export function createCssResourcePlugin(url: CssUrl, cache?: LoadResultCache): Plugin {
   return {
     name: 'angular-css-resource',
     setup(build: PluginBuild): void {
@@ -101,15 +94,18 @@ export function createCssResourcePlugin(url: CssUrl): Plugin {
         };
       });
 
-      build.onLoad({ filter: /./, namespace: CSS_RESOURCE_NAMESPACE }, async args => {
-        const resourcePath = join(build.initialOptions.absWorkingDir ?? '', args.path);
+      build.onLoad(
+        { filter: /./, namespace: CSS_RESOURCE_NAMESPACE },
+        createCachedLoad(cache, async args => {
+          const resourcePath = join(build.initialOptions.absWorkingDir ?? '', args.path);
 
-        return {
-          contents: await readFile(resourcePath),
-          loader: 'dataurl',
-          watchFiles: [resourcePath],
-        };
-      });
+          return {
+            contents: await readFile(resourcePath),
+            loader: 'dataurl',
+            watchFiles: [resourcePath],
+          };
+        }),
+      );
     },
   };
 }
