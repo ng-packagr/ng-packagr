@@ -1,8 +1,7 @@
 import ora from 'ora';
 import * as path from 'path';
 import ts from 'typescript';
-import { isInProgress } from '../../graph/select';
-import { Transform, transformFromPromise } from '../../graph/transform';
+import { EntryPointTransform, transformEntryPointFromPromise } from '../../graph/entry-point-transform';
 import { compileSourceFiles } from '../../ngc/compile-source-files';
 import { StylesheetProcessor as StylesheetProcessorClass } from '../../styles/stylesheet-processor';
 import { setDependenciesTsConfigPaths } from '../../ts/tsconfig';
@@ -12,24 +11,19 @@ import { NgPackagrOptions } from '../options.di';
 export const compileNgcTransformFactory = (
   StylesheetProcessor: typeof StylesheetProcessorClass,
   options: NgPackagrOptions,
-): Transform => {
-  return transformFromPromise(async graph => {
+): EntryPointTransform => {
+  return transformEntryPointFromPromise(async (entryPoint, graph) => {
     const spinner = ora({
       hideCursor: false,
       discardStdin: false,
     });
 
     const entryPoints: EntryPointNode[] = [];
-    let entryPoint: EntryPointNode;
     let ngPackageNode: PackageNode;
 
     for (const node of graph.values()) {
       if (isEntryPoint(node)) {
         entryPoints.push(node);
-
-        if (isInProgress(node)) {
-          entryPoint = node;
-        }
       } else if (isPackage(node)) {
         ngPackageNode = node;
       }
@@ -62,6 +56,7 @@ export const compileNgcTransformFactory = (
 
       await compileSourceFiles(
         graph,
+        entryPoint,
         tsConfig,
         moduleResolutionCache,
         options,
@@ -83,7 +78,5 @@ export const compileNgcTransformFactory = (
     }
 
     spinner.succeed();
-
-    return graph;
   });
 };

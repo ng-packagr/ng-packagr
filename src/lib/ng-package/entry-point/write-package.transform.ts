@@ -2,14 +2,14 @@ import ora from 'ora';
 import * as path from 'path';
 import { AssetPattern } from '../../../ng-package.schema';
 import { BuildGraph } from '../../graph/build-graph';
+import { transformEntryPointFromPromise } from '../../graph/entry-point-transform';
 import { Node } from '../../graph/node';
-import { transformFromPromise } from '../../graph/transform';
 import { colors } from '../../utils/color';
 import { copyFile, exists, readFile, rmdir, stat, writeFile } from '../../utils/fs';
 import { globFiles } from '../../utils/glob';
 import * as log from '../../utils/log';
 import { ensureUnixPath } from '../../utils/path';
-import { EntryPointNode, PackageNode, fileUrl, isEntryPoint, isEntryPointInProgress, isPackage } from '../nodes';
+import { EntryPointNode, PackageNode, fileUrl, isEntryPoint, isPackage } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 import { NgPackage } from '../package';
 import { NgEntryPoint } from './entry-point';
@@ -17,12 +17,11 @@ import { NgEntryPoint } from './entry-point';
 type CompilationMode = 'partial' | 'full' | undefined;
 
 export const writePackageTransform = (options: NgPackagrOptions) =>
-  transformFromPromise(async graph => {
+  transformEntryPointFromPromise(async (entryPoint, graph) => {
     const spinner = ora({
       hideCursor: false,
       discardStdin: false,
     });
-    const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
     const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
     const ngPackageNode: PackageNode = graph.find(isPackage);
     const ngPackage = ngPackageNode.data;
@@ -102,8 +101,6 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
     }
 
     spinner.succeed(`Built ${ngEntryPoint.moduleId}`);
-
-    return graph;
   });
 
 type AssetEntry = Exclude<AssetPattern, string>;

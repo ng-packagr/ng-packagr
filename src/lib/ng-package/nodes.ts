@@ -1,5 +1,6 @@
 import type { NgtscProgram, ParsedConfiguration, Program } from '@angular/compiler-cli';
 import type { RollupCache } from 'rollup';
+import { Subject } from 'rxjs';
 import ts from 'typescript';
 import { FileCache } from '../file-system/file-cache';
 import { ComplexPredicate } from '../graph/build-graph';
@@ -60,6 +61,9 @@ export type OutputFileCache = Map<string, { version?: string; content: string; m
 
 export class EntryPointNode extends Node {
   readonly type = TYPE_NG_ENTRY_POINT;
+
+  /** Triggers an abortion of current transformations. */
+  public abort$ = new Subject<void>();
 
   constructor(
     public readonly url: string,
