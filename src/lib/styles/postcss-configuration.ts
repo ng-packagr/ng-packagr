@@ -1,5 +1,7 @@
 import { readFileSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { createRequire } from 'node:module';
+import { join, relative } from 'node:path';
+import { warn } from '../utils/log';
 
 export interface PostcssConfiguration {
   plugins: [name: string, options?: object | string][];
@@ -49,6 +51,35 @@ function findFile(searchDirectories: SearchDirectory[], potentialFiles: string[]
 
 export function findTailwindConfiguration(searchDirectories: SearchDirectory[]): string | undefined {
   return findFile(searchDirectories, tailwindConfigFiles);
+}
+
+export function getTailwindConfig(
+  searchDirectories: SearchDirectory[],
+  workspaceRoot: string,
+): { file: string; package: string } | undefined {
+  const tailwindConfigurationPath = findTailwindConfiguration(searchDirectories);
+
+  if (!tailwindConfigurationPath) {
+    return undefined;
+  }
+
+  // Create a node resolver from the configuration file
+  const resolver = createRequire(tailwindConfigurationPath);
+  try {
+    return {
+      file: tailwindConfigurationPath,
+      package: resolver.resolve('tailwindcss'),
+    };
+  } catch {
+    const relativeTailwindConfigPath = relative(workspaceRoot, tailwindConfigurationPath);
+    warn(
+      `Tailwind CSS configuration file found (${relativeTailwindConfigPath})` +
+        ` but the 'tailwindcss' package is not installed.` +
+        ` To enable Tailwind CSS, please install the 'tailwindcss' package.`,
+    );
+  }
+
+  return undefined;
 }
 
 function readPostcssConfiguration(configurationFile: string): RawPostcssConfiguration {

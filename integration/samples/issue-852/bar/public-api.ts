@@ -5,6 +5,7 @@ export const BAR_TOKEN = new InjectionToken<string>('bar-token');
 
 @Directive({
   selector: 'input[Bar]',
+  standalone: false,
 })
 export class BarDirective {
   constructor(@Optional() private _formField: SomeComponent) {}

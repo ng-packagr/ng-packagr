@@ -1,6 +1,7 @@
 import type { CompilerHost, CompilerOptions } from '@angular/compiler-cli';
 import convertSourceMap from 'convert-source-map';
 import { createHash } from 'crypto';
+import { formatMessages } from 'esbuild';
 import assert from 'node:assert';
 import * as path from 'path';
 import ts from 'typescript';
@@ -10,6 +11,7 @@ import { BuildGraph } from '../graph/build-graph';
 import { Node } from '../graph/node';
 import { EntryPointNode, fileUrl } from '../ng-package/nodes';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
+import { error, warn } from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 
 export function cacheCompilerHost(
@@ -22,13 +24,6 @@ export function cacheCompilerHost(
   sourcesFileCache: FileCache = entryPoint.cache.sourcesFileCache,
 ): CompilerHost {
   const compilerHost = ts.createIncrementalCompilerHost(compilerOptions);
-
-  // Set the parsing mode to the same as TS 5.3 default for tsc. This provides a parse
-  // performance improvement by skipping non-type related JSDoc parsing.
-  // NOTE: The check for this enum can be removed when TS 5.3 support is the minimum.
-  if (ts.JSDocParsingMode) {
-    compilerHost.jsDocParsingMode = ts.JSDocParsingMode.ParseForTypeErrors;
-  }
 
   const getNode = (fileName: string) => {
     const nodeUri = fileUrl(ensureUnixPath(fileName));
@@ -205,10 +200,33 @@ export function cacheCompilerHost(
           cache.content = compilerHost.readFile.call(this, fileName);
         } else {
           // stylesheet
-          cache.content = await stylesheetProcessor.process({
-            filePath: fileName,
-            content: compilerHost.readFile.call(this, fileName),
-          });
+          const {
+            referencedFiles,
+            contents,
+            errors: esbuildErrors,
+            warnings: esBuildWarnings,
+          } = await stylesheetProcessor.bundleFile(fileName);
+          const node = getNode(fileName);
+          const depNodes = [...referencedFiles].map(getNode).filter(n => n !== node);
+          node.dependsOn(depNodes);
+
+          for (const n of node.dependees) {
+            if (n.url.endsWith('.ts')) {
+              n.dependsOn(depNodes);
+            }
+          }
+
+          if (esBuildWarnings?.length > 0) {
+            (await formatMessages(esBuildWarnings, { kind: 'warning' })).forEach(msg => warn(msg));
+          }
+
+          if (esbuildErrors?.length > 0) {
+            (await formatMessages(esBuildWarnings, { kind: 'error' })).forEach(msg => error(msg));
+
+            throw new Error(`An error has occuried while processing ${fileName}.`);
+          }
+
+          return contents;
         }
 
         cache.exists = true;
@@ -217,28 +235,39 @@ export function cacheCompilerHost(
       return cache.content;
     },
     transformResource: async (data, context) => {
-      if (context.resourceFile || context.type !== 'style') {
+      const { containingFile, resourceFile, type } = context;
+
+      if (resourceFile || type !== 'style') {
         return null;
       }
 
       if (inlineStyleLanguage) {
-        const key = createHash('sha1').update(data).digest('hex');
-        const fileName = `${context.containingFile}-${key}.${inlineStyleLanguage}`;
-        const cache = sourcesFileCache.getOrCreate(fileName);
-        if (cache.content === undefined) {
-          cache.content = await stylesheetProcessor.process({
-            filePath: fileName,
-            content: data,
-          });
+        const {
+          contents,
+          referencedFiles,
+          errors: esbuildErrors,
+          warnings: esBuildWarnings,
+        } = await stylesheetProcessor.bundleInline(
+          data,
+          containingFile,
+          containingFile.endsWith('.html') ? 'css' : inlineStyleLanguage,
+        );
 
-          const virtualFileNode = getNode(fileName);
-          const containingFileNode = getNode(context.containingFile);
-          virtualFileNode.dependsOn(containingFileNode);
+        const node = getNode(containingFile);
+        node.dependsOn([...referencedFiles].map(getNode));
+
+        if (esBuildWarnings?.length > 0) {
+          (await formatMessages(esBuildWarnings, { kind: 'warning' })).forEach(msg => warn(msg));
         }
 
-        cache.exists = true;
+        if (esbuildErrors?.length > 0) {
+          (await formatMessages(esBuildWarnings, { kind: 'error' })).forEach(msg => error(msg));
 
-        return { content: cache.content };
+          throw new Error(`An error has occuried while processing ${containingFile}.`);
+        }
+
+
+        return { content: contents };
       }
 
       return null;

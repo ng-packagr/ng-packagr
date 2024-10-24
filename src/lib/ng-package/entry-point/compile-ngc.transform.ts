@@ -51,6 +51,7 @@ export const compileNgcTransformFactory = (
         styleIncludePaths,
         sass,
         options.cacheEnabled && options.cacheDirectory,
+        options.watch,
       );
 
       await compileSourceFiles(

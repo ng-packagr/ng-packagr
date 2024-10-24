@@ -7,6 +7,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 const CDK_VERSION_TOKEN = new InjectionToken<Version>('VERSION_TOKEN');
 
 @Component({
+  standalone: false,
   selector: 'app-some-cdk-component',
   template: `
     <div cdkObserveContent></div>

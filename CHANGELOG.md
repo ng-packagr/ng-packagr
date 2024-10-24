@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [19.0.0-next.7](https://github.com/ng-packagr/ng-packagr/compare/19.0.0-next.5...19.0.0-next.7) (2024-10-24)
+
+
+### Features
+
+* add `sass` option ([c85df4f](https://github.com/ng-packagr/ng-packagr/commit/c85df4ff489258a1723a4b8c4ffd78c9ef63c1d5))
+
+
+### Bug Fixes
+
+* overhaul the stylesheet pipeline ([e2dc6e1](https://github.com/ng-packagr/ng-packagr/commit/e2dc6e14665460c4feb0a7feac1ef2f96f280d48)), closes [#1873](https://github.com/ng-packagr/ng-packagr/issues/1873) [#2918](https://github.com/ng-packagr/ng-packagr/issues/2918) [#2660](https://github.com/ng-packagr/ng-packagr/issues/2660) [#2654](https://github.com/ng-packagr/ng-packagr/issues/2654)
+
 ## [19.0.0-next.6](https://github.com/ng-packagr/ng-packagr/compare/19.0.0-next.5...19.0.0-next.6) (2024-10-15)
 * Internal refactors
 ## [19.0.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/19.0.0-next.4...19.0.0-next.5) (2024-10-15)
