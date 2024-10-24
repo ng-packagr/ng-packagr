@@ -93,6 +93,8 @@ export class EntryPointNode extends Node {
   };
 
   data: {
+    /** List of modified files that triggered the rebuild. */
+    modifiedFiles?: Set<string>;
     destinationFiles: DestinationFiles;
     entryPoint: NgEntryPoint;
     tsConfig?: ParsedConfiguration;

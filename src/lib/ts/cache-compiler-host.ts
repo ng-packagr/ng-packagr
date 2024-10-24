@@ -266,7 +266,6 @@ export function cacheCompilerHost(
           throw new Error(`An error has occuried while processing ${containingFile}.`);
         }
 
-
         return { content: contents };
       }
 
@@ -288,4 +287,16 @@ export function augmentProgramWithVersioning(program: ts.Program): void {
 
     return files;
   };
+}
+
+export function invalidateProgramFiles(program: ts.Program, files: Set<string>): void {
+  files.forEach(file => {
+    const source = program.getSourceFile(file) as ts.SourceFile & { version?: string };
+
+    if (source) {
+      source.version = createHash('sha256')
+        .update(source.text + new Date().getTime())
+        .digest('hex');
+    }
+  });
 }

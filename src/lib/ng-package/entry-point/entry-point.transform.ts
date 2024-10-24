@@ -47,5 +47,6 @@ export const entryPointTransformFactory = (
     writePackage,
     transformEntryPointFromPromise(entryPoint => {
       entryPoint.state = STATE_DONE;
+      delete entryPoint.data.modifiedFiles;
     }),
   );

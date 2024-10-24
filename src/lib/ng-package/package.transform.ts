@@ -10,6 +10,7 @@ import {
   finalize,
   from,
   map,
+  mergeMap,
   of as observableOf,
   pipe,
   startWith,
@@ -22,7 +23,7 @@ import {
 import { createFileWatch } from '../file-system/file-watcher';
 import { BuildGraph } from '../graph/build-graph';
 import { EntryPointTransform } from '../graph/entry-point-transform';
-import { STATE_DIRTY, STATE_DONE, STATE_IN_PROGRESS } from '../graph/node';
+import { STATE_DIRTY, STATE_IN_PROGRESS, STATE_PENDING } from '../graph/node';
 import { isInProgress } from '../graph/select';
 import { Transform } from '../graph/transform';
 import { colors } from '../utils/color';
@@ -142,10 +143,9 @@ const watchTransformFactory =
         graph.watcher = watcher;
 
         return onFileChange.pipe(
-          tap(fileChange => {
+          filter(fileChange => {
             const { filePath } = fileChange;
             const { sourcesFileCache } = cache;
-            const cachedSourceFile = sourcesFileCache.get(filePath);
             const uriToClean = [filePath].map(x => fileUrl(ensureUnixPath(x)));
             const nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
 
@@ -167,28 +167,39 @@ const watchTransformFactory =
               sourcesFileCache.delete(fileUrlPath(url));
             }
 
-            const potentialStylesResources = new Set<string>();
+            const dirtyFiles = new Set<string>();
             for (const { url } of allNodesToClean) {
               if (isFileUrl(url)) {
-                potentialStylesResources.add(fileUrlPath(url));
+                dirtyFiles.add(fileUrlPath(url));
               }
             }
 
             for (const entryPoint of graph.filter(isEntryPoint)) {
-              let isDirty = !!entryPoint.cache.stylesheetProcessor.invalidate(potentialStylesResources)?.length;
+              let isDirty = !!entryPoint.cache.stylesheetProcessor?.invalidate(dirtyFiles)?.length;
               isDirty ||= allNodesToClean.some(dependent => entryPoint.dependents.has(dependent));
 
               if (isDirty) {
                 if (isInProgress(entryPoint)) {
                   entryPoint.abort$.next();
                 }
-                entryPoint.state = STATE_DIRTY;
+
+                if (entryPoint.state === STATE_DIRTY) {
+                  return false;
+                }
+
+                if (entryPoint.state !== STATE_PENDING) {
+                  entryPoint.state = STATE_DIRTY;
+                }
+
+                entryPoint.data.modifiedFiles = dirtyFiles;
 
                 for (const url of uriToClean) {
                   entryPoint.cache.analysesSourcesFileCache.delete(fileUrlPath(url));
                 }
               }
             }
+
+            return true;
           }),
           debounceTime(100),
           tap(() => log.msg(FileChangeDetected)),
@@ -196,7 +207,7 @@ const watchTransformFactory =
           map(() => graph),
         );
       }),
-      switchMap(graph => {
+      mergeMap(graph => {
         return observableOf(graph).pipe(
           buildTransformFactory(project, analyseSourcesTransform, entryPointTransform),
           tap(() => log.msg(CompleteWaitingForFileChange)),
@@ -268,7 +279,9 @@ const scheduleEntryPoints = (epTransform: EntryPointTransform): Transform =>
       // Build entry points with lower depth values first.
       return from(groups).pipe(
         map((epUrl: string): EntryPointNode => graph.find(byEntryPoint().and(ep => ep.url === epUrl))),
-        filter((entryPoint: EntryPointNode): boolean => entryPoint.state !== STATE_DONE),
+        filter((entryPoint: EntryPointNode): boolean => entryPoint.state === STATE_DIRTY),
+        // Mark the entry point as 'pending'
+        tap(entryPoint => (entryPoint.state = STATE_PENDING)),
         concatMap(ep =>
           observableOf(ep).pipe(
             // Mark the entry point as 'in-progress'
@@ -281,7 +294,7 @@ const scheduleEntryPoints = (epTransform: EntryPointTransform): Transform =>
               return throwError(() => error);
             }),
             map(() => graph),
-            takeUntil(ep.abort$)
+            takeUntil(ep.abort$),
           ),
         ),
         takeLast(1), // don't use last as sometimes it this will cause 'no elements in sequence',

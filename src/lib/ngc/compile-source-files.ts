@@ -5,7 +5,7 @@ import { BuildGraph } from '../graph/build-graph';
 import { EntryPointNode, PackageNode, isPackage } from '../ng-package/nodes';
 import { NgPackagrOptions } from '../ng-package/options.di';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
-import { augmentProgramWithVersioning, cacheCompilerHost } from '../ts/cache-compiler-host';
+import { augmentProgramWithVersioning, cacheCompilerHost, invalidateProgramFiles } from '../ts/cache-compiler-host';
 import { ngCompilerCli } from '../utils/load-esm';
 import * as log from '../utils/log';
 
@@ -65,6 +65,12 @@ export async function compileSourceFiles(
 
   let builder: ts.BuilderProgram | ts.EmitAndSemanticDiagnosticsBuilderProgram;
   if (watch || cacheDir) {
+    // Ensure that the version of the files that were touched don't match the ones from the old builder
+    // This allows the files to be detected as "affected" and get typechecked correctly
+    if (entryPoint.data.modifiedFiles && oldBuilder) {
+      invalidateProgramFiles(typeScriptProgram, entryPoint.data.modifiedFiles);
+    }
+
     builder = cache.oldBuilder = ts.createEmitAndSemanticDiagnosticsBuilderProgram(
       typeScriptProgram,
       tsCompilerHost,

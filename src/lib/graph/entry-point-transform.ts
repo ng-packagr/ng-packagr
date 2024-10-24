@@ -18,7 +18,10 @@ export interface EntryPointTransform extends MonoTypeOperatorFunction<EntryPoint
 }
 
 export interface PromiseBasedEntryPointTransform {
-  (entryPoint: EntryPointNode, graph: BuildGraph): Promise<EntryPointTransformData | void> | EntryPointTransformData | void;
+  (
+    entryPoint: EntryPointNode,
+    graph: BuildGraph,
+  ): Promise<EntryPointTransformData | void> | EntryPointTransformData | void;
 }
 
 export const transformEntryPointFromPromise = (transformFn: PromiseBasedEntryPointTransform): EntryPointTransform =>

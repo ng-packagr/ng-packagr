@@ -1,5 +1,5 @@
-import { FactoryProvider, InjectionToken } from "injection-js";
-import { EntryPointTransform } from "./entry-point-transform";
+import { FactoryProvider, InjectionToken } from 'injection-js';
+import { EntryPointTransform } from './entry-point-transform';
 
 /**
  * A specialized `FactoryProvider` for a `EntryPointTransform`.
