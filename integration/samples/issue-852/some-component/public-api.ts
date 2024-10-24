@@ -1,6 +1,7 @@
 import { Component, NgModule } from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'some-component',
   template: '',
 })

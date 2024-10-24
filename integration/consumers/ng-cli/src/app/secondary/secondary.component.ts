@@ -4,6 +4,7 @@ import { SHARED_FEATURE } from '@sample/secondary/shared';
 export const YEAH_I_AM_RUNNING_IN_A_LOOP_FAST = [SHARED_FEATURE];
 
 @Component({
+  standalone: false,
   selector: 'app-secondary',
   template: `
     <ul>
