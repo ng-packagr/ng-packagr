@@ -1,6 +1,7 @@
 import { Component, ContentChild, ElementRef } from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'custom-foo-bar',
   templateUrl: './foo-bar.component.html',
 })
