@@ -149,7 +149,9 @@ const watchTransformFactory =
               ...nodesToClean,
               // if a non ts file changes we need to clean up its direct dependees
               // this is mainly done for resources such as html and css
-              ...nodesToClean.filter(node => !node.url.endsWith('.ts')).flatMap(node => [...node.dependees]),
+              ...nodesToClean
+                .filter(node => !node.url.endsWith('.ts'))
+                .flatMap(node => [...node.dependees].filter(dependee => dependee.url.endsWith('.ts'))),
             ];
 
             // delete node that changes

@@ -266,7 +266,6 @@ export function cacheCompilerHost(
           throw new Error(`An error has occuried while processing ${containingFile}.`);
         }
 
-
         return { content: contents };
       }
 

@@ -17,6 +17,30 @@ describe('intra-dependent', () => {
     harness.expectDtsToMatch('src/primary.component', /count: number/);
   });
 
+  it('should always fail when there are errors in the template.', async () => {
+    harness.copyTestCase('primary-with-template');
+    await new Promise<void>((resolve) => harness.onComplete(() => resolve()));
+
+    harness.copyTestCase(`multi-save/primary-invalid-template`);
+    for(let i = 2; i >= 0; i--) {
+      harness.reSaveSrcFile('src/primary.component.html');
+      await new Promise<void>((resolve) => harness.onFailure(() => resolve()));
+    }
+
+    harness.copyTestCase('valid');
+  });
+
+  it('should always fail when there are errors in the component.', async () => {
+    harness.copyTestCase('primary-with-template');
+    await new Promise<void>((resolve) => harness.onComplete(() => resolve()));
+    
+    harness.copyTestCase(`multi-save/primary-invalid-component`);
+    const error = await new Promise<Error>((resolve) => harness.onFailure((err) => resolve(err)));
+    expect(error.message).to.match(/Can\'t bind to \'count\' since it isn\'t a known property/);
+
+    harness.copyTestCase('valid');
+  });
+
   it('should fail when introducing a circular import.', done => {
     harness.copyTestCase('circular');
 
