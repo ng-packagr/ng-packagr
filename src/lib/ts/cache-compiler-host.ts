@@ -60,11 +60,19 @@ export function cacheCompilerHost(
       return cache.exists;
     },
 
-    getSourceFile: (fileName: string, languageVersion: ts.ScriptTarget) => {
+    getSourceFile: (fileName, languageVersion, onError, shouldCreateNewSourceFile, ...parameters) => {
       addDependee(fileName);
       const cache = sourcesFileCache.getOrCreate(fileName);
-      if (!cache.sourceFile) {
-        cache.sourceFile = compilerHost.getSourceFile.call(this, fileName, languageVersion);
+
+      if (shouldCreateNewSourceFile || !cache.sourceFile) {
+        cache.sourceFile = compilerHost.getSourceFile.call(
+          this,
+          fileName,
+          languageVersion,
+          onError,
+          true,
+          ...parameters,
+        );
       }
 
       return cache.sourceFile;
