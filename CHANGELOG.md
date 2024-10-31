@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [19.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/19.0.0-next.7...19.0.0-rc.0) (2024-10-31)
+
 ## [19.0.0-next.7](https://github.com/ng-packagr/ng-packagr/compare/19.0.0-next.5...19.0.0-next.7) (2024-10-24)
 
 
