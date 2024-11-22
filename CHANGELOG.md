@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [19.0.1](https://github.com/ng-packagr/ng-packagr/compare/19.0.0...19.0.1) (2024-11-22)
+
+
+### Bug Fixes
+
+* correctly show stylesheet processing errors ([4d66246](https://github.com/ng-packagr/ng-packagr/commit/4d66246ef67623e8adc3fa422d7ff68b95140207))
+
 ## [19.0.0](https://github.com/ng-packagr/ng-packagr/compare/18.2.1...19.0.0) (2024-11-19)
 
 
