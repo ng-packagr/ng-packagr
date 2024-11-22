@@ -229,7 +229,7 @@ export function cacheCompilerHost(
           }
 
           if (esbuildErrors?.length > 0) {
-            (await formatMessages(esBuildWarnings, { kind: 'error' })).forEach(msg => error(msg));
+            (await formatMessages(esbuildErrors, { kind: 'error' })).forEach(msg => error(msg));
 
             throw new Error(`An error has occuried while processing ${fileName}.`);
           }
@@ -269,11 +269,10 @@ export function cacheCompilerHost(
         }
 
         if (esbuildErrors?.length > 0) {
-          (await formatMessages(esBuildWarnings, { kind: 'error' })).forEach(msg => error(msg));
+          (await formatMessages(esbuildErrors, { kind: 'error' })).forEach(msg => error(msg));
 
           throw new Error(`An error has occuried while processing ${containingFile}.`);
         }
-
 
         return { content: contents };
       }
