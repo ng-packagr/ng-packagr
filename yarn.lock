@@ -15,26 +15,26 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@angular/cdk@~19.0.0-next.0":
-  version "19.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-19.0.0.tgz#ef1d0baa821d1f56d2f36bb69a76550338197341"
-  integrity sha512-KcOYhCwN4Bw3L4+W4ymTfPGqRjrkwD8M5jX8GM7YsZ5DsX9OEd/gNrwRvjn+8JItzimXLXdGrcqXrMTxkq7QPA==
+"@angular/cdk@~19.1.0-next.0":
+  version "19.1.0-next.0"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-19.1.0-next.0.tgz#fbcfa411171caa4fe81cf96900cfd0ffd5ee57b0"
+  integrity sha512-2WNr+i5QlaQiq6iu0y5+eRdG7DFe7NxlGtk/VKpHzvEzpoPXDwlqi3UpRQxIGkVR6+twNO+bdWpIOub/bis+LQ==
   dependencies:
     tslib "^2.3.0"
   optionalDependencies:
     parse5 "^7.1.2"
 
-"@angular/common@~19.0.0-next.0":
-  version "19.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/common/-/common-19.0.0.tgz#d1ef6cb9ef91fb52d88e640696610d62f63f4698"
-  integrity sha512-kb2iS26GZS0vyR3emAQbIiQifnK5M5vnbclEHni+pApDEU5V9FufbdRP3vCxs28UHZvAZKB0LrxkTrnT6T+z5g==
+"@angular/common@~19.1.0-next.0":
+  version "19.1.0-next.0"
+  resolved "https://registry.yarnpkg.com/@angular/common/-/common-19.1.0-next.0.tgz#8608c148a2c1d6db3437ab07b343b718c6b57d20"
+  integrity sha512-CiBL2qJ5hYAuIwjJ/jzBM8J+5SRktzetd8DHKKPgsZsU4xIvaKLfF+lDBWBMIewNJwyUdL517RJRzzRcd7NzFg==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/compiler-cli@~19.0.0-next.0":
-  version "19.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-19.0.0.tgz#b06bae640841cf8150e55b9ad0a5d83af2b317bb"
-  integrity sha512-2PxpsIeppoDLAx7A6i0GE10WjC+Fkz8tTQioa7r4y/+eYnniEjJFIQM/8lbkOnRVcuYoeXoNyYWr3fEQAyO4LA==
+"@angular/compiler-cli@~19.1.0-next.0":
+  version "19.1.0-next.0"
+  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-19.1.0-next.0.tgz#cb9226c5d5fc8dfaa340c6f1be0a82dd39cf9c8f"
+  integrity sha512-vr4ZBImO+1fIbm+X6Mvfutje7Aw5gNOykkTYnTOroguB4lCUsG/xqdQHVpJXE+B56pg/uXqWMyF8SD3MZhEp5g==
   dependencies:
     "@babel/core" "7.26.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
@@ -45,38 +45,38 @@
     tslib "^2.3.0"
     yargs "^17.2.1"
 
-"@angular/compiler@~19.0.0-next.0":
-  version "19.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-19.0.0.tgz#6a9d03b639d9c2e89b31581e7976e99bae1cad27"
-  integrity sha512-Uw2Yy25pdqfzKsS9WofnIq1zvknlVYyy03LYO7NMKHlFWiy8q8SIXN7WKPFhiHlOfyACXipp4eZb9m3+IbOfSA==
+"@angular/compiler@~19.1.0-next.0":
+  version "19.1.0-next.0"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-19.1.0-next.0.tgz#0711ae78aecc4deaede5fb788a66da81cc31eeaf"
+  integrity sha512-IJWMyzchAbvaeGLJlLhQpEzjQOsge4/hWs1ONzW98AzqeTtO3L7Bx9hch45egqX/UvrOhQKCYj6YaNJwmN/j3Q==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/core@~19.0.0-next.0":
-  version "19.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-19.0.0.tgz#ba977b5b436b89acb31d204b26622c533334139c"
-  integrity sha512-aNG2kd30BOM/zf0jC+aEVG8OA27IwqCki9EkmyRNYnaP2O5Mj1n7JpCyZGI+0LrWTJ2UUCfRNZiZdZwmNThr1Q==
+"@angular/core@~19.1.0-next.0":
+  version "19.1.0-next.0"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-19.1.0-next.0.tgz#e0d0b5bf8fe7367ac7be6b55bf4d2a41c1bc781f"
+  integrity sha512-EyFu4Jki1QCzn/jqEoOZokwRyYyR4HABxbJIkxdiXVv/UaCYCZIRwCOjNAD0kmmFU0btm5UVJtoXSrTo3mQBBg==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/material@~19.0.0-next.0":
-  version "19.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/material/-/material-19.0.0.tgz#c6e8a58e2f09f0267bc095da1defe38aebcc0c8b"
-  integrity sha512-j7dDFUh8dqiysuWu32biukDTHScajUYHFR9Srhn98kBwnXMob5y1paMoOx5RQO5DU4KCxKaKx8HcHJBJeTKHjw==
+"@angular/material@~19.1.0-next.0":
+  version "19.1.0-next.0"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-19.1.0-next.0.tgz#09f0c0af652af5295323c4534821afad5831dbfc"
+  integrity sha512-ZpzE2Onnvu0elilFUNzHIMSN+rshayloPFCTkSfuVs2TL1twkegf0puKdjISKbnCeajd/ojC+/LnBhb8gkHZpQ==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/platform-browser@~19.0.0-next.0":
-  version "19.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-19.0.0.tgz#217935da8119438e5de51c0bd5a1d6c66f3ebe8c"
-  integrity sha512-g9Qkv+KgEmXLVeg+dw1edmWsRBspUGeJMOBf2UX1kUCw6txeco+pzCMimouB5LQYHfs6cD6oC+FwINm0HNwrhg==
+"@angular/platform-browser@~19.1.0-next.0":
+  version "19.1.0-next.0"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-19.1.0-next.0.tgz#a5610a69cde8fe0afd41d64950594085faf0ecfd"
+  integrity sha512-SquzOLqNdAcW6ugLApMBMeGEjHGgVsua/jEYsKqVWSCG+kLm8I1pwVJDUWP/B4GnBK0P/38fsL9PPzY5gjpohA==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/router@~19.0.0-next.0":
-  version "19.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/router/-/router-19.0.0.tgz#49eed476d74eab0ed2b7111311bd707b72bde3bd"
-  integrity sha512-uFyT8DWVLGY8k0AZjpK7iyMO/WwT4/+b09Ax0uUEbdcRxTXSOg8/U/AVzQWtxzxI80/vJE2WZMmhIJFUTYwhKA==
+"@angular/router@~19.1.0-next.0":
+  version "19.1.0-next.0"
+  resolved "https://registry.yarnpkg.com/@angular/router/-/router-19.1.0-next.0.tgz#d6a24da6b40cde5b26152a8bd89ca3c9be38dd79"
+  integrity sha512-ijnBqLcvqA5JmBFN4hM8r9DzkjRRtU77l+gPK9qCOurhVnh1bHAZBTO/idNjXTFEgz+qd9Pa9/uAKBFssdOQwA==
   dependencies:
     tslib "^2.3.0"
 
@@ -4901,10 +4901,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typescript@5.6.3:
-  version "5.6.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.6.3.tgz#5f3449e31c9d94febb17de03cc081dd56d81db5b"
-  integrity sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==
+typescript@5.7.2:
+  version "5.7.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.7.2.tgz#3169cf8c4c8a828cde53ba9ecb3d2b1d5dd67be6"
+  integrity sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==
 
 uglify-js@^3.1.4:
   version "3.19.3"
