@@ -51,6 +51,8 @@ export function cacheCompilerHost(
     ...compilerHost,
 
     // ts specific
+    getModuleResolutionCache: () => moduleResolutionCache,
+
     fileExists: (fileName: string) => {
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.exists === undefined) {
