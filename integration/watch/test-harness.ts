@@ -48,11 +48,17 @@ export class TestHarness {
     return isJson ? fs.readJsonSync(file) : fs.readFileSync(file, { encoding: 'utf-8' });
   }
 
+  reSaveSrcFile(filePath: string) {
+    const file = path.join(this.testTempPath, filePath);
+    const content = fs.readFileSync(file, { encoding: 'utf-8' });
+    fs.writeFileSync(file, content, { encoding: 'utf-8' })
+  }
+
   /**
    * Copy a test case to it's temporary destination immediately.
    */
   copyTestCase(caseName: string) {
-    fs.copySync(path.join(this.testSrc, 'test_files', caseName), this.testTempPath);
+    fs.copySync(path.join(this.testSrc, 'test_files', caseName), this.testTempPath, { overwrite: true });
   }
 
   expectFesm2022ToMatch(fileName: string, regexp: RegExp): Chai.Assertion {
