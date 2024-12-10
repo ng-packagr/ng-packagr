@@ -1,15 +1,15 @@
 import { expect } from 'chai';
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 import { TestHarness } from './test-harness';
 
 describe('intra-dependent', () => {
   const harness = new TestHarness('intra-dependent');
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     await harness.initialize();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     harness.dispose();
   });
 
@@ -17,22 +17,20 @@ describe('intra-dependent', () => {
     harness.expectDtsToMatch('src/primary.component', /count: number/);
   });
 
-  it('should fail when introducing a circular import.', done => {
-    harness.copyTestCase('circular');
-
-    harness.onFailure(error => {
-      expect(error.message).to.contain('Entry point intra-dependent has a circular dependency on itself.');
-      harness.copyTestCase('valid');
-      done();
-    });
-  });
-
   it('should throw error component inputs is changed without updating usages', done => {
     harness.copyTestCase('invalid-component-property');
 
     harness.onFailure(error => {
       expect(error.message).to.match(/Can\'t bind to \'count\' since it isn\'t a known property/);
-      harness.copyTestCase('valid');
+      done();
+    });
+  });
+
+  it('should fail when introducing a circular import.', done => {
+    harness.copyTestCase('circular');
+
+    harness.onFailure(error => {
+      expect(error.message).to.contain('Entry point intra-dependent has a circular dependency on itself.');
       done();
     });
   });
@@ -42,7 +40,6 @@ describe('intra-dependent', () => {
 
     harness.onFailure(error => {
       expect(error.message).to.match(/Property \'initialize\' does not exist on type \'PrimaryAngularService\'/);
-      harness.copyTestCase('valid');
       done();
     });
   });
@@ -64,5 +61,42 @@ describe('intra-dependent', () => {
       expect(fs.statSync(thirdFesmPath).mtimeMs).to.equals(thirdModifiedTime);
       done();
     });
+  });
+
+  it('should always fail when there are errors in the template.', async () => {
+    harness.copyTestCase('valid-with-template');
+    await new Promise<void>(resolve => harness.onComplete(() => resolve()));
+
+    harness.copyTestCase(`multi-save/primary-invalid-template`);
+
+    for (let i = 2; i >= 0; i--) {
+      harness.reSaveSrcFile('src/primary.component.html');
+      await new Promise<void>(resolve =>
+        harness.onFailure(error => {
+          expect(error.message).to.match(
+            /Property \'count1\' does not exist on type \'PrimaryAngularComponent\'. Did you mean 'count'/,
+          );
+          resolve();
+        }),
+      );
+    }
+  });
+
+  it('should always fail when there are errors in the component.', async () => {
+    harness.copyTestCase('valid-with-template');
+    await new Promise<void>(resolve => harness.onComplete(() => resolve()));
+
+    harness.copyTestCase(`multi-save/primary-invalid-component`);
+
+    for (let i = 2; i >= 0; i--) {
+      harness.reSaveSrcFile('src/primary.component.html');
+      await new Promise<void>(resolve =>
+        harness.onFailure(error => {
+          expect(error.message).to.match(/Property \'count\' does not exist on type \'PrimaryAngularComponent\'./);
+
+          resolve();
+        }),
+      );
+    }
   });
 });

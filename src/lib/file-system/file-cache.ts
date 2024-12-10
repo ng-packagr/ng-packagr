@@ -6,7 +6,6 @@ export interface CacheEntry {
   sourceFile?: ts.SourceFile;
   content?: string;
   declarationFileName?: string;
-  angularDiagnostics?: ts.Diagnostic[];
 }
 
 export class FileCache {
@@ -46,15 +45,5 @@ export class FileCache {
     }
 
     return entry;
-  }
-
-  updateAngularDiagnostics(sourceFile: ts.SourceFile, diagnostics: ts.Diagnostic[]): void {
-    if (this.has(sourceFile.fileName)) {
-      this.get(sourceFile.fileName).angularDiagnostics = diagnostics;
-    }
-  }
-
-  getAngularDiagnostics(sourceFile: ts.SourceFile): ts.Diagnostic[] | undefined {
-    return this.get(sourceFile.fileName)?.angularDiagnostics;
   }
 }
