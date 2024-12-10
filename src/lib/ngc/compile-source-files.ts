@@ -43,7 +43,6 @@ export async function compileSourceFiles(
   );
 
   const cache = entryPoint.cache;
-  const sourceFileCache = cache.sourcesFileCache;
   let usingBuildInfo = false;
 
   let oldBuilder = cache.oldBuilder;
@@ -141,6 +140,7 @@ export async function compileSourceFiles(
   await angularCompiler.analyzeAsync();
 
   // Collect source file specific diagnostics
+  const angularDiagnosticCache = cache.angularDiagnosticCache;
   for (const sourceFile of builder.getSourceFiles()) {
     if (ignoreForDiagnostics.has(sourceFile)) {
       continue;
@@ -165,9 +165,10 @@ export async function compileSourceFiles(
         affectedFiles.size === 1 ? /** OptimizeFor.SingleFile **/ 0 : /** OptimizeFor.WholeProgram */ 1,
       );
 
-      allDiagnostics.push(...angularDiagnostics);
-      sourceFileCache.updateAngularDiagnostics(sourceFile, angularDiagnostics);
+      angularDiagnosticCache.update(sourceFile, angularDiagnostics);
     }
+
+    allDiagnostics.push(...angularDiagnosticCache.get(sourceFile));
   }
 
   const otherDiagnostics = [];

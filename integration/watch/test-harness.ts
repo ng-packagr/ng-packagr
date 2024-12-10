@@ -48,6 +48,11 @@ export class TestHarness {
     return isJson ? fs.readJsonSync(file) : fs.readFileSync(file, { encoding: 'utf-8' });
   }
 
+  reSaveSrcFile(filePath: string): void {
+    const file = path.join(this.testTempPath, filePath);
+    fs.writeFileSync(file, fs.readFileSync(file));
+  }
+
   /**
    * Copy a test case to it's temporary destination immediately.
    */

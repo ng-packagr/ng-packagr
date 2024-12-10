@@ -5,6 +5,7 @@ import { FileCache } from '../file-system/file-cache';
 import { ComplexPredicate } from '../graph/build-graph';
 import { Node } from '../graph/node';
 import { by, isDirty, isInProgress } from '../graph/select';
+import { AngularDiagnosticsCache } from '../ngc/angular-diagnostics-cache';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { DestinationFiles, NgEntryPoint } from './entry-point/entry-point';
 import { NgPackage } from './package';
@@ -73,6 +74,7 @@ export class EntryPointNode extends Node {
       analysesSourcesFileCache: new FileCache(),
       moduleResolutionCache,
       outputCache: new Map(),
+      angularDiagnosticCache: new AngularDiagnosticsCache(),
     };
   }
 
@@ -86,6 +88,7 @@ export class EntryPointNode extends Node {
     stylesheetProcessor?: StylesheetProcessor;
     oldNgtscProgram?: NgtscProgram;
     oldBuilder?: ts.EmitAndSemanticDiagnosticsBuilderProgram;
+    angularDiagnosticCache: AngularDiagnosticsCache;
   };
 
   data: {
