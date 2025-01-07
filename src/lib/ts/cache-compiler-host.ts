@@ -50,6 +50,10 @@ export function cacheCompilerHost(
   return {
     ...compilerHost,
 
+    // Set the parsing mode to the same as TS 5.3+ default for tsc. This provides a parse
+    // performance improvement by skipping non-type related JSDoc parsing.
+    jsDocParsingMode: ts.JSDocParsingMode.ParseForTypeErrors,
+
     // ts specific
     getModuleResolutionCache: () => moduleResolutionCache,
 
