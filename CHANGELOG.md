@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [19.1.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/19.1.0-next.2...19.1.0-next.3) (2025-01-07)
 
+### Bug Fixes
+
+* Re-use module resolution cache.
+
 ## [19.1.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/19.1.0-next.1...19.1.0-next.2) (2024-11-29)
 
 ## [19.1.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/19.1.0-next.0...19.1.0-next.1) (2024-11-29)
