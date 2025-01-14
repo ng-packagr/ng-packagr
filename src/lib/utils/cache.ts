@@ -73,5 +73,5 @@ export async function saveCacheEntry(cachePath: string, key: string, content: an
 
   const data = JSON.stringify(content, (_key, value) => (typeof value === 'bigint' ? `%BigInt(${value})` : value));
 
-  await writeFile(filePath, data, 'utf8');
+  return writeFile(filePath, data, 'utf8');
 }
