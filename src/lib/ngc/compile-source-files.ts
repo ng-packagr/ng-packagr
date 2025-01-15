@@ -147,9 +147,11 @@ export async function compileSourceFiles(
     }
 
     allDiagnostics.push(
-      ...builder.getDeclarationDiagnostics(sourceFile),
       ...builder.getSyntacticDiagnostics(sourceFile),
       ...builder.getSemanticDiagnostics(sourceFile),
+      // We use the `typeScriptProgram` instead of `builder` here as a
+      // performance workaround for: https://github.com/microsoft/TypeScript/issues/60970
+      ...typeScriptProgram.getDeclarationDiagnostics(sourceFile),
     );
 
     // Declaration files cannot have template diagnostics
