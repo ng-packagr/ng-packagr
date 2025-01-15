@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [19.1.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/19.1.0-next.3...19.1.0-next.4) (2025-01-15)
+
+
+### Performance
+
+* mitigate TypeScript 5.6+ performance regression ([ac9766e](https://github.com/ng-packagr/ng-packagr/commit/ac9766eb1edbdc98d8173a3b0576d246109283c5)), closes [#2969](https://github.com/ng-packagr/ng-packagr/issues/2969)
+
 ## [19.1.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/19.1.0-next.2...19.1.0-next.3) (2025-01-07)
 
 ### Bug Fixes
