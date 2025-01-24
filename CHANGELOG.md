@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [19.1.1](https://github.com/ng-packagr/ng-packagr/compare/19.1.0...19.1.1) (2025-01-24)
+
+
+### Bug Fixes
+
+* disable TypeScript `removeComments` option ([f0415dd](https://github.com/ng-packagr/ng-packagr/commit/f0415ddb2ffe9d87fd6c71811f296079d12749b7))
+
 ## [19.1.0](https://github.com/ng-packagr/ng-packagr/compare/19.1.0-next.4...19.1.0) (2025-01-15)
 
 ### Features
