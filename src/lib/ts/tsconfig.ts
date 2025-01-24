@@ -22,6 +22,10 @@ async function readDefaultTsConfig(fileName = defaultTsConfigPath): Promise<Pars
     outDir: '',
     declaration: true,
 
+    // Disable removing of comments as TS is quite aggressive with these and can
+    // remove important annotations, such as /* @__PURE__ */
+    removeComments: false,
+
     // ng compiler
     enableResourceInlining: true,
 
