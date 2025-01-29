@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [19.2.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/19.2.0-next.0...19.2.0-next.1) (2025-01-29)
+
+
+### Bug Fixes
+
+* add `tailwindcss` version 4 as a valid peer dependency ([16561cd](https://github.com/ng-packagr/ng-packagr/commit/16561cdca05509a8a59c1b892f1f2690e26e1b14))
+
 ## [19.2.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/19.1.1...19.2.0-next.0) (2025-01-24)
 
 ### [19.1.1](https://github.com/ng-packagr/ng-packagr/compare/19.1.0...19.1.1) (2025-01-24)
