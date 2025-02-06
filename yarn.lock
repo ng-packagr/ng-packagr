@@ -15,26 +15,26 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@angular/cdk@~19.1.0-next.0":
-  version "19.1.1"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-19.1.1.tgz#4088b8495611a1c5c7f06b5cabbfaa00d96eb261"
-  integrity sha512-MmfNB9iANuDN1TS+HL8uKqA3/7pdVeCRN+HdAcfqFrcqZmSUUSlYWy8PXqymmyeXxoSwt9p4I/6R0By03VoCMw==
+"@angular/cdk@~19.2.0-next.2":
+  version "19.2.0-next.3"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-19.2.0-next.3.tgz#48312a5b6251ca1a6cd2ea1c70e2ea4f5d4c705f"
+  integrity sha512-X6rU+udh1Zja1T7QMefv43NHryQxAoRm6ZADqouEF1SKAHGiwFDRRY48rlWDmrQzvBC+tmWxkPkvDNTkL2FA0w==
   dependencies:
     tslib "^2.3.0"
   optionalDependencies:
     parse5 "^7.1.2"
 
-"@angular/common@~19.1.0-next.0":
-  version "19.1.3"
-  resolved "https://registry.yarnpkg.com/@angular/common/-/common-19.1.3.tgz#6b21830ede0b1ed8132d3c3871a673a1886505c9"
-  integrity sha512-r1P0W6FKrON83szIJboF8z6UNCVL4HIxyD+nhmHMMT/iJpu4kDHVugaN/+w2jYLb4oelAJK5xzkzA+1IaHpzLg==
+"@angular/common@~19.2.0-next.2":
+  version "19.2.0-next.2"
+  resolved "https://registry.yarnpkg.com/@angular/common/-/common-19.2.0-next.2.tgz#fd8ccfbe24309fd2c840b34d460c23074774aced"
+  integrity sha512-aaTcSVXyPcYYGBivfeGbQuaUM9MWpDWcWDpBqSDUID8j8n38tDdmMx09i5Atl8KB5w1g2DYDNoq6OyyeD7xNUw==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/compiler-cli@~19.1.0-next.0":
-  version "19.1.3"
-  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-19.1.3.tgz#df250faeb527e9b133f9a1cc447ab3cd4cffc94a"
-  integrity sha512-nDBvZenQECcr9CClmTp3iJNilRQ6oDKFgBkhlWffEFBx0Z6kBA36MXKKLuCkf31D+NGmt5VJlAkl8Ax8BJ9qJw==
+"@angular/compiler-cli@~19.2.0-next.2":
+  version "19.2.0-next.2"
+  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-19.2.0-next.2.tgz#6b7e318f4fd026208aebb468eb04bfec5ad23ed6"
+  integrity sha512-Yt592vMX145G1nfqU6Ao1COGqz3FVAua6hwjpjgkQxXSI3FV+sUkAXepjnCPEqvd1097sLyiMyUEcd3jp4IfYA==
   dependencies:
     "@babel/core" "7.26.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
@@ -45,38 +45,38 @@
     tslib "^2.3.0"
     yargs "^17.2.1"
 
-"@angular/compiler@~19.1.0-next.0":
-  version "19.1.3"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-19.1.3.tgz#79689c3fe937da2a203e12865fa04b576990d3a9"
-  integrity sha512-omX5Gyt3zlJVTUteO2YxsqYWtAIpkvs8kRYSUsLTi79V1gbGo+J1TawFuyBTrWxj4UtTGvwmDgZxiCIwMtP5KQ==
+"@angular/compiler@~19.2.0-next.2":
+  version "19.2.0-next.2"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-19.2.0-next.2.tgz#8f0e05c19c9b28cedc81702c627513a0d06fb0db"
+  integrity sha512-Cjf1Frm23OmdpPjhuiP+2BXJRdpd48hrg2GaOmyWjjWumI4AtxvYUKNC2CHx79Poqw9kqtcTGfACUnSs5BsUSw==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/core@~19.1.0-next.0":
-  version "19.1.3"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-19.1.3.tgz#9a4ebb2689e84e1e234d6e0e9da2edd0b2392a09"
-  integrity sha512-Hh1eHvi+y+gsTRODiEEEWnRj5zqv9WNoou1KmQ1mv1NTOf0Pv61Hg9P2rBWDr0mPIXFSzqUKjyzW30BgdQ+AEA==
+"@angular/core@~19.2.0-next.2":
+  version "19.2.0-next.2"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-19.2.0-next.2.tgz#13da9cad8be871e47f61f0b61a59e551689c9d90"
+  integrity sha512-jRCMZumbCfLHWM1PEtcJArge9b/MMFnes9HjHTqJgGeex+33vPYA6Kh8kj598yrArXrz8hq+kDR7iiglEM6XeA==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/material@~19.1.0-next.0":
-  version "19.1.1"
-  resolved "https://registry.yarnpkg.com/@angular/material/-/material-19.1.1.tgz#f1829eb09bedbfdf2181f7ff033e358fe6a584be"
-  integrity sha512-x/EwyBx3yCIYyu/hve19eecmufJzwltRWOO/3Y74jY4jSNNFrR9046t0ptw4fyEXjN8UQZI6Fp/melcZxl3IiA==
+"@angular/material@~19.2.0-next.2":
+  version "19.2.0-next.3"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-19.2.0-next.3.tgz#0c261e21175e7a69bb155ccb871bdfc0f27cfb42"
+  integrity sha512-59h2o21uosKuh3pnF3uzzMKlvXQR/3SKliAnBWVHt9qHVLKTD0cHdcFQ0ey8/KtGAIUkoeQQpxwSyRo0NtvCYw==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/platform-browser@~19.1.0-next.0":
-  version "19.1.3"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-19.1.3.tgz#768e83918e5ade876930ce3d2b89e21e704f0844"
-  integrity sha512-bLgnM2hRyzUdoWRoUhe+IMenlr74EvrgwyG7anJ27bjg5PcvhQPXrGqU0hri5yPDb9SHVJZminr7OjNCN8QJkQ==
+"@angular/platform-browser@~19.2.0-next.2":
+  version "19.2.0-next.2"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-19.2.0-next.2.tgz#235de19372c6fa3f738a129922e45cd56c4e1def"
+  integrity sha512-DFj2QX373NAK1lnJByuXoTLsYfXyA32M7TcQ0FsoIIywoLP5Gjs7Kho6B9o2zL5HPel/q0qWyRlTodkTNkNl5A==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/router@~19.1.0-next.0":
-  version "19.1.3"
-  resolved "https://registry.yarnpkg.com/@angular/router/-/router-19.1.3.tgz#4429fad5540086e083be302203c5c68400fd9a75"
-  integrity sha512-DJ9BgvtxJV6xohaPQXPdBsFCZoQIEq2OPDyKcoW4L0ST4kIIFpHyI6wJ+AlPnLkhSwmOOoHciH0oxZ2xPVxmiQ==
+"@angular/router@~19.2.0-next.2":
+  version "19.2.0-next.2"
+  resolved "https://registry.yarnpkg.com/@angular/router/-/router-19.2.0-next.2.tgz#b0e59f85fe7806350b3dce7df42804b82a833a28"
+  integrity sha512-Nyi8sUFz2y58c0UMgHkmrbh8yTSesidOuM5Xi4XnoTJrN2BEPlsGY6X0LWxAkmSqzrtdOvXuTrsE4Ywo/AeKvQ==
   dependencies:
     tslib "^2.3.0"
 
@@ -5039,10 +5039,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typescript@5.7.3:
-  version "5.7.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.7.3.tgz#919b44a7dbb8583a9b856d162be24a54bf80073e"
-  integrity sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==
+typescript@5.8.0-beta:
+  version "5.8.0-beta"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.8.0-beta.tgz#ba16fac5715be6540d01f0a9778f5eab7ae2ec61"
+  integrity sha512-7VGUiBOGi+BYhiuy3iITIgu6m2wVW2Vb4CW+OJsW6OJS/TgvezKbAN3WBfiSErE8QOLdce0ilm6VANMkzNWW1A==
 
 uglify-js@^3.1.4:
   version "3.19.3"
