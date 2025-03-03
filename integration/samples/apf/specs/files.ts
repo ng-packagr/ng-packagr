@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as path from 'path';
-import { sync } from 'fast-glob';
+import { globSync } from 'tinyglobby';
 import * as fs from 'fs';
 
 describe('@sample/apf', () => {
@@ -13,7 +13,7 @@ describe('@sample/apf', () => {
     it('should contain a total of 32 files', () => {
       // this is a safe guard / alternative to snapshots in order to
       // protect ourselves from doing a change that will emit unexpected files.
-      const files = sync('**/*', { cwd: DIST });
+      const files = globSync('**/*', { cwd: DIST });
       expect(files.length).to.equals(32);
     });
 
@@ -40,11 +40,11 @@ describe('@sample/apf', () => {
 
   describe('FESM2022', () => {
     it(`should contain 4 '.mjs.map' files`, () => {
-      expect(sync(`fesm2022/**/*.mjs.map`, { cwd: DIST }).length).equal(4);
+      expect(globSync(`fesm2022/**/*.mjs.map`, { cwd: DIST }).length).equal(4);
     });
 
     it(`should contain 4 '.mjs' files`, () => {
-      expect(sync(`fesm2022/**/*.mjs`, { cwd: DIST }).length).equal(4);
+      expect(globSync(`fesm2022/**/*.mjs`, { cwd: DIST }).length).equal(4);
     });
   });
 

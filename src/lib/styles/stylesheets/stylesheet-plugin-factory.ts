@@ -1,9 +1,9 @@
 import type { OnLoadResult, Plugin, PluginBuild } from 'esbuild';
-import glob from 'fast-glob';
 import assert from 'node:assert';
 import { readFile } from 'node:fs/promises';
 import { extname } from 'node:path';
 import type { Options } from 'sass';
+import { glob } from 'tinyglobby';
 import { LoadResultCache, createCachedLoad } from '../load-result-cache';
 import {PostcssConfiguration} from '../postcss-configuration';
 

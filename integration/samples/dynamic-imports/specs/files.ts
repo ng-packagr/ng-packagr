@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as path from 'path';
-import { sync } from 'fast-glob';
+import { globSync } from 'tinyglobby';
 import * as fs from 'fs';
 
 describe('@sample/dynamic-imports', () => {
@@ -11,11 +11,11 @@ describe('@sample/dynamic-imports', () => {
 
   describe('FESM2022', () => {
     it(`should contain 2 '.mjs.map' files`, () => {
-      expect(sync(`fesm2022/**/*.mjs.map`, { cwd: DIST }).length).equal(2);
+      expect(globSync(`fesm2022/**/*.mjs.map`, { cwd: DIST }).length).equal(2);
     });
 
     it(`should contain 2 '.mjs' files`, () => {
-      expect(sync(`fesm2022/**/*.mjs`, { cwd: DIST }).length).equal(2);
+      expect(globSync(`fesm2022/**/*.mjs`, { cwd: DIST }).length).equal(2);
     });
   });
 
