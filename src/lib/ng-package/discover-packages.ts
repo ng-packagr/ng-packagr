@@ -1,7 +1,7 @@
 import { parse as parseJson } from 'jsonc-parser';
 import * as path from 'path';
+import { glob } from 'tinyglobby';
 import { exists, readFile, stat } from '../utils/fs';
-import { globFiles } from '../utils/glob';
 import * as log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 import { NgEntryPoint } from './entry-point/entry-point';
@@ -80,11 +80,7 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
       }
     }
 
-    return {
-      basePath,
-      packageJson,
-      ngPackageJson,
-    };
+    return { basePath, packageJson, ngPackageJson };
   }
 
   if (pathStats.isDirectory()) {
@@ -109,11 +105,7 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
 async function findSecondaryPackagesPaths(directoryPath: string, excludeFolder: string): Promise<string[]> {
   const ignore = ['**/node_modules/**', '**/.git/**', `${excludeFolder}/**`, 'ng-package.json'];
 
-  const filePaths = await globFiles(`**/ng-package.json`, {
-    ignore,
-    onlyFiles: true,
-    cwd: directoryPath,
-  });
+  const filePaths = await glob(`**/ng-package.json`, { ignore, onlyFiles: true, cwd: directoryPath });
 
   return filePaths.map(subpath => path.dirname(path.join(directoryPath, subpath)));
 }

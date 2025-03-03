@@ -1,12 +1,12 @@
 import ora from 'ora';
 import * as path from 'path';
+import { glob } from 'tinyglobby';
 import { AssetPattern } from '../../../ng-package.schema';
 import { BuildGraph } from '../../graph/build-graph';
 import { Node } from '../../graph/node';
 import { transformFromPromise } from '../../graph/transform';
 import { colors } from '../../utils/color';
 import { copyFile, exists, readFile, rmdir, stat, writeFile } from '../../utils/fs';
-import { globFiles } from '../../utils/glob';
 import * as log from '../../utils/log';
 import { ensureUnixPath } from '../../utils/path';
 import { EntryPointNode, PackageNode, fileUrl, isEntryPoint, isEntryPointInProgress, isPackage } from '../nodes';
@@ -18,10 +18,7 @@ type CompilationMode = 'partial' | 'full' | undefined;
 
 export const writePackageTransform = (options: NgPackagrOptions) =>
   transformFromPromise(async graph => {
-    const spinner = ora({
-      hideCursor: false,
-      discardStdin: false,
-    });
+    const spinner = ora({ hideCursor: false, discardStdin: false });
     const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
     const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
     const ngPackageNode: PackageNode = graph.find(isPackage);
@@ -121,11 +118,7 @@ async function copyAssets(
     ...graph.filter(isEntryPoint).map(({ data }) => {
       const subpath = data.entryPoint.destinationFiles.directory || '/';
 
-      return {
-        glob: 'README.md',
-        input: subpath,
-        output: subpath,
-      };
+      return { glob: 'README.md', input: subpath, output: subpath };
     }),
   ];
 
@@ -143,11 +136,7 @@ async function copyAssets(
         asset = { glob: '**/*', input: assetPath, output: assetPath };
       } else if (isFile) {
         // filenames are their own glob
-        asset = {
-          glob: path.basename(assetPath),
-          input: path.dirname(assetPath),
-          output: path.dirname(assetPath),
-        };
+        asset = { glob: path.basename(assetPath), input: path.dirname(assetPath), output: path.dirname(assetPath) };
       } else {
         asset = { glob: assetPath, input: '/', output: '/' };
       }
@@ -168,7 +157,7 @@ async function copyAssets(
   }
 
   for (const asset of assets) {
-    const filePaths = await globFiles(asset.glob, {
+    const filePaths = await glob(asset.glob, {
       cwd: asset.input,
       ignore: [...(asset.ignore ?? []), ...globsForceIgnored],
       dot: true,
@@ -236,10 +225,7 @@ async function writePackageJson(
     const tsLibVersion = angularPeerDependencies.tslib || angularDependencies.tslib;
 
     if (tsLibVersion) {
-      packageJson.dependencies = {
-        ...packageJson.dependencies,
-        tslib: tsLibVersion,
-      };
+      packageJson.dependencies = { ...packageJson.dependencies, tslib: tsLibVersion };
     }
   } else if (packageJson.peerDependencies?.tslib) {
     spinner.warn(
@@ -247,10 +233,7 @@ async function writePackageJson(
         `'tslib' is no longer recommended to be used as a 'peerDependencies'. Moving it to 'dependencies'.`,
       ),
     );
-    packageJson.dependencies = {
-      ...(packageJson.dependencies || {}),
-      tslib: packageJson.peerDependencies.tslib,
-    };
+    packageJson.dependencies = { ...(packageJson.dependencies || {}), tslib: packageJson.peerDependencies.tslib };
 
     delete packageJson.peerDependencies.tslib;
   }
@@ -345,10 +328,7 @@ type PackageExports = Record<string, ConditionalExport>;
  * Type describing the conditional exports descriptor for an entry-point.
  * https://nodejs.org/api/packages.html#packages_conditional_exports
  */
-type ConditionalExport = {
-  types?: string;
-  default?: string;
-};
+type ConditionalExport = { types?: string; default?: string };
 
 /**
  * Generates the `package.json` package exports following APF v13.
