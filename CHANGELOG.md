@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [20.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.0...20.0.0-next.1) (2025-03-04)
+
+
+### Features
+
+* support Angular version 20 ([cebe060](https://github.com/ng-packagr/ng-packagr/commit/cebe0608bc17968bf7c946b972dec5e09b12b3fe))
+
 ## [20.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/19.2.0-next.2...20.0.0-next.0) (2025-03-03)
 
 ## [19.2.0](https://github.com/ng-packagr/ng-packagr/compare/19.2.0-next.2...19.2.0) (2025-02-25)
