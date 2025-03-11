@@ -11,6 +11,9 @@ copyFileSync('src/lib/ts/conf/tsconfig.ngc.json', 'dist/lib/ts/conf/tsconfig.ngc
 const packageJson = JSON.parse(readFileSync('package.json'));
 delete packageJson['devDependencies'];
 delete packageJson['scripts'];
-delete packageJson['private'];
+delete packageJson['scripts'];
+delete packageJson['packageManager'];
 delete packageJson['husky'];
+delete packageJson['overrides'];
+
 writeFileSync('dist/package.json', JSON.stringify(packageJson, undefined, 2));

@@ -18,9 +18,9 @@ commands:
     steps:
       - run: nvm install 20.11.1
       - run: nvm use 20.11.1
-      - run: npm install -g yarn@1.22.19
+      - run: npm install -g pnpm@9.15.6
       - run: node --version
-      - run: yarn --version
+      - run: pnpm --version
 
 # Executor Definitions
 # https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-executors
@@ -38,13 +38,16 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v3-dependencies-linux-{{ checksum "yarn.lock" }}
+            - v3-dependencies-linux-{{ checksum "pnpm-lock.yaml" }}
       # Install dependencies
-      - run: yarn install --frozen-lockfile --non-interactive
+      - run:
+          name: Enable Corepack
+          command: corepack enable --install-directory="/home/circleci/bin"
+      - run: pnpm install --frozen-lockfile
       - save_cache:
-          key: v3-dependencies-linux-{{ checksum "yarn.lock" }}
+          key: v3-dependencies-linux-{{ checksum "pnpm-lock.yaml" }}
           paths:
-            - ~/.cache/yarn
+            - ~/.pnpm-store
       - persist_to_workspace:
           root: ~/repo
           paths: .
@@ -54,13 +57,13 @@ jobs:
     steps:
       - custom_attach_workspace
       # Build and run tests
-      - run: yarn lint
-      - run: yarn build
-      - run: yarn test:specs
-      - run: yarn integration:samples
-      - run: yarn integration:specs
-      - run: yarn integration:watch:specs
-      - run: yarn integration:consumers
+      - run: pnpm -s lint
+      - run: pnpm -s build
+      - run: pnpm -s test:specs
+      - run: pnpm -s integration:samples
+      - run: pnpm -s integration:specs
+      - run: pnpm -s integration:watch:specs
+      - run: pnpm -s integration:consumers
       - persist_to_workspace:
           root: ~/repo
           paths: dist
@@ -87,7 +90,7 @@ jobs:
             fi
             # Build, pack and publish to npm registry
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-            yarn publish:ci
+            pnpm -s publish:ci
             pushd dist
             npm publish --tag ${NPM_TAG}
 
@@ -101,18 +104,17 @@ jobs:
       - setup_windows
       - restore_cache:
           keys:
-            - v3-dependencies-win-{{ checksum "yarn.lock" }}
+          key: v3-dependencies-win-{{ checksum "pnpm-lock.yaml" }}
       # Install dependencies
-      - run: yarn install --frozen-lockfile --non-interactive
-      - run: yarn build
-      - run: yarn test:specs
-      - run: yarn integration:samples
-      - run: yarn integration:specs
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm -s build
+      - run: pnpm -s test:specs
+      - run: pnpm -s integration:samples
+      - run: pnpm -s integration:specs
       - save_cache:
-          key: v3-dependencies-win-{{ checksum "yarn.lock" }}
+          key: v3-dependencies-win-{{ checksum "pnpm-lock.yaml" }}
           paths:
-            # Get cache dir on windows via `yarn cache dir`
-            - C:\Users\circleci\AppData\Local\Yarn\Cache
+            - ~/AppData/Local/pnpm/store
 
 workflows:
   version: 2.1
