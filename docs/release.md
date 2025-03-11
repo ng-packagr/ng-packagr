@@ -4,7 +4,7 @@
 pushed.
 
 ## Important
-When a patch release is to be released and the `main` branch is in a pre-release state. 
+When a patch release is to be released and the `main` branch is in a pre-release state.
 In the below commands the `main` branch should be replaced with versioned branch name (ex. `git checkout 16.2.x`).
 
 ## Steps
@@ -17,16 +17,16 @@ To release `ng-packagr`:
     ```
 2.  Consider dry running the release:
     ```shell
-    yarn release --dry-run
+     pnpm release --dry-run
     ```
 3.  Run the `release` script. This does not _actually_ release, instead it bumps
     the `package.json` version, updates the changelog, commits the changes, and
     tags the commit. Depending on the kind of release, use one of:
     ```shell
-    yarn release --release-as=patch
-    yarn release --release-as=minor
-    yarn release --release-as=major
-    yarn release --prerelease
+    pnpm release --release-as=patch
+    pnpm release --release-as=minor
+    pnpm release --release-as=major
+    pnpm release --prerelease
     ```
 4.  Push the commit to upstream, make sure to include the tag so CI triggers the
     release.

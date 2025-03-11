@@ -5,7 +5,7 @@ Develop Guideline
 ## Release & Publish Workflow
 
 ```bash
-$ yarn release
+$ pnpm release
 ```
 
 This builds the tool, cuts a release, and copies the distributable artefacts to `dist`.
@@ -22,6 +22,6 @@ Circle CI will checkout the Git tag, build from sources (again), and automatical
 If necessary, distributable artefacts can be created and published by hand:
 
 ```bash
-$ yarn pack dist
+$ pnpm pack dist
 $ npm publish dist/<name-x.y.z>.tgz
 ```

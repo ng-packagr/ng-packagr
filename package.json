@@ -13,6 +13,7 @@
     "css",
     "scss"
   ],
+  "packageManager": "pnpm@9.15.6",
   "engines": {
     "node": "^20.11.1 || >=22.0.0"
   },
@@ -26,17 +27,13 @@
   "bugs": {
     "url": "https://github.com/ng-packagr/ng-packagr/issues"
   },
-  "resolutions": {
-    "strip-ansi": "6.0.1",
-    "string-width": "4.2.2",
-    "wrap-ansi": "7.0.0"
-  },
   "bin": {
     "ng-packagr": "./cli/main.js"
   },
   "main": "./public_api.js",
   "typings": "./public_api.d.ts",
   "dependencies": {
+    "@ampproject/remapping": "^2.3.0",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/wasm-node": "^4.24.0",
     "ajv": "^8.17.1",
@@ -116,12 +113,10 @@
   "private": true,
   "scripts": {
     "prepare": "husky",
-    "prebuild": "rimraf dist && yarn schema",
-    "build": "tsc -p src/tsconfig.packagr.json",
-    "postbuild": "node ./scripts/postbuild.js",
+    "build": "rimraf dist && pnpm -s schema && tsc -p src/tsconfig.packagr.json && node ./scripts/postbuild.js",
     "schema": "json2ts --input src/ng-package.schema.json --output src/ng-package.schema.ts && json2ts --input src/ng-entrypoint.schema.json --output src/ng-entrypoint.schema.ts",
     "release": "standard-version --releaseCommitMessageFormat 'release: cut {{currentTag}}' --no-verify --tag-prefix=\"\"",
-    "publish:ci": "yarn build",
+    "publish:ci": "pnpm -s build",
     "lint": "eslint --cache --max-warnings=0 \"**/*.ts\"",
     "integration:samples": "ts-node integration/samples.ts",
     "integration:samples:dev": "ts-node --project src/tsconfig.packagr.json ./integration/samples.dev.ts",
@@ -130,6 +125,6 @@
     "integration:consumers:ngc": "ngc -p integration/consumers/tsc/tsconfig.json",
     "integration:watch:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json jasmine-ts --random=false \"integration/watch/*.spec.ts\"",
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json jasmine-ts \"src/**/*.spec.ts\"",
-    "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:watch:specs && yarn integration:consumers"
+    "test": "pnpm -s && pnpm -s test:specs && pnpm -s integration:samples && pnpm -s integration:specs && pnpm -s integration:watch:specs && pnpm -s integration:consumers"
   }
 }

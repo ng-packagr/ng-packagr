@@ -11,11 +11,11 @@ Integration Testing for `ng-packagr`
 Build the sample libraries and prepare dist packages for linking:
 
 ```bash
-$ yarn samples
+$ pnpm samples
 $ cd integration/sample_custom/dist
-$ yarn link
+$ pnpm link
 $ cd integration/sample_material/dist
-$ yarn link
+$ pnpm link
 ```
 
 ##### Angular CLI
@@ -24,12 +24,12 @@ Build an `ng` CLI consumer app:
 
 ```bash
 $ cd integration/consumer-ng-cli
-$ yarn install
-$ yarn link @sample/material
-$ yarn link sample-material
-$ yarn build:dev
-$ yarn build:prod:jit
-$ yarn build:prod:aot
+$ pnpm install
+$ pnpm link @sample/material
+$ pnpm link sample-material
+$ pnpm build:dev
+$ pnpm build:prod:jit
+$ pnpm build:prod:aot
 ```
 
-Note: `ng` (and `webpack` under the hood) will resolve dependencies through symlinks in the local `node_modules` 
+Note: `ng` (and `webpack` under the hood) will resolve dependencies through symlinks in the local `node_modules`
