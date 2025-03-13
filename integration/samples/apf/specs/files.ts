@@ -10,11 +10,11 @@ describe('@sample/apf', () => {
   });
 
   describe('dist', () => {
-    it('should contain a total of 32 files', () => {
+    it('should contain a total of 17 files', () => {
       // this is a safe guard / alternative to snapshots in order to
       // protect ourselves from doing a change that will emit unexpected files.
       const files = globSync('**/*', { cwd: DIST });
-      expect(files.length).to.equals(32);
+      expect(files.length).to.equals(17);
     });
 
     it(`should contain a README.md file`, () => {
@@ -49,26 +49,20 @@ describe('@sample/apf', () => {
   });
 
   describe('declarations', () => {
-    describe('index.d.ts', () => {
+    it(`should contain 4 '.d.ts' files`, () => {
+      expect(globSync(`types/**/*.d.ts`, { cwd: DIST }).length).equal(4);
+    });
+
+    describe('types/sample-apf.d.ts', () => {
       it(`should exist`, () => {
-        const file = fs.existsSync(path.join(DIST, 'index.d.ts'));
+        const file = fs.existsSync(path.join(DIST, 'types/sample-apf.d.ts'));
         expect(file).to.be.true;
       });
     });
 
-    describe('secondary/index.d.ts', () => {
+    describe('types/sample-apf-secondary.d.ts', () => {
       it(`should exist`, () => {
-        const file = fs.existsSync(path.join(DIST, 'secondary', 'index.d.ts'));
-        expect(file).to.be.true;
-      });
-    });
-
-    describe('primary.component.d.ts', () => {
-      it(`should only exist in the dist/src`, () => {
-        let file = fs.existsSync(path.join(DIST, 'primary.component.d.ts'));
-        expect(file).to.be.false;
-
-        file = fs.existsSync(path.join(DIST, 'src', 'primary.component.d.ts'));
+        const file = fs.existsSync(path.join(DIST, 'types/sample-apf-secondary.d.ts'));
         expect(file).to.be.true;
       });
     });

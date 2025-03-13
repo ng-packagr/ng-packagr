@@ -69,7 +69,7 @@ export class TestHarness {
   }
 
   expectDtsToMatch(fileName: string, regexp: RegExp): Chai.Assertion {
-    return expect(this.readFileSync(`${fileName}.d.ts`)).to.match(regexp);
+    return expect(this.readFileSync(`types/${fileName}.d.ts`)).to.match(regexp);
   }
 
   expectPackageManifestToMatch(regexp: RegExp): Chai.Assertion {
