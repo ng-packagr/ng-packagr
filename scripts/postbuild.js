@@ -12,6 +12,7 @@ const packageJson = JSON.parse(readFileSync('package.json'));
 delete packageJson['devDependencies'];
 delete packageJson['scripts'];
 delete packageJson['private'];
+delete packageJson['pnpm'];
 delete packageJson['packageManager'];
 delete packageJson['husky'];
 delete packageJson['overrides'];

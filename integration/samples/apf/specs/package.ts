@@ -27,13 +27,12 @@ describe(`@sample/apf`, () => {
       expect(PACKAGE.dependencies.tslib).to.be.ok;
     });
 
-    Object.entries({
-      module: 'fesm2022/sample-apf.mjs',
-      typings: 'index.d.ts',
-    }).forEach(([key, value]: [string, string]): void => {
-      it(`should reference "${key}" file`, () => {
-        expect(PACKAGE[key]).to.equal(value);
-      });
+    it(`should reference "typings" file`, () => {
+      expect(PACKAGE['typings']).to.equal('index.d.ts');
+    });
+
+    it(`should reference "module" file`, () => {
+      expect(PACKAGE['module']).to.equal('fesm2022/sample-apf.mjs');
     });
 
     it(`should apply the 'sideEffects: false' flag by default`, () => {

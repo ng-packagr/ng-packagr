@@ -58,7 +58,7 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
           ngPackage,
           {
             module: relativeUnixFromDestPath(destinationFiles.fesm2022),
-            typings: relativeUnixFromDestPath(destinationFiles.declarations),
+            typings: relativeUnixFromDestPath(destinationFiles.declarationsBundled),
             exports: generatePackageExports(ngEntryPoint, graph),
             // webpack v4+ specific flag to enable advanced optimizations and code splitting
             sideEffects: ngEntryPoint.packageJson.sideEffects ?? false,
@@ -369,7 +369,7 @@ function generatePackageExports({ destinationPath, packageJson }: NgEntryPoint, 
     const subpath = isSecondaryEntryPoint ? `./${destinationFiles.directory}` : '.';
 
     insertMappingOrError(subpath, {
-      types: relativeUnixFromDestPath(destinationFiles.declarations),
+      types: relativeUnixFromDestPath(destinationFiles.declarationsBundled),
       default: relativeUnixFromDestPath(destinationFiles.fesm2022),
     });
   }

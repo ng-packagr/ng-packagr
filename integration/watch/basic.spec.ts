@@ -18,7 +18,7 @@ describe('basic', () => {
     });
 
     it("should perform initial compilation when 'watch' is started", () => {
-      harness.expectDtsToMatch('public_api', /title = "hello world"/);
+      harness.expectDtsToMatch('index', /title = "hello world"/);
       harness.expectFesm2022ToMatch('basic', /hello world/);
     });
 
@@ -27,7 +27,7 @@ describe('basic', () => {
         harness.copyTestCase('valid-text');
 
         harness.onComplete(() => {
-          harness.expectDtsToMatch('public_api', /title = "foo bar"/);
+          harness.expectDtsToMatch('index', /title = "foo bar"/);
           harness.expectFesm2022ToMatch('basic', /foo bar/);
           done();
         });
@@ -37,7 +37,7 @@ describe('basic', () => {
         harness.copyTestCase('invalid-type');
 
         harness.onComplete(() => {
-          harness.expectDtsToMatch('public_api', /title = "foo bar"/);
+          harness.expectDtsToMatch('index', /title = "foo bar"/);
           harness.expectFesm2022ToMatch('basic', /foo bar/);
           done();
         });

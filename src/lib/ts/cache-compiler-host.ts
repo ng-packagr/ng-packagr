@@ -41,11 +41,6 @@ export function cacheCompilerHost(
     entryPoint.dependsOn(node);
   };
 
-  const { flatModuleFile, destinationPath, entryFile } = entryPoint.data.entryPoint;
-  const flatModuleFileDtsFilename = `${flatModuleFile}.d.ts`;
-  const flatModuleFileDtsPath = ensureUnixPath(path.join(destinationPath, flatModuleFileDtsFilename));
-  const hasIndexEntryFile = path.basename(entryFile.toLowerCase()) === 'index.ts';
-
   return {
     ...compilerHost,
 
@@ -95,7 +90,6 @@ export function cacheCompilerHost(
       }
 
       const extension = path.extname(fileName);
-
       if (!sourceFiles?.length && extension === '.tsbuildinfo') {
         // Save builder info contents to specified location
         compilerHost.writeFile.call(this, fileName, data, writeByteOrderMark, onError, sourceFiles);
@@ -107,51 +101,24 @@ export function cacheCompilerHost(
       const outputCache = entryPoint.cache.outputCache;
 
       if (extension === '.ts') {
-        if (fileName === flatModuleFileDtsPath) {
-          if (hasIndexEntryFile) {
-            // In case the entry file is index.ts, we should not emit the `d.ts` which are a re-export of the `index.ts`.
-            // Because it will cause a conflict.
-            return;
-          } else {
-            // Rename file to index.d.ts so that TypeScript can resolve types without
-            // them needing to be referenced in the package.json manifest.
-            fileName = fileName.replace(flatModuleFileDtsFilename, 'index.d.ts');
-          }
-        }
-
         for (const source of sourceFiles) {
           const cache = sourcesFileCache.getOrCreate(source.fileName);
           if (!cache.declarationFileName) {
             cache.declarationFileName = ensureUnixPath(fileName);
           }
         }
-
-        if (outputCache.get(fileName)?.content === data) {
-          // Only emit files that changed content.
-          return;
-        }
-
-        outputCache.set(fileName, {
-          content: data,
-        });
       } else {
         fileName = fileName.replace(/\.js(\.map)?$/, '.mjs$1');
-        if (outputCache.get(fileName)?.content === data) {
-          return;
-        }
-
-        const version = createHash('sha256').update(data).digest('hex');
-
-        outputCache.set(fileName, {
-          content: data,
-          version,
-        });
       }
 
-      if (extension === '.ts' || (extension === '.map' && fileName.endsWith('.d.ts.map'))) {
-        // Only write .d.ts and .d.ts.map files to disk.
-        compilerHost.writeFile.call(this, fileName, data, writeByteOrderMark, onError, sourceFiles);
+      if (outputCache.get(fileName)?.content === data) {
+        return;
       }
+
+      outputCache.set(fileName, {
+        content: data,
+        version: createHash('sha256').update(data).digest('hex'),
+      });
     },
 
     readFile: (fileName: string) => {

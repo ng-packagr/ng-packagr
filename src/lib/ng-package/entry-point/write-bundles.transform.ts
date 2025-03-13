@@ -1,6 +1,6 @@
 import ora from 'ora';
 import { join } from 'path';
-import type { OutputAsset, OutputChunk, RollupCache } from 'rollup';
+import type { OutputAsset, OutputChunk } from 'rollup';
 import { rollupBundleFile } from '../../flatten/rollup';
 import { transformFromPromise } from '../../graph/transform';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../../utils/cache';
@@ -11,6 +11,7 @@ import { NgPackagrOptions } from '../options.di';
 interface BundlesCache {
   hash: string;
   fesm2022: (OutputChunk | OutputAsset)[];
+  types: (OutputChunk | OutputAsset)[];
 }
 
 export const writeBundlesTransform = (options: NgPackagrOptions) =>
@@ -18,43 +19,62 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
     const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
     const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
     const cache = entryPoint.cache;
-    const { fesm2022Dir, esm2022 } = destinationFiles;
+    const { fesm2022Dir, esm2022, declarations, declarationsDir } = destinationFiles;
 
     const spinner = ora({
       hideCursor: false,
       discardStdin: false,
     });
 
-    const key = await generateKey(ngEntryPoint.moduleId, esm2022, fesm2022Dir, tsConfig.options.compilationMode);
+    const cacheKey = await generateKey(
+      ngEntryPoint.moduleId,
+      esm2022,
+      fesm2022Dir,
+      tsConfig.options.compilationMode,
+      declarations,
+      declarationsDir,
+    );
     const hash = await generateKey([...cache.outputCache.values()].map(({ version }) => version).join(':'));
     const cacheDirectory = options.cacheEnabled && options.cacheDirectory;
     if (cacheDirectory) {
-      const cacheResult: BundlesCache = await readCacheEntry(options.cacheDirectory, key);
+      const cacheResult: BundlesCache = await readCacheEntry(options.cacheDirectory, cacheKey);
       let writing = false;
 
       if (cacheResult?.hash === hash) {
+        const filesToCopy = [
+          ...cacheResult.fesm2022.map(file => ({
+            ...file,
+            filePath: join(fesm2022Dir, file.fileName),
+          })),
+          ...cacheResult.types.map(file => ({
+            ...file,
+            filePath: join(declarationsDir, file.fileName),
+          })),
+        ];
+
         try {
-          for (const file of cacheResult.fesm2022) {
-            const filePath = join(fesm2022Dir, file.fileName);
-            if (options.watch && (await exists(filePath))) {
+          const writeFilePromises: Promise<void>[] = [];
+          for (const file of filesToCopy) {
+            if (options.watch && (await exists(file.filePath))) {
               continue;
             }
 
             if (!writing) {
               writing = true;
-              spinner.start('Writing FESM bundles');
-              await mkdir(fesm2022Dir, { recursive: true });
+              spinner.start('Writing FESM and DTS bundles');
+              await Promise.all([mkdir(fesm2022Dir, { recursive: true }), mkdir(declarationsDir, { recursive: true })]);
             }
 
-            await writeFile(filePath, file.type === 'asset' ? file.source : file.code);
+            writeFilePromises.push(writeFile(file.filePath, file.type === 'asset' ? file.source : file.code));
           }
 
           if (writing) {
-            spinner.succeed('Writing FESM bundles');
+            await Promise.all(writeFilePromises);
+            spinner.succeed('Writing FESM and DTS bundles');
           }
         } catch (error) {
           if (!writing) {
-            spinner.start('Writing FESM bundles');
+            spinner.start('Writing FESM and DTS bundles');
           }
 
           spinner.fail();
@@ -65,51 +85,54 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
       }
     }
 
-    async function generateFESM(
-      rollupCache: RollupCache,
-      dir: string,
-    ): Promise<{ files: (OutputChunk | OutputAsset)[]; rollupCache: RollupCache }> {
-      const { cache: rollupFESMCache, files } = await rollupBundleFile({
-        entry: esm2022,
-        entryName: ngEntryPoint.flatModuleFile,
-        moduleName: ngEntryPoint.moduleId,
-        dir,
-        cache: rollupCache,
-        cacheDirectory,
-        fileCache: cache.outputCache,
-        cacheKey: await generateKey(esm2022, dir, ngEntryPoint.moduleId, tsConfig.options.compilationMode),
-      });
+    async function generateBundles(): Promise<BundlesCache> {
+      const [{ cache: rollupFESM2022Cache, files: fesmFiles }, { cache: rollupTypesCache, files: typesFiles }] =
+        await Promise.all([
+          rollupBundleFile({
+            entry: esm2022,
+            entryName: ngEntryPoint.flatModuleFile,
+            moduleName: ngEntryPoint.moduleId,
+            dir: fesm2022Dir,
+            cache: cache.rollupFESM2022Cache,
+            cacheDirectory,
+            fileCache: cache.outputCache,
+            cacheKey,
+            sourcemap: true,
+          }),
+          rollupBundleFile({
+            entry: declarations,
+            entryName: 'index',
+            // entryName: ngEntryPoint.flatModuleFile,
+            moduleName: ngEntryPoint.moduleId,
+            dir: declarationsDir,
+            cache: cache.rollupTypesCache,
+            cacheDirectory,
+            fileCache: cache.outputCache,
+            cacheKey,
+            sourcemap: tsConfig.options.declarationMap || false,
+          }),
+        ]);
+
+      cache.rollupFESM2022Cache = rollupFESM2022Cache;
+      cache.rollupTypesCache = rollupTypesCache;
 
       return {
-        /** The map contents are in an asset file type, which makes storing the map in the cache as redudant. */
-        files: files.map(f => {
-          if (f.type === 'chunk') {
-            f.map = null;
-          }
-
-          return f;
-        }),
-        rollupCache: options.watch ? rollupFESMCache : undefined,
+        hash,
+        types: typesFiles,
+        fesm2022: fesmFiles,
       };
     }
 
-    const fesmCache: Partial<BundlesCache> = {
-      hash,
-    };
-
+    let cacheRollup: BundlesCache;
     try {
-      const { rollupCache, files } = await generateFESM(cache.rollupFESM2022Cache, fesm2022Dir);
-
-      cache.rollupFESM2022Cache = rollupCache;
-      fesmCache.fesm2022 = files;
-
-      spinner.succeed(`Generating FESM bundles`);
+      cacheRollup = await generateBundles();
+      spinner.succeed(`Generating FESM and DTS bundles`);
     } catch (error) {
       spinner.fail();
       throw error;
     }
 
     if (cacheDirectory) {
-      await saveCacheEntry(cacheDirectory, key, fesmCache);
+      await saveCacheEntry(cacheDirectory, cacheKey, cacheRollup);
     }
   });

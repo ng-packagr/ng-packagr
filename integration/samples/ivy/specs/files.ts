@@ -10,7 +10,7 @@ describe('@sample/ivy', () => {
 
   describe('angular.component.d.ts', () => {
     it(`should contain Ivy declarations`, () => {
-      const content = fs.readFileSync(path.join(DIST, 'src/angular.component.d.ts'), { encoding: 'utf-8' });
+      const content = fs.readFileSync(path.join(DIST, 'index.d.ts'), { encoding: 'utf-8' });
       expect(content).to.contain('ɵcmp');
     });
   });
