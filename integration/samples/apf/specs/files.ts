@@ -10,11 +10,11 @@ describe('@sample/apf', () => {
   });
 
   describe('dist', () => {
-    it('should contain a total of 32 files', () => {
+    it('should contain a total of 20 files', () => {
       // this is a safe guard / alternative to snapshots in order to
       // protect ourselves from doing a change that will emit unexpected files.
       const files = globSync('**/*', { cwd: DIST });
-      expect(files.length).to.equals(32);
+      expect(files.length).to.equals(20);
     });
 
     it(`should contain a README.md file`, () => {
@@ -58,17 +58,7 @@ describe('@sample/apf', () => {
 
     describe('secondary/index.d.ts', () => {
       it(`should exist`, () => {
-        const file = fs.existsSync(path.join(DIST, 'secondary', 'index.d.ts'));
-        expect(file).to.be.true;
-      });
-    });
-
-    describe('primary.component.d.ts', () => {
-      it(`should only exist in the dist/src`, () => {
-        let file = fs.existsSync(path.join(DIST, 'primary.component.d.ts'));
-        expect(file).to.be.false;
-
-        file = fs.existsSync(path.join(DIST, 'src', 'primary.component.d.ts'));
+        const file = fs.existsSync(path.join(DIST, 'secondary/index.d.ts'));
         expect(file).to.be.true;
       });
     });

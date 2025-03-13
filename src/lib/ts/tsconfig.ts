@@ -114,7 +114,7 @@ export function setDependenciesTsConfigPaths(
   for (const dep of entryPoints) {
     const { entryPoint } = dep.data;
     const { moduleId, destinationFiles, entryFilePath } = entryPoint;
-    const mappedPath = [pointToSource ? entryFilePath : destinationFiles.declarations];
+    const mappedPath = [pointToSource ? entryFilePath : destinationFiles.declarationsBundled];
 
     if (!tsConfig.options.paths[moduleId]) {
       tsConfig.options.paths[moduleId] = mappedPath;

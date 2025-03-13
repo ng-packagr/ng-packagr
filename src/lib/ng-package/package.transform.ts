@@ -133,7 +133,7 @@ const watchTransformFactory =
         graph.watcher = watcher;
 
         return onFileChange.pipe(
-          tap(fileChange => {
+          map(fileChange => {
             const { filePath } = fileChange;
             const { sourcesFileCache } = cache;
             const cachedSourceFile = sourcesFileCache.get(filePath);
@@ -142,7 +142,7 @@ const watchTransformFactory =
             const nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
 
             if (!nodesToClean.length) {
-              return;
+              return false;
             }
 
             const allNodesToClean = [
@@ -165,7 +165,7 @@ const watchTransformFactory =
             }
 
             for (const entryPoint of graph.filter(isEntryPoint)) {
-              let isDirty = !!entryPoint.cache.stylesheetProcessor.invalidate(potentialStylesResources)?.length;
+              let isDirty = !!entryPoint.cache.stylesheetProcessor?.invalidate(potentialStylesResources)?.length;
               isDirty ||= allNodesToClean.some(dependent => entryPoint.dependents.has(dependent));
 
               if (isDirty) {
@@ -176,7 +176,10 @@ const watchTransformFactory =
                 }
               }
             }
+
+            return true;
           }),
+          filter(isChanged => isChanged),
           debounceTime(100),
           tap(() => log.msg(FileChangeDetected)),
           startWith(undefined),

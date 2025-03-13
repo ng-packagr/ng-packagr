@@ -8,6 +8,10 @@ import { ensureUnixPath } from '../../utils/path';
 export interface DestinationFiles {
   /** Absolute path of this entry point `declarations` */
   declarations: string;
+  /** Absolute path of this bundled entry point `declarations` */
+  declarationsBundled: string;
+  /** Absolute path of this entry point `types` directory */
+  declarationsDir: string;
   /** Absolute path of this entry point `FESM2022` module */
   fesm2022: string;
   /** Absolute path of this entry point `ESM2022` module */
@@ -87,9 +91,11 @@ export class NgEntryPoint {
     const pathJoinWithDest = (...paths: string[]) => path.join(primaryDestPath, ...paths);
 
     return {
-      directory: ensureUnixPath(secondaryDir) ?? '',
-      declarations: pathJoinWithDest(secondaryDir, 'index.d.ts'),
-      esm2022: pathJoinWithDest('esm2022', secondaryDir, `${flatModuleFile}.mjs`),
+      directory: ensureUnixPath(secondaryDir),
+      declarations: pathJoinWithDest('tmp-typings', secondaryDir, `${flatModuleFile}.d.ts`),
+      declarationsBundled: pathJoinWithDest(secondaryDir, 'index.d.ts'),
+      declarationsDir: pathJoinWithDest(secondaryDir),
+      esm2022: pathJoinWithDest('tmp-esm2022', secondaryDir, `${flatModuleFile}.mjs`),
       fesm2022: pathJoinWithDest('fesm2022', `${flatModuleFile}.mjs`),
       fesm2022Dir: pathJoinWithDest('fesm2022'),
     };

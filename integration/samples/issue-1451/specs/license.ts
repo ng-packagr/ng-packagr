@@ -18,8 +18,8 @@ describe(`issue-1451-license`, () => {
       });
     });
 
-    it(`license directory should contain 3 files`, () => {
-      expect(globSync(`license/**/*`, { cwd: DIST }).length).equal(3);
+    it(`license directory should contain 2 files`, () => {
+      expect(globSync(`license/**/*`, { cwd: DIST }).length).equal(2);
     });
   });
 });
