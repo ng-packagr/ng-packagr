@@ -27,13 +27,12 @@ describe(`@sample/apf`, () => {
       expect(PACKAGE.dependencies.tslib).to.be.ok;
     });
 
-    Object.entries({
-      module: 'fesm2022/sample-apf.mjs',
-      typings: 'index.d.ts',
-    }).forEach(([key, value]: [string, string]): void => {
-      it(`should reference "${key}" file`, () => {
-        expect(PACKAGE[key]).to.equal(value);
-      });
+    it(`should reference "typings" file`, () => {
+      expect(PACKAGE['typings']).to.equal('types/sample-apf.d.ts');
+    });
+
+    it(`should reference "module" file`, () => {
+      expect(PACKAGE['module']).to.equal('fesm2022/sample-apf.mjs');
     });
 
     it(`should apply the 'sideEffects: false' flag by default`, () => {
@@ -44,7 +43,7 @@ describe(`@sample/apf`, () => {
       expect(PACKAGE['exports']).to.deep.equal({
         '.': {
           sass: './theming.scss',
-          types: './index.d.ts',
+          types: './types/sample-apf.d.ts',
           default: './fesm2022/sample-apf.mjs',
         },
         './theming': {
@@ -54,15 +53,15 @@ describe(`@sample/apf`, () => {
           default: './package.json',
         },
         './secondary': {
-          types: './secondary/index.d.ts',
+          types: './types/sample-apf-secondary.d.ts',
           default: './fesm2022/sample-apf-secondary.mjs',
         },
         './secondary/testing': {
-          types: './secondary/testing/index.d.ts',
+          types: './types/sample-apf-secondary-testing.d.ts',
           default: './fesm2022/sample-apf-secondary-testing.mjs',
         },
         './testing': {
-          types: './testing/index.d.ts',
+          types: './types/sample-apf-testing.d.ts',
           default: './fesm2022/sample-apf-testing.mjs',
         },
       });

@@ -20,7 +20,7 @@ describe(`@sample/core`, () => {
     });
 
     it(`should reference "typings" files`, () => {
-      expect(PACKAGE['typings']).to.equal('index.d.ts');
+      expect(PACKAGE['typings']).to.equal('types/sample-core.d.ts');
     });
 
     it(`should have 'scripts' section removed`, () => {

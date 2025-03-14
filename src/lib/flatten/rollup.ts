@@ -1,6 +1,7 @@
 import rollupJson from '@rollup/plugin-json';
 import * as path from 'path';
 import type { OutputAsset, OutputChunk, RollupCache } from 'rollup';
+import { dts } from 'rollup-plugin-dts';
 import { OutputFileCache } from '../ng-package/nodes';
 import { readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
@@ -20,6 +21,7 @@ export interface RollupOptions {
   cacheDirectory?: string | false;
   fileCache: OutputFileCache;
   cacheKey: string;
+  sourcemap: boolean;
 }
 
 let rollup: typeof import('rollup') | undefined;
@@ -31,7 +33,8 @@ export async function rollupBundleFile(
   await ensureRollup();
 
   log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dir}`);
-
+  const dtsMode = opts.entry.endsWith('.d.ts');
+  const outExtension = dtsMode ? '.d.ts' : '.mjs';
   const cacheDirectory = opts.cacheDirectory;
 
   // Create the bundle
@@ -40,7 +43,7 @@ export async function rollupBundleFile(
     external: moduleId => isExternalDependency(moduleId),
     cache: opts.cache ?? (cacheDirectory ? await readCacheEntry(cacheDirectory, opts.cacheKey) : undefined),
     input: opts.entry,
-    plugins: [fileLoaderPlugin(opts.fileCache), rollupJson()],
+    plugins: [fileLoaderPlugin(opts.fileCache), dtsMode ? dts() : rollupJson()],
     onwarn: warning => {
       switch (warning.code) {
         case 'CIRCULAR_DEPENDENCY':
@@ -66,10 +69,10 @@ export async function rollupBundleFile(
     dir: opts.dir,
     inlineDynamicImports: false,
     hoistTransitiveImports: false,
-    chunkFileNames: opts.entryName + '-[name]-[hash].mjs',
-    entryFileNames: opts.entryName + '.mjs',
+    chunkFileNames: `${opts.entryName}-[name]-[hash]${outExtension}`,
+    entryFileNames: opts.entryName + outExtension,
     banner: '',
-    sourcemap: true,
+    sourcemap: opts.sourcemap,
   });
 
   if (cacheDirectory) {
@@ -80,7 +83,14 @@ export async function rollupBundleFile(
   await bundle.close();
 
   return {
-    files: output.output,
+    files: output.output.map(f => {
+      /** The map contents are in an asset file type, which makes storing the map in the cache as redudant. */
+      if (f.type === 'chunk') {
+        f.map = null;
+      }
+
+      return f;
+    }),
     cache: bundle.cache,
   };
 }

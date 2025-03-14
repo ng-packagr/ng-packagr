@@ -128,12 +128,12 @@ const watchTransformFactory =
 
     return source$.pipe(
       switchMap(graph => {
-        const { data, cache } = graph.find(isPackage);
-        const { onFileChange, watcher } = createFileWatch([], [data.dest + '/'], options.poll);
+        const { cache } = graph.find(isPackage);
+        const { onFileChange, watcher } = createFileWatch([], [], options.poll);
         graph.watcher = watcher;
 
         return onFileChange.pipe(
-          tap(fileChange => {
+          map(fileChange => {
             const { filePath } = fileChange;
             const { sourcesFileCache } = cache;
             const cachedSourceFile = sourcesFileCache.get(filePath);
@@ -142,7 +142,7 @@ const watchTransformFactory =
             const nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
 
             if (!nodesToClean.length) {
-              return;
+              return false;
             }
 
             const allNodesToClean = [
@@ -176,7 +176,10 @@ const watchTransformFactory =
                 }
               }
             }
+
+            return true;
           }),
+          filter(isChanged => isChanged),
           debounceTime(100),
           tap(() => log.msg(FileChangeDetected)),
           startWith(undefined),
