@@ -8,9 +8,9 @@ describe('@sample/ivy', () => {
     DIST = path.resolve(__dirname, '../dist');
   });
 
-  describe('angular.component.d.ts', () => {
+  describe('sample-ivy.d.ts', () => {
     it(`should contain Ivy declarations`, () => {
-      const content = fs.readFileSync(path.join(DIST, 'src/angular.component.d.ts'), { encoding: 'utf-8' });
+      const content = fs.readFileSync(path.join(DIST, 'types/sample-ivy.d.ts'), { encoding: 'utf-8' });
       expect(content).to.contain('ɵcmp');
     });
   });

@@ -3,14 +3,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`@sample/core`, () => {
-  describe(`index.d.ts`, () => {
-    let TYPINGS;
-    beforeAll(() => {
-      TYPINGS = fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'index.d.ts'), 'utf-8');
-    });
-
+  describe(`sample-core.d.ts`, () => {
     it(`should exist`, () => {
-      expect(TYPINGS).to.be.ok;
+      expect(fs.existsSync(path.resolve(__dirname, '../dist/types/sample-core.d.ts'))).to.be.true;
     });
   });
 });

@@ -160,11 +160,6 @@ export function cacheCompilerHost(
           map,
         });
       }
-
-      if (extension === '.ts' || (extension === '.map' && fileName.endsWith('.d.ts.map'))) {
-        // Only write .d.ts and .d.ts.map files to disk.
-        compilerHost.writeFile.call(this, fileName, data, writeByteOrderMark, onError, sourceFiles);
-      }
     },
 
     readFile: (fileName: string) => {
