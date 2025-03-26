@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [20.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.1...20.0.0-next.2) (2025-03-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* Node.js versions from 22.0 to 22.10 are no longer supported
+* Node.js v18 is no longer supported
+* TypeScript versions less than 5.8 are no longer supported.
+
+### Features
+
+* drop support for TypeScript older than 5.8 ([a8255ce](https://github.com/ng-packagr/ng-packagr/commit/a8255ce73d69375e0f8eed14a9e5bc38a673494a))
+* support Sass package importers ([f767d3c](https://github.com/ng-packagr/ng-packagr/commit/f767d3cff7bf521e188a662472edc4524555e834))
+
+
+### Bug Fixes
+
+* remove Node.js v18 support ([69d9d9e](https://github.com/ng-packagr/ng-packagr/commit/69d9d9ee74c4e6b25eda3768b25501b1494002cc))
+* update minimum supported Node.js 22 version to 22.11.0 ([a836a71](https://github.com/ng-packagr/ng-packagr/commit/a836a71ccd753f425227c684fdfb017bfc017f8f))
+
 ## [20.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.0...20.0.0-next.1) (2025-03-04)
 
 
