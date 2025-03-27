@@ -15,9 +15,9 @@ async function readDefaultTsConfig(fileName = defaultTsConfigPath): Promise<Pars
     target: ts.ScriptTarget.ES2022,
 
     // sourcemaps
-    sourceMap: false,
+    sourceMap: true,
     inlineSources: true,
-    inlineSourceMap: true,
+    inlineSourceMap: false,
 
     outDir: '',
     declaration: true,
