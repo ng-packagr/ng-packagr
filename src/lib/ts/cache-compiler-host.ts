@@ -1,5 +1,4 @@
 import type { CompilerHost, CompilerOptions } from '@angular/compiler-cli';
-import convertSourceMap from 'convert-source-map';
 import { createHash } from 'crypto';
 import { formatMessages } from 'esbuild';
 import assert from 'node:assert';
@@ -141,23 +140,11 @@ export function cacheCompilerHost(
           return;
         }
 
-        // Extract inline sourcemap which will later be used by rollup.
-        let map = undefined;
         const version = createHash('sha256').update(data).digest('hex');
-
-        if (fileName.endsWith('.mjs')) {
-          if (outputCache.get(fileName)?.version === version) {
-            // Only emit changed files
-            return;
-          }
-
-          map = convertSourceMap.fromComment(data).toJSON();
-        }
 
         outputCache.set(fileName, {
           content: data,
           version,
-          map,
         });
       }
 

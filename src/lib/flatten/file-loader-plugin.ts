@@ -29,14 +29,15 @@ export function fileLoaderPlugin(fileCache: OutputFileCache): Plugin {
     },
     load: function (id) {
       log.debug(`file-loader ${id}`);
-      const data = fileCache.get(ensureUnixPath(id));
+      const idNormalized = ensureUnixPath(id);
+      const data = fileCache.get(idNormalized);
       if (!data) {
         throw new Error(`Could not load '${id}' from memory.`);
       }
 
       return {
         code: data.content,
-        map: data.map,
+        map: fileCache.get(idNormalized + '.map')?.content,
       };
     },
   };
