@@ -5,7 +5,7 @@ import { OutputFileCache } from '../ng-package/nodes';
 import * as log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 
-const POTENTIAL_MATCHES = ['', '.mjs', '/index.mjs'];
+const POTENTIAL_MATCHES = ['', '.mjs', '/index.mjs', '.d.ts', '/index.d.ts'];
 /**
  * Loads a file and it's map.
  */
@@ -29,14 +29,15 @@ export function fileLoaderPlugin(fileCache: OutputFileCache): Plugin {
     },
     load: function (id) {
       log.debug(`file-loader ${id}`);
-      const data = fileCache.get(ensureUnixPath(id));
+      const idPosix = ensureUnixPath(id);
+      const data = fileCache.get(idPosix);
       if (!data) {
         throw new Error(`Could not load '${id}' from memory.`);
       }
 
       return {
         code: data.content,
-        map: data.map,
+        map: data.map ?? fileCache.get(`${idPosix}.map`)?.content,
       };
     },
   };
