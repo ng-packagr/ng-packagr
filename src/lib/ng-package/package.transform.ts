@@ -33,7 +33,6 @@ import {
   fileUrl,
   fileUrlPath,
   isEntryPoint,
-  isFileUrl,
   isPackage,
   ngUrl,
 } from './nodes';
@@ -145,28 +144,35 @@ const watchTransformFactory =
               return false;
             }
 
-            const allNodesToClean = [
+            const allNodesToClean = new Set([
               ...nodesToClean,
               // if a non ts file changes we need to clean up its direct dependees
               // this is mainly done for resources such as html and css
               ...nodesToClean.filter(node => !node.url.endsWith('.ts')).flatMap(node => [...node.dependees]),
-            ];
+            ]);
 
             // delete node that changes
-            for (const { url } of allNodesToClean) {
-              sourcesFileCache.delete(fileUrlPath(url));
-            }
-
             const potentialStylesResources = new Set<string>();
             for (const { url } of allNodesToClean) {
-              if (isFileUrl(url)) {
-                potentialStylesResources.add(fileUrlPath(url));
+              const fileUrl = fileUrlPath(url);
+              if (!fileUrl) {
+                continue;
               }
+
+              sourcesFileCache.delete(fileUrl);
+              potentialStylesResources.add(fileUrl);
             }
 
             for (const entryPoint of graph.filter(isEntryPoint)) {
               let isDirty = !!entryPoint.cache.stylesheetProcessor?.invalidate(potentialStylesResources)?.length;
-              isDirty ||= allNodesToClean.some(dependent => entryPoint.dependents.has(dependent));
+              if (!isDirty) {
+                for (const dependent of allNodesToClean) {
+                  if (entryPoint.dependents.has(dependent)) {
+                    isDirty = true;
+                    break;
+                  }
+                }
+              }
 
               if (isDirty) {
                 entryPoint.state = STATE_DIRTY;

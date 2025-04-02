@@ -1,5 +1,5 @@
 import { FSWatcher } from 'chokidar';
-import { URL_PROTOCOL_FILE } from '../ng-package/nodes';
+import { fileUrlPath } from '../ng-package/nodes';
 import { Node } from './node';
 
 export type SimplePredicate<T = Node> = {
@@ -47,8 +47,11 @@ export class BuildGraph implements Traversable<Node> {
       oldNode['_dependees'].delete(oldNode);
     }
 
-    if (this.watcher && node.url.startsWith(URL_PROTOCOL_FILE)) {
-      this.watcher.add(node.url.slice(URL_PROTOCOL_FILE.length));
+    if (this.watcher) {
+      const fileUrl = fileUrlPath(node.url);
+      if (fileUrl) {
+        this.watcher.add(fileUrl);
+      }
     }
 
     this.store.set(node.url, node);

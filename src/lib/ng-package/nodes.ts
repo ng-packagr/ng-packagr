@@ -10,14 +10,14 @@ import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { DestinationFiles, NgEntryPoint } from './entry-point/entry-point';
 import { NgPackage } from './package';
 
-export const TYPE_NG_PACKAGE = 'application/ng-package';
-export const TYPE_NG_ENTRY_POINT = 'application/ng-entry-point';
+const TYPE_NG_PACKAGE = 'application/ng-package';
+const TYPE_NG_ENTRY_POINT = 'application/ng-entry-point';
 
 /** A node that can be read through the `fs` api. */
-export const URL_PROTOCOL_FILE = 'file://';
+const URL_PROTOCOL_FILE = 'file://';
 
 /** A node specific to angular. */
-export const URL_PROTOCOL_NG = 'ng://';
+const URL_PROTOCOL_NG = 'ng://';
 
 export function isEntryPoint(node: Node): node is EntryPointNode {
   return node.type === TYPE_NG_ENTRY_POINT;
@@ -39,18 +39,12 @@ export function isEntryPointDirty(): ComplexPredicate<EntryPointNode> {
   return by(isEntryPoint).and(isDirty);
 }
 
-export function isFileUrl(value: string): boolean {
-  return value.startsWith(URL_PROTOCOL_FILE);
-}
-
 export function fileUrl(path: string): string {
   return `${URL_PROTOCOL_FILE}${path}`;
 }
 
-export function fileUrlPath(url: string): string {
-  if (url.startsWith(URL_PROTOCOL_FILE)) {
-    return url.substring(URL_PROTOCOL_FILE.length);
-  }
+export function fileUrlPath(url: string): string | null {
+  return url.startsWith(URL_PROTOCOL_FILE) ? url.slice(URL_PROTOCOL_FILE.length) : null;
 }
 
 export function ngUrl(path: string): string {
