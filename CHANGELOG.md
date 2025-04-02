@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [20.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.2...20.0.0-next.3) (2025-04-02)
+
+
+### Features
+
+* add DTS bundles for entry-points ([ca9d568](https://github.com/ng-packagr/ng-packagr/commit/ca9d568838704d70bc64c2832d1ecfbe8536b627)), closes [#139](https://github.com/ng-packagr/ng-packagr/issues/139)
+
+
+### Bug Fixes
+
+* correctly resolve SCSS resources from nested paths ([f34a73d](https://github.com/ng-packagr/ng-packagr/commit/f34a73df3071499ce137505ffd0ea4a80fb35aa5)), closes [#3006](https://github.com/ng-packagr/ng-packagr/issues/3006)
+
 ## [20.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.1...20.0.0-next.2) (2025-03-26)
 
 
