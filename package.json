@@ -1,6 +1,6 @@
 {
   "name": "ng-packagr",
-  "version": "19.2.0",
+  "version": "19.2.1",
   "description": "Compile and package Angular libraries in Angular Package Format (APF)",
   "keywords": [
     "apf",
@@ -131,5 +131,6 @@
     "integration:watch:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json jasmine-ts --random=false \"integration/watch/*.spec.ts\"",
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json jasmine-ts \"src/**/*.spec.ts\"",
     "test": "yarn build && yarn test:specs && yarn integration:samples && yarn integration:specs && yarn integration:watch:specs && yarn integration:consumers"
-  }
+  },
+  "packageManager": "pnpm@9.15.6+sha512.139cab068fdf0b751268179ac5f909b5be72afb4a75c513d1905d151befc8977b593d3cf8671ed83d4d6637c5c94b98ffbce108125de4a5a27a31233601a99de"
 }

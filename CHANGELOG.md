@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [19.2.1](https://github.com/ng-packagr/ng-packagr/compare/19.2.0...19.2.1) (2025-04-02)
+
+
+### Bug Fixes
+
+* correctly resolve SCSS resources from nested paths ([2fcbe68](https://github.com/ng-packagr/ng-packagr/commit/2fcbe6808d02b5be5bc27d180d8ea316d94e67cd)), closes [#3006](https://github.com/ng-packagr/ng-packagr/issues/3006)
+
 ## [19.2.0](https://github.com/ng-packagr/ng-packagr/compare/19.2.0-next.2...19.2.0) (2025-02-25)
 
 ## [19.2.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/19.2.0-next.1...19.2.0-next.2) (2025-02-10)
