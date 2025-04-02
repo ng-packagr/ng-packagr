@@ -32,11 +32,11 @@ export function byEntryPoint(): ComplexPredicate<EntryPointNode> {
 }
 
 export function isEntryPointInProgress(): ComplexPredicate<EntryPointNode> {
-  return by(isEntryPoint).and(isInProgress);
+  return by(n => isEntryPoint(n) && isInProgress(n));
 }
 
 export function isEntryPointDirty(): ComplexPredicate<EntryPointNode> {
-  return by(isEntryPoint).and(isDirty);
+  return by(n => isEntryPoint(n) && isDirty(n));
 }
 
 export function fileUrl(path: string): string {
