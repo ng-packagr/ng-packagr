@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [20.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.3...20.0.0-next.4) (2025-04-03)
+
+
+### Performance
+
+* optimize node deletion using `Set` ([a99785c](https://github.com/ng-packagr/ng-packagr/commit/a99785cbc7f6fc3fbec30cc5d7c3b9352836bfe5))
+* prevent redundant entry-point builds in watch mode ([2f2668b](https://github.com/ng-packagr/ng-packagr/commit/2f2668b51ca56cecbb3dbf163180338cbc14d9b6)), closes [#2936](https://github.com/ng-packagr/ng-packagr/issues/2936)
+
 ## [20.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.2...20.0.0-next.3) (2025-04-02)
 
 
