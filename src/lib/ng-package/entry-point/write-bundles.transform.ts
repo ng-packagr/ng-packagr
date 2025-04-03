@@ -40,8 +40,6 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
     const cacheDirectory = options.cacheEnabled && options.cacheDirectory;
     if (cacheDirectory) {
       const cacheResult: BundlesCache = await readCacheEntry(options.cacheDirectory, cacheKey);
-      let writing = false;
-
       if (cacheResult?.hash === hash) {
         const filesToCopy = [
           ...cacheResult.fesm2022.map(file => ({
@@ -61,8 +59,7 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
               continue;
             }
 
-            if (!writing) {
-              writing = true;
+            if (writeFilePromises.length === 0) {
               spinner.start('Writing FESM and DTS bundles');
               await Promise.all([mkdir(fesm2022Dir, { recursive: true }), mkdir(declarationsDir, { recursive: true })]);
             }
@@ -70,16 +67,12 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
             writeFilePromises.push(writeFile(file.filePath, file.type === 'asset' ? file.source : file.code));
           }
 
-          if (writing) {
+          if (writeFilePromises.length) {
             await Promise.all(writeFilePromises);
             spinner.succeed('Writing FESM and DTS bundles');
           }
         } catch (error) {
-          if (!writing) {
-            spinner.start('Writing FESM and DTS bundles');
-          }
-
-          spinner.fail();
+          spinner.fail('Writing FESM and DTS bundles');
           throw error;
         }
 
