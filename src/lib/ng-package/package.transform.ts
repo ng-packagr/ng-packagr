@@ -21,7 +21,7 @@ import {
   takeLast,
   tap,
 } from 'rxjs';
-import { createFileWatch } from '../file-system/file-watcher';
+import { createFileWatch, invalidateEntryPointsAndCacheOnFileChange } from '../file-system/file-watcher';
 import { BuildGraph } from '../graph/build-graph';
 import { Node, STATE_DONE, STATE_ERROR, STATE_IN_PROGRESS, STATE_PENDING } from '../graph/node';
 import { Transform } from '../graph/transform';
@@ -33,8 +33,6 @@ import {
   EntryPointNode,
   PackageNode,
   byEntryPoint,
-  fileUrl,
-  fileUrlPath,
   isEntryPoint,
   isEntryPointPending,
   isPackage,
@@ -131,61 +129,15 @@ const watchTransformFactory =
 
     return source$.pipe(
       switchMap(graph => {
-        const { data, cache } = graph.find(isPackage);
+        const {
+          data,
+          cache: { sourcesFileCache },
+        } = graph.find(isPackage);
         const { onFileChange, watcher } = createFileWatch([], [data.dest + '/'], options.poll);
         graph.watcher = watcher;
 
         return onFileChange.pipe(
-          concatMap(async fileChange => {
-            const { filePath } = fileChange;
-            const { sourcesFileCache } = cache;
-            const changedFileUrl = fileUrl(filePath);
-            const nodeToClean = graph.find(node => changedFileUrl === node.url);
-
-            if (!nodeToClean) {
-              return false;
-            }
-
-            const allNodesToClean = new Set([nodeToClean]);
-            // if a non ts file changes we need to clean up its direct dependees
-            // this is mainly done for resources such as html and css
-            if (!nodeToClean.url.endsWith('.ts')) {
-              for (const dependees of nodeToClean.dependees) {
-                allNodesToClean.add(dependees);
-              }
-            }
-
-            // delete node that changes
-            const potentialStylesResources = new Set<string>();
-            for (const { url } of allNodesToClean) {
-              const fileUrl = fileUrlPath(url);
-              if (!fileUrl) {
-                continue;
-              }
-
-              sourcesFileCache.delete(fileUrl);
-              potentialStylesResources.add(fileUrl);
-            }
-
-            for (const entryPoint of graph.filter(isEntryPoint)) {
-              let isDirty = !!entryPoint.cache.stylesheetProcessor?.invalidate(potentialStylesResources)?.length;
-              if (!isDirty) {
-                for (const dependent of allNodesToClean) {
-                  if (entryPoint.dependents.has(dependent)) {
-                    isDirty = true;
-                    break;
-                  }
-                }
-              }
-
-              if (isDirty) {
-                entryPoint.state = STATE_PENDING;
-                entryPoint.cache.analysesSourcesFileCache.delete(filePath);
-              }
-            }
-
-            return true;
-          }),
+          map(fileChange => invalidateEntryPointsAndCacheOnFileChange(graph, [fileChange.filePath], sourcesFileCache)),
           filter(isChanged => isChanged),
           debounceTime(100),
           tap(() => log.msg(FileChangeDetected)),
