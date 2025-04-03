@@ -1,8 +1,6 @@
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { version as tsVersion } from 'typescript';
-import { ngCompilerCli } from './load-esm';
 
 let ngPackagrVersion: string | undefined;
 try {
@@ -14,19 +12,8 @@ try {
 
 const BIGINT_STRING_VALUE_REGEXP = /^%BigInt\((\d+)\)$/;
 
-let compilerCliVersion: string | undefined;
-
 export async function generateKey(...valuesToConsider: string[]): Promise<string> {
-  if (compilerCliVersion === undefined) {
-    compilerCliVersion = (await ngCompilerCli()).VERSION.full;
-  }
-
-  return createHash('sha256')
-    .update(ngPackagrVersion)
-    .update(compilerCliVersion)
-    .update(tsVersion)
-    .update(valuesToConsider.join(':'))
-    .digest('hex');
+  return createHash('sha256').update(ngPackagrVersion).update(valuesToConsider.join(':')).digest('hex');
 }
 
 async function ensureCacheDirExists(cachePath: string): Promise<void> {
