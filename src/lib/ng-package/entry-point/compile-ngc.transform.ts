@@ -47,7 +47,7 @@ export const compileNgcTransformFactory = (
       const { moduleResolutionCache } = entryPoint.cache;
 
       spinner.start(
-        `Compiling with Angular sources in Ivy ${tsConfig.options.compilationMode || 'full'} compilation mode.`,
+        `Compiling with Angular sources in ${tsConfig.options.compilationMode || 'full'} compilation mode.`,
       );
 
       entryPoint.cache.stylesheetProcessor ??= new StylesheetProcessor(

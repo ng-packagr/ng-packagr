@@ -266,8 +266,8 @@ async function writePackageJson(
     const scripts = packageJson.scripts || (packageJson.scripts = {});
     scripts.prepublishOnly =
       'node --eval "console.error(\'' +
-      'ERROR: Trying to publish a package that has been compiled by Ivy in full compilation mode. This is not allowed.\\n' +
-      'Please delete and rebuild the package with Ivy partial compilation mode, before attempting to publish.\\n' +
+      'ERROR: Trying to publish a package that has been compiled in full compilation mode. This is not allowed.\\n' +
+      'Please delete and rebuild the package with partial compilation mode, before attempting to publish.\\n' +
       '\')" ' +
       '&& exit 1';
   }
