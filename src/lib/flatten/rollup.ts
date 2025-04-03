@@ -49,6 +49,7 @@ export async function rollupBundleFile(
         case 'CIRCULAR_DEPENDENCY':
         case 'UNUSED_EXTERNAL_IMPORT':
         case 'THIS_IS_UNDEFINED':
+        case 'EMPTY_BUNDLE':
           break;
 
         default:
