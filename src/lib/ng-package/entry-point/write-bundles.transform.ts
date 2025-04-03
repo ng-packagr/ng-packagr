@@ -30,12 +30,12 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
 
     const cacheKey = await generateKey(
       ngEntryPoint.moduleId,
-      esm2022,
       fesm2022Dir,
-      tsConfig.options.compilationMode,
-      declarations,
       declarationsDir,
+      tsConfig.options.compilationMode,
+      (tsConfig.options.declarationMap ?? false).toString(),
     );
+
     const hash = await generateKey([...cache.outputCache.values()].map(({ version }) => version).join(':'));
     const cacheDirectory = options.cacheEnabled && options.cacheDirectory;
     if (cacheDirectory) {
