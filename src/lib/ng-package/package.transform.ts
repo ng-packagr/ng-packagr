@@ -10,6 +10,7 @@ import {
   filter,
   finalize,
   from,
+  last,
   map,
   of as observableOf,
   of,
@@ -22,7 +23,7 @@ import {
 } from 'rxjs';
 import { createFileWatch } from '../file-system/file-watcher';
 import { BuildGraph } from '../graph/build-graph';
-import { STATE_DONE, STATE_ERROR, STATE_IN_PROGRESS, STATE_PENDING } from '../graph/node';
+import { Node, STATE_DONE, STATE_ERROR, STATE_IN_PROGRESS, STATE_PENDING } from '../graph/node';
 import { Transform } from '../graph/transform';
 import { colors } from '../utils/color';
 import { rmdir } from '../utils/fs';
@@ -193,16 +194,24 @@ const watchTransformFactory =
         );
       }),
       switchMap(graph => {
+        const startTime = Date.now();
+        const pkgUri = ngUrl(project);
+        const ngPkg = graph.get(pkgUri);
+
         return observableOf(graph).pipe(
-          buildTransformFactory(project, analyseSourcesTransform, entryPointTransform),
+          analyseSourcesTransform,
+          // Next, run through the entry point transformation (assets rendering, code compilation)
+          scheduleEntryPoints(entryPointTransform),
           repeat({ delay: () => (graph.some(isEntryPointPending()) ? of(1) : EMPTY) }),
-          tap(() => log.msg(CompleteWaitingForFileChange)),
+          last(),
+          tap(() => printBuiltAngularPackage(ngPkg, startTime)),
           catchError(error => {
             log.error(error);
             log.msg(FailedWaitingForFileChange);
 
             return NEVER;
           }),
+          tap(() => log.msg(CompleteWaitingForFileChange)),
         );
       }),
     );
@@ -211,25 +220,19 @@ const watchTransformFactory =
 const buildTransformFactory =
   (project: string, analyseSourcesTransform: Transform, entryPointTransform: Transform) =>
   (source$: Observable<BuildGraph>): Observable<BuildGraph> => {
-    const startTime = Date.now();
-
-    const pkgUri = ngUrl(project);
-
     return source$.pipe(
-      // Analyse dependencies and external resources for each entry point
-      analyseSourcesTransform,
-      // Next, run through the entry point transformation (assets rendering, code compilation)
-      scheduleEntryPoints(entryPointTransform),
-      tap(graph => {
+      switchMap(graph => {
+        const startTime = Date.now();
+        const pkgUri = ngUrl(project);
         const ngPkg = graph.get(pkgUri);
-        log.success('\n------------------------------------------------------------------------------');
-        log.success(`Built Angular Package
- - from: ${ngPkg.data.src}
- - to:   ${ngPkg.data.dest}`);
-        log.success('------------------------------------------------------------------------------');
-        const b = colors.bold;
-        const w = colors.white;
-        log.msg(w(`\nBuild at: ${b(new Date().toISOString())} - Time: ${b('' + (Date.now() - startTime))}ms\n`));
+
+        return observableOf(graph).pipe(
+          // Analyse dependencies and external resources for each entry point
+          analyseSourcesTransform,
+          // Next, run through the entry point transformation (assets rendering, code compilation)
+          scheduleEntryPoints(entryPointTransform),
+          tap(() => printBuiltAngularPackage(ngPkg, startTime)),
+        );
       }),
     );
   };
@@ -284,3 +287,14 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
       );
     }),
   );
+
+function printBuiltAngularPackage(ngPackage: Node, startTime: number): void {
+  log.success('\n------------------------------------------------------------------------------');
+  log.success(`Built Angular Package
+- from: ${ngPackage.data.src}
+- to:   ${ngPackage.data.dest}`);
+  log.success('------------------------------------------------------------------------------');
+  const b = colors.bold;
+  const w = colors.white;
+  log.msg(w(`\nBuild at: ${b(new Date().toISOString())} - Time: ${b('' + (Date.now() - startTime))}ms\n`));
+}
