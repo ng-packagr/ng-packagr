@@ -3,14 +3,14 @@ import { fileUrlPath } from '../ng-package/nodes';
 import { Node } from './node';
 
 export type SimplePredicate<T = Node> = {
-  (value: T, index: number): boolean;
+  (value: T): boolean;
   and?: (criteria: SimplePredicate<T>) => SimplePredicate<T>;
 };
 
 export type ComplexPredicate<T = Node, R extends T = T> =
   | SimplePredicate<T>
   | {
-      (value: T, index: number): value is R;
+      (value: T): value is R;
       and?: (criteria: ComplexPredicate<T, R>) => ComplexPredicate<T, R>;
     };
 
@@ -66,9 +66,7 @@ export class BuildGraph implements Traversable<Node> {
   }
 
   public entries(): Node[] {
-    const values = this.store.values();
-
-    return Array.from(values);
+    return Array.from(this.store.values());
   }
 
   public values(): IterableIterator<Node> {
@@ -76,15 +74,35 @@ export class BuildGraph implements Traversable<Node> {
   }
 
   public some<T extends Node = Node>(by: ComplexPredicate<Node, T>): boolean {
-    return this.entries().some(by);
+    for (const node of this.store.values()) {
+      if (by(node)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   public filter<T extends Node = Node>(by: ComplexPredicate<Node, T>): T[] {
-    return this.entries().filter(by) as T[];
+    const result: T[] = [];
+
+    for (const node of this.store.values()) {
+      if (by(node)) {
+        result.push(node as T);
+      }
+    }
+
+    return result;
   }
 
   public find<T extends Node = Node>(by: ComplexPredicate<Node, T>): T | undefined {
-    return this.entries().find(by) as T | undefined;
+    for (const node of this.store.values()) {
+      if (by(node)) {
+        return node as T;
+      }
+    }
+
+    return undefined;
   }
 
   get size(): number {
