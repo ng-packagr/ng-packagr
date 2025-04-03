@@ -99,18 +99,6 @@ export function cacheCompilerHost(
 
       assert(sourceFiles?.length === 1, 'Invalid TypeScript program emit for ' + fileName);
       const outputCache = entryPoint.cache.outputCache;
-
-      if (extension === '.ts') {
-        for (const source of sourceFiles) {
-          const cache = sourcesFileCache.getOrCreate(source.fileName);
-          if (!cache.declarationFileName) {
-            cache.declarationFileName = ensureUnixPath(fileName);
-          }
-        }
-      } else {
-        fileName = fileName.replace(/\.js(\.map)?$/, '.mjs$1');
-      }
-
       if (outputCache.get(fileName)?.content === data) {
         return;
       }

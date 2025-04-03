@@ -1,5 +1,6 @@
 import { DepGraph } from 'dependency-graph';
 import {
+  EMPTY,
   NEVER,
   Observable,
   catchError,
@@ -11,7 +12,9 @@ import {
   from,
   map,
   of as observableOf,
+  of,
   pipe,
+  repeat,
   startWith,
   switchMap,
   takeLast,
@@ -19,12 +22,11 @@ import {
 } from 'rxjs';
 import { createFileWatch } from '../file-system/file-watcher';
 import { BuildGraph } from '../graph/build-graph';
-import { STATE_DIRTY, STATE_DONE, STATE_IN_PROGRESS } from '../graph/node';
+import { STATE_DONE, STATE_ERROR, STATE_IN_PROGRESS, STATE_PENDING } from '../graph/node';
 import { Transform } from '../graph/transform';
 import { colors } from '../utils/color';
 import { rmdir } from '../utils/fs';
 import * as log from '../utils/log';
-import { ensureUnixPath } from '../utils/path';
 import { discoverPackages } from './discover-packages';
 import {
   EntryPointNode,
@@ -33,6 +35,7 @@ import {
   fileUrl,
   fileUrlPath,
   isEntryPoint,
+  isEntryPointPending,
   isPackage,
   ngUrl,
 } from './nodes';
@@ -95,7 +98,7 @@ export const packageTransformFactory =
             ngPkg.cache.moduleResolutionCache,
           );
           node.data = { entryPoint, destinationFiles };
-          node.state = 'dirty';
+          node.state = STATE_PENDING;
           ngPkg.dependsOn(node);
 
           return node;
@@ -132,24 +135,24 @@ const watchTransformFactory =
         graph.watcher = watcher;
 
         return onFileChange.pipe(
-          map(fileChange => {
+          concatMap(async fileChange => {
             const { filePath } = fileChange;
             const { sourcesFileCache } = cache;
-            const cachedSourceFile = sourcesFileCache.get(filePath);
-            const { declarationFileName } = cachedSourceFile || {};
-            const uriToClean = [filePath, declarationFileName].map(x => fileUrl(ensureUnixPath(x)));
-            const nodesToClean = graph.filter(node => uriToClean.some(uri => uri === node.url));
+            const changedFileUrl = fileUrl(filePath);
+            const nodeToClean = graph.find(node => changedFileUrl === node.url);
 
-            if (!nodesToClean.length) {
+            if (!nodeToClean) {
               return false;
             }
 
-            const allNodesToClean = new Set([
-              ...nodesToClean,
-              // if a non ts file changes we need to clean up its direct dependees
-              // this is mainly done for resources such as html and css
-              ...nodesToClean.filter(node => !node.url.endsWith('.ts')).flatMap(node => [...node.dependees]),
-            ]);
+            const allNodesToClean = new Set([nodeToClean]);
+            // if a non ts file changes we need to clean up its direct dependees
+            // this is mainly done for resources such as html and css
+            if (!nodeToClean.url.endsWith('.ts')) {
+              for (const dependees of nodeToClean.dependees) {
+                allNodesToClean.add(dependees);
+              }
+            }
 
             // delete node that changes
             const potentialStylesResources = new Set<string>();
@@ -175,11 +178,8 @@ const watchTransformFactory =
               }
 
               if (isDirty) {
-                entryPoint.state = STATE_DIRTY;
-
-                for (const url of uriToClean) {
-                  entryPoint.cache.analysesSourcesFileCache.delete(fileUrlPath(url));
-                }
+                entryPoint.state = STATE_PENDING;
+                entryPoint.cache.analysesSourcesFileCache.delete(filePath);
               }
             }
 
@@ -195,6 +195,7 @@ const watchTransformFactory =
       switchMap(graph => {
         return observableOf(graph).pipe(
           buildTransformFactory(project, analyseSourcesTransform, entryPointTransform),
+          repeat({ delay: () => (graph.some(isEntryPointPending()) ? of(1) : EMPTY) }),
           tap(() => log.msg(CompleteWaitingForFileChange)),
           catchError(error => {
             log.error(error);
@@ -271,6 +272,11 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
             tap(entryPoint => (entryPoint.state = STATE_IN_PROGRESS)),
             map(() => graph),
             epTransform,
+            catchError(err => {
+              ep.state = STATE_ERROR;
+
+              throw err;
+            }),
           ),
         ),
         takeLast(1), // don't use last as sometimes it this will cause 'no elements in sequence',

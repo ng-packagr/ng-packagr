@@ -4,7 +4,7 @@ import ts from 'typescript';
 import { FileCache } from '../file-system/file-cache';
 import { ComplexPredicate } from '../graph/build-graph';
 import { Node } from '../graph/node';
-import { by, isDirty, isInProgress } from '../graph/select';
+import { by,  isInProgress, isPending } from '../graph/select';
 import { AngularDiagnosticsCache } from '../ngc/angular-diagnostics-cache';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { DestinationFiles, NgEntryPoint } from './entry-point/entry-point';
@@ -35,8 +35,8 @@ export function isEntryPointInProgress(): ComplexPredicate<EntryPointNode> {
   return by(n => isEntryPoint(n) && isInProgress(n));
 }
 
-export function isEntryPointDirty(): ComplexPredicate<EntryPointNode> {
-  return by(n => isEntryPoint(n) && isDirty(n));
+export function isEntryPointPending(): ComplexPredicate<EntryPointNode> {
+  return by(n => isEntryPoint(n) && isPending(n));
 }
 
 export function fileUrl(path: string): string {
