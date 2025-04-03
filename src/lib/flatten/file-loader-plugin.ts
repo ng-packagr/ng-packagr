@@ -5,7 +5,7 @@ import { OutputFileCache } from '../ng-package/nodes';
 import * as log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 
-const POTENTIAL_MATCHES = ['', '.mjs', '/index.mjs', '.d.ts', '/index.d.ts'];
+const POTENTIAL_MATCHES = ['', '.js', '/index.js', '.d.ts', '/index.d.ts'];
 /**
  * Loads a file and it's map.
  */

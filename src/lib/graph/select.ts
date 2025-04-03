@@ -1,4 +1,4 @@
-import { Node, STATE_DIRTY, STATE_DONE, STATE_IN_PROGRESS, STATE_PENDING } from './node';
+import { Node,  STATE_DONE, STATE_IN_PROGRESS, STATE_PENDING } from './node';
 
 export function and(...criteria: ((node: Node) => boolean)[]) {
   return (node: Node) => criteria.every(c => c(node));
@@ -26,10 +26,6 @@ export function isInProgress(node: Node): boolean {
 
 export function isPending(node: Node): boolean {
   return node.state === STATE_PENDING;
-}
-
-export function isDirty(node: Node): boolean {
-  return node.state === STATE_DIRTY;
 }
 
 export function isDone(node: Node): boolean {

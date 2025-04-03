@@ -5,7 +5,6 @@ export interface CacheEntry {
   exists?: boolean;
   sourceFile?: ts.SourceFile;
   content?: string;
-  declarationFileName?: string;
 }
 
 export class FileCache {

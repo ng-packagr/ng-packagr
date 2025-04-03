@@ -2,10 +2,13 @@ import ora from 'ora';
 import { join } from 'path';
 import type { OutputAsset, OutputChunk } from 'rollup';
 import { rollupBundleFile } from '../../flatten/rollup';
+import { STATE_PENDING } from '../../graph/node';
+import { isPending } from '../../graph/select';
 import { transformFromPromise } from '../../graph/transform';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../../utils/cache';
 import { exists, mkdir, writeFile } from '../../utils/fs';
-import { EntryPointNode, isEntryPointInProgress } from '../nodes';
+import { ensureUnixPath } from '../../utils/path';
+import { EntryPointNode, fileUrl, isEntryPoint, isEntryPointInProgress } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 
 interface BundlesCache {
@@ -20,7 +23,6 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
     const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
     const cache = entryPoint.cache;
     const { fesm2022Dir, esm2022, declarations, declarationsDir } = destinationFiles;
-
     const spinner = ora({
       hideCursor: false,
       discardStdin: false,
@@ -127,6 +129,40 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
     try {
       cacheRollup = await generateBundles();
       spinner.succeed(`Generating FESM and DTS bundles`);
+
+      // Invalidate dependent entry-points
+      const entryPoints = graph.filter(isEntryPoint);
+      for (const file of cacheRollup.types) {
+        if (file.type !== 'chunk' || !file.fileName.endsWith('.d.ts')) {
+          continue;
+        }
+
+        const dtsFile = ensureUnixPath(join(declarationsDir, file.fileName));
+        const cachedSourceFile = cache.sourcesFileCache.get(dtsFile);
+        if (cachedSourceFile?.sourceFile?.text === file.code) {
+          // Contents of the file is exact
+          continue;
+        }
+
+        cache.sourcesFileCache.delete(dtsFile);
+        cache.analysesSourcesFileCache.delete(dtsFile);
+
+        const changedFileUrl = fileUrl(dtsFile);
+        const nodeToClean = graph.find(node => changedFileUrl === node.url);
+        if (!nodeToClean) {
+          continue;
+        }
+
+        for (const entryPoint of entryPoints) {
+          if (isPending(entryPoint)) {
+            continue;
+          }
+
+          if (entryPoint.dependents.has(nodeToClean)) {
+            entryPoint.state = STATE_PENDING;
+          }
+        }
+      }
     } catch (error) {
       spinner.fail();
       throw error;

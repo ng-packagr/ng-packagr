@@ -29,10 +29,6 @@ export function createFileWatch(
       /\.map$/,
       /.tsbuildinfo$/,
       file => {
-        if (file.endsWith('.d.ts')) {
-          return false;
-        }
-
         const normalizedPath = ensureUnixPath(file);
 
         return ignoredPaths.some(f => normalizedPath.startsWith(f));
