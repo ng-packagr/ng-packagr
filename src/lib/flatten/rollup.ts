@@ -1,6 +1,6 @@
 import rollupJson from '@rollup/plugin-json';
 import * as path from 'path';
-import type { OutputAsset, OutputChunk, RollupCache } from 'rollup';
+import type { InputPluginOption, OutputAsset, OutputChunk, RollupCache } from 'rollup';
 import { dts } from 'rollup-plugin-dts';
 import { OutputFileCache } from '../ng-package/nodes';
 import { readCacheEntry, saveCacheEntry } from '../utils/cache';
@@ -33,9 +33,18 @@ export async function rollupBundleFile(
   await ensureRollup();
 
   log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dir}`);
-  const dtsMode = opts.entry.endsWith('.d.ts');
-  const outExtension = dtsMode ? '.d.ts' : '.mjs';
   const cacheDirectory = opts.cacheDirectory;
+  const dtsMode = opts.entry.endsWith('.d.ts');
+  let outExtension: string;
+  let plugins: InputPluginOption[];
+
+  if (dtsMode) {
+    outExtension = '.d.ts';
+    plugins = [fileLoaderPlugin(opts.fileCache, ['.d.ts', '/index.d.ts']), dts()];
+  } else {
+    outExtension = '.mjs';
+    plugins = [fileLoaderPlugin(opts.fileCache, ['.js', '/index.js']), rollupJson()];
+  }
 
   // Create the bundle
   const bundle = await rollup.rollup({
@@ -43,7 +52,7 @@ export async function rollupBundleFile(
     external: moduleId => isExternalDependency(moduleId),
     cache: opts.cache ?? (cacheDirectory ? await readCacheEntry(cacheDirectory, opts.cacheKey) : undefined),
     input: opts.entry,
-    plugins: [fileLoaderPlugin(opts.fileCache), dtsMode ? dts() : rollupJson()],
+    plugins,
     onwarn: warning => {
       switch (warning.code) {
         case 'CIRCULAR_DEPENDENCY':

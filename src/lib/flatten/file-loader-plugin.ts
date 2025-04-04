@@ -5,11 +5,10 @@ import { OutputFileCache } from '../ng-package/nodes';
 import * as log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 
-const POTENTIAL_MATCHES = ['', '.js', '/index.js', '.d.ts', '/index.d.ts'];
 /**
  * Loads a file and it's map.
  */
-export function fileLoaderPlugin(fileCache: OutputFileCache): Plugin {
+export function fileLoaderPlugin(fileCache: OutputFileCache, resolutionExtensions: string[]): Plugin {
   return {
     name: 'file-loader',
     resolveId: function (id, importer) {
@@ -17,13 +16,19 @@ export function fileLoaderPlugin(fileCache: OutputFileCache): Plugin {
         return id;
       }
 
-      if (importer) {
-        const resolved = ensureUnixPath(resolve(dirname(importer), id));
-        for (const suffix of POTENTIAL_MATCHES) {
-          const potential = resolved + suffix;
-          if (fileCache.has(potential)) {
-            return potential;
-          }
+      if (!importer) {
+        return;
+      }
+
+      const resolved = ensureUnixPath(resolve(dirname(importer), id));
+      if (fileCache.has(resolved)) {
+        return resolved;
+      }
+
+      for (const suffix of resolutionExtensions) {
+        const potential = resolved + suffix;
+        if (fileCache.has(potential)) {
+          return potential;
         }
       }
     },
