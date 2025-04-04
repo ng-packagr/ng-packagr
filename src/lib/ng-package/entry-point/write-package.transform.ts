@@ -99,8 +99,6 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
     }
 
     spinner.succeed(`Built ${ngEntryPoint.moduleId}`);
-
-    return graph;
   });
 
 type AssetEntry = Exclude<AssetPattern, string>;
