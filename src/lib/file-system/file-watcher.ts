@@ -3,9 +3,8 @@ import { platform } from 'os';
 import * as path from 'path';
 import { Observable, Observer } from 'rxjs';
 import { BuildGraph } from '../graph/build-graph';
-import { STATE_PENDING } from '../graph/node';
-import { isPending } from '../graph/select';
-import { EntryPointNode, fileUrl, fileUrlPath, isEntryPoint } from '../ng-package/nodes';
+import { Node, STATE_PENDING } from '../graph/node';
+import { fileUrl, fileUrlPath, isEntryPoint } from '../ng-package/nodes';
 import * as log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 import { FileCache } from './file-cache';
@@ -88,7 +87,7 @@ export function invalidateEntryPointsAndCacheOnFileChange(
   sourcesFileCache: FileCache,
 ): boolean {
   let invalidatedEntryPoint = false;
-  let entryPoints: EntryPointNode[] | undefined;
+  const allNodesToClean: Map<string, Node> = new Map();
 
   for (const filePath of files) {
     const changedFileUrl = fileUrl(filePath);
@@ -97,55 +96,55 @@ export function invalidateEntryPointsAndCacheOnFileChange(
       continue;
     }
 
-    const allNodesToClean = new Set([nodeToClean]);
-    // if a non ts file changes we need to clean up its direct dependees
-    // this is mainly done for resources such as html and css
-    if (!nodeToClean.url.endsWith('.ts')) {
-      for (const dependees of nodeToClean.dependees) {
-        allNodesToClean.add(dependees);
-      }
+    allNodesToClean.set(filePath, nodeToClean);
+  }
+
+  // delete node that changes
+  const potentialStylesResources = new Set<string>();
+  for (const [filePath, nodeToClean] of allNodesToClean) {
+    sourcesFileCache.delete(filePath);
+
+    if (filePath.endsWith('.ts')) {
+      continue;
     }
 
-    // delete node that changes
-    const potentialStylesResources = new Set<string>();
-    for (const { url } of allNodesToClean) {
-      const fileUrl = fileUrlPath(url);
-      if (!fileUrl) {
+    // if a non ts file changes we need to clean up its direct dependees
+    // this is mainly done for resources such as html and css
+    potentialStylesResources.add(filePath);
+    for (const dependees of nodeToClean.dependees) {
+      const filePath = fileUrlPath(dependees.url);
+      if (!filePath) {
         continue;
       }
 
-      sourcesFileCache.delete(fileUrl);
+      allNodesToClean.set(filePath, dependees);
 
-      if (!fileUrl.endsWith('.ts')) {
-        potentialStylesResources.add(fileUrl);
+      if (!filePath.endsWith('.ts')) {
+        potentialStylesResources.add(filePath);
       }
     }
+  }
 
-    entryPoints ??= graph.filter(isEntryPoint);
-    for (const entryPoint of entryPoints) {
-      let isDirty = false;
-      if (potentialStylesResources.size > 0) {
-        isDirty = !!entryPoint.cache.stylesheetProcessor?.invalidate(potentialStylesResources)?.length;
-      }
-
-      isDirty ||= isPending(entryPoint);
-
-      if (!isDirty) {
-        for (const dependent of allNodesToClean) {
-          if (entryPoint.dependents.has(dependent)) {
-            isDirty = true;
-            break;
-          }
-        }
-      }
-
-      if (isDirty) {
-        entryPoint.state = STATE_PENDING;
-        entryPoint.cache.analysesSourcesFileCache.delete(filePath);
-      }
+  const entryPoints = graph.filter(isEntryPoint);
+  for (const entryPoint of entryPoints) {
+    let isDirty = false;
+    if (potentialStylesResources.size > 0) {
+      isDirty = !!entryPoint.cache.stylesheetProcessor?.invalidate(potentialStylesResources)?.length;
     }
 
-    invalidatedEntryPoint = true;
+    for (const [filePath, dependent] of allNodesToClean) {
+      if (!entryPoint.dependents.has(dependent)) {
+        continue;
+      }
+
+      entryPoint.cache.analysesSourcesFileCache.delete(filePath);
+      isDirty = true;
+    }
+
+    if (isDirty) {
+      entryPoint.state = STATE_PENDING;
+      invalidatedEntryPoint = true;
+    }
   }
 
   return invalidatedEntryPoint;
