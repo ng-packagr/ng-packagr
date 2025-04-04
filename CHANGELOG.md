@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [20.0.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.4...20.0.0-next.5) (2025-04-04)
+
+
+### Bug Fixes
+
+* disable emitting empty chunk warning ([638c107](https://github.com/ng-packagr/ng-packagr/commit/638c107b2a2265223f18aef6d9c8f10ea70a9377))
+
 ## [20.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.3...20.0.0-next.4) (2025-04-03)
 
 
