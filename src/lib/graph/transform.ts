@@ -1,4 +1,4 @@
-import { MonoTypeOperatorFunction, Observable, pipe, switchMap } from 'rxjs';
+import { MonoTypeOperatorFunction, Observable, switchMap } from 'rxjs';
 import { BuildGraph } from './build-graph';
 
 /**
@@ -15,15 +15,9 @@ export interface Transform extends MonoTypeOperatorFunction<BuildGraph> {
   (source$: Observable<BuildGraph>): Observable<BuildGraph>;
 }
 
-export interface PromiseBasedTransform {
-  (graph: BuildGraph): Promise<BuildGraph | void> | BuildGraph | void;
+interface PromiseBasedTransform {
+  (graph: BuildGraph): Promise<BuildGraph | void>;
 }
 
 export const transformFromPromise = (transformFn: PromiseBasedTransform): Transform =>
-  pipe(
-    switchMap(async graph => {
-      const transformResult = await transformFn(graph);
-
-      return transformResult || graph;
-    }),
-  );
+  switchMap(graph => transformFn(graph).then(r => r || graph));
