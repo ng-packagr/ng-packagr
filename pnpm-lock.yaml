@@ -113,8 +113,8 @@ importers:
         specifier: ^2.0.0
         version: 2.1.7
       '@types/find-cache-dir':
-        specifier: ^3.2.0
-        version: 3.2.1
+        specifier: ^5.0.0
+        version: 5.0.2
       '@types/fs-extra':
         specifier: ^11.0.0
         version: 11.0.4
@@ -982,8 +982,9 @@ packages:
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
 
-  '@types/find-cache-dir@3.2.1':
-    resolution: {integrity: sha512-frsJrz2t/CeGifcu/6uRo4b+SzAwT4NYCVPu1GN8IB9XTzrpPkGuV0tmh9mN+/L0PklAlsC3u5Fxt0ju00LXIw==}
+  '@types/find-cache-dir@5.0.2':
+    resolution: {integrity: sha512-pIpWpRaCpj/TH4XSRlBhbqgEkka/2UGCBQ1+aYX2yMLAnMc4YMvP11YrspgoN9mF4q0+AtWRdbTv4Zda4lpEew==}
+    deprecated: This is a stub types definition. find-cache-dir provides its own type definitions, so you do not need this installed.
 
   '@types/fs-extra@11.0.4':
     resolution: {integrity: sha512-yTbItCNreRooED33qjunPthRcSjERP1r4MqCZc7wv0u2sUkzTFp45tgUfS5+r7FrZPdmCCNflLhVSP/o+SemsQ==}
@@ -4043,7 +4044,9 @@ snapshots:
 
   '@types/estree@1.0.7': {}
 
-  '@types/find-cache-dir@3.2.1': {}
+  '@types/find-cache-dir@5.0.2':
+    dependencies:
+      find-cache-dir: 3.3.2
 
   '@types/fs-extra@11.0.4':
     dependencies:
