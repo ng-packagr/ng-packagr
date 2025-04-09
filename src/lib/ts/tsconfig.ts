@@ -14,6 +14,8 @@ async function readDefaultTsConfig(fileName = defaultTsConfigPath): Promise<Pars
   const extraOptions: CompilerOptions = {
     target: ts.ScriptTarget.ES2022,
 
+    composite: false,
+
     // sourcemaps
     sourceMap: true,
     inlineSources: true,
