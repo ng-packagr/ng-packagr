@@ -165,7 +165,7 @@ const watchTransformFactory =
             }
 
             for (const entryPoint of graph.filter(isEntryPoint)) {
-              let isDirty = !!entryPoint.cache.stylesheetProcessor.invalidate(potentialStylesResources)?.length;
+              let isDirty = !!entryPoint.cache.stylesheetProcessor?.invalidate(potentialStylesResources)?.length;
               isDirty ||= allNodesToClean.some(dependent => entryPoint.dependents.has(dependent));
 
               if (isDirty) {
