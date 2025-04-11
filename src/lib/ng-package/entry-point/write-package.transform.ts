@@ -4,12 +4,13 @@ import { glob } from 'tinyglobby';
 import { AssetPattern } from '../../../ng-package.schema';
 import { BuildGraph } from '../../graph/build-graph';
 import { Node } from '../../graph/node';
+import { isInProgress } from '../../graph/select';
 import { transformFromPromise } from '../../graph/transform';
 import { colors } from '../../utils/color';
 import { copyFile, exists, readFile, rmdir, stat, writeFile } from '../../utils/fs';
 import * as log from '../../utils/log';
 import { ensureUnixPath } from '../../utils/path';
-import { EntryPointNode, PackageNode, fileUrl, isEntryPoint, isEntryPointInProgress, isPackage } from '../nodes';
+import { EntryPointNode, PackageNode, fileUrl, isEntryPoint, isPackage } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 import { NgPackage } from '../package';
 import { NgEntryPoint } from './entry-point';
@@ -19,7 +20,8 @@ type CompilationMode = 'partial' | 'full' | undefined;
 export const writePackageTransform = (options: NgPackagrOptions) =>
   transformFromPromise(async graph => {
     const spinner = ora({ hideCursor: false, discardStdin: false });
-    const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
+    const entryPoints = graph.filter(isEntryPoint);
+    const entryPoint = entryPoints.find(isInProgress);
     const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
     const ngPackageNode: PackageNode = graph.find(isPackage);
     const ngPackage = ngPackageNode.data;
@@ -28,7 +30,7 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
     if (!ngEntryPoint.isSecondaryEntryPoint) {
       spinner.start('Copying assets');
       try {
-        await copyAssets(graph, entryPoint, ngPackageNode);
+        await copyAssets(graph, entryPoint, ngPackageNode, entryPoints);
       } catch (error) {
         spinner.fail();
         throw error;
@@ -59,7 +61,7 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
           {
             module: relativeUnixFromDestPath(destinationFiles.fesm2022),
             typings: relativeUnixFromDestPath(destinationFiles.declarationsBundled),
-            exports: generatePackageExports(ngEntryPoint, graph),
+            exports: generatePackageExports(ngEntryPoint, entryPoints),
             // webpack v4+ specific flag to enable advanced optimizations and code splitting
             sideEffects: ngEntryPoint.packageJson.sideEffects ?? false,
           },
@@ -107,13 +109,13 @@ async function copyAssets(
   graph: BuildGraph,
   entryPointNode: EntryPointNode,
   ngPackageNode: PackageNode,
+  entryPoints: EntryPointNode[],
 ): Promise<void> {
   const ngPackage = ngPackageNode.data;
-
   const globsForceIgnored: string[] = ['.gitkeep', '**/.DS_Store', '**/Thumbs.db', `${ngPackage.dest}/**`];
   const defaultAssets: AssetEntry[] = [
     { glob: 'LICENSE', input: '/', output: '/' },
-    ...graph.filter(isEntryPoint).map(({ data }) => {
+    ...entryPoints.map(({ data }) => {
       const subpath = data.entryPoint.destinationFiles.directory || '/';
 
       return { glob: 'README.md', input: subpath, output: subpath };
@@ -121,7 +123,6 @@ async function copyAssets(
   ];
 
   const assets: AssetEntry[] = [];
-
   for (const assetPath of [...ngPackage.assets, ...defaultAssets]) {
     let asset: AssetEntry;
     if (typeof assetPath === 'object') {
@@ -332,7 +333,10 @@ type ConditionalExport = { types?: string; default?: string };
  * Generates the `package.json` package exports following APF v13.
  * This is supposed to match with: https://github.com/angular/angular/blob/e0667efa6eada64d1fb8b143840689090fc82e52/packages/bazel/src/ng_package/packager.ts#L415.
  */
-function generatePackageExports({ destinationPath, packageJson }: NgEntryPoint, graph: BuildGraph): PackageExports {
+function generatePackageExports(
+  { destinationPath, packageJson }: NgEntryPoint,
+  entryPoints: EntryPointNode[],
+): PackageExports {
   const exports: PackageExports = packageJson.exports ? JSON.parse(JSON.stringify(packageJson.exports)) : {};
 
   const insertMappingOrError = (subpath: string, mapping: ConditionalExport) => {
@@ -361,7 +365,6 @@ function generatePackageExports({ destinationPath, packageJson }: NgEntryPoint, 
 
   insertMappingOrError('./package.json', { default: './package.json' });
 
-  const entryPoints = graph.filter(isEntryPoint);
   for (const entryPoint of entryPoints) {
     const { destinationFiles, isSecondaryEntryPoint } = entryPoint.data.entryPoint;
     const subpath = isSecondaryEntryPoint ? `./${destinationFiles.directory}` : '.';
