@@ -68,5 +68,10 @@ export function createStylesheetBundleOptions(
     // Preprocessor specific behavior is handled in each stylesheet language plugin.
     resolveExtensions: [],
     plugins,
+    // Angular encapsulation does not support nesting
+    // See: https://github.com/angular/angular/issues/58996
+    supported: {
+      nesting: false,
+    },
   };
 }
