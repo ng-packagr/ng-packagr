@@ -2,6 +2,7 @@ const { readFileSync, copyFileSync, writeFileSync, constants, mkdirSync } = requ
 
 copyFileSync('LICENSE', 'dist/LICENSE', constants.COPYFILE_FICLONE);
 copyFileSync('README.md', 'dist/README.md', constants.COPYFILE_FICLONE);
+copyFileSync('.browserslistrc', 'dist/.browserslistrc', constants.COPYFILE_FICLONE);
 copyFileSync('src/ng-package.schema.json', 'dist/ng-package.schema.json', constants.COPYFILE_FICLONE);
 copyFileSync('src/ng-entrypoint.schema.json', 'dist/ng-entrypoint.schema.json', constants.COPYFILE_FICLONE);
 
