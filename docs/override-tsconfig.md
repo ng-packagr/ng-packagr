@@ -50,7 +50,7 @@ Your `tsconfig.lib.json` can extend it
 
 ```json
 {
-  "extends": "<root>/node_modules/ng-packagr/lib/ts/conf/tsconfig.ngc.json",
+  "extends": "<root>/node_modules/ng-packagr/src/lib/ts/conf/tsconfig.ngc.json",
   "compilerOptions": {
     "types": ["node"]
     // Other overrides

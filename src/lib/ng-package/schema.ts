@@ -14,7 +14,7 @@ let ajvNgPackageEntryPointSchemaValidator: ValidateFunction | undefined;
  * @param ngPackageJson The value to validate.
  */
 export function validateNgPackageSchema(ngPackageJson: unknown): asserts ngPackageJson is NgPackageConfig {
-  const validate = (ajvNgPackageSchemaValidator ??= getSchemaValidator(require('../../ng-package.schema.json')));
+  const validate = (ajvNgPackageSchemaValidator ??= getSchemaValidator(require('../../../ng-package.schema.json')));
   const isValid = validate(ngPackageJson);
   if (!isValid) {
     throw new Error(
@@ -33,7 +33,7 @@ export function validateNgPackageEntryPointSchema(
   ngPackageJson: unknown,
 ): asserts ngPackageJson is NgPackageEntryConfig {
   const validate = (ajvNgPackageEntryPointSchemaValidator ??= getSchemaValidator(
-    require('../../ng-entrypoint.schema.json'),
+    require('../../../ng-entrypoint.schema.json'),
   ));
   const isValid = validate(ngPackageJson);
   if (!isValid) {

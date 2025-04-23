@@ -1,4 +1,4 @@
-const ngPackage = require('../../../dist/public_api');
+const ngPackage = require('../../../dist/src/public_api');
 const path = require('path');
 
 ngPackage

@@ -16,11 +16,11 @@ for (const testDirectory of testDirectories) {
 
   console.log(`Found ng-packagr file: ${configFile}.`);
 
-  const args = [];
+  const args: string[] = [];
   if (configFile === 'ng-packagr-api.js') {
-    args.push([`${testPath}/${configFile}`]);
+    args.push(`${testPath}/${configFile}`);
   } else {
-    args.push('dist/cli/main.js', '-p', `${testPath}/${configFile}`);
+    args.push('dist/src/cli/main.js', '-p', `${testPath}/${configFile}`);
   }
 
   const { status, error } = spawnSync(process.execPath, args, {

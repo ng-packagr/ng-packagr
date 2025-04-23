@@ -30,8 +30,8 @@
   "bin": {
     "ng-packagr": "./cli/main.js"
   },
-  "main": "./public_api.js",
-  "typings": "./public_api.d.ts",
+  "main": "./src/public_api.js",
+  "typings": "./src/public_api.d.ts",
   "dependencies": {
     "@ampproject/remapping": "^2.3.0",
     "@rollup/plugin-json": "^6.1.0",

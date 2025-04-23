@@ -6,8 +6,8 @@ copyFileSync('.browserslistrc', 'dist/.browserslistrc', constants.COPYFILE_FICLO
 copyFileSync('src/ng-package.schema.json', 'dist/ng-package.schema.json', constants.COPYFILE_FICLONE);
 copyFileSync('src/ng-entrypoint.schema.json', 'dist/ng-entrypoint.schema.json', constants.COPYFILE_FICLONE);
 
-mkdirSync('dist/lib/ts/conf', { recursive: true });
-copyFileSync('src/lib/ts/conf/tsconfig.ngc.json', 'dist/lib/ts/conf/tsconfig.ngc.json', constants.COPYFILE_FICLONE);
+mkdirSync('dist/src/lib/ts/conf', { recursive: true });
+copyFileSync('src/lib/ts/conf/tsconfig.ngc.json', 'dist/src/lib/ts/conf/tsconfig.ngc.json', constants.COPYFILE_FICLONE);
 
 const packageJson = JSON.parse(readFileSync('package.json'));
 delete packageJson['devDependencies'];

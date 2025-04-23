@@ -1,6 +1,6 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import * as log from '../../dist/lib/utils/log';
+import * as log from '../../dist/src/lib/utils/log';
 import { expect } from 'chai';
 import { Subscription, tap } from 'rxjs';
 import { ngPackagr } from '../../dist';
