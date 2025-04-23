@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [20.0.0-next.8](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.7...20.0.0-next.8) (2025-04-23)
+
+
+### Bug Fixes
+
+* ensure in package `.browserslistrc` is correctly resolved ([14ed50d](https://github.com/ng-packagr/ng-packagr/commit/14ed50dc9b1db91dece66e294103bf3f1b1a1523))
+
 ## [20.0.0-next.7](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.6...20.0.0-next.7) (2025-04-23)
 
 
