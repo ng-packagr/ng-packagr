@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [20.0.0-next.7](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.6...20.0.0-next.7) (2025-04-23)
+
+
+### Features
+
+* expand browser support to widely available Baseline ([94f7fbe](https://github.com/ng-packagr/ng-packagr/commit/94f7fbeb3300e9e930a51740226d91b8bd990394))
+
+
+### Bug Fixes
+
+* prevent nested CSS in components ([e2d9ef0](https://github.com/ng-packagr/ng-packagr/commit/e2d9ef006837392867889aa78587c907c24569f6))
+
 ## [20.0.0-next.6](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.5...20.0.0-next.6) (2025-04-09)
 
 
