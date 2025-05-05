@@ -17,7 +17,7 @@ export class WorkerPool extends Piscina {
       idleTimeout: 1000,
       // Web containers do not support transferable objects with receiveOnMessagePort which
       // is used when the Atomics based wait loop is enable.
-      useAtomics: !process.versions.webcontainer,
+      atomics: process.versions.webcontainer ? 'disabled' : 'sync',
       recordTiming: false,
       ...options,
     };
@@ -33,7 +33,7 @@ export class WorkerPool extends Piscina {
         // Default behavior of `env` option is to copy current process values
         piscinaOptions.env = {
           ...process.env,
-          'NODE_COMPILE_CACHE': compileCacheDirectory,
+          NODE_COMPILE_CACHE: compileCacheDirectory,
         };
       }
     }
