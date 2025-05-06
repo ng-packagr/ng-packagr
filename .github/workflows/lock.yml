@@ -8,7 +8,9 @@ jobs:
   lock:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      issues: write
+      pull-requests: write
+      discussions: write
     steps:
       - uses: dessant/lock-threads@v2
         with:
