@@ -27,7 +27,7 @@ commands:
 executors:
   linux-executor:
     docker:
-      - image: cimg/node:20.11
+      - image: cimg/node:24.0
     working_directory: ~/repo
 
 jobs:
