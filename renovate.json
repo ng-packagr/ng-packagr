@@ -1,37 +1,4 @@
 {
-  "pinVersions": false,
-  "semanticCommits": true,
-  "semanticPrefix": "build",
-  "separateMajorMinor": false,
-  "lockFileMaintenance": {
-    "enabled": true
-  },
-  "packageFiles": ["package.json", "integration/consumers/ng-cli/package.json"],
-  "packageRules": [
-    {
-      "packagePatterns": ["^@angular.*"],
-      "groupName": "angular",
-      "pinVersions": false
-    },
-    {
-      "packagePatterns": ["^@commitlint/.*"],
-      "groupName": "commitlint",
-      "pinVersions": false
-    },
-    {
-      "packagePatterns": ["^@typescript-eslint/.*"],
-      "groupName": "typescript-eslint",
-      "pinVersions": false
-    },
-    {
-      "packagePatterns": ["^jasmine.*"],
-      "groupName": "jasmine",
-      "pinVersions": false
-    },
-    {
-      "packagePatterns": ["^karma.*"],
-      "groupName": "karma",
-      "pinVersions": false
-    }
-  ]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>angular/dev-infra//renovate-presets/default.json5"]
 }
