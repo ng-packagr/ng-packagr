@@ -161,11 +161,11 @@ importers:
         specifier: ^9.0.0
         version: 9.1.7
       jasmine:
-        specifier: ^3.9.0
-        version: 3.99.0
+        specifier: ^5.0.0
+        version: 5.7.1
       jasmine-ts:
         specifier: ^0.4.0
-        version: 0.4.0(jasmine@3.99.0)(ts-node@10.9.2(@types/node@20.17.46)(typescript@5.8.3))(typescript@5.8.3)
+        version: 0.4.0(jasmine@5.7.1)(ts-node@10.9.2(@types/node@20.17.46)(typescript@5.8.3))(typescript@5.8.3)
       json-schema-to-typescript:
         specifier: ^15.0.0
         version: 15.0.4
@@ -2208,8 +2208,8 @@ packages:
     resolution: {integrity: sha512-9DDdhb5j6cpeitCbvLO7n7J4IxnbM6hoF6O1g4HQ5TfhvvKN8ywDM7668ZhMHRqVmxqhps/F6syWK2KcPxYlkw==}
     engines: {node: 20 || >=22}
 
-  jasmine-core@3.99.1:
-    resolution: {integrity: sha512-Hu1dmuoGcZ7AfyynN3LsfruwMbxMALMka+YtZeGoLuDEySVmVAPaonkNoBRIw/ectu8b9tVQCJNgp4a4knp+tg==}
+  jasmine-core@5.7.1:
+    resolution: {integrity: sha512-QnurrtpKsPoixxG2R3d1xP0St/2kcX5oTZyDyQJMY+Vzi/HUlu1kGm+2V8Tz+9lV991leB1l0xcsyz40s9xOOw==}
 
   jasmine-ts@0.4.0:
     resolution: {integrity: sha512-bIAWJKUwxfuZfGI1ctEbny7+dsyFzsN0eLzOokxh0qIUCofai2WUEKoe3MMllkGEBXJzbEVYr2IyhJBv4j7SBA==}
@@ -2219,8 +2219,8 @@ packages:
       ts-node: '>=3.2.0 <=11'
       typescript: '>=3.5.2'
 
-  jasmine@3.99.0:
-    resolution: {integrity: sha512-YIThBuHzaIIcjxeuLmPD40SjxkEcc8i//sGMDKCgkRMVgIwRJf5qyExtlJpQeh7pkeoBSOe6lQEdg+/9uKg9mw==}
+  jasmine@5.7.1:
+    resolution: {integrity: sha512-E/4fkRNy/9ALz6z3Z3/tYXFAohoznVy7In9FWutG2fqBSkILJHFzbgZtHJUw5UrL3jgUQ4sdGYOVZ5KpSXYjGw==}
     hasBin: true
 
   jiti@1.21.7:
@@ -5455,19 +5455,19 @@ snapshots:
     dependencies:
       '@isaacs/cliui': 8.0.2
 
-  jasmine-core@3.99.1: {}
+  jasmine-core@5.7.1: {}
 
-  jasmine-ts@0.4.0(jasmine@3.99.0)(ts-node@10.9.2(@types/node@20.17.46)(typescript@5.8.3))(typescript@5.8.3):
+  jasmine-ts@0.4.0(jasmine@5.7.1)(ts-node@10.9.2(@types/node@20.17.46)(typescript@5.8.3))(typescript@5.8.3):
     dependencies:
-      jasmine: 3.99.0
+      jasmine: 5.7.1
       ts-node: 10.9.2(@types/node@20.17.46)(typescript@5.8.3)
       typescript: 5.8.3
       yargs: 17.7.2
 
-  jasmine@3.99.0:
+  jasmine@5.7.1:
     dependencies:
-      glob: 7.2.3
-      jasmine-core: 3.99.1
+      glob: 10.4.5
+      jasmine-core: 5.7.1
 
   jiti@1.21.7: {}
 
