@@ -1,4 +1,5 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>angular/dev-infra//renovate-presets/default.json5"]
+  "extends": ["github>angular/dev-infra//renovate-presets/default.json5"],
+  "ignorePaths": ["integration/samples/**"]
 }
