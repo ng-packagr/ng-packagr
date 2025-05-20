@@ -16,8 +16,8 @@ commands:
           at: ~/repo
   setup_windows:
     steps:
-      - run: nvm install 20.11.1
-      - run: nvm use 20.11.1
+      - run: nvm install 20.19.0
+      - run: nvm use 20.19.0
       - run: npm install -g pnpm@9.15.6
       - run: node --version
       - run: pnpm --version
