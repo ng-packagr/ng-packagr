@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [20.0.0-rc.1](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-rc.0...20.0.0-rc.1) (2025-05-21)
+
+
+### Bug Fixes
+
+* update min Node.js support to 20.19, 22.12, and 24.0 ([5a7eac4](https://github.com/ng-packagr/ng-packagr/commit/5a7eac4a74306f415c857e16ec6501a4d542868d))
+
 ## [20.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.8...20.0.0-rc.0) (2025-04-30)
 
 ## [20.0.0-next.8](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-next.7...20.0.0-next.8) (2025-04-23)
