@@ -1,4 +1,4 @@
-import ora from 'ora';
+import ora, { type Ora } from 'ora';
 import * as path from 'path';
 import { glob } from 'tinyglobby';
 import { AssetPattern } from '../../../ng-package.schema';
@@ -199,7 +199,7 @@ async function writePackageJson(
   additionalProperties: { [key: string]: string | boolean | string[] | ConditionalExport },
   isWatchMode: boolean,
   compilationMode: CompilationMode,
-  spinner: ora.Ora,
+  spinner: Ora,
 ): Promise<void> {
   log.debug('Writing package.json');
 
@@ -300,7 +300,7 @@ function checkNonPeerDependencies(
   packageJson: Record<string, unknown>,
   property: string,
   allowed: RegExp[],
-  spinner: ora.Ora,
+  spinner: Ora,
 ) {
   if (!packageJson[property]) {
     return;
