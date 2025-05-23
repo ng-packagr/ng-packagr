@@ -38,7 +38,7 @@ importers:
       esbuild:
         specifier: ^0.25.0
         version: 0.25.4
-      find-cache-dir:
+      find-cache-directory:
         specifier: ^6.0.0
         version: 6.0.0
       injection-js:
@@ -112,9 +112,6 @@ importers:
       '@types/chokidar':
         specifier: ^2.0.0
         version: 2.1.7
-      '@types/find-cache-dir':
-        specifier: ^5.0.0
-        version: 5.0.2
       '@types/fs-extra':
         specifier: ^11.0.0
         version: 11.0.4
@@ -982,10 +979,6 @@ packages:
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
 
-  '@types/find-cache-dir@5.0.2':
-    resolution: {integrity: sha512-pIpWpRaCpj/TH4XSRlBhbqgEkka/2UGCBQ1+aYX2yMLAnMc4YMvP11YrspgoN9mF4q0+AtWRdbTv4Zda4lpEew==}
-    deprecated: This is a stub types definition. find-cache-dir provides its own type definitions, so you do not need this installed.
-
   '@types/fs-extra@11.0.4':
     resolution: {integrity: sha512-yTbItCNreRooED33qjunPthRcSjERP1r4MqCZc7wv0u2sUkzTFp45tgUfS5+r7FrZPdmCCNflLhVSP/o+SemsQ==}
 
@@ -1761,10 +1754,9 @@ packages:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
 
-  find-cache-dir@6.0.0:
-    resolution: {integrity: sha512-nZMBQ0IuwcMgW8jsiShHtj2WQS6ReVTOMGiSnriCdWBUN/eVsolBlE0EPXe2R5MfIWtqkpM4grjGuqimbWhUFA==}
-    engines: {node: '>=16'}
-    deprecated: Renamed to `find-cache-directory`.
+  find-cache-directory@6.0.0:
+    resolution: {integrity: sha512-CvFd5ivA6HcSHbD+59P7CyzINHXzwhuQK8RY7CxJZtgDSAtRlHiCaQpZQ2lMR/WRyUIEmzUvL6G2AGurMfegZA==}
+    engines: {node: '>=20'}
 
   find-up-simple@1.0.1:
     resolution: {integrity: sha512-afd4O7zpqHeRyg4PfDQsXmlDe2PfdHtJt6Akt8jOWaApLOZk5JXs6VMR29lz03pRe9mpykrRCYIYxaJYcfpncQ==}
@@ -1785,10 +1777,6 @@ packages:
   find-up@5.0.0:
     resolution: {integrity: sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng==}
     engines: {node: '>=10'}
-
-  find-up@6.3.0:
-    resolution: {integrity: sha512-v2ZsoEuVHYy8ZIlYqwPe/39Cy+cFDzp4dXPaxNvkEuouymu+2Jbz0PxpKarJHYJTmv2HWT3O382qY8l4jMWthw==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   find-up@7.0.0:
     resolution: {integrity: sha512-YyZM99iHrqLKjmt4LJDj58KI+fYyufRLBSYcqycxf//KpBk9FoewoGX0450m9nB44qrZnovzC2oeP5hUibxc/g==}
@@ -2701,9 +2689,9 @@ packages:
     resolution: {integrity: sha512-R+arufwL7sZvGjAhSMK3TfH55YdGOqhpKXkcwQJr432AAnJX/xxX19PA4QisrmJ+BTTfZVggaz6HexbkQq1l1Q==}
     engines: {node: '>=18.x'}
 
-  pkg-dir@7.0.0:
-    resolution: {integrity: sha512-Ie9z/WINcxxLp27BKOCHGde4ITq9UklYKDzVo1nhk5sqGEXU3FpkwP5GM2voTGJkGd9B3Otl+Q4uwSOeSUtOBA==}
-    engines: {node: '>=14.16'}
+  pkg-dir@8.0.0:
+    resolution: {integrity: sha512-4peoBq4Wks0riS0z8741NVv+/8IiTvqnZAr8QGgtdifrtpdXbNw/FxRS1l6NFqm4EMzuS0EDqNNx4XGaz8cuyQ==}
+    engines: {node: '>=18'}
 
   possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
@@ -4040,10 +4028,6 @@ snapshots:
 
   '@types/estree@1.0.7': {}
 
-  '@types/find-cache-dir@5.0.2':
-    dependencies:
-      find-cache-dir: 6.0.0
-
   '@types/fs-extra@11.0.4':
     dependencies:
       '@types/jsonfile': 6.1.4
@@ -4989,10 +4973,10 @@ snapshots:
     dependencies:
       to-regex-range: 5.0.1
 
-  find-cache-dir@6.0.0:
+  find-cache-directory@6.0.0:
     dependencies:
       common-path-prefix: 3.0.0
-      pkg-dir: 7.0.0
+      pkg-dir: 8.0.0
 
   find-up-simple@1.0.1: {}
 
@@ -5013,11 +4997,6 @@ snapshots:
     dependencies:
       locate-path: 6.0.0
       path-exists: 4.0.0
-
-  find-up@6.3.0:
-    dependencies:
-      locate-path: 7.2.0
-      path-exists: 5.0.0
 
   find-up@7.0.0:
     dependencies:
@@ -5921,9 +5900,9 @@ snapshots:
     optionalDependencies:
       '@napi-rs/nice': 1.0.1
 
-  pkg-dir@7.0.0:
+  pkg-dir@8.0.0:
     dependencies:
-      find-up: 6.3.0
+      find-up-simple: 1.0.1
 
   possible-typed-array-names@1.1.0: {}
 
