@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [20.0.0-rc.2](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-rc.1...20.0.0-rc.2) (2025-05-27)
+
+
+### Bug Fixes
+
+* correctly update reference to bin ([e73db8e](https://github.com/ng-packagr/ng-packagr/commit/e73db8e0d27a8c57ba65a904cdb15e624a26a00b)), closes [#3062](https://github.com/ng-packagr/ng-packagr/issues/3062)
+
 ## [20.0.0-rc.1](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-rc.0...20.0.0-rc.1) (2025-05-21)
 
 
