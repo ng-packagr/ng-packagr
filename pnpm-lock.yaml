@@ -109,9 +109,6 @@ importers:
       '@types/chai':
         specifier: ^4.0.0
         version: 4.3.20
-      '@types/chokidar':
-        specifier: ^2.0.0
-        version: 2.1.7
       '@types/fs-extra':
         specifier: ^11.0.0
         version: 11.0.4
@@ -965,10 +962,6 @@ packages:
 
   '@types/chai@4.3.20':
     resolution: {integrity: sha512-/pC9HAB5I/xMlc5FP77qjCnI16ChlJfW0tGa0IUcFn38VJrTV6DeZ60NU5KZBtaOZqjdpwTWohz5HU1RrhiYxQ==}
-
-  '@types/chokidar@2.1.7':
-    resolution: {integrity: sha512-A7/MFHf6KF7peCzjEC1BBTF8jpmZTokb3vr/A0NxRGfwRLK3Ws+Hq6ugVn6cJIMfM6wkCak/aplWrxbTcu8oig==}
-    deprecated: This is a stub types definition. chokidar provides its own type definitions, so you do not need this installed.
 
   '@types/conventional-commits-parser@5.0.1':
     resolution: {integrity: sha512-7uz5EHdzz2TqoMfV7ee61Egf5y6NkcO4FB/1iCCQnbeiI1F3xzv3vK5dBCXUCLQgGYS+mUeigK1iKQzvED+QnQ==}
@@ -3981,10 +3974,6 @@ snapshots:
   '@tsconfig/node16@1.0.4': {}
 
   '@types/chai@4.3.20': {}
-
-  '@types/chokidar@2.1.7':
-    dependencies:
-      chokidar: 4.0.3
 
   '@types/conventional-commits-parser@5.0.1':
     dependencies:
