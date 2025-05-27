@@ -66,7 +66,7 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
       throw e;
     }
 
-    let packageJson: {} = {};
+    let packageJson: Record<string, unknown> = {};
     if (!isSecondary) {
       const pkgJsonPath = path.join(basePath, 'package.json');
       packageJson = await readConfigFile(pkgJsonPath);
