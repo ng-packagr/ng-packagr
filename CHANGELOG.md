@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [20.1.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/20.0.0...20.1.0-next.0) (2025-05-28)
 
-## [20.0.0](https://github.com/ng-packagr/ng-packagr/compare/19.1.1...20.0.0) (2025-05-28)
+## [20.0.0](https://github.com/ng-packagr/ng-packagr/compare/19.2.2...20.0.0) (2025-05-28)
 
 ### ⚠ BREAKING CHANGES
 
