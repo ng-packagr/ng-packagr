@@ -2,7 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [20.0.0](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-rc.2...20.0.0) (2025-05-28)
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [20.0.0](https://github.com/ng-packagr/ng-packagr/compare/19.1.1...20.0.0) (2025-05-28)
+
+### ⚠ BREAKING CHANGES
+
+* Node.js versions from 22.0 to 22.10 are no longer supported
+* Node.js v18 is no longer supported
+* TypeScript versions less than 5.8 are no longer supported.
+
+### Features
+
+* expand browser support to widely available Baseline ([94f7fbe](https://github.com/ng-packagr/ng-packagr/commit/94f7fbeb3300e9e930a51740226d91b8bd990394))
+* add DTS bundles for entry-points ([ca9d568](https://github.com/ng-packagr/ng-packagr/commit/ca9d568838704d70bc64c2832d1ecfbe8536b627)), closes [#139](https://github.com/ng-packagr/ng-packagr/issues/139)
+* support Angular version 20 ([cebe060](https://github.com/ng-packagr/ng-packagr/commit/cebe0608bc17968bf7c946b972dec5e09b12b3fe))
+* drop support for TypeScript older than 5.8 ([a8255ce](https://github.com/ng-packagr/ng-packagr/commit/a8255ce73d69375e0f8eed14a9e5bc38a673494a))
+* support Sass package importers ([f767d3c](https://github.com/ng-packagr/ng-packagr/commit/f767d3cff7bf521e188a662472edc4524555e834))
+
+### Bug Fixes
+
+* correctly resolve SCSS resources from nested paths ([f34a73d](https://github.com/ng-packagr/ng-packagr/commit/f34a73df3071499ce137505ffd0ea4a80fb35aa5)), closes [#3006](https://github.com/ng-packagr/ng-packagr/issues/3006)
+* correctly update reference to bin ([e73db8e](https://github.com/ng-packagr/ng-packagr/commit/e73db8e0d27a8c57ba65a904cdb15e624a26a00b)), closes [#3062](https://github.com/ng-packagr/ng-packagr/issues/3062)
+* update min Node.js support to 20.19, 22.12, and 24.0 ([5a7eac4](https://github.com/ng-packagr/ng-packagr/commit/5a7eac4a74306f415c857e16ec6501a4d542868d))
+* ensure in package `.browserslistrc` is correctly resolved ([14ed50d](https://github.com/ng-packagr/ng-packagr/commit/14ed50dc9b1db91dece66e294103bf3f1b1a1523))
+* prevent nested CSS in components ([e2d9ef0](https://github.com/ng-packagr/ng-packagr/commit/e2d9ef006837392867889aa78587c907c24569f6))
+* disable TypeScript `composite` option with Angular compiler ([5dfbdba](https://github.com/ng-packagr/ng-packagr/commit/5dfbdba5c67ea759cfc3546a09a80b212a7db465))
+* disable emitting empty chunk warning ([638c107](https://github.com/ng-packagr/ng-packagr/commit/638c107b2a2265223f18aef6d9c8f10ea70a9377))
+* remove Node.js v18 support ([69d9d9e](https://github.com/ng-packagr/ng-packagr/commit/69d9d9ee74c4e6b25eda3768b25501b1494002cc))
+* update minimum supported Node.js 22 version to 22.11.0 ([a836a71](https://github.com/ng-packagr/ng-packagr/commit/a836a71ccd753f425227c684fdfb017bfc017f8f))
+
+### Performance
+
+* optimize node deletion using `Set` ([a99785c](https://github.com/ng-packagr/ng-packagr/commit/a99785cbc7f6fc3fbec30cc5d7c3b9352836bfe5))
+* prevent redundant entry-point builds in watch mode ([2f2668b](https://github.com/ng-packagr/ng-packagr/commit/2f2668b51ca56cecbb3dbf163180338cbc14d9b6)), closes [#2936](https://github.com/ng-packagr/ng-packagr/issues/2936)
 
 ## [20.0.0-rc.2](https://github.com/ng-packagr/ng-packagr/compare/20.0.0-rc.1...20.0.0-rc.2) (2025-05-27)
 
