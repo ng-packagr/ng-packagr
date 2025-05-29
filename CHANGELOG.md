@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### ⚠ BREAKING CHANGES
 
-* Node.js versions from 22.0 to 22.10 are no longer supported
+* Node.js versions from 22.0 to 22.11 are no longer supported
 * Node.js v18 is no longer supported
 * TypeScript versions less than 5.8 are no longer supported.
 
