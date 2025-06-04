@@ -16,14 +16,14 @@ jobs:
       - uses: dessant/lock-threads@v5
         with:
           github-token: ${{ github.token }}
-          issue-lock-inactive-days: 30
-          issue-lock-comment: >
+          issue-inactive-days: 30
+          issue-comment: >
             This issue has been automatically locked due to inactivity.<br>
             Please file a new issue if you are encountering a similar or related problem.<br><br>
             <sub>_This action has been performed automatically by a bot._</sub>
           issue-lock-reason: ''
-          pr-lock-inactive-days: 30
-          pr-lock-comment: >
+          pr-inactive-days: 30
+          pr-comment: >
             This PR has been automatically locked due to inactivity.<br>
             Please file a new issue if you are encountering a similar or related problem.<br><br>
             <sub>_This action has been performed automatically by a bot._</sub>
