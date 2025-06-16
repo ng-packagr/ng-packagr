@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { debug } from './log';
 
 let ngPackagrVersion: string | undefined;
 try {
@@ -43,12 +44,9 @@ export async function readCacheEntry(cachePath: string, key: string): Promise<an
       return value;
     });
   } catch (err) {
-    if (err.code === 'ENOENT') {
-      // File does not exist (cache miss)
-      return undefined;
-    }
+    debug(`[readCacheError]: ${err}`);
 
-    throw err;
+    return undefined;
   }
 }
 
