@@ -1,17 +1,12 @@
-import * as fs from 'fs';
-import { dirname } from 'path';
-import { promisify } from 'util';
+import { PathLike, constants } from 'node:fs';
+import { access, copyFile as cpFile, mkdir } from 'node:fs/promises';
+import { dirname } from 'node:path';
 
-export const readFile = fs.promises.readFile;
-export const writeFile = fs.promises.writeFile;
-export const access = fs.promises.access;
-export const mkdir = fs.promises.mkdir;
-export const stat = fs.promises.stat;
-export const rmdir = fs.promises.rm;
+export { readFile, writeFile, access, mkdir, stat, rm as rmdir } from 'node:fs/promises';
 
-export async function exists(path: fs.PathLike): Promise<boolean> {
+export async function exists(path: PathLike): Promise<boolean> {
   try {
-    await access(path, fs.constants.F_OK);
+    await access(path, constants.F_OK);
 
     return true;
   } catch {
@@ -19,12 +14,11 @@ export async function exists(path: fs.PathLike): Promise<boolean> {
   }
 }
 
-const cpFile = promisify(fs.copyFile);
 export async function copyFile(src: string, dest: string): Promise<void> {
   const dir = dirname(dest);
   if (!(await exists(dir))) {
     await mkdir(dir, { recursive: true });
   }
 
-  await cpFile(src, dest, fs.constants.COPYFILE_FICLONE);
+  await cpFile(src, dest, constants.COPYFILE_FICLONE);
 }
