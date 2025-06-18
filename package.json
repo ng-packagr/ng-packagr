@@ -59,7 +59,7 @@
     "rollup": "^4.24.0"
   },
   "peerDependencies": {
-    "@angular/compiler-cli": "^20.0.0 || ^20.1.0-next.0",
+    "@angular/compiler-cli": "^20.1.0-next",
     "tailwindcss": "^2.0.0 || ^3.0.0 || ^4.0.0",
     "tslib": "^2.3.0",
     "typescript": ">=5.8 <5.9"
@@ -70,14 +70,14 @@
     }
   },
   "devDependencies": {
-    "@angular/cdk": "~20.0.0",
-    "@angular/common": "~20.0.0",
-    "@angular/compiler": "~20.0.0",
-    "@angular/compiler-cli": "~20.0.0",
-    "@angular/core": "~20.0.0",
-    "@angular/material": "~20.0.0",
-    "@angular/platform-browser": "~20.0.0",
-    "@angular/router": "~20.0.0",
+    "@angular/cdk": "~20.1.0-next",
+    "@angular/common": "~20.1.0-next",
+    "@angular/compiler": "~20.1.0-next",
+    "@angular/compiler-cli": "~20.1.0-next",
+    "@angular/core": "~20.1.0-next",
+    "@angular/material": "~20.1.0-next",
+    "@angular/platform-browser": "~20.1.0-next",
+    "@angular/router": "~20.1.0-next",
     "@commitlint/cli": "^19.0.0",
     "@commitlint/config-angular": "^19.0.0",
     "@types/chai": "^4.0.0",
