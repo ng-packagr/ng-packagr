@@ -2,9 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-# Changelog
+### [20.0.1](https://github.com/ng-packagr/ng-packagr/compare/20.0.0...20.0.1) (2025-06-18)
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### Bug Fixes
+
+* prevent 'Unexpected non-whitespace character' error ([d2701fa](https://github.com/ng-packagr/ng-packagr/commit/d2701faa800eab29c3419835810f1865eb97e650)), closes [#3080](https://github.com/ng-packagr/ng-packagr/issues/3080)
 
 ## [20.0.0](https://github.com/ng-packagr/ng-packagr/compare/19.1.1...20.0.0) (2025-05-28)
 
