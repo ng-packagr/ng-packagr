@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [20.1.0](https://github.com/ng-packagr/ng-packagr/compare/20.1.0-rc.0...20.1.0) (2025-07-09)
 
+### Bug Fixes
+
+* prevent 'Unexpected non-whitespace character' error ([dfb51b2](https://github.com/ng-packagr/ng-packagr/commit/dfb51b2da3d9c02cdb9e9bfa0bfe2547707e41c0)), closes [#3080](https://github.com/ng-packagr/ng-packagr/issues/3080)
+
+
 ## [20.1.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/20.1.0-next.0...20.1.0-rc.0) (2025-07-01)
 
 
