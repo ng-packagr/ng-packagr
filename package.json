@@ -62,7 +62,7 @@
     "@angular/compiler-cli": "^20.0.0 || ^20.1.0-next.0 || ^20.2.0-next.0",
     "tailwindcss": "^2.0.0 || ^3.0.0 || ^4.0.0",
     "tslib": "^2.3.0",
-    "typescript": ">=5.8 <5.9"
+    "typescript": ">=5.8 <6.0"
   },
   "peerDependenciesMeta": {
     "tailwindcss": {
@@ -70,14 +70,14 @@
     }
   },
   "devDependencies": {
-    "@angular/cdk": "~20.0.0",
-    "@angular/common": "~20.0.0",
-    "@angular/compiler": "~20.0.0",
-    "@angular/compiler-cli": "~20.0.0",
-    "@angular/core": "~20.0.0",
-    "@angular/material": "~20.0.0",
-    "@angular/platform-browser": "~20.0.0",
-    "@angular/router": "~20.0.0",
+    "@angular/cdk": "~20.2.0-next.2",
+    "@angular/common": "~20.2.0-next.2",
+    "@angular/compiler": "~20.2.0-next.2",
+    "@angular/compiler-cli": "~20.2.0-next.2",
+    "@angular/core": "~20.2.0-next.2",
+    "@angular/material": "~20.2.0-next.2",
+    "@angular/platform-browser": "~20.2.0-next.2",
+    "@angular/router": "~20.2.0-next.2",
     "@commitlint/cli": "^19.0.0",
     "@commitlint/config-angular": "^19.0.0",
     "@types/chai": "^4.0.0",
@@ -104,7 +104,7 @@
     "tailwindcss": "^3.2.0",
     "ts-node": "^10.2.1",
     "tslib": "^2.0.0",
-    "typescript": "5.8.3",
+    "typescript": "5.9.2",
     "zone.js": "^0.15.0"
   },
   "private": true,
