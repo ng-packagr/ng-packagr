@@ -71,10 +71,6 @@ importers:
       tinyglobby:
         specifier: ^0.2.12
         version: 0.2.14
-    optionalDependencies:
-      rollup:
-        specifier: ^4.24.0
-        version: 4.46.2
     devDependencies:
       '@angular/cdk':
         specifier: ~20.2.0-next.2
@@ -184,6 +180,10 @@ importers:
       zone.js:
         specifier: ^0.15.0
         version: 0.15.1
+    optionalDependencies:
+      rollup:
+        specifier: ^4.24.0
+        version: 4.46.2
 
 packages:
 
