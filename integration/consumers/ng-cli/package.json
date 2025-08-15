@@ -15,9 +15,9 @@
   },
   "private": true,
   "dependencies": {
-    "sample-custom": "file://../../samples/custom/dist/",
-    "@sample/material": "file://../../samples/material/dist/",
-    "@sample/secondary": "file://../../samples/secondary/dist/",
+    "sample-custom": "link://../../samples/custom/dist/",
+    "@sample/material": "link://../../samples/material/dist/",
+    "@sample/secondary": "link://../../samples/secondary/dist/",
     "@angular/cdk": "~20.0.0",
     "@angular/common": "~20.0.0",
     "@angular/compiler": "~20.0.0",
