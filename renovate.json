@@ -1,5 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>angular/dev-infra//renovate-presets/default.json5"],
-  "ignorePaths": ["integration/samples/**", "integration/watch/**"]
+  "extends": [
+    "github>angular/dev-infra//renovate-presets/default.json5"
+  ],
+  "ignorePaths": [
+    "integration/samples/**",
+    "integration/watch/**"
+  ],
+  "postUpgradeTasks": {
+    "commands": []
+  }
 }
