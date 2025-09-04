@@ -33,7 +33,7 @@
   "main": "./src/public_api.js",
   "typings": "./src/public_api.d.ts",
   "dependencies": {
-    "@ampproject/remapping": "^2.3.0",
+    "@jridgewell/remapping": "2.3.4",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/wasm-node": "^4.24.0",
     "ajv": "^8.17.1",
