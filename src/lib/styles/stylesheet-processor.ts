@@ -18,14 +18,7 @@ export class StylesheetProcessor extends ComponentStylesheetBundler {
     protected readonly cacheDirectory?: string | false,
     protected readonly watch?: boolean,
   ) {
-    // By default, browserslist defaults are too inclusive
-    // https://github.com/browserslist/browserslist/blob/83764ea81ffaa39111c204b02c371afa44a4ff07/index.js#L516-L522
-    // We change the default query to browsers that Angular support.
-    // https://angular.dev/reference/versions#browser-support
-    (browserslist.defaults as string[]) = browserslist(undefined, {
-      path: require.resolve('../../../.browserslistrc'),
-    });
-
+    browserslist.defaults = ['baseline widely available on 2025-08-20']
     const browserslistData = browserslist(undefined, { path: basePath });
     const searchDirs = generateSearchDirectories([projectBasePath]);
     const postcssConfiguration = loadPostcssConfiguration(searchDirs);
