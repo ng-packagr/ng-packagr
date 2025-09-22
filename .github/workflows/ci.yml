@@ -108,4 +108,4 @@ jobs:
         run: |
           pnpm -s publish:ci
           pushd dist
-          pnpm publish --access public --tag ${{ steps.npm_tag.outputs.NPM_TAG }}
+          pnpm publish --no-git-checks --access public --tag ${{ steps.npm_tag.outputs.NPM_TAG }}
