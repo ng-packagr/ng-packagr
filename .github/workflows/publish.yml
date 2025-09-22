@@ -69,10 +69,6 @@ jobs:
             NPM_TAG=next
           fi
           echo "NPM_TAG=$NPM_TAG" >> $GITHUB_OUTPUT
-      - name: Configure NPM authentication
-        run: pnpm config set '//registry.npmjs.org/:_authToken' "${NODE_AUTH_TOKEN}"
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       - name: Publish to NPM
         run: |
           pnpm -s publish:ci
