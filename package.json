@@ -123,5 +123,8 @@
     "integration:watch:specs": "cross-env TS_NODE_PROJECT=integration/tsconfig.specs.json jasmine-ts --random=false \"integration/watch/*.spec.ts\"",
     "test:specs": "cross-env TS_NODE_PROJECT=src/tsconfig.specs.json jasmine-ts \"src/**/*.spec.ts\"",
     "test": "pnpm -s build && pnpm -s test:specs && pnpm -s integration:samples && pnpm -s integration:specs && pnpm -s integration:watch:specs && pnpm -s integration:consumers"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": []
   }
 }
