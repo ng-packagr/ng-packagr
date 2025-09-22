@@ -35,6 +35,8 @@ jobs:
           run_install: false
       - name: Setup Node.js
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version-file: '.nvmrc'
       - run: pnpm install --frozen-lockfile
       - name: Build and test
         run: pnpm test
@@ -55,6 +57,8 @@ jobs:
           run_install: false
       - name: Setup Node.js
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version-file: '.nvmrc'
       - run: pnpm install --frozen-lockfile
       - name: Determine npm tag
         id: npm_tag
@@ -73,4 +77,4 @@ jobs:
         run: |
           pnpm -s publish:ci
           pushd dist
-          npm publish --tag ${{ steps.npm_tag.outputs.NPM_TAG }}
+          pnpx npm@^11.5.1 publish --tag ${{ steps.npm_tag.outputs.NPM_TAG }}

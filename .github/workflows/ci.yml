@@ -33,6 +33,8 @@ jobs:
           run_install: false
       - name: Setup Node.js
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version-file: '.nvmrc'
       - run: pnpm install --frozen-lockfile
       - name: Lint
         run: pnpm -s lint
@@ -62,6 +64,8 @@ jobs:
           run_install: false
       - name: Setup Node.js
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version-file: '.nvmrc'
       - run: pnpm install --frozen-lockfile
       - name: Build
         run: pnpm -s build
