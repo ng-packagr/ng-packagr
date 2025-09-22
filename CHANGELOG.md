@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [21.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-next.0...21.0.0-next.1) (2025-09-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* TypeScript versions older than 5.9 are no longer supported.
+
+### Bug Fixes
+
+* drop support for TypeScript 5.8 ([7b48224](https://github.com/ng-packagr/ng-packagr/commit/7b4822488868a752c76144a82e4b1c1ca927ab7d))
+
 ## [21.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/20.2.0...21.0.0-next.0) (2025-08-20)
 
 
