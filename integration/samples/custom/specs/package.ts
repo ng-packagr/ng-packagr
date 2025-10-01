@@ -22,7 +22,7 @@ describe(`sample-custom`, () => {
     });
 
     it(`should reference "typings" files`, () => {
-      expect(PACKAGE['typings']).to.equal('index.d.ts');
+      expect(PACKAGE['typings']).to.equal('types/sample-custom.d.ts');
     });
 
     it(`should keep 'scripts' section intact`, () => {

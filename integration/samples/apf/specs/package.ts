@@ -28,7 +28,7 @@ describe(`@sample/apf`, () => {
     });
 
     it(`should reference "typings" file`, () => {
-      expect(PACKAGE['typings']).to.equal('index.d.ts');
+      expect(PACKAGE['typings']).to.equal('types/sample-apf.d.ts');
     });
 
     it(`should reference "module" file`, () => {
@@ -43,7 +43,7 @@ describe(`@sample/apf`, () => {
       expect(PACKAGE['exports']).to.deep.equal({
         '.': {
           sass: './theming.scss',
-          types: './index.d.ts',
+          types: './types/sample-apf.d.ts',
           default: './fesm2022/sample-apf.mjs',
         },
         './theming': {
@@ -53,16 +53,16 @@ describe(`@sample/apf`, () => {
           default: './package.json',
         },
         './secondary': {
-          types: './secondary/index.d.ts',
+          types: './types/sample-apf-secondary.d.ts',
           default: './fesm2022/sample-apf-secondary.mjs',
         },
-        './secondary/testing': {
-          types: './secondary/testing/index.d.ts',
-          default: './fesm2022/sample-apf-secondary-testing.mjs',
-        },
         './testing': {
-          types: './testing/index.d.ts',
+          types: './types/sample-apf-testing.d.ts',
           default: './fesm2022/sample-apf-testing.mjs',
+        },
+        './secondary/testing': {
+          types: './types/sample-apf-secondary-testing.d.ts',
+          default: './fesm2022/sample-apf-secondary-testing.mjs',
         },
       });
     });

@@ -93,8 +93,8 @@ export class NgEntryPoint {
     return {
       directory: ensureUnixPath(secondaryDir),
       declarations: pathJoinWithDest('tmp-typings', secondaryDir, `${flatModuleFile}.d.ts`),
-      declarationsBundled: pathJoinWithDest(secondaryDir, 'index.d.ts'),
-      declarationsDir: pathJoinWithDest(secondaryDir),
+      declarationsBundled: pathJoinWithDest('types', `${flatModuleFile}.d.ts`),
+      declarationsDir: pathJoinWithDest('types'),
       esm2022: pathJoinWithDest('tmp-esm2022', secondaryDir, `${flatModuleFile}.js`),
       fesm2022: pathJoinWithDest('fesm2022', `${flatModuleFile}.mjs`),
       fesm2022Dir: pathJoinWithDest('fesm2022'),

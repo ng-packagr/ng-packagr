@@ -7,7 +7,7 @@ import { Node } from '../../graph/node';
 import { isInProgress } from '../../graph/select';
 import { transformFromPromise } from '../../graph/transform';
 import { colors } from '../../utils/color';
-import { copyFile, exists, readFile, rmdir, stat, writeFile } from '../../utils/fs';
+import { copyFile, mkdir, rmdir, stat, writeFile } from '../../utils/fs';
 import * as log from '../../utils/log';
 import { ensureUnixPath } from '../../utils/path';
 import { EntryPointNode, PackageNode, fileUrl, isEntryPoint, isPackage } from '../nodes';
@@ -75,28 +75,19 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
       }
       spinner.succeed();
     } else if (ngEntryPoint.isSecondaryEntryPoint) {
-      if (options.watch) {
-        // Update the watch version of the primary entry point `package.json` file.
-        // this is needed because of Webpack's 5 `cachemanagedpaths`
-        // https://github.com/ng-packagr/ng-packagr/issues/2069
-        const primary = ngPackageNode.data.primary;
-        const packageJsonPath = path.join(primary.destinationPath, 'package.json');
-
-        if (await exists(packageJsonPath)) {
-          const packageJson = JSON.parse(await readFile(packageJsonPath, { encoding: 'utf8' }));
-          packageJson.version = generateWatchVersion();
-          await writeFile(
-            path.join(primary.destinationPath, 'package.json'),
-            JSON.stringify(packageJson, undefined, 2),
-          );
-        }
-      }
-
       // Write a package.json in each secondary entry-point
       // This is need for esbuild to secondary entry-points in dist correctly.
+      await mkdir(ngEntryPoint.destinationPath, { recursive: true });
       await writeFile(
         path.join(ngEntryPoint.destinationPath, 'package.json'),
-        JSON.stringify({ module: relativeUnixFromDestPath(destinationFiles.fesm2022) }, undefined, 2),
+        JSON.stringify(
+          {
+            module: relativeUnixFromDestPath(destinationFiles.fesm2022),
+            typings: relativeUnixFromDestPath(destinationFiles.declarationsBundled),
+          },
+          undefined,
+          2,
+        ),
       );
     }
 

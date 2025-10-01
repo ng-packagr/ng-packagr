@@ -49,16 +49,16 @@ describe('@sample/apf', () => {
   });
 
   describe('declarations', () => {
-    describe('index.d.ts', () => {
+    describe('types/sample-apf.d.ts', () => {
       it(`should exist`, () => {
-        const file = fs.existsSync(path.join(DIST, 'index.d.ts'));
+        const file = fs.existsSync(path.join(DIST, 'types/sample-apf.d.ts'));
         expect(file).to.be.true;
       });
     });
 
-    describe('secondary/index.d.ts', () => {
+    describe('types/sample-apf-secondary.d.ts', () => {
       it(`should exist`, () => {
-        const file = fs.existsSync(path.join(DIST, 'secondary/index.d.ts'));
+        const file = fs.existsSync(path.join(DIST, 'types/sample-apf-secondary.d.ts'));
         expect(file).to.be.true;
       });
     });
