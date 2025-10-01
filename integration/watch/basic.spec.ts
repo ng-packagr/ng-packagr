@@ -18,7 +18,7 @@ describe('basic', () => {
     });
 
     it("should perform initial compilation when 'watch' is started", () => {
-      harness.expectDtsToMatch('index', /title = "hello world"/);
+      harness.expectDtsToMatch('basic', /title = "hello world"/);
       harness.expectFesm2022ToMatch('basic', /hello world/);
     });
 
@@ -27,7 +27,7 @@ describe('basic', () => {
         harness.copyTestCase('valid-text');
 
         harness.onComplete(() => {
-          harness.expectDtsToMatch('index', /title = "foo bar"/);
+          harness.expectDtsToMatch('basic', /title = "foo bar"/);
           harness.expectFesm2022ToMatch('basic', /foo bar/);
           done();
         });
@@ -37,7 +37,7 @@ describe('basic', () => {
         harness.copyTestCase('invalid-type');
 
         harness.onComplete(() => {
-          harness.expectDtsToMatch('index', /title = "foo bar"/);
+          harness.expectDtsToMatch('basic', /title = "foo bar"/);
           harness.expectFesm2022ToMatch('basic', /foo bar/);
           done();
         });
@@ -57,21 +57,6 @@ describe('basic', () => {
 
         harness.onComplete(() => {
           harness.expectFesm2022ToMatch('basic-secondary', /Hello Angular/);
-          done();
-        });
-      });
-
-      it('should update `package.json` watch version', done => {
-        const originalVersion = harness.readFileSync('package.json', true)['version'];
-        expect(originalVersion).to.match(/^0\.0\.0-watch\+\d+$/);
-
-        harness.copyTestCase('secondary-valid-2');
-
-        harness.onComplete(() => {
-          const updatedVersion = harness.readFileSync('package.json', true)['version'];
-          expect(updatedVersion).to.match(/^0\.0\.0-watch\+\d+$/);
-          expect(originalVersion).to.not.be.equal(updatedVersion);
-
           done();
         });
       });

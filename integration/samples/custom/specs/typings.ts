@@ -3,10 +3,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`sample-custom`, () => {
-  describe(`index.d.ts`, () => {
+  describe(`sample-custom.d.ts`, () => {
     let TYPINGS;
     beforeAll(() => {
-      TYPINGS = fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'index.d.ts'), 'utf-8');
+      TYPINGS = fs.readFileSync(path.resolve(__dirname, '..', 'dist/types/sample-custom.d.ts'), 'utf-8');
     });
 
     it(`should exist`, () => {

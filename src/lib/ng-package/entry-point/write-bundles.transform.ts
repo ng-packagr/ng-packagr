@@ -29,8 +29,8 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
 
     const cacheKey = await generateKey(
       ngEntryPoint.moduleId,
-      fesm2022Dir,
       declarationsDir,
+      fesm2022Dir,
       tsConfig.options.compilationMode,
       (tsConfig.options.declarationMap ?? false).toString(),
     );
@@ -95,8 +95,7 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
           }),
           rollupBundleFile({
             entry: declarations,
-            entryName: 'index',
-            // entryName: ngEntryPoint.flatModuleFile,
+            entryName: ngEntryPoint.flatModuleFile,
             moduleName: ngEntryPoint.moduleId,
             dir: declarationsDir,
             cache: cache.rollupTypesCache,

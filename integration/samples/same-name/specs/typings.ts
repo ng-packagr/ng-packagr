@@ -3,10 +3,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 describe(`@sample/same-name`, () => {
-  describe(`index.d.ts`, () => {
+  describe(`sample-testing.d.ts`, () => {
     let TYPINGS;
     beforeAll(() => {
-      TYPINGS = fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'index.d.ts'), 'utf-8');
+      TYPINGS = fs.readFileSync(path.resolve(__dirname, '..', 'dist/types/sample-testing.d.ts'), 'utf-8');
     });
 
     it(`should exist`, () => {
@@ -14,10 +14,10 @@ describe(`@sample/same-name`, () => {
     });
   });
 
-  describe(`testing/index.d.ts`, () => {
+  describe(`sample-testing-testing.d.ts`, () => {
     let TYPINGS;
     beforeAll(() => {
-      TYPINGS = fs.readFileSync(path.resolve(__dirname, '..', 'dist', 'testing', 'index.d.ts'), 'utf-8');
+      TYPINGS = fs.readFileSync(path.resolve(__dirname, '..', 'dist/types/sample-testing-testing.d.ts'), 'utf-8');
     });
 
     it(`should exist`, () => {
