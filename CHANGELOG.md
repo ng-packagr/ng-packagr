@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [21.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-next.3...21.0.0-next.4) (2025-10-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* The `javascriptEnabled` option for Less is no longer supported. Projects relying on inline JavaScript within Less files will need to refactor their stylesheets to remove this dependency.
+
+### Features
+
+* write the types in `types` directory ([7a5e8fb](https://github.com/ng-packagr/ng-packagr/commit/7a5e8fbd51010db91d0a74bf6efb6c0eb6732a00))
+
+
+### Bug Fixes
+
+* remove deprecated `javascriptEnabled` option for Less ([d57278d](https://github.com/ng-packagr/ng-packagr/commit/d57278d23f446996ba8ac72d260fd5650fba8cc8))
+
 ## [21.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-next.2...21.0.0-next.3) (2025-09-22)
 
 ## [21.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-next.1...21.0.0-next.2) (2025-09-22)
