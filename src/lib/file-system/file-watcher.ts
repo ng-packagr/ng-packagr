@@ -4,7 +4,7 @@ import * as path from 'path';
 import { Observable, Observer } from 'rxjs';
 import { BuildGraph } from '../graph/build-graph';
 import { Node, STATE_PENDING } from '../graph/node';
-import { fileUrl, fileUrlPath, isEntryPoint } from '../ng-package/nodes';
+import { EntryPointNode, fileUrl, fileUrlPath, isEntryPoint } from '../ng-package/nodes';
 import * as log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 import { FileCache } from './file-cache';
@@ -126,6 +126,7 @@ export function invalidateEntryPointsAndCacheOnFileChange(
   }
 
   const entryPoints = graph.filter(isEntryPoint);
+  const dirtyEntryPoints = new Set<EntryPointNode>();
   for (const entryPoint of entryPoints) {
     let isDirty = false;
     if (potentialStylesResources.size > 0) {
@@ -144,6 +145,17 @@ export function invalidateEntryPointsAndCacheOnFileChange(
     if (isDirty) {
       entryPoint.state = STATE_PENDING;
       invalidatedEntryPoint = true;
+      dirtyEntryPoints.add(entryPoint);
+    }
+  }
+
+  for (const dirtyEntryPoint of dirtyEntryPoints) {
+    for (const dependeeNode of dirtyEntryPoint.dependees) {
+      if (isEntryPoint(dependeeNode) && dependeeNode.state !== STATE_PENDING) {
+        dependeeNode.state = STATE_PENDING;
+        invalidatedEntryPoint = true;
+        dirtyEntryPoints.add(dependeeNode);
+      }
     }
   }
 
