@@ -33,6 +33,7 @@ jobs:
         uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: '.nvmrc'
+          cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - name: Lint
         run: pnpm -s lint
@@ -64,6 +65,7 @@ jobs:
         uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: '.nvmrc'
+          cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - name: Build
         run: pnpm -s build
