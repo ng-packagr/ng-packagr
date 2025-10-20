@@ -18,7 +18,7 @@ export class StylesheetProcessor extends ComponentStylesheetBundler {
     protected readonly cacheDirectory?: string | false,
     protected readonly watch?: boolean,
   ) {
-    browserslist.defaults = ['baseline widely available on 2025-08-20']
+    browserslist.defaults = ['baseline widely available on 2025-10-20']
     const browserslistData = browserslist(undefined, { path: basePath });
     const searchDirs = generateSearchDirectories([projectBasePath]);
     const postcssConfiguration = loadPostcssConfiguration(searchDirs);
