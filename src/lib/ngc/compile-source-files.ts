@@ -6,7 +6,6 @@ import { EntryPointNode, PackageNode, isEntryPointInProgress, isPackage } from '
 import { NgPackagrOptions } from '../ng-package/options.di';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { augmentProgramWithVersioning, cacheCompilerHost } from '../ts/cache-compiler-host';
-import { ngCompilerCli } from '../utils/load-esm';
 import * as log from '../utils/log';
 
 export async function compileSourceFiles(
@@ -17,7 +16,7 @@ export async function compileSourceFiles(
   extraOptions?: Partial<CompilerOptions>,
   stylesheetProcessor?: StylesheetProcessor,
 ) {
-  const { NgtscProgram, formatDiagnostics } = await ngCompilerCli();
+  const { NgtscProgram, formatDiagnostics } = await import('@angular/compiler-cli');
   const { cacheDirectory, watch, cacheEnabled } = options;
   const tsConfigOptions: CompilerOptions = { ...tsConfig.options, ...extraOptions };
   const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
