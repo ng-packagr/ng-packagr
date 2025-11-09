@@ -58,6 +58,12 @@ Your `tsconfig.lib.json` can extend it
 }
 ```
 
+If you are using `ng-packagr` CLI, use the `--config` flag.
+
+```bash
+ng-packagr --config=tsconfig.lib.json
+```
+
 ## Angular CLI Users
 
 Overriding a tsconfig for Angular CLI users is straight forward as Angular CLI already uses the API. All you need to do is amend `tsconfig.lib.json` under the library folder.
