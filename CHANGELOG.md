@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [21.0.0-rc.1](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-rc.0...21.0.0-rc.1) (2025-11-12)
+
+
+### Performance
+
+* reduce memory usage for multiple entry-points (non-watch) ([01bdd42](https://github.com/ng-packagr/ng-packagr/commit/01bdd42c15dbce078d427524848d0d6c75d985a0)), closes [#3168](https://github.com/ng-packagr/ng-packagr/issues/3168)
+
 ## [21.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-next.4...21.0.0-rc.0) (2025-10-29)
 
 ## [21.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-next.3...21.0.0-next.4) (2025-10-01)
