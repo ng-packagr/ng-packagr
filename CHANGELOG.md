@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [20.3.1](https://github.com/ng-packagr/ng-packagr/compare/20.3.0...20.3.1) (2025-11-12)
+
+
+### Performance
+
+* reduce memory usage for multiple entry-points (non-watch) ([e063368](https://github.com/ng-packagr/ng-packagr/commit/e0633680a119d42e74f8247438f9bc47049327fd)), closes [#3168](https://github.com/ng-packagr/ng-packagr/issues/3168)
+
 ## [20.3.0](https://github.com/ng-packagr/ng-packagr/compare/20.2.0...20.3.0) (2025-09-10)
  * No visible changes
 
