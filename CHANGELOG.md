@@ -9,6 +9,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 * reduce memory usage for multiple entry-points (non-watch) ([01bdd42](https://github.com/ng-packagr/ng-packagr/commit/01bdd42c15dbce078d427524848d0d6c75d985a0)), closes [#3168](https://github.com/ng-packagr/ng-packagr/issues/3168)
 
+### [20.3.1](https://github.com/ng-packagr/ng-packagr/compare/20.3.0...20.3.1) (2025-11-12)
+
+
+### Performance
+
+* reduce memory usage for multiple entry-points (non-watch) ([e063368](https://github.com/ng-packagr/ng-packagr/commit/e0633680a119d42e74f8247438f9bc47049327fd)), closes [#3168](https://github.com/ng-packagr/ng-packagr/issues/3168)
+
 ## [21.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-next.4...21.0.0-rc.0) (2025-10-29)
 
 ## [21.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-next.3...21.0.0-next.4) (2025-10-01)
