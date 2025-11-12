@@ -58,8 +58,8 @@ export class EntryPointNode extends Node {
 
   constructor(
     public readonly url: string,
-     sourcesFileCache: FileCache,
-     moduleResolutionCache: ts.ModuleResolutionCache,
+    sourcesFileCache: FileCache,
+    moduleResolutionCache: ts.ModuleResolutionCache,
   ) {
     super(url);
 
@@ -92,8 +92,8 @@ export class EntryPointNode extends Node {
     tsConfig?: ParsedConfiguration;
   };
 
-  dipose(): void {
-    void this.cache.stylesheetProcessor?.destroy();
+  dispose(): void {
+    this.cache.stylesheetProcessor?.destroy();
     this.cache = undefined;
   }
 }

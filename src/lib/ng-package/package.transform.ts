@@ -234,7 +234,7 @@ const scheduleEntryPoints = (epTransform: Transform, options: NgPackagrOptions):
             }),
             finalize(() => {
               if (!options.watch) {
-                ep.dipose();
+                ep.dispose();
               }
             }),
           ),
