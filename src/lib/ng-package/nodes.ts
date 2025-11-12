@@ -4,7 +4,7 @@ import ts from 'typescript';
 import { FileCache } from '../file-system/file-cache';
 import { ComplexPredicate } from '../graph/build-graph';
 import { Node } from '../graph/node';
-import { by,  isInProgress, isPending } from '../graph/select';
+import { by, isInProgress, isPending } from '../graph/select';
 import { AngularDiagnosticsCache } from '../ngc/angular-diagnostics-cache';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { DestinationFiles, NgEntryPoint } from './entry-point/entry-point';
@@ -91,6 +91,11 @@ export class EntryPointNode extends Node {
     entryPoint: NgEntryPoint;
     tsConfig?: ParsedConfiguration;
   };
+
+  dipose(): void {
+    void this.cache.stylesheetProcessor?.destroy();
+    this.cache = undefined;
+  }
 }
 
 export class PackageNode extends Node {
