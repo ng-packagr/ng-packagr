@@ -69,7 +69,7 @@ export const packageTransformFactory =
 
     const buildTransform = options.watch
       ? watchTransformFactory(project, options, analyseSourcesTransform, entryPointTransform)
-      : buildTransformFactory(project, analyseSourcesTransform, entryPointTransform);
+      : buildTransformFactory(project, options, analyseSourcesTransform, entryPointTransform);
 
     const pkgUri = ngUrl(project);
     const ngPkg = new PackageNode(pkgUri);
@@ -153,7 +153,7 @@ const watchTransformFactory =
         return observableOf(graph).pipe(
           analyseSourcesTransform,
           // Next, run through the entry point transformation (assets rendering, code compilation)
-          scheduleEntryPoints(entryPointTransform),
+          scheduleEntryPoints(entryPointTransform, options),
           repeat({ delay: () => (graph.some(isEntryPointPending()) ? of(1) : EMPTY) }),
           last(),
           tap(() => printBuiltAngularPackage(ngPkg, startTime)),
@@ -170,7 +170,7 @@ const watchTransformFactory =
   };
 
 const buildTransformFactory =
-  (project: string, analyseSourcesTransform: Transform, entryPointTransform: Transform) =>
+  (project: string, options: NgPackagrOptions, analyseSourcesTransform: Transform, entryPointTransform: Transform) =>
   (source$: Observable<BuildGraph>): Observable<BuildGraph> => {
     return source$.pipe(
       switchMap(graph => {
@@ -182,14 +182,14 @@ const buildTransformFactory =
           // Analyse dependencies and external resources for each entry point
           analyseSourcesTransform,
           // Next, run through the entry point transformation (assets rendering, code compilation)
-          scheduleEntryPoints(entryPointTransform),
+          scheduleEntryPoints(entryPointTransform, options),
           tap(() => printBuiltAngularPackage(ngPkg, startTime)),
         );
       }),
     );
   };
 
-const scheduleEntryPoints = (epTransform: Transform): Transform =>
+const scheduleEntryPoints = (epTransform: Transform, options: NgPackagrOptions): Transform =>
   pipe(
     concatMap(graph => {
       // Calculate node/dependency depth and determine build order
@@ -231,6 +231,11 @@ const scheduleEntryPoints = (epTransform: Transform): Transform =>
               ep.state = STATE_ERROR;
 
               throw err;
+            }),
+            finalize(() => {
+              if (!options.watch) {
+                ep.dipose();
+              }
             }),
           ),
         ),
