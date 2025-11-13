@@ -356,7 +356,8 @@ function generatePackageExports(
 
   insertMappingOrError('./package.json', { default: './package.json' });
 
-  for (const entryPoint of entryPoints) {
+  const entryPointsSorted = entryPoints.sort((a, b) => a.url.localeCompare(b.url));
+  for (const entryPoint of entryPointsSorted) {
     const { destinationFiles, isSecondaryEntryPoint } = entryPoint.data.entryPoint;
     const subpath = isSecondaryEntryPoint ? `./${destinationFiles.directory}` : '.';
 
