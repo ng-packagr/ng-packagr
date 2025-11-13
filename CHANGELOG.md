@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [20.3.2](https://github.com/ng-packagr/ng-packagr/compare/20.3.1...20.3.2) (2025-11-13)
+
+
+### Bug Fixes
+
+* ensure deterministic ordering of 'exports' field ([952ca64](https://github.com/ng-packagr/ng-packagr/commit/952ca64fb8e80c55e8d1a95c5bb23776eaeb5d9d)), closes [#3175](https://github.com/ng-packagr/ng-packagr/issues/3175)
+
 ## [21.0.0-rc.1](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-rc.0...21.0.0-rc.1) (2025-11-12)
 
 
