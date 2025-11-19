@@ -2,12 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [21.0.0](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-rc.1...21.0.0) (2025-11-19)
+## [21.0.0](https://github.com/ng-packagr/ng-packagr/compare/20.3.2...21.0.0) (2025-11-19)
 
+### ⚠ BREAKING CHANGES
+
+* TypeScript versions older than 5.9 are no longer supported.
+* The `javascriptEnabled` option for Less is no longer supported. Projects relying on inline JavaScript within Less files will need to refactor their stylesheets to remove this dependency.
 
 ### Bug Fixes
 
-* ensure deterministic ordering of 'exports' field ([9f77f47](https://github.com/ng-packagr/ng-packagr/commit/9f77f47d0cba9e842c8243101359d7af733c8afc)), closes [#3175](https://github.com/ng-packagr/ng-packagr/issues/3175)
+* drop support for TypeScript 5.8 ([7b48224](https://github.com/ng-packagr/ng-packagr/commit/7b4822488868a752c76144a82e4b1c1ca927ab7d))
+* remove deprecated `javascriptEnabled` option for Less ([d57278d](https://github.com/ng-packagr/ng-packagr/commit/d57278d23f446996ba8ac72d260fd5650fba8cc8))
+
+### Features
+
+* write the types in `types` directory ([7a5e8fb](https://github.com/ng-packagr/ng-packagr/commit/7a5e8fbd51010db91d0a74bf6efb6c0eb6732a00))
+* add support for Angular version 21 ([ed70e23](https://github.com/ng-packagr/ng-packagr/commit/ed70e2326deb257fbcb789cdf07b71b31f236f4b))
 
 ## [20.3.2](https://github.com/ng-packagr/ng-packagr/compare/20.3.1...20.3.2) (2025-11-13)
 
@@ -16,13 +26,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 * ensure deterministic ordering of 'exports' field ([952ca64](https://github.com/ng-packagr/ng-packagr/commit/952ca64fb8e80c55e8d1a95c5bb23776eaeb5d9d)), closes [#3175](https://github.com/ng-packagr/ng-packagr/issues/3175)
 
-## [21.0.0-rc.1](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-rc.0...21.0.0-rc.1) (2025-11-12)
-
-
-### Performance
-
-* reduce memory usage for multiple entry-points (non-watch) ([01bdd42](https://github.com/ng-packagr/ng-packagr/commit/01bdd42c15dbce078d427524848d0d6c75d985a0)), closes [#3168](https://github.com/ng-packagr/ng-packagr/issues/3168)
-
 ## [20.3.1](https://github.com/ng-packagr/ng-packagr/compare/20.3.0...20.3.1) (2025-11-12)
 
 
@@ -30,45 +33,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 * reduce memory usage for multiple entry-points (non-watch) ([e063368](https://github.com/ng-packagr/ng-packagr/commit/e0633680a119d42e74f8247438f9bc47049327fd)), closes [#3168](https://github.com/ng-packagr/ng-packagr/issues/3168)
 
-## [21.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-next.4...21.0.0-rc.0) (2025-10-29)
-
-## [21.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-next.3...21.0.0-next.4) (2025-10-01)
-
-
-### ⚠ BREAKING CHANGES
-
-* The `javascriptEnabled` option for Less is no longer supported. Projects relying on inline JavaScript within Less files will need to refactor their stylesheets to remove this dependency.
-
-### Features
-
-* write the types in `types` directory ([7a5e8fb](https://github.com/ng-packagr/ng-packagr/commit/7a5e8fbd51010db91d0a74bf6efb6c0eb6732a00))
-
-
-### Bug Fixes
-
-* remove deprecated `javascriptEnabled` option for Less ([d57278d](https://github.com/ng-packagr/ng-packagr/commit/d57278d23f446996ba8ac72d260fd5650fba8cc8))
-
-## [21.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-next.2...21.0.0-next.3) (2025-09-22)
-
-## [21.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-next.1...21.0.0-next.2) (2025-09-22)
-
-## [21.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/21.0.0-next.0...21.0.0-next.1) (2025-09-22)
-
-
-### ⚠ BREAKING CHANGES
-
-* TypeScript versions older than 5.9 are no longer supported.
-
-### Bug Fixes
-
-* drop support for TypeScript 5.8 ([7b48224](https://github.com/ng-packagr/ng-packagr/commit/7b4822488868a752c76144a82e4b1c1ca927ab7d))
-
-## [21.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/20.2.0...21.0.0-next.0) (2025-08-20)
-
-
-### Features
-
-* add support for Angular version 21 ([ed70e23](https://github.com/ng-packagr/ng-packagr/commit/ed70e2326deb257fbcb789cdf07b71b31f236f4b))
 
 ## [20.2.0](https://github.com/ng-packagr/ng-packagr/compare/20.2.0-rc.0...20.2.0) (2025-08-20)
 
