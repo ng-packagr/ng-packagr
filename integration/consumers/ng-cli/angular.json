@@ -20,9 +20,6 @@
             "index": "src/index.html",
             "tsConfig": "src/tsconfig.app.json",
             "preserveSymlinks": true,
-            "polyfills": [
-              "zone.js"
-            ],
             "progress": false,
             "assets": ["src/assets", "src/favicon.ico"],
             "styles": ["src/styles.css"],
