@@ -97,7 +97,7 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
             entry: declarations,
             entryName: ngEntryPoint.flatModuleFile,
             moduleName: ngEntryPoint.moduleId,
-            dir: declarationsDir,
+            file: join(declarationsDir, `${ngEntryPoint.flatModuleFile}.d.ts`),
             cache: cache.rollupTypesCache,
             cacheDirectory,
             fileCache: cache.outputCache,
