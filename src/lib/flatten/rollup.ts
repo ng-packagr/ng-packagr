@@ -37,6 +37,7 @@ export async function rollupBundleFile(
   const dtsMode = opts.entry.endsWith('.d.ts');
   let outExtension: string;
   let plugins: InputPluginOption[];
+  const jail = path.dirname(opts.entry);
 
   if (dtsMode) {
     outExtension = '.d.ts';
@@ -49,7 +50,7 @@ export async function rollupBundleFile(
   // Create the bundle
   const bundle = await rollup.rollup({
     context: 'this',
-    external: moduleId => isExternalDependency(moduleId),
+    external: (moduleId, parentId) => isExternalDependency(moduleId, parentId, jail),
     cache: opts.cache ?? (cacheDirectory ? await readCacheEntry(cacheDirectory, opts.cacheKey) : undefined),
     input: opts.entry,
     plugins,
@@ -119,12 +120,12 @@ async function ensureRollup(): Promise<void> {
   }
 }
 
-function isExternalDependency(moduleId: string): boolean {
+function isExternalDependency(moduleId: string, parentId: string, jail: string): boolean {
   // more information about why we don't check for 'node_modules' path
   // https://github.com/rollup/rollup-plugin-node-resolve/issues/110#issuecomment-350353632
   if (moduleId[0] === '.' || moduleId[0] === '/' || path.isAbsolute(moduleId)) {
     // if it's either 'absolute', marked to embed, starts with a '.' or '/' or is the umd bundle and is tslib
-    return false;
+    return !path.join(parentId, moduleId).startsWith(jail);
   }
 
   return true;
