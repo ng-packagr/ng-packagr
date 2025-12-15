@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [21.0.1](https://github.com/ng-packagr/ng-packagr/compare/21.0.0...21.0.1) (2025-12-15)
+
+
+### Bug Fixes
+
+* correctly identify external modules ([e0f7b22](https://github.com/ng-packagr/ng-packagr/commit/e0f7b22dfd59470a7458191b6784d66cbf8d083a))
+
 ## [21.1.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/21.0.0...21.1.0-next.0) (2025-11-19)
 
 ## [21.1.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/21.0.0...21.1.0-next.0) (2025-11-19)
