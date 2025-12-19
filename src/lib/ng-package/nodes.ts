@@ -86,7 +86,7 @@ export class EntryPointNode extends Node {
     angularDiagnosticCache: AngularDiagnosticsCache;
   };
 
-  data: {
+  declare data: {
     destinationFiles: DestinationFiles;
     entryPoint: NgEntryPoint;
     tsConfig?: ParsedConfiguration;
@@ -100,7 +100,7 @@ export class EntryPointNode extends Node {
 
 export class PackageNode extends Node {
   readonly type = TYPE_NG_PACKAGE;
-  data: NgPackage;
+  declare data: NgPackage;
 
   cache = {
     sourcesFileCache: new FileCache(),
