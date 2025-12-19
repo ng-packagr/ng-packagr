@@ -4,6 +4,7 @@ import path from 'node:path';
 import { BuildOutputFileType, BundleContextResult, BundlerContext } from './bundler-context';
 import { MemoryCache } from './cache';
 import { BundleStylesheetOptions, createStylesheetBundleOptions } from './stylesheets/bundle-options';
+import { shutdownSassWorkerPool } from './stylesheets/sass-language';
 
 /**
  * Bundles component stylesheets. A stylesheet can be either an inline stylesheet that
@@ -30,7 +31,7 @@ export class ComponentStylesheetBundler {
       return new BundlerContext(this.options.workspaceRoot, this.incremental, loadCache => {
         const buildOptions = createStylesheetBundleOptions(this.options, loadCache);
 
-          buildOptions.entryPoints = [entry];
+        buildOptions.entryPoints = [entry];
 
         return buildOptions;
       });
@@ -43,9 +44,7 @@ export class ComponentStylesheetBundler {
     // Use a hash of the inline stylesheet content to ensure a consistent identifier. External stylesheets will resolve
     // to the actual stylesheet file path.
     // TODO: Consider xxhash instead for hashing
-    const id = createHash('sha256')
-      .update(data)
-      .digest('hex');
+    const id = createHash('sha256').update(data).digest('hex');
     const entry = [language, id, filename].join(';');
 
     const bundlerContext = await this.#inlineContexts.getOrCreate(entry, () => {
@@ -55,7 +54,7 @@ export class ComponentStylesheetBundler {
         const buildOptions = createStylesheetBundleOptions(this.options, loadCache, {
           [entry]: data,
         });
-          buildOptions.entryPoints = [`${namespace};${entry}`];
+        buildOptions.entryPoints = [`${namespace};${entry}`];
 
         buildOptions.plugins.push({
           name: 'angular-component-styles',
@@ -119,7 +118,7 @@ export class ComponentStylesheetBundler {
     this.#fileContexts.clear();
     this.#inlineContexts.clear();
 
-    await Promise.allSettled(contexts.map(context => context.dispose()));
+    await Promise.allSettled([shutdownSassWorkerPool(), contexts.map(context => context.dispose())]);
   }
 
   private extractResult(result: BundleContextResult, referencedFiles: Set<string> | undefined) {
