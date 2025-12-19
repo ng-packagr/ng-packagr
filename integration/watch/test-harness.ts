@@ -10,13 +10,17 @@ import { ngPackagr } from '../../dist';
  */
 export class TestHarness {
   private harnessTempDir = path.join(__dirname, '.tmp');
-  private testTempPath = path.join(this.harnessTempDir, this.testName);
-  private testSrc = path.join(__dirname, this.testName);
-  private testDistPath = path.join(this.testTempPath, 'dist');
-  private ngPackagr$$: Subscription;
+  private testTempPath: string;
+  private testDistPath: string;
+  private testSrc: string;
+  private ngPackagr$$: Subscription | undefined;
   private loggerStubs: Record<string, jasmine.Spy> = {};
 
-  constructor(private testName: string) {
+  constructor(testName: string) {
+    this.testTempPath = path.join(this.harnessTempDir, testName);
+    this.testSrc = path.join(__dirname, testName);
+    this.testDistPath = path.join(this.testTempPath, 'dist');
+
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
   }
 
@@ -35,10 +39,7 @@ export class TestHarness {
 
   dispose(): void {
     this.loggerStubs = {};
-
-    if (this.ngPackagr$$) {
-      this.ngPackagr$$.unsubscribe();
-    }
+    this.ngPackagr$$?.unsubscribe();
 
     this.emptyTestDirectory();
   }

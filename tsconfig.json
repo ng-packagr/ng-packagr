@@ -3,7 +3,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2019",
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "noUnusedLocals": true,
@@ -16,7 +15,8 @@
     "allowSyntheticDefaultImports": true,
     "inlineSources": true,
     "esModuleInterop": true,
-    "lib": ["es2022"],
+    "target": "es2023",
+    "lib": ["es2023"],
     "types": ["chai", "jasmine", "node"]
   },
   "exclude": ["dist", "integration"]
