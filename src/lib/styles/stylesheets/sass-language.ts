@@ -6,22 +6,15 @@ import { MemoryCache } from '../cache';
 import type { SassWorkerImplementation } from '../sass/sass-service';
 import { StylesheetLanguage, StylesheetPluginOptions } from './stylesheet-plugin-factory';
 
-let sassWorkerPool: SassWorkerImplementation | undefined;
 let sassWorkerPoolPromise: Promise<SassWorkerImplementation> | undefined;
-
 function isSassException(error: unknown): error is Exception {
   return !!error && typeof error === 'object' && 'sassMessage' in error;
 }
 
-export function shutdownSassWorkerPool(): void {
-  if (sassWorkerPool) {
-    void sassWorkerPool.close();
-    sassWorkerPool = undefined;
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  } else if (sassWorkerPoolPromise) {
-    void sassWorkerPoolPromise.then(shutdownSassWorkerPool);
-  }
+export async function shutdownSassWorkerPool(): Promise<void> {
+  const pool = await sassWorkerPoolPromise;
   sassWorkerPoolPromise = undefined;
+  await pool?.close();
 }
 
 export const SassStylesheetLanguage = Object.freeze<StylesheetLanguage>({
@@ -71,14 +64,11 @@ async function compileString(
   resolveUrl: (url: string, options: CanonicalizeContext) => Promise<ResolveResult>,
 ): Promise<OnLoadResult> {
   // Lazily load Sass when a Sass file is found
-  if (sassWorkerPool === undefined) {
-    if (sassWorkerPoolPromise === undefined) {
-      sassWorkerPoolPromise = import('../sass/sass-service').then(
-        sassService => new sassService.SassWorkerImplementation(true),
-      );
-    }
-    sassWorkerPool = await sassWorkerPoolPromise;
-  }
+  sassWorkerPoolPromise ??= import('../sass/sass-service').then(
+    sassService => new sassService.SassWorkerImplementation(true),
+  );
+
+  const sassWorkerPool = await sassWorkerPoolPromise;
 
   // Cache is currently local to individual compile requests.
   // Caching follows Sass behavior where a given url will always resolve to the same value
