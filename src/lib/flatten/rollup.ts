@@ -7,22 +7,31 @@ import { readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
 import { fileLoaderPlugin } from './file-loader-plugin';
 
-/**
- * Options used in `ng-packagr` for writing flat bundle files.
- *
- * These options are passed through to rollup.
- */
-export interface RollupOptions {
+interface RollupCommonOptions {
   moduleName: string;
   entry: string;
   entryName: string;
-  dir: string;
   cache?: RollupCache;
   cacheDirectory?: string | false;
   fileCache: OutputFileCache;
   cacheKey: string;
   sourcemap: boolean;
 }
+
+interface RollupOptionsDir extends RollupCommonOptions {
+  dir: string;
+}
+
+interface RollupOptionsFile extends RollupCommonOptions {
+  file: string;
+}
+
+/**
+ * Options used in `ng-packagr` for writing flat bundle files.
+ *
+ * These options are passed through to rollup.
+ */
+export type RollupOptions = RollupOptionsDir | RollupOptionsFile;
 
 let rollup: typeof import('rollup') | undefined;
 
@@ -77,7 +86,7 @@ export async function rollupBundleFile(
   const output = await bundle.write({
     name: opts.moduleName,
     format: 'es',
-    dir: opts.dir,
+    ...('dir' in opts ? { dir: opts.dir } : { file: opts.file }),
     inlineDynamicImports: false,
     hoistTransitiveImports: false,
     chunkFileNames: `${opts.entryName}-[name]-[hash]${outExtension}`,
