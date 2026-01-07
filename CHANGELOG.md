@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [21.1.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/21.1.0-next.0...21.1.0-rc.0) (2026-01-07)
+
+
+### Features
+
+* add `importAttributesKey: 'with'` to Rollup output options ([ba4f690](https://github.com/ng-packagr/ng-packagr/commit/ba4f6900a5ddcc4dd5a41d7df0c0fa902de4241a)), closes [#3212](https://github.com/ng-packagr/ng-packagr/issues/3212)
+
+
+### Bug Fixes
+
+* correctly identify external modules ([7c24c84](https://github.com/ng-packagr/ng-packagr/commit/7c24c84056831327b917cc7ad3772f7146ec24b7))
+
 ### [21.0.1](https://github.com/ng-packagr/ng-packagr/compare/21.0.0...21.0.1) (2025-12-15)
 
 
