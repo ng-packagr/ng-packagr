@@ -78,6 +78,7 @@ export async function rollupBundleFile(
     name: opts.moduleName,
     format: 'es',
     dir: opts.dir,
+    importAttributesKey: 'with',
     inlineDynamicImports: false,
     hoistTransitiveImports: false,
     chunkFileNames: `${opts.entryName}-[name]-[hash]${outExtension}`,
