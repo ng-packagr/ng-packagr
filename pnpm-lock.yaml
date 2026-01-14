@@ -73,8 +73,8 @@ importers:
         version: 0.2.15
     devDependencies:
       '@angular/cdk':
-        specifier: ~21.1.0-next
-        version: 21.1.0-next.4(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(@angular/platform-browser@21.1.0-rc.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2)))(rxjs@7.8.2)
+        specifier: ~21.2.0-next
+        version: 21.2.0-next.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(@angular/platform-browser@21.1.0-rc.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/common':
         specifier: ~21.1.0-next
         version: 21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2)
@@ -88,8 +88,8 @@ importers:
         specifier: ~21.1.0-next
         version: 21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2)
       '@angular/material':
-        specifier: ~21.1.0-next
-        version: 21.1.0-next.4(ebea7de3f240af9ba50b67bfd2d642a0)
+        specifier: ~21.2.0-next
+        version: 21.2.0-next.0(c21cdcb18a7957ad02f6dd17eb5e72f4)
       '@angular/platform-browser':
         specifier: ~21.1.0-next
         version: 21.1.0-rc.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))
@@ -185,8 +185,8 @@ importers:
   integration/consumers/ng-cli:
     dependencies:
       '@angular/cdk':
-        specifier: ~21.1.0-next
-        version: 21.1.0-next.4(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(@angular/platform-browser@21.1.0-rc.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2)))(rxjs@7.8.2)
+        specifier: ~21.2.0-next
+        version: 21.2.0-next.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(@angular/platform-browser@21.1.0-rc.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/common':
         specifier: ~21.1.0-next
         version: 21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2)
@@ -367,8 +367,8 @@ packages:
       vitest:
         optional: true
 
-  '@angular/cdk@21.1.0-next.4':
-    resolution: {integrity: sha512-hF4ZIgMhG1TFT6XnOcK7G00IsOqMPmXkcMgVHz2bmwoSXlqfpUCVQKAhGHRHrMLQqUMckecYiWYG0njeWrsHkw==}
+  '@angular/cdk@21.2.0-next.0':
+    resolution: {integrity: sha512-k7hL8A3bxxsQzOp/KeU0uI0jLckqXq/n26j8u8cH/IQN66V5OBqM+NBV3rXi6Wc/HEBcYhvcBxsecGkpj14Qbw==}
     peerDependencies:
       '@angular/common': ^21.0.0-0 || ^21.1.0-0 || ^21.2.0-0 || ^21.3.0-0 || ^22.0.0-0
       '@angular/core': ^21.0.0-0 || ^21.1.0-0 || ^21.2.0-0 || ^21.3.0-0 || ^22.0.0-0
@@ -424,10 +424,10 @@ packages:
       '@angular/platform-browser': 21.1.0-rc.0
       rxjs: ^6.5.3 || ^7.4.0
 
-  '@angular/material@21.1.0-next.4':
-    resolution: {integrity: sha512-ykfaHuScS98Aexo5x8WN+LrbGxBIhYnEtNw0ba5bdL1jNoWZI3iFANk9wLb3u9Mw+G1qrbO4B+60VPKdp7jVbw==}
+  '@angular/material@21.2.0-next.0':
+    resolution: {integrity: sha512-g7dfzJrT4TcX7fjfvYAPPvwNxKj+fVnq1F+Ll5jk91BY+Y2kYVBhEYeVXnC3l5r+HshR0MUst772Tm+4stG56g==}
     peerDependencies:
-      '@angular/cdk': 21.1.0-next.4
+      '@angular/cdk': 21.2.0-next.0
       '@angular/common': ^21.0.0-0 || ^21.1.0-0 || ^21.2.0-0 || ^21.3.0-0 || ^22.0.0-0
       '@angular/core': ^21.0.0-0 || ^21.1.0-0 || ^21.2.0-0 || ^21.3.0-0 || ^22.0.0-0
       '@angular/forms': ^21.0.0-0 || ^21.1.0-0 || ^21.2.0-0 || ^21.3.0-0 || ^22.0.0-0
@@ -4760,7 +4760,7 @@ snapshots:
       - tsx
       - yaml
 
-  '@angular/cdk@21.1.0-next.4(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(@angular/platform-browser@21.1.0-rc.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2)))(rxjs@7.8.2)':
+  '@angular/cdk@21.2.0-next.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(@angular/platform-browser@21.1.0-rc.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2)))(rxjs@7.8.2)':
     dependencies:
       '@angular/common': 21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/core': 21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2)
@@ -4855,9 +4855,9 @@ snapshots:
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@angular/material@21.1.0-next.4(ebea7de3f240af9ba50b67bfd2d642a0)':
+  '@angular/material@21.2.0-next.0(c21cdcb18a7957ad02f6dd17eb5e72f4)':
     dependencies:
-      '@angular/cdk': 21.1.0-next.4(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(@angular/platform-browser@21.1.0-rc.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2)))(rxjs@7.8.2)
+      '@angular/cdk': 21.2.0-next.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(@angular/platform-browser@21.1.0-rc.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2)))(rxjs@7.8.2)
       '@angular/common': 21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2)
       '@angular/core': 21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2)
       '@angular/forms': 21.1.0-rc.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(@angular/platform-browser@21.1.0-rc.0(@angular/common@21.1.0-rc.0(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@21.1.0-rc.0(@angular/compiler@21.1.0-rc.0)(rxjs@7.8.2)))(rxjs@7.8.2)
