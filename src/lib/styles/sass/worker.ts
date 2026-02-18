@@ -1,4 +1,4 @@
-import mergeSourceMaps, { RawSourceMap } from '@ampproject/remapping';
+import mergeSourceMaps, { RawSourceMap } from '@jridgewell/remapping';
 import { dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { MessagePort, receiveMessageOnPort } from 'node:worker_threads';
