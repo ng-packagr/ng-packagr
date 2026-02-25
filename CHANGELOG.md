@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/21.2.0-next.0...22.0.0-next.0) (2026-02-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* Node.js v20 is no longer supported. The minimum supported Node.js versions are now v22.22.0 and v24.13.1.
+
+### Features
+
+* update @angular/compiler-cli peer dependency to support Angular v22 ([1fd8eb1](https://github.com/ng-packagr/ng-packagr/commit/1fd8eb15c4dbdbe52955666417caf056f116eca3))
+
+
+### Bug Fixes
+
+* allow TypeScript 6 peer dependency ([fdb49da](https://github.com/ng-packagr/ng-packagr/commit/fdb49da99ab8fc7a9ef62da9229f971bc561b26d))
+
+
+* update minimum supported Node.js versions ([f7e5ef5](https://github.com/ng-packagr/ng-packagr/commit/f7e5ef55ef4f14f77cd1e786e8ec35676d373e9c))
+
 ## [21.2.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/21.1.0...21.2.0-next.0) (2026-01-14)
 
 ## [21.1.0](https://github.com/ng-packagr/ng-packagr/compare/21.0.1...21.1.0) (2026-01-14)
