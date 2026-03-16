@@ -101,7 +101,7 @@ const postcssProcessors = new Map<string, WeakRef<PostcssProcessor>>();
 export class StylesheetPluginFactory {
   constructor(
     private readonly options: StylesheetPluginOptions,
-    private readonly cache?: LoadResultCache,
+    private readonly cache: LoadResultCache | undefined = undefined,
   ) {}
 
   create(language: Readonly<StylesheetLanguage>): Plugin {

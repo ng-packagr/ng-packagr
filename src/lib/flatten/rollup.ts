@@ -108,7 +108,7 @@ async function rollupDtsBundleFile(opts: RollupOptions): Promise<{ files: (Outpu
 
   const bundle = await rollup.rollup({
     context: 'this',
-    external: (moduleId: string, parentId: string) => isExternalDependency(moduleId, parentId, jail),
+    external: (moduleId: string, parentId: string | undefined) => isExternalDependency(moduleId, parentId, jail),
     input: opts.entry,
     plugins: [fileLoaderPlugin(opts.fileCache, ['.d.ts', '/index.d.ts']) as unknown as import('rollup').Plugin, dts()],
     onwarn: warning => {

@@ -4,12 +4,8 @@ const PATH_REGEXP = new RegExp('\\' + nodePath.win32.sep, 'g');
 const ensureUnixPathCache = new Map<string, string>();
 const IS_WINDOWS = process.platform === 'win32';
 
-export const ensureUnixPath: (path?: string) => string | null = IS_WINDOWS
-  ? (path?: string): string | null => {
-      if (!path) {
-        return null;
-      }
-
+export const ensureUnixPath: (path: string) => string = IS_WINDOWS
+  ? (path: string): string => {
       const cachePath = ensureUnixPathCache.get(path);
       if (cachePath) {
         return cachePath;
@@ -22,4 +18,4 @@ export const ensureUnixPath: (path?: string) => string | null = IS_WINDOWS
 
       return normalizedPath;
     }
-  : (path?: string) => path;
+  : (path: string) => path;

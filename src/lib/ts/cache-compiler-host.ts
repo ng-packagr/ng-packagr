@@ -54,7 +54,7 @@ export function cacheCompilerHost(
     fileExists: (fileName: string) => {
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.exists === undefined) {
-        cache.exists = compilerHost.fileExists.call(this, fileName);
+        cache.exists = compilerHost.fileExists.call(compilerHost, fileName);
       }
 
       return cache.exists;
@@ -65,7 +65,7 @@ export function cacheCompilerHost(
       const cache = sourcesFileCache.getOrCreate(fileName);
 
       if (shouldCreateNewSourceFile || !cache.sourceFile) {
-        cache.sourceFile = compilerHost.getSourceFile.call(this, fileName, languageVersion, onError, true, ...parameters);
+        cache.sourceFile = compilerHost.getSourceFile.call(compilerHost, fileName, languageVersion, onError, true, ...parameters);
       }
 
       return cache.sourceFile;
@@ -85,7 +85,7 @@ export function cacheCompilerHost(
       const extension = path.extname(fileName);
       if (!sourceFiles?.length && extension === '.tsbuildinfo') {
         // Save builder info contents to specified location
-        compilerHost.writeFile.call(this, fileName, data, writeByteOrderMark, onError, sourceFiles);
+        compilerHost.writeFile.call(compilerHost, fileName, data, writeByteOrderMark, onError, sourceFiles);
 
         return;
       }
@@ -106,7 +106,7 @@ export function cacheCompilerHost(
       addDependee(fileName);
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.content === undefined) {
-        cache.content = compilerHost.readFile.call(this, fileName);
+        cache.content = compilerHost.readFile.call(compilerHost, fileName);
       }
 
       return cache.content;
@@ -121,7 +121,7 @@ export function cacheCompilerHost(
       return resourcePath;
     },
 
-    readResource: async (fileName: string) => {
+    readResource: async (fileName: string): Promise<string> => {
       addDependee(fileName);
 
       const cache = sourcesFileCache.getOrCreate(fileName);
@@ -132,9 +132,12 @@ export function cacheCompilerHost(
 
         if (/(?:html?|svg)$/.test(path.extname(fileName))) {
           // template
-          cache.content = compilerHost.readFile.call(this, fileName);
+          cache.content = compilerHost.readFile.call(compilerHost, fileName);
         } else {
           // stylesheet
+          if (!stylesheetProcessor) {
+            throw new Error('stylesheetProcessor is not available for processing stylesheets');
+          }
           const {
             referencedFiles,
             contents,
@@ -142,7 +145,7 @@ export function cacheCompilerHost(
             warnings: esBuildWarnings,
           } = await stylesheetProcessor.bundleFile(fileName);
           const node = getNode(fileName);
-          const depNodes = [...referencedFiles].map(getNode).filter(n => n !== node);
+          const depNodes = [...(referencedFiles ?? [])].map(getNode).filter(n => n !== node);
           node.dependsOn(depNodes);
 
           for (const n of node.dependees) {
@@ -151,11 +154,11 @@ export function cacheCompilerHost(
             }
           }
 
-          if (esBuildWarnings?.length > 0) {
+          if (esBuildWarnings && esBuildWarnings.length > 0) {
             (await formatMessages(esBuildWarnings, { kind: 'warning' })).forEach(msg => warn(msg));
           }
 
-          if (esbuildErrors?.length > 0) {
+          if (esbuildErrors && esbuildErrors.length > 0) {
             (await formatMessages(esbuildErrors, { kind: 'error' })).forEach(msg => error(msg));
 
             throw new Error(`An error has occuried while processing ${fileName}.`);
@@ -167,7 +170,7 @@ export function cacheCompilerHost(
         cache.exists = true;
       }
 
-      return cache.content;
+      return cache.content ?? '';
     },
     transformResource: async (data, context) => {
       const { containingFile, resourceFile, type } = context;
@@ -177,6 +180,9 @@ export function cacheCompilerHost(
       }
 
       if (inlineStyleLanguage) {
+        if (!stylesheetProcessor) {
+          throw new Error('stylesheetProcessor is not available for processing inline styles');
+        }
         const {
           contents,
           referencedFiles,
@@ -185,13 +191,13 @@ export function cacheCompilerHost(
         } = await stylesheetProcessor.bundleInline(data, containingFile, containingFile.endsWith('.html') ? 'css' : inlineStyleLanguage);
 
         const node = getNode(containingFile);
-        node.dependsOn([...referencedFiles].map(getNode));
+        node.dependsOn([...(referencedFiles ?? [])].map(getNode));
 
-        if (esBuildWarnings?.length > 0) {
+        if (esBuildWarnings && esBuildWarnings.length > 0) {
           (await formatMessages(esBuildWarnings, { kind: 'warning' })).forEach(msg => warn(msg));
         }
 
-        if (esbuildErrors?.length > 0) {
+        if (esbuildErrors && esbuildErrors.length > 0) {
           (await formatMessages(esbuildErrors, { kind: 'error' })).forEach(msg => error(msg));
 
           throw new Error(`An error has occuried while processing ${containingFile}.`);

@@ -34,13 +34,21 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
   const { oldPrograms, analysesSourcesFileCache, moduleResolutionCache } = entryPoint.cache;
   const oldProgram = oldPrograms && (oldPrograms['analysis'] as ts.Program | undefined);
   const { moduleId } = entryPoint.data.entryPoint;
-  const packageNode: PackageNode = graph.find(isPackage);
+  const packageNode: PackageNode | undefined = graph.find(isPackage);
+  if (!packageNode) {
+    throw new Error('Could not find package node in build graph');
+  }
   const primaryModuleId = packageNode.data.primary.moduleId;
+
+  const tsConfig = entryPoint.data.tsConfig;
+  if (!tsConfig) {
+    throw new Error(`tsConfig not set for entry point '${moduleId}'`);
+  }
 
   debug(`Analysing sources for ${moduleId}`);
   const tsConfigOptions: ts.CompilerOptions = {
     // Needed because of `Property 'extendedDiagnostics' is incompatible with index signature.`
-    ...(entryPoint.data.tsConfig.options as ts.CompilerOptions),
+    ...(tsConfig.options as ts.CompilerOptions),
     skipLibCheck: true,
     noLib: true,
     noEmit: true,
@@ -119,7 +127,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     });
   };
 
-  const program: ts.Program = ts.createProgram(entryPoint.data.tsConfig.rootNames, tsConfigOptions, compilerHost, oldProgram);
+  const program: ts.Program = ts.createProgram(tsConfig.rootNames, tsConfigOptions, compilerHost, oldProgram);
 
   // If an index file exists parallel to the entryFilePath it is not valid as index should be reserved as an
   // entry file of an entry-point based on node resolution strategy.
@@ -138,7 +146,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
 
   debug(`tsc program structure is reused: ${oldProgram ? (oldProgram as any).structureIsReused : 'No old program'}`);
 
-  entryPoint.cache.oldPrograms = { ...entryPoint.cache.oldPrograms, ['analysis']: program };
+  entryPoint.cache.oldPrograms = { ...entryPoint.cache.oldPrograms, ['analysis']: program } as typeof entryPoint.cache.oldPrograms;
 
   const entryPointsMapped: Record<string, EntryPointNode> = {};
   for (const dep of entryPoints) {

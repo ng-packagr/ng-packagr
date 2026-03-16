@@ -68,7 +68,7 @@ export function createFileWatch(
   return {
     watcher: watch,
     onFileChange: new Observable(observer => {
-      watch.on('all', (event: AllFileWatchEvents, filePath: string) => handleFileChange(event, filePath, observer));
+      watch.on('all', (event, filePath: string) => handleFileChange(event as AllFileWatchEvents, filePath, observer));
 
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       return () => watch.close();

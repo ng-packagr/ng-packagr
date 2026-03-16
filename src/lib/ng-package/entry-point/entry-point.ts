@@ -60,7 +60,7 @@ export class NgEntryPoint {
     /** Absolute directory path of this entry point's `package.json` location. */
     public readonly basePath: string,
     /** XX: additional auto-configured data passed for secondary entry point's. Needs better docs. */
-    private readonly secondaryData?: Record<string, any>,
+    private readonly secondaryData: Record<string, any> | undefined = undefined,
   ) {}
 
   /** Absolute file path of the entry point's source code entry file. */
@@ -105,8 +105,8 @@ export class NgEntryPoint {
     const parts = key.split('.');
     let value = this.ngPackageJson as unknown;
     for (const key of parts) {
-      if (typeof value === 'object' && key in value) {
-        value = value[key];
+      if (value != null && typeof value === 'object' && key in value) {
+        value = (value as Record<string, unknown>)[key];
       } else {
         return undefined;
       }
@@ -134,7 +134,7 @@ export class NgEntryPoint {
     return includePaths.map(includePath => (path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath)));
   }
 
-  public get sass(): NgPackageEntryConfig['lib']['sass'] {
+  public get sass(): NonNullable<NgPackageEntryConfig['lib']>['sass'] {
     return this.$get('lib.sass');
   }
 

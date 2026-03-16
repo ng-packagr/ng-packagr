@@ -11,7 +11,7 @@ export const STATE_DONE: NodeState = 'done';
 export class Node {
   constructor(public readonly url: string) {}
 
-  public type: string;
+  public type!: string;
 
   public data: any;
 

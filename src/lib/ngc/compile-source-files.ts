@@ -1,7 +1,8 @@
 import { CompilerOptions, ParsedConfiguration } from '@angular/compiler-cli';
 import { join } from 'node:path';
 import ts from 'typescript';
-import { BuildGraph } from '../graph/build-graph';
+import { BuildGraph, ComplexPredicate } from '../graph/build-graph';
+import { Node } from '../graph/node';
 import { EntryPointNode, PackageNode, isEntryPointInProgress, isPackage } from '../ng-package/nodes';
 import { NgPackagrOptions } from '../ng-package/options.di';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
@@ -19,8 +20,14 @@ export async function compileSourceFiles(
   const { NgtscProgram, formatDiagnostics } = await import('@angular/compiler-cli');
   const { cacheDirectory, watch, cacheEnabled } = options;
   const tsConfigOptions: CompilerOptions = { ...tsConfig.options, ...extraOptions };
-  const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
-  const ngPackageNode: PackageNode = graph.find(isPackage);
+  const entryPoint: EntryPointNode | undefined = graph.find(isEntryPointInProgress() as ComplexPredicate<Node, EntryPointNode>);
+  if (!entryPoint) {
+    throw new Error('Could not find entry point in progress');
+  }
+  const ngPackageNode: PackageNode | undefined = graph.find(isPackage);
+  if (!ngPackageNode) {
+    throw new Error('Could not find package node in build graph');
+  }
   const inlineStyleLanguage = ngPackageNode.data.inlineStyleLanguage;
 
   const cacheDir = cacheEnabled && cacheDirectory;
@@ -165,8 +172,8 @@ export async function compileSourceFiles(
     allDiagnostics.push(...angularDiagnosticCache.get(sourceFile));
   }
 
-  const otherDiagnostics = [];
-  const errorDiagnostics = [];
+  const otherDiagnostics: ts.Diagnostic[] = [];
+  const errorDiagnostics: ts.Diagnostic[] = [];
   for (const diagnostic of allDiagnostics) {
     if (diagnostic.category === ts.DiagnosticCategory.Error) {
       errorDiagnostics.push(diagnostic);

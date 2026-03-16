@@ -136,7 +136,12 @@ function secondaryEntryPoint(primary: NgEntryPoint, userPackage: UserPackage): N
 export async function discoverPackages({ project }: { project: string }): Promise<NgPackage> {
   project = path.isAbsolute(project) ? project : path.resolve(project);
 
-  const { packageJson, ngPackageJson, basePath } = await resolveUserPackage(project);
+  const resolvedPackage = await resolveUserPackage(project);
+  if (!resolvedPackage) {
+    throw new Error(`Cannot discover package sources at ${project}. No ng-package configuration found.`);
+  }
+
+  const { packageJson, ngPackageJson, basePath } = resolvedPackage;
   const primary = new NgEntryPoint(packageJson, ngPackageJson, basePath);
   log.debug(`Found primary entry point: ${primary.moduleId}`);
 

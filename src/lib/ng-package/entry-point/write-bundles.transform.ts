@@ -7,6 +7,8 @@ import { type Transform, transformFromPromise } from '../../graph/transform';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../../utils/cache';
 import { exists, mkdir, writeFile } from '../../utils/fs';
 import { ensureUnixPath } from '../../utils/path';
+import { ComplexPredicate } from '../../graph/build-graph';
+import { Node } from '../../graph/node';
 import { EntryPointNode, isEntryPointInProgress } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 
@@ -18,8 +20,15 @@ interface BundlesCache {
 
 export const writeBundlesTransform = (options: NgPackagrOptions): Transform =>
   transformFromPromise(async graph => {
-    const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
-    const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
+    const entryPoint: EntryPointNode | undefined = graph.find(isEntryPointInProgress() as ComplexPredicate<Node, EntryPointNode>);
+    if (!entryPoint) {
+      throw new Error('Could not find entry point in progress');
+    }
+    const { destinationFiles, entryPoint: ngEntryPoint, tsConfig: maybeConfig } = entryPoint.data;
+    if (!maybeConfig) {
+      throw new Error('tsConfig not set for entry point');
+    }
+    const tsConfig = maybeConfig;
     const cache = entryPoint.cache;
     const { fesm2022Dir, esm2022, declarations, declarationsDir } = destinationFiles;
     const spinner = ora({
@@ -31,14 +40,14 @@ export const writeBundlesTransform = (options: NgPackagrOptions): Transform =>
       ngEntryPoint.moduleId,
       declarationsDir,
       fesm2022Dir,
-      tsConfig.options.compilationMode,
+      tsConfig.options.compilationMode ?? '',
       (tsConfig.options.declarationMap ?? false).toString(),
     );
 
     const hash = await generateKey([...cache.outputCache.values()].map(({ version }) => version).join(':'));
     const cacheDirectory = options.cacheEnabled && options.cacheDirectory;
     if (cacheDirectory) {
-      const cacheResult: BundlesCache = await readCacheEntry(options.cacheDirectory, cacheKey);
+      const cacheResult: BundlesCache = await readCacheEntry(cacheDirectory, cacheKey);
       if (cacheResult?.hash === hash) {
         const filesToCopy = [
           ...cacheResult.fesm2022.map(file => ({

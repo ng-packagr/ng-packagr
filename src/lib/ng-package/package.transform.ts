@@ -22,7 +22,7 @@ import {
   tap,
 } from 'rxjs';
 import { createFileWatch, invalidateEntryPointsAndCacheOnFileChange } from '../file-system/file-watcher';
-import { BuildGraph } from '../graph/build-graph';
+import { BuildGraph, ComplexPredicate } from '../graph/build-graph';
 import { Node, STATE_DONE, STATE_ERROR, STATE_IN_PROGRESS, STATE_PENDING } from '../graph/node';
 import { Transform } from '../graph/transform';
 import { colors } from '../utils/color';
@@ -117,10 +117,14 @@ const watchTransformFactory =
 
     return source$.pipe(
       switchMap(graph => {
+        const packageNode = graph.find(isPackage);
+        if (!packageNode) {
+          throw new Error('Could not find package node in build graph');
+        }
         const {
           data,
           cache: { sourcesFileCache },
-        } = graph.find(isPackage);
+        } = packageNode;
         const { onFileChange, watcher } = createFileWatch([], [data.dest + '/'], options.poll);
         graph.watcher = watcher;
 
@@ -137,6 +141,9 @@ const watchTransformFactory =
         const startTime = Date.now();
         const pkgUri = ngUrl(project);
         const ngPkg = graph.get(pkgUri);
+        if (!ngPkg) {
+          throw new Error(`Package node not found in build graph: ${pkgUri}`);
+        }
 
         return observableOf(graph).pipe(
           analyseSourcesTransform,
@@ -165,6 +172,9 @@ const buildTransformFactory =
         const startTime = Date.now();
         const pkgUri = ngUrl(project);
         const ngPkg = graph.get(pkgUri);
+        if (!ngPkg) {
+          throw new Error(`Package node not found in build graph: ${pkgUri}`);
+        }
 
         return observableOf(graph).pipe(
           // Analyse dependencies and external resources for each entry point
@@ -207,7 +217,18 @@ const scheduleEntryPoints = (epTransform: Transform, options: NgPackagrOptions):
 
       // Build entry points with lower depth values first.
       return from(groups).pipe(
-        map((epUrl: string): EntryPointNode => graph.find(byEntryPoint().and(ep => ep.url === epUrl))),
+        map((epUrl: string): EntryPointNode => {
+          const andFn = byEntryPoint().and;
+          if (!andFn) {
+            throw new Error('byEntryPoint predicate does not support chaining');
+          }
+          const ep = graph.find(andFn((ep: Node) => ep.url === epUrl) as ComplexPredicate<Node, EntryPointNode>);
+          if (!ep) {
+            throw new Error(`Could not find entry point for URL: ${epUrl}`);
+          }
+
+          return ep;
+        }),
         filter((entryPoint: EntryPointNode): boolean => entryPoint.state !== STATE_DONE),
         concatMap(ep =>
           observableOf(ep).pipe(

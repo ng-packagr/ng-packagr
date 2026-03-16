@@ -12,9 +12,9 @@ export class StylesheetProcessor extends ComponentStylesheetBundler {
   constructor(
     protected readonly projectBasePath: string,
     protected readonly basePath: string,
-    protected readonly cssUrl?: CssUrl,
+    protected readonly cssUrl: CssUrl | undefined = undefined,
     protected readonly includePaths?: string[],
-    protected readonly sass?: NgPackageEntryConfig['lib']['sass'],
+    protected readonly sass?: NonNullable<NgPackageEntryConfig['lib']>['sass'],
     protected readonly cacheDirectory?: string | false,
     protected readonly watch?: boolean,
   ) {
@@ -30,12 +30,12 @@ export class StylesheetProcessor extends ComponentStylesheetBundler {
         tailwindConfiguration: postcssConfiguration ? undefined : getTailwindConfig(searchDirs, projectBasePath),
         sass: sass as any,
         workspaceRoot: projectBasePath,
-        cssUrl: cssUrl,
+        cssUrl: cssUrl as CssUrl,
         target: transformSupportedBrowsersToTargets(browserslistData),
         includePaths: includePaths,
       },
       'css',
-      watch,
+      watch ?? false,
     );
   }
 
@@ -73,5 +73,5 @@ function transformSupportedBrowsersToTargets(supportedBrowsers: string[]): strin
     }
   }
 
-  return transformed.length ? transformed : undefined;
+  return transformed.length ? transformed : [];
 }

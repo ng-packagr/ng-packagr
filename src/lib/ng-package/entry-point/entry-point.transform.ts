@@ -1,8 +1,9 @@
 import { pipe, tap } from 'rxjs';
-import { STATE_DONE } from '../../graph/node';
+import { ComplexPredicate } from '../../graph/build-graph';
+import { Node, STATE_DONE } from '../../graph/node';
 import { Transform } from '../../graph/transform';
 import * as log from '../../utils/log';
-import { isEntryPointInProgress } from '../nodes';
+import { EntryPointNode, isEntryPointInProgress } from '../nodes';
 
 /**
  * A re-write of the `transformSources()` script that transforms an entry point from sources to distributable format.
@@ -33,7 +34,10 @@ export const entryPointTransformFactory = (compileTs: Transform, writeBundles: T
   pipe(
     tap(graph => {
       // Peek the first entry point from the graph
-      const entryPoint = graph.find(isEntryPointInProgress());
+      const entryPoint = graph.find(isEntryPointInProgress() as ComplexPredicate<Node, EntryPointNode>);
+      if (!entryPoint) {
+        throw new Error('Could not find entry point in progress');
+      }
       log.msg('\n------------------------------------------------------------------------------');
       log.msg(`Building entry point '${entryPoint.data.entryPoint.moduleId}'`);
       log.msg('------------------------------------------------------------------------------');
@@ -44,7 +48,10 @@ export const entryPointTransformFactory = (compileTs: Transform, writeBundles: T
     writeBundles,
     writePackage,
     tap(graph => {
-      const entryPoint = graph.find(isEntryPointInProgress());
+      const entryPoint = graph.find(isEntryPointInProgress() as ComplexPredicate<Node, EntryPointNode>);
+      if (!entryPoint) {
+        throw new Error('Could not find entry point in progress');
+      }
       entryPoint.state = STATE_DONE;
     }),
   );

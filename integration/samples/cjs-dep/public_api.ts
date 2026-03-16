@@ -1,3 +1,3 @@
-import * as rimraf from 'rimraf';
+import { DepGraph } from 'dependency-graph';
 
-console.log(rimraf);
+console.log(DepGraph);

@@ -26,16 +26,16 @@ export function isPackage(node: Node): node is PackageNode {
   return node.type === TYPE_NG_PACKAGE;
 }
 
-export function byEntryPoint(): ComplexPredicate<EntryPointNode> {
-  return by(isEntryPoint);
+export function byEntryPoint(): ComplexPredicate<Node, EntryPointNode> {
+  return by(isEntryPoint) as ComplexPredicate<Node, EntryPointNode>;
 }
 
-export function isEntryPointInProgress(): ComplexPredicate<EntryPointNode> {
-  return by(n => isEntryPoint(n) && isInProgress(n));
+export function isEntryPointInProgress(): ComplexPredicate<Node, EntryPointNode> {
+  return by(n => isEntryPoint(n) && isInProgress(n)) as ComplexPredicate<Node, EntryPointNode>;
 }
 
-export function isEntryPointPending(): ComplexPredicate<EntryPointNode> {
-  return by(n => isEntryPoint(n) && isPending(n));
+export function isEntryPointPending(): ComplexPredicate<Node, EntryPointNode> {
+  return by(n => isEntryPoint(n) && isPending(n)) as ComplexPredicate<Node, EntryPointNode>;
 }
 
 export function fileUrl(path: string): string {
@@ -91,7 +91,7 @@ export class EntryPointNode extends Node {
 
   dispose(): void {
     this.cache.stylesheetProcessor?.destroy();
-    this.cache = undefined;
+    this.cache = undefined as any;
   }
 }
 

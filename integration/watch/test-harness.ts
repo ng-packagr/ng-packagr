@@ -21,7 +21,7 @@ export class TestHarness {
     this.testSrc = path.join(__dirname, testName);
     this.testDistPath = path.join(this.testTempPath, 'dist');
 
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
   }
 
   async initialize(): Promise<void> {

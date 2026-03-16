@@ -6,7 +6,7 @@ export const error = (err: string | Error): void => {
     console.error(colors.red('ERROR: ' + err.message));
 
     if (process.env.DEBUG) {
-      console.error(colors.red(err.stack) + '\n');
+      console.error(colors.red(err.stack ?? String(err)) + '\n');
     }
   } else {
     console.error(colors.red(err));

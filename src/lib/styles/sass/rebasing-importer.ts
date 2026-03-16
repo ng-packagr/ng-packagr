@@ -184,7 +184,7 @@ export class RelativeUrlRebasingImporter extends UrlRebasingImporter {
       let entries;
       try {
         entries = readdirSync(directory, { withFileTypes: true });
-      } catch (error) {
+      } catch (error: any) {
         // If the containing directory does not exist return null to indicate it cannot be resolved
         if (error.code === 'ENOENT') {
           return null;
@@ -329,7 +329,7 @@ export class LoadPathsUrlRebasingImporter extends RelativeUrlRebasingImporter {
       return super.canonicalize(url, options);
     }
 
-    let result = null;
+    let result: URL | null = null;
     for (const loadPath of this.loadPaths) {
       result = super.canonicalize(pathToFileURL(join(loadPath, url)).href, options);
       if (result !== null) {

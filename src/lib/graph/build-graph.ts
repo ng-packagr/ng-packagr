@@ -44,7 +44,9 @@ export class BuildGraph implements Traversable<Node> {
     if (this.store.has(node.url)) {
       // Clean up dependee references
       const oldNode = this.store.get(node.url);
-      oldNode['_dependees'].delete(oldNode);
+      if (oldNode) {
+        oldNode['_dependees'].delete(oldNode);
+      }
     }
 
     if (this.watcher) {
@@ -57,7 +59,7 @@ export class BuildGraph implements Traversable<Node> {
     this.store.set(node.url, node);
   }
 
-  public get(url: string): Node {
+  public get(url: string): Node | undefined {
     return this.store.get(url);
   }
 

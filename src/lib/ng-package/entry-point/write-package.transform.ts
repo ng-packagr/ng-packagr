@@ -22,8 +22,14 @@ export const writePackageTransform = (options: NgPackagrOptions): Transform =>
     const spinner = ora({ hideCursor: false, discardStdin: false });
     const entryPoints = graph.filter(isEntryPoint);
     const entryPoint = entryPoints.find(isInProgress);
+    if (!entryPoint) {
+      throw new Error('Could not find entry point in progress');
+    }
     const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
-    const ngPackageNode: PackageNode = graph.find(isPackage);
+    const ngPackageNode: PackageNode | undefined = graph.find(isPackage);
+    if (!ngPackageNode) {
+      throw new Error('Could not find package node in build graph');
+    }
     const ngPackage = ngPackageNode.data;
     const { destinationFiles } = entryPoint.data;
 
@@ -52,7 +58,11 @@ export const writePackageTransform = (options: NgPackagrOptions): Transform =>
           );
         }
 
-        const { compilationMode } = entryPoint.data.tsConfig.options;
+        const tsConfig = entryPoint.data.tsConfig;
+        if (!tsConfig) {
+          throw new Error('tsConfig not set for entry point');
+        }
+        const { compilationMode } = tsConfig.options;
 
         await writePackageJson(
           ngEntryPoint,

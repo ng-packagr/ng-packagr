@@ -14,13 +14,17 @@ try {
 const BIGINT_STRING_VALUE_REGEXP = /^%BigInt\((\d+)\)$/;
 
 export async function generateKey(...valuesToConsider: string[]): Promise<string> {
+  if (!ngPackagrVersion) {
+    throw new Error('ng-packagr version could not be determined');
+  }
+
   return createHash('sha256').update(ngPackagrVersion).update(valuesToConsider.join(':')).digest('hex');
 }
 
 async function ensureCacheDirExists(cachePath: string): Promise<void> {
   try {
     await mkdir(cachePath, { recursive: true });
-  } catch (err) {
+  } catch (err: any) {
     if (err.code !== 'EEXIST') {
       throw err;
     }

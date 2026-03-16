@@ -65,7 +65,7 @@ export class NgPackagr {
    * @param defaultValues A tsconfig providing default values to the compilation.
    * @return Self instance for fluent API
    */
-  public withTsConfig(defaultValues: ParsedConfiguration | string): NgPackagr {
+  public withTsConfig(defaultValues: ParsedConfiguration | string | undefined): NgPackagr {
     this.providers.push(provideTsConfig(defaultValues));
 
     return this;

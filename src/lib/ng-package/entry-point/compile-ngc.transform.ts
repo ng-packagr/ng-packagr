@@ -17,8 +17,8 @@ export const compileNgcTransformFactory = (StylesheetProcessor: typeof Styleshee
     });
 
     const entryPoints: EntryPointNode[] = [];
-    let entryPoint: EntryPointNode;
-    let ngPackageNode: PackageNode;
+    let entryPoint!: EntryPointNode;
+    let ngPackageNode!: PackageNode;
 
     for (const node of graph.values()) {
       if (isEntryPoint(node)) {
@@ -36,7 +36,11 @@ export const compileNgcTransformFactory = (StylesheetProcessor: typeof Styleshee
 
     try {
       // Add paths mappings for dependencies
-      const tsConfig = setDependenciesTsConfigPaths(entryPoint.data.tsConfig, entryPoints);
+      const entryPointTsConfig = entryPoint.data.tsConfig;
+      if (!entryPointTsConfig) {
+        throw new Error('tsConfig not set for entry point');
+      }
+      const tsConfig = setDependenciesTsConfigPaths(entryPointTsConfig, entryPoints);
 
       // Compile TypeScript sources
       const { esm2022, declarations } = entryPoint.data.destinationFiles;

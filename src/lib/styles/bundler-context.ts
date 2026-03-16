@@ -171,8 +171,10 @@ export class BundlerContext {
 
     // Return the successful build results
     return {
-      ...result,
       errors: undefined,
+      warnings: result.warnings,
+      metafile: result.metafile,
+      outputFiles: result.outputFiles as BuildOutputFile[],
     };
   }
 

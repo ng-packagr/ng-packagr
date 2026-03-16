@@ -7,7 +7,7 @@ import { Component, ContentChild, ElementRef } from '@angular/core';
 })
 export class FooBarComponent {
   @ContentChild('heading', { read: ElementRef, static: true })
-  buttons: ElementRef;
+  buttons!: ElementRef;
 
   constructor(private elementRef: ElementRef) {}
 

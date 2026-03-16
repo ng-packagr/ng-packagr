@@ -83,7 +83,7 @@ export class NgPackage {
     return Array.from(new Set([...allowedNonPeerDependencies, ...alwaysInclude]));
   }
 
-  public entryPoint(moduleId: string): NgEntryPoint {
+  public entryPoint(moduleId: string): NgEntryPoint | undefined {
     return [this.primary, ...this.secondaries].find(entryPoint => entryPoint.moduleId === moduleId);
   }
 }
