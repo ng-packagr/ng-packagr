@@ -3,7 +3,6 @@ import type { OutputAsset, OutputChunk } from 'rolldown';
 import { VERSION as ROLLDOWN_VERSION, rolldown } from 'rolldown';
 import { dts } from 'rollup-plugin-dts';
 import { OutputFileCache } from '../ng-package/nodes';
-import { saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
 import { fileLoaderPlugin } from './file-loader-plugin';
 
@@ -17,10 +16,23 @@ export interface RollupOptions {
   entry: string;
   entryName: string;
   dir: string;
-  cacheDirectory?: string | false;
   fileCache: OutputFileCache;
   cacheKey: string;
   sourcemap: boolean;
+}
+
+/** Handles common bundler warnings by suppressing known-harmless codes. */
+function handleBundlerWarning(warning: { code?: string; message: string }): void {
+  switch (warning.code) {
+    case 'CIRCULAR_DEPENDENCY':
+    case 'UNUSED_EXTERNAL_IMPORT':
+    case 'THIS_IS_UNDEFINED':
+    case 'EMPTY_BUNDLE':
+      break;
+    default:
+      log.warn(warning.message);
+      break;
+  }
 }
 
 /** Runs rolldown (JS) or rollup (DTS) over the given entry file, writes a bundle file. */
@@ -37,26 +49,13 @@ export async function rollupBundleFile(opts: RollupOptions): Promise<{ files: (O
 /** Bundles JavaScript using Rolldown. */
 async function rolldownJsBundleFile(opts: RollupOptions): Promise<{ files: (OutputChunk | OutputAsset)[] }> {
   log.debug(`rolldown (v${ROLLDOWN_VERSION}) ${opts.entry} to ${opts.dir}`);
-  const cacheDirectory = opts.cacheDirectory;
   const jail = path.dirname(opts.entry);
 
   const bundle = await rolldown({
     external: (moduleId, parentId) => isExternalDependency(moduleId, parentId, jail),
     input: opts.entry,
     plugins: [fileLoaderPlugin(opts.fileCache, ['.js', '/index.js'])],
-    onwarn: warning => {
-      switch (warning.code) {
-        case 'CIRCULAR_DEPENDENCY':
-        case 'UNUSED_EXTERNAL_IMPORT':
-        case 'THIS_IS_UNDEFINED':
-        case 'EMPTY_BUNDLE':
-          break;
-
-        default:
-          log.warn(warning.message);
-          break;
-      }
-    },
+    onwarn: handleBundlerWarning,
     resolve: {
       symlinks: false,
     },
@@ -74,10 +73,6 @@ async function rolldownJsBundleFile(opts: RollupOptions): Promise<{ files: (Outp
     banner: '',
     sourcemap: opts.sourcemap,
   });
-
-  if (cacheDirectory) {
-    await saveCacheEntry(cacheDirectory, opts.cacheKey, output);
-  }
 
   await bundle.close();
 
@@ -103,7 +98,6 @@ async function rolldownJsBundleFile(opts: RollupOptions): Promise<{ files: (Outp
 async function rollupDtsBundleFile(opts: RollupOptions): Promise<{ files: (OutputChunk | OutputAsset)[] }> {
   const rollup = await ensureRollup();
   log.debug(`rollup (v${rollup.VERSION}) [dts] ${opts.entry} to ${opts.dir}`);
-  const cacheDirectory = opts.cacheDirectory;
   const jail = path.dirname(opts.entry);
 
   const bundle = await rollup.rollup({
@@ -111,19 +105,7 @@ async function rollupDtsBundleFile(opts: RollupOptions): Promise<{ files: (Outpu
     external: (moduleId: string, parentId: string | undefined) => isExternalDependency(moduleId, parentId, jail),
     input: opts.entry,
     plugins: [fileLoaderPlugin(opts.fileCache, ['.d.ts', '/index.d.ts']) as unknown as import('rollup').Plugin, dts()],
-    onwarn: warning => {
-      switch (warning.code) {
-        case 'CIRCULAR_DEPENDENCY':
-        case 'UNUSED_EXTERNAL_IMPORT':
-        case 'THIS_IS_UNDEFINED':
-        case 'EMPTY_BUNDLE':
-          break;
-
-        default:
-          log.warn(warning.message);
-          break;
-      }
-    },
+    onwarn: handleBundlerWarning,
     preserveSymlinks: true,
     treeshake: false,
   });
@@ -141,16 +123,12 @@ async function rollupDtsBundleFile(opts: RollupOptions): Promise<{ files: (Outpu
     sourcemap: opts.sourcemap,
   });
 
-  if (cacheDirectory) {
-    await saveCacheEntry(cacheDirectory, opts.cacheKey, bundle.cache);
-  }
-
   await bundle.close();
 
   return {
     files: output.output.map(f => {
       if (f.type === 'chunk') {
-        f.map = null;
+        return { ...f, map: null };
       }
 
       return f;

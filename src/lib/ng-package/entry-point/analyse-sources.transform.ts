@@ -7,7 +7,7 @@ import { Transform } from '../../graph/transform';
 import { cacheCompilerHost } from '../../ts/cache-compiler-host';
 import { debug } from '../../utils/log';
 import { ensureUnixPath } from '../../utils/path';
-import { EntryPointNode, PackageNode, isEntryPoint, isPackage } from '../nodes';
+import { EntryPointNode, findPackageNode, isEntryPoint } from '../nodes';
 
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {
@@ -34,10 +34,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
   const { oldPrograms, analysesSourcesFileCache, moduleResolutionCache } = entryPoint.cache;
   const oldProgram = oldPrograms && (oldPrograms['analysis'] as ts.Program | undefined);
   const { moduleId } = entryPoint.data.entryPoint;
-  const packageNode: PackageNode | undefined = graph.find(isPackage);
-  if (!packageNode) {
-    throw new Error('Could not find package node in build graph');
-  }
+  const packageNode = findPackageNode(graph);
   const primaryModuleId = packageNode.data.primary.moduleId;
 
   const tsConfig = entryPoint.data.tsConfig;

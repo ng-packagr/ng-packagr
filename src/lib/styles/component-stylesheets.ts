@@ -127,7 +127,7 @@ export class ComponentStylesheetBundler {
     this.#fileContexts.clear();
     this.#inlineContexts.clear();
 
-    await Promise.allSettled([shutdownSassWorkerPool(), contexts.map(context => context.dispose())]);
+    await Promise.allSettled([shutdownSassWorkerPool(), ...contexts.map(context => context.dispose())]);
   }
 
   private extractResult(result: BundleContextResult, referencedFiles: Set<string> | undefined): ComponentStylesheetResult {

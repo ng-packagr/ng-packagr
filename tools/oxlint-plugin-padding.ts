@@ -1,7 +1,7 @@
 interface ASTNode {
   type: string;
   range: [number, number];
-  loc: { start: { line: number }; end: { line: number } };
+  loc: { start: { line: number; column: number }; end: { line: number } };
   body?: ASTNode[];
   consequent?: ASTNode[];
   parent?: ASTNode;

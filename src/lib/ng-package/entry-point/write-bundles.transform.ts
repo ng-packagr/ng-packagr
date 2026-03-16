@@ -7,9 +7,7 @@ import { type Transform, transformFromPromise } from '../../graph/transform';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../../utils/cache';
 import { exists, mkdir, writeFile } from '../../utils/fs';
 import { ensureUnixPath } from '../../utils/path';
-import { ComplexPredicate } from '../../graph/build-graph';
-import { Node } from '../../graph/node';
-import { EntryPointNode, isEntryPointInProgress } from '../nodes';
+import { findEntryPointInProgress } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 
 interface BundlesCache {
@@ -20,10 +18,7 @@ interface BundlesCache {
 
 export const writeBundlesTransform = (options: NgPackagrOptions): Transform =>
   transformFromPromise(async graph => {
-    const entryPoint: EntryPointNode | undefined = graph.find(isEntryPointInProgress() as ComplexPredicate<Node, EntryPointNode>);
-    if (!entryPoint) {
-      throw new Error('Could not find entry point in progress');
-    }
+    const entryPoint = findEntryPointInProgress(graph);
     const { destinationFiles, entryPoint: ngEntryPoint, tsConfig: maybeConfig } = entryPoint.data;
     if (!maybeConfig) {
       throw new Error('tsConfig not set for entry point');
@@ -95,7 +90,6 @@ export const writeBundlesTransform = (options: NgPackagrOptions): Transform =>
           entryName: ngEntryPoint.flatModuleFile,
           moduleName: ngEntryPoint.moduleId,
           dir: fesm2022Dir,
-          cacheDirectory,
           fileCache: cache.outputCache,
           cacheKey,
           sourcemap: true,
@@ -105,7 +99,6 @@ export const writeBundlesTransform = (options: NgPackagrOptions): Transform =>
           entryName: ngEntryPoint.flatModuleFile,
           moduleName: ngEntryPoint.moduleId,
           dir: declarationsDir,
-          cacheDirectory,
           fileCache: cache.outputCache,
           cacheKey,
           sourcemap: tsConfig.options.declarationMap || false,
