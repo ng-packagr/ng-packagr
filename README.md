@@ -2,7 +2,6 @@
 
 > Compile and package Angular libraries in Angular Package Format (APF)
 
-
 [![npm](https://img.shields.io/npm/v/ng-packagr.svg?style=flat-square)](https://www.npmjs.com/package/ng-packagr)
 [![npm License](https://img.shields.io/npm/l/ng-packagr.svg?style=flat-square)](https://github.com/ng-packagr/ng-packagr/blob/main/LICENSE)
 [![CircleCI](https://img.shields.io/circleci/project/github/ng-packagr/ng-packagr/main.svg?label=Circle%20CI&style=flat-square)](https://circleci.com/gh/ng-packagr/ng-packagr)
@@ -55,19 +54,19 @@ Create one `package.json` per npm package, run _ng-packagr_ for each!
 
 ## Features
 
-* :gift: Implements [Angular Package Format](https://angular.dev/tools/libraries/angular-package-format)
-  * :checkered_flag: Bundles your library in FESM2022
-  * :school_satchel: npm package can be consumed by [Angular CLI](https://github.com/angular/angular-cli), [Webpack](https://github.com/webpack/webpack), or ESM Bundlers
-  * :dancer: Creates type definitions (`.d.ts`)
-* :mag_right: Creates [scoped and non-scoped packages](https://docs.npmjs.com/misc/scope) for publishing to npm registry
-* :surfer: Inlines Templates and Stylesheets
-* :sparkles: CSS Features
-  * :camel: Runs [SCSS](http://sass-lang.com/guide) preprocessor, supporting custom include paths
-  * :monkey: Adds vendor-specific prefixes
-  * :tiger: Embed assets data
-
+- :gift: Implements [Angular Package Format](https://angular.dev/tools/libraries/angular-package-format)
+  - :checkered_flag: Bundles your library in FESM2022
+  - :school_satchel: npm package can be consumed by [Angular CLI](https://github.com/angular/angular-cli), [Webpack](https://github.com/webpack/webpack), or ESM Bundlers
+  - :dancer: Creates type definitions (`.d.ts`)
+- :mag_right: Creates [scoped and non-scoped packages](https://docs.npmjs.com/misc/scope) for publishing to npm registry
+- :surfer: Inlines Templates and Stylesheets
+- :sparkles: CSS Features
+  - :camel: Runs [SCSS](http://sass-lang.com/guide) preprocessor, supporting custom include paths
+  - :monkey: Adds vendor-specific prefixes
+  - :tiger: Embed assets data
 
 ## How to…
+
 - [Copy Assets](docs/copy-assets.md)
 - [Embed Assets in CSS](docs/embed-assets-css.md)
 - [Managing Dependencies](docs/dependencies.md)
@@ -91,7 +90,6 @@ Create and publish Angular libs like a Pro - Juri Strumpflohner at NG-BE ([Dec 2
 Packaging Angular - Jason Aden at ng-conf 2017 ([28min talk](https://youtu.be/unICbsPGFIA))
 
 [![Packaging Angular - Jason Aden](https://img.youtube.com/vi/unICbsPGFIA/0.jpg)](https://youtu.be/unICbsPGFIA)
-
 
 Create and publish Angular libs like a Pro - Juri Strumpflohner at ngVikings, this time demoing building Angular libraries with ng-packagr, with NX as well as Bazel ([March 2018, 30min talk](https://youtu.be/Tw8TCgeqotg))
 

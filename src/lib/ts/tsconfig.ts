@@ -4,7 +4,7 @@ import ts from 'typescript';
 import { EntryPointNode } from '../ng-package/nodes';
 import * as log from '../utils/log';
 
-export const defaultTsConfigPath = path.join(__dirname, 'conf', 'tsconfig.ngc.json');
+export const defaultTsConfigPath: string = path.join(__dirname, 'conf', 'tsconfig.ngc.json');
 /**
  * Reads the default TypeScript configuration.
  */

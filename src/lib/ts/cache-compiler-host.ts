@@ -65,14 +65,7 @@ export function cacheCompilerHost(
       const cache = sourcesFileCache.getOrCreate(fileName);
 
       if (shouldCreateNewSourceFile || !cache.sourceFile) {
-        cache.sourceFile = compilerHost.getSourceFile.call(
-          this,
-          fileName,
-          languageVersion,
-          onError,
-          true,
-          ...parameters,
-        );
+        cache.sourceFile = compilerHost.getSourceFile.call(this, fileName, languageVersion, onError, true, ...parameters);
       }
 
       return cache.sourceFile;
@@ -189,11 +182,7 @@ export function cacheCompilerHost(
           referencedFiles,
           errors: esbuildErrors,
           warnings: esBuildWarnings,
-        } = await stylesheetProcessor.bundleInline(
-          data,
-          containingFile,
-          containingFile.endsWith('.html') ? 'css' : inlineStyleLanguage,
-        );
+        } = await stylesheetProcessor.bundleInline(data, containingFile, containingFile.endsWith('.html') ? 'css' : inlineStyleLanguage);
 
         const node = getNode(containingFile);
         node.dependsOn([...referencedFiles].map(getNode));

@@ -23,9 +23,7 @@ function isWhitespace(code: number): boolean {
  * @param contents A string containing a CSS or Sass file to scan.
  * @returns An iterable that yields each CSS url function value found.
  */
-export function* findUrls(
-  contents: string,
-): Iterable<{ start: number; end: number; value: string }> {
+export function* findUrls(contents: string): Iterable<{ start: number; end: number; value: string }> {
   let pos = 0;
   let width = 1;
   let current = -1;

@@ -30,10 +30,9 @@ function supportColor(): boolean {
   return false;
 }
 
-
 // Create a separate instance to prevent unintended global changes to the color configuration
 // Create function is not defined in the typings. See: https://github.com/doowb/ansi-colors/pull/44
-const colors = (ansiColors as AnsiColors & { create: () => AnsiColors }).create();
+const colors: AnsiColors = (ansiColors as AnsiColors & { create: () => AnsiColors }).create();
 colors.enabled = supportColor();
 
 export { colors };

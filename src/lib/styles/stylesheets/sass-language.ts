@@ -17,7 +17,7 @@ export async function shutdownSassWorkerPool(): Promise<void> {
   await pool?.close();
 }
 
-export const SassStylesheetLanguage = Object.freeze<StylesheetLanguage>({
+export const SassStylesheetLanguage: Readonly<StylesheetLanguage> = Object.freeze<StylesheetLanguage>({
   name: 'sass',
   componentFilter: /^s[ac]ss;/,
   fileFilter: /\.s[ac]ss$/,
@@ -64,9 +64,7 @@ async function compileString(
   resolveUrl: (url: string, options: CanonicalizeContext) => Promise<ResolveResult>,
 ): Promise<OnLoadResult> {
   // Lazily load Sass when a Sass file is found
-  sassWorkerPoolPromise ??= import('../sass/sass-service').then(
-    sassService => new sassService.SassWorkerImplementation(true),
-  );
+  sassWorkerPoolPromise ??= import('../sass/sass-service').then(sassService => new sassService.SassWorkerImplementation(true));
 
   const sassWorkerPool = await sassWorkerPoolPromise;
 

@@ -1,5 +1,5 @@
 import { dirname, resolve } from 'node:path';
-import type { Plugin } from 'rollup';
+import type { Plugin as RolldownPlugin } from 'rolldown';
 import { OutputFileCache } from '../ng-package/nodes';
 
 import * as log from '../utils/log';
@@ -8,7 +8,7 @@ import { ensureUnixPath } from '../utils/path';
 /**
  * Loads a file and it's map.
  */
-export function fileLoaderPlugin(fileCache: OutputFileCache, resolutionExtensions: string[]): Plugin {
+export function fileLoaderPlugin(fileCache: OutputFileCache, resolutionExtensions: string[]): RolldownPlugin {
   return {
     name: 'file-loader',
     resolveId: function (id, importer) {

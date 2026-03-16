@@ -31,16 +31,7 @@
       "env": {
         "TS_NODE_PROJECT": "src/tsconfig.specs.json"
       },
-      "args": [
-        "--ui",
-        "tdd",
-        "--timeout",
-        "4000",
-        "--colors",
-        "--require",
-        "ts-node/register",
-        "${workspaceRoot}/src/**/*.spec.ts"
-      ],
+      "args": ["--ui", "tdd", "--timeout", "4000", "--colors", "--require", "ts-node/register", "${workspaceRoot}/src/**/*.spec.ts"],
       "internalConsoleOptions": "openOnSessionStart"
     },
     {

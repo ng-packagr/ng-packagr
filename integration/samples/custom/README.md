@@ -1,5 +1,4 @@
-Sample library: Custom folder layout
-====================================
+# Sample library: Custom folder layout
 
 Custom Folder layout:
 

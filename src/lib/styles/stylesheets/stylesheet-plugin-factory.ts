@@ -5,15 +5,12 @@ import { extname } from 'node:path';
 import type { Options } from 'sass';
 import { glob } from 'tinyglobby';
 import { LoadResultCache, createCachedLoad } from '../load-result-cache';
-import {PostcssConfiguration} from '../postcss-configuration';
+import { PostcssConfiguration } from '../postcss-configuration';
 
 /**
  * Configuration options for handling Sass-specific deprecations in a stylesheet plugin.
  */
-export type StylesheetPluginsass = Pick<
-  Options<'async'>,
-  'futureDeprecations' | 'fatalDeprecations' | 'silenceDeprecations'
->;
+export type StylesheetPluginsass = Pick<Options<'async'>, 'futureDeprecations' | 'fatalDeprecations' | 'silenceDeprecations'>;
 
 /**
  * Convenience type for a postcss processor.
@@ -148,31 +145,20 @@ export class StylesheetPluginFactory {
         // Add a load callback to support inline Component styles
         build.onLoad(
           { filter: language.componentFilter, namespace: 'angular:styles/component' },
-          createCachedLoad(cache, (args) => {
+          createCachedLoad(cache, args => {
             const data = options.inlineComponentData?.[args.path];
-            assert(
-              typeof data === 'string',
-              `component style name should always be found [${args.path}]`,
-            );
+            assert(typeof data === 'string', `component style name should always be found [${args.path}]`);
 
             const [format, , filename] = args.path.split(';', 3);
 
-            return processStylesheet(
-              language,
-              data,
-              filename,
-              format,
-              options,
-              build,
-              postcssProcessor,
-            );
+            return processStylesheet(language, data, filename, format, options, build, postcssProcessor);
           }),
         );
 
         // Add a load callback to support files from disk
         build.onLoad(
           { filter: language.fileFilter, namespace: 'file' },
-          createCachedLoad(cache, async (args) => {
+          createCachedLoad(cache, async args => {
             const data = await readFile(args.path, 'utf-8');
 
             return processStylesheet(
@@ -272,9 +258,7 @@ async function processStylesheet(
   // Only use postcss if Tailwind processing is required or custom postcss is present.
   if (postcssProcessor && (options.postcssConfiguration || hasTailwindKeywords(result.contents))) {
     const postcssResult = await compileString(
-      typeof result.contents === 'string'
-        ? result.contents
-        : Buffer.from(result.contents).toString('utf-8'),
+      typeof result.contents === 'string' ? result.contents : Buffer.from(result.contents).toString('utf-8'),
       filename,
       postcssProcessor,
       options,
@@ -311,13 +295,13 @@ async function processStylesheet(
 function hasTailwindKeywords(contents: string | Uint8Array): boolean {
   // TODO: use better search algorithm for keywords
   if (typeof contents === 'string') {
-    return TAILWIND_KEYWORDS.some((keyword) => contents.includes(keyword));
+    return TAILWIND_KEYWORDS.some(keyword => contents.includes(keyword));
   }
 
   // Contents is a Uint8Array
   const data = contents instanceof Buffer ? contents : Buffer.from(contents);
 
-  return TAILWIND_KEYWORDS.some((keyword) => data.includes(keyword));
+  return TAILWIND_KEYWORDS.some(keyword => data.includes(keyword));
 }
 
 /**
@@ -353,7 +337,7 @@ async function compileString(
     const rawWarnings = postcssResult.warnings();
     if (rawWarnings.length > 0) {
       const lineMappings = new Map<string, string[] | null>();
-      loadResult.warnings = rawWarnings.map((warning) => {
+      loadResult.warnings = rawWarnings.map(warning => {
         const file = warning.node.source?.input.file;
         if (file === undefined) {
           return { text: warning.text };

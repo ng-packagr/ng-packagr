@@ -5,7 +5,7 @@ import { AssetPattern } from '../../../ng-package.schema';
 import { BuildGraph } from '../../graph/build-graph';
 import { Node } from '../../graph/node';
 import { isInProgress } from '../../graph/select';
-import { transformFromPromise } from '../../graph/transform';
+import { type Transform, transformFromPromise } from '../../graph/transform';
 import { colors } from '../../utils/color';
 import { copyFile, mkdir, rmdir, stat, writeFile } from '../../utils/fs';
 import * as log from '../../utils/log';
@@ -17,7 +17,7 @@ import { NgEntryPoint } from './entry-point';
 
 type CompilationMode = 'partial' | 'full' | undefined;
 
-export const writePackageTransform = (options: NgPackagrOptions) =>
+export const writePackageTransform = (options: NgPackagrOptions): Transform =>
   transformFromPromise(async graph => {
     const spinner = ora({ hideCursor: false, discardStdin: false });
     const entryPoints = graph.filter(isEntryPoint);
@@ -39,8 +39,7 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
     }
 
     // 6. WRITE PACKAGE.JSON
-    const relativeUnixFromDestPath = (filePath: string) =>
-      ensureUnixPath(path.relative(ngEntryPoint.destinationPath, filePath));
+    const relativeUnixFromDestPath = (filePath: string) => ensureUnixPath(path.relative(ngEntryPoint.destinationPath, filePath));
 
     if (!ngEntryPoint.isSecondaryEntryPoint) {
       try {
@@ -218,11 +217,7 @@ async function writePackageJson(
       packageJson.dependencies = { ...packageJson.dependencies, tslib: tsLibVersion };
     }
   } else if (packageJson.peerDependencies?.tslib) {
-    spinner.warn(
-      colors.yellow(
-        `'tslib' is no longer recommended to be used as a 'peerDependencies'. Moving it to 'dependencies'.`,
-      ),
-    );
+    spinner.warn(colors.yellow(`'tslib' is no longer recommended to be used as a 'peerDependencies'. Moving it to 'dependencies'.`));
     packageJson.dependencies = { ...(packageJson.dependencies || {}), tslib: packageJson.peerDependencies.tslib };
 
     delete packageJson.peerDependencies.tslib;
@@ -245,9 +240,7 @@ async function writePackageJson(
       delete packageJson.scripts;
     } else {
       spinner.warn(
-        colors.yellow(
-          `You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`,
-        ),
+        colors.yellow(`You enabled keepLifecycleScripts explicitly. The scripts section in package.json will be published to npm.`),
       );
     }
   }
@@ -266,15 +259,7 @@ async function writePackageJson(
   // this will not throw if ngPackage field does not exist
   delete packageJson.ngPackage;
 
-  const packageJsonPropertiesToDelete = [
-    'stylelint',
-    'prettier',
-    'browserslist',
-    'devDependencies',
-    'jest',
-    'workspaces',
-    'husky',
-  ];
+  const packageJsonPropertiesToDelete = ['stylelint', 'prettier', 'browserslist', 'devDependencies', 'jest', 'workspaces', 'husky'];
 
   for (const prop of packageJsonPropertiesToDelete) {
     if (prop in packageJson) {
@@ -287,12 +272,7 @@ async function writePackageJson(
   await writeFile(path.join(entryPoint.destinationPath, 'package.json'), JSON.stringify(packageJson, undefined, 2));
 }
 
-function checkNonPeerDependencies(
-  packageJson: Record<string, unknown>,
-  property: string,
-  allowed: RegExp[],
-  spinner: Ora,
-) {
+function checkNonPeerDependencies(packageJson: Record<string, unknown>, property: string, allowed: RegExp[], spinner: Ora) {
   if (!packageJson[property]) {
     return;
   }
@@ -324,10 +304,7 @@ type ConditionalExport = { types?: string; default?: string };
  * Generates the `package.json` package exports following APF v13.
  * This is supposed to match with: https://github.com/angular/angular/blob/e0667efa6eada64d1fb8b143840689090fc82e52/packages/bazel/src/ng_package/packager.ts#L415.
  */
-function generatePackageExports(
-  { destinationPath, packageJson }: NgEntryPoint,
-  entryPoints: EntryPointNode[],
-): PackageExports {
+function generatePackageExports({ destinationPath, packageJson }: NgEntryPoint, entryPoints: EntryPointNode[]): PackageExports {
   const exports: PackageExports = packageJson.exports ? JSON.parse(JSON.stringify(packageJson.exports)) : {};
 
   const insertMappingOrError = (subpath: string, mapping: ConditionalExport) => {
@@ -351,8 +328,7 @@ function generatePackageExports(
     }
   };
 
-  const relativeUnixFromDestPath = (filePath: string) =>
-    './' + ensureUnixPath(path.relative(destinationPath, filePath));
+  const relativeUnixFromDestPath = (filePath: string) => './' + ensureUnixPath(path.relative(destinationPath, filePath));
 
   insertMappingOrError('./package.json', { default: './package.json' });
 

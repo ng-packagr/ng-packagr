@@ -73,9 +73,7 @@ describe('intra-dependent', () => {
       harness.reSaveSrcFile('src/primary.component.html');
       await new Promise<void>(resolve =>
         harness.onFailure(error => {
-          expect(error.message).to.match(
-            /Property \'count1\' does not exist on type \'PrimaryAngularComponent\'. Did you mean 'count'/,
-          );
+          expect(error.message).to.match(/Property \'count1\' does not exist on type \'PrimaryAngularComponent\'. Did you mean 'count'/);
           resolve();
         }),
       );

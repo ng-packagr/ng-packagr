@@ -1,2 +1,2 @@
-const config =  require('../ng-package');
+const config = require('../ng-package');
 module.exports = config;

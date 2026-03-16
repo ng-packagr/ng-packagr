@@ -14,5 +14,5 @@ export class AngularService {
 }
 
 export async function foo(): Promise<void> {
- return undefined;
+  return undefined;
 }

@@ -1,10 +1,6 @@
-Integration Testing for `ng-packagr`
-====================================
-
-
+# Integration Testing for `ng-packagr`
 
 ### Steps to reproduce
-
 
 ##### Sample Libraries
 

@@ -107,7 +107,7 @@ abstract class UrlRebasingImporter implements Importer<'sync'> {
 export class RelativeUrlRebasingImporter extends UrlRebasingImporter {
   constructor(
     entryDirectory: string,
-    private directoryCache = new Map<string, DirectoryEntry>(),
+    private directoryCache: Map<string, DirectoryEntry> = new Map<string, DirectoryEntry>(),
   ) {
     super(entryDirectory);
   }

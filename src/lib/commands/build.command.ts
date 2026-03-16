@@ -14,7 +14,7 @@ export interface CliArguments {
   /** Path to a tsconfig file. */
   config?: string;
   /** Enable and define the file watching poll time period in milliseconds */
-  poll? : number;
+  poll?: number;
 }
 
 /**

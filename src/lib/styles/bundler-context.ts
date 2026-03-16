@@ -1,14 +1,4 @@
-import {
-  BuildContext,
-  BuildFailure,
-  BuildOptions,
-  BuildResult,
-  Message,
-  Metafile,
-  OutputFile,
-  build,
-  context,
-} from 'esbuild';
+import { BuildContext, BuildFailure, BuildOptions, BuildResult, Message, Metafile, OutputFile, build, context } from 'esbuild';
 import { join } from 'node:path';
 import { LoadResultCache, MemoryLoadResultCache } from './load-result-cache';
 
@@ -44,9 +34,7 @@ export interface BuildOutputFile extends OutputFile {
   clone: () => BuildOutputFile;
 }
 
-export type BundlerOptionsFactory<T extends BuildOptions = BuildOptions> = (
-  loadCache: LoadResultCache | undefined,
-) => T;
+export type BundlerOptionsFactory<T extends BuildOptions = BuildOptions> = (loadCache: LoadResultCache | undefined) => T;
 
 /**
  * Determines if an unknown value is an esbuild BuildFailure error object thrown by esbuild.
@@ -64,7 +52,7 @@ export class BundlerContext {
   #optionsFactory: BundlerOptionsFactory<BuildOptions & { metafile: true; write: false }>;
   #shouldCacheResult: boolean;
   #loadCache?: MemoryLoadResultCache;
-  readonly watchFiles = new Set<string>();
+  readonly watchFiles: Set<string> = new Set<string>();
 
   constructor(
     private workspaceRoot: string,

@@ -1,5 +1,4 @@
 import type { NgtscProgram, ParsedConfiguration, Program } from '@angular/compiler-cli';
-import type { RollupCache } from 'rollup';
 import ts from 'typescript';
 import { FileCache } from '../file-system/file-cache';
 import { ComplexPredicate } from '../graph/build-graph';
@@ -54,7 +53,7 @@ export function ngUrl(path: string): string {
 export type OutputFileCache = Map<string, { version?: string; content: string }>;
 
 export class EntryPointNode extends Node {
-  readonly type = TYPE_NG_ENTRY_POINT;
+  readonly type: string = TYPE_NG_ENTRY_POINT;
 
   constructor(
     public readonly url: string,
@@ -78,8 +77,6 @@ export class EntryPointNode extends Node {
     sourcesFileCache: FileCache;
     analysesSourcesFileCache: FileCache;
     moduleResolutionCache: ts.ModuleResolutionCache;
-    rollupFESM2022Cache?: RollupCache;
-    rollupTypesCache?: RollupCache;
     stylesheetProcessor?: StylesheetProcessor;
     oldNgtscProgram?: NgtscProgram;
     oldBuilder?: ts.EmitAndSemanticDiagnosticsBuilderProgram;
@@ -99,10 +96,13 @@ export class EntryPointNode extends Node {
 }
 
 export class PackageNode extends Node {
-  readonly type = TYPE_NG_PACKAGE;
+  readonly type: string = TYPE_NG_PACKAGE;
   declare data: NgPackage;
 
-  cache = {
+  cache: {
+    sourcesFileCache: FileCache;
+    moduleResolutionCache: ts.ModuleResolutionCache;
+  } = {
     sourcesFileCache: new FileCache(),
     moduleResolutionCache: ts.createModuleResolutionCache(process.cwd(), s => s),
   };

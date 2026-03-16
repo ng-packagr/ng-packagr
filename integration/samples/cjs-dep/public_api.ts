@@ -1,3 +1,3 @@
 import * as rimraf from 'rimraf';
 
-console.log(rimraf)
+console.log(rimraf);

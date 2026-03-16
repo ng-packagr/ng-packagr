@@ -92,12 +92,7 @@ describe(`NgEntryPoint`, () => {
       primaryDestinationPath: primaryEntryPoint.destinationPath,
       destinationPath: join(primaryEntryPoint.destinationPath, secondaryEntryPointRelativeSourcePath),
     };
-    secondaryEntryPoint = new NgEntryPoint(
-      packageJson,
-      secondaryNgPackageJson,
-      secondaryEntryPointBasePath,
-      secondaryData,
-    );
+    secondaryEntryPoint = new NgEntryPoint(packageJson, secondaryNgPackageJson, secondaryEntryPointBasePath, secondaryData);
 
     expect(secondaryEntryPoint.entryFilePath).to.equal(resolve(secondaryEntryPointBasePath, 'public-api.ts'));
     expect(secondaryEntryPoint.isSecondaryEntryPoint).to.be.true;
@@ -137,19 +132,12 @@ describe(`NgEntryPoint`, () => {
       primaryDestinationPath: primaryEntryPoint.destinationPath,
       destinationPath: join(primaryEntryPoint.destinationPath, secondaryEntryPointRelativeSourcePath),
     };
-    secondaryEntryPoint = new NgEntryPoint(
-      packageJson,
-      secondaryNgPackageJson,
-      secondaryEntryPointBasePath,
-      secondaryData,
-    );
+    secondaryEntryPoint = new NgEntryPoint(packageJson, secondaryNgPackageJson, secondaryEntryPointBasePath, secondaryData);
 
     expect(secondaryEntryPoint.entryFilePath).to.equal(resolve(secondaryEntryPointBasePath, 'demo-api.ts'));
     expect(secondaryEntryPoint.entryFile).to.equal('demo-api.ts');
     expect(secondaryEntryPoint.cssUrl).to.equal('none');
     expect(secondaryEntryPoint.flatModuleFile).to.equal('exampleTestEntryPointExtra');
-    expect(secondaryEntryPoint.styleIncludePaths).to.deep.equal([
-      resolve(secondaryEntryPointBasePath, './style-includes'),
-    ]);
+    expect(secondaryEntryPoint.styleIncludePaths).to.deep.equal([resolve(secondaryEntryPointBasePath, './style-includes')]);
   });
 });

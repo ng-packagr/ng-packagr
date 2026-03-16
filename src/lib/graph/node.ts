@@ -40,7 +40,7 @@ export class Node {
   private _dependents = new Set<Node>();
   private _dependees = new Set<Node>();
 
-  public dependsOn(dependent: Node | Node[]) {
+  public dependsOn(dependent: Node | Node[]): void {
     const newDeps = Array.isArray(dependent) ? dependent : [dependent];
 
     for (const newDep of newDeps) {

@@ -30,12 +30,7 @@ const MAX_RENDER_WORKERS = maxWorkers;
 /**
  * All available importer types.
  */
-type Importers =
-  | Importer<'sync'>
-  | Importer<'async'>
-  | FileImporter<'sync'>
-  | FileImporter<'async'>
-  | NodePackageImporter;
+type Importers = Importer<'sync'> | Importer<'async'> | FileImporter<'sync'> | FileImporter<'async'> | NodePackageImporter;
 
 export interface SerializableVersion {
   major: number;
@@ -82,8 +77,8 @@ export class SassWorkerImplementation {
   #workerPool: WorkerPool | undefined;
 
   constructor(
-    private readonly rebase = false,
-    readonly maxThreads = MAX_RENDER_WORKERS,
+    private readonly rebase: boolean = false,
+    readonly maxThreads: number = MAX_RENDER_WORKERS,
   ) {}
 
   #ensureWorkerPool(): WorkerPool {
@@ -116,10 +111,7 @@ export class SassWorkerImplementation {
    * @param source The contents to compile.
    * @param options The `dart-sass` options to use when rendering the stylesheet.
    */
-  async compileStringAsync(
-    source: string,
-    options: StringOptions<'async'>,
-  ): Promise<CompileResult> {
+  async compileStringAsync(source: string, options: StringOptions<'async'>): Promise<CompileResult> {
     // The `functions`, `logger` and `importer` options are JavaScript functions that cannot be transferred.
     // If any additional function options are added in the future, they must be excluded as well.
     const { functions, importers, url, logger, ...serializableOptions } = options;
@@ -177,7 +169,7 @@ export class SassWorkerImplementation {
     return {
       ...result,
       // URL is not serializable so in the worker we convert to string and here back to URL.
-      loadedUrls: result.loadedUrls.map((p) => pathToFileURL(p)),
+      loadedUrls: result.loadedUrls.map(p => pathToFileURL(p)),
     };
   }
 
@@ -200,28 +192,23 @@ export class SassWorkerImplementation {
     const { port1: mainImporterPort, port2: workerImporterPort } = new MessageChannel();
     const importerSignal = new Int32Array(new SharedArrayBuffer(4));
 
-    mainImporterPort.on(
-      'message',
-      ({ url, options }: { url: string; options: CanonicalizeContext }) => {
-        this.processImporters(importers, url, {
-          ...options,
-          // URL is not serializable so in the worker we convert to string and here back to URL.
-          containingUrl: options.containingUrl
-            ? pathToFileURL(options.containingUrl as unknown as string)
-            : null,
+    mainImporterPort.on('message', ({ url, options }: { url: string; options: CanonicalizeContext }) => {
+      this.processImporters(importers, url, {
+        ...options,
+        // URL is not serializable so in the worker we convert to string and here back to URL.
+        containingUrl: options.containingUrl ? pathToFileURL(options.containingUrl as unknown as string) : null,
+      })
+        .then(result => {
+          mainImporterPort.postMessage(result);
         })
-          .then((result) => {
-            mainImporterPort.postMessage(result);
-          })
-          .catch((error) => {
-            mainImporterPort.postMessage(error);
-          })
-          .finally(() => {
-            Atomics.store(importerSignal, 0, 1);
-            Atomics.notify(importerSignal, 0);
-          });
-      },
-    );
+        .catch(error => {
+          mainImporterPort.postMessage(error);
+        })
+        .finally(() => {
+          Atomics.store(importerSignal, 0, 1);
+          Atomics.notify(importerSignal, 0);
+        });
+    });
 
     mainImporterPort.unref();
 
@@ -234,11 +221,7 @@ export class SassWorkerImplementation {
     };
   }
 
-  private async processImporters(
-    importers: Iterable<Importers>,
-    url: string,
-    options: CanonicalizeContext,
-  ): Promise<string | null> {
+  private async processImporters(importers: Iterable<Importers>, url: string, options: CanonicalizeContext): Promise<string | null> {
     for (const importer of importers) {
       if (!this.isFileImporter(importer)) {
         // Importer

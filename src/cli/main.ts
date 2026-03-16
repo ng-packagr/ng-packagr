@@ -17,15 +17,8 @@ program
   .option('-v, --version', 'Prints version info')
   .option('-w, --watch', 'Watch for file changes')
   .option('--poll <interval>', 'Enable and define the file watching poll time period in milliseconds', x => +x)
-  .option(
-    '-p, --project <path>',
-    "Path to the 'ng-package.json' or 'package.json' file.",
-    parseProjectPath,
-    DEFAULT_PROJECT_PATH,
-  )
-  .option('-c, --config <config>', 'Path to a tsconfig file.', (value: string | undefined) =>
-    value ? path.resolve(value) : undefined,
-  );
+  .option('-p, --project <path>', "Path to the 'ng-package.json' or 'package.json' file.", parseProjectPath, DEFAULT_PROJECT_PATH)
+  .option('-c, --config <config>', 'Path to a tsconfig file.', (value: string | undefined) => (value ? path.resolve(value) : undefined));
 
 program.on('option:version', () => {
   void versionCommand().then(() => process.exit(0));

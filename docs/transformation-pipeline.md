@@ -13,7 +13,7 @@ Transformation functions may be composed through dependency injection, thus maki
 A transformation is a pipeable operator (more precise, a mono-type operator) over the build graph:
 
 ```ts
-(source$: Observable<BuildGraph>) => Observable<BuildGraph>
+(source$: Observable<BuildGraph>) => Observable<BuildGraph>;
 ```
 
 Promise-based transformations and async/await-based transformations may be written as (undefined and void return values indicate that the graph wasn't altered):
@@ -60,10 +60,7 @@ A Transformation may be composed of several "sub-transformations". Composition t
 import { pipe } from 'rxjs/util/pipe';
 
 function composedTransformationFactory(firstSubTransform: Transform, secondSubTransform: Transform) {
-  return pipe(
-    firstSubTransform,
-    secondSubTransform,
-  );
+  return pipe(firstSubTransform, secondSubTransform);
 }
 ```
 

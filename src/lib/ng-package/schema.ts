@@ -17,9 +17,7 @@ export function validateNgPackageSchema(ngPackageJson: unknown): asserts ngPacka
   const validate = (ajvNgPackageSchemaValidator ??= getSchemaValidator(require('../../../ng-package.schema.json')));
   const isValid = validate(ngPackageJson);
   if (!isValid) {
-    throw new Error(
-      `Configuration doesn't match the required schema.\n${formatSchemaValidationErrors(validate.errors)}`,
-    );
+    throw new Error(`Configuration doesn't match the required schema.\n${formatSchemaValidationErrors(validate.errors)}`);
   }
 }
 
@@ -29,17 +27,11 @@ export function validateNgPackageSchema(ngPackageJson: unknown): asserts ngPacka
  *
  * @param ngPackageJson The value to validate.
  */
-export function validateNgPackageEntryPointSchema(
-  ngPackageJson: unknown,
-): asserts ngPackageJson is NgPackageEntryConfig {
-  const validate = (ajvNgPackageEntryPointSchemaValidator ??= getSchemaValidator(
-    require('../../../ng-entrypoint.schema.json'),
-  ));
+export function validateNgPackageEntryPointSchema(ngPackageJson: unknown): asserts ngPackageJson is NgPackageEntryConfig {
+  const validate = (ajvNgPackageEntryPointSchemaValidator ??= getSchemaValidator(require('../../../ng-entrypoint.schema.json')));
   const isValid = validate(ngPackageJson);
   if (!isValid) {
-    throw new Error(
-      `Configuration doesn't match the required schema.\n${formatSchemaValidationErrors(validate.errors)}`,
-    );
+    throw new Error(`Configuration doesn't match the required schema.\n${formatSchemaValidationErrors(validate.errors)}`);
   }
 }
 
@@ -70,9 +62,7 @@ function getSchemaValidator(schema: unknown): ValidateFunction {
     keyword: 'x-deprecated',
     validate: (schema, _data, _parentSchema, dataCxt) => {
       if (schema) {
-        log.warn(
-          `Option "${dataCxt.parentDataProperty}" is deprecated${typeof schema == 'string' ? ': ' + schema : '.'}`,
-        );
+        log.warn(`Option "${dataCxt.parentDataProperty}" is deprecated${typeof schema == 'string' ? ': ' + schema : '.'}`);
       }
 
       return true;

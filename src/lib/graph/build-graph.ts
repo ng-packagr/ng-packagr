@@ -28,7 +28,7 @@ export class BuildGraph implements Traversable<Node> {
   private store = new Map<string, Node>();
   watcher?: FSWatcher;
 
-  public put(value: Node | Node[]) {
+  public put(value: Node | Node[]): this {
     if (value instanceof Array) {
       for (const node of value) {
         this.insert(node);

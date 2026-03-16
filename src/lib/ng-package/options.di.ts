@@ -3,7 +3,7 @@ import { InjectionToken, Provider, ValueProvider } from 'injection-js';
 import { tmpdir } from 'os';
 import { resolve } from 'path';
 
-export const OPTIONS_TOKEN = new InjectionToken<NgPackagrOptions>(`ng.v5.options`);
+export const OPTIONS_TOKEN: InjectionToken<NgPackagrOptions> = new InjectionToken<NgPackagrOptions>(`ng.v5.options`);
 export interface NgPackagrOptions {
   /** Whether or not ng-packagr will watch for file changes and perform an incremental build. */
   watch?: boolean;

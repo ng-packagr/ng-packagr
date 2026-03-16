@@ -29,15 +29,7 @@ import { colors } from '../utils/color';
 import { rmdir } from '../utils/fs';
 import * as log from '../utils/log';
 import { discoverPackages } from './discover-packages';
-import {
-  EntryPointNode,
-  PackageNode,
-  byEntryPoint,
-  isEntryPoint,
-  isEntryPointPending,
-  isPackage,
-  ngUrl,
-} from './nodes';
+import { EntryPointNode, PackageNode, byEntryPoint, isEntryPoint, isEntryPointPending, isPackage, ngUrl } from './nodes';
 import { NgPackagrOptions } from './options.di';
 
 /**
@@ -91,11 +83,7 @@ export const packageTransformFactory =
 
         const entryPoints = [ngPkg.data.primary, ...ngPkg.data.secondaries].map(entryPoint => {
           const { destinationFiles, moduleId } = entryPoint;
-          const node = new EntryPointNode(
-            ngUrl(moduleId),
-            ngPkg.cache.sourcesFileCache,
-            ngPkg.cache.moduleResolutionCache,
-          );
+          const node = new EntryPointNode(ngUrl(moduleId), ngPkg.cache.sourcesFileCache, ngPkg.cache.moduleResolutionCache);
           node.data = { entryPoint, destinationFiles };
           node.state = STATE_PENDING;
           ngPkg.dependsOn(node);

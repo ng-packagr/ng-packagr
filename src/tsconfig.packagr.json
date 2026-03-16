@@ -2,6 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "declaration": true,
+    "isolatedDeclarations": true,
     "outDir": "../dist/src",
     "skipLibCheck": true, // due to: https://github.com/angular/angular/issues/23112
     "types": ["node"]

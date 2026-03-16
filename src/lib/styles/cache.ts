@@ -102,7 +102,7 @@ export class MemoryCache<V> extends Cache<V, Map<string, V>> {
   /**
    * Removes all entries from the cache instance.
    */
-  clear() {
+  clear(): void {
     this.store.clear();
   }
 
@@ -110,7 +110,7 @@ export class MemoryCache<V> extends Cache<V, Map<string, V>> {
    * Provides all the values currently present in the cache instance.
    * @returns An iterable of all values in the cache.
    */
-  values() {
+  values(): IterableIterator<V> {
     return this.store.values();
   }
 
@@ -118,7 +118,7 @@ export class MemoryCache<V> extends Cache<V, Map<string, V>> {
    * Provides all the keys/values currently present in the cache instance.
    * @returns An iterable of all key/value pairs in the cache.
    */
-  entries() {
+  entries(): IterableIterator<[string, V]> {
     return this.store.entries();
   }
 }

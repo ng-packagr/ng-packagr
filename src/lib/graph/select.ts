@@ -1,12 +1,10 @@
-import { Node,  STATE_DONE, STATE_IN_PROGRESS, STATE_PENDING } from './node';
+import { Node, STATE_DONE, STATE_IN_PROGRESS, STATE_PENDING } from './node';
 
-export function and(...criteria: ((node: Node) => boolean)[]) {
+export function and(...criteria: ((node: Node) => boolean)[]): (node: Node) => boolean {
   return (node: Node) => criteria.every(c => c(node));
 }
 
-export function by(
-  criteria: (node: Node) => boolean,
-): {
+export function by(criteria: (node: Node) => boolean): {
   (node: Node): boolean;
   and: (criteria: (node: Node) => boolean) => (node: Node) => boolean;
 } {

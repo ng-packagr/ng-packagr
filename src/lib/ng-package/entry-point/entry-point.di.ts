@@ -6,7 +6,7 @@ import { entryPointTransformFactory } from './entry-point.transform';
 import { WRITE_BUNDLES_TRANSFORM, WRITE_BUNDLES_TRANSFORM_TOKEN } from './write-bundles.di';
 import { WRITE_PACKAGE_TRANSFORM, WRITE_PACKAGE_TRANSFORM_TOKEN } from './write-package.di';
 
-export const ENTRY_POINT_TRANSFORM_TOKEN = new InjectionToken<Transform>(`ng.v5.entryPointTransform`);
+export const ENTRY_POINT_TRANSFORM_TOKEN: InjectionToken<Transform> = new InjectionToken<Transform>(`ng.v5.entryPointTransform`);
 
 export const ENTRY_POINT_TRANSFORM: TransformProvider = provideTransform({
   provide: ENTRY_POINT_TRANSFORM_TOKEN,

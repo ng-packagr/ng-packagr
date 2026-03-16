@@ -12,12 +12,7 @@ interface RawPostcssConfiguration {
 }
 
 const postcssConfigurationFiles: string[] = ['postcss.config.json', '.postcssrc.json'];
-const tailwindConfigFiles: string[] = [
-  'tailwind.config.js',
-  'tailwind.config.cjs',
-  'tailwind.config.mjs',
-  'tailwind.config.ts',
-];
+const tailwindConfigFiles: string[] = ['tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs', 'tailwind.config.ts'];
 
 export interface SearchDirectory {
   root: string;

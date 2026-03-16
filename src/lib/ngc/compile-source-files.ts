@@ -15,7 +15,7 @@ export async function compileSourceFiles(
   options: NgPackagrOptions,
   extraOptions?: Partial<CompilerOptions>,
   stylesheetProcessor?: StylesheetProcessor,
-) {
+): Promise<void> {
   const { NgtscProgram, formatDiagnostics } = await import('@angular/compiler-cli');
   const { cacheDirectory, watch, cacheEnabled } = options;
   const tsConfigOptions: CompilerOptions = { ...tsConfig.options, ...extraOptions };
@@ -26,10 +26,7 @@ export async function compileSourceFiles(
   const cacheDir = cacheEnabled && cacheDirectory;
   if (cacheDir) {
     tsConfigOptions.incremental ??= true;
-    tsConfigOptions.tsBuildInfoFile ??= join(
-      cacheDir,
-      `tsbuildinfo/${entryPoint.data.entryPoint.flatModuleFile}.tsbuildinfo`,
-    );
+    tsConfigOptions.tsBuildInfoFile ??= join(cacheDir, `tsbuildinfo/${entryPoint.data.entryPoint.flatModuleFile}.tsbuildinfo`);
   }
 
   const tsCompilerHost = cacheCompilerHost(
@@ -63,11 +60,7 @@ export async function compileSourceFiles(
 
   let builder: ts.BuilderProgram | ts.EmitAndSemanticDiagnosticsBuilderProgram;
   if (watch || cacheDir) {
-    builder = cache.oldBuilder = ts.createEmitAndSemanticDiagnosticsBuilderProgram(
-      typeScriptProgram,
-      tsCompilerHost,
-      oldBuilder,
-    );
+    builder = cache.oldBuilder = ts.createEmitAndSemanticDiagnosticsBuilderProgram(typeScriptProgram, tsCompilerHost, oldBuilder);
     cache.oldNgtscProgram = angularProgram;
   } else {
     builder = ts.createEmitAndSemanticDiagnosticsBuilderProgram(typeScriptProgram, tsCompilerHost);

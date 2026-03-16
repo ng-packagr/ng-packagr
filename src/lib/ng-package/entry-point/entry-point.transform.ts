@@ -29,11 +29,7 @@ import { isEntryPointInProgress } from '../nodes';
  * @param writeBundles Transformation flattening ES2022 modules to ESM2022, UMD, and minified UMD.
  * @param writePackage Transformation writing a distribution-ready `package.json` (for publishing to npm registry).
  */
-export const entryPointTransformFactory = (
-  compileTs: Transform,
-  writeBundles: Transform,
-  writePackage: Transform,
-): Transform =>
+export const entryPointTransformFactory = (compileTs: Transform, writeBundles: Transform, writePackage: Transform): Transform =>
   pipe(
     tap(graph => {
       // Peek the first entry point from the graph

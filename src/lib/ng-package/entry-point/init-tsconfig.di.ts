@@ -11,9 +11,11 @@ export const provideTsConfig = (values?: ParsedConfiguration | string): Provider
   };
 };
 
-export const DEFAULT_TS_CONFIG_TOKEN = new InjectionToken<ParsedConfiguration | string | undefined>('ng.v5.defaultTsConfig');
+export const DEFAULT_TS_CONFIG_TOKEN: InjectionToken<ParsedConfiguration | string | undefined> = new InjectionToken<
+  ParsedConfiguration | string | undefined
+>('ng.v5.defaultTsConfig');
 
-export const INIT_TS_CONFIG_TOKEN = new InjectionToken<Transform>('ng.v5.initTsConfigTransform');
+export const INIT_TS_CONFIG_TOKEN: InjectionToken<Transform> = new InjectionToken<Transform>('ng.v5.initTsConfigTransform');
 
 export const INIT_TS_CONFIG_TRANSFORM: TransformProvider = provideTransform({
   provide: INIT_TS_CONFIG_TOKEN,

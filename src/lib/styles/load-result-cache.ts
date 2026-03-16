@@ -15,7 +15,7 @@ export function createCachedLoad(
     return callback;
   }
 
-  return async (args) => {
+  return async args => {
     const loadCacheKey = `${args.namespace}:${args.path}`;
     let result: OnLoadResult | null | undefined = cache.get(loadCacheKey);
 

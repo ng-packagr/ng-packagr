@@ -19,7 +19,7 @@ function isLessException(error: unknown): error is LessException {
   return !!error && typeof error === 'object' && 'column' in error;
 }
 
-export const LessStylesheetLanguage = Object.freeze<StylesheetLanguage>({
+export const LessStylesheetLanguage: Readonly<StylesheetLanguage> = Object.freeze<StylesheetLanguage>({
   name: 'less',
   componentFilter: /^less;/,
   fileFilter: /\.less$/,

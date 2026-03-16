@@ -12,10 +12,10 @@ The motivation is to help authors write libraries and generate the expected, dis
 
 According to [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview), there need to be the following build artefacts:
 
-* FESM2015 Bundle: `@<prefix>/<name>.js` in ES2015 syntax and ES2015 module format, a so-called Flat ECMAScript Module. It is referenced in the `es2015` property of `package.json`.
-* Type definitions: an `index.d.ts` file is needed to support TypeScript debugging and rich developer experience. It is references in the `typings` property of `package.json`
-* A `package.json` file: it describes the structure of the library and serves as the entry point for library users, when resolving TypeScript import statements: `import { .. } from '@<prefix>/<name>'`.
-* A `README.md` and `LICENSE` file for the library. These files should be located next to the `package.json` (and can be copied "as is" / static assets).
+- FESM2015 Bundle: `@<prefix>/<name>.js` in ES2015 syntax and ES2015 module format, a so-called Flat ECMAScript Module. It is referenced in the `es2015` property of `package.json`.
+- Type definitions: an `index.d.ts` file is needed to support TypeScript debugging and rich developer experience. It is references in the `typings` property of `package.json`
+- A `package.json` file: it describes the structure of the library and serves as the entry point for library users, when resolving TypeScript import statements: `import { .. } from '@<prefix>/<name>'`.
+- A `README.md` and `LICENSE` file for the library. These files should be located next to the `package.json` (and can be copied "as is" / static assets).
 
 **DO**: `ng-packagr` generates a TypeScript library in Angular Package Format.
 JavaScript bundles, type definitions and AoT metadata are auto-generated during build.
@@ -111,10 +111,10 @@ To help writing the JSON file, a JSON schema ships with `ng-packagr`.
 
 From that deliberate design choice, the following considerations are derived. `ng-package.json`…
 
-* …IS a declarative way of describing an Angular library.
-  * Multiple libraries are handled by writing one `ng-package.json` file per project and running `ng-packagr` for each project.
-* …SHOULD describe the properties and characteristics of an Angular library . Library authors should take care of describing _WHAT_ their library looks like.
-* …SHOULD NOT try to pass-up configuration of internal tools (e.g. `tsc` or `rollup` configs). This would put burden on library authors to take care of _HOW_ an internal build process is orchestrated.
+- …IS a declarative way of describing an Angular library.
+  - Multiple libraries are handled by writing one `ng-package.json` file per project and running `ng-packagr` for each project.
+- …SHOULD describe the properties and characteristics of an Angular library . Library authors should take care of describing _WHAT_ their library looks like.
+- …SHOULD NOT try to pass-up configuration of internal tools (e.g. `tsc` or `rollup` configs). This would put burden on library authors to take care of _HOW_ an internal build process is orchestrated.
 
 ---
 

@@ -81,11 +81,7 @@ export function createFileWatch(
  *
  * @returns - Returns `true` if any entry point was invalidated, otherwise `false`.
  */
-export function invalidateEntryPointsAndCacheOnFileChange(
-  graph: BuildGraph,
-  files: string[],
-  sourcesFileCache: FileCache,
-): boolean {
+export function invalidateEntryPointsAndCacheOnFileChange(graph: BuildGraph, files: string[], sourcesFileCache: FileCache): boolean {
   let invalidatedEntryPoint = false;
   const allNodesToClean: Map<string, Node> = new Map();
 

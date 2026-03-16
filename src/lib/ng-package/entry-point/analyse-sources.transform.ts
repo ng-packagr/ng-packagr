@@ -119,12 +119,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     });
   };
 
-  const program: ts.Program = ts.createProgram(
-    entryPoint.data.tsConfig.rootNames,
-    tsConfigOptions,
-    compilerHost,
-    oldProgram,
-  );
+  const program: ts.Program = ts.createProgram(entryPoint.data.tsConfig.rootNames, tsConfigOptions, compilerHost, oldProgram);
 
   // If an index file exists parallel to the entryFilePath it is not valid as index should be reserved as an
   // entry file of an entry-point based on node resolution strategy.
