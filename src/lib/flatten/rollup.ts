@@ -41,7 +41,7 @@ export async function rollupBundleFile(
 
   if (dtsMode) {
     outExtension = '.d.ts';
-    plugins = [fileLoaderPlugin(opts.fileCache, ['.d.ts', '/index.d.ts']), dts()];
+    plugins = [fileLoaderPlugin(opts.fileCache, ['.d.ts', '/index.d.ts']), dts({ sourcemap: opts.sourcemap })];
   } else {
     outExtension = '.mjs';
     plugins = [fileLoaderPlugin(opts.fileCache, ['.js', '/index.js']), rollupJson()];
