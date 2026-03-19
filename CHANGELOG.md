@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/22.0.0-next.0...22.0.0-next.1) (2026-03-19)
+
+
+### Bug Fixes
+
+* ensure dts sourcemaps point to original ts files ([28424e2](https://github.com/ng-packagr/ng-packagr/commit/28424e2b7ce8d78e95614481dd797b75fe7db2be))
+
 ## [22.0.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/21.2.0-next.0...22.0.0-next.0) (2026-02-25)
 
 
