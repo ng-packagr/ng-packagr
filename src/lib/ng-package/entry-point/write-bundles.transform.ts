@@ -102,7 +102,7 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
             cacheDirectory,
             fileCache: cache.outputCache,
             cacheKey,
-            sourcemap: tsConfig.options.declarationMap || false,
+            sourcemap: tsConfig.options.declarationMap ?? false,
           }),
         ]);
 
