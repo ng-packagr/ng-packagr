@@ -1,4 +1,4 @@
-import type { CompilerOptions, ParsedConfiguration } from '@angular/compiler-cli';
+import type { AngularCompilerOptions, ParsedConfiguration } from '@angular/compiler-cli';
 import * as path from 'path';
 import ts from 'typescript';
 import { EntryPointNode } from '../ng-package/nodes';
@@ -10,7 +10,7 @@ export const defaultTsConfigPath = path.join(__dirname, 'conf', 'tsconfig.ngc.js
  */
 async function readDefaultTsConfig(fileName = defaultTsConfigPath): Promise<ParsedConfiguration> {
   // these options are mandatory
-  const extraOptions: CompilerOptions = {
+  const extraOptions: AngularCompilerOptions = {
     target: ts.ScriptTarget.ES2022,
 
     composite: false,
@@ -76,7 +76,7 @@ export async function initializeTsConfig(
 
     // Resolve defaults from DI token and create a deep copy of the defaults
     const tsConfig: ParsedConfiguration = JSON.parse(JSON.stringify(defaultTsConfigParsed));
-    const overrideOptions: CompilerOptions = {
+    const overrideOptions: AngularCompilerOptions = {
       flatModuleId: entryPoint.moduleId,
       flatModuleOutFile: `${entryPoint.flatModuleFile}.js`,
       basePath,

@@ -3,11 +3,13 @@
   "compileOnSave": false,
   "compilerOptions": {
     "module": "commonjs",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "skipLibCheck": true,
     "pretty": true,
+    "strict": false,
     "noEmitOnError": true,
     "noImplicitAny": false,
     "sourceMap": true,
@@ -17,7 +19,8 @@
     "esModuleInterop": true,
     "target": "es2023",
     "lib": ["es2023"],
-    "types": ["chai", "jasmine", "node"]
+    "types": ["chai", "jasmine", "node"],
+    "rootDir": "./src"
   },
   "exclude": ["dist", "integration"]
 }
