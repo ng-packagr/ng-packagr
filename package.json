@@ -59,7 +59,7 @@
     "rollup": "^4.24.0"
   },
   "peerDependencies": {
-    "@angular/compiler-cli": "^22.0.0-next",
+    "@angular/compiler-cli": "^22.0.0-next.3",
     "tailwindcss": "^2.0.0 || ^3.0.0 || ^4.0.0",
     "tslib": "^2.3.0",
     "typescript": ">=5.9 <6.1"
@@ -71,13 +71,13 @@
   },
   "devDependencies": {
     "@angular/cdk": "~22.0.0-next",
-    "@angular/common": "~22.0.0-next",
-    "@angular/compiler": "~22.0.0-next",
-    "@angular/compiler-cli": "~22.0.0-next",
-    "@angular/core": "~22.0.0-next",
+    "@angular/common": "~22.0.0-next.3",
+    "@angular/compiler": "~22.0.0-next.3",
+    "@angular/compiler-cli": "~22.0.0-next.3",
+    "@angular/core": "~22.0.0-next.3",
     "@angular/material": "~22.0.0-next",
-    "@angular/platform-browser": "~22.0.0-next",
-    "@angular/router": "~22.0.0-next",
+    "@angular/platform-browser": "~22.0.0-next.3",
+    "@angular/router": "~22.0.0-next.3",
     "@commitlint/cli": "^20.0.0",
     "@commitlint/config-angular": "^20.0.0",
     "@types/chai": "^5.0.0",
@@ -104,7 +104,7 @@
     "tailwindcss": "^3.2.0",
     "ts-node": "^10.2.1",
     "tslib": "^2.0.0",
-    "typescript": "5.9.3"
+    "typescript": "6.0.2"
   },
   "private": true,
   "scripts": {

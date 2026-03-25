@@ -7,5 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class PrimaryAngularComponent {
   @Input()
-  counter: number;
+  counter?: number;
 }
