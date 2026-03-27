@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/22.0.0-next.1...22.0.0-next.2) (2026-03-27)
+
+
+### Features
+
+* update to TypeScript 6 ([f841ddf](https://github.com/ng-packagr/ng-packagr/commit/f841ddf5350f53c6c6a859d4d7130ce71beb5de6))
+
+
+### Bug Fixes
+
+* default generated package.json type to module ([0a12da7](https://github.com/ng-packagr/ng-packagr/commit/0a12da70fd0f9bd1f4be82ee986f3a40c4157d1b))
+
 ## [22.0.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/22.0.0-next.0...22.0.0-next.1) (2026-03-19)
 
 
