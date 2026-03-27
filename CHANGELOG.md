@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [21.2.2](https://github.com/ng-packagr/ng-packagr/compare/21.2.1...21.2.2) (2026-03-27)
+
+
+### Bug Fixes
+
+* default generated package.json type to module ([f499dc9](https://github.com/ng-packagr/ng-packagr/commit/f499dc92b904bf9649abd318fbc942518f5edae4))
+
 ### [21.2.1](https://github.com/ng-packagr/ng-packagr/compare/21.2.0...21.2.1) (2026-03-19)
 
 
