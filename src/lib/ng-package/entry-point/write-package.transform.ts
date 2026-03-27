@@ -196,6 +196,7 @@ async function writePackageJson(
 
   // set additional properties
   const packageJson = { ...entryPoint.packageJson, ...additionalProperties };
+  packageJson.type ??= 'module';
 
   // read tslib version from `@angular/compiler` so that our tslib
   // version at least matches that of angular if we use require('tslib').version
