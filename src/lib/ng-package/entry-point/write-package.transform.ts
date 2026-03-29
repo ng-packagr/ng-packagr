@@ -10,7 +10,7 @@ import { colors } from '../../utils/color';
 import { copyFile, mkdir, rmdir, stat, writeFile } from '../../utils/fs';
 import * as log from '../../utils/log';
 import { ensureUnixPath } from '../../utils/path';
-import { EntryPointNode, PackageNode, fileUrl, isEntryPoint, isPackage } from '../nodes';
+import { EntryPointNode, PackageNode, fileUrl, findPackageNode, isEntryPoint } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 import { NgPackage } from '../package';
 import { NgEntryPoint } from './entry-point';
@@ -23,7 +23,7 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
     const entryPoints = graph.filter(isEntryPoint);
     const entryPoint = entryPoints.find(isInProgress);
     const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
-    const ngPackageNode: PackageNode = graph.find(isPackage);
+    const ngPackageNode = findPackageNode(graph);
     const ngPackage = ngPackageNode.data;
     const { destinationFiles } = entryPoint.data;
 
