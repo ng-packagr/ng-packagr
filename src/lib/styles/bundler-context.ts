@@ -64,7 +64,7 @@ export class BundlerContext {
   #optionsFactory: BundlerOptionsFactory<BuildOptions & { metafile: true; write: false }>;
   #shouldCacheResult: boolean;
   #loadCache?: MemoryLoadResultCache;
-  readonly watchFiles = new Set<string>();
+  readonly watchFiles: Set<string> = new Set<string>();
 
   constructor(
     private workspaceRoot: string,
@@ -183,8 +183,10 @@ export class BundlerContext {
 
     // Return the successful build results
     return {
-      ...result,
       errors: undefined,
+      warnings: result.warnings,
+      metafile: result.metafile,
+      outputFiles: result.outputFiles as BuildOutputFile[],
     };
   }
 

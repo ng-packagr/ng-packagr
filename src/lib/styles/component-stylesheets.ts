@@ -1,10 +1,19 @@
-import { OutputFile } from 'esbuild';
+import { Message, Metafile, OutputFile } from 'esbuild';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { BuildOutputFileType, BundleContextResult, BundlerContext } from './bundler-context';
 import { MemoryCache } from './cache';
 import { BundleStylesheetOptions, createStylesheetBundleOptions } from './stylesheets/bundle-options';
 import { shutdownSassWorkerPool } from './stylesheets/sass-language';
+
+export interface ComponentStylesheetResult {
+  errors: Message[] | undefined;
+  warnings: Message[];
+  contents: string;
+  outputFiles: OutputFile[];
+  metafile: Metafile | undefined;
+  referencedFiles: Set<string> | undefined;
+}
 
 /**
  * Bundles component stylesheets. A stylesheet can be either an inline stylesheet that
@@ -26,7 +35,7 @@ export class ComponentStylesheetBundler {
     private readonly incremental: boolean,
   ) {}
 
-  async bundleFile(entry: string) {
+  async bundleFile(entry: string): Promise<ComponentStylesheetResult> {
     const bundlerContext = await this.#fileContexts.getOrCreate(entry, () => {
       return new BundlerContext(this.options.workspaceRoot, this.incremental, loadCache => {
         const buildOptions = createStylesheetBundleOptions(this.options, loadCache);
@@ -40,7 +49,7 @@ export class ComponentStylesheetBundler {
     return this.extractResult(await bundlerContext.bundle(), bundlerContext.watchFiles);
   }
 
-  async bundleInline(data: string, filename: string, language = this.defaultInlineLanguage) {
+  async bundleInline(data: string, filename: string, language: string = this.defaultInlineLanguage): Promise<ComponentStylesheetResult> {
     // Use a hash of the inline stylesheet content to ensure a consistent identifier. External stylesheets will resolve
     // to the actual stylesheet file path.
     // TODO: Consider xxhash instead for hashing
@@ -118,10 +127,10 @@ export class ComponentStylesheetBundler {
     this.#fileContexts.clear();
     this.#inlineContexts.clear();
 
-    await Promise.allSettled([shutdownSassWorkerPool(), contexts.map(context => context.dispose())]);
+    await Promise.allSettled([shutdownSassWorkerPool(), ...contexts.map(context => context.dispose())]);
   }
 
-  private extractResult(result: BundleContextResult, referencedFiles: Set<string> | undefined) {
+  private extractResult(result: BundleContextResult, referencedFiles: Set<string> | undefined): ComponentStylesheetResult {
     let contents = '';
     let metafile;
     const outputFiles: OutputFile[] = [];

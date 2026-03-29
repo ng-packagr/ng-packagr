@@ -20,9 +20,6 @@ importers:
       ajv:
         specifier: ^8.17.1
         version: 8.18.0
-      ansi-colors:
-        specifier: ^4.1.3
-        version: 4.1.3
       browserslist:
         specifier: ^4.26.0
         version: 4.28.1
@@ -1993,10 +1990,6 @@ packages:
   algoliasearch@5.49.2:
     resolution: {integrity: sha512-1K0wtDaRONwfhL4h8bbJ9qTjmY6rhGgRvvagXkMBsAOMNr+3Q2SffHECh9DIuNVrMA1JwA0zCwhyepgBZVakng==}
     engines: {node: '>= 14.0.0'}
-
-  ansi-colors@4.1.3:
-    resolution: {integrity: sha512-/6w/C21Pm1A7aZitlI5Ni/2J6FFQN8i1Cvz3kHABAAbw93v/NlvKdVOqz7CCWz/3iv/JplRSEEZ83XION15ovw==}
-    engines: {node: '>=6'}
 
   ansi-escapes@7.3.0:
     resolution: {integrity: sha512-BvU8nYgGQBxcmMuEeUEmNTvrMVjJNSH7RgW24vXexN4Ven6qCvy4TntnvlnwnMLTVlcRQQdbRY8NKnaIoeWDNg==}
@@ -6314,8 +6307,6 @@ snapshots:
       '@algolia/requester-browser-xhr': 5.49.2
       '@algolia/requester-fetch': 5.49.2
       '@algolia/requester-node-http': 5.49.2
-
-  ansi-colors@4.1.3: {}
 
   ansi-escapes@7.3.0:
     dependencies:
