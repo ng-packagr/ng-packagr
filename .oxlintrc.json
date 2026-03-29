@@ -1,0 +1,41 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "options": {
+    "typeAware": true,
+    "typeCheck": true
+  },
+  "plugins": ["import", "typescript"],
+  "jsPlugins": ["./tools/oxlint-plugin-padding.ts"],
+  "rules": {
+    "typescript/consistent-type-assertions": "error",
+    "typescript/no-non-null-assertion": "error",
+    "typescript/no-unnecessary-qualifier": "error",
+    "typescript/no-unused-expressions": "error",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-absolute-path": "error",
+    "import/no-duplicates": "error",
+    "import/no-unassigned-import": ["error", { "allow": ["symbol-observable"] }],
+    "import/order": [
+      "error",
+      {
+        "alphabetize": { "order": "asc" },
+        "groups": [["builtin", "external"], "parent", "sibling", "index"]
+      }
+    ],
+    "max-lines-per-function": "off",
+    "no-caller": "error",
+    "no-console": "error",
+    "no-empty": ["error", { "allowEmptyCatch": true }],
+    "no-eval": "error",
+    "no-multiple-empty-lines": "error",
+    "no-throw-literal": "error",
+    "sort-imports": ["error", { "ignoreDeclarationSort": true }],
+    "curly": "error",
+    "padding/line-before-return": "error",
+
+    "typescript/unbound-method": "off",
+    "typescript/restrict-template-expressions": "off"
+  },
+  "overrides": []
+}
