@@ -33,9 +33,9 @@ import {
   EntryPointNode,
   PackageNode,
   byEntryPoint,
+  findPackageNode,
   isEntryPoint,
   isEntryPointPending,
-  isPackage,
   ngUrl,
 } from './nodes';
 import { NgPackagrOptions } from './options.di';
@@ -132,7 +132,7 @@ const watchTransformFactory =
         const {
           data,
           cache: { sourcesFileCache },
-        } = graph.find(isPackage);
+        } = findPackageNode(graph);
         const { onFileChange, watcher } = createFileWatch([], [data.dest + '/'], options.poll);
         graph.watcher = watcher;
 

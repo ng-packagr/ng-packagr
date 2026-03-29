@@ -7,7 +7,7 @@ import { transformFromPromise } from '../../graph/transform';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../../utils/cache';
 import { exists, mkdir, writeFile } from '../../utils/fs';
 import { ensureUnixPath } from '../../utils/path';
-import { EntryPointNode, isEntryPointInProgress } from '../nodes';
+import { findEntryPointInProgress } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 
 interface BundlesCache {
@@ -18,7 +18,7 @@ interface BundlesCache {
 
 export const writeBundlesTransform = (options: NgPackagrOptions) =>
   transformFromPromise(async graph => {
-    const entryPoint: EntryPointNode = graph.find(isEntryPointInProgress());
+    const entryPoint = findEntryPointInProgress(graph);
     const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
     const cache = entryPoint.cache;
     const { fesm2022Dir, esm2022, declarations, declarationsDir } = destinationFiles;

@@ -2,7 +2,7 @@ import type { NgtscProgram, ParsedConfiguration, Program } from '@angular/compil
 import type { RollupCache } from 'rollup';
 import ts from 'typescript';
 import { FileCache } from '../file-system/file-cache';
-import { ComplexPredicate } from '../graph/build-graph';
+import { BuildGraph, ComplexPredicate } from '../graph/build-graph';
 import { Node } from '../graph/node';
 import { by, isInProgress, isPending } from '../graph/select';
 import { AngularDiagnosticsCache } from '../ngc/angular-diagnostics-cache';
@@ -37,6 +37,24 @@ export function isEntryPointInProgress(): ComplexPredicate<EntryPointNode> {
 
 export function isEntryPointPending(): ComplexPredicate<EntryPointNode> {
   return by(n => isEntryPoint(n) && isPending(n));
+}
+
+export function findEntryPointInProgress(graph: BuildGraph): EntryPointNode {
+  const entryPoint = graph.find(isEntryPointInProgress());
+  if (!entryPoint) {
+    throw new Error('Could not find entry point in progress');
+  }
+
+  return entryPoint;
+}
+
+export function findPackageNode(graph: BuildGraph): PackageNode {
+  const packageNode: PackageNode | undefined = graph.find(isPackage);
+  if (!packageNode) {
+    throw new Error('Could not find package node in build graph');
+  }
+
+  return packageNode;
 }
 
 export function fileUrl(path: string): string {
