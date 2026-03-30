@@ -37,6 +37,10 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Lint
         run: pnpm -s lint
+      - name: Check code format
+        run: pnpm ng-dev format changed --check ${{ github.event.pull_request.base.sha }}
+      - name: Check commit message
+        run: pnpm ng-dev commit-message validate-range ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
       - name: Build
         run: pnpm -s build
       - name: Run tests
