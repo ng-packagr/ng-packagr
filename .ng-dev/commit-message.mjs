@@ -7,5 +7,5 @@ export const commitMessage = {
   maxLineLength: Infinity,
   minBodyLength: 20,
   minBodyLengthTypeExcludes: ['docs'],
-  scopes: [],
+  scopes: ['ng-packagr'],
 };
