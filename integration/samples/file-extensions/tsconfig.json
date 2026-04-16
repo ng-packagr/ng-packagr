@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "allowJs": true,
+    "target": "esnext",
+    "module": "es2022",
+    "moduleResolution": "bundler"
+  },
+  "angularCompilerOptions": {
+    "compilationMode": "partial"
+  },
+  "files": ["index.ts", "src/foo.ts", "src/bar.ts", "src/baz.js", "src/qxc.mjs", "src/cqxc.cjs", "src/esm.mts", "src/cjs.cts"]
+}
