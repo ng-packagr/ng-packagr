@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/22.0.0-next.2...22.0.0-next.3) (2026-04-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ng-packagr:** * TypeScript versions older than 6.0 are no longer supported.
+
+### Features
+
+* **ng-packagr:** drop support for TypeScript 5.9 ([b59e280](https://github.com/ng-packagr/ng-packagr/commit/b59e2806c6eaef78e71e412e5851b4b437cca45a))
+
+
+### Bug Fixes
+
+* **ng-packagr:** resolve imports with TS extensions in rollup ([804c04b](https://github.com/ng-packagr/ng-packagr/commit/804c04bdfa408fca64610d55449a75d82ed43c49)), closes [#3281](https://github.com/ng-packagr/ng-packagr/issues/3281)
+
 ## [22.0.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/22.0.0-next.1...22.0.0-next.2) (2026-03-27)
 
 
