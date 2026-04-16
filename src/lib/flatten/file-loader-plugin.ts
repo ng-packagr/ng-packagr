@@ -1,4 +1,4 @@
-import { dirname, resolve } from 'node:path';
+import { dirname, format, parse, resolve } from 'node:path';
 import type { Plugin } from 'rollup';
 import { OutputFileCache } from '../ng-package/nodes';
 
@@ -8,7 +8,11 @@ import { ensureUnixPath } from '../utils/path';
 /**
  * Loads a file and it's map.
  */
-export function fileLoaderPlugin(fileCache: OutputFileCache, resolutionExtensions: string[]): Plugin {
+export function fileLoaderPlugin(
+  fileCache: OutputFileCache,
+  resolutionExtension: string,
+  resolutionExtensionMapping?: Record<string, string>
+): Plugin {
   return {
     name: 'file-loader',
     resolveId: function (id, importer) {
@@ -20,15 +24,43 @@ export function fileLoaderPlugin(fileCache: OutputFileCache, resolutionExtension
         return;
       }
 
-      const resolved = ensureUnixPath(resolve(dirname(importer), id));
+      const importerDirectory = dirname(importer);
+      const resolved = ensureUnixPath(resolve(importerDirectory, id));
       if (fileCache.has(resolved)) {
         return resolved;
       }
 
-      for (const suffix of resolutionExtensions) {
-        const potential = resolved + suffix;
-        if (fileCache.has(potential)) {
-          return potential;
+      const fileWithResolutionExtension = format({
+        name: resolved,
+        ext: resolutionExtension
+      });
+      if (fileCache.has(fileWithResolutionExtension)) {
+        return fileWithResolutionExtension;
+      }
+
+      const indexFilePath = format({
+        dir: resolved,
+        name: 'index',
+        ext: resolutionExtension
+      });
+      if (fileCache.has(indexFilePath)) {
+        return indexFilePath;
+      }
+
+      const {
+        ext
+      } = parse(resolved);
+
+      const mappedExtension = resolutionExtensionMapping?.[ext];
+
+      if (mappedExtension) {
+        const fileExtensionReplacedWithMappedExtension = format({
+          ...parse(resolved),
+          base: '',
+          ext: mappedExtension
+        });
+        if (fileCache.has(fileExtensionReplacedWithMappedExtension)) {
+          return fileExtensionReplacedWithMappedExtension;
         }
       }
     },

@@ -41,10 +41,18 @@ export async function rollupBundleFile(
 
   if (dtsMode) {
     outExtension = '.d.ts';
-    plugins = [fileLoaderPlugin(opts.fileCache, ['.d.ts', '/index.d.ts']), dts({ sourcemap: opts.sourcemap })];
+    const dtsExtensionMapping = {
+      '.js': '.d.ts',
+      '.cjs': '.d.cts',
+      '.mjs': '.d.mts',
+      '.ts': '.d.ts',
+      '.mts': '.d.mts',
+      '.cts': '.d.cts',
+    }
+    plugins = [fileLoaderPlugin(opts.fileCache, '.d.ts', dtsExtensionMapping), dts({ sourcemap: opts.sourcemap })];
   } else {
     outExtension = '.mjs';
-    plugins = [fileLoaderPlugin(opts.fileCache, ['.js', '/index.js']), rollupJson()];
+    plugins = [fileLoaderPlugin(opts.fileCache, '.js'), rollupJson()];
   }
 
   // Create the bundle
