@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [21.2.3](https://github.com/ng-packagr/ng-packagr/compare/21.2.2...21.2.3) (2026-04-16)
+
+
+### Bug Fixes
+
+* **ng-packagr:** resolve imports with TS extensions in rollup ([5629808](https://github.com/ng-packagr/ng-packagr/commit/562980812114e05a30fa66bd36c51d9bbb7c73e8)), closes [#3281](https://github.com/ng-packagr/ng-packagr/issues/3281)
+
 ## [22.0.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/22.0.0-next.2...22.0.0-next.3) (2026-04-16)
 
 
