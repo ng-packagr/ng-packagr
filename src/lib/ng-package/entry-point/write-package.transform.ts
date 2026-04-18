@@ -313,7 +313,7 @@ function checkNonPeerDependencies(
   }
 }
 
-type PackageExports = Record<string, ConditionalExport>;
+type PackageExports = Record<string, ConditionalExport | string>;
 
 /**
  * Type describing the conditional exports descriptor for an entry-point.
@@ -333,6 +333,10 @@ function generatePackageExports(
 
   const insertMappingOrError = (subpath: string, mapping: ConditionalExport) => {
     exports[subpath] ??= {};
+
+    if (typeof exports[subpath] === 'string') {
+      exports[subpath] = { default: exports[subpath] };
+    }
     const subpathExport = exports[subpath];
 
     // Go through all conditions that should be inserted. If the condition is already
