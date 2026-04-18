@@ -9,6 +9,7 @@ import { transformFromPromise } from '../../graph/transform';
 import { colors } from '../../utils/color';
 import { copyFile, mkdir, rmdir, stat, writeFile } from '../../utils/fs';
 import * as log from '../../utils/log';
+import { ConditionalExport, generatePackageExports, generateWatchVersion } from '../../utils/package-json';
 import { ensureUnixPath } from '../../utils/path';
 import { EntryPointNode, PackageNode, fileUrl, findPackageNode, isEntryPoint } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
@@ -311,69 +312,4 @@ function checkNonPeerDependencies(
       throw new Error(`Dependency ${dep} must be explicitly allowed using the "allowedNonPeerDependencies" option.`);
     }
   }
-}
-
-type PackageExports = Record<string, ConditionalExport>;
-
-/**
- * Type describing the conditional exports descriptor for an entry-point.
- * https://nodejs.org/api/packages.html#packages_conditional_exports
- */
-type ConditionalExport = { types?: string; default?: string };
-
-/**
- * Generates the `package.json` package exports following APF v13.
- * This is supposed to match with: https://github.com/angular/angular/blob/e0667efa6eada64d1fb8b143840689090fc82e52/packages/bazel/src/ng_package/packager.ts#L415.
- */
-function generatePackageExports(
-  { destinationPath, packageJson }: NgEntryPoint,
-  entryPoints: EntryPointNode[],
-): PackageExports {
-  const exports: PackageExports = packageJson.exports ? JSON.parse(JSON.stringify(packageJson.exports)) : {};
-
-  const insertMappingOrError = (subpath: string, mapping: ConditionalExport) => {
-    exports[subpath] ??= {};
-    const subpathExport = exports[subpath];
-
-    // Go through all conditions that should be inserted. If the condition is already
-    // manually set of the subpath export, we throw an error. In general, we allow for
-    // additional conditions to be set. These will always precede the generated ones.
-    for (const conditionName of Object.keys(mapping)) {
-      if (subpathExport[conditionName] !== undefined) {
-        log.warn(
-          `Found a conflicting export condition for "${subpath}". The "${conditionName}" ` +
-            `condition would be overridden by ng-packagr. Please unset it.`,
-        );
-      }
-
-      // **Note**: The order of the conditions is preserved even though we are setting
-      // the conditions once at a time (the latest assignment will be at the end).
-      subpathExport[conditionName] = mapping[conditionName];
-    }
-  };
-
-  const relativeUnixFromDestPath = (filePath: string) =>
-    './' + ensureUnixPath(path.relative(destinationPath, filePath));
-
-  insertMappingOrError('./package.json', { default: './package.json' });
-
-  const entryPointsSorted = entryPoints.sort((a, b) => a.url.localeCompare(b.url));
-  for (const entryPoint of entryPointsSorted) {
-    const { destinationFiles, isSecondaryEntryPoint } = entryPoint.data.entryPoint;
-    const subpath = isSecondaryEntryPoint ? `./${destinationFiles.directory}` : '.';
-
-    insertMappingOrError(subpath, {
-      types: relativeUnixFromDestPath(destinationFiles.declarationsBundled),
-      default: relativeUnixFromDestPath(destinationFiles.fesm2022),
-    });
-  }
-
-  return exports;
-}
-
-/**
- * Generates a new version for the package `package.json` when runing in watch mode.
- */
-function generateWatchVersion() {
-  return `0.0.0-watch+${Date.now()}`;
 }
