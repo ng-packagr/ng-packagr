@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/22.0.0-next.3...22.0.0-next.4) (2026-05-07)
+
+
+### Features
+
+* support Node.js 26 ([4360fea](https://github.com/ng-packagr/ng-packagr/commit/4360fea0d8fff19d9e2cdf2b4f1fb487ec01dff5))
+
 ## [21.2.3](https://github.com/ng-packagr/ng-packagr/compare/21.2.2...21.2.3) (2026-04-16)
 
 ### Bug Fixes
