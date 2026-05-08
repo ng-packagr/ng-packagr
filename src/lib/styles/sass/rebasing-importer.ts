@@ -40,7 +40,7 @@ abstract class UrlRebasingImporter implements Importer<'sync'> {
     let contents = readFileSync(stylesheetPath, 'utf-8');
 
     // Rebase any URLs that are found
-    let updatedContents;
+    let updatedContents: string;
     for (const { start, end, value } of findUrls(contents)) {
       // Skip if value is empty or Webpack-specific prefix
       if (value.length === 0 || value[0] === '~' || value[0] === '^') {
@@ -70,6 +70,7 @@ abstract class UrlRebasingImporter implements Importer<'sync'> {
       // https://developer.mozilla.org/en-US/docs/Web/CSS/url#syntax
       const rebasedUrl = rebasedPath.replace(/\\/g, '/').replace(/[()\s'"]/g, '\\$&');
 
+      // eslint-disable-next-line no-useless-assignment
       updatedContents ??= contents;
       updatedContents = contents.slice(0, start) + `"${rebasedUrl}||file:${valueNormalized}"` + contents.slice(end);
     }
