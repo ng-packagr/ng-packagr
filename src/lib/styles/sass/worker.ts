@@ -159,7 +159,7 @@ export default async function renderSassStylesheet(request: RenderRequestMessage
                 span: warnOptions.span && convertSourceSpan(warnOptions.span),
                 ...convertDeprecation(
                   warnOptions.deprecation,
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
                   (warnOptions as any).deprecationType,
                 ),
               });

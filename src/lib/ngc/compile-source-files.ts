@@ -78,7 +78,6 @@ export async function compileSourceFiles(
 
   // Analyze affected files when in watch mode for incremental type checking
   if ('getSemanticDiagnosticsOfNextAffectedFile' in builder) {
-    // eslint-disable-next-line no-constant-condition
     while (true) {
       const result = builder.getSemanticDiagnosticsOfNextAffectedFile(undefined, sourceFile => {
         // If the affected file is a TTC shim, add the shim's original source file.

@@ -107,7 +107,6 @@ export class BundlerContext {
     return result;
   }
 
-  // eslint-disable-next-line max-lines-per-function
   async #performBundle(): Promise<BundleContextResult> {
     // Create esbuild options if not present
     if (this.#esbuildOptions === undefined) {
