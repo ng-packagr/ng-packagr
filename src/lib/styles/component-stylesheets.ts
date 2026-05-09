@@ -49,7 +49,11 @@ export class ComponentStylesheetBundler {
     return this.extractResult(await bundlerContext.bundle(), bundlerContext.watchFiles);
   }
 
-  async bundleInline(data: string, filename: string, language: string = this.defaultInlineLanguage): Promise<ComponentStylesheetResult> {
+  async bundleInline(
+    data: string,
+    filename: string,
+    language: string = this.defaultInlineLanguage,
+  ): Promise<ComponentStylesheetResult> {
     // Use a hash of the inline stylesheet content to ensure a consistent identifier. External stylesheets will resolve
     // to the actual stylesheet file path.
     // TODO: Consider xxhash instead for hashing
@@ -130,7 +134,10 @@ export class ComponentStylesheetBundler {
     await Promise.allSettled([shutdownSassWorkerPool(), ...contexts.map(context => context.dispose())]);
   }
 
-  private extractResult(result: BundleContextResult, referencedFiles: Set<string> | undefined): ComponentStylesheetResult {
+  private extractResult(
+    result: BundleContextResult,
+    referencedFiles: Set<string> | undefined,
+  ): ComponentStylesheetResult {
     let contents = '';
     let metafile;
     const outputFiles: OutputFile[] = [];
