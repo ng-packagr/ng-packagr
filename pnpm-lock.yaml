@@ -88,8 +88,8 @@ importers:
         specifier: ~22.0.0-next
         version: 22.0.0-next.7(4553895a87201db6ad7e1e0c018696d9)
       '@angular/ng-dev':
-        specifier: https://github.com/angular/dev-infra-private-ng-dev-builds.git#df5bcf2c22735628d01f1e9cdb45d336bec4cfdf
-        version: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/df5bcf2c22735628d01f1e9cdb45d336bec4cfdf(@modelcontextprotocol/sdk@1.29.0(zod@4.3.6))
+        specifier: https://github.com/angular/dev-infra-private-ng-dev-builds.git#2c36222db3f44751284cc93b3806dbe1baee583a
+        version: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/2c36222db3f44751284cc93b3806dbe1baee583a(@modelcontextprotocol/sdk@1.29.0(zod@4.3.6))
       '@angular/platform-browser':
         specifier: ~22.0.0-next.3
         version: 22.0.0-next.9(@angular/common@22.0.0-next.9(@angular/core@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2))
@@ -173,7 +173,7 @@ importers:
         version: 9.5.0
       tailwindcss:
         specifier: ^3.2.0
-        version: 3.4.19(tsx@4.21.0)(yaml@2.8.3)
+        version: 3.4.19(tsx@4.21.0)(yaml@2.8.4)
       ts-node:
         specifier: ^10.2.1
         version: 10.9.2(@types/node@20.19.39)(typescript@6.0.3)
@@ -232,7 +232,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ~22.0.0-next
-        version: 22.0.0-next.6(@angular/compiler-cli@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(typescript@6.0.3))(@angular/compiler@22.0.0-next.9)(@angular/core@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2))(@angular/platform-browser@22.0.0-next.9(@angular/common@22.0.0-next.9(@angular/core@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2)))(@types/node@24.12.2)(chokidar@5.0.0)(jiti@1.21.7)(less@4.6.4)(postcss@8.5.12)(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.3))(tslib@2.8.1)(tsx@4.21.0)(typescript@6.0.3)(yaml@2.8.3)
+        version: 22.0.0-next.6(@angular/compiler-cli@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(typescript@6.0.3))(@angular/compiler@22.0.0-next.9)(@angular/core@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2))(@angular/platform-browser@22.0.0-next.9(@angular/common@22.0.0-next.9(@angular/core@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2)))(@types/node@24.12.2)(chokidar@5.0.0)(jiti@1.21.7)(less@4.6.4)(postcss@8.5.12)(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.4))(tslib@2.8.1)(tsx@4.21.0)(typescript@6.0.3)(yaml@2.8.4)
       '@angular/cli':
         specifier: ~22.0.0-next
         version: 22.0.0-next.6(@types/node@24.12.2)(chokidar@5.0.0)
@@ -455,9 +455,9 @@ packages:
       '@angular/platform-browser': ^22.0.0-0 || ^22.1.0-0 || ^22.2.0-0 || ^22.3.0-0 || ^23.0.0-0
       rxjs: ^6.5.3 || ^7.4.0
 
-  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/df5bcf2c22735628d01f1e9cdb45d336bec4cfdf':
-    resolution: {gitHosted: true, integrity: sha512-fJN+IduwPg4PK2cLL/v1zd2Kfws2KhFpxV/a9PXG/SDj25V4XuB8NKbss80tplCkUX3UbjDg1x+Rp5Nr3JGY0w==, tarball: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/df5bcf2c22735628d01f1e9cdb45d336bec4cfdf}
-    version: 0.0.0-fcf9aad99710835428e0e9859bf060689045a131
+  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/2c36222db3f44751284cc93b3806dbe1baee583a':
+    resolution: {gitHosted: true, integrity: sha512-dL7hHTLkH5etryOn4CsGh5Ij3H90Y4DuH7n0/c0PmkUbS9kC753TNTgS7V8UqxvxR/Y/Oybx54DAoLDsb9hBFg==, tarball: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/2c36222db3f44751284cc93b3806dbe1baee583a}
+    version: 0.0.0-6ef1cf3158022456bf1f7031de79b7e44fe479b2
     hasBin: true
 
   '@angular/platform-browser-dynamic@22.0.0-next.9':
@@ -1193,8 +1193,8 @@ packages:
     resolution: {integrity: sha512-IJn+8A3QZJfe7FUtWqHVNo3xJs7KFpurCWGWCiCz3oEh+BkRymKZ1QxfAbU2yGMDzTytLGQ2IV6T2r3cuo75/w==}
     engines: {node: '>=18'}
 
-  '@google/genai@1.50.1':
-    resolution: {integrity: sha512-YbkX7H9+1Pt8wOt7DDREy8XSoiL6fRDzZQRyaVBarFf8MR3zHGqVdvM4cLbDXqPhxqvegZShgfxb8kw9C7YhAQ==}
+  '@google/genai@1.52.0':
+    resolution: {integrity: sha512-gwSvbpiN/17O9TbsqSsE/OzZcpv5Fo4RQjdngGgogtuB9RsyJ8ZHhX5KjHj1bp5N9snN2eK8LDGXSaWW2hof8Q==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       '@modelcontextprotocol/sdk': ^1.25.2
@@ -4175,8 +4175,8 @@ packages:
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  nock@14.0.13:
-    resolution: {integrity: sha512-SCPsQmGVNY8h1rfS3aU0MzOGYY+wKIFukHEsoSIwPRCYocZkya7MFIlWIEYPWQZj+Gaksg6EyUaY255ZDqpQuA==}
+  nock@14.0.14:
+    resolution: {integrity: sha512-PKk7tex0O3RRXUZC5XDKJ9yM3rYRPS13myduT85VIIYDBnib42Fpxoe6KxRSzqB4iL2NDxkcJ2yiskZ18hGLEQ==}
     engines: {node: '>=18.20.0 <20 || >=20.12.1'}
 
   node-addon-api@6.1.0:
@@ -5324,6 +5324,11 @@ packages:
     engines: {node: ^20.17.0 || >=22.9.0}
     hasBin: true
 
+  which@7.0.0:
+    resolution: {integrity: sha512-RancgH2dmbLdHl6LRhEqvklWMgl/Hdnun0Y90KhBOLkMefg8Qa7/Zel8Sm+8HEcP6DEjzsWzpkuBQEZok58isA==}
+    engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
+    hasBin: true
+
   word-wrap@1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
     engines: {node: '>=0.10.0'}
@@ -5380,8 +5385,8 @@ packages:
     resolution: {integrity: sha512-YgvUTfwqyc7UXVMrB+SImsVYSmTS8X/tSrtdNZMImM+n7+QTriRXyXim0mBrTXNeqzVF0KWGgHPeiyViFFrNDw==}
     engines: {node: '>=18'}
 
-  yaml@2.8.3:
-    resolution: {integrity: sha512-AvbaCLOO2Otw/lW5bmh9d/WEdcDFdQp2Z2ZUH3pX9U2ihyUY0nvLv7J6TrWowklRGPYbB/IuIMfYgxaCPg5Bpg==}
+  yaml@2.8.4:
+    resolution: {integrity: sha512-ml/JPOj9fOQK8RNnWojA67GbZ0ApXAUlN2UQclwv2eVgTgn7O9gg9o7paZWKMp4g0H3nTLtS9LVzhkpOFIKzog==}
     engines: {node: '>= 14.6'}
     hasBin: true
 
@@ -5566,7 +5571,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular/build@22.0.0-next.6(@angular/compiler-cli@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(typescript@6.0.3))(@angular/compiler@22.0.0-next.9)(@angular/core@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2))(@angular/platform-browser@22.0.0-next.9(@angular/common@22.0.0-next.9(@angular/core@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2)))(@types/node@24.12.2)(chokidar@5.0.0)(jiti@1.21.7)(less@4.6.4)(postcss@8.5.12)(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.3))(tslib@2.8.1)(tsx@4.21.0)(typescript@6.0.3)(yaml@2.8.3)':
+  '@angular/build@22.0.0-next.6(@angular/compiler-cli@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(typescript@6.0.3))(@angular/compiler@22.0.0-next.9)(@angular/core@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2))(@angular/platform-browser@22.0.0-next.9(@angular/common@22.0.0-next.9(@angular/core@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2)))(@types/node@24.12.2)(chokidar@5.0.0)(jiti@1.21.7)(less@4.6.4)(postcss@8.5.12)(tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.4))(tslib@2.8.1)(tsx@4.21.0)(typescript@6.0.3)(yaml@2.8.4)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.2200.0-next.6(chokidar@5.0.0)
@@ -5576,7 +5581,7 @@ snapshots:
       '@babel/helper-annotate-as-pure': 7.27.3
       '@babel/helper-split-export-declaration': 7.24.7
       '@inquirer/confirm': 6.0.12(@types/node@24.12.2)
-      '@vitejs/plugin-basic-ssl': 2.3.0(vite@7.3.2(@types/node@24.12.2)(jiti@1.21.7)(less@4.6.4)(sass@1.99.0)(tsx@4.21.0)(yaml@2.8.3))
+      '@vitejs/plugin-basic-ssl': 2.3.0(vite@7.3.2(@types/node@24.12.2)(jiti@1.21.7)(less@4.6.4)(sass@1.99.0)(tsx@4.21.0)(yaml@2.8.4))
       beasties: 0.4.2
       browserslist: 4.28.2
       esbuild: 0.28.0
@@ -5595,7 +5600,7 @@ snapshots:
       tinyglobby: 0.2.16
       tslib: 2.8.1
       typescript: 6.0.3
-      vite: 7.3.2(@types/node@24.12.2)(jiti@1.21.7)(less@4.6.4)(sass@1.99.0)(tsx@4.21.0)(yaml@2.8.3)
+      vite: 7.3.2(@types/node@24.12.2)(jiti@1.21.7)(less@4.6.4)(sass@1.99.0)(tsx@4.21.0)(yaml@2.8.4)
       watchpack: 2.5.1
     optionalDependencies:
       '@angular/core': 22.0.0-next.9(@angular/compiler@22.0.0-next.9)(rxjs@7.8.2)
@@ -5603,7 +5608,7 @@ snapshots:
       less: 4.6.4
       lmdb: 3.5.4
       postcss: 8.5.12
-      tailwindcss: 3.4.19(tsx@4.21.0)(yaml@2.8.3)
+      tailwindcss: 3.4.19(tsx@4.21.0)(yaml@2.8.4)
     transitivePeerDependencies:
       - '@types/node'
       - chokidar
@@ -5704,12 +5709,12 @@ snapshots:
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/df5bcf2c22735628d01f1e9cdb45d336bec4cfdf(@modelcontextprotocol/sdk@1.29.0(zod@4.3.6))':
+  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/2c36222db3f44751284cc93b3806dbe1baee583a(@modelcontextprotocol/sdk@1.29.0(zod@4.3.6))':
     dependencies:
       '@actions/core': 3.0.1
       '@conventional-changelog/git-client': 2.7.0(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.4.0)
       '@google-cloud/spanner': 8.0.0(supports-color@10.2.2)
-      '@google/genai': 1.50.1(@modelcontextprotocol/sdk@1.29.0(zod@4.3.6))(bufferutil@4.1.0)(supports-color@10.2.2)(utf-8-validate@6.0.6)
+      '@google/genai': 1.52.0(@modelcontextprotocol/sdk@1.29.0(zod@4.3.6))(bufferutil@4.1.0)(supports-color@10.2.2)(utf-8-validate@6.0.6)
       '@inquirer/prompts': 8.4.2(@types/node@24.12.2)
       '@inquirer/type': 4.0.5(@types/node@24.12.2)
       '@octokit/auth-app': 8.2.0
@@ -5749,15 +5754,15 @@ snapshots:
       jsonc-parser: 3.3.1
       minimatch: 10.2.5
       multimatch: 8.0.0
-      nock: 14.0.13
+      nock: 14.0.14
       semver: 7.7.4
       supports-color: 10.2.2
       tsx: 4.21.0
       typed-graphqlify: 3.1.6
       typescript: 6.0.3
       utf-8-validate: 6.0.6
-      which: 6.0.1
-      yaml: 2.8.3
+      which: 7.0.0
+      yaml: 2.8.4
       yargs: 18.0.0
       zod: 4.3.6
     transitivePeerDependencies:
@@ -6506,7 +6511,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@google/genai@1.50.1(@modelcontextprotocol/sdk@1.29.0(zod@4.3.6))(bufferutil@4.1.0)(supports-color@10.2.2)(utf-8-validate@6.0.6)':
+  '@google/genai@1.52.0(@modelcontextprotocol/sdk@1.29.0(zod@4.3.6))(bufferutil@4.1.0)(supports-color@10.2.2)(utf-8-validate@6.0.6)':
     dependencies:
       google-auth-library: 10.6.2(supports-color@10.2.2)
       p-retry: 4.6.2
@@ -7520,9 +7525,9 @@ snapshots:
       '@typescript-eslint/types': 8.59.3
       eslint-visitor-keys: 5.0.1
 
-  '@vitejs/plugin-basic-ssl@2.3.0(vite@7.3.2(@types/node@24.12.2)(jiti@1.21.7)(less@4.6.4)(sass@1.99.0)(tsx@4.21.0)(yaml@2.8.3))':
+  '@vitejs/plugin-basic-ssl@2.3.0(vite@7.3.2(@types/node@24.12.2)(jiti@1.21.7)(less@4.6.4)(sass@1.99.0)(tsx@4.21.0)(yaml@2.8.4))':
     dependencies:
-      vite: 7.3.2(@types/node@24.12.2)(jiti@1.21.7)(less@4.6.4)(sass@1.99.0)(tsx@4.21.0)(yaml@2.8.3)
+      vite: 7.3.2(@types/node@24.12.2)(jiti@1.21.7)(less@4.6.4)(sass@1.99.0)(tsx@4.21.0)(yaml@2.8.4)
 
   '@xmldom/xmldom@0.8.13': {}
 
@@ -9676,7 +9681,7 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  nock@14.0.13:
+  nock@14.0.14:
     dependencies:
       '@mswjs/interceptors': 0.41.6
       json-stringify-safe: 5.0.1
@@ -10062,14 +10067,14 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.5.12
 
-  postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.12)(tsx@4.21.0)(yaml@2.8.3):
+  postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.12)(tsx@4.21.0)(yaml@2.8.4):
     dependencies:
       lilconfig: 3.1.3
     optionalDependencies:
       jiti: 1.21.7
       postcss: 8.5.12
       tsx: 4.21.0
-      yaml: 2.8.3
+      yaml: 2.8.4
 
   postcss-media-query-parser@0.2.3: {}
 
@@ -10700,7 +10705,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.3):
+  tailwindcss@3.4.19(tsx@4.21.0)(yaml@2.8.4):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -10719,7 +10724,7 @@ snapshots:
       postcss: 8.5.12
       postcss-import: 15.1.0(postcss@8.5.12)
       postcss-js: 4.1.0(postcss@8.5.12)
-      postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.12)(tsx@4.21.0)(yaml@2.8.3)
+      postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.12)(tsx@4.21.0)(yaml@2.8.4)
       postcss-nested: 6.2.0(postcss@8.5.12)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.12
@@ -10937,7 +10942,7 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite@7.3.2(@types/node@24.12.2)(jiti@1.21.7)(less@4.6.4)(sass@1.99.0)(tsx@4.21.0)(yaml@2.8.3):
+  vite@7.3.2(@types/node@24.12.2)(jiti@1.21.7)(less@4.6.4)(sass@1.99.0)(tsx@4.21.0)(yaml@2.8.4):
     dependencies:
       esbuild: 0.27.7
       fdir: 6.5.0(picomatch@4.0.4)
@@ -10952,7 +10957,7 @@ snapshots:
       less: 4.6.4
       sass: 1.99.0
       tsx: 4.21.0
-      yaml: 2.8.3
+      yaml: 2.8.4
 
   watchpack@2.5.1:
     dependencies:
@@ -11023,6 +11028,10 @@ snapshots:
     dependencies:
       isexe: 4.0.0
 
+  which@7.0.0:
+    dependencies:
+      isexe: 4.0.0
+
   word-wrap@1.2.5: {}
 
   wordwrap@1.0.0: {}
@@ -11068,7 +11077,7 @@ snapshots:
 
   yallist@5.0.0: {}
 
-  yaml@2.8.3: {}
+  yaml@2.8.4: {}
 
   yargs-parser@20.2.9: {}
 
