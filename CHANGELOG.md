@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.0.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/22.0.0-next.4...22.0.0-next.5) (2026-05-18)
+
+
+### Bug Fixes
+
+* **ng-packagr:** handle package.json files with export subpaths ([89e195d](https://github.com/ng-packagr/ng-packagr/commit/89e195da6d474dbe0401494f0d78ded9cd7f573a))
+
 ## [22.0.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/22.0.0-next.3...22.0.0-next.4) (2026-05-07)
 
 
