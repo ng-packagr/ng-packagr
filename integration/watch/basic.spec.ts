@@ -33,7 +33,7 @@ describe('basic', () => {
         });
       });
 
-      it('should recover from errors', done => {
+      it('should recover from template errors', done => {
         harness.copyTestCase('invalid-type');
 
         harness.onComplete(() => {
@@ -45,6 +45,19 @@ describe('basic', () => {
         harness.onFailure(error => {
           harness.copyTestCase('valid-text');
           expect(error.message).to.match(/is not assignable to type 'boolean'/);
+        });
+      });
+
+      it('should recover from template errors when switching between Signal Input and Decorator Input', done => {
+        harness.copyTestCase('input-to-decorator');
+
+        harness.onComplete(() => {
+          done();
+        });
+
+        harness.onFailure(error => {
+          harness.copyTestCase('input-to-decorator-fixed');
+          expect(error.message).to.match(/(is not callable|has no call signatures)/);
         });
       });
     });

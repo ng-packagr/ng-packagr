@@ -159,7 +159,7 @@ export async function compileSourceFiles(
 
     // Only request Angular template diagnostics for affected files to avoid
     // overhead of template diagnostics for unchanged files.
-    if (affectedFiles.has(sourceFile)) {
+    if (affectedFiles.has(sourceFile) || !angularDiagnosticCache.has(sourceFile)) {
       const angularDiagnostics = angularCompiler.getDiagnosticsForFile(
         sourceFile,
         affectedFiles.size === 1 ? /** OptimizeFor.SingleFile **/ 0 : /** OptimizeFor.WholeProgram */ 1,
