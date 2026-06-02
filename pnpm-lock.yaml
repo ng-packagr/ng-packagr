@@ -4,6 +4,8 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+packageExtensionsChecksum: sha256-3L73Fw32UVtE6x5BJxJPBtQtH/mgsr31grNpdhHP1IY=
+
 importers:
 
   .:
@@ -3631,6 +3633,8 @@ packages:
   grpc-gcp@1.0.1:
     resolution: {integrity: sha512-06r73IoGaAIpzT+DRPnw7V5BXvZ5mjy1OcKqSPX+ZHOgbLxT+lJfz8IN83z/sbA3t55ZX88MfDaaCjDGdveVIA==}
     engines: {node: '>=12'}
+    peerDependencies:
+      protobufjs: '*'
 
   handlebars@4.7.9:
     resolution: {integrity: sha512-4E71E0rpOaQuJR2A3xDZ+GM1HyWYv1clR58tC8emQNeQe3RH7MAzSbat+V0wG78LQBo6m6bzSG/L4pBuCsgnUQ==}
@@ -6677,7 +6681,7 @@ snapshots:
       extend: 3.0.2
       google-auth-library: 10.6.2(supports-color@10.2.2)
       google-gax: 5.0.6(supports-color@10.2.2)
-      grpc-gcp: 1.0.1
+      grpc-gcp: 1.0.1(protobufjs@7.6.2)
       is: 3.3.2
       lodash.snakecase: 4.1.1
       merge-stream: 2.0.0
@@ -9261,9 +9265,10 @@ snapshots:
 
   graphql@16.14.0: {}
 
-  grpc-gcp@1.0.1:
+  grpc-gcp@1.0.1(protobufjs@7.6.2):
     dependencies:
       '@grpc/grpc-js': 1.14.4
+      protobufjs: 7.6.2
 
   handlebars@4.7.9:
     dependencies:

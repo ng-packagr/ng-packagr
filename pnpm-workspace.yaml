@@ -23,3 +23,8 @@ minimumReleaseAgeExclude:
   - '@ngtools/webpack'
   - '@schematics/*'
   - 'ng-packagr'
+
+packageExtensions:
+  grpc-gcp:
+    peerDependencies:
+      protobufjs: '*'
