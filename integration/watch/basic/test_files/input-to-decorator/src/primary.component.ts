@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   standalone: false,
@@ -6,5 +6,6 @@ import { Component, input } from '@angular/core';
   templateUrl: './primary.component.html',
 })
 export class PrimaryAngularComponent {
-  x = input(5);
+  @Input()
+  x = 5;
 }
