@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.0.0](https://github.com/ng-packagr/ng-packagr/compare/22.0.0-rc.0...22.0.0) (2026-06-03)
+
+
+### Bug Fixes
+
+* **ng-packagr:** invalidate angularDiagnosticCache for html changes ([e7d8e38](https://github.com/ng-packagr/ng-packagr/commit/e7d8e38a30c6197a6f2f450d41b1752cce9360e2))
+
 ## [22.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/22.0.0-next.5...22.0.0-rc.0) (2026-05-18)
 
 ## [22.0.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/22.0.0-next.4...22.0.0-next.5) (2026-05-18)
