@@ -4,10 +4,25 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [22.0.0](https://github.com/ng-packagr/ng-packagr/compare/22.0.0-rc.0...22.0.0) (2026-06-03)
 
+### ⚠ BREAKING CHANGES
+
+* **ng-packagr:** * TypeScript versions older than 6.0 are no longer supported.
+* Node.js v20 is no longer supported. The minimum supported Node.js versions are now v22.22.0 and v24.13.1.
+
+### Features
+
+* update @angular/compiler-cli peer dependency to support Angular v22 ([1fd8eb1](https://github.com/ng-packagr/ng-packagr/commit/1fd8eb15c4dbdbe52955666417caf056f116eca3))
+* support Node.js 26 ([4360fea](https://github.com/ng-packagr/ng-packagr/commit/4360fea0d8fff19d9e2cdf2b4f1fb487ec01dff5))
+* **ng-packagr:** drop support for TypeScript 5.9 ([b59e280](https://github.com/ng-packagr/ng-packagr/commit/b59e2806c6eaef78e71e412e5851b4b437cca45a))
 
 ### Bug Fixes
 
 * **ng-packagr:** invalidate angularDiagnosticCache for html changes ([e7d8e38](https://github.com/ng-packagr/ng-packagr/commit/e7d8e38a30c6197a6f2f450d41b1752cce9360e2))
+* **ng-packagr:** handle package.json files with export subpaths ([89e195d](https://github.com/ng-packagr/ng-packagr/commit/89e195da6d474dbe0401494f0d78ded9cd7f573a))
+* ensure dts sourcemaps point to original ts files ([28424e2](https://github.com/ng-packagr/ng-packagr/commit/28424e2b7ce8d78e95614481dd797b75fe7db2be))
+* allow TypeScript 6 peer dependency ([fdb49da](https://github.com/ng-packagr/ng-packagr/commit/fdb49da99ab8fc7a9ef62da9229f971bc561b26d))
+* update minimum supported Node.js versions ([f7e5ef5](https://github.com/ng-packagr/ng-packagr/commit/f7e5ef55ef4f14f77cd1e786e8ec35676d373e9c))
+
 
 ## [22.0.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/22.0.0-next.5...22.0.0-rc.0) (2026-05-18)
 
