@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### ⚠ BREAKING CHANGES
 
-* **ng-packagr:** * TypeScript versions older than 6.0 are no longer supported.
+* **ng-packagr:** TypeScript versions older than 6.0 are no longer supported.
 * Node.js v20 is no longer supported. The minimum supported Node.js versions are now v22.22.0 and v24.13.1.
 
 ### Features
