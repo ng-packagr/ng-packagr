@@ -61,6 +61,8 @@ export class BundlerContext {
   #esbuildContext?: BuildContext<{ metafile: true; write: false }>;
   #esbuildOptions?: BuildOptions & { metafile: true; write: false };
   #esbuildResult?: BundleContextResult;
+  #activeBundlePromise?: Promise<BundleContextResult>;
+  #disposed = false;
   #optionsFactory: BundlerOptionsFactory<BuildOptions & { metafile: true; write: false }>;
   #shouldCacheResult: boolean;
   #loadCache?: MemoryLoadResultCache;
@@ -93,13 +95,24 @@ export class BundlerContext {
    * @returns If output files are generated, the full esbuild BuildResult; if not, the
    * warnings and errors for the attempted build.
    */
-  async bundle(): Promise<BundleContextResult> {
+  async bundle(force = false): Promise<BundleContextResult> {
     // Return existing result if present
     if (this.#esbuildResult) {
       return this.#esbuildResult;
     }
 
-    const result = await this.#performBundle();
+    if (!force && this.#activeBundlePromise !== undefined) {
+      return this.#activeBundlePromise;
+    }
+
+    const bundlePromise = this.#performBundle().finally(() => {
+      if (this.#activeBundlePromise === bundlePromise) {
+        this.#activeBundlePromise = undefined;
+      }
+    });
+    this.#activeBundlePromise = bundlePromise;
+
+    const result = await bundlePromise;
     if (this.#shouldCacheResult) {
       this.#esbuildResult = result;
     }
@@ -128,7 +141,12 @@ export class BundlerContext {
       } else if (this.incremental) {
         // Create an incremental build context and perform the first build.
         // Context creation does not perform a build.
-        this.#esbuildContext = await context(this.#esbuildOptions);
+        const esbuildContext = await context(this.#esbuildOptions);
+        if (this.#disposed) {
+          await esbuildContext.dispose();
+          throw new Error('BundlerContext was disposed during build.');
+        }
+        this.#esbuildContext = esbuildContext;
         result = await this.#esbuildContext.rebuild();
       } else {
         // For non-incremental builds, perform a single build
@@ -239,9 +257,11 @@ export class BundlerContext {
    * @returns A promise that resolves when disposal is complete.
    */
   async dispose(): Promise<void> {
+    this.#disposed = true;
     try {
       this.#esbuildOptions = undefined;
       this.#esbuildResult = undefined;
+      this.#activeBundlePromise = undefined;
       this.#loadCache = undefined;
       await this.#esbuildContext?.dispose();
     } finally {
