@@ -5,6 +5,7 @@
  * @type { import("@angular/ng-dev").PullRequestConfig }
  */
 export const pullRequest = {
+  requiredStatuses: [],
   githubApiMerge: {
     default: 'auto',
     labels: [{ pattern: 'merge: squash commits', method: 'squash' }],
