@@ -58,7 +58,7 @@
     "rollup": "^4.24.0"
   },
   "peerDependencies": {
-    "@angular/compiler-cli": "^22.0.0 || ^22.1.0-next.0",
+    "@angular/compiler-cli": "^22.1.0-next",
     "tailwindcss": "^2.0.0 || ^3.0.0 || ^4.0.0",
     "tslib": "^2.3.0",
     "typescript": ">=6.0 <6.1"
@@ -69,15 +69,15 @@
     }
   },
   "devDependencies": {
-    "@angular/cdk": "~22.0.0-next",
-    "@angular/common": "~22.0.0-next.3",
-    "@angular/compiler": "~22.0.0-next.3",
-    "@angular/compiler-cli": "~22.0.0-next.3",
-    "@angular/core": "~22.0.0-next.3",
-    "@angular/material": "~22.0.0-next",
-    "@angular/ng-dev": "https://github.com/angular/dev-infra-private-ng-dev-builds.git#74db100f1fee202d031c5f306778b847f577398c",
-    "@angular/platform-browser": "~22.0.0-next.3",
-    "@angular/router": "~22.0.0-next.3",
+    "@angular/cdk": "~22.1.0-next",
+    "@angular/common": "~22.1.0-next",
+    "@angular/compiler": "~22.1.0-next",
+    "@angular/compiler-cli": "~22.1.0-next",
+    "@angular/core": "~22.1.0-next",
+    "@angular/material": "~22.1.0-next",
+    "@angular/ng-dev": "https://github.com/angular/dev-infra-private-ng-dev-builds.git#5d9842518819d66cfb65994e2dda90354410a449",
+    "@angular/platform-browser": "~22.1.0-next",
+    "@angular/router": "~22.1.0-next",
     "@eslint/compat": "^2.0.5",
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^10.0.1",
