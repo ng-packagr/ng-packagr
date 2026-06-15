@@ -81,10 +81,49 @@ interface RenderResponseMessage {
 export class SassWorkerImplementation {
   #workerPool: WorkerPool | undefined;
 
+  /** Queue of pending transformation tasks waiting for an active concurrency slot. */
+  #pendingTasks: { resolve: () => void; reject: (reason: Error) => void }[] = [];
+
+  /** Current count of actively executing transformation tasks. */
+  #activeTasks = 0;
+
+  /** Maximum number of transformation tasks allowed to execute concurrently. */
+  readonly #maxConcurrent: number;
+
   constructor(
     private readonly rebase = false,
     readonly maxThreads = MAX_RENDER_WORKERS,
-  ) {}
+  ) {
+    // Maintain 2 active tasks per worker thread to keep transformation pipelines fully saturated
+    this.#maxConcurrent = Math.max(1, maxThreads * 2);
+  }
+
+  /**
+   * Executes a transformation action using a semaphore-based backpressure throttle.
+   * Prevents libuv thread pool saturation and excessive V8 heap accumulation.
+   * @param action A callback that produces a promise for the transformation result.
+   * @returns A promise resolving to the transformation result.
+   */
+  async #runWithThrottle<T>(action: () => Promise<T>): Promise<T> {
+    if (this.#activeTasks >= this.#maxConcurrent) {
+      await new Promise<void>((resolve, reject) => {
+        this.#pendingTasks.push({ resolve, reject });
+      });
+    } else {
+      this.#activeTasks++;
+    }
+
+    try {
+      return await action();
+    } finally {
+      const next = this.#pendingTasks.shift();
+      if (next) {
+        next.resolve();
+      } else {
+        this.#activeTasks--;
+      }
+    }
+  }
 
   #ensureWorkerPool(): WorkerPool {
     this.#workerPool ??= new WorkerPool({
@@ -126,56 +165,58 @@ export class SassWorkerImplementation {
       throw new Error('Sass custom functions are not supported.');
     }
 
-    using importerChannel = importers?.length ? this.#createImporterChannel(importers) : undefined;
+    return this.#runWithThrottle(async () => {
+      using importerChannel = importers?.length ? this.#createImporterChannel(importers) : undefined;
 
-    const response = (await this.#ensureWorkerPool().run(
-      {
-        source,
-        importerChannel,
-        hasLogger: !!logger,
-        rebase: this.rebase,
-        options: {
-          ...serializableOptions,
-          // URL is not serializable so to convert to string here and back to URL in the worker.
-          url: url ? fileURLToPath(url) : undefined,
-        },
-      },
-      {
-        transferList: importerChannel ? [importerChannel.port] : undefined,
-      },
-    )) as RenderResponseMessage;
-
-    const { result, error, warnings } = response;
-
-    if (warnings && logger?.warn) {
-      for (const { message, span, ...options } of warnings) {
-        logger.warn(message, {
-          ...options,
-          span: span && {
-            ...span,
-            url: span.url ? pathToFileURL(span.url) : undefined,
+      const response = (await this.#ensureWorkerPool().run(
+        {
+          source,
+          importerChannel,
+          hasLogger: !!logger,
+          rebase: this.rebase,
+          options: {
+            ...serializableOptions,
+            // URL is not serializable so to convert to string here and back to URL in the worker.
+            url: url ? fileURLToPath(url) : undefined,
           },
-        });
+        },
+        {
+          transferList: importerChannel ? [importerChannel.port] : undefined,
+        },
+      )) as RenderResponseMessage;
+
+      const { result, error, warnings } = response;
+
+      if (warnings && logger?.warn) {
+        for (const { message, span, ...options } of warnings) {
+          logger.warn(message, {
+            ...options,
+            span: span && {
+              ...span,
+              url: span.url ? pathToFileURL(span.url) : undefined,
+            },
+          });
+        }
       }
-    }
 
-    if (error) {
-      // Convert stringified url value required for cloning back to a URL object
-      const url = error.span?.url as unknown as string | undefined;
-      if (url) {
-        error.span.url = pathToFileURL(url);
+      if (error) {
+        // Convert stringified url value required for cloning back to a URL object
+        const url = error.span?.url as unknown as string | undefined;
+        if (url) {
+          error.span.url = pathToFileURL(url);
+        }
+
+        throw error;
       }
 
-      throw error;
-    }
+      assert(result, 'Sass render worker should always return a result or an error');
 
-    assert(result, 'Sass render worker should always return a result or an error');
-
-    return {
-      ...result,
-      // URL is not serializable so in the worker we convert to string and here back to URL.
-      loadedUrls: result.loadedUrls.map(p => pathToFileURL(p)),
-    };
+      return {
+        ...result,
+        // URL is not serializable so in the worker we convert to string and here back to URL.
+        loadedUrls: result.loadedUrls.map(p => pathToFileURL(p)),
+      };
+    });
   }
 
   /**
@@ -184,6 +225,12 @@ export class SassWorkerImplementation {
    * @returns A void promise that resolves when closing is complete.
    */
   async close(): Promise<void> {
+    const pending = this.#pendingTasks;
+    this.#pendingTasks = [];
+    for (const task of pending) {
+      task.reject(new Error('SassWorkerImplementation closed.'));
+    }
+
     if (this.#workerPool) {
       try {
         await this.#workerPool.destroy();
