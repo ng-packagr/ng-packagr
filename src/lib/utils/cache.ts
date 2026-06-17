@@ -28,10 +28,8 @@ async function ensureCacheDirExists(cachePath: string): Promise<void> {
 }
 
 export async function readCacheEntry(cachePath: string, key: string): Promise<any> {
-  const filePath = join(cachePath, key);
-
   try {
-    const data = await readFile(filePath, 'utf8');
+    const data = await readFile(getCacheFilePath(cachePath, key), 'utf8');
 
     return JSON.parse(data, (_key, value) => {
       if (typeof value === 'string' && value[0] === '%') {
@@ -51,12 +49,14 @@ export async function readCacheEntry(cachePath: string, key: string): Promise<an
 }
 
 export async function saveCacheEntry(cachePath: string, key: string, content: any): Promise<void> {
-  const filePath = join(cachePath, key);
-
   // Ensure the cache directory exists
   await ensureCacheDirExists(cachePath);
 
   const data = JSON.stringify(content, (_key, value) => (typeof value === 'bigint' ? `%BigInt(${value})` : value));
 
-  return writeFile(filePath, data, 'utf8');
+  return writeFile(getCacheFilePath(cachePath, key), data, 'utf8');
+}
+
+function getCacheFilePath(cachePath: string, key: string): string {
+  return join(cachePath, `${key}.json`);
 }
