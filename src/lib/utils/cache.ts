@@ -20,8 +20,8 @@ export async function generateKey(...valuesToConsider: string[]): Promise<string
 async function ensureCacheDirExists(cachePath: string): Promise<void> {
   try {
     await mkdir(cachePath, { recursive: true });
-  } catch (err) {
-    if (err.code !== 'EEXIST') {
+  } catch (err: unknown) {
+    if (!(typeof err === 'object' && err !== null && 'code' in err && (err as { code?: unknown }).code === 'EEXIST')) {
       throw err;
     }
   }
