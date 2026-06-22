@@ -75,7 +75,7 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
         throw new Error(`Cannot discover package sources at ${folderPathOrFilePath} as 'package.json' was not found.`);
       }
 
-      if (packageJson && typeof packageJson !== 'object') {
+      if (typeof packageJson !== 'object') {
         throw new Error(`Invalid 'package.json' at ${folderPathOrFilePath}.`);
       }
     }
