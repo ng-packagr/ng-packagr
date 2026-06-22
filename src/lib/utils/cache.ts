@@ -34,7 +34,7 @@ export async function readCacheEntry(cachePath: string, key: string): Promise<an
     return JSON.parse(data, (_key, value) => {
       if (typeof value === 'string' && value[0] === '%') {
         const numPart = value.match(BIGINT_STRING_VALUE_REGEXP);
-        if (numPart && isFinite(numPart[1] as any)) {
+        if (numPart) {
           return BigInt(numPart[1]);
         }
       }
