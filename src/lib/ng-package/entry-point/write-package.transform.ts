@@ -48,10 +48,26 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
         spinner.start('Writing package manifest');
         if (!options.watch) {
           const primary = ngPackageNode.data.primary;
-          await writeFile(
-            path.join(primary.destinationPath, '.npmignore'),
-            `# Nested package.json's are only needed for development.\n**/package.json`,
-          );
+
+          const nestedPackageJsons: string[] = [];
+          // Secondary entry-points package.json
+          for (const { data } of entryPoints) {
+            if (!data.entryPoint.isSecondaryEntryPoint) {
+              continue;
+            }
+
+            const packageJsonPath = ensureUnixPath(
+              path.join(path.relative(primary.destinationPath, data.entryPoint.destinationPath), 'package.json'),
+            );
+            nestedPackageJsons.push(packageJsonPath);
+          }
+
+          if (nestedPackageJsons.length) {
+            await writeFile(
+              path.join(primary.destinationPath, '.npmignore'),
+              `# Nested package.json's are only needed for development.\n${nestedPackageJsons.join('\n')}`,
+            );
+          }
         }
 
         const { compilationMode } = entryPoint.data.tsConfig.options;
