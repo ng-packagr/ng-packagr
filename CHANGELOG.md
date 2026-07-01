@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [22.0.1](https://github.com/ng-packagr/ng-packagr/compare/22.0.0...22.0.1) (2026-07-01)
+
+
+### Bug Fixes
+
+* **ng-packagr:** generate specific .npmignore entries for secondary entry-point package.json files ([44bc3a7](https://github.com/ng-packagr/ng-packagr/commit/44bc3a7a5cf07072b2c5556a6e2af6aa22d6e600)), closes [#3343](https://github.com/ng-packagr/ng-packagr/issues/3343)
+* **ng-packagr:** prevent concurrent compilation and stale cache results ([c4fd75f](https://github.com/ng-packagr/ng-packagr/commit/c4fd75f93ef18fb31c88c0bcb21e971add052eb1))
+
+
+### Performance
+
+* **ng-packagr:** implement semaphore backpressure throttling in SassWorkerImplementation ([1b6ac8e](https://github.com/ng-packagr/ng-packagr/commit/1b6ac8e9f516dc71a1d822cff563180435335d9d))
+
+
 ## [22.1.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/22.1.0-next.1...22.1.0-next.2) (2026-06-11)
 
 
