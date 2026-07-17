@@ -5,4 +5,6 @@ import { Component } from '@angular/core';
   selector: 'ng-component',
   template: '<h1>Angular!</h1>',
 })
-export class PrimaryAngularComponent {}
+export class PrimaryAngularComponent {
+  // strip this component please!
+}
