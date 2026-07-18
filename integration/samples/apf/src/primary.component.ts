@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 
+/**
+ * @license
+ * super important license for this component...
+ */
 @Component({
   standalone: false,
   selector: 'ng-component',
