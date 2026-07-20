@@ -182,7 +182,7 @@ export async function compileSourceFiles(
   }
 
   if (otherDiagnostics.length) {
-    log.msg(formatDiagnostics(errorDiagnostics));
+    log.msg(formatDiagnostics(otherDiagnostics));
   }
 
   if (errorDiagnostics.length) {
