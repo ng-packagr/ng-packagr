@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [22.0.2](https://github.com/ng-packagr/ng-packagr/compare/22.0.1...22.0.2) (2026-07-24)
+
+
+### Bug Fixes
+
+* **ng-packagr:** log correct diagnostics array for warnings ([9d1c0cd](https://github.com/ng-packagr/ng-packagr/commit/9d1c0cd01be79f25765751da1b768f4848ecc199)), closes [#3346](https://github.com/ng-packagr/ng-packagr/issues/3346)
+
 ### [22.0.1](https://github.com/ng-packagr/ng-packagr/compare/22.0.0...22.0.1) (2026-07-01)
 
 
