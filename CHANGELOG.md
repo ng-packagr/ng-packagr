@@ -4,8 +4,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [22.1.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/22.1.0-next.4...22.1.0-rc.0) (2026-07-24)
 
-## [22.1.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/22.1.0-next.4...22.1.0-next.5) (2026-07-24)
-
 ## [22.1.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/22.1.0-next.3...22.1.0-next.4) (2026-07-24)
 
 
