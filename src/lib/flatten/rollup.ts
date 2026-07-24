@@ -1,4 +1,5 @@
 import rollupJson from '@rollup/plugin-json';
+import { transform } from 'esbuild';
 import * as path from 'path';
 import type { InputPluginOption, OutputAsset, OutputChunk, RollupCache } from 'rollup';
 import { dts } from 'rollup-plugin-dts';
@@ -44,7 +45,22 @@ export async function rollupBundleFile(
     plugins = [fileLoaderPlugin(opts.fileCache, ['.d.ts', '/index.d.ts'], dtsMode), dts({ sourcemap: opts.sourcemap })];
   } else {
     outExtension = '.mjs';
-    plugins = [fileLoaderPlugin(opts.fileCache, ['.js', '/index.js'], dtsMode), rollupJson()];
+    plugins = [
+      fileLoaderPlugin(opts.fileCache, ['.js', '/index.js'], dtsMode),
+      rollupJson(),
+      {
+        name: 'strip-comments',
+        async renderChunk(code) {
+          const result = await transform(code, {
+            format: 'esm',
+            legalComments: 'none',
+            sourcemap: opts.sourcemap ? 'external' : false,
+          });
+
+          return { code: result.code, map: result.map };
+        },
+      }
+    ];
   }
 
   // Create the bundle
