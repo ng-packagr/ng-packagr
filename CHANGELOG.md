@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.2.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.0...22.2.0-next.1) (2026-07-29)
+
+
+### Features
+
+* **ng-packagr:** replace rollup with rolldown ([0951b28](https://github.com/ng-packagr/ng-packagr/commit/0951b284caf9807ea8bb892a1b953ef5c6160131))
+
+
+### Bug Fixes
+
+* **ng-packagr:** preserve legal and annotation comments while removing other comments in JS bundles ([defb171](https://github.com/ng-packagr/ng-packagr/commit/defb171128f96df7ab6a8382f84f638455cb2d3e)), closes [#3347](https://github.com/ng-packagr/ng-packagr/issues/3347)
+
 ## [22.2.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/22.1.0-rc.0...22.2.0-next.0) (2026-07-29)
 
 ## [22.1.0](https://github.com/ng-packagr/ng-packagr/compare/22.1.0-rc.0...22.1.0) (2026-07-29)
