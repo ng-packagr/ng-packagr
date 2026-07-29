@@ -72,6 +72,13 @@ export async function rolldownBundleFile(opts: RolldownOptions): Promise<{ files
     entryFileNames: opts.entryName + outExtension,
     banner: '',
     sourcemap: opts.sourcemap,
+    comments: dtsMode
+      ? true
+      : {
+          legal: true,
+          annotation: true,
+          jsdoc: false,
+        },
   });
 
   // Close the bundle to let plugins clean up their external processes or services
