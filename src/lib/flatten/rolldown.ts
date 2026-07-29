@@ -1,42 +1,30 @@
-import rollupJson from '@rollup/plugin-json';
 import * as path from 'path';
-import type { InputPluginOption, OutputAsset, OutputChunk, RollupCache } from 'rollup';
-import { dts } from 'rollup-plugin-dts';
+import { type OutputAsset, type OutputChunk, type RolldownPluginOption, rolldown } from 'rolldown';
+import { dts } from 'rolldown-plugin-dts';
 import { OutputFileCache } from '../ng-package/nodes';
-import { readCacheEntry, saveCacheEntry } from '../utils/cache';
 import * as log from '../utils/log';
 import { fileLoaderPlugin } from './file-loader-plugin';
 
 /**
  * Options used in `ng-packagr` for writing flat bundle files.
  *
- * These options are passed through to rollup.
+ * These options are passed through to rolldown.
  */
-export interface RollupOptions {
+export interface RolldownOptions {
   moduleName: string;
   entry: string;
   entryName: string;
   dir: string;
-  cache?: RollupCache;
-  cacheDirectory?: string | false;
   fileCache: OutputFileCache;
-  cacheKey: string;
   sourcemap: boolean;
 }
 
-let rollup: typeof import('rollup') | undefined;
-
-/** Runs rollup over the given entry file, writes a bundle file. */
-export async function rollupBundleFile(
-  opts: RollupOptions,
-): Promise<{ cache: RollupCache; files: (OutputChunk | OutputAsset)[] }> {
-  await ensureRollup();
-
-  log.debug(`rollup (v${rollup.VERSION}) ${opts.entry} to ${opts.dir}`);
-  const cacheDirectory = opts.cacheDirectory;
+/** Runs rolldown over the given entry file, writes a bundle file. */
+export async function rolldownBundleFile(opts: RolldownOptions): Promise<{ files: (OutputChunk | OutputAsset)[] }> {
+  log.debug(`rolldown ${opts.entry} to ${opts.dir}`);
   const dtsMode = opts.entry.endsWith('.d.ts');
   let outExtension: string;
-  let plugins: InputPluginOption[];
+  let plugins: RolldownPluginOption[];
   const jail = path.dirname(opts.entry);
 
   if (dtsMode) {
@@ -44,14 +32,13 @@ export async function rollupBundleFile(
     plugins = [fileLoaderPlugin(opts.fileCache, ['.d.ts', '/index.d.ts'], dtsMode), dts({ sourcemap: opts.sourcemap })];
   } else {
     outExtension = '.mjs';
-    plugins = [fileLoaderPlugin(opts.fileCache, ['.js', '/index.js'], dtsMode), rollupJson()];
+    plugins = [fileLoaderPlugin(opts.fileCache, ['.js', '/index.js'], dtsMode)];
   }
 
   // Create the bundle
-  const bundle = await rollup.rollup({
+  const bundle = await rolldown({
     context: 'this',
     external: (moduleId, parentId) => isExternalDependency(moduleId, parentId, jail),
-    cache: opts.cache ?? (cacheDirectory ? await readCacheEntry(cacheDirectory, opts.cacheKey) : undefined),
     input: opts.entry,
     plugins,
     onwarn: warning => {
@@ -67,7 +54,9 @@ export async function rollupBundleFile(
           break;
       }
     },
-    preserveSymlinks: true,
+    resolve: {
+      symlinks: false,
+    },
     // Disable treeshaking when generating bundles
     // see: https://github.com/angular/angular/pull/32069
     treeshake: false,
@@ -78,18 +67,12 @@ export async function rollupBundleFile(
     name: opts.moduleName,
     format: 'es',
     dir: opts.dir,
-    importAttributesKey: 'with',
-    inlineDynamicImports: false,
     hoistTransitiveImports: false,
     chunkFileNames: `${opts.entryName}-[name]-[hash]${outExtension}`,
     entryFileNames: opts.entryName + outExtension,
     banner: '',
     sourcemap: opts.sourcemap,
   });
-
-  if (cacheDirectory) {
-    await saveCacheEntry(cacheDirectory, opts.cacheKey, bundle.cache);
-  }
 
   // Close the bundle to let plugins clean up their external processes or services
   await bundle.close();
@@ -98,35 +81,20 @@ export async function rollupBundleFile(
     files: output.output.map(f => {
       /** The map contents are in an asset file type, which makes storing the map in the cache as redudant. */
       if (f.type === 'chunk') {
-        f.map = null;
+        Object.defineProperty(f, 'map', { value: null, configurable: true });
       }
 
       return f;
     }),
-    cache: bundle.cache,
   };
 }
 
-async function ensureRollup(): Promise<void> {
-  if (rollup) {
-    return;
-  }
-
-  try {
-    rollup = await import('rollup');
-    log.debug(`rollup using native version.`);
-  } catch {
-    rollup = await import('@rollup/wasm-node');
-    log.debug(`rollup using wasm version.`);
-  }
-}
-
-function isExternalDependency(moduleId: string, parentId: string, jail: string): boolean {
+function isExternalDependency(moduleId: string, parentId: string | undefined, jail: string): boolean {
   // more information about why we don't check for 'node_modules' path
   // https://github.com/rollup/rollup-plugin-node-resolve/issues/110#issuecomment-350353632
   if (moduleId[0] === '.' || moduleId[0] === '/' || path.isAbsolute(moduleId)) {
     // if it's either 'absolute', marked to embed, starts with a '.' or '/' or is the umd bundle and is tslib
-    return !path.join(parentId, moduleId).startsWith(jail);
+    return !parentId || !path.join(parentId, moduleId).startsWith(jail);
   }
 
   return true;

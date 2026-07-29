@@ -1,8 +1,8 @@
 import ora from 'ora';
 import { join } from 'path';
-import type { OutputAsset, OutputChunk } from 'rollup';
+import type { OutputAsset, OutputChunk } from 'rolldown';
 import { invalidateEntryPointsAndCacheOnFileChange } from '../../file-system/file-watcher';
-import { rollupBundleFile } from '../../flatten/rollup';
+import { rolldownBundleFile } from '../../flatten/rolldown';
 import { transformFromPromise } from '../../graph/transform';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../../utils/cache';
 import { exists, mkdir, writeFile } from '../../utils/fs';
@@ -80,34 +80,24 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
     }
 
     async function generateBundles(): Promise<BundlesCache> {
-      const [{ cache: rollupFESM2022Cache, files: fesmFiles }, { cache: rollupTypesCache, files: typesFiles }] =
-        await Promise.all([
-          rollupBundleFile({
-            entry: esm2022,
-            entryName: ngEntryPoint.flatModuleFile,
-            moduleName: ngEntryPoint.moduleId,
-            dir: fesm2022Dir,
-            cache: cache.rollupFESM2022Cache,
-            cacheDirectory,
-            fileCache: cache.outputCache,
-            cacheKey,
-            sourcemap: true,
-          }),
-          rollupBundleFile({
-            entry: declarations,
-            entryName: ngEntryPoint.flatModuleFile,
-            moduleName: ngEntryPoint.moduleId,
-            dir: declarationsDir,
-            cache: cache.rollupTypesCache,
-            cacheDirectory,
-            fileCache: cache.outputCache,
-            cacheKey,
-            sourcemap: tsConfig.options.declarationMap ?? false,
-          }),
-        ]);
-
-      cache.rollupFESM2022Cache = rollupFESM2022Cache;
-      cache.rollupTypesCache = rollupTypesCache;
+      const [{ files: fesmFiles }, { files: typesFiles }] = await Promise.all([
+        rolldownBundleFile({
+          entry: esm2022,
+          entryName: ngEntryPoint.flatModuleFile,
+          moduleName: ngEntryPoint.moduleId,
+          dir: fesm2022Dir,
+          fileCache: cache.outputCache,
+          sourcemap: true,
+        }),
+        rolldownBundleFile({
+          entry: declarations,
+          entryName: ngEntryPoint.flatModuleFile,
+          moduleName: ngEntryPoint.moduleId,
+          dir: declarationsDir,
+          fileCache: cache.outputCache,
+          sourcemap: tsConfig.options.declarationMap ?? false,
+        }),
+      ]);
 
       return {
         hash,

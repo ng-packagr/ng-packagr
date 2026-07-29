@@ -1,5 +1,4 @@
 import type { NgtscProgram, ParsedConfiguration, Program } from '@angular/compiler-cli';
-import type { RollupCache } from 'rollup';
 import ts from 'typescript';
 import { FileCache } from '../file-system/file-cache';
 import { BuildGraph, ComplexPredicate } from '../graph/build-graph';
@@ -96,8 +95,6 @@ export class EntryPointNode extends Node {
     sourcesFileCache: FileCache;
     analysesSourcesFileCache: FileCache;
     moduleResolutionCache: ts.ModuleResolutionCache;
-    rollupFESM2022Cache?: RollupCache;
-    rollupTypesCache?: RollupCache;
     stylesheetProcessor?: StylesheetProcessor;
     oldNgtscProgram?: NgtscProgram;
     oldBuilder?: ts.EmitAndSemanticDiagnosticsBuilderProgram;
