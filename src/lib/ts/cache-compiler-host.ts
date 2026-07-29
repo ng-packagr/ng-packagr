@@ -54,7 +54,7 @@ export function cacheCompilerHost(
     fileExists: (fileName: string) => {
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.exists === undefined) {
-        cache.exists = compilerHost.fileExists.call(compilerHost, fileName);
+        cache.exists = compilerHost.fileExists(fileName);
       }
 
       return cache.exists;
@@ -65,14 +65,7 @@ export function cacheCompilerHost(
       const cache = sourcesFileCache.getOrCreate(fileName);
 
       if (shouldCreateNewSourceFile || !cache.sourceFile) {
-        cache.sourceFile = compilerHost.getSourceFile.call(
-          compilerHost,
-          fileName,
-          languageVersion,
-          onError,
-          true,
-          ...parameters,
-        );
+        cache.sourceFile = compilerHost.getSourceFile(fileName, languageVersion, onError, true, ...parameters);
       }
 
       return cache.sourceFile;
@@ -92,7 +85,7 @@ export function cacheCompilerHost(
       const extension = path.extname(fileName);
       if (!sourceFiles?.length && extension === '.tsbuildinfo') {
         // Save builder info contents to specified location
-        compilerHost.writeFile.call(compilerHost, fileName, data, writeByteOrderMark, onError, sourceFiles);
+        compilerHost.writeFile(fileName, data, writeByteOrderMark, onError, sourceFiles);
 
         return;
       }
@@ -113,7 +106,7 @@ export function cacheCompilerHost(
       addDependee(fileName);
       const cache = sourcesFileCache.getOrCreate(fileName);
       if (cache.content === undefined) {
-        cache.content = compilerHost.readFile.call(compilerHost, fileName);
+        cache.content = compilerHost.readFile(fileName);
       }
 
       return cache.content;
@@ -139,7 +132,7 @@ export function cacheCompilerHost(
 
         if (/(?:html?|svg)$/.test(path.extname(fileName))) {
           // template
-          cache.content = compilerHost.readFile.call(compilerHost, fileName);
+          cache.content = compilerHost.readFile(fileName);
         } else {
           // stylesheet
           if (!stylesheetProcessor) {
@@ -161,11 +154,11 @@ export function cacheCompilerHost(
             }
           }
 
-          if (esBuildWarnings && esBuildWarnings.length > 0) {
+          if (esBuildWarnings?.length) {
             (await formatMessages(esBuildWarnings, { kind: 'warning' })).forEach(msg => warn(msg));
           }
 
-          if (esbuildErrors && esbuildErrors.length > 0) {
+          if (esbuildErrors?.length) {
             (await formatMessages(esbuildErrors, { kind: 'error' })).forEach(msg => error(msg));
 
             throw new Error(`An error has occuried while processing ${fileName}.`);
@@ -187,9 +180,6 @@ export function cacheCompilerHost(
       }
 
       if (inlineStyleLanguage) {
-        if (!stylesheetProcessor) {
-          throw new Error('stylesheetProcessor is not available for processing inline styles');
-        }
         const {
           contents,
           referencedFiles,
@@ -202,7 +192,7 @@ export function cacheCompilerHost(
         );
 
         const node = getNode(containingFile);
-        node.dependsOn([...(referencedFiles ?? [])].map(getNode));
+        node.dependsOn([...referencedFiles].map(getNode));
 
         if (esBuildWarnings?.length) {
           (await formatMessages(esBuildWarnings, { kind: 'warning' })).forEach(msg => warn(msg));
