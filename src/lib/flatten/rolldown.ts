@@ -29,7 +29,10 @@ export async function rolldownBundleFile(opts: RolldownOptions): Promise<{ files
 
   if (dtsMode) {
     outExtension = '.d.ts';
-    plugins = [fileLoaderPlugin(opts.fileCache, ['.d.ts', '/index.d.ts'], dtsMode), dts({ sourcemap: opts.sourcemap })];
+    plugins = [
+      fileLoaderPlugin(opts.fileCache, ['.d.ts', '/index.d.ts'], dtsMode),
+      dts({ generator: 'oxc', sourcemap: opts.sourcemap }),
+    ];
   } else {
     outExtension = '.mjs';
     plugins = [fileLoaderPlugin(opts.fileCache, ['.js', '/index.js'], dtsMode)];
@@ -54,6 +57,9 @@ export async function rolldownBundleFile(opts: RolldownOptions): Promise<{ files
           break;
       }
     },
+    experimental: {
+      attachDebugInfo: 'none',
+    },
     resolve: {
       symlinks: false,
     },
@@ -72,13 +78,11 @@ export async function rolldownBundleFile(opts: RolldownOptions): Promise<{ files
     entryFileNames: opts.entryName + outExtension,
     banner: '',
     sourcemap: opts.sourcemap,
-    comments: dtsMode
-      ? true
-      : {
-          legal: true,
-          annotation: true,
-          jsdoc: false,
-        },
+    comments: {
+      legal: true,
+      annotation: true,
+      jsdoc: dtsMode,
+    },
   });
 
   // Close the bundle to let plugins clean up their external processes or services
