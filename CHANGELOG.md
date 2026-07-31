@@ -3,11 +3,7 @@
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 ## [22.2.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.1...22.2.0-next.2) (2026-07-29)
-
-
-### Performance
-
-* **ng-packagr:** use oxc generator for dts bundling ([e57d693](https://github.com/ng-packagr/ng-packagr/commit/e57d693d430ed945a559b82957cc617eab501280))
+git
 
 ## [22.2.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.0...22.2.0-next.1) (2026-07-29)
 
