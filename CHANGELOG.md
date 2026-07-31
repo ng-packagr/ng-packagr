@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [21.2.6](https://github.com/ng-packagr/ng-packagr/compare/21.2.5...21.2.6) (2026-07-31)
+
+
+### Bug Fixes
+
+* update esbuild to v0.28.1 to mitigate "GHSA-g7r4-m6w7-qqqr" ([2db6333](https://github.com/ng-packagr/ng-packagr/commit/2db6333fda713010888058ff7ee323c4619b3548))
+
 ### [21.2.5](https://github.com/ng-packagr/ng-packagr/compare/21.2.3...21.2.5) (2026-06-02)
 
 
