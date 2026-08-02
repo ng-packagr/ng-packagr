@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { NgPackageEntryConfig } from '../../../ng-entrypoint.schema';
 import { NgPackageConfig } from '../../../ng-package.schema';
-import { CssUrl } from '../../styles/stylesheet-processor';
+import { CssUrl } from '../../styles/css-url.enum';
 import { ensureUnixPath } from '../../utils/path';
 
 /** A list of output absolute paths for various formats */
