@@ -2,11 +2,7 @@ import browserslist from 'browserslist';
 import { NgPackageEntryConfig } from '../../ng-entrypoint.schema';
 import { ComponentStylesheetBundler } from './component-stylesheets';
 import { generateSearchDirectories, getTailwindConfig, loadPostcssConfiguration } from './postcss-configuration';
-
-export enum CssUrl {
-  inline = 'inline',
-  none = 'none',
-}
+import { CssUrl } from './css-url.enum';
 
 export class StylesheetProcessor extends ComponentStylesheetBundler {
   constructor(

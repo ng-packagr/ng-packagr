@@ -2,7 +2,7 @@ import type { Plugin, PluginBuild } from 'esbuild';
 import { readFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
 import { LoadResultCache, createCachedLoad } from '../load-result-cache';
-import { CssUrl } from '../stylesheet-processor';
+import { CssUrl } from '../css-url.enum';
 
 const CSS_RESOURCE_NAMESPACE = 'angular:css-resource';
 
