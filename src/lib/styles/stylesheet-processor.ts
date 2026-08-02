@@ -1,8 +1,8 @@
 import browserslist from 'browserslist';
 import { NgPackageEntryConfig } from '../../ng-entrypoint.schema';
 import { ComponentStylesheetBundler } from './component-stylesheets';
-import { generateSearchDirectories, getTailwindConfig, loadPostcssConfiguration } from './postcss-configuration';
 import { CssUrl } from './css-url.enum';
+import { generateSearchDirectories, getTailwindConfig, loadPostcssConfiguration } from './postcss-configuration';
 
 export class StylesheetProcessor extends ComponentStylesheetBundler {
   constructor(
@@ -14,7 +14,7 @@ export class StylesheetProcessor extends ComponentStylesheetBundler {
     protected readonly cacheDirectory?: string | false,
     protected readonly watch?: boolean,
   ) {
-    browserslist.defaults = ['baseline widely available on 2026-05-07']
+    browserslist.defaults = ['baseline widely available on 2026-05-07'];
     const browserslistData = browserslist(undefined, { path: basePath });
     const searchDirs = generateSearchDirectories([projectBasePath]);
     const postcssConfiguration = loadPostcssConfiguration(searchDirs);

@@ -1,12 +1,11 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import * as log from '../../dist/src/lib/utils/log';
 import { expect } from 'chai';
 import { Subscription, tap } from 'rxjs';
 import { ngPackagr } from '../../dist';
 
 /**
- * A testing harness class to setup the enviroment andtest the incremental builds.
+ * A testing harness class to setup the enviroment and test the incremental builds.
  */
 export class TestHarness {
   private harnessTempDir = path.join(__dirname, '.tmp');
@@ -14,7 +13,8 @@ export class TestHarness {
   private testDistPath: string;
   private testSrc: string;
   private ngPackagr$$: Subscription | undefined;
-  private loggerStubs: Record<string, jasmine.Spy> = {};
+  private activeCompleteCallback: (() => void) | null = null;
+  private activeFailureCallback: ((error: Error) => void) | null = null;
 
   constructor(testName: string) {
     this.testTempPath = path.join(this.harnessTempDir, testName);
@@ -26,11 +26,26 @@ export class TestHarness {
 
   async initialize(): Promise<void> {
     // the below is done in order to avoid poluting the test reporter with build logs
-    for (const key in log) {
-      if (log.hasOwnProperty(key)) {
-        this.loggerStubs[key] = spyOn(log, key as keyof typeof log).and.callFake(() => null);
+    spyOn(console, 'log').and.callFake((...args: any[]) => {
+      const msg = args.join(' ');
+      if (msg.includes('Built Angular Package') || msg.includes('Compilation sequence updated')) {
+        if (this.activeCompleteCallback) {
+          const cb = this.activeCompleteCallback;
+          this.activeCompleteCallback = null;
+          cb();
+        }
       }
-    }
+    });
+    spyOn(console, 'error').and.callFake((...args: any[]) => {
+      const msg = args.join(' ');
+      if (this.activeFailureCallback) {
+        const cb = this.activeFailureCallback;
+        this.activeFailureCallback = null;
+        cb(new Error(msg));
+      }
+    });
+    spyOn(console, 'info').and.callFake(() => {});
+    spyOn(console, 'warn').and.callFake(() => {});
 
     this.emptyTestDirectory();
     await fs.copy(this.testSrc, this.testTempPath);
@@ -38,9 +53,9 @@ export class TestHarness {
   }
 
   dispose(): void {
-    this.loggerStubs = {};
+    this.activeCompleteCallback = null;
+    this.activeFailureCallback = null;
     this.ngPackagr$$?.unsubscribe();
-
     this.emptyTestDirectory();
   }
 
@@ -78,21 +93,17 @@ export class TestHarness {
   }
 
   /**
-   * Gets invoked when a compilation completes succesfully.
+   * Gets invoked when a compilation completes successfully.
    */
   onComplete(done: () => void): void {
-    this.loggerStubs['success'].and.callFake(msg => {
-      if (msg.includes('Built Angular Package')) {
-        done();
-      }
-    });
+    this.activeCompleteCallback = done;
   }
 
   /**
-   * Gets invoked when a compilation error occuries.
+   * Gets invoked when a compilation error occurs.
    */
   onFailure(done: (error: Error) => void): void {
-    this.loggerStubs['error'].and.callFake(done);
+    this.activeFailureCallback = done;
   }
 
   /**

@@ -1,8 +1,8 @@
 import type { Plugin, PluginBuild } from 'esbuild';
 import { readFile } from 'node:fs/promises';
 import { extname, join, relative } from 'node:path';
-import { LoadResultCache, createCachedLoad } from '../load-result-cache';
 import { CssUrl } from '../css-url.enum';
+import { LoadResultCache, createCachedLoad } from '../load-result-cache';
 
 const CSS_RESOURCE_NAMESPACE = 'angular:css-resource';
 
