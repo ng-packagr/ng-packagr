@@ -56,8 +56,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.1
       rolldown-plugin-dts:
-        specifier: ^0.27.14
-        version: 0.27.14(rolldown@1.2.1)(typescript@6.0.3)
+        specifier: ^0.28.0
+        version: 0.28.0(rolldown@1.2.1)(typescript@6.0.3)
       rxjs:
         specifier: ^7.8.1
         version: 7.8.2
@@ -5141,13 +5141,13 @@ packages:
     engines: {node: 20 || >=22}
     hasBin: true
 
-  rolldown-plugin-dts@0.27.14:
-    resolution: {integrity: sha512-ZvuDDwoIpRK9RPxDXratCpklFO9QZZWndf/sd0VBFb4LEj0jj07UcHK9OCh7V4XiFz2Z89ziyBC2K6tJiDjrbw==}
-    engines: {node: ^22.18.0 || >=24.11.0}
+  rolldown-plugin-dts@0.28.0:
+    resolution: {integrity: sha512-Ip/B9B0IK3OLBj0tl59yAfQgbHBicLE5GQ04+6eJoniZ1HKNCpf49NzmBC4SfIg1cIvKr0n0mUQe8mG6UrJHbw==}
+    engines: {node: ^22.18.0 || ^24.11.0 || >=26.0.0}
     peerDependencies:
       '@typescript/native-preview': '*'
       '@volar/typescript': ~2.4.0
-      rolldown: ^1.0.0
+      rolldown: ^1.2.0
       typescript: ^5.0.0 || ^6.0.0 || ~7.0.0
       vue-tsc: ~3.2.0 || ~3.3.0
     peerDependenciesMeta:
@@ -10856,7 +10856,7 @@ snapshots:
       glob: 13.0.6
       package-json-from-dist: 1.0.1
 
-  rolldown-plugin-dts@0.27.14(rolldown@1.2.1)(typescript@6.0.3):
+  rolldown-plugin-dts@0.28.0(rolldown@1.2.1)(typescript@6.0.3):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.5
