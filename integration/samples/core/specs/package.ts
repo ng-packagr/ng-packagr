@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-describe(`@sample/core`, () => {
+describe(`@sample/core - package.json`, () => {
   describe(`package.json`, () => {
     let PACKAGE;
     beforeAll(() => {

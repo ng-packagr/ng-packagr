@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { existsSync } from 'fs';
 import { resolve, join } from 'path';
 
-describe(`@sample/embed-assets`, () => {
+describe(`@sample/embed-assets - assets`, () => {
   const dist = resolve(__dirname, '..', 'dist');
 
   describe('assets', () => {
