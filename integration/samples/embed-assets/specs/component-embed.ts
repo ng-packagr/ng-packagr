@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { readFileSync } from 'fs';
 import { resolve, join } from 'path';
 
-describe(`@sample/embed-assets`, () => {
+describe(`@sample/embed-assets - component embed`, () => {
   const dist = resolve(__dirname, '..', 'dist');
 
   describe('embed asset', () => {

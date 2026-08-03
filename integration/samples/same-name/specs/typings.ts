@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as fs from 'fs';
 import * as path from 'path';
 
-describe(`@sample/same-name`, () => {
+describe(`@sample/same-name - typings`, () => {
   describe(`sample-testing.d.ts`, () => {
     let TYPINGS;
     beforeAll(() => {

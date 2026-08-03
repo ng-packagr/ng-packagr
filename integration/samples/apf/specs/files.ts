@@ -3,7 +3,7 @@ import * as path from 'path';
 import { globSync } from 'tinyglobby';
 import * as fs from 'fs';
 
-describe('@sample/apf', () => {
+describe('@sample/apf - files', () => {
   let DIST: string;
   beforeAll(() => {
     DIST = path.resolve(__dirname, '../dist');

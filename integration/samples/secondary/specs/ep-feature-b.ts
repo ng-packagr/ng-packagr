@@ -20,12 +20,4 @@ describe(`@sample/secondary/feature-b`, () => {
   it(`should 'import .. from '@sample/secondary/feature-a';' (FESM2022)`, () => {
     expect(ESM2022_CONTENTS).to.match(/import \{ FEATURE_A \} from ["']@sample\/secondary\/feature-a["']/);
   });
-
-  it(`should 'export { .. }' (FESM2022)`, () => {
-    expect(ESM2022_CONTENTS).to.contain(`export {`);
-  });
-
-  it(`should 'import .. from '@sample/secondary/feature-a';' (FESM2022)`, () => {
-    expect(ESM2022_CONTENTS).to.match(/import \{ FEATURE_A \} from ["']@sample\/secondary\/feature-a["']/);
-  });
 });

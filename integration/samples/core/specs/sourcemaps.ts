@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-describe(`@sample/core`, () => {
+describe(`@sample/core - sourcemaps`, () => {
   describe(`fesm2022/sample-core.mjs.map`, () => {
     let sourceMap;
     beforeAll(() => {
