@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [21.2.7](https://github.com/ng-packagr/ng-packagr/compare/21.2.6...21.2.7) (2026-08-04)
+
+
+### Bug Fixes
+
+* pin rollup-plugin-dts to ~6.4.1 ([767e4d3](https://github.com/ng-packagr/ng-packagr/commit/767e4d330d95f1587c198cf851809881a66b78fd))
+
 ### [21.2.6](https://github.com/ng-packagr/ng-packagr/compare/21.2.5...21.2.6) (2026-07-31)
 
 
