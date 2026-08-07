@@ -64,6 +64,9 @@ importers:
       sass:
         specifier: ^1.81.0
         version: 1.100.0
+      semver:
+        specifier: ^7.8.5
+        version: 7.8.5
       tinyglobby:
         specifier: ^0.2.12
         version: 0.2.17
@@ -119,6 +122,9 @@ importers:
       '@types/node':
         specifier: ^20.0.0
         version: 20.19.42
+      '@types/semver':
+        specifier: ^7.8.0
+        version: 7.8.0
       '@typescript-eslint/eslint-plugin':
         specifier: 8.66.0
         version: 8.66.0(@typescript-eslint/parser@8.66.0(eslint@10.8.0(jiti@1.21.7)(supports-color@11.0.0))(supports-color@11.0.0)(typescript@6.0.3))(eslint@10.8.0(jiti@1.21.7)(supports-color@11.0.0))(supports-color@11.0.0)(typescript@6.0.3)
@@ -2489,6 +2495,9 @@ packages:
 
   '@types/semver@7.7.1':
     resolution: {integrity: sha512-FmgJfu+MOcQ370SD0ev7EI8TlCAfKYU+B4m5T3yXc1CiRN94g/SZPtsCkk506aUDtlMnFZvasDwHHUcZUEaYuA==}
+
+  '@types/semver@7.8.0':
+    resolution: {integrity: sha512-1mAINjtQCXXeLkJ9ehXkwOcBpqtLxiVtKhpUf83DdRNdQKV0iXZpaHYqRr7nj+wvxuJzoAmAwXI+sCNMv1CzLQ==}
 
   '@types/stack-trace@0.0.33':
     resolution: {integrity: sha512-O7in6531Bbvlb2KEsJ0dq0CHZvc3iWSR5ZYMtvGgnHA56VgriAN/AU2LorfmcvAl2xc9N5fbCTRyMRRl8nd74g==}
@@ -5195,11 +5204,6 @@ packages:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
     hasBin: true
 
-  semver@7.8.4:
-    resolution: {integrity: sha512-rUCObTnP32Q08R2uuIrt7r9PlEonuTmtuXYcW6s5kjdlj3xbnwe+21yXptAUYcMAABLkYYTtnmzb3w3EDZfueA==}
-    engines: {node: '>=10'}
-    hasBin: true
-
   semver@7.8.5:
     resolution: {integrity: sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA==}
     engines: {node: '>=10'}
@@ -5940,7 +5944,7 @@ snapshots:
       chokidar: 5.0.0
       convert-source-map: 1.9.0
       reflect-metadata: 0.2.2
-      semver: 7.8.4
+      semver: 7.8.5
       tslib: 2.8.1
       yargs: 18.0.0
     optionalDependencies:
@@ -6087,7 +6091,7 @@ snapshots:
       import-meta-resolve: 4.2.0
       json5: 2.2.3
       obug: 2.1.4
-      semver: 7.8.4
+      semver: 7.8.5
 
   '@babel/generator@8.0.0':
     dependencies:
@@ -6165,7 +6169,7 @@ snapshots:
     dependencies:
       '@simple-libs/child-process-utils': 2.0.0
       '@simple-libs/stream-utils': 2.0.0
-      semver: 7.8.4
+      semver: 7.8.5
     optionalDependencies:
       conventional-commits-filter: 6.0.1
       conventional-commits-parser: 7.1.1
@@ -7592,7 +7596,7 @@ snapshots:
     dependencies:
       '@pnpm/crypto.hash': 1000.2.2
       '@pnpm/types': 1001.3.0
-      semver: 7.8.4
+      semver: 7.8.5
 
   '@pnpm/graceful-fs@1000.1.0':
     dependencies:
@@ -7940,6 +7944,8 @@ snapshots:
   '@types/retry@0.12.0': {}
 
   '@types/semver@7.7.1': {}
+
+  '@types/semver@7.8.0': {}
 
   '@types/stack-trace@0.0.33': {}
 
@@ -10260,7 +10266,7 @@ snapshots:
     dependencies:
       hosted-git-info: 10.1.1
       proc-log: 7.0.0
-      semver: 7.8.4
+      semver: 7.8.5
       validate-npm-package-name: 8.0.0
 
   nth-check@2.1.1:
@@ -10958,8 +10964,6 @@ snapshots:
 
   semver@6.3.1: {}
 
-  semver@7.8.4: {}
-
   semver@7.8.5: {}
 
   send@1.2.1(supports-color@11.0.0):
@@ -11113,7 +11117,7 @@ snapshots:
       figures: 3.2.0
       find-up: 5.0.0
       git-semver-tags: 4.1.1
-      semver: 7.8.4
+      semver: 7.8.5
       stringify-package: 1.0.1
       yargs: 16.2.0
 
