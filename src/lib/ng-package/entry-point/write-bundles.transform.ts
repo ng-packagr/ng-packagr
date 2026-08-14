@@ -1,5 +1,5 @@
+import { join } from 'node:path';
 import ora from 'ora';
-import { join } from 'path';
 import type { OutputAsset, OutputChunk } from 'rolldown';
 import { invalidateEntryPointsAndCacheOnFileChange } from '../../file-system/file-watcher';
 import { rolldownBundleFile } from '../../flatten/rolldown';
@@ -10,10 +10,22 @@ import { ensureUnixPath } from '../../utils/path';
 import { findEntryPointInProgress } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 
+type CachedBundleFile =
+  | {
+      type: 'chunk';
+      fileName: string;
+      code: string;
+    }
+  | {
+      type: 'asset';
+      fileName: string;
+      source: string | Uint8Array;
+    };
+
 interface BundlesCache {
   hash: string;
-  fesm2022: (OutputChunk | OutputAsset)[];
-  types: (OutputChunk | OutputAsset)[];
+  fesm2022: CachedBundleFile[];
+  types: CachedBundleFile[];
 }
 
 export const writeBundlesTransform = (options: NgPackagrOptions) =>
@@ -99,21 +111,34 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
         }),
       ]);
 
+      const mapFile = (file: OutputChunk | OutputAsset): CachedBundleFile =>
+        file.type === 'chunk'
+          ? {
+              type: 'chunk',
+              fileName: file.fileName,
+              code: file.code,
+            }
+          : {
+              type: 'asset',
+              fileName: file.fileName,
+              source: file.source,
+            };
+
       return {
         hash,
-        types: typesFiles,
-        fesm2022: fesmFiles,
+        types: typesFiles.map(mapFile),
+        fesm2022: fesmFiles.map(mapFile),
       };
     }
 
-    let cacheRollup: BundlesCache;
+    let bundlesCache: BundlesCache;
     try {
-      cacheRollup = await generateBundles();
-      spinner.succeed(`Generating FESM and DTS bundles`);
+      bundlesCache = await generateBundles();
+      spinner.succeed('Generating FESM and DTS bundles');
 
       // Invalidate dependent entry-points
       const changedDtsFiles: string[] = [];
-      for (const file of cacheRollup.types) {
+      for (const file of bundlesCache.types) {
         if (file.type !== 'chunk' || !file.fileName.endsWith('.d.ts')) {
           continue;
         }
@@ -134,6 +159,6 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
     }
 
     if (cacheDirectory) {
-      await saveCacheEntry(cacheDirectory, cacheKey, cacheRollup);
+      await saveCacheEntry(cacheDirectory, cacheKey, bundlesCache);
     }
   });

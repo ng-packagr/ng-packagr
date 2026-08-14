@@ -1,4 +1,4 @@
-import * as path from 'path';
+import * as path from 'node:path';
 import { type OutputAsset, type OutputChunk, type RolldownPluginOption, rolldown } from 'rolldown';
 import { dts } from 'rolldown-plugin-dts';
 import { OutputFileCache } from '../ng-package/nodes';
@@ -89,14 +89,7 @@ export async function rolldownBundleFile(opts: RolldownOptions): Promise<{ files
   await bundle.close();
 
   return {
-    files: output.output.map(f => {
-      /** The map contents are in an asset file type, which makes storing the map in the cache as redudant. */
-      if (f.type === 'chunk') {
-        Object.defineProperty(f, 'map', { value: null, configurable: true });
-      }
-
-      return f;
-    }),
+    files: output.output,
   };
 }
 
