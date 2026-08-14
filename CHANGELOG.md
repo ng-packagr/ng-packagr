@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.2.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.2...22.2.0-next.3) (2026-08-14)
+
+
+### Features
+
+* **ng-packagr:** transform supported browsers to targets using lowest version ([148f640](https://github.com/ng-packagr/ng-packagr/commit/148f6408716e363ab9e7cc84db582dae256a8033))
+
+
+### Performance
+
+* **ng-packagr:** cache declaration diagnostics and optimize incremental emit ([37151c6](https://github.com/ng-packagr/ng-packagr/commit/37151c6bdd730cc7cd5b4a2c3ec51f2c0178eebb))
+* **ng-packagr:** prune rolldown cache payload and optimize file loader ([f7b8c0d](https://github.com/ng-packagr/ng-packagr/commit/f7b8c0d052a03cc1d2e939bed59eba58322a45f8))
+* **ng-packagr:** use lightweight scanner for source analysis ([5bf290b](https://github.com/ng-packagr/ng-packagr/commit/5bf290bc249cf43af151d7ee7105a8c27435b695))
+
 ### [22.1.1](https://github.com/ng-packagr/ng-packagr/compare/22.1.0...22.1.1) (2026-08-04)
 
 
