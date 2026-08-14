@@ -1,4 +1,4 @@
-import { dirname, resolve } from 'node:path';
+import { dirname, extname, isAbsolute, resolve } from 'node:path';
 import type { Plugin } from 'rolldown';
 import { OutputFileCache } from '../ng-package/nodes';
 
@@ -6,43 +6,66 @@ import * as log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 
 /**
- * A regex used to strip the file extension from a file path.
- */
-const FILE_EXT_REGEXP = /\.(c|m)?(t|j)s$/;
-
-/**
- * Loads a file and it's map.
+ * Loads a file and its map.
  */
 export function fileLoaderPlugin(fileCache: OutputFileCache, resolutionExtensions: string[], dtsMode: boolean): Plugin {
   return {
     name: 'file-loader',
     resolveId: function (id, importer) {
-      const normalizedId = ensureUnixPath(id);
-      if (fileCache.has(normalizedId)) {
-        return normalizedId;
+      let resolved: string;
+      if (importer) {
+        if (id[0] !== '.' && id[0] !== '/' && !isAbsolute(id)) {
+          return;
+        }
+
+        resolved = ensureUnixPath(resolve(dirname(importer), id));
+      } else {
+        resolved = ensureUnixPath(id);
       }
 
-      const potentialId = normalizedId.endsWith('.d.ts')
-        ? normalizedId
-        : normalizedId.replace(FILE_EXT_REGEXP, (_match, p1) => {
-            if (dtsMode) {
-              return p1 ? `.d.${p1}ts` : '.d.ts';
-            }
-
-            return p1 ? `.${p1}js` : '.js';
-          });
-
-      if (fileCache.has(potentialId)) {
-        return potentialId;
-      }
-
-      if (!importer) {
-        return;
-      }
-
-      const resolved = ensureUnixPath(resolve(dirname(importer), potentialId));
       if (fileCache.has(resolved)) {
         return resolved;
+      }
+
+      const ext = extname(resolved);
+      const base = resolved.slice(0, -ext.length);
+      if (dtsMode) {
+        let potential: string | undefined;
+        switch (ext) {
+          case '.js':
+          case '.ts':
+            potential = `${base}.d.ts`;
+            break;
+          case '.mjs':
+          case '.mts':
+            potential = `${base}.d.mts`;
+            break;
+          case '.cjs':
+          case '.cts':
+            potential = `${base}.d.cts`;
+            break;
+        }
+
+        if (potential && fileCache.has(potential)) {
+          return potential;
+        }
+      } else {
+        let potential: string | undefined;
+        switch (ext) {
+          case '.ts':
+            potential = `${base}.js`;
+            break;
+          case '.mts':
+            potential = `${base}.mjs`;
+            break;
+          case '.cts':
+            potential = `${base}.cjs`;
+            break;
+        }
+
+        if (potential && fileCache.has(potential)) {
+          return potential;
+        }
       }
 
       for (const suffix of resolutionExtensions) {
