@@ -139,7 +139,7 @@ export function invalidateEntryPointsAndCacheOnFileChange(
 
       entryPoint.cache.angularDiagnosticCache.delete(filePath);
       entryPoint.cache.declarationDiagnosticCache?.delete(filePath);
-      entryPoint.cache.analysesSourcesFileCache.delete(filePath);
+      entryPoint.cache.analyseSourcesFileCache.delete(filePath);
       isDirty = true;
     }
 

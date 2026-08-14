@@ -1,4 +1,4 @@
-import type { NgtscProgram, ParsedConfiguration, Program } from '@angular/compiler-cli';
+import type { NgtscProgram, ParsedConfiguration } from '@angular/compiler-cli';
 import ts from 'typescript';
 import { FileCache } from '../file-system/file-cache';
 import { BuildGraph, ComplexPredicate } from '../graph/build-graph';
@@ -82,7 +82,7 @@ export class EntryPointNode extends Node {
 
     this.cache = {
       sourcesFileCache,
-      analysesSourcesFileCache: new FileCache(),
+      analyseSourcesFileCache: new FileCache(),
       moduleResolutionCache,
       outputCache: new Map(),
       angularDiagnosticCache: new AngularDiagnosticsCache(),
@@ -90,11 +90,10 @@ export class EntryPointNode extends Node {
     };
   }
 
-  cache: {
+  cache?: {
     outputCache: OutputFileCache;
-    oldPrograms?: Record<ts.ScriptTarget | 'analysis', Program | ts.Program>;
     sourcesFileCache: FileCache;
-    analysesSourcesFileCache: FileCache;
+    analyseSourcesFileCache: FileCache;
     moduleResolutionCache: ts.ModuleResolutionCache;
     stylesheetProcessor?: StylesheetProcessor;
     oldNgtscProgram?: NgtscProgram;
@@ -110,7 +109,7 @@ export class EntryPointNode extends Node {
   };
 
   dispose(): void {
-    this.cache.stylesheetProcessor?.destroy();
+    this.cache?.stylesheetProcessor?.destroy();
     this.cache = undefined;
   }
 }

@@ -1,10 +1,10 @@
-import { basename, dirname, join } from 'path';
+import * as fs from 'node:fs';
+import { basename, dirname, extname, join, resolve } from 'node:path';
 import { map, pipe } from 'rxjs';
 import ts from 'typescript';
-import { BuildGraph } from '../../graph/build-graph';
+import { FileCache } from '../../file-system/file-cache';
 import { STATE_DONE } from '../../graph/node';
 import { Transform } from '../../graph/transform';
-import { cacheCompilerHost } from '../../ts/cache-compiler-host';
 import { debug } from '../../utils/log';
 import { ensureUnixPath } from '../../utils/path';
 import { EntryPointNode, findPackageNode, isEntryPoint } from '../nodes';
@@ -12,10 +12,13 @@ import { EntryPointNode, findPackageNode, isEntryPoint } from '../nodes';
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {
     const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
+    const entryPointsMapped = new Map<string, EntryPointNode>(entryPoints.map(ep => [ep.data.entryPoint.moduleId, ep]));
+    const packageNode = findPackageNode(graph);
+    const primaryModuleId = packageNode.data.primary.moduleId;
 
     for (const entryPoint of entryPoints) {
       if (entryPoint.state !== STATE_DONE) {
-        analyseEntryPoint(graph, entryPoint, entryPoints);
+        analyseEntryPoint(entryPoint, entryPointsMapped, primaryModuleId);
       }
     }
 
@@ -23,116 +26,103 @@ export const analyseSourcesTransform: Transform = pipe(
   }),
 );
 
+const JS_TO_TS_EXTENSIONS: Readonly<Record<string, readonly string[]>> = {
+  '.js': ['.ts', '.tsx', '.d.ts'],
+  '.mjs': ['.mts', '.d.mts'],
+  '.cjs': ['.cts', '.d.cts'],
+};
+
+const RESOLUTION_EXTENSIONS: readonly string[] = [
+  '.ts',
+  '.tsx',
+  '.mts',
+  '.cts',
+  '.d.ts',
+  '.d.mts',
+  '.d.cts',
+  '/index.ts',
+  '/index.tsx',
+  '/index.mts',
+  '/index.cts',
+  '/index.d.ts',
+  '/index.d.mts',
+  '/index.d.cts',
+  '.js',
+  '.mjs',
+  '.cjs',
+  '/index.js',
+  '/index.mjs',
+  '/index.cjs',
+];
+
+function checkFile(filePath: string, fileCache: FileCache): boolean {
+  const entry = fileCache.getOrCreate(filePath);
+  if (entry.exists === undefined) {
+    const stat = fs.statSync(filePath, { throwIfNoEntry: false });
+    if (stat?.isFile()) {
+      entry.exists = true;
+    } else {
+      return false;
+    }
+  }
+
+  return entry.exists;
+}
+
+function resolveRelativeSourceFile(dir: string, moduleName: string, fileCache: FileCache): string | undefined {
+  const target = resolve(dir, moduleName);
+  if (target.includes('/node_modules/') || target.includes('\\node_modules\\')) {
+    return undefined;
+  }
+
+  const ext = extname(target);
+  const tsExtensions = JS_TO_TS_EXTENSIONS[ext];
+  if (tsExtensions) {
+    const base = target.slice(0, -ext.length);
+    for (const tsExt of tsExtensions) {
+      const candidate = base + tsExt;
+      if (checkFile(candidate, fileCache)) {
+        return ensureUnixPath(candidate);
+      }
+    }
+  }
+
+  if (checkFile(target, fileCache)) {
+    return ensureUnixPath(target);
+  }
+
+  for (const suffix of RESOLUTION_EXTENSIONS) {
+    const candidate = target + suffix;
+    if (checkFile(candidate, fileCache)) {
+      return ensureUnixPath(candidate);
+    }
+  }
+
+  return undefined;
+}
+
 /**
- * Analyses an entrypoint, searching for TypeScript dependencies and additional resources (Templates and Stylesheets).
+ * Analyses an entrypoint, searching for TypeScript dependencies and internal package imports.
  *
- * @param graph Build graph
  * @param entryPoint Current entry point that should be analysed.
- * @param entryPoints List of all entry points.
+ * @param entryPointsMapped Map of all entry points by moduleId.
+ * @param primaryModuleId The moduleId of the primary entry point.
  */
-function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryPoints: EntryPointNode[]) {
-  const { oldPrograms, analysesSourcesFileCache, moduleResolutionCache } = entryPoint.cache;
-  const oldProgram = oldPrograms && (oldPrograms['analysis'] as ts.Program | undefined);
-  const { moduleId } = entryPoint.data.entryPoint;
-  const packageNode = findPackageNode(graph);
-  const primaryModuleId = packageNode.data.primary.moduleId;
+function analyseEntryPoint(
+  entryPoint: EntryPointNode,
+  entryPointsMapped: Map<string, EntryPointNode>,
+  primaryModuleId: string,
+) {
+  const { analyseSourcesFileCache } = entryPoint.cache;
+  const { moduleId, entryFilePath } = entryPoint.data.entryPoint;
 
   debug(`Analysing sources for ${moduleId}`);
-  const tsConfigOptions: ts.CompilerOptions = {
-    // Needed because of `Property 'extendedDiagnostics' is incompatible with index signature.`
-    ...(entryPoint.data.tsConfig.options as ts.CompilerOptions),
-    skipLibCheck: true,
-    noLib: true,
-    noEmit: true,
-    types: [],
-    target: ts.ScriptTarget.Latest,
-    strict: false,
-  };
-
-  const compilerHost = cacheCompilerHost(
-    graph,
-    entryPoint,
-    tsConfigOptions,
-    moduleResolutionCache,
-    undefined,
-    undefined,
-    analysesSourcesFileCache,
-  );
-
-  const potentialDependencies = new Set<string>();
-
-  compilerHost.resolveTypeReferenceDirectives = (
-    moduleNames: string[] | ts.FileReference[],
-    containingFile: string,
-    redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions,
-  ) => {
-    return moduleNames.map(name => {
-      const moduleName = typeof name === 'string' ? name : name.fileName;
-
-      if (!moduleName.startsWith('.')) {
-        if (moduleName === primaryModuleId || moduleName.startsWith(`${primaryModuleId}/`)) {
-          potentialDependencies.add(moduleName);
-        }
-
-        return undefined;
-      }
-
-      const result = ts.resolveTypeReferenceDirective(
-        moduleName,
-        ensureUnixPath(containingFile),
-        options,
-        compilerHost,
-        redirectedReference,
-      ).resolvedTypeReferenceDirective;
-
-      return result;
-    });
-  };
-
-  compilerHost.resolveModuleNames = (
-    moduleNames: string[],
-    containingFile: string,
-    _reusedNames: string[] | undefined,
-    redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions,
-  ) => {
-    return moduleNames.map(moduleName => {
-      if (!moduleName.startsWith('.')) {
-        if (moduleName === primaryModuleId || moduleName.startsWith(`${primaryModuleId}/`)) {
-          potentialDependencies.add(moduleName);
-        }
-
-        return undefined;
-      }
-
-      const { resolvedModule } = ts.resolveModuleName(
-        moduleName,
-        ensureUnixPath(containingFile),
-        options,
-        compilerHost,
-        moduleResolutionCache,
-        redirectedReference,
-      );
-
-      return resolvedModule;
-    });
-  };
-
-  const program: ts.Program = ts.createProgram(
-    entryPoint.data.tsConfig.rootNames,
-    tsConfigOptions,
-    compilerHost,
-    oldProgram,
-  );
 
   // If an index file exists parallel to the entryFilePath it is not valid as index should be reserved as an
   // entry file of an entry-point based on node resolution strategy.
-  if (basename(entryPoint.data.entryPoint.entryFilePath) !== 'index.ts') {
-    const potentialIndexPath = join(dirname(entryPoint.data.entryPoint.entryFilePath), 'index.ts');
-    const sf = program.getSourceFile(ensureUnixPath(potentialIndexPath));
-
-    if (sf) {
+  if (basename(entryFilePath) !== 'index.ts') {
+    const potentialIndexPath = join(dirname(entryFilePath), 'index.ts');
+    if (fs.existsSync(potentialIndexPath)) {
       throw new Error(
         `Entry point '${moduleId}' has an 'index.ts' parallel to the 'entryFilePath'. ` +
           `The 'entryFilePath' should be updated to point to the 'index.ts' file.\n` +
@@ -141,17 +131,71 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
     }
   }
 
-  debug(`tsc program structure is reused: ${oldProgram ? (oldProgram as any).structureIsReused : 'No old program'}`);
+  // Remove previously discovered entry point dependencies in watch mode
+  for (const dep of entryPoint.dependents) {
+    if (isEntryPoint(dep)) {
+      dep.dependees.delete(entryPoint);
+      entryPoint.dependents.delete(dep);
+    }
+  }
 
-  entryPoint.cache.oldPrograms = { ...entryPoint.cache.oldPrograms, ['analysis']: program };
+  const potentialDependencies = new Set<string>();
+  const filesToScan = [...(entryPoint.data.tsConfig?.rootNames ?? [entryFilePath])];
+  const visited = new Set<string>();
 
-  const entryPointsMapped: Record<string, EntryPointNode> = {};
-  for (const dep of entryPoints) {
-    entryPointsMapped[dep.data.entryPoint.moduleId] = dep;
+  while (filesToScan.length > 0) {
+    const file = filesToScan.pop();
+    if (!file) {
+      continue;
+    }
+
+    const currentFile = ensureUnixPath(file);
+    if (visited.has(currentFile)) {
+      continue;
+    }
+    visited.add(currentFile);
+
+    const fileEntry = analyseSourcesFileCache.getOrCreate(currentFile);
+    if (fileEntry.content === undefined) {
+      try {
+        fileEntry.content = fs.readFileSync(currentFile, 'utf-8');
+        fileEntry.exists = true;
+      } catch {
+        continue;
+      }
+    }
+
+    const { importedFiles, typeReferenceDirectives, referencedFiles } = ts.preProcessFile(
+      fileEntry.content,
+      true, // readImportFiles
+      true, // detectJavaScriptImports
+    );
+
+    for (const ref of referencedFiles) {
+      const resolvedPath = resolveRelativeSourceFile(dirname(currentFile), ref.fileName, analyseSourcesFileCache);
+      if (resolvedPath && !visited.has(resolvedPath)) {
+        filesToScan.push(resolvedPath);
+      }
+    }
+
+    for (const ref of [...importedFiles, ...typeReferenceDirectives]) {
+      const moduleName = ref.fileName;
+
+      if (moduleName[0] !== '.') {
+        if (moduleName === primaryModuleId || moduleName.startsWith(`${primaryModuleId}/`)) {
+          potentialDependencies.add(moduleName);
+        }
+      } else {
+        const resolvedPath = resolveRelativeSourceFile(dirname(currentFile), moduleName, analyseSourcesFileCache);
+        if (resolvedPath && !visited.has(resolvedPath)) {
+          filesToScan.push(resolvedPath);
+        }
+      }
+    }
   }
 
   for (const moduleName of potentialDependencies) {
-    const dep = entryPointsMapped[moduleName];
+    const dep = entryPointsMapped.get(moduleName);
 
     if (dep) {
       debug(`Found entry point dependency: ${moduleId} -> ${moduleName}`);
@@ -160,7 +204,7 @@ function analyseEntryPoint(graph: BuildGraph, entryPoint: EntryPointNode, entryP
         throw new Error(`Entry point ${moduleName} has a circular dependency on itself.`);
       }
 
-      if (dep.some(n => entryPoint === n)) {
+      if (dep.dependents.has(entryPoint)) {
         throw new Error(`Entry point ${moduleName} has a circular dependency on ${moduleId}.`);
       }
 
