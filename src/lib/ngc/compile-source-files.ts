@@ -138,24 +138,29 @@ export async function compileSourceFiles(
   await angularCompiler.analyzeAsync();
 
   // Collect source file specific diagnostics
-  const angularDiagnosticCache = cache.angularDiagnosticCache;
+  const { angularDiagnosticCache, declarationDiagnosticCache } = cache;
+
   for (const sourceFile of builder.getSourceFiles()) {
     if (ignoreForDiagnostics.has(sourceFile)) {
       continue;
     }
 
-    allDiagnostics.push(
-      ...builder.getSyntacticDiagnostics(sourceFile),
-      ...builder.getSemanticDiagnostics(sourceFile),
-      // We use the `typeScriptProgram` instead of `builder` here as a
-      // performance workaround for: https://github.com/microsoft/TypeScript/issues/60970
-      ...typeScriptProgram.getDeclarationDiagnostics(sourceFile),
-    );
+    allDiagnostics.push(...builder.getSyntacticDiagnostics(sourceFile), ...builder.getSemanticDiagnostics(sourceFile));
 
-    // Declaration files cannot have template diagnostics
+    // Declaration files cannot have declaration or template diagnostics
     if (sourceFile.isDeclarationFile) {
       continue;
     }
+
+    // Only request declaration diagnostics for affected or uncached files
+    if (affectedFiles.has(sourceFile) || !declarationDiagnosticCache.has(sourceFile)) {
+      // We use the `typeScriptProgram` instead of `builder` here as a
+      // performance workaround for: https://github.com/microsoft/TypeScript/issues/60970
+      const declarationDiagnostics = typeScriptProgram.getDeclarationDiagnostics(sourceFile);
+      declarationDiagnosticCache.update(sourceFile, declarationDiagnostics);
+    }
+
+    allDiagnostics.push(...declarationDiagnosticCache.get(sourceFile));
 
     // Only request Angular template diagnostics for affected files to avoid
     // overhead of template diagnostics for unchanged files.
@@ -191,6 +196,18 @@ export async function compileSourceFiles(
 
   const transformers = angularCompiler.prepareEmit().transformers;
 
+  const writeFile: ts.WriteFileCallback = (fileName, data, writeByteOrderMark, onError, sourceFiles) => {
+    if (sourceFiles) {
+      for (const sourceFile of sourceFiles) {
+        if (!sourceFile.isDeclarationFile) {
+          angularCompiler.incrementalCompilation.recordSuccessfulEmit(sourceFile);
+        }
+      }
+    }
+
+    tsCompilerHost.writeFile(fileName, data, writeByteOrderMark, onError, sourceFiles);
+  };
+
   if ('getSemanticDiagnosticsOfNextAffectedFile' in builder) {
     while (
       builder.emitNextAffectedFile((fileName, data, writeByteOrderMark, onError, sourceFiles) => {
@@ -204,7 +221,7 @@ export async function compileSourceFiles(
   }
 
   for (const sourceFile of builder.getSourceFiles()) {
-    if (ignoreForEmit.has(sourceFile)) {
+    if (sourceFile.isDeclarationFile || ignoreForEmit.has(sourceFile)) {
       continue;
     }
 
@@ -212,7 +229,6 @@ export async function compileSourceFiles(
       continue;
     }
 
-    builder.emit(sourceFile, undefined, undefined, undefined, transformers);
-    angularCompiler.incrementalCompilation.recordSuccessfulEmit(sourceFile);
+    builder.emit(sourceFile, writeFile, undefined, undefined, transformers);
   }
 }

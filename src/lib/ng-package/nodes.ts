@@ -86,6 +86,7 @@ export class EntryPointNode extends Node {
       moduleResolutionCache,
       outputCache: new Map(),
       angularDiagnosticCache: new AngularDiagnosticsCache(),
+      declarationDiagnosticCache: new AngularDiagnosticsCache(),
     };
   }
 
@@ -99,6 +100,7 @@ export class EntryPointNode extends Node {
     oldNgtscProgram?: NgtscProgram;
     oldBuilder?: ts.EmitAndSemanticDiagnosticsBuilderProgram;
     angularDiagnosticCache: AngularDiagnosticsCache;
+    declarationDiagnosticCache: AngularDiagnosticsCache;
   };
 
   declare data: {
