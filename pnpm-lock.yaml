@@ -87,8 +87,8 @@ importers:
         specifier: ~22.2.0-next
         version: 22.2.0-next.0(616a2a6a82efa781e00935c185e46317)
       '@angular/ng-dev':
-        specifier: https://github.com/angular/dev-infra-private-ng-dev-builds.git#fe8d168ef720af0b12276b21f820b2c93e3d342e
-        version: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/fe8d168ef720af0b12276b21f820b2c93e3d342e
+        specifier: https://github.com/angular/dev-infra-private-ng-dev-builds.git#bcad06e14cb29b52b0856020af5e2ab868075602
+        version: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/bcad06e14cb29b52b0856020af5e2ab868075602
       '@angular/platform-browser':
         specifier: ~22.2.0-next
         version: 22.2.0-next.1(@angular/common@22.2.0-next.1(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2))
@@ -394,9 +394,9 @@ packages:
       '@angular/platform-browser': ^22.0.0-0 || ^22.1.0-0 || ^22.2.0-0 || ^22.3.0-0 || ^23.0.0-0
       rxjs: ^6.5.3 || ^7.4.0
 
-  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/fe8d168ef720af0b12276b21f820b2c93e3d342e':
-    resolution: {gitHosted: true, integrity: sha512-6sQRCd29gx7lREERjAupLXS6orZKqCwNssMKW2YQYBYwulyLTK4G31M2yu5+m2Izly7VsfVQyeOVk+ZmD9j2jA==, tarball: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/fe8d168ef720af0b12276b21f820b2c93e3d342e}
-    version: 0.0.0-630fa0aa7ce9b7127b1ec4464b6af02d34f8154b
+  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/bcad06e14cb29b52b0856020af5e2ab868075602':
+    resolution: {gitHosted: true, integrity: sha512-fs92JkAu6Y2CXh1HEUDSTzgdVp12emRA/jEfoJG1d9V1t60tBZTsbnYyi3Zd8XkDy1Tu0l9Ne8xcHjQqwdhy8Q==, tarball: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/bcad06e14cb29b52b0856020af5e2ab868075602}
+    version: 0.0.0-6d918a6dd670e28afd4ba54d00b805d4aba43dca
     hasBin: true
 
   '@angular/platform-browser@22.2.0-next.1':
@@ -1141,8 +1141,8 @@ packages:
     resolution: {integrity: sha512-IJn+8A3QZJfe7FUtWqHVNo3xJs7KFpurCWGWCiCz3oEh+BkRymKZ1QxfAbU2yGMDzTytLGQ2IV6T2r3cuo75/w==}
     engines: {node: '>=18'}
 
-  '@google/genai@2.17.0':
-    resolution: {integrity: sha512-Cnw71bRtYXnGkN/K1YLb4Wz3yPwIe/7c5kw4VkbXAX508A9HHZCTMsBUhaAjTHDfD9Tn2veHxyJXK1Dxxtcx4g==}
+  '@google/genai@2.17.1':
+    resolution: {integrity: sha512-CdZ3M/titoH81hXXkvOikrOW26bC9IXh9iYT7u+r+5p7wi1LnMEnB0AbJfDeWAkjuneP4oJ299BtCt6twmORWg==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       '@modelcontextprotocol/sdk': ^1.25.2
@@ -1332,9 +1332,6 @@ packages:
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
-
-  '@jasminejs/reporters@1.0.0':
-    resolution: {integrity: sha512-rM3GG4vx2H1Gp5kYCTr9aKlOEJFd43pzpiMAiy5b1+FUc2ub4e6bS6yCi/WQNDzAa5MVp9++dwcoEtcIfoEnhA==}
 
   '@jasminejs/reporters@1.1.0':
     resolution: {integrity: sha512-JIrlfaf9c6m0+GtBAgZdcFB6RIRbFBbXxZDZ0WOewq4cLIEcVKEe0RgI1FA77M39FNzeSMTAm+LK/kcQVIkfGQ==}
@@ -5532,12 +5529,12 @@ snapshots:
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/fe8d168ef720af0b12276b21f820b2c93e3d342e':
+  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/bcad06e14cb29b52b0856020af5e2ab868075602':
     dependencies:
       '@actions/core': 3.0.1
       '@conventional-changelog/git-client': 3.1.2(conventional-commits-filter@6.0.1)(conventional-commits-parser@7.1.2)
       '@google-cloud/spanner': 8.0.0(supports-color@11.0.0)
-      '@google/genai': 2.17.0(bufferutil@4.1.0)(supports-color@11.0.0)(utf-8-validate@6.0.6)
+      '@google/genai': 2.17.1(bufferutil@4.1.0)(supports-color@11.0.0)(utf-8-validate@6.0.6)
       '@inquirer/prompts': 8.5.2(@types/node@24.13.3)
       '@inquirer/type': 4.0.7(@types/node@24.13.3)
       '@octokit/auth-app': 8.3.0
@@ -6331,7 +6328,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@google/genai@2.17.0(bufferutil@4.1.0)(supports-color@11.0.0)(utf-8-validate@6.0.6)':
+  '@google/genai@2.17.1(bufferutil@4.1.0)(supports-color@11.0.0)(utf-8-validate@6.0.6)':
     dependencies:
       google-auth-library: 10.9.1(supports-color@11.0.0)
       p-retry: 4.6.2
@@ -6629,8 +6626,6 @@ snapshots:
       strip-ansi-cjs: strip-ansi@6.0.1
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
-
-  '@jasminejs/reporters@1.0.0': {}
 
   '@jasminejs/reporters@1.1.0': {}
 
@@ -9116,7 +9111,7 @@ snapshots:
 
   jasmine@6.3.0:
     dependencies:
-      '@jasminejs/reporters': 1.0.0
+      '@jasminejs/reporters': 1.1.0
       glob: 13.0.6
       jasmine-core: 6.3.0
 
