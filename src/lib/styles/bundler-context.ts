@@ -9,7 +9,8 @@ import {
   build,
   context,
 } from 'esbuild';
-import { join } from 'node:path';
+import { isAbsolute, join } from 'node:path';
+import { ensureUnixPath } from '../utils/path';
 import { LoadResultCache, MemoryLoadResultCache } from './load-result-cache';
 
 export type BundleContextResult =
@@ -65,14 +66,22 @@ export class BundlerContext {
   #disposed = false;
   #optionsFactory: BundlerOptionsFactory<BuildOptions & { metafile: true; write: false }>;
   #shouldCacheResult: boolean;
-  #loadCache?: MemoryLoadResultCache;
+  #loadCache?: LoadResultCache;
   readonly watchFiles: Set<string> = new Set<string>();
 
   constructor(
     private workspaceRoot: string,
     private incremental: boolean,
     options: BuildOptions | BundlerOptionsFactory,
+    private useContext = incremental,
+    initialFilter?: ((initial: Readonly<InitialFileRecord>) => boolean) | LoadResultCache,
+    sharedLoadCache?: LoadResultCache,
   ) {
+    if (initialFilter && typeof initialFilter !== 'function') {
+      this.#loadCache = initialFilter;
+    } else {
+      this.#loadCache = sharedLoadCache;
+    }
     // To cache the results an option factory is needed to capture the full set of dependencies
     this.#shouldCacheResult = incremental && typeof options === 'function';
     this.#optionsFactory = (...args) => {
@@ -123,7 +132,7 @@ export class BundlerContext {
   async #performBundle(): Promise<BundleContextResult> {
     // Create esbuild options if not present
     if (this.#esbuildOptions === undefined) {
-      if (this.incremental) {
+      if (this.incremental && !this.#loadCache) {
         this.#loadCache = new MemoryLoadResultCache();
       }
       this.#esbuildOptions = this.#optionsFactory(this.#loadCache);
@@ -138,7 +147,7 @@ export class BundlerContext {
       if (this.#esbuildContext) {
         // Rebuild using the existing incremental build context
         result = await this.#esbuildContext.rebuild();
-      } else if (this.incremental) {
+      } else if (this.useContext) {
         // Create an incremental build context and perform the first build.
         // Context creation does not perform a build.
         const esbuildContext = await context(this.#esbuildOptions);
@@ -150,28 +159,23 @@ export class BundlerContext {
         result = await this.#esbuildContext.rebuild();
       } else {
         // For non-incremental builds, perform a single build
+        if (this.#disposed) {
+          throw new Error('BundlerContext was disposed during build.');
+        }
         result = await build(this.#esbuildOptions);
+        if (this.#disposed) {
+          throw new Error('BundlerContext was disposed during build.');
+        }
       }
     } catch (failure) {
       // Build failures will throw an exception which contains errors/warnings
       if (isEsBuildFailure(failure)) {
         this.#addErrorsToWatch(failure);
+        this.#addLoadCacheFilesToWatch();
 
         return failure;
       } else {
         throw failure;
-      }
-    } finally {
-      if (this.incremental) {
-        // When incremental always add any files from the load result cache
-        if (this.#loadCache) {
-          for (const file of this.#loadCache.watchFiles) {
-            if (!isInternalAngularFile(file)) {
-              // watch files are fully resolved paths
-              this.watchFiles.add(file);
-            }
-          }
-        }
       }
     }
 
@@ -181,9 +185,30 @@ export class BundlerContext {
     if (this.incremental) {
       // Add input files except virtual angular files which do not exist on disk
       for (const input of Object.keys(result.metafile.inputs)) {
-        if (!isInternalAngularFile(input)) {
-          // input file paths are always relative to the workspace root
-          this.watchFiles.add(join(this.workspaceRoot, input));
+        const isInternal = isInternalAngularFile(input) || isInternalBundlerFile(input);
+
+        // Input file paths are always relative to the workspace root unless already absolute
+        const normalizedAbsoluteInput = isAbsolute(input)
+          ? ensureUnixPath(input)
+          : ensureUnixPath(join(this.workspaceRoot, input));
+
+        if (!isInternal) {
+          this.watchFiles.add(normalizedAbsoluteInput);
+        }
+
+        if (this.#loadCache) {
+          const cachedLoad = await (this.#loadCache.get(input) ??
+            this.#loadCache.get(input.replace(';', ':')) ??
+            this.#loadCache.get('file:' + normalizedAbsoluteInput));
+          if (cachedLoad?.watchFiles) {
+            for (const file of cachedLoad.watchFiles) {
+              if (!isInternalAngularFile(file)) {
+                this.watchFiles.add(
+                  isAbsolute(file) ? ensureUnixPath(file) : ensureUnixPath(join(this.workspaceRoot, file)),
+                );
+              }
+            }
+          }
         }
       }
     }
@@ -191,6 +216,7 @@ export class BundlerContext {
     // Return if the build encountered any errors
     if (result.errors.length) {
       this.#addErrorsToWatch(result);
+      this.#addLoadCacheFilesToWatch();
 
       return {
         errors: result.errors,
@@ -209,14 +235,26 @@ export class BundlerContext {
 
   #addErrorsToWatch(result: BuildFailure | BuildResult): void {
     for (const error of result.errors) {
-      let file = error.location?.file;
+      const file = error.location?.file;
       if (file && !isInternalAngularFile(file)) {
-        this.watchFiles.add(join(this.workspaceRoot, file));
+        this.watchFiles.add(isAbsolute(file) ? ensureUnixPath(file) : ensureUnixPath(join(this.workspaceRoot, file)));
       }
-      for (const note of error.notes) {
-        file = note.location?.file;
-        if (file && !isInternalAngularFile(file)) {
-          this.watchFiles.add(join(this.workspaceRoot, file));
+      for (const note of error.notes ?? []) {
+        const noteFile = note.location?.file;
+        if (noteFile && !isInternalAngularFile(noteFile)) {
+          this.watchFiles.add(
+            isAbsolute(noteFile) ? ensureUnixPath(noteFile) : ensureUnixPath(join(this.workspaceRoot, noteFile)),
+          );
+        }
+      }
+    }
+  }
+
+  #addLoadCacheFilesToWatch(): void {
+    if (this.incremental && this.#loadCache) {
+      for (const file of this.#loadCache.watchFiles) {
+        if (!isInternalAngularFile(file)) {
+          this.watchFiles.add(isAbsolute(file) ? ensureUnixPath(file) : ensureUnixPath(join(this.workspaceRoot, file)));
         }
       }
     }
@@ -229,19 +267,72 @@ export class BundlerContext {
    * to be stored.
    * @returns True, if the result was invalidated; False, otherwise.
    */
-  invalidate(files: Iterable<string>): boolean {
+  invalidate(files: Iterable<string> | ReadonlySet<string>): boolean {
     if (!this.incremental) {
       return false;
     }
 
-    let invalid = false;
-    for (const file of files) {
-      if (this.#loadCache?.invalidate(file)) {
-        invalid = true;
-        continue;
+    let candidateFiles: ReadonlySet<string>;
+    if (files instanceof Set) {
+      let isCandidateReady = true;
+      for (const file of files) {
+        if (
+          file !== ensureUnixPath(file) ||
+          (!isAbsolute(file) && !files.has(ensureUnixPath(join(this.workspaceRoot, file))))
+        ) {
+          isCandidateReady = false;
+          break;
+        }
       }
 
-      invalid ||= this.watchFiles.has(file);
+      if (isCandidateReady) {
+        candidateFiles = files;
+      } else {
+        const normalizedFiles = new Set<string>();
+        for (const file of files) {
+          const normalized = ensureUnixPath(file);
+          normalizedFiles.add(normalized);
+          if (!isAbsolute(normalized)) {
+            normalizedFiles.add(ensureUnixPath(join(this.workspaceRoot, normalized)));
+          }
+        }
+        candidateFiles = normalizedFiles;
+      }
+    } else {
+      const normalizedFiles = new Set<string>();
+      for (const file of files) {
+        const normalized = ensureUnixPath(file);
+        normalizedFiles.add(normalized);
+        if (!isAbsolute(normalized)) {
+          normalizedFiles.add(ensureUnixPath(join(this.workspaceRoot, normalized)));
+        }
+      }
+      candidateFiles = normalizedFiles;
+    }
+
+    let invalid = false;
+    for (const file of candidateFiles) {
+      if (this.#loadCache?.invalidate(file)) {
+        invalid = true;
+      }
+    }
+
+    if (!invalid) {
+      if (this.watchFiles.size < candidateFiles.size) {
+        for (const file of this.watchFiles) {
+          if (candidateFiles.has(file)) {
+            invalid = true;
+            break;
+          }
+        }
+      } else {
+        for (const file of candidateFiles) {
+          if (this.watchFiles.has(file)) {
+            invalid = true;
+            break;
+          }
+        }
+      }
     }
 
     if (invalid) {
@@ -270,6 +361,20 @@ export class BundlerContext {
   }
 }
 
-function isInternalAngularFile(file: string) {
+function isInternalAngularFile(file: string): boolean {
   return file.startsWith('angular:');
+}
+
+function isInternalBundlerFile(file: string): boolean {
+  // Bundler virtual files such as "<define:???>" or "<runtime>"
+  if (file[0] === '<' && file.at(-1) === '>') {
+    return true;
+  }
+
+  // Any (disabled): path is a virtual esbuild entry that doesn't exist on disk
+  if (file.includes('(disabled):')) {
+    return true;
+  }
+
+  return false;
 }

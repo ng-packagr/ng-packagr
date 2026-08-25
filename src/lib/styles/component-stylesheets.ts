@@ -1,8 +1,10 @@
 import { Message, Metafile, OutputFile } from 'esbuild';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
+import { ensureUnixPath } from '../utils/path';
 import { BuildOutputFileType, BundleContextResult, BundlerContext } from './bundler-context';
 import { MemoryCache } from './cache';
+import { MemoryLoadResultCache } from './load-result-cache';
 import { BundleStylesheetOptions, createStylesheetBundleOptions } from './stylesheets/bundle-options';
 import { shutdownSassWorkerPool } from './stylesheets/sass-language';
 
@@ -23,11 +25,12 @@ export interface ComponentStylesheetResult {
 export class ComponentStylesheetBundler {
   readonly #fileContexts = new MemoryCache<BundlerContext>();
   readonly #inlineContexts = new MemoryCache<BundlerContext>();
+  readonly #loadCache = new MemoryLoadResultCache();
 
   /**
-   *
    * @param options An object containing the stylesheet bundling options.
-   * @param cache A load result cache to use when bundling.
+   * @param defaultInlineLanguage The default language to use for inline component styles.
+   * @param incremental True if incremental watch mode is enabled.
    */
   constructor(
     private readonly options: BundleStylesheetOptions,
@@ -36,20 +39,35 @@ export class ComponentStylesheetBundler {
   ) {}
 
   async bundleFile(entry: string): Promise<ComponentStylesheetResult> {
+    entry = ensureUnixPath(entry);
+
     const bundlerContext = await this.#fileContexts.getOrCreate(entry, () => {
-      return new BundlerContext(this.options.workspaceRoot, this.incremental, loadCache => {
-        const buildOptions = createStylesheetBundleOptions(this.options, loadCache);
+      return new BundlerContext(
+        this.options.workspaceRoot,
+        this.incremental,
+        loadCache => {
+          const buildOptions = createStylesheetBundleOptions(this.options, loadCache);
 
-        buildOptions.entryPoints = [entry];
+          buildOptions.entryPoints = [entry];
 
-        return buildOptions;
-      });
+          return buildOptions;
+        },
+        /* useContext */ false,
+        /* initialFilter */ undefined,
+        this.#loadCache,
+      );
     });
 
     return this.extractResult(await bundlerContext.bundle(), bundlerContext.watchFiles);
   }
 
-  async bundleInline(data: string, filename: string, language: string = this.defaultInlineLanguage): Promise<ComponentStylesheetResult> {
+  async bundleInline(
+    data: string,
+    filename: string,
+    language: string = this.defaultInlineLanguage,
+  ): Promise<ComponentStylesheetResult> {
+    filename = ensureUnixPath(filename);
+
     // Use a hash of the inline stylesheet content to ensure a consistent identifier. External stylesheets will resolve
     // to the actual stylesheet file path.
     // TODO: Consider xxhash instead for hashing
@@ -59,37 +77,44 @@ export class ComponentStylesheetBundler {
     const bundlerContext = await this.#inlineContexts.getOrCreate(entry, () => {
       const namespace = 'angular:styles/component';
 
-      return new BundlerContext(this.options.workspaceRoot, this.incremental, loadCache => {
-        const buildOptions = createStylesheetBundleOptions(this.options, loadCache, {
-          [entry]: data,
-        });
-        buildOptions.entryPoints = [`${namespace};${entry}`];
+      return new BundlerContext(
+        this.options.workspaceRoot,
+        this.incremental,
+        loadCache => {
+          const buildOptions = createStylesheetBundleOptions(this.options, loadCache, {
+            [entry]: data,
+          });
+          buildOptions.entryPoints = [`${namespace};${entry}`];
 
-        buildOptions.plugins.push({
-          name: 'angular-component-styles',
-          setup(build) {
-            build.onResolve({ filter: /^angular:styles\/component;/ }, args => {
-              if (args.kind !== 'entry-point') {
-                return null;
-              }
+          buildOptions.plugins.push({
+            name: 'angular-component-styles',
+            setup(build) {
+              build.onResolve({ filter: /^angular:styles\/component;/ }, args => {
+                if (args.kind !== 'entry-point') {
+                  return null;
+                }
 
-              return {
-                path: entry,
-                namespace,
-              };
-            });
-            build.onLoad({ filter: /^css;/, namespace }, () => {
-              return {
-                contents: data,
-                loader: 'css',
-                resolveDir: path.dirname(filename),
-              };
-            });
-          },
-        });
+                return {
+                  path: entry,
+                  namespace,
+                };
+              });
+              build.onLoad({ filter: /^css;/, namespace }, () => {
+                return {
+                  contents: data,
+                  loader: 'css',
+                  resolveDir: path.dirname(filename),
+                };
+              });
+            },
+          });
 
-        return buildOptions;
-      });
+          return buildOptions;
+        },
+        /* useContext */ false,
+        /* initialFilter */ undefined,
+        this.#loadCache,
+      );
     });
 
     // Extract the result of the bundling from the output files
@@ -101,12 +126,20 @@ export class ComponentStylesheetBundler {
    * @param files The group of files that have been modified
    * @returns An array of file based stylesheet entries if any were invalidated; otherwise, undefined.
    */
-  invalidate(files: Iterable<string>): string[] | undefined {
+  invalidate(files: Iterable<string> | ReadonlySet<string>): string[] | undefined {
     if (!this.incremental) {
       return;
     }
 
-    const normalizedFiles = [...files].map(path.normalize);
+    const normalizedFiles = new Set<string>();
+    for (const file of files) {
+      const normalized = ensureUnixPath(file);
+      normalizedFiles.add(normalized);
+      if (!path.isAbsolute(normalized)) {
+        normalizedFiles.add(ensureUnixPath(path.join(this.options.workspaceRoot, normalized)));
+      }
+    }
+
     let entries: string[] | undefined;
 
     for (const [entry, bundler] of this.#fileContexts.entries()) {
@@ -115,8 +148,17 @@ export class ComponentStylesheetBundler {
         entries.push(entry);
       }
     }
-    for (const bundler of this.#inlineContexts.values()) {
-      bundler.invalidate(normalizedFiles);
+    for (const [entry, bundler] of this.#inlineContexts.entries()) {
+      // Entry is format: [language, id, filename].join(';')
+      const firstSemi = entry.indexOf(';');
+      const secondSemi = firstSemi !== -1 ? entry.indexOf(';', firstSemi + 1) : -1;
+      const filename = secondSemi !== -1 ? entry.slice(secondSemi + 1) : '';
+      if (filename && normalizedFiles.has(ensureUnixPath(filename))) {
+        this.#inlineContexts.delete(entry);
+        void bundler.dispose();
+      } else {
+        bundler.invalidate(normalizedFiles);
+      }
     }
 
     return entries;
@@ -126,11 +168,15 @@ export class ComponentStylesheetBundler {
     const contexts = [...this.#fileContexts.values(), ...this.#inlineContexts.values()];
     this.#fileContexts.clear();
     this.#inlineContexts.clear();
+    this.#loadCache.clear();
 
     await Promise.allSettled([shutdownSassWorkerPool(), ...contexts.map(context => context.dispose())]);
   }
 
-  private extractResult(result: BundleContextResult, referencedFiles: Set<string> | undefined): ComponentStylesheetResult {
+  private extractResult(
+    result: BundleContextResult,
+    referencedFiles: Set<string> | undefined,
+  ): ComponentStylesheetResult {
     let contents = '';
     let metafile;
     const outputFiles: OutputFile[] = [];
