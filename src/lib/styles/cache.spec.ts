@@ -133,4 +133,12 @@ describe('MemoryCache', () => {
     const val2 = await cache.getOrCreate('key', () => 'should-not-run');
     expect(val2).toBe('override-value');
   });
+
+  it('should delete a key from the cache', async () => {
+    await cache.put('key', 'value');
+    expect(await cache.get('key')).toBe('value');
+    expect(cache.delete('key')).toBeTrue();
+    expect(await cache.get('key')).toBeUndefined();
+    expect(cache.delete('key')).toBeFalse();
+  });
 });

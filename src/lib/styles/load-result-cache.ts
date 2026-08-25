@@ -1,9 +1,10 @@
 import type { OnLoadResult, PluginBuild } from 'esbuild';
-import { normalize } from 'node:path';
+import { ensureUnixPath } from '../utils/path';
 
 export interface LoadResultCache {
   get(path: string): OnLoadResult | undefined;
   put(path: string, result: OnLoadResult): Promise<void>;
+  invalidate(path: string): boolean;
   readonly watchFiles: ReadonlyArray<string>;
 }
 
@@ -15,7 +16,7 @@ export function createCachedLoad(
     return callback;
   }
 
-  return async (args) => {
+  return async args => {
     const loadCacheKey = `${args.namespace}:${args.path}`;
     let result: OnLoadResult | null | undefined = cache.get(loadCacheKey);
 
@@ -50,7 +51,7 @@ export class MemoryLoadResultCache implements LoadResultCache {
     if (result.watchFiles) {
       for (const watchFile of result.watchFiles) {
         // Normalize the watch file path to ensure OS consistent paths
-        const normalizedWatchFile = normalize(watchFile);
+        const normalizedWatchFile = ensureUnixPath(watchFile);
         let affected = this.#fileDependencies.get(normalizedWatchFile);
         if (affected === undefined) {
           affected = new Set();
@@ -62,7 +63,7 @@ export class MemoryLoadResultCache implements LoadResultCache {
   }
 
   invalidate(path: string): boolean {
-    const affectedPaths = this.#fileDependencies.get(path);
+    const affectedPaths = this.#fileDependencies.get(ensureUnixPath(path));
     let found = false;
 
     if (affectedPaths) {
@@ -81,5 +82,10 @@ export class MemoryLoadResultCache implements LoadResultCache {
     // this.#loadResults.keys() is not included here because the keys
     // are namespaced request paths and not disk-based file paths.
     return [...this.#fileDependencies.keys()];
+  }
+
+  clear(): void {
+    this.#loadResults.clear();
+    this.#fileDependencies.clear();
   }
 }
