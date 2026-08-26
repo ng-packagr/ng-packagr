@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { basename, dirname, extname, join, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import type { CanonicalizeContext, Importer, ImporterResult, Syntax } from 'sass';
+import type { CanonicalizeContext, Importer, ImporterResult, Syntax } from 'sass-embedded';
 import { findUrls } from './lexer';
 
 /**
@@ -32,7 +32,7 @@ abstract class UrlRebasingImporter implements Importer<'sync'> {
    */
   constructor(private entryDirectory: string) {}
 
-  abstract canonicalize(url: string, options: { fromImport: boolean }): URL | null;
+  abstract canonicalize(url: string, options: CanonicalizeContext): URL | null;
 
   load(canonicalUrl: URL): ImporterResult | null {
     const stylesheetPath = fileURLToPath(canonicalUrl);
@@ -113,7 +113,7 @@ export class RelativeUrlRebasingImporter extends UrlRebasingImporter {
     super(entryDirectory);
   }
 
-  canonicalize(url: string, options: { fromImport: boolean }): URL | null {
+  canonicalize(url: string, options: CanonicalizeContext): URL | null {
     return this.resolveImport(url, options.fromImport, true);
   }
 
@@ -312,6 +312,36 @@ export class ModuleUrlRebasingImporter extends RelativeUrlRebasingImporter {
 }
 
 /**
+ * Provides the Sass importer logic to resolve module (npm package) stylesheet imports asynchronously
+ * and also rebase any `url()` function usage within those stylesheets.
+ */
+export class AsyncModuleUrlRebasingImporter implements Importer<'async'> {
+  private relativeImporter: RelativeUrlRebasingImporter;
+
+  constructor(
+    entryDirectory: string,
+    directoryCache: Map<string, DirectoryEntry>,
+    private finder: (specifier: string, options: CanonicalizeContext) => Promise<URL | null> | URL | null,
+  ) {
+    this.relativeImporter = new RelativeUrlRebasingImporter(entryDirectory, directoryCache);
+  }
+
+  async canonicalize(url: string, options: CanonicalizeContext): Promise<URL | null> {
+    if (url.startsWith('file://')) {
+      return this.relativeImporter.canonicalize(url, options);
+    }
+
+    const result = await this.finder(url, options);
+
+    return result ? this.relativeImporter.canonicalize(result.href, options) : null;
+  }
+
+  load(canonicalUrl: URL): ImporterResult | null {
+    return this.relativeImporter.load(canonicalUrl);
+  }
+}
+
+/**
  * Provides the Sass importer logic to resolve load paths located stylesheet imports via both import and
  * use rules and also rebase any `url()` function usage within those stylesheets. The rebasing will ensure that
  * the URLs in the output of the Sass compiler reflect the final filesystem location of the output CSS file.
@@ -325,7 +355,7 @@ export class LoadPathsUrlRebasingImporter extends RelativeUrlRebasingImporter {
     super(entryDirectory, directoryCache);
   }
 
-  override canonicalize(url: string, options: { fromImport: boolean }): URL | null {
+  override canonicalize(url: string, options: CanonicalizeContext): URL | null {
     if (url.startsWith('file://')) {
       return super.canonicalize(url, options);
     }

@@ -1,20 +1,45 @@
 import type { OnLoadResult, PartialMessage, PartialNote, ResolveResult } from 'esbuild';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import type { CanonicalizeContext, CompileResult, Exception, Syntax } from 'sass';
+import type { CanonicalizeContext, CompileResult, Exception, Syntax } from 'sass-embedded';
 import { MemoryCache } from '../cache';
-import type { SassWorkerImplementation } from '../sass/sass-service';
+import type { SassServiceImplementation } from '../sass/sass-service';
 import { StylesheetLanguage, StylesheetPluginOptions } from './stylesheet-plugin-factory';
 
-let sassWorkerPoolPromise: Promise<SassWorkerImplementation> | undefined;
+let sassService: SassServiceImplementation | undefined;
+let sassServicePromise: Promise<SassServiceImplementation> | undefined;
+
+function parseTristate(value: unknown): boolean | undefined {
+  if (value === '1' || value === 'true') {
+    return true;
+  }
+  if (value === '0' || value === 'false') {
+    return false;
+  }
+
+  return undefined;
+}
+
+/**
+ * When `NG_BUILD_SASS_WORKER` is enabled (`1` or `true`), the worker-based
+ * Sass implementation will be used instead of the native asynchronous compiler.
+ */
+const useSassWorker =
+  !!(process.versions as Record<string, string | undefined>)['webcontainer'] ||
+  parseTristate(process.env['NG_BUILD_SASS_WORKER']) === true;
+
 function isSassException(error: unknown): error is Exception {
   return !!error && typeof error === 'object' && 'sassMessage' in error;
 }
 
-export async function shutdownSassWorkerPool(): Promise<void> {
-  const pool = await sassWorkerPoolPromise;
-  sassWorkerPoolPromise = undefined;
-  await pool?.close();
+export function shutdownSassWorkerPool(): void {
+  if (sassService) {
+    void sassService.close();
+    sassService = undefined;
+  } else if (sassServicePromise !== undefined) {
+    void sassServicePromise.then(shutdownSassWorkerPool);
+  }
+  sassServicePromise = undefined;
 }
 
 export const SassStylesheetLanguage = Object.freeze<StylesheetLanguage>({
@@ -64,11 +89,22 @@ async function compileString(
   resolveUrl: (url: string, options: CanonicalizeContext) => Promise<ResolveResult>,
 ): Promise<OnLoadResult> {
   // Lazily load Sass when a Sass file is found
-  sassWorkerPoolPromise ??= import('../sass/sass-service').then(
-    sassService => new sassService.SassWorkerImplementation(true),
-  );
-
-  const sassWorkerPool = await sassWorkerPoolPromise;
+  if (sassService === undefined) {
+    if (sassServicePromise === undefined) {
+      sassServicePromise = useSassWorker
+        ? import('../sass/sass-worker-implementation').then(
+            sassService => new sassService.SassWorkerImplementation(true),
+          )
+        : import('../sass/sass-async-compiler-implementation').then(
+            sassService => new sassService.SassAsyncCompilerImplementation(),
+          );
+    }
+    try {
+      sassService = await sassServicePromise;
+    } finally {
+      sassServicePromise = undefined;
+    }
+  }
 
   // Cache is currently local to individual compile requests.
   // Caching follows Sass behavior where a given url will always resolve to the same value
@@ -82,7 +118,7 @@ async function compileString(
   const { silenceDeprecations, futureDeprecations, fatalDeprecations } = options.sass ?? {};
 
   try {
-    const { css, sourceMap, loadedUrls } = await sassWorkerPool.compileStringAsync(data, {
+    const { css, sourceMap, loadedUrls } = await sassService.compileStringAsync(data, {
       url: pathToFileURL(filePath),
       style: 'expanded',
       syntax,
@@ -213,7 +249,7 @@ function* extractFilesFromStack(stack: string): Iterable<string> {
     }
 
     if (path) {
-      // Stack paths from dart-sass are relative to the current working directory (not input file or workspace root)
+      // Stack paths from sass are relative to the current working directory (not input file or workspace root)
       yield join(cwd, path);
     }
   }
