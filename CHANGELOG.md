@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.2.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.3...22.2.0-next.4) (2026-08-26)
+
+
+### Performance
+
+* **ng-packagr:** consolidate component stylesheet bundling with shared load result cache ([17f1764](https://github.com/ng-packagr/ng-packagr/commit/17f176418bd7b817b3d6a617a709b6b8f66bb63e)), closes [angular/angular-cli#33906](https://github.com/angular/angular-cli/issues/33906)
+
 ## [22.2.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.2...22.2.0-next.3) (2026-08-14)
 
 
