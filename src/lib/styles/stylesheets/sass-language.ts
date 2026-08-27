@@ -3,30 +3,11 @@ import { dirname, join, relative } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import type { CanonicalizeContext, CompileResult, Exception, Syntax } from 'sass-embedded';
 import { MemoryCache } from '../cache';
-import type { SassServiceImplementation } from '../sass/sass-service';
+import type { SassCompiler } from '../sass/sass-service';
 import { StylesheetLanguage, StylesheetPluginOptions } from './stylesheet-plugin-factory';
 
-let sassService: SassServiceImplementation | undefined;
-let sassServicePromise: Promise<SassServiceImplementation> | undefined;
-
-function parseTristate(value: unknown): boolean | undefined {
-  if (value === '1' || value === 'true') {
-    return true;
-  }
-  if (value === '0' || value === 'false') {
-    return false;
-  }
-
-  return undefined;
-}
-
-/**
- * When `NG_BUILD_SASS_WORKER` is enabled (`1` or `true`), the worker-based
- * Sass implementation will be used instead of the native asynchronous compiler.
- */
-const useSassWorker =
-  !!(process.versions as Record<string, string | undefined>)['webcontainer'] ||
-  parseTristate(process.env['NG_BUILD_SASS_WORKER']) === true;
+let sassService: SassCompiler | undefined;
+let sassServicePromise: Promise<SassCompiler> | undefined;
 
 function isSassException(error: unknown): error is Exception {
   return !!error && typeof error === 'object' && 'sassMessage' in error;
@@ -91,13 +72,7 @@ async function compileString(
   // Lazily load Sass when a Sass file is found
   if (sassService === undefined) {
     if (sassServicePromise === undefined) {
-      sassServicePromise = useSassWorker
-        ? import('../sass/sass-worker-implementation').then(
-            sassService => new sassService.SassWorkerImplementation(true),
-          )
-        : import('../sass/sass-async-compiler-implementation').then(
-            sassService => new sassService.SassAsyncCompilerImplementation(),
-          );
+      sassServicePromise = import('../sass/sass-service').then(sassService => new sassService.SassCompiler(true));
     }
     try {
       sassService = await sassServicePromise;
