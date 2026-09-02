@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.2.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.4...22.2.0-next.5) (2026-09-02)
+
+
+### Performance
+
+* **ng-packagr:** use native sass-embedded compiler daemon ([10cbbac](https://github.com/ng-packagr/ng-packagr/commit/10cbbacc80aff6e7e444dff96b7d57210a83fd7b))
+
 ## [22.2.0-next.4](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.3...22.2.0-next.4) (2026-08-26)
 
 
