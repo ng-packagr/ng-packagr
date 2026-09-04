@@ -87,8 +87,8 @@ importers:
         specifier: ~22.2.0-next
         version: 22.2.0-next.0(616a2a6a82efa781e00935c185e46317)
       '@angular/ng-dev':
-        specifier: https://github.com/angular/dev-infra-private-ng-dev-builds.git#151e36ffa910f4a01aafe1c482ed8294e2050566
-        version: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/151e36ffa910f4a01aafe1c482ed8294e2050566
+        specifier: https://github.com/angular/dev-infra-private-ng-dev-builds.git#dd47442d110ac5cbafc687a19696693fe5ddf370
+        version: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/dd47442d110ac5cbafc687a19696693fe5ddf370
       '@angular/platform-browser':
         specifier: ~22.2.0-next
         version: 22.2.0-next.1(@angular/common@22.2.0-next.1(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2))
@@ -224,7 +224,7 @@ importers:
     devDependencies:
       '@angular/build':
         specifier: ~22.2.0-next
-        version: 22.2.0-next.2(@angular/compiler-cli@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(typescript@6.0.3))(@angular/compiler@22.2.0-next.1)(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.0-next.1(@angular/common@22.2.0-next.1(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2)))(@types/node@20.19.43)(chokidar@5.0.0)(jiti@1.21.7)(less@4.8.1(supports-color@11.0.0))(postcss@8.5.26)(sass-embedded@1.103.1)(supports-color@11.0.0)(tailwindcss@3.4.19(tsx@4.23.12)(yaml@2.9.0))(tslib@2.8.1)(tsx@4.23.12)(typescript@6.0.3)(yaml@2.9.0)
+        version: 22.2.0-next.2(@angular/compiler-cli@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(typescript@6.0.3))(@angular/compiler@22.2.0-next.1)(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.0-next.1(@angular/common@22.2.0-next.1(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2)))(@types/node@20.19.43)(chokidar@5.0.0)(jiti@1.21.7)(less@4.8.1(supports-color@11.0.0))(postcss@8.5.26)(sass-embedded@1.103.1)(supports-color@11.0.0)(tailwindcss@3.4.19(tsx@4.23.13)(yaml@2.9.0))(tslib@2.8.1)(tsx@4.23.12)(typescript@6.0.3)(yaml@2.9.0)
       '@angular/cli':
         specifier: ~22.2.0-next
         version: 22.2.0-next.2(@types/node@20.19.43)(chokidar@5.0.0)
@@ -394,9 +394,9 @@ packages:
       '@angular/platform-browser': ^22.0.0-0 || ^22.1.0-0 || ^22.2.0-0 || ^22.3.0-0 || ^23.0.0-0
       rxjs: ^6.5.3 || ^7.4.0
 
-  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/151e36ffa910f4a01aafe1c482ed8294e2050566':
-    resolution: {gitHosted: true, integrity: sha512-Y1lrl+05m57WpiTLSB6CgdS0RxzG+uElOl97PtJhDhHCZSMyG0zmHsX2u1goa6uC1NSb0Zlr3erdqZhJ1a+3Ag==, tarball: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/151e36ffa910f4a01aafe1c482ed8294e2050566}
-    version: 0.0.0-6a54b1f6636c00be7b9c3fa5928da87df48ff9a0
+  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/dd47442d110ac5cbafc687a19696693fe5ddf370':
+    resolution: {gitHosted: true, integrity: sha512-BaSZLO/kJ3QYRTPqBxeGqpWliL34hw3mCRQ7gFwdQc75h4LRB/+rN25jrSE6YId5tBi11xewg1uLKvGrN394gw==, tarball: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/dd47442d110ac5cbafc687a19696693fe5ddf370}
+    version: 0.0.0-f826089a718c89f9ce3d6a0d3e155fbc0fb4a3de
     hasBin: true
 
   '@angular/platform-browser@22.2.0-next.1':
@@ -1144,8 +1144,8 @@ packages:
     resolution: {integrity: sha512-IJn+8A3QZJfe7FUtWqHVNo3xJs7KFpurCWGWCiCz3oEh+BkRymKZ1QxfAbU2yGMDzTytLGQ2IV6T2r3cuo75/w==}
     engines: {node: '>=18'}
 
-  '@google/genai@2.19.0':
-    resolution: {integrity: sha512-IM3u1FjpOLyOPsPh0smGA6Ntj2olUWCPbTs/WQj7cA/2AKCGw/652W7IaySx0XtwuscFnMYBoraebQusSZ0zSQ==}
+  '@google/genai@2.20.0':
+    resolution: {integrity: sha512-kFEzARfA064oCNAmYTyOaAeJ9KSkbZ2Upxz36oO5eVNlcxAXsixLlGbwY1oy+Ab8HJ6nMWMD9hg+NdIron6wJw==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       '@modelcontextprotocol/sdk': ^1.25.2
@@ -1444,15 +1444,6 @@ packages:
       '@types/node':
         optional: true
 
-  '@inquirer/type@4.0.7':
-    resolution: {integrity: sha512-t28inv14nMQ1PhKpsJPY+kEs/c00qzeCOS2gTNRyTjG5d6qsVA2fItxW4hkvGZ5lvanGLdtCzVIx5dwdRpN1+g==}
-    engines: {node: '>=23.5.0 || ^22.13.0 || ^20.17.0'}
-    peerDependencies:
-      '@types/node': '>=18'
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-
   '@inquirer/type@4.1.0':
     resolution: {integrity: sha512-FMiJpuHUG3Dk0ex+UIXkre7i+i4OcwHWk9YdcVtZHFwb/r2rnrU2ipTCNAB7A+QOP0ryzIcqOfy76fRyyvOEAw==}
     engines: {node: '>=23.5.0 || ^22.13.0 || ^20.17.0'}
@@ -1704,20 +1695,20 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@octokit/auth-app@8.3.0':
-    resolution: {integrity: sha512-/UaKmJCsOc5XBZwhnFiGNdLH/FkDF8lYtBn1QlKxtX7IpgaRB/XOXjixFtERAknyUZHxp3oDuoiG0En4VptJSg==}
+  '@octokit/auth-app@8.3.1':
+    resolution: {integrity: sha512-XHWxZsF4mvGTQCv7AOxgby9t9OjVO19FBuKq+QmyBxFrf+B2hR/P5j/MTF8g95bITf8cRtR17KIXThpFNqiKbg==}
     engines: {node: '>= 20'}
 
-  '@octokit/auth-oauth-app@9.0.4':
-    resolution: {integrity: sha512-Pe3du5LrC6dlv10b0RbarBlJtIT1Urq8BFoQklK8WmBw8YKnGgrANn7cQmHiA1v8AVihgi7YutV8MncP57I4og==}
+  '@octokit/auth-oauth-app@9.0.5':
+    resolution: {integrity: sha512-Hn2yAlIDjFLGjAz7t+CRu7e9VYoFW1W3LLyOLyahFoJGlCf4PtDkHKtRET8w/2CJpsrC0FxIF5g5Xtx9E4O78w==}
     engines: {node: '>= 20'}
 
-  '@octokit/auth-oauth-device@8.0.4':
-    resolution: {integrity: sha512-M/+34rmkxMvUnnTo/uqNeVRCXJoJ+5N34eNTbL1KMtIyJpedCTsu/iFL1cWdL+w5hQMlYt6xzXoyux2gn0OVnw==}
+  '@octokit/auth-oauth-device@8.0.5':
+    resolution: {integrity: sha512-kdJtjRhykMLJrMdcoC56XUBDfoUAuWEFKpkDxwYim+bNwYw1MreLolk+PLnwEYT8djm589YepeMuJ8+ECAIzVQ==}
     engines: {node: '>= 20'}
 
-  '@octokit/auth-oauth-user@6.0.3':
-    resolution: {integrity: sha512-t4OKUhrI5britmpRiSzPAz1TJPyUN/Hw1HEE3Hz/uElxcmnf/YCRSKtFRNc5gy4yJFTlXgk34H1lvxiotQJQvQ==}
+  '@octokit/auth-oauth-user@6.0.4':
+    resolution: {integrity: sha512-eya2pMJ9pCBq1jrm1Rf6J3NI+NemEpzDMLo9J/GpRoK0KgdxIVXWX4LESIfwJ+GYeoq6QFIlUJNi1lVp5FBgmw==}
     engines: {node: '>= 20'}
 
   '@octokit/auth-token@6.0.0':
@@ -1728,8 +1719,16 @@ packages:
     resolution: {integrity: sha512-DcB0M3KFgr9ECI328lhBMVsyFT2DnmNucSBTqEN3exyNKUzkkpUSCHmTRcunF41Eou2TIQKW4seewri8ON9bSA==}
     engines: {node: '>= 20'}
 
+  '@octokit/core@7.0.8':
+    resolution: {integrity: sha512-L7y8eYc+AwxGr2PWI4WFt1VG4TiJ66c26BD16mXpYIlXxG0SMigM1+m4aTSlYyBr5BlQsGAlz8uDCoZN4SEMcg==}
+    engines: {node: '>= 20'}
+
   '@octokit/endpoint@11.0.4':
     resolution: {integrity: sha512-f1cOWoHPmxryJFknxbtDdjODWfV8A9tc8Aae6ermXPNgHFZ/x91AtHIz4gicEjL8hkJiip+u21QHJORfBv/qiA==}
+    engines: {node: '>= 20'}
+
+  '@octokit/endpoint@11.0.5':
+    resolution: {integrity: sha512-iXa654H3yFafF/ieHkukfbgWo2rmXD2ceD0ZOtrPhw1bc3FDch1d9N/TNs0FQ1/cIbwb7kspUX8jzIs8nzb9DQ==}
     engines: {node: '>= 20'}
 
   '@octokit/graphql-schema@15.26.1':
@@ -1739,12 +1738,16 @@ packages:
     resolution: {integrity: sha512-5s15CCiY8XXQ+FG+b1YQcl6Z2FA++nwAz/tg2VUrTmnMncP+2nnGUEYANImdnxsA2Fnq+Mbl7hDjUTw7cFAwcg==}
     engines: {node: '>= 20'}
 
+  '@octokit/graphql@9.0.5':
+    resolution: {integrity: sha512-bt/hm03LeU6Vy7FwTrkkC9p3XGT/lBwClglMqxBSe5/q0E5CdJTXeAqEI0vlw89/LF/G6tryTIH8HirZ3prMVg==}
+    engines: {node: '>= 20'}
+
   '@octokit/oauth-authorization-url@8.0.0':
     resolution: {integrity: sha512-7QoLPRh/ssEA/HuHBHdVdSgF8xNLz/Bc5m9fZkArJE5bb6NmVkDm3anKxXPmN1zh6b5WKZPRr3697xKT/yM3qQ==}
     engines: {node: '>= 20'}
 
-  '@octokit/oauth-methods@6.0.4':
-    resolution: {integrity: sha512-96RsnxS7Hk/BQhUA1Qo2pmcYP6LWQRWMdo7bVbNE7ZCkFLhSUYBXVUj9tVnvhl4jzbwHYt/dcIG+ioY427b2sg==}
+  '@octokit/oauth-methods@6.0.5':
+    resolution: {integrity: sha512-/mAz7taDZD7DcV4zcG6TDw3Kr6TOldmYBRpvA62C3WIxRMmcgX8XxsTvVQomqKE7VEk/BgYhUao1aR2tYGyIKg==}
     engines: {node: '>= 20'}
 
   '@octokit/openapi-types@27.0.0':
@@ -1752,6 +1755,9 @@ packages:
 
   '@octokit/openapi-types@28.0.0':
     resolution: {integrity: sha512-0rFyLuyHvIj6uuZWuDslxkowFYdPXoNIkeAv4b27dzm2Tf4vGWXnPsMcxs7d65kLdMERgP3wc1AEPlqMz8e1cQ==}
+
+  '@octokit/openapi-types@29.0.1':
+    resolution: {integrity: sha512-9qWOMFNxxLokERcms42rU0PTLqQmVs7g5E41TI4mCOxmpFayD1rfC7XxOL55cG9MBZLFlC31BrR37myMKardwg==}
 
   '@octokit/plugin-paginate-rest@14.0.0':
     resolution: {integrity: sha512-fNVRE7ufJiAA3XUrha2omTA39M6IXIc6GIZLvlbsm8QOQCYvpq/LkMNGyFlB1d8hTDzsAXa3OKtybdMAYsV/fw==}
@@ -1787,8 +1793,16 @@ packages:
     resolution: {integrity: sha512-+eaY7G2VVpSf2pc5Gn1+mph837V/d/TYTJAgWL9Tb0ogGYcpN3IlAVFgjL+Vv93F/sevrxkvsYCedtpLdcFLzA==}
     engines: {node: '>= 20'}
 
+  '@octokit/request-error@7.1.2':
+    resolution: {integrity: sha512-XZRuT3xZ84D3gYErI1DZvhJ33dCWVV6uzBtWkaBB4TvA/L6eOeTZodxLFVB44bBEEo3vEx7y00UfX1tBLrtLRg==}
+    engines: {node: '>= 20'}
+
   '@octokit/request@10.0.13':
     resolution: {integrity: sha512-v2269YxL9Yf+x3d+gRI63FP0vFQEiWgLyBzxe/Y+0yFDg2B/Tzf5dhh9VNfccVAQnfcfwQWyk/y6Bn7rUXXs7A==}
+    engines: {node: '>= 20'}
+
+  '@octokit/request@10.0.16':
+    resolution: {integrity: sha512-A0zWGjHzISIb+9ccG8s0dq7LKO5zVpJLRICjgUb+sJxEWqn8RUHB1rD3AE51+PECvXHIxqZ1VVvs4fHTSD9nUQ==}
     engines: {node: '>= 20'}
 
   '@octokit/rest@22.0.1':
@@ -1800,6 +1814,9 @@ packages:
 
   '@octokit/types@17.0.0':
     resolution: {integrity: sha512-ByP1v7YL5SMveFPP7+sj0/ZuWCOOg/Chs4NafOMpq6WNIM/hdGY0S7C0TCGDBWu1aGmOxmUIhMx3cO+IdwYZ1Q==}
+
+  '@octokit/types@18.0.0':
+    resolution: {integrity: sha512-l6bAF43PNxkJp6g+W4PjoUSSkxHomXw2nOum5CTftJz1NlV3vu93NImgOYtLf6CbBUb5j+fiuzW0PPQ5JTSvZA==}
 
   '@open-draft/deferred-promise@2.2.0':
     resolution: {integrity: sha512-CecwLWx3rhxVQF6V4bAgPS5t+So2sTbPgAzafKkVizyi7tlwpcFpdFqq+wqF2OwNBmqFuu6tOyouTuxgpMfzmA==}
@@ -2936,6 +2953,10 @@ packages:
     resolution: {integrity: sha512-j/O/d7GcZCyNl7/hwZAb606rzqkyvaDctLmckbxLzHvFBzTJHuGEdodATcP3yIRoDrLHkIATJuvzbFlp/ki2cQ==}
     engines: {node: '>=18'}
 
+  content-type@3.0.0:
+    resolution: {integrity: sha512-AIi5H6p0xk5uknXcN3/rmhP8jgp69OfSe/JuKiQAFprJ7UGw7mwj7m4XcmDzlrnJDG+cGpphAINGdU3g3g7kDw==}
+    engines: {node: '>=22'}
+
   conventional-changelog-angular@5.0.13:
     resolution: {integrity: sha512-i/gipMxs7s8L/QeuavPF2hLnJgH6pEZAttySB6aiQLWcX3puWDL3ACVmvBhJGxnAy52Qc15ua26BufY6KpmrVA==}
     engines: {node: '>=10'}
@@ -4055,6 +4076,9 @@ packages:
 
   json-with-bigint@3.5.10:
     resolution: {integrity: sha512-Vcx+JVNEBts/xfcoCS69sKrOhOk/3TVlvlT+XzUOefVKnnrbYSCKpDCm10pohsJFtsJVYnwa/cXRZ4eElzaM6w==}
+
+  json-with-bigint@3.5.12:
+    resolution: {integrity: sha512-uwbF/wSSuOgC7qqlq27Xp5B6a2MHVug3t0idZdTqu0JnlFvgJuH7ju+KAk/J06C7GfhoYy2gnb9wz2INqcne7w==}
 
   json5@1.0.2:
     resolution: {integrity: sha512-g1MWMLBiz8FKi1e4w0UyVL3w+iJceWAFBAaBnnGKOpNa5f8TLktkbre1+s6oICydWAm+HRUGTmI+//xv2hvXYA==}
@@ -5335,6 +5359,11 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
+  tsx@4.23.13:
+    resolution: {integrity: sha512-BL5MGkRln6aDYhb0xbQlEAGw743BaZYWdbWtdJOBriYJboKgUUYCadFp2/FpBBZquBC/ezNBn7wMMPx7FDZUDw==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+
   tunnel@0.0.6:
     resolution: {integrity: sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==}
     engines: {node: '>=0.6.11 <=0.7.0 || >=0.7.3'}
@@ -5679,7 +5708,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular/build@22.2.0-next.2(@angular/compiler-cli@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(typescript@6.0.3))(@angular/compiler@22.2.0-next.1)(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.0-next.1(@angular/common@22.2.0-next.1(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2)))(@types/node@20.19.43)(chokidar@5.0.0)(jiti@1.21.7)(less@4.8.1(supports-color@11.0.0))(postcss@8.5.26)(sass-embedded@1.103.1)(supports-color@11.0.0)(tailwindcss@3.4.19(tsx@4.23.12)(yaml@2.9.0))(tslib@2.8.1)(tsx@4.23.12)(typescript@6.0.3)(yaml@2.9.0)':
+  '@angular/build@22.2.0-next.2(@angular/compiler-cli@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(typescript@6.0.3))(@angular/compiler@22.2.0-next.1)(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2))(@angular/platform-browser@22.2.0-next.1(@angular/common@22.2.0-next.1(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.0-next.1(@angular/compiler@22.2.0-next.1)(rxjs@7.8.2)))(@types/node@20.19.43)(chokidar@5.0.0)(jiti@1.21.7)(less@4.8.1(supports-color@11.0.0))(postcss@8.5.26)(sass-embedded@1.103.1)(supports-color@11.0.0)(tailwindcss@3.4.19(tsx@4.23.13)(yaml@2.9.0))(tslib@2.8.1)(tsx@4.23.12)(typescript@6.0.3)(yaml@2.9.0)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.2202.0-next.2(chokidar@5.0.0)
@@ -5715,7 +5744,7 @@ snapshots:
       less: 4.8.1(supports-color@11.0.0)
       lmdb: 3.5.6
       postcss: 8.5.26
-      tailwindcss: 3.4.19(tsx@4.23.12)(yaml@2.9.0)
+      tailwindcss: 3.4.19(tsx@4.23.13)(yaml@2.9.0)
     transitivePeerDependencies:
       - '@types/node'
       - '@vitejs/devtools'
@@ -5810,22 +5839,22 @@ snapshots:
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/151e36ffa910f4a01aafe1c482ed8294e2050566':
+  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/dd47442d110ac5cbafc687a19696693fe5ddf370':
     dependencies:
       '@actions/core': 3.0.1
       '@conventional-changelog/git-client': 3.1.2(conventional-commits-filter@6.0.1)(conventional-commits-parser@7.1.2)
       '@google-cloud/spanner': 8.0.0(supports-color@11.0.0)
-      '@google/genai': 2.19.0(bufferutil@4.1.0)(supports-color@11.0.0)(utf-8-validate@6.0.6)
+      '@google/genai': 2.20.0(bufferutil@4.1.0)(supports-color@11.0.0)(utf-8-validate@6.0.6)
       '@inquirer/prompts': 8.7.0(@types/node@24.13.3)
       '@inquirer/type': 4.1.0(@types/node@24.13.3)
-      '@octokit/auth-app': 8.3.0
-      '@octokit/core': 7.0.7
-      '@octokit/graphql': 9.0.4
+      '@octokit/auth-app': 8.3.1
+      '@octokit/core': 7.0.8
+      '@octokit/graphql': 9.0.5
       '@octokit/graphql-schema': 15.26.1
       '@octokit/openapi-types': 28.0.0
-      '@octokit/plugin-paginate-rest': 15.0.0(@octokit/core@7.0.7)
-      '@octokit/plugin-rest-endpoint-methods': 18.0.0(@octokit/core@7.0.7)
-      '@octokit/request-error': 7.1.1
+      '@octokit/plugin-paginate-rest': 15.0.0(@octokit/core@7.0.8)
+      '@octokit/plugin-rest-endpoint-methods': 18.0.0(@octokit/core@7.0.8)
+      '@octokit/request-error': 7.1.2
       '@octokit/rest': 22.0.1
       '@octokit/types': 17.0.0
       '@pnpm/dependency-path': 1001.1.10
@@ -5858,7 +5887,7 @@ snapshots:
       nock: 14.0.17
       semver: 7.8.5
       supports-color: 11.0.0
-      tsx: 4.23.12
+      tsx: 4.23.13
       typed-graphqlify: 3.1.6
       typescript: 6.0.3
       utf-8-validate: 6.0.6
@@ -6611,7 +6640,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@google/genai@2.19.0(bufferutil@4.1.0)(supports-color@11.0.0)(utf-8-validate@6.0.6)':
+  '@google/genai@2.20.0(bufferutil@4.1.0)(supports-color@11.0.0)(utf-8-validate@6.0.6)':
     dependencies:
       google-auth-library: 10.9.1(supports-color@11.0.0)
       p-retry: 4.6.2
@@ -6674,7 +6703,7 @@ snapshots:
       '@inquirer/ansi': 2.0.7
       '@inquirer/core': 11.2.1(@types/node@20.19.43)
       '@inquirer/figures': 2.0.7
-      '@inquirer/type': 4.0.7(@types/node@20.19.43)
+      '@inquirer/type': 4.1.0(@types/node@20.19.43)
     optionalDependencies:
       '@types/node': 20.19.43
 
@@ -6690,7 +6719,7 @@ snapshots:
   '@inquirer/confirm@6.1.1(@types/node@20.19.43)':
     dependencies:
       '@inquirer/core': 11.2.1(@types/node@20.19.43)
-      '@inquirer/type': 4.0.7(@types/node@20.19.43)
+      '@inquirer/type': 4.1.0(@types/node@20.19.43)
     optionalDependencies:
       '@types/node': 20.19.43
 
@@ -6705,7 +6734,7 @@ snapshots:
     dependencies:
       '@inquirer/ansi': 2.0.7
       '@inquirer/figures': 2.0.7
-      '@inquirer/type': 4.0.7(@types/node@20.19.43)
+      '@inquirer/type': 4.1.0(@types/node@20.19.43)
       cli-width: 4.1.0
       fast-wrap-ansi: 0.2.2
       mute-stream: 3.0.0
@@ -6729,7 +6758,7 @@ snapshots:
     dependencies:
       '@inquirer/core': 11.2.1(@types/node@20.19.43)
       '@inquirer/external-editor': 3.0.3(@types/node@20.19.43)
-      '@inquirer/type': 4.0.7(@types/node@20.19.43)
+      '@inquirer/type': 4.1.0(@types/node@20.19.43)
     optionalDependencies:
       '@types/node': 20.19.43
 
@@ -6744,7 +6773,7 @@ snapshots:
   '@inquirer/expand@5.1.1(@types/node@20.19.43)':
     dependencies:
       '@inquirer/core': 11.2.1(@types/node@20.19.43)
-      '@inquirer/type': 4.0.7(@types/node@20.19.43)
+      '@inquirer/type': 4.1.0(@types/node@20.19.43)
     optionalDependencies:
       '@types/node': 20.19.43
 
@@ -6776,7 +6805,7 @@ snapshots:
   '@inquirer/input@5.1.2(@types/node@20.19.43)':
     dependencies:
       '@inquirer/core': 11.2.1(@types/node@20.19.43)
-      '@inquirer/type': 4.0.7(@types/node@20.19.43)
+      '@inquirer/type': 4.1.0(@types/node@20.19.43)
     optionalDependencies:
       '@types/node': 20.19.43
 
@@ -6790,7 +6819,7 @@ snapshots:
   '@inquirer/number@4.1.1(@types/node@20.19.43)':
     dependencies:
       '@inquirer/core': 11.2.1(@types/node@20.19.43)
-      '@inquirer/type': 4.0.7(@types/node@20.19.43)
+      '@inquirer/type': 4.1.0(@types/node@20.19.43)
     optionalDependencies:
       '@types/node': 20.19.43
 
@@ -6805,7 +6834,7 @@ snapshots:
     dependencies:
       '@inquirer/ansi': 2.0.7
       '@inquirer/core': 11.2.1(@types/node@20.19.43)
-      '@inquirer/type': 4.0.7(@types/node@20.19.43)
+      '@inquirer/type': 4.1.0(@types/node@20.19.43)
     optionalDependencies:
       '@types/node': 20.19.43
 
@@ -6850,7 +6879,7 @@ snapshots:
   '@inquirer/rawlist@5.3.1(@types/node@20.19.43)':
     dependencies:
       '@inquirer/core': 11.2.1(@types/node@20.19.43)
-      '@inquirer/type': 4.0.7(@types/node@20.19.43)
+      '@inquirer/type': 4.1.0(@types/node@20.19.43)
     optionalDependencies:
       '@types/node': 20.19.43
 
@@ -6865,7 +6894,7 @@ snapshots:
     dependencies:
       '@inquirer/core': 11.2.1(@types/node@20.19.43)
       '@inquirer/figures': 2.0.7
-      '@inquirer/type': 4.0.7(@types/node@20.19.43)
+      '@inquirer/type': 4.1.0(@types/node@20.19.43)
     optionalDependencies:
       '@types/node': 20.19.43
 
@@ -6882,7 +6911,7 @@ snapshots:
       '@inquirer/ansi': 2.0.7
       '@inquirer/core': 11.2.1(@types/node@20.19.43)
       '@inquirer/figures': 2.0.7
-      '@inquirer/type': 4.0.7(@types/node@20.19.43)
+      '@inquirer/type': 4.1.0(@types/node@20.19.43)
     optionalDependencies:
       '@types/node': 20.19.43
 
@@ -6895,7 +6924,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.13.3
 
-  '@inquirer/type@4.0.7(@types/node@20.19.43)':
+  '@inquirer/type@4.1.0(@types/node@20.19.43)':
     optionalDependencies:
       '@types/node': 20.19.43
 
@@ -6935,7 +6964,7 @@ snapshots:
   '@listr2/prompt-adapter-inquirer@4.2.5(@inquirer/prompts@8.5.2(@types/node@20.19.43))(@types/node@20.19.43)(listr2@11.0.0)':
     dependencies:
       '@inquirer/prompts': 8.5.2(@types/node@20.19.43)
-      '@inquirer/type': 4.0.7(@types/node@20.19.43)
+      '@inquirer/type': 4.1.0(@types/node@20.19.43)
       listr2: 11.0.0
     transitivePeerDependencies:
       - '@types/node'
@@ -7095,38 +7124,38 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.20.1
 
-  '@octokit/auth-app@8.3.0':
+  '@octokit/auth-app@8.3.1':
     dependencies:
-      '@octokit/auth-oauth-app': 9.0.4
-      '@octokit/auth-oauth-user': 6.0.3
-      '@octokit/request': 10.0.13
-      '@octokit/request-error': 7.1.1
-      '@octokit/types': 17.0.0
+      '@octokit/auth-oauth-app': 9.0.5
+      '@octokit/auth-oauth-user': 6.0.4
+      '@octokit/request': 10.0.16
+      '@octokit/request-error': 7.1.2
+      '@octokit/types': 18.0.0
       toad-cache: 3.7.4
       universal-github-app-jwt: 2.2.2
       universal-user-agent: 7.0.3
 
-  '@octokit/auth-oauth-app@9.0.4':
+  '@octokit/auth-oauth-app@9.0.5':
     dependencies:
-      '@octokit/auth-oauth-device': 8.0.4
-      '@octokit/auth-oauth-user': 6.0.3
-      '@octokit/request': 10.0.13
-      '@octokit/types': 17.0.0
+      '@octokit/auth-oauth-device': 8.0.5
+      '@octokit/auth-oauth-user': 6.0.4
+      '@octokit/request': 10.0.16
+      '@octokit/types': 18.0.0
       universal-user-agent: 7.0.3
 
-  '@octokit/auth-oauth-device@8.0.4':
+  '@octokit/auth-oauth-device@8.0.5':
     dependencies:
-      '@octokit/oauth-methods': 6.0.4
-      '@octokit/request': 10.0.13
-      '@octokit/types': 17.0.0
+      '@octokit/oauth-methods': 6.0.5
+      '@octokit/request': 10.0.16
+      '@octokit/types': 18.0.0
       universal-user-agent: 7.0.3
 
-  '@octokit/auth-oauth-user@6.0.3':
+  '@octokit/auth-oauth-user@6.0.4':
     dependencies:
-      '@octokit/auth-oauth-device': 8.0.4
-      '@octokit/oauth-methods': 6.0.4
-      '@octokit/request': 10.0.13
-      '@octokit/types': 17.0.0
+      '@octokit/auth-oauth-device': 8.0.5
+      '@octokit/oauth-methods': 6.0.5
+      '@octokit/request': 10.0.16
+      '@octokit/types': 18.0.0
       universal-user-agent: 7.0.3
 
   '@octokit/auth-token@6.0.0': {}
@@ -7141,9 +7170,24 @@ snapshots:
       before-after-hook: 4.0.0
       universal-user-agent: 7.0.3
 
+  '@octokit/core@7.0.8':
+    dependencies:
+      '@octokit/auth-token': 6.0.0
+      '@octokit/graphql': 9.0.5
+      '@octokit/request': 10.0.16
+      '@octokit/request-error': 7.1.2
+      '@octokit/types': 18.0.0
+      before-after-hook: 4.0.0
+      universal-user-agent: 7.0.3
+
   '@octokit/endpoint@11.0.4':
     dependencies:
       '@octokit/types': 17.0.0
+      universal-user-agent: 7.0.3
+
+  '@octokit/endpoint@11.0.5':
+    dependencies:
+      '@octokit/types': 18.0.0
       universal-user-agent: 7.0.3
 
   '@octokit/graphql-schema@15.26.1':
@@ -7157,27 +7201,35 @@ snapshots:
       '@octokit/types': 17.0.0
       universal-user-agent: 7.0.3
 
+  '@octokit/graphql@9.0.5':
+    dependencies:
+      '@octokit/request': 10.0.16
+      '@octokit/types': 18.0.0
+      universal-user-agent: 7.0.3
+
   '@octokit/oauth-authorization-url@8.0.0': {}
 
-  '@octokit/oauth-methods@6.0.4':
+  '@octokit/oauth-methods@6.0.5':
     dependencies:
       '@octokit/oauth-authorization-url': 8.0.0
-      '@octokit/request': 10.0.13
-      '@octokit/request-error': 7.1.1
-      '@octokit/types': 17.0.0
+      '@octokit/request': 10.0.16
+      '@octokit/request-error': 7.1.2
+      '@octokit/types': 18.0.0
 
   '@octokit/openapi-types@27.0.0': {}
 
   '@octokit/openapi-types@28.0.0': {}
+
+  '@octokit/openapi-types@29.0.1': {}
 
   '@octokit/plugin-paginate-rest@14.0.0(@octokit/core@7.0.7)':
     dependencies:
       '@octokit/core': 7.0.7
       '@octokit/types': 16.0.0
 
-  '@octokit/plugin-paginate-rest@15.0.0(@octokit/core@7.0.7)':
+  '@octokit/plugin-paginate-rest@15.0.0(@octokit/core@7.0.8)':
     dependencies:
-      '@octokit/core': 7.0.7
+      '@octokit/core': 7.0.8
       '@octokit/types': 17.0.0
 
   '@octokit/plugin-request-log@6.0.0(@octokit/core@7.0.7)':
@@ -7189,14 +7241,18 @@ snapshots:
       '@octokit/core': 7.0.7
       '@octokit/types': 16.0.0
 
-  '@octokit/plugin-rest-endpoint-methods@18.0.0(@octokit/core@7.0.7)':
+  '@octokit/plugin-rest-endpoint-methods@18.0.0(@octokit/core@7.0.8)':
     dependencies:
-      '@octokit/core': 7.0.7
+      '@octokit/core': 7.0.8
       '@octokit/types': 17.0.0
 
   '@octokit/request-error@7.1.1':
     dependencies:
       '@octokit/types': 17.0.0
+
+  '@octokit/request-error@7.1.2':
+    dependencies:
+      '@octokit/types': 18.0.0
 
   '@octokit/request@10.0.13':
     dependencies:
@@ -7205,6 +7261,15 @@ snapshots:
       '@octokit/types': 17.0.0
       content-type: 2.0.0
       json-with-bigint: 3.5.10
+      universal-user-agent: 7.0.3
+
+  '@octokit/request@10.0.16':
+    dependencies:
+      '@octokit/endpoint': 11.0.5
+      '@octokit/request-error': 7.1.2
+      '@octokit/types': 18.0.0
+      content-type: 3.0.0
+      json-with-bigint: 3.5.12
       universal-user-agent: 7.0.3
 
   '@octokit/rest@22.0.1':
@@ -7221,6 +7286,10 @@ snapshots:
   '@octokit/types@17.0.0':
     dependencies:
       '@octokit/openapi-types': 28.0.0
+
+  '@octokit/types@18.0.0':
+    dependencies:
+      '@octokit/openapi-types': 29.0.1
 
   '@open-draft/deferred-promise@2.2.0': {}
 
@@ -8123,6 +8192,8 @@ snapshots:
       typedarray: 0.0.6
 
   content-type@2.0.0: {}
+
+  content-type@3.0.0: {}
 
   conventional-changelog-angular@5.0.13:
     dependencies:
@@ -9457,6 +9528,8 @@ snapshots:
 
   json-with-bigint@3.5.10: {}
 
+  json-with-bigint@3.5.12: {}
+
   json5@1.0.2:
     dependencies:
       minimist: 1.2.8
@@ -10099,6 +10172,16 @@ snapshots:
       postcss: 8.5.26
       tsx: 4.23.12
       yaml: 2.9.0
+
+  postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.26)(tsx@4.23.13)(yaml@2.9.0):
+    dependencies:
+      lilconfig: 3.1.3
+    optionalDependencies:
+      jiti: 1.21.7
+      postcss: 8.5.26
+      tsx: 4.23.13
+      yaml: 2.9.0
+    optional: true
 
   postcss-media-query-parser@0.2.3: {}
 
@@ -10794,6 +10877,35 @@ snapshots:
       - tsx
       - yaml
 
+  tailwindcss@3.4.19(tsx@4.23.13)(yaml@2.9.0):
+    dependencies:
+      '@alloc/quick-lru': 5.2.0
+      arg: 5.0.2
+      chokidar: 3.6.0
+      didyoumean: 1.2.2
+      dlv: 1.1.3
+      fast-glob: 3.3.3
+      glob-parent: 6.0.2
+      is-glob: 4.0.3
+      jiti: 1.21.7
+      lilconfig: 3.1.3
+      micromatch: 4.0.8
+      normalize-path: 3.0.0
+      object-hash: 3.0.0
+      picocolors: 1.1.1
+      postcss: 8.5.26
+      postcss-import: 15.1.0(postcss@8.5.26)
+      postcss-js: 4.1.0(postcss@8.5.26)
+      postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.26)(tsx@4.23.13)(yaml@2.9.0)
+      postcss-nested: 6.2.0(postcss@8.5.26)
+      postcss-selector-parser: 6.1.4
+      resolve: 1.22.12
+      sucrase: 3.35.1
+    transitivePeerDependencies:
+      - tsx
+      - yaml
+    optional: true
+
   teeny-request@10.1.4(supports-color@11.0.0):
     dependencies:
       http-proxy-agent: 7.0.2(supports-color@11.0.0)
@@ -10853,6 +10965,12 @@ snapshots:
   tslib@2.8.1: {}
 
   tsx@4.23.12:
+    dependencies:
+      esbuild: 0.28.2
+    optionalDependencies:
+      fsevents: 2.3.3
+
+  tsx@4.23.13:
     dependencies:
       esbuild: 0.28.2
     optionalDependencies:
