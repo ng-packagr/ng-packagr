@@ -39,17 +39,17 @@ jobs:
           package-manager-cache: false
       - run: pnpm install --frozen-lockfile
       - name: Build
-        run: pnpm -s build
+        run: pnpm --silent build
       - name: Run tests
-        run: pnpm -s test:specs
+        run: pnpm --silent test:specs
       - name: Run integration samples
-        run: pnpm -s integration:samples
+        run: pnpm --silent integration:samples
       - name: Run integration specs
-        run: pnpm -s integration:specs
+        run: pnpm --silent integration:specs
       - name: Run integration watch specs
-        run: pnpm -s integration:watch:specs
+        run: pnpm --silent integration:watch:specs
       - name: Run integration consumers
-        run: pnpm -s integration:consumers
+        run: pnpm --silent integration:consumers
 
   test_windows:
     runs-on: windows-2025
@@ -70,10 +70,10 @@ jobs:
           package-manager-cache: false
       - run: pnpm install --frozen-lockfile
       - name: Build
-        run: pnpm -s build
+        run: pnpm --silent build
       - name: Run tests
-        run: pnpm -s test:specs
+        run: pnpm --silent test:specs
       - name: Run integration samples
-        run: pnpm -s integration:samples
+        run: pnpm --silent integration:samples
       - name: Run integration specs
-        run: pnpm -s integration:specs
+        run: pnpm --silent integration:specs
