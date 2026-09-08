@@ -75,6 +75,6 @@ jobs:
           echo "NPM_TAG=$NPM_TAG" >> $GITHUB_OUTPUT
       - name: Publish to NPM
         run: |
-          pnpm -s publish:ci
+          pnpm --silent publish:ci
           pushd dist
           pnpx npm@^11.5.1 publish --tag ${{ steps.npm_tag.outputs.NPM_TAG }}
