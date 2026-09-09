@@ -6,7 +6,7 @@ import { BuildOutputFileType, BundleContextResult, BundlerContext } from './bund
 import { MemoryCache } from './cache';
 import { MemoryLoadResultCache } from './load-result-cache';
 import { BundleStylesheetOptions, createStylesheetBundleOptions } from './stylesheets/bundle-options';
-import { shutdownSassWorkerPool } from './stylesheets/sass-language';
+import { resetSassWorkerPoolCaches, shutdownSassWorkerPool } from './stylesheets/sass-language';
 
 export interface ComponentStylesheetResult {
   errors: Message[] | undefined;
@@ -130,6 +130,8 @@ export class ComponentStylesheetBundler {
     if (!this.incremental) {
       return;
     }
+
+    resetSassWorkerPoolCaches();
 
     const normalizedFiles = new Set<string>();
     for (const file of files) {
