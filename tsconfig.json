@@ -19,7 +19,7 @@
     "esModuleInterop": true,
     "target": "es2023",
     "lib": ["es2023"],
-    "types": ["chai", "jasmine", "node"],
+    "types": ["vitest/globals", "node"],
     "rootDir": "./src"
   },
   "exclude": ["dist", "integration"]

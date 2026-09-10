@@ -9,7 +9,7 @@ describe('BundlerContext', () => {
       }));
       context.watchFiles.add('/workspace/src/app.css');
 
-      expect(context.invalidate(['/workspace/src/app.css'])).toBeFalse();
+      expect(context.invalidate(['/workspace/src/app.css'])).toBeFalsy();
     });
 
     it('should return true when a watch file matches changed files as an array', () => {
@@ -18,7 +18,7 @@ describe('BundlerContext', () => {
       }));
       context.watchFiles.add('/workspace/src/app.css');
 
-      expect(context.invalidate(['/workspace/src/app.css'])).toBeTrue();
+      expect(context.invalidate(['/workspace/src/app.css'])).toBeTruthy();
     });
 
     it('should return true when a watch file matches changed files as a ReadonlySet', () => {
@@ -28,7 +28,7 @@ describe('BundlerContext', () => {
       context.watchFiles.add('/workspace/src/app.css');
 
       const changedSet: ReadonlySet<string> = new Set(['/workspace/src/app.css']);
-      expect(context.invalidate(changedSet)).toBeTrue();
+      expect(context.invalidate(changedSet)).toBeTruthy();
     });
 
     it('should return false when changed files do not intersect with watchFiles', () => {
@@ -37,7 +37,7 @@ describe('BundlerContext', () => {
       }));
       context.watchFiles.add('/workspace/src/app.css');
 
-      expect(context.invalidate(['/workspace/src/other.css'])).toBeFalse();
+      expect(context.invalidate(['/workspace/src/other.css'])).toBeFalsy();
     });
 
     it('should correctly handle relative changed file paths', () => {
@@ -46,7 +46,7 @@ describe('BundlerContext', () => {
       }));
       context.watchFiles.add('/workspace/src/app.css');
 
-      expect(context.invalidate(['src/app.css'])).toBeTrue();
+      expect(context.invalidate(['src/app.css'])).toBeTruthy();
     });
 
     it('should correctly handle relative paths inside a ReadonlySet', () => {
@@ -56,7 +56,7 @@ describe('BundlerContext', () => {
       context.watchFiles.add('/workspace/src/app.css');
 
       const set: ReadonlySet<string> = new Set(['src/app.css']);
-      expect(context.invalidate(set)).toBeTrue();
+      expect(context.invalidate(set)).toBeTruthy();
     });
 
     it('should invalidate shared load cache when files change', async () => {
@@ -77,7 +77,7 @@ describe('BundlerContext', () => {
       );
 
       expect(loadCache.get('file:/workspace/src/app.css')).toBeDefined();
-      expect(context.invalidate(['/workspace/src/app.css'])).toBeTrue();
+      expect(context.invalidate(['/workspace/src/app.css'])).toBeTruthy();
       expect(loadCache.get('file:/workspace/src/app.css')).toBeUndefined();
     });
 
@@ -88,7 +88,7 @@ describe('BundlerContext', () => {
       context.watchFiles.add('/workspace/src/file10.css');
 
       const changedFiles = Array.from({ length: 100 }, (_, i) => `/workspace/src/file${i}.css`);
-      expect(context.invalidate(new Set(changedFiles))).toBeTrue();
+      expect(context.invalidate(new Set(changedFiles))).toBeTruthy();
     });
 
     it('should work when changed files is smaller than watchFiles', () => {
@@ -99,7 +99,7 @@ describe('BundlerContext', () => {
         context.watchFiles.add(`/workspace/src/file${i}.css`);
       }
 
-      expect(context.invalidate(new Set(['/workspace/src/file50.css']))).toBeTrue();
+      expect(context.invalidate(new Set(['/workspace/src/file50.css']))).toBeTruthy();
     });
   });
 });

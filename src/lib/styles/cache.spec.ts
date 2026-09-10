@@ -84,8 +84,8 @@ describe('MemoryCache', () => {
 
     rejectCreator(new Error('creator error'));
 
-    await expectAsync(p1).toBeRejectedWithError('creator error');
-    await expectAsync(p2).toBeRejectedWithError('creator error');
+    await expect(p1).rejects.toThrow('creator error');
+    await expect(p2).rejects.toThrow('creator error');
 
     // Subsequent call should trigger the creator again
     const p3 = cache.getOrCreate('key', () => {
@@ -137,8 +137,8 @@ describe('MemoryCache', () => {
   it('should delete a key from the cache', async () => {
     await cache.put('key', 'value');
     expect(await cache.get('key')).toBe('value');
-    expect(cache.delete('key')).toBeTrue();
+    expect(cache.delete('key')).toBeTruthy();
     expect(await cache.get('key')).toBeUndefined();
-    expect(cache.delete('key')).toBeFalse();
+    expect(cache.delete('key')).toBeFalsy();
   });
 });
