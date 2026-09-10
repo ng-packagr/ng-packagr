@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.2.0-next.6](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.5...22.2.0-next.6) (2026-09-10)
+
+
+### Performance
+
+* **ng-packagr:** share sass directory and resolution caches across stylesheets ([3beb4af](https://github.com/ng-packagr/ng-packagr/commit/3beb4afdd4af85c520215740d50d33717b65fc2c)), closes [angular/angular-cli#34041](https://github.com/angular/angular-cli/issues/34041)
+
 ## [22.2.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.4...22.2.0-next.5) (2026-09-02)
 
 
