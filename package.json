@@ -107,7 +107,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky",
-    "build": "rimraf dist && pnpm --silent schema && tsc -p src/tsconfig.packagr.json && node ./scripts/postbuild.js",
+    "build": "rimraf dist && pnpm --silent schema && tsc --project src/tsconfig.packagr.json && node ./scripts/postbuild.js",
     "schema": "json2ts --input src/ng-package.schema.json --output src/ng-package.schema.ts && json2ts --input src/ng-entrypoint.schema.json --output src/ng-entrypoint.schema.ts",
     "release": "standard-version --releaseCommitMessageFormat 'release: cut {{currentTag}}' --no-verify --tag-prefix=\"\"",
     "publish:ci": "pnpm --silent build",
@@ -116,7 +116,7 @@
     "integration:samples:dev": "tsx --tsconfig src/tsconfig.packagr.json ./integration/samples.dev.ts",
     "integration:specs": "tsx ./node_modules/jasmine/bin/jasmine.js --config=integration/tsconfig.specs.json \"integration/samples/*/specs/**/*.ts\"",
     "integration:consumers": "integration/consumers.sh",
-    "integration:consumers:ngc": "ngc -p integration/consumers/tsc/tsconfig.json",
+    "integration:consumers:ngc": "ngc --project integration/consumers/tsc/tsconfig.json",
     "integration:watch:specs": "tsx ./node_modules/jasmine/bin/jasmine.js --config=integration/tsconfig.specs.json --random=false \"integration/watch/*.spec.ts\"",
     "test:specs": "tsx ./node_modules/jasmine/bin/jasmine.js --config=src/tsconfig.specs.json \"src/**/*.spec.ts\"",
     "test": "pnpm --silent build && pnpm --silent test:specs && pnpm --silent integration:samples && pnpm --silent integration:specs && pnpm --silent integration:watch:specs && pnpm --silent integration:consumers"
