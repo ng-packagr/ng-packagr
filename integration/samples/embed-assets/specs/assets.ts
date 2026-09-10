@@ -1,6 +1,6 @@
-import { expect } from 'chai';
-import { existsSync } from 'fs';
-import { resolve, join } from 'path';
+import { existsSync } from 'node:fs';
+import { resolve, join } from 'node:path';
+import { describe, expect, it } from 'vitest';
 
 describe(`@sample/embed-assets - assets`, () => {
   const dist = resolve(__dirname, '..', 'dist');

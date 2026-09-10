@@ -1,12 +1,12 @@
-import { expect } from 'chai';
-import * as path from 'path';
+import { existsSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 import { globSync } from 'tinyglobby';
-import * as fs from 'fs';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 describe('@sample/apf - files', () => {
   let DIST: string;
   beforeAll(() => {
-    DIST = path.resolve(__dirname, '../dist');
+    DIST = resolve(__dirname, '../dist');
   });
 
   describe('dist', () => {
@@ -18,22 +18,22 @@ describe('@sample/apf - files', () => {
     });
 
     it(`should contain a README.md file`, () => {
-      const file = fs.existsSync(path.join(DIST, 'README.md'));
+      const file = existsSync(join(DIST, 'README.md'));
       expect(file).to.be.true;
     });
 
     it(`should contain the "theming.scss" file`, () => {
-      const file = fs.existsSync(path.join(DIST, 'theming.scss'));
+      const file = existsSync(join(DIST, 'theming.scss'));
       expect(file).to.be.true;
     });
 
     it(`should contain a LICENSE life`, () => {
-      const file = fs.existsSync(path.join(DIST, 'LICENSE'));
+      const file = existsSync(join(DIST, 'LICENSE'));
       expect(file).to.be.true;
     });
 
     it(`should not have a nested 'dist' folder`, () => {
-      const dist = fs.existsSync(path.join(DIST, 'dist'));
+      const dist = existsSync(join(DIST, 'dist'));
       expect(dist).to.be.false;
     });
   });
@@ -51,14 +51,14 @@ describe('@sample/apf - files', () => {
   describe('declarations', () => {
     describe('types/sample-apf.d.ts', () => {
       it(`should exist`, () => {
-        const file = fs.existsSync(path.join(DIST, 'types/sample-apf.d.ts'));
+        const file = existsSync(join(DIST, 'types/sample-apf.d.ts'));
         expect(file).to.be.true;
       });
     });
 
     describe('types/sample-apf-secondary.d.ts', () => {
       it(`should exist`, () => {
-        const file = fs.existsSync(path.join(DIST, 'types/sample-apf-secondary.d.ts'));
+        const file = existsSync(join(DIST, 'types/sample-apf-secondary.d.ts'));
         expect(file).to.be.true;
       });
     });

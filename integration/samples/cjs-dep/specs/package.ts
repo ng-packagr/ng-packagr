@@ -1,8 +1,8 @@
-import { expect } from 'chai';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 describe(`@sample/cjs-dep`, () => {
   describe(`package.json`, () => {
-    let PACKAGE;
+    let PACKAGE: any;
     beforeAll(() => {
       PACKAGE = require('../dist/package.json');
     });

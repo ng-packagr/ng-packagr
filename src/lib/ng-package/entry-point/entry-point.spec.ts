@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import { expect } from 'chai';
-import { join, resolve } from 'path';
+import { join, resolve } from 'node:path';
+import { describe, expect, it } from 'vitest';
 import { NgPackageConfig } from '../../../ng-package.schema';
 import { NgEntryPoint } from './entry-point';
 

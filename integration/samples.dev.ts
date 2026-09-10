@@ -1,18 +1,17 @@
-import * as fs from 'fs-extra';
-import * as path from 'path';
+import { lstatSync, readdirSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { build } from '../src/public_api';
 
 process.env.DEBUG = 'true';
 
-const PATH = path.resolve(__dirname, 'samples');
+const PATH = resolve(__dirname, 'samples');
 let SAMPLES = [];
 if (process.argv[2]) {
-  SAMPLES = [path.resolve(PATH, process.argv[2])];
+  SAMPLES = [resolve(PATH, process.argv[2])];
 } else {
-  SAMPLES = fs
-    .readdirSync(PATH)
-    .map(dir => path.resolve(PATH, dir))
-    .filter(file => fs.lstatSync(file).isDirectory())
+  SAMPLES = readdirSync(PATH)
+    .map(dir => resolve(PATH, dir))
+    .filter(file => lstatSync(file).isDirectory())
     .reverse();
 }
 

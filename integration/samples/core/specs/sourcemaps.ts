@@ -1,12 +1,12 @@
-import { expect } from 'chai';
-import * as fs from 'fs-extra';
-import * as path from 'path';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 describe(`@sample/core - sourcemaps`, () => {
   describe(`fesm2022/sample-core.mjs.map`, () => {
-    let sourceMap;
+    let sourceMap: any;
     beforeAll(() => {
-      sourceMap = fs.readJsonSync(path.resolve(__dirname, '../dist/fesm2022/sample-core.mjs.map'));
+      sourceMap = JSON.parse(readFileSync(resolve(__dirname, '../dist/fesm2022/sample-core.mjs.map'), 'utf-8'));
     });
 
     it(`should exist`, () => {

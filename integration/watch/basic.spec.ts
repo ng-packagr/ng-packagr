@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { TestHarness } from './test-harness';
 
 describe('basic', () => {

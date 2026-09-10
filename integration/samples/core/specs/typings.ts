@@ -1,12 +1,12 @@
-import { expect } from 'chai';
-import * as fs from 'fs';
-import * as path from 'path';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 describe(`@sample/core - typings`, () => {
   describe(`index.d.ts`, () => {
-    let TYPINGS;
+    let TYPINGS: any;
     beforeAll(() => {
-      TYPINGS = fs.readFileSync(path.resolve(__dirname, '..', 'dist/types/sample-core.d.ts'), 'utf-8');
+      TYPINGS = readFileSync(resolve(__dirname, '..', 'dist/types/sample-core.d.ts'), 'utf-8');
     });
 
     it(`should exist`, () => {

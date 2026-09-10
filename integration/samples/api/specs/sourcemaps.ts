@@ -1,12 +1,12 @@
-import { expect } from 'chai';
-import * as fs from 'fs-extra';
-import * as path from 'path';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 describe(`@sample/api`, () => {
   describe('sample-api.d.ts.map', () => {
-    let sourceMap;
+    let sourceMap: any;
     beforeAll(() => {
-      sourceMap = fs.readJsonSync(path.resolve(__dirname, '../dist/types/sample-api.d.ts.map'));
+      sourceMap = JSON.parse(readFileSync(resolve(__dirname, '../dist/types/sample-api.d.ts.map'), 'utf-8'));
     });
 
     it(`should exist`, () => {
