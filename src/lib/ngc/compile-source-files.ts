@@ -1,4 +1,4 @@
-import { CompilerOptions, ParsedConfiguration } from '@angular/compiler-cli';
+import { CompilerOptions, NgtscProgram, ParsedConfiguration, formatDiagnostics } from '@angular/compiler-cli';
 import { join } from 'node:path';
 import ts from 'typescript';
 import { BuildGraph } from '../graph/build-graph';
@@ -8,6 +8,14 @@ import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { augmentProgramWithVersioning, cacheCompilerHost } from '../ts/cache-compiler-host';
 import * as log from '../utils/log';
 
+interface BuilderWithBuildInfo {
+  emitBuildInfo(writeFile?: ts.WriteFileCallback, cancellationToken?: ts.CancellationToken): ts.EmitResult;
+}
+
+function hasEmitBuildInfo(builder: ts.BuilderProgram): builder is ts.BuilderProgram & BuilderWithBuildInfo {
+  return 'emitBuildInfo' in builder && typeof (builder as unknown as BuilderWithBuildInfo).emitBuildInfo === 'function';
+}
+
 export async function compileSourceFiles(
   graph: BuildGraph,
   tsConfig: ParsedConfiguration,
@@ -16,7 +24,6 @@ export async function compileSourceFiles(
   extraOptions?: Partial<CompilerOptions>,
   stylesheetProcessor?: StylesheetProcessor,
 ) {
-  const { NgtscProgram, formatDiagnostics } = await import('@angular/compiler-cli');
   const { cacheDirectory, watch, cacheEnabled } = options;
   const tsConfigOptions: CompilerOptions = { ...tsConfig.options, ...extraOptions };
   const entryPoint = findEntryPointInProgress(graph);
@@ -61,7 +68,7 @@ export async function compileSourceFiles(
   const typeScriptProgram = angularProgram.getTsProgram();
   augmentProgramWithVersioning(typeScriptProgram);
 
-  let builder: ts.BuilderProgram | ts.EmitAndSemanticDiagnosticsBuilderProgram;
+  let builder: ts.EmitAndSemanticDiagnosticsBuilderProgram;
   if (watch || cacheDir) {
     builder = cache.oldBuilder = ts.createEmitAndSemanticDiagnosticsBuilderProgram(
       typeScriptProgram,
@@ -141,16 +148,11 @@ export async function compileSourceFiles(
   const { angularDiagnosticCache, declarationDiagnosticCache } = cache;
 
   for (const sourceFile of builder.getSourceFiles()) {
-    if (ignoreForDiagnostics.has(sourceFile)) {
+    if (sourceFile.isDeclarationFile || ignoreForDiagnostics.has(sourceFile)) {
       continue;
     }
 
     allDiagnostics.push(...builder.getSyntacticDiagnostics(sourceFile), ...builder.getSemanticDiagnostics(sourceFile));
-
-    // Declaration files cannot have declaration or template diagnostics
-    if (sourceFile.isDeclarationFile) {
-      continue;
-    }
 
     // Only request declaration diagnostics for affected or uncached files
     if (affectedFiles.has(sourceFile) || !declarationDiagnosticCache.has(sourceFile)) {
@@ -208,18 +210,6 @@ export async function compileSourceFiles(
     tsCompilerHost.writeFile(fileName, data, writeByteOrderMark, onError, sourceFiles);
   };
 
-  if ('getSemanticDiagnosticsOfNextAffectedFile' in builder) {
-    while (
-      builder.emitNextAffectedFile((fileName, data, writeByteOrderMark, onError, sourceFiles) => {
-        if (fileName.endsWith('.tsbuildinfo')) {
-          tsCompilerHost.writeFile(fileName, data, writeByteOrderMark, onError, sourceFiles);
-        }
-      })
-    ) {
-      // empty
-    }
-  }
-
   for (const sourceFile of builder.getSourceFiles()) {
     if (sourceFile.isDeclarationFile || ignoreForEmit.has(sourceFile)) {
       continue;
@@ -230,5 +220,9 @@ export async function compileSourceFiles(
     }
 
     builder.emit(sourceFile, writeFile, undefined, undefined, transformers);
+  }
+
+  if (hasEmitBuildInfo(builder)) {
+    builder.emitBuildInfo(writeFile);
   }
 }
