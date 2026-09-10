@@ -9,71 +9,86 @@ import { ensureUnixPath } from '../utils/path';
  * Loads a file and its map.
  */
 export function fileLoaderPlugin(fileCache: OutputFileCache, resolutionExtensions: string[], dtsMode: boolean): Plugin {
+  const resolutionCache = new Map<string, string | null>();
+
+  function resolveFile(id: string, importer?: string): string | undefined {
+    let resolved: string;
+    if (importer) {
+      if (id[0] !== '.' && id[0] !== '/' && !isAbsolute(id)) {
+        return;
+      }
+
+      resolved = ensureUnixPath(resolve(dirname(importer), id));
+    } else {
+      resolved = ensureUnixPath(id);
+    }
+
+    if (fileCache.has(resolved)) {
+      return resolved;
+    }
+
+    const ext = extname(resolved);
+    const base = resolved.slice(0, -ext.length);
+    if (dtsMode) {
+      let potential: string | undefined;
+      switch (ext) {
+        case '.js':
+        case '.ts':
+          potential = `${base}.d.ts`;
+          break;
+        case '.mjs':
+        case '.mts':
+          potential = `${base}.d.mts`;
+          break;
+        case '.cjs':
+        case '.cts':
+          potential = `${base}.d.cts`;
+          break;
+      }
+
+      if (potential && fileCache.has(potential)) {
+        return potential;
+      }
+    } else {
+      let potential: string | undefined;
+      switch (ext) {
+        case '.ts':
+          potential = `${base}.js`;
+          break;
+        case '.mts':
+          potential = `${base}.mjs`;
+          break;
+        case '.cts':
+          potential = `${base}.cjs`;
+          break;
+      }
+
+      if (potential && fileCache.has(potential)) {
+        return potential;
+      }
+    }
+
+    for (const suffix of resolutionExtensions) {
+      const potential = resolved + suffix;
+      if (fileCache.has(potential)) {
+        return potential;
+      }
+    }
+  }
+
   return {
     name: 'file-loader',
     resolveId: function (id, importer) {
-      let resolved: string;
-      if (importer) {
-        if (id[0] !== '.' && id[0] !== '/' && !isAbsolute(id)) {
-          return;
-        }
-
-        resolved = ensureUnixPath(resolve(dirname(importer), id));
-      } else {
-        resolved = ensureUnixPath(id);
+      const cacheKey = importer ? `${importer}\0${id}` : id;
+      const cached = resolutionCache.get(cacheKey);
+      if (cached !== undefined) {
+        return cached ?? undefined;
       }
 
-      if (fileCache.has(resolved)) {
-        return resolved;
-      }
+      const resolved = resolveFile(id, importer);
+      resolutionCache.set(cacheKey, resolved ?? null);
 
-      const ext = extname(resolved);
-      const base = resolved.slice(0, -ext.length);
-      if (dtsMode) {
-        let potential: string | undefined;
-        switch (ext) {
-          case '.js':
-          case '.ts':
-            potential = `${base}.d.ts`;
-            break;
-          case '.mjs':
-          case '.mts':
-            potential = `${base}.d.mts`;
-            break;
-          case '.cjs':
-          case '.cts':
-            potential = `${base}.d.cts`;
-            break;
-        }
-
-        if (potential && fileCache.has(potential)) {
-          return potential;
-        }
-      } else {
-        let potential: string | undefined;
-        switch (ext) {
-          case '.ts':
-            potential = `${base}.js`;
-            break;
-          case '.mts':
-            potential = `${base}.mjs`;
-            break;
-          case '.cts':
-            potential = `${base}.cjs`;
-            break;
-        }
-
-        if (potential && fileCache.has(potential)) {
-          return potential;
-        }
-      }
-
-      for (const suffix of resolutionExtensions) {
-        const potential = resolved + suffix;
-        if (fileCache.has(potential)) {
-          return potential;
-        }
-      }
+      return resolved;
     },
     load: function (id) {
       log.debug(`file-loader ${id}`);
