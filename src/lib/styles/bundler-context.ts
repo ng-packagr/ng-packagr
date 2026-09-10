@@ -83,7 +83,7 @@ export class BundlerContext {
       this.#loadCache = sharedLoadCache;
     }
     // To cache the results an option factory is needed to capture the full set of dependencies
-    this.#shouldCacheResult = incremental && typeof options === 'function';
+    this.#shouldCacheResult = typeof options === 'function';
     this.#optionsFactory = (...args) => {
       const baseOptions = typeof options === 'function' ? options(...args) : options;
 
