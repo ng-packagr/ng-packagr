@@ -6,7 +6,7 @@ import { BuildOutputFileType, BundleContextResult, BundlerContext } from './bund
 import { MemoryCache } from './cache';
 import { MemoryLoadResultCache } from './load-result-cache';
 import { BundleStylesheetOptions, createStylesheetBundleOptions } from './stylesheets/bundle-options';
-import { resetSassWorkerPoolCaches, shutdownSassWorkerPool } from './stylesheets/sass-language';
+import { resetSassWorkerPoolCaches } from './stylesheets/sass-language';
 
 export interface ComponentStylesheetResult {
   errors: Message[] | undefined;
@@ -172,7 +172,7 @@ export class ComponentStylesheetBundler {
     this.#inlineContexts.clear();
     this.#loadCache.clear();
 
-    await Promise.allSettled([shutdownSassWorkerPool(), ...contexts.map(context => context.dispose())]);
+    await Promise.allSettled(contexts.map(context => context.dispose()));
   }
 
   private extractResult(

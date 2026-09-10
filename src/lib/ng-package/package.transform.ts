@@ -25,6 +25,7 @@ import { createFileWatch, invalidateEntryPointsAndCacheOnFileChange } from '../f
 import { BuildGraph } from '../graph/build-graph';
 import { Node, STATE_DONE, STATE_ERROR, STATE_IN_PROGRESS, STATE_PENDING } from '../graph/node';
 import { Transform } from '../graph/transform';
+import { shutdownSassWorkerPool } from '../styles/stylesheets/sass-language';
 import { colors } from '../utils/color';
 import { rmdir } from '../utils/fs';
 import * as log from '../utils/log';
@@ -113,9 +114,10 @@ export const packageTransformFactory =
       finalize(() => {
         for (const node of ngPkg.dependents) {
           if (node instanceof EntryPointNode) {
-            node.cache.stylesheetProcessor?.destroy();
+            node.cache?.stylesheetProcessor?.destroy();
           }
         }
+        shutdownSassWorkerPool();
       }),
     );
   };
