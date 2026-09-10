@@ -10,10 +10,6 @@
     "@angular/core": "^4.1.2",
     "@angular/common": "^4.1.2"
   },
-  "scripts": {
-    "test":
-      "../../../node_modules/.bin/cross-env TS_NODE_PROJECT=../../../integration/tsconfig.specs.json ../../../node_modules/.bin/mocha --compilers ts:ts-node/register specs/**/*.ts"
-  },
   "devDependencies": {
     "@angular/compiler-cli": "^4.1.2"
   }

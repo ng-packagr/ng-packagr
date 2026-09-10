@@ -116,7 +116,7 @@
     "integration:samples": "tsx integration/samples.ts",
     "integration:samples:dev": "tsx --tsconfig src/tsconfig.packagr.json ./integration/samples.dev.ts",
     "integration:specs": "vitest run --config vitest.integration.config.ts",
-    "integration:watch:specs": "vitest --config vitest.integration.config.ts --watch --sequence.shuffle=false integration/watch/",
+    "integration:watch:specs": "vitest run --config vitest.integration.config.ts --sequence.shuffle=false integration/watch/",
     "test:specs": "vitest run",
     "test": "pnpm --silent build && pnpm --silent test:specs && pnpm --silent integration:samples && pnpm --silent integration:specs && pnpm --silent integration:watch:specs && pnpm --silent integration:consumers"
   }
