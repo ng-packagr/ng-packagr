@@ -4,6 +4,39 @@ import { ComponentStylesheetBundler } from './component-stylesheets';
 import { CssUrl } from './css-url.enum';
 import { generateSearchDirectories, getTailwindConfig, loadPostcssConfiguration } from './postcss-configuration';
 
+interface CachedStyleConfig {
+  postcssConfiguration: ReturnType<typeof loadPostcssConfiguration>;
+  tailwindConfiguration: ReturnType<typeof getTailwindConfig>;
+  target: string[] | undefined;
+}
+
+const styleConfigCache = new Map<string, CachedStyleConfig>();
+
+export function resetStyleConfigCache(): void {
+  styleConfigCache.clear();
+}
+
+function getProjectStyleConfig(projectBasePath: string): CachedStyleConfig {
+  let config = styleConfigCache.get(projectBasePath);
+  if (!config) {
+    browserslist.defaults = ['baseline widely available on 2026-05-07'];
+    const browserslistData = browserslist(undefined, { path: projectBasePath });
+    const searchDirs = generateSearchDirectories([projectBasePath]);
+    const postcssConfiguration = loadPostcssConfiguration(searchDirs);
+    const tailwindConfiguration = postcssConfiguration ? undefined : getTailwindConfig(searchDirs, projectBasePath);
+    const target = transformSupportedBrowsersToTargets(browserslistData);
+
+    config = {
+      postcssConfiguration,
+      tailwindConfiguration,
+      target,
+    };
+    styleConfigCache.set(projectBasePath, config);
+  }
+
+  return config;
+}
+
 export class StylesheetProcessor extends ComponentStylesheetBundler {
   constructor(
     protected readonly projectBasePath: string,
@@ -14,20 +47,17 @@ export class StylesheetProcessor extends ComponentStylesheetBundler {
     protected readonly cacheDirectory?: string | false,
     protected readonly watch?: boolean,
   ) {
-    browserslist.defaults = ['baseline widely available on 2026-05-07'];
-    const browserslistData = browserslist(undefined, { path: basePath });
-    const searchDirs = generateSearchDirectories([projectBasePath]);
-    const postcssConfiguration = loadPostcssConfiguration(searchDirs);
+    const { postcssConfiguration, tailwindConfiguration, target } = getProjectStyleConfig(projectBasePath);
 
     super(
       {
         cacheDirectory: cacheDirectory,
         postcssConfiguration: postcssConfiguration,
-        tailwindConfiguration: postcssConfiguration ? undefined : getTailwindConfig(searchDirs, projectBasePath),
+        tailwindConfiguration: tailwindConfiguration,
         sass: sass as any,
         workspaceRoot: projectBasePath,
         cssUrl: cssUrl,
-        target: transformSupportedBrowsersToTargets(browserslistData),
+        target: target,
         includePaths: includePaths,
       },
       'css',
