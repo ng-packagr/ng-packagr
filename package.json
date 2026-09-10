@@ -115,9 +115,9 @@
     "integration:consumers:ngc": "ngc --project integration/consumers/tsc/tsconfig.json",
     "integration:samples": "tsx integration/samples.ts",
     "integration:samples:dev": "tsx --tsconfig src/tsconfig.packagr.json ./integration/samples.dev.ts",
-    "integration:specs": "vitest run --config vitest.integration.config.ts",
-    "integration:watch:specs": "vitest run --config vitest.integration.config.ts --sequence.shuffle=false integration/watch/",
-    "test:specs": "vitest run",
+    "integration:specs": "vitest run ./integration/samples/",
+    "integration:watch:specs": "vitest run --sequence.shuffle=false ./integration/watch/",
+    "test:specs": "vitest run ./src/",
     "test": "pnpm --silent build && pnpm --silent test:specs && pnpm --silent integration:samples && pnpm --silent integration:specs && pnpm --silent integration:watch:specs && pnpm --silent integration:consumers"
   }
 }
