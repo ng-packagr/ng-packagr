@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import { expect } from 'chai';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { FileCache } from './file-cache';
 
 describe('FileCache', () => {

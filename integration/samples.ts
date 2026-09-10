@@ -1,6 +1,6 @@
-import { spawnSync } from 'child_process';
-import { existsSync, readdirSync } from 'fs';
-import { join, resolve } from 'path';
+import { spawnSync } from 'node:child_process';
+import { existsSync, readdirSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 const PACKAGE_FILE_CANDIDATES = ['ng-packagr-api.js', 'ng-package.js', 'ng-package.json', 'package.json'];
 const testDirectories = readdirSync('integration/samples');
 console.log(`Processing integration samples: ${testDirectories.join('\n')}`);

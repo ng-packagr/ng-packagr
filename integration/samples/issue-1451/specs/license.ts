@@ -1,6 +1,6 @@
-import { expect } from 'chai';
-import { existsSync, readFileSync } from 'fs';
-import { resolve } from 'path';
+import { existsSync, readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { beforeAll, describe, expect, it } from 'vitest';
 
 describe(`issue-1451-license`, () => {
   let DIST: string;

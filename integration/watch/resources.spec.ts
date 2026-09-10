@@ -1,3 +1,4 @@
+import { afterAll, beforeAll, describe, it } from 'vitest';
 import { TestHarness } from './test-harness';
 
 describe('resources', () => {

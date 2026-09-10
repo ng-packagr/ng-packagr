@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { describe, expect, it } from 'vitest';
 import { NgEntryPoint } from '../ng-package/entry-point/entry-point';
 import { EntryPointNode } from '../ng-package/nodes';
 

@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { describe, expect, it } from 'vitest';
 // Public API imports the way of user's: 'import {..} from 'ng-packagr'';
 import { NgPackagr, build, execute, ngPackagr } from './public_api';
 

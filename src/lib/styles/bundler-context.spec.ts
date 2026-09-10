@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { BundlerContext } from './bundler-context';
 import { MemoryLoadResultCache } from './load-result-cache';
 

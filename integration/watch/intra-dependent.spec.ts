@@ -1,5 +1,5 @@
-import { expect } from 'chai';
 import * as fs from 'node:fs';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { TestHarness } from './test-harness';
 
 describe('intra-dependent', () => {

@@ -1,6 +1,6 @@
-import { expect } from 'chai';
-import { readFileSync } from 'fs';
-import { resolve, join } from 'path';
+import { readFileSync } from 'node:fs';
+import { resolve, join } from 'node:path';
+import { describe, expect, it } from 'vitest';
 
 describe(`@sample/embed-assets - component embed`, () => {
   const dist = resolve(__dirname, '..', 'dist');

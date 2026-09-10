@@ -1,15 +1,14 @@
-import * as fs from 'fs-extra';
-import * as path from 'path';
-import { expect } from 'chai';
+import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { Subscription, tap } from 'rxjs';
-import { vi } from 'vitest';
+import { expect, vi } from 'vitest';
 import { ngPackagr } from '../../dist';
 
 /**
  * A testing harness class to setup the enviroment and test the incremental builds.
  */
 export class TestHarness {
-  private harnessTempDir = path.join(__dirname, '.tmp');
+  private harnessTempDir = join(__dirname, '.tmp');
   private testTempPath: string;
   private testDistPath: string;
   private testSrc: string;
@@ -18,9 +17,9 @@ export class TestHarness {
   private activeFailureCallback: ((error: Error) => void) | null = null;
 
   constructor(testName: string) {
-    this.testTempPath = path.join(this.harnessTempDir, testName);
-    this.testSrc = path.join(__dirname, testName);
-    this.testDistPath = path.join(this.testTempPath, 'dist');
+    this.testTempPath = join(this.harnessTempDir, testName);
+    this.testSrc = join(__dirname, testName);
+    this.testDistPath = join(this.testTempPath, 'dist');
 
     vi.setConfig({ testTimeout: 15000 });
   }
@@ -49,7 +48,8 @@ export class TestHarness {
     vi.spyOn(console, 'warn').mockImplementation(() => {});
 
     this.emptyTestDirectory();
-    await fs.copy(this.testSrc, this.testTempPath);
+    cpSync(this.testSrc, this.testTempPath, { recursive: true });
+
     return this.setUpNgPackagr();
   }
 
@@ -61,35 +61,35 @@ export class TestHarness {
   }
 
   readFileSync(filePath: string, isJson = false): string | object {
-    const file = path.join(this.testDistPath, filePath);
-    return isJson ? fs.readJsonSync(file) : fs.readFileSync(file, { encoding: 'utf-8' });
+    const file = join(this.testDistPath, filePath);
+    return isJson ? JSON.parse(readFileSync(file, 'utf-8')) : readFileSync(file, { encoding: 'utf-8' });
   }
 
   reSaveSrcFile(filePath: string): void {
-    const file = path.join(this.testTempPath, filePath);
-    fs.writeFileSync(file, fs.readFileSync(file));
+    const file = join(this.testTempPath, filePath);
+    writeFileSync(file, readFileSync(file));
   }
 
   /**
    * Copy a test case to it's temporary destination immediately.
    */
   copyTestCase(caseName: string) {
-    fs.copySync(path.join(this.testSrc, 'test_files', caseName), this.testTempPath);
+    cpSync(join(this.testSrc, 'test_files', caseName), this.testTempPath, { recursive: true });
   }
 
-  expectFesm2022ToMatch(fileName: string, regexp: RegExp): Chai.Assertion {
+  expectFesm2022ToMatch(fileName: string, regexp: RegExp) {
     return expect(this.readFileSync(`fesm2022/${fileName}.mjs`)).to.match(regexp);
   }
 
-  expectFileToMatch(fileName: string, regexp: RegExp): Chai.Assertion {
+  expectFileToMatch(fileName: string, regexp: RegExp) {
     return expect(this.readFileSync(fileName)).to.match(regexp);
   }
 
-  expectDtsToMatch(fileName: string, regexp: RegExp): Chai.Assertion {
+  expectDtsToMatch(fileName: string, regexp: RegExp) {
     return expect(this.readFileSync(`types/${fileName}.d.ts`)).to.match(regexp);
   }
 
-  expectPackageManifestToMatch(regexp: RegExp): Chai.Assertion {
+  expectPackageManifestToMatch(regexp: RegExp) {
     return expect(this.readFileSync('package.json')).to.match(regexp);
   }
 
@@ -111,18 +111,19 @@ export class TestHarness {
    * Remove the entire directory for the current test case.
    */
   emptyTestDirectory(): void {
-    fs.emptyDirSync(this.testTempPath);
+    rmSync(this.testTempPath, { recursive: true, force: true });
+    mkdirSync(this.testTempPath, { recursive: true });
   }
 
   getFilePath(filePath: string): string {
-    return path.join(this.testDistPath, filePath);
+    return join(this.testDistPath, filePath);
   }
 
   private setUpNgPackagr(): Promise<void> {
     return new Promise(resolve => {
       this.ngPackagr$$ = ngPackagr()
-        .forProject(path.join(this.testTempPath, 'ng-package.json'))
-        .withTsConfig(path.join(this.testTempPath, 'tsconfig.ngc.json'))
+        .forProject(join(this.testTempPath, 'ng-package.json'))
+        .withTsConfig(join(this.testTempPath, 'tsconfig.ngc.json'))
         .watch()
         .pipe(
           tap(() => resolve()), // we are only interested when in the first builds, that's why we are resolving it
