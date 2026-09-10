@@ -4,14 +4,13 @@ import { glob } from 'tinyglobby';
 import { AssetPattern } from '../../../ng-package.schema';
 import { BuildGraph } from '../../graph/build-graph';
 import { Node } from '../../graph/node';
-import { isInProgress } from '../../graph/select';
 import { transformFromPromise } from '../../graph/transform';
 import { colors } from '../../utils/color';
 import { copyFile, mkdir, rmdir, stat, writeFile } from '../../utils/fs';
 import * as log from '../../utils/log';
 import { ConditionalExport, generatePackageExports, generateWatchVersion } from '../../utils/package-json';
 import { ensureUnixPath } from '../../utils/path';
-import { EntryPointNode, PackageNode, fileUrl, findPackageNode, isEntryPoint } from '../nodes';
+import { EntryPointNode, PackageNode, fileUrl, findPackageNode, getActiveEntryPoint, isEntryPoint } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 import { NgPackage } from '../package';
 import { NgEntryPoint } from './entry-point';
@@ -22,7 +21,7 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
   transformFromPromise(async graph => {
     const spinner = ora({ hideCursor: false, discardStdin: false });
     const entryPoints = graph.filter(isEntryPoint);
-    const entryPoint = entryPoints.find(isInProgress);
+    const entryPoint = getActiveEntryPoint(graph);
     const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
     const ngPackageNode = findPackageNode(graph);
     const ngPackage = ngPackageNode.data;

@@ -1,15 +1,15 @@
 import { DepGraph } from 'dependency-graph';
+import { availableParallelism } from 'node:os';
 import {
   EMPTY,
   NEVER,
   Observable,
+  Subscription,
   catchError,
   concatMap,
   debounceTime,
-  defaultIfEmpty,
   filter,
   finalize,
-  from,
   last,
   map,
   of as observableOf,
@@ -18,11 +18,10 @@ import {
   repeat,
   startWith,
   switchMap,
-  takeLast,
   tap,
 } from 'rxjs';
 import { createFileWatch, invalidateEntryPointsAndCacheOnFileChange } from '../file-system/file-watcher';
-import { BuildGraph } from '../graph/build-graph';
+import { BuildGraph, ScopedBuildGraph } from '../graph/build-graph';
 import { Node, STATE_DONE, STATE_ERROR, STATE_IN_PROGRESS, STATE_PENDING } from '../graph/node';
 import { Transform } from '../graph/transform';
 import { shutdownSassWorkerPool } from '../styles/stylesheets/sass-language';
@@ -30,15 +29,7 @@ import { colors } from '../utils/color';
 import { rmdir } from '../utils/fs';
 import * as log from '../utils/log';
 import { discoverPackages } from './discover-packages';
-import {
-  EntryPointNode,
-  PackageNode,
-  byEntryPoint,
-  findPackageNode,
-  isEntryPoint,
-  isEntryPointPending,
-  ngUrl,
-} from './nodes';
+import { EntryPointNode, PackageNode, findPackageNode, isEntryPoint, isEntryPointPending, ngUrl } from './nodes';
 import { NgPackagrOptions } from './options.di';
 
 /**
@@ -193,58 +184,202 @@ const buildTransformFactory =
 
 const scheduleEntryPoints = (epTransform: Transform, options: NgPackagrOptions): Transform =>
   pipe(
-    concatMap(graph => {
-      // Calculate node/dependency depth and determine build order
-      const depGraph = new DepGraph({ circular: false });
-      for (const node of graph.values()) {
-        if (!isEntryPoint(node)) {
-          continue;
-        }
+    concatMap(
+      graph =>
+        new Observable<BuildGraph>(subscriber => {
+          // Calculate node/dependency depth and determine build order
+          const depGraph = new DepGraph({ circular: false });
+          const entryPoints = new Map<string, EntryPointNode>();
 
-        // Remove `ng://` prefix for better error messages
-        const from = node.url.substring(5);
-        depGraph.addNode(from);
+          for (const node of graph.values()) {
+            if (!isEntryPoint(node)) {
+              continue;
+            }
 
-        for (const dep of node.dependents) {
-          if (!isEntryPoint(dep)) {
-            continue;
+            // Remove `ng://` prefix for better error messages
+            const from = node.url.startsWith('ng://') ? node.url.slice(5) : node.url;
+            entryPoints.set(from, node);
+            depGraph.addNode(from);
+
+            for (const dep of node.dependents) {
+              if (!isEntryPoint(dep)) {
+                continue;
+              }
+
+              const to = dep.url.startsWith('ng://') ? dep.url.slice(5) : dep.url;
+              depGraph.addNode(to);
+              depGraph.addDependency(from, to);
+            }
           }
 
-          const to = dep.url.substring(5);
-          depGraph.addNode(to);
-          depGraph.addDependency(from, to);
-        }
-      }
+          // Topological sort will throw a DependencyCycleError if cycles exist
+          const overallOrder = depGraph.overallOrder();
+          const pending = new Set<string>();
 
-      // The array index is the depth.
-      const groups = depGraph.overallOrder().map(ngUrl);
+          for (const id of overallOrder) {
+            const ep = entryPoints.get(id);
+            if (ep && ep.state !== STATE_DONE) {
+              pending.add(id);
+            }
+          }
 
-      // Build entry points with lower depth values first.
-      return from(groups).pipe(
-        map((epUrl: string): EntryPointNode => graph.find(byEntryPoint().and(ep => ep.url === epUrl))),
-        filter((entryPoint: EntryPointNode): boolean => entryPoint.state !== STATE_DONE),
-        concatMap(ep =>
-          observableOf(ep).pipe(
-            // Mark the entry point as 'in-progress'
-            tap(entryPoint => (entryPoint.state = STATE_IN_PROGRESS)),
-            map(() => graph),
-            epTransform,
-            catchError(err => {
-              ep.state = STATE_ERROR;
+          if (pending.size === 0) {
+            subscriber.next(graph);
+            subscriber.complete();
 
-              throw err;
-            }),
-            finalize(() => {
-              if (!options.watch) {
-                ep.dispose();
+            return;
+          }
+
+          const inDegree = new Map<string, number>();
+          const readyQueue: string[] = [];
+
+          for (const id of pending) {
+            const directDeps = depGraph.directDependenciesOf(id);
+            let pendingDepsCount = 0;
+            for (const dep of directDeps) {
+              if (pending.has(dep)) {
+                pendingDepsCount++;
               }
-            }),
-          ),
-        ),
-        takeLast(1), // don't use last as sometimes it this will cause 'no elements in sequence',
-        defaultIfEmpty(graph),
-      );
-    }),
+            }
+            inDegree.set(id, pendingDepsCount);
+            if (pendingDepsCount === 0) {
+              readyQueue.push(id);
+            }
+          }
+
+          const maxConcurrency = Math.max(1, Math.min(availableParallelism() - 1, 8));
+          let activeCount = 0;
+          let buildError: unknown = null;
+          let isCancelled = false;
+          const activeSubscriptions = new Set<Subscription>();
+
+          const toError = (err: unknown): Error => {
+            if (err instanceof Error) {
+              return err;
+            }
+            if (typeof err === 'string') {
+              return new Error(err);
+            }
+            if (
+              err &&
+              typeof err === 'object' &&
+              'message' in err &&
+              typeof (err as { message: unknown }).message === 'string'
+            ) {
+              return new Error((err as { message: string }).message);
+            }
+
+            return new Error('Build error');
+          };
+
+          const next = () => {
+            if (isCancelled) {
+              return;
+            }
+
+            if (buildError) {
+              if (activeCount === 0) {
+                subscriber.error(toError(buildError));
+              }
+
+              return;
+            }
+
+            if (pending.size === 0 && activeCount === 0) {
+              subscriber.next(graph);
+              subscriber.complete();
+
+              return;
+            }
+
+            if (activeCount === 0 && readyQueue.length === 0 && pending.size > 0) {
+              const pendingIds = [...pending].join(', ');
+              subscriber.error(new Error(`Deadlock detected: unresolved dependencies for [${pendingIds}]`));
+
+              return;
+            }
+
+            while (activeCount < maxConcurrency && readyQueue.length > 0) {
+              const id = readyQueue.shift();
+              if (!id) {
+                break;
+              }
+
+              const ep = entryPoints.get(id);
+              if (!ep) {
+                buildError = new Error(`Entry point node not found for '${id}'`);
+                readyQueue.length = 0;
+                if (activeCount === 0) {
+                  subscriber.error(toError(buildError));
+                }
+
+                return;
+              }
+
+              activeCount++;
+
+              const scopedGraph = new ScopedBuildGraph(graph, ep);
+              const run$ = of(scopedGraph).pipe(
+                tap(() => {
+                  ep.state = STATE_IN_PROGRESS;
+                }),
+                epTransform,
+                catchError(err => {
+                  ep.state = STATE_ERROR;
+                  throw err;
+                }),
+                finalize(() => {
+                  if (!options.watch) {
+                    ep.dispose();
+                  }
+                }),
+              );
+
+              const sub: Subscription = run$.subscribe({
+                error: err => {
+                  activeSubscriptions.delete(sub);
+                  activeCount--;
+                  if (!buildError) {
+                    buildError = err;
+                    readyQueue.length = 0;
+                  }
+                  next();
+                },
+                complete: () => {
+                  activeSubscriptions.delete(sub);
+                  activeCount--;
+                  pending.delete(id);
+
+                  for (const depId of depGraph.directDependantsOf(id)) {
+                    if (pending.has(depId)) {
+                      const remaining = (inDegree.get(depId) ?? 1) - 1;
+                      inDegree.set(depId, remaining);
+                      if (remaining === 0) {
+                        readyQueue.push(depId);
+                      }
+                    }
+                  }
+
+                  next();
+                },
+              });
+
+              activeSubscriptions.add(sub);
+            }
+          };
+
+          next();
+
+          return () => {
+            isCancelled = true;
+            readyQueue.length = 0;
+            for (const activeSub of activeSubscriptions) {
+              activeSub.unsubscribe();
+            }
+            activeSubscriptions.clear();
+          };
+        }),
+    ),
   );
 
 function printBuiltAngularPackage(ngPackage: Node, startTime: number): void {

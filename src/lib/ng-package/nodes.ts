@@ -1,7 +1,7 @@
 import type { NgtscProgram, ParsedConfiguration } from '@angular/compiler-cli';
 import ts from 'typescript';
 import { FileCache } from '../file-system/file-cache';
-import { BuildGraph, ComplexPredicate } from '../graph/build-graph';
+import { BuildGraph, ComplexPredicate, isScopedBuildGraph } from '../graph/build-graph';
 import { Node } from '../graph/node';
 import { by, isInProgress, isPending } from '../graph/select';
 import { AngularDiagnosticsCache } from '../ngc/angular-diagnostics-cache';
@@ -38,13 +38,29 @@ export function isEntryPointPending(): ComplexPredicate<EntryPointNode> {
   return by(n => isEntryPoint(n) && isPending(n));
 }
 
-export function findEntryPointInProgress(graph: BuildGraph): EntryPointNode {
-  const entryPoint = graph.find(isEntryPointInProgress());
-  if (!entryPoint) {
-    throw new Error('Could not find entry point in progress');
+export function getActiveEntryPoint(graph: BuildGraph): EntryPointNode {
+  if (isScopedBuildGraph(graph) && isEntryPoint(graph.activeEntryPoint)) {
+    return graph.activeEntryPoint;
   }
 
-  return entryPoint;
+  return findEntryPointInProgress(graph);
+}
+
+export function findEntryPointInProgress(graph: BuildGraph): EntryPointNode {
+  if (isScopedBuildGraph(graph) && isEntryPoint(graph.activeEntryPoint)) {
+    return graph.activeEntryPoint;
+  }
+
+  const inProgress = graph.filter(isEntryPointInProgress());
+  if (inProgress.length === 1) {
+    return inProgress[0];
+  }
+  if (inProgress.length > 1) {
+    const moduleIds = inProgress.map(e => e.data.entryPoint.moduleId).join(', ');
+    throw new Error(`Multiple entry points are in progress (${moduleIds}). A ScopedBuildGraph is required.`);
+  }
+
+  throw new Error('Could not find entry point in progress');
 }
 
 export function findPackageNode(graph: BuildGraph): PackageNode {
