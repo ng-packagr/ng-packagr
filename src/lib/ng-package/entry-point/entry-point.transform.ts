@@ -2,7 +2,7 @@ import { pipe, tap } from 'rxjs';
 import { STATE_DONE } from '../../graph/node';
 import { Transform } from '../../graph/transform';
 import * as log from '../../utils/log';
-import { findEntryPointInProgress } from '../nodes';
+import { getActiveEntryPoint } from '../nodes';
 
 /**
  * A re-write of the `transformSources()` script that transforms an entry point from sources to distributable format.
@@ -37,7 +37,7 @@ export const entryPointTransformFactory = (
   pipe(
     tap(graph => {
       // Peek the first entry point from the graph
-      const entryPoint = findEntryPointInProgress(graph);
+      const entryPoint = getActiveEntryPoint(graph);
       log.msg('\n------------------------------------------------------------------------------');
       log.msg(`Building entry point '${entryPoint.data.entryPoint.moduleId}'`);
       log.msg('------------------------------------------------------------------------------');
@@ -48,7 +48,7 @@ export const entryPointTransformFactory = (
     writeBundles,
     writePackage,
     tap(graph => {
-      const entryPoint = findEntryPointInProgress(graph);
+      const entryPoint = getActiveEntryPoint(graph);
       entryPoint.state = STATE_DONE;
     }),
   );

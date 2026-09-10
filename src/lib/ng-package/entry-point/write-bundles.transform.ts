@@ -7,7 +7,7 @@ import { transformFromPromise } from '../../graph/transform';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../../utils/cache';
 import { exists, mkdir, writeFile } from '../../utils/fs';
 import { ensureUnixPath } from '../../utils/path';
-import { findEntryPointInProgress } from '../nodes';
+import { getActiveEntryPoint } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 
 type CachedBundleFile =
@@ -30,7 +30,7 @@ interface BundlesCache {
 
 export const writeBundlesTransform = (options: NgPackagrOptions) =>
   transformFromPromise(async graph => {
-    const entryPoint = findEntryPointInProgress(graph);
+    const entryPoint = getActiveEntryPoint(graph);
     const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
     const cache = entryPoint.cache;
     const { fesm2022Dir, esm2022, declarations, declarationsDir } = destinationFiles;
@@ -46,8 +46,12 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
       tsConfig.options.compilationMode,
       (tsConfig.options.declarationMap ?? false).toString(),
     );
-
-    const hash = await generateKey([...cache.outputCache.values()].map(({ version }) => version).join(':'));
+    const hash = await generateKey(
+      [...cache.outputCache.entries()]
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([p, { version }]) => `${p}:${version}`)
+        .join(':'),
+    );
     const cacheDirectory = options.cacheEnabled && options.cacheDirectory;
     if (cacheDirectory) {
       const cacheResult: BundlesCache = await readCacheEntry(options.cacheDirectory, cacheKey);
