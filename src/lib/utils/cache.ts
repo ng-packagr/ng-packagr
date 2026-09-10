@@ -11,8 +11,6 @@ try {
   ngPackagrVersion = require('../../../package.json').version;
 }
 
-const BIGINT_STRING_VALUE_REGEXP = /^%BigInt\((\d+)\)$/;
-
 export async function generateKey(...valuesToConsider: string[]): Promise<string> {
   return createHash('sha256').update(ngPackagrVersion).update(valuesToConsider.join(':')).digest('hex');
 }
@@ -31,16 +29,7 @@ export async function readCacheEntry(cachePath: string, key: string): Promise<an
   try {
     const data = await readFile(getCacheFilePath(cachePath, key), 'utf8');
 
-    return JSON.parse(data, (_key, value) => {
-      if (typeof value === 'string' && value[0] === '%') {
-        const numPart = value.match(BIGINT_STRING_VALUE_REGEXP);
-        if (numPart) {
-          return BigInt(numPart[1]);
-        }
-      }
-
-      return value;
-    });
+    return JSON.parse(data);
   } catch (err) {
     debug(`[readCacheError]: ${err}`);
 
@@ -52,7 +41,7 @@ export async function saveCacheEntry(cachePath: string, key: string, content: an
   // Ensure the cache directory exists
   await ensureCacheDirExists(cachePath);
 
-  const data = JSON.stringify(content, (_key, value) => (typeof value === 'bigint' ? `%BigInt(${value})` : value));
+  const data = JSON.stringify(content);
 
   return writeFile(getCacheFilePath(cachePath, key), data, 'utf8');
 }
