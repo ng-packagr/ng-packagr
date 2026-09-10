@@ -44,6 +44,9 @@ export async function rolldownBundleFile(opts: RolldownOptions): Promise<{ files
     external: (moduleId, parentId) => isExternalDependency(moduleId, parentId, jail),
     input: opts.entry,
     plugins,
+    checks: {
+      circularDependency: false,
+    },
     onwarn: warning => {
       switch (warning.code) {
         case 'CIRCULAR_DEPENDENCY':
