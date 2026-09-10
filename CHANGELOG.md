@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Performance
 
-* **ng-packagr:** share sass directory and resolution caches across stylesheets ([3beb4af](https://github.com/ng-packagr/ng-packagr/commit/3beb4afdd4af85c520215740d50d33717b65fc2c)), closes [angular/angular-cli#34041](https://github.com/angular/angular-cli/issues/34041)
+* **ng-packagr:** share sass directory and resolution caches across stylesheets ([3beb4af](https://github.com/ng-packagr/ng-packagr/commit/3beb4afdd4af85c520215740d50d33717b65fc2c))
 
 ## [22.2.0-next.5](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.4...22.2.0-next.5) (2026-09-02)
 
@@ -21,7 +21,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Performance
 
-* **ng-packagr:** consolidate component stylesheet bundling with shared load result cache ([17f1764](https://github.com/ng-packagr/ng-packagr/commit/17f176418bd7b817b3d6a617a709b6b8f66bb63e)), closes [angular/angular-cli#33906](https://github.com/angular/angular-cli/issues/33906)
+* **ng-packagr:** consolidate component stylesheet bundling with shared load result cache ([17f1764](https://github.com/ng-packagr/ng-packagr/commit/17f176418bd7b817b3d6a617a709b6b8f66bb63e))
 
 ## [22.2.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.2...22.2.0-next.3) (2026-08-14)
 
