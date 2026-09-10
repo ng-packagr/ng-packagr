@@ -79,7 +79,6 @@
     "@eslint/js": "^10.0.1",
     "@types/chai": "^5.0.0",
     "@types/fs-extra": "^11.0.0",
-    "@types/jasmine": "^6.0.0",
     "@types/less": "^3.0.2",
     "@types/node": "^20.0.0",
     "@types/semver": "^7.8.0",
@@ -94,7 +93,6 @@
     "fs-extra": "^11.0.0",
     "globals": "^17.6.0",
     "husky": "^9.0.0",
-    "jasmine": "^7.0.0",
     "json-schema-to-typescript": "^16.0.0",
     "prettier": "~3.9.0",
     "rimraf": "^6.0.0",
@@ -102,7 +100,8 @@
     "tailwindcss": "^3.2.0",
     "tslib": "^2.0.0",
     "tsx": "^4.23.1",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vitest": "^5.0.0"
   },
   "private": true,
   "scripts": {
@@ -112,13 +111,13 @@
     "release": "standard-version --releaseCommitMessageFormat 'release: cut {{currentTag}}' --no-verify --tag-prefix=\"\"",
     "publish:ci": "pnpm --silent build",
     "lint": "eslint --cache --max-warnings=0 \"**/*.ts\"",
-    "integration:samples": "tsx integration/samples.ts",
-    "integration:samples:dev": "tsx --tsconfig src/tsconfig.packagr.json ./integration/samples.dev.ts",
-    "integration:specs": "tsx ./node_modules/jasmine/bin/jasmine.js --config=integration/tsconfig.specs.json \"integration/samples/*/specs/**/*.ts\"",
     "integration:consumers": "integration/consumers.sh",
     "integration:consumers:ngc": "ngc --project integration/consumers/tsc/tsconfig.json",
-    "integration:watch:specs": "tsx ./node_modules/jasmine/bin/jasmine.js --config=integration/tsconfig.specs.json --random=false \"integration/watch/*.spec.ts\"",
-    "test:specs": "tsx ./node_modules/jasmine/bin/jasmine.js --config=src/tsconfig.specs.json \"src/**/*.spec.ts\"",
+    "integration:samples": "tsx integration/samples.ts",
+    "integration:samples:dev": "tsx --tsconfig src/tsconfig.packagr.json ./integration/samples.dev.ts",
+    "integration:specs": "vitest run --config vitest.integration.config.ts",
+    "integration:watch:specs": "vitest --config vitest.integration.config.ts --watch --sequence.shuffle=false integration/watch/",
+    "test:specs": "vitest run",
     "test": "pnpm --silent build && pnpm --silent test:specs && pnpm --silent integration:samples && pnpm --silent integration:specs && pnpm --silent integration:watch:specs && pnpm --silent integration:consumers"
   }
 }

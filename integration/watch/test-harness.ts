@@ -2,6 +2,7 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import { expect } from 'chai';
 import { Subscription, tap } from 'rxjs';
+import { vi } from 'vitest';
 import { ngPackagr } from '../../dist';
 
 /**
@@ -21,12 +22,12 @@ export class TestHarness {
     this.testSrc = path.join(__dirname, testName);
     this.testDistPath = path.join(this.testTempPath, 'dist');
 
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000;
+    vi.setConfig({ testTimeout: 15000 });
   }
 
   async initialize(): Promise<void> {
     // the below is done in order to avoid poluting the test reporter with build logs
-    spyOn(console, 'log').and.callFake((...args: any[]) => {
+    vi.spyOn(console, 'log').mockImplementation((...args: any[]) => {
       const msg = args.join(' ');
       if (msg.includes('Built Angular Package') || msg.includes('Compilation sequence updated')) {
         if (this.activeCompleteCallback) {
@@ -36,7 +37,7 @@ export class TestHarness {
         }
       }
     });
-    spyOn(console, 'error').and.callFake((...args: any[]) => {
+    vi.spyOn(console, 'error').mockImplementation((...args: any[]) => {
       const msg = args.join(' ');
       if (this.activeFailureCallback) {
         const cb = this.activeFailureCallback;
@@ -44,8 +45,8 @@ export class TestHarness {
         cb(new Error(msg));
       }
     });
-    spyOn(console, 'info').and.callFake(() => {});
-    spyOn(console, 'warn').and.callFake(() => {});
+    vi.spyOn(console, 'info').mockImplementation(() => {});
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
 
     this.emptyTestDirectory();
     await fs.copy(this.testSrc, this.testTempPath);
