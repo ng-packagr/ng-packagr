@@ -16,9 +16,7 @@ export async function exists(path: PathLike): Promise<boolean> {
 
 export async function copyFile(src: string, dest: string): Promise<void> {
   const dir = dirname(dest);
-  if (!(await exists(dir))) {
-    await mkdir(dir, { recursive: true });
-  }
+  await mkdir(dir, { recursive: true });
 
   await cpFile(src, dest, constants.COPYFILE_FICLONE);
 }

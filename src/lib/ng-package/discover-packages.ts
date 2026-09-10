@@ -17,18 +17,35 @@ interface UserPackage {
   basePath: string;
 }
 
-async function readConfigFile(filePath: string): Promise<any> {
-  if (!(await exists(filePath))) {
-    return undefined;
+function parseJsonConfig(content: string): any {
+  const sanitized = content.charCodeAt(0) === 0xfeff ? content.slice(1) : content;
+  try {
+    return JSON.parse(sanitized);
+  } catch {
+    return parseJson(sanitized, undefined, { allowTrailingComma: true });
   }
+}
 
+async function readConfigFile(filePath: string): Promise<any> {
   if (filePath.endsWith('.js')) {
+    if (!(await exists(filePath))) {
+      return undefined;
+    }
+
     return import(filePath);
   }
 
-  const data = await readFile(filePath, 'utf-8');
+  let data: string;
+  try {
+    data = await readFile(filePath, 'utf-8');
+  } catch (err: unknown) {
+    if (typeof err === 'object' && err !== null && 'code' in err && (err as { code?: string }).code === 'ENOENT') {
+      return undefined;
+    }
+    throw err;
+  }
 
-  return parseJson(data, undefined, { allowTrailingComma: true });
+  return parseJsonConfig(data);
 }
 
 /**
@@ -141,10 +158,10 @@ export async function discoverPackages({ project }: { project: string }): Promis
   log.debug(`Found primary entry point: ${primary.moduleId}`);
 
   const folderPaths = await findSecondaryPackagesPaths(basePath, primary.$get('dest'));
+  const secondaryPackages = await Promise.all(folderPaths.map(folderPath => resolveUserPackage(folderPath, true)));
   const secondaries: NgEntryPoint[] = [];
 
-  for (const folderPath of folderPaths) {
-    const secondaryPackage = await resolveUserPackage(folderPath, true);
+  for (const secondaryPackage of secondaryPackages) {
     if (secondaryPackage) {
       secondaries.push(secondaryEntryPoint(primary, secondaryPackage));
     }
