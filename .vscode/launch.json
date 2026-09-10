@@ -14,58 +14,6 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch current file w/ mocha",
-      "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-      "env": {
-        "TS_NODE_PROJECT": "src/tsconfig.specs.json"
-      },
-      "args": ["--ui", "tdd", "--timeout", "4000", "--colors", "--require", "ts-node/register", "${relativeFile}"],
-      "cwd": "${workspaceRoot}",
-      "internalConsoleOptions": "openOnSessionStart"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Mocha Tests",
-      "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-      "env": {
-        "TS_NODE_PROJECT": "src/tsconfig.specs.json"
-      },
-      "args": [
-        "--ui",
-        "tdd",
-        "--timeout",
-        "4000",
-        "--colors",
-        "--require",
-        "ts-node/register",
-        "${workspaceRoot}/src/**/*.spec.ts"
-      ],
-      "internalConsoleOptions": "openOnSessionStart"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Mocha Integration Tests",
-      "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-      "env": {
-        "TS_NODE_PROJECT": "integration/tsconfig.specs.json"
-      },
-      "args": [
-        "--ui",
-        "tdd",
-        "--timeout",
-        "4000",
-        "--colors",
-        "--require",
-        "ts-node/register",
-        "${workspaceRoot}/integration/samples/*/specs/**.ts"
-      ],
-      "internalConsoleOptions": "openOnSessionStart"
-    },
-    {
-      "type": "node",
-      "request": "launch",
       "name": "Samples (all)",
       "program": "${workspaceRoot}/integration/samples.dev.js"
     },
