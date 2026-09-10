@@ -61,6 +61,14 @@ export const SassStylesheetLanguage = Object.freeze<StylesheetLanguage>({
   },
 });
 
+export function isPackageUrl(url: string): boolean {
+  if (url.startsWith('pkg:')) {
+    return true;
+  }
+
+  return url.length > 0 && !url.startsWith('.') && !url.startsWith('/') && !url.startsWith('\\') && !url.includes(':');
+}
+
 function parsePackageName(url: string): { packageName: string; readonly pathSegments: string[] } {
   const parts = (url.startsWith('pkg:') ? url.slice(4) : url).split('/');
   const hasScope = parts.length >= 2 && parts[0][0] === '@';
@@ -121,7 +129,8 @@ async function compileString(
       importers: [
         {
           findFileUrl: (url, options) => {
-            const cacheKey = url.startsWith('pkg:') ? url : `${options.containingUrl?.href ?? ''}:${url}`;
+            const isPackage = isPackageUrl(url);
+            const cacheKey = isPackage ? url : `${options.containingUrl?.href ?? ''}:${url}`;
 
             return currentResolutionCache.getOrCreate(cacheKey, async () => {
               const result = await resolveUrl(url, options);
@@ -130,12 +139,15 @@ async function compileString(
               }
 
               // Check for package deep imports
+              if (!isPackage) {
+                return null;
+              }
+
               const { packageName, pathSegments } = parsePackageName(url);
 
               // Caching package root locations is particularly beneficial for `@material/*` packages
               // which extensively use deep imports.
-              const packageRootKey = `${options.containingUrl?.href ?? ''}:${packageName}`;
-              const packageRoot = await currentPackageRootCache.getOrCreate(packageRootKey, async () => {
+              const packageRoot = await currentPackageRootCache.getOrCreate(packageName, async () => {
                 // Use the required presence of a package root `package.json` file to resolve the location
                 const packageResult = await resolveUrl(packageName + '/package.json', options);
 
