@@ -31,7 +31,7 @@ export async function rolldownBundleFile(opts: RolldownOptions): Promise<{ files
     outExtension = '.d.ts';
     plugins = [
       fileLoaderPlugin(opts.fileCache, ['.d.ts', '/index.d.ts'], dtsMode),
-      dts({ generator: 'oxc', sourcemap: opts.sourcemap }),
+      dts({ dtsInput: true, tsconfig: false, generator: 'oxc', sourcemap: opts.sourcemap }),
     ];
   } else {
     outExtension = '.mjs';
@@ -80,7 +80,7 @@ export async function rolldownBundleFile(opts: RolldownOptions): Promise<{ files
     sourcemap: opts.sourcemap,
     comments: {
       legal: true,
-      annotation: true,
+      annotation: !dtsMode,
       jsdoc: dtsMode,
     },
   });
