@@ -30,15 +30,13 @@ import { rmdir } from '../utils/fs';
 import * as log from '../utils/log';
 import { discoverPackages } from './discover-packages';
 import { EntryPointNode, PackageNode, findPackageNode, isEntryPoint, isEntryPointPending, ngUrl } from './nodes';
-import { NgPackagrOptions } from './options.di';
+import { NgPackagrOptions } from './options';
 
 /**
  * A transformation for building an npm package:
  *
- *  - discoverPackages
- *  - options
  *  - initTsConfig
- *  - analyzeTsSources (thereby extracting template and stylesheet files)
+ *  - analyseSources
  *  - for each entry point
  *    - run the entryPontTransform
  *
