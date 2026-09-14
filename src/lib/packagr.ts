@@ -3,11 +3,16 @@ import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
 import { Observable, map, of as observableOf } from 'rxjs';
 import { BuildGraph } from './graph/build-graph';
 import { Transform } from './graph/transform';
-import { ENTRY_POINT_PROVIDERS } from './ng-package/entry-point/entry-point.di';
-import { DEFAULT_TS_CONFIG_TOKEN, provideTsConfig } from './ng-package/entry-point/init-tsconfig.di';
-import { NgPackagrOptions, provideOptions } from './ng-package/options.di';
-import { PACKAGE_PROVIDERS, PACKAGE_TRANSFORM } from './ng-package/package.di';
-import { provideProject } from './project.di';
+import { NgPackagrOptions } from './ng-package/options';
+import {
+  DEFAULT_TS_CONFIG_TOKEN,
+  ENTRY_POINT_PROVIDERS,
+  PACKAGE_PROVIDERS,
+  PACKAGE_TRANSFORM,
+  provideOptions,
+  provideProject,
+  provideTsConfig,
+} from './packagr.di';
 
 /**
  * The original ng-packagr implemented on top of a rxjs-ified and di-jectable transformation pipeline.
@@ -52,6 +57,7 @@ export class NgPackagr {
    * @param providers
    * @return Self instance for fluent API
    * @link https://github.com/mgechev/injection-js
+   * @deprecated the DI system will be removed from ng-packagr
    */
   public withProviders(providers: Provider[]): NgPackagr {
     this.providers = [...this.providers, ...providers];
@@ -76,6 +82,7 @@ export class NgPackagr {
    *
    * @param transform
    * @return Self instance for fluent API
+   * @deprecated the DI system will be removed from ng-packagr
    */
   public withBuildTransform(transform: InjectionToken<Transform>): NgPackagr {
     this.buildTransform = transform;
