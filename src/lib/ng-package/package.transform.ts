@@ -39,15 +39,13 @@ import {
   isEntryPointPending,
   ngUrl,
 } from './nodes';
-import { NgPackagrOptions } from './options.di';
+import { NgPackagrOptions } from './options';
 
 /**
  * A transformation for building an npm package:
  *
- *  - discoverPackages
- *  - options
  *  - initTsConfig
- *  - analyzeTsSources (thereby extracting template and stylesheet files)
+ *  - analyseSources
  *  - for each entry point
  *    - run the entryPontTransform
  *
