@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.2.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.6...22.2.0-rc.0) (2026-09-16)
+
+
+### Performance
+
+* **ng-packagr:** configure rolldown dtsInput and skip dts annotation scanning ([d086582](https://github.com/ng-packagr/ng-packagr/commit/d086582ac4ab57f76f9d64fb90d33d32cbeb6e0e))
+* **ng-packagr:** decouple sass daemon lifecycle from entry points ([cf658e0](https://github.com/ng-packagr/ng-packagr/commit/cf658e009536564506c819e5bf50f7899ccd73fa))
+* **ng-packagr:** disable rolldown circular dependency checks ([1a40ec6](https://github.com/ng-packagr/ng-packagr/commit/1a40ec6b57c9e3e26e02aadc3536d75c62a19fcb))
+* **ng-packagr:** eliminate redundant compiler emit loop and optimize diagnostics ([2438748](https://github.com/ng-packagr/ng-packagr/commit/2438748bb5f81a73596e3ea4981841800496b996))
+* **ng-packagr:** implement parallel dag scheduling for entry points ([cd0b052](https://github.com/ng-packagr/ng-packagr/commit/cd0b0522f272fad90e0bb736e893391cffb926b4))
+* **ng-packagr:** key sass package resolutions without containing url ([dbea592](https://github.com/ng-packagr/ng-packagr/commit/dbea592a754b59adaac573f02f674d6bb354630c))
+* **ng-packagr:** memoize module resolutions in file loader plugin ([cf9997e](https://github.com/ng-packagr/ng-packagr/commit/cf9997e2e89860b5167369fe68d97e69c6a51735))
+* **ng-packagr:** memoize style configurations by project base path ([6af5309](https://github.com/ng-packagr/ng-packagr/commit/6af53094f4f5fd1bf8d7c789535ff48409fceee3))
+* **ng-packagr:** optimize cache entry serialization using native json parse and stringify ([46d3c79](https://github.com/ng-packagr/ng-packagr/commit/46d3c79fd7bb0db6575e3ab789306c4fc0855b41))
+* **ng-packagr:** parallelize package discovery and optimize config reads ([faeea5f](https://github.com/ng-packagr/ng-packagr/commit/faeea5f3c69c1a1e5b991261edc6c035a317d897))
+
 ## [22.2.0-next.6](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.5...22.2.0-next.6) (2026-09-10)
 
 
