@@ -43,25 +43,38 @@ export function validateNgPackageEntryPointSchema(
   }
 }
 
-function formatSchemaValidationErrors(errors: ErrorObject[]): string {
+/** Exported for testing. */
+export function formatSchemaValidationErrors(errors: ErrorObject[]): string {
   return errors
     .map(err => {
-      let message = `Data path ${JSON.stringify(err.instancePath)} ${err.message}`;
       if (err.keyword === 'additionalProperties') {
-        message += ` (${(err.params as any).additionalProperty})`;
+        const unknown = (err.params as { additionalProperty: string }).additionalProperty;
+        // `parentSchema` is the schema that rejected the property, which ajv only attaches when
+        // the validator was created with `verbose: true`. A schema that declares no `properties`
+        // of its own has no options to offer.
+        const known = Object.keys((err.parentSchema as { properties?: object })?.properties ?? {});
+
+        return (
+          `Unknown option "${unknown}"${err.instancePath ? ` at "${err.instancePath}"` : ''}.` +
+          (known.length ? ` Valid options are: ${known.join(', ')}.` : '')
+        );
       }
 
-      return message + '.';
+      return `Data path ${JSON.stringify(err.instancePath)} ${err.message}.`;
     })
     .join('\n');
 }
 
 /**
  * Returns an initialized ajv validator for the ng-package JSON schema.
+ *
+ * Exported for testing.
  */
-function getSchemaValidator(schema: unknown): ValidateFunction {
+export function getSchemaValidator(schema: unknown): ValidateFunction {
   const _ajv = new Ajv({
     useDefaults: true,
+    // Needed to list the valid options of the object an unknown option was found in.
+    verbose: true,
     strict: false, // strict mode is enabled by default in JSON schema type definitions, which disallows the use of `useDefaults`.
   });
 
