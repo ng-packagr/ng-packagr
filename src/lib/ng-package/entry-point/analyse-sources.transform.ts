@@ -118,19 +118,6 @@ function analyseEntryPoint(
 
   debug(`Analysing sources for ${moduleId}`);
 
-  // If an index file exists parallel to the entryFilePath it is not valid as index should be reserved as an
-  // entry file of an entry-point based on node resolution strategy.
-  if (basename(entryFilePath) !== 'index.ts') {
-    const potentialIndexPath = join(dirname(entryFilePath), 'index.ts');
-    if (fs.existsSync(potentialIndexPath)) {
-      throw new Error(
-        `Entry point '${moduleId}' has an 'index.ts' parallel to the 'entryFilePath'. ` +
-          `The 'entryFilePath' should be updated to point to the 'index.ts' file.\n` +
-          `Full path: ${potentialIndexPath}`,
-      );
-    }
-  }
-
   // Remove previously discovered entry point dependencies in watch mode
   for (const dep of entryPoint.dependents) {
     if (isEntryPoint(dep)) {
@@ -191,6 +178,19 @@ function analyseEntryPoint(
           filesToScan.push(resolvedPath);
         }
       }
+    }
+  }
+
+  // If an index file parallel to the entryFilePath is imported it is not valid as index should be reserved as an
+  // entry file of an entry-point based on node resolution strategy.
+  if (basename(entryFilePath) !== 'index.ts') {
+    const potentialIndexPath = join(dirname(entryFilePath), 'index.ts');
+    if (visited.has(ensureUnixPath(potentialIndexPath))) {
+      throw new Error(
+        `Entry point '${moduleId}' has an 'index.ts' parallel to the 'entryFilePath'. ` +
+          `The 'entryFilePath' should be updated to point to the 'index.ts' file.\n` +
+          `Full path: ${potentialIndexPath}`,
+      );
     }
   }
 
