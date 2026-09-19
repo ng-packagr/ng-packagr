@@ -11,7 +11,7 @@ import * as log from '../../utils/log';
 import { ConditionalExport, generatePackageExports, generateWatchVersion } from '../../utils/package-json';
 import { ensureUnixPath } from '../../utils/path';
 import { EntryPointNode, PackageNode, fileUrl, findPackageNode, getActiveEntryPoint, isEntryPoint } from '../nodes';
-import { NgPackagrOptions } from '../options.di';
+import { NgPackagrOptions } from '../options';
 import { NgPackage } from '../package';
 import { NgEntryPoint } from './entry-point';
 
