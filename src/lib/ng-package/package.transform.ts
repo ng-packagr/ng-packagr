@@ -174,10 +174,6 @@ export const buildTransformFactory2 = (
 
     await analyseSourcesTransform2(graph);
 
-    // TODO execute entry points by in degree (topological sort)
-    // await scheduleEntryPoints2(entryPointTransform2, options)(graph);
-    console.log(options, entryPointTransform2); // TODO scheduling of the entry point is the real blocker
-
     // Calculate node/dependency depth and determine build order
     const depGraph = new DepGraph({ circular: false });
     const entryPoints = new Map<string, EntryPointNode>();
@@ -236,6 +232,7 @@ export const buildTransformFactory2 = (
     }
 
     while (readyQueue.length > 0) {
+console.log("peeking...", readyQueue);
       const id = readyQueue.shift();
       if (!id) {
         break;
@@ -246,7 +243,7 @@ export const buildTransformFactory2 = (
       ep.state = STATE_IN_PROGRESS;
 
       try {
-        entryPointTransform2(scopedGraph);
+        await entryPointTransform2(scopedGraph);
       } catch (err) {
         ep.state = STATE_ERROR;
         throw err;

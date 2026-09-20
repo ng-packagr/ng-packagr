@@ -105,7 +105,6 @@ export function setDependenciesTsConfigPaths(
   entryPoints: EntryPointNode[],
   pointToSource = false,
 ): ParsedConfiguration {
-console.log("parsedTsConfig", parsedTsConfig);
   const tsConfig = JSON.parse(JSON.stringify(parsedTsConfig));
 
   // Add paths mappings for dependencies

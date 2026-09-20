@@ -59,9 +59,7 @@ export async function buildNgPackage(
   graph.put(entryPoints);
 
   const initTs = initTsConfigTransformFactory2(tsConfig);
-  initTs(graph);
-
-  console.log("graph...", graph);
+  await initTs(graph);
 
   // XX: migrated from package.transform.ts
   const compileNgc = compileNgcTransformFactory2(StylesheetProcessor, normalizedOptions)
@@ -70,5 +68,5 @@ export async function buildNgPackage(
   const entryPointTransform = entryPointTransformFactory2(compileNgc, writeBundles, writePackages);
   const buildTransform = buildTransformFactory2(project, normalizedOptions, analyseSourcesTransform2, entryPointTransform);
 
-  buildTransform(graph);
+  await buildTransform(graph);
 }
