@@ -22,9 +22,8 @@ export async function buildNgPackage(
 ): Promise<void> {
   log.info(`Building Angular Package`);
 
+  // Normalize options
   const normalizedOptions = normalizeOptions(options);
-  console.log("options", normalizedOptions);
-  console.log("project", project);
 
   // XX: migrated from package.transform.ts
   const pkgUri = ngUrl(project);
@@ -62,11 +61,16 @@ export async function buildNgPackage(
   await initTs(graph);
 
   // XX: migrated from package.transform.ts
-  const compileNgc = compileNgcTransformFactory2(StylesheetProcessor, normalizedOptions)
-  const writeBundles = writeBundlesTransform2(normalizedOptions);
-  const writePackages = writePackageTansform2(normalizedOptions);
-  const entryPointTransform = entryPointTransformFactory2(compileNgc, writeBundles, writePackages);
-  const buildTransform = buildTransformFactory2(project, normalizedOptions, analyseSourcesTransform2, entryPointTransform);
+  const buildTransform = buildTransformFactory2(
+    project,
+    normalizedOptions,
+    analyseSourcesTransform2,
+    entryPointTransformFactory2(
+      compileNgcTransformFactory2(StylesheetProcessor, normalizedOptions),
+      writeBundlesTransform2(normalizedOptions),
+      writePackageTansform2(normalizedOptions)
+    )
+  );
 
   await buildTransform(graph);
 }

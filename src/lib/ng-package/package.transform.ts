@@ -232,7 +232,6 @@ export const buildTransformFactory2 = (
     }
 
     while (readyQueue.length > 0) {
-console.log("peeking...", readyQueue);
       const id = readyQueue.shift();
       if (!id) {
         break;

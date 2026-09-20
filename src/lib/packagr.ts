@@ -107,8 +107,11 @@ export class NgPackagr {
     const labsBuild = true; // XX... switch for promise vs. rxjs pipeline
     if (labsBuild) {
       const opts = options || this.options;
-      return buildNgPackage(opts, this.project, this.tsConfig);
+      return buildNgPackage(opts, this.project, this.tsConfig)
+        .finally((() => console.log("fininally finished!")));
     }
+
+    console.log("no no, never observable!")
 
     this.providers.push(provideOptions(options));
 

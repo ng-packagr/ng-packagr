@@ -27,5 +27,6 @@ export const build: Command<CliArguments, void> = opts => {
     throw new Error('No options provided to the build command.');
   }
 
-  return ngPackagr().forProject(opts.project).withTsConfig(opts.config).build({ watch: opts.watch, poll: opts.poll });
+  return ngPackagr().forProject(opts.project).withTsConfig(opts.config)
+    .build({ watch: opts.watch, poll: opts.poll });
 };
