@@ -1,7 +1,7 @@
 import Ajv, { ErrorObject, ValidateFunction } from 'ajv';
 import { NgPackageEntryConfig } from '../../ng-entrypoint.schema';
 import { NgPackageConfig } from '../../ng-package.schema';
-import * as log from '../utils/log';
+import log from '../utils/log';
 
 /** Lazily initialized ajv validator instance. */
 let ajvNgPackageSchemaValidator: ValidateFunction | undefined;

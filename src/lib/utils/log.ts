@@ -34,3 +34,12 @@ export const debug = (msg: string): void => {
     console.log(colors.inverse.cyan(`[debug] ${msg}`));
   }
 };
+
+export default {
+  error,
+  warn,
+  success,
+  info,
+  msg,
+  debug,
+};

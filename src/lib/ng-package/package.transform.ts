@@ -27,7 +27,7 @@ import { Transform } from '../graph/transform';
 import { shutdownSassWorkerPool } from '../styles/stylesheets/sass-language';
 import { colors } from '../utils/color';
 import { rmdir } from '../utils/fs';
-import * as log from '../utils/log';
+import log from '../utils/log';
 import { discoverPackages } from './discover-packages';
 import { EntryPointNode, PackageNode, findPackageNode, isEntryPoint, isEntryPointPending, ngUrl } from './nodes';
 import { NgPackagrOptions } from './options.di';

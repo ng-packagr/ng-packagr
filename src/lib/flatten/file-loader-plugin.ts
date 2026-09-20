@@ -2,7 +2,7 @@ import { dirname, extname, isAbsolute, resolve } from 'node:path';
 import type { Plugin } from 'rolldown';
 import { OutputFileCache } from '../ng-package/nodes';
 
-import * as log from '../utils/log';
+import log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 
 /**

@@ -1,8 +1,8 @@
 import { parse as parseJson } from 'jsonc-parser';
-import * as path from 'path';
+import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { glob } from 'tinyglobby';
 import { exists, readFile, stat } from '../utils/fs';
-import * as log from '../utils/log';
+import log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 import { NgEntryPoint } from './entry-point/entry-point';
 import { NgPackage } from './package';
@@ -56,15 +56,15 @@ async function readConfigFile(filePath: string): Promise<any> {
  * @return The user's package
  */
 async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = false): Promise<UserPackage | undefined> {
-  const fullPath = path.resolve(folderPathOrFilePath);
+  const fullPath = resolve(folderPathOrFilePath);
   const pathStats = await stat(fullPath);
-  const basePath = pathStats.isDirectory() ? fullPath : path.dirname(fullPath);
+  const basePath = pathStats.isDirectory() ? fullPath : dirname(fullPath);
 
   let ngPackageJson: unknown;
   if (pathStats.isDirectory()) {
-    ngPackageJson = await readConfigFile(path.join(basePath, 'ng-package.json'));
+    ngPackageJson = await readConfigFile(join(basePath, 'ng-package.json'));
     if (!ngPackageJson) {
-      ngPackageJson = await readConfigFile(path.join(basePath, 'ng-package.js'));
+      ngPackageJson = await readConfigFile(join(basePath, 'ng-package.js'));
     }
   } else {
     ngPackageJson = await readConfigFile(fullPath);
@@ -85,7 +85,7 @@ async function resolveUserPackage(folderPathOrFilePath: string, isSecondary = fa
 
     let packageJson: Record<string, unknown> = {};
     if (!isSecondary) {
-      const pkgJsonPath = path.join(basePath, 'package.json');
+      const pkgJsonPath = join(basePath, 'package.json');
       packageJson = await readConfigFile(pkgJsonPath);
 
       if (!packageJson) {
@@ -124,7 +124,7 @@ async function findSecondaryPackagesPaths(directoryPath: string, excludeFolder: 
 
   const filePaths = await glob(`**/ng-package.json`, { ignore, onlyFiles: true, cwd: directoryPath });
 
-  return filePaths.map(subpath => path.dirname(path.join(directoryPath, subpath)));
+  return filePaths.map(subpath => dirname(join(directoryPath, subpath)));
 }
 
 /**
@@ -135,23 +135,23 @@ async function findSecondaryPackagesPaths(directoryPath: string, excludeFolder: 
  */
 function secondaryEntryPoint(primary: NgEntryPoint, userPackage: UserPackage): NgEntryPoint {
   const { packageJson, ngPackageJson, basePath } = userPackage;
-  if (path.resolve(basePath) === path.resolve(primary.basePath)) {
+  if (resolve(basePath) === resolve(primary.basePath)) {
     log.error(`Cannot read secondary entry point. It's already a primary entry point. Path: ${basePath}`);
     throw new Error(`Secondary entry point is already a primary.`);
   }
 
-  const relativeSourcePath = path.relative(primary.basePath, basePath);
+  const relativeSourcePath = relative(primary.basePath, basePath);
   const secondaryModuleId = ensureUnixPath(`${primary.moduleId}/${relativeSourcePath}`);
 
   return new NgEntryPoint(packageJson, ngPackageJson, basePath, {
     moduleId: secondaryModuleId,
     primaryDestinationPath: primary.destinationPath,
-    destinationPath: path.join(primary.destinationPath, relativeSourcePath),
+    destinationPath: join(primary.destinationPath, relativeSourcePath),
   });
 }
 
 export async function discoverPackages({ project }: { project: string }): Promise<NgPackage> {
-  project = path.isAbsolute(project) ? project : path.resolve(project);
+  project = isAbsolute(project) ? project : resolve(project);
 
   const { packageJson, ngPackageJson, basePath } = await resolveUserPackage(project);
   const primary = new NgEntryPoint(packageJson, ngPackageJson, basePath);

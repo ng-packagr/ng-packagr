@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import * as path from 'path';
+import { resolve } from 'node:path';
 import { error } from '../lib/utils/log';
 import { build, execute, version as versionCommand } from '../public_api';
 
-const DEFAULT_PROJECT_PATH = path.resolve(process.cwd(), 'ng-package.json');
+const DEFAULT_PROJECT_PATH = resolve(process.cwd(), 'ng-package.json');
 
 function parseProjectPath(parsed: string): string {
   return parsed || DEFAULT_PROJECT_PATH;
@@ -24,7 +24,7 @@ program
     DEFAULT_PROJECT_PATH,
   )
   .option('-c, --config <config>', 'Path to a tsconfig file.', (value: string | undefined) =>
-    value ? path.resolve(value) : undefined,
+    value ? resolve(value) : undefined,
   );
 
 program.on('option:version', () => {

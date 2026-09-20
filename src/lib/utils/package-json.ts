@@ -1,7 +1,7 @@
-import * as path from 'path';
+import { relative } from 'node:path';
 import { NgEntryPoint } from '../ng-package/entry-point/entry-point';
 import { EntryPointNode } from '../ng-package/nodes';
-import * as log from './log';
+import log from './log';
 import { ensureUnixPath } from './path';
 
 export type PackageExports = Record<string, ConditionalExport | string>;
@@ -52,8 +52,7 @@ export function generatePackageExports(
     }
   };
 
-  const relativeUnixFromDestPath = (filePath: string) =>
-    './' + ensureUnixPath(path.relative(destinationPath, filePath));
+  const relativeUnixFromDestPath = (filePath: string) => './' + ensureUnixPath(relative(destinationPath, filePath));
 
   insertMappingOrError('./package.json', { default: './package.json' });
 
