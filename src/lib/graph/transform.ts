@@ -16,7 +16,7 @@ export interface Transform extends MonoTypeOperatorFunction<BuildGraph> {
   (source$: Observable<BuildGraph>): Observable<BuildGraph>;
 }
 
-interface PromiseBasedTransform {
+export interface PromiseBasedTransform {
   (graph: BuildGraph): Promise<BuildGraph | void>;
 }
 
