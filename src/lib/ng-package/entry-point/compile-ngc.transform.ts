@@ -1,18 +1,18 @@
 import { dirname } from 'node:path';
 import ora from 'ora';
 import ts from 'typescript';
-import { Transform, transformFromPromise } from '../../graph/transform';
+import { PromiseBasedTransform, Transform, transformFromPromise } from '../../graph/transform';
 import { compileSourceFiles } from '../../ngc/compile-source-files';
 import { StylesheetProcessor as StylesheetProcessorClass } from '../../styles/stylesheet-processor';
 import { setDependenciesTsConfigPaths } from '../../ts/tsconfig';
 import { findPackageNode, getActiveEntryPoint, isEntryPoint } from '../nodes';
 import { NgPackagrOptions } from '../options';
 
-export const compileNgcTransformFactory = (
+export const compileNgcTransformFactory2 = (
   StylesheetProcessor: typeof StylesheetProcessorClass,
   options: NgPackagrOptions,
-): Transform => {
-  return transformFromPromise(async graph => {
+): PromiseBasedTransform =>
+  async graph => {
     const spinner = ora({
       hideCursor: false,
       discardStdin: false,
@@ -67,5 +67,9 @@ export const compileNgcTransformFactory = (
     spinner.succeed();
 
     return graph;
-  });
-};
+  };
+
+export const compileNgcTransformFactory = (
+  StylesheetProcessor: typeof StylesheetProcessorClass,
+  options: NgPackagrOptions,
+): Transform => transformFromPromise(compileNgcTransformFactory2(StylesheetProcessor, options));

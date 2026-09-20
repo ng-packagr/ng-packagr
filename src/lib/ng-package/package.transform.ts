@@ -23,7 +23,7 @@ import {
 import { createFileWatch, invalidateEntryPointsAndCacheOnFileChange } from '../file-system/file-watcher';
 import { BuildGraph, ScopedBuildGraph } from '../graph/build-graph';
 import { Node, STATE_DONE, STATE_ERROR, STATE_IN_PROGRESS, STATE_PENDING } from '../graph/node';
-import { Transform } from '../graph/transform';
+import { PromiseBasedTransform, Transform } from '../graph/transform';
 import { shutdownSassWorkerPool } from '../styles/stylesheets/sass-language';
 import { colors } from '../utils/color';
 import { rmdir } from '../utils/fs';
@@ -159,6 +159,28 @@ const watchTransformFactory =
       }),
     );
   };
+
+
+export const buildTransformFactory2 = (
+  project: string,
+  options: NgPackagrOptions,
+  analyseSourcesTransform2: PromiseBasedTransform,
+  entryPointTransform2: PromiseBasedTransform
+): PromiseBasedTransform => {
+  return async (graph: BuildGraph): Promise<void> => {
+    const startTime = Date.now();
+    const pkgUri = ngUrl(project);
+    const ngPkg = graph.get(pkgUri);
+
+    await analyseSourcesTransform2(graph);
+
+    // TODO execute entry points by in degree (topological sort)
+    // await scheduleEntryPoints2(entryPointTransform2, options)(graph);
+    console.log(options, entryPointTransform2); // TODO scheduling of the entry point is the real blocker
+
+    printBuiltAngularPackage(ngPkg, startTime);
+  };
+}
 
 const buildTransformFactory =
   (project: string, options: NgPackagrOptions, analyseSourcesTransform: Transform, entryPointTransform: Transform) =>

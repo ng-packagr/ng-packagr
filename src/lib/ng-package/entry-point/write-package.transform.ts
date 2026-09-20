@@ -4,7 +4,7 @@ import { glob } from 'tinyglobby';
 import { AssetPattern } from '../../../ng-package.schema';
 import { BuildGraph } from '../../graph/build-graph';
 import { Node } from '../../graph/node';
-import { transformFromPromise } from '../../graph/transform';
+import { PromiseBasedTransform, transformFromPromise } from '../../graph/transform';
 import { colors } from '../../utils/color';
 import { copyFile, mkdir, rmdir, stat, writeFile } from '../../utils/fs';
 import log from '../../utils/log';
@@ -17,8 +17,8 @@ import { NgEntryPoint } from './entry-point';
 
 type CompilationMode = 'partial' | 'full' | undefined;
 
-export const writePackageTransform = (options: NgPackagrOptions) =>
-  transformFromPromise(async graph => {
+export const writePackageTansform2 = (options: NgPackagrOptions): PromiseBasedTransform =>
+  async graph => {
     const spinner = ora({ hideCursor: false, discardStdin: false });
     const entryPoints = graph.filter(isEntryPoint);
     const entryPoint = getActiveEntryPoint(graph);
@@ -108,7 +108,10 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
     }
 
     spinner.succeed(`Built ${ngEntryPoint.moduleId}`);
-  });
+  };
+
+export const writePackageTransform = (options: NgPackagrOptions) =>
+  transformFromPromise(writePackageTansform2(options));
 
 type AssetEntry = Exclude<AssetPattern, string>;
 

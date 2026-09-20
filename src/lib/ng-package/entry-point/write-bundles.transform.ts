@@ -3,7 +3,7 @@ import ora from 'ora';
 import type { OutputAsset, OutputChunk } from 'rolldown';
 import { invalidateEntryPointsAndCacheOnFileChange } from '../../file-system/file-watcher';
 import { rolldownBundleFile } from '../../flatten/rolldown';
-import { transformFromPromise } from '../../graph/transform';
+import { PromiseBasedTransform, transformFromPromise } from '../../graph/transform';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../../utils/cache';
 import { exists, mkdir, writeFile } from '../../utils/fs';
 import { ensureUnixPath } from '../../utils/path';
@@ -28,8 +28,8 @@ interface BundlesCache {
   types: CachedBundleFile[];
 }
 
-export const writeBundlesTransform = (options: NgPackagrOptions) =>
-  transformFromPromise(async graph => {
+export const writeBundlesTransform2 = (options: NgPackagrOptions): PromiseBasedTransform =>
+  async graph => {
     const entryPoint = getActiveEntryPoint(graph);
     const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
     const cache = entryPoint.cache;
@@ -165,4 +165,7 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
     if (cacheDirectory) {
       await saveCacheEntry(cacheDirectory, cacheKey, bundlesCache);
     }
-  });
+  };
+
+export const writeBundlesTransform = (options: NgPackagrOptions) =>
+  transformFromPromise(writeBundlesTransform2(options));

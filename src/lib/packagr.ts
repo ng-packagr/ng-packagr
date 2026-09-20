@@ -13,6 +13,7 @@ import {
   provideProject,
   provideTsConfig,
 } from './packagr.di';
+import { buildNgPackage } from './v23/build';
 
 /**
  * The original ng-packagr implemented on top of a rxjs-ified and di-jectable transformation pipeline.
@@ -22,6 +23,10 @@ import {
  * @link https://github.com/ng-packagr/ng-packagr/pull/572
  */
 export class NgPackagr {
+  private options: NgPackagrOptions;
+  private project: string;
+  private tsConfig: ParsedConfiguration | string;
+
   private buildTransform: InjectionToken<Transform> = PACKAGE_TRANSFORM.provide;
 
   constructor(private providers: Provider[]) {}
@@ -34,6 +39,7 @@ export class NgPackagr {
    * @deprecated use the options parameter in 'build' and 'watch' methods
    */
   public withOptions(options: NgPackagrOptions): NgPackagr {
+    this.options = options;
     this.providers.push(provideOptions(options));
 
     return this;
@@ -46,6 +52,7 @@ export class NgPackagr {
    * @return Self instance for fluent API
    */
   public forProject(project: string): NgPackagr {
+    this.project = project;
     this.providers.push(provideProject(project));
 
     return this;
@@ -72,6 +79,7 @@ export class NgPackagr {
    * @return Self instance for fluent API
    */
   public withTsConfig(defaultValues: ParsedConfiguration | string): NgPackagr {
+    this.tsConfig = defaultValues;
     this.providers.push(provideTsConfig(defaultValues));
 
     return this;
@@ -96,6 +104,10 @@ export class NgPackagr {
    * @return A promisified result of the transformation pipeline.
    */
   public build(options: NgPackagrOptions = {}): Promise<void> {
+    console.log("Building", this.options, this.project, this.tsConfig, buildNgPackage);
+    // const opts = options || this.options;
+    // return buildNgPackage(opts, this.project, this.tsConfig);
+
     this.providers.push(provideOptions(options));
 
     return this.buildAsObservable().toPromise();

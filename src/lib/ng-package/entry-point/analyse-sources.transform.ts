@@ -1,30 +1,28 @@
 import { readFileSync, statSync } from 'node:fs';
 import { basename, dirname, extname, join, resolve } from 'node:path';
-import { map, pipe } from 'rxjs';
 import ts from 'typescript';
 import { FileCache } from '../../file-system/file-cache';
 import { STATE_DONE } from '../../graph/node';
-import { Transform } from '../../graph/transform';
+import { PromiseBasedTransform, Transform, transformFromPromise } from '../../graph/transform';
 import { debug } from '../../utils/log';
 import { ensureUnixPath } from '../../utils/path';
 import { EntryPointNode, findPackageNode, isEntryPoint } from '../nodes';
+import { BuildGraph } from '../../graph/build-graph';
 
-export const analyseSourcesTransform: Transform = pipe(
-  map(graph => {
-    const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
-    const entryPointsMapped = new Map<string, EntryPointNode>(entryPoints.map(ep => [ep.data.entryPoint.moduleId, ep]));
-    const packageNode = findPackageNode(graph);
-    const primaryModuleId = packageNode.data.primary.moduleId;
+export const analyseSourcesTransform2: PromiseBasedTransform = async (graph: BuildGraph): Promise<void> => {
+  const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
+  const entryPointsMapped = new Map<string, EntryPointNode>(entryPoints.map(ep => [ep.data.entryPoint.moduleId, ep]));
+  const packageNode = findPackageNode(graph);
+  const primaryModuleId = packageNode.data.primary.moduleId;
 
-    for (const entryPoint of entryPoints) {
-      if (entryPoint.state !== STATE_DONE) {
-        analyseEntryPoint(entryPoint, entryPointsMapped, primaryModuleId);
-      }
+  for (const entryPoint of entryPoints) {
+    if (entryPoint.state !== STATE_DONE) {
+      analyseEntryPoint(entryPoint, entryPointsMapped, primaryModuleId);
     }
+  }
+};
 
-    return graph;
-  }),
-);
+export const analyseSourcesTransform: Transform = transformFromPromise(analyseSourcesTransform2);
 
 const JS_TO_TS_EXTENSIONS: Readonly<Record<string, readonly string[]>> = {
   '.js': ['.ts', '.tsx', '.d.ts'],
