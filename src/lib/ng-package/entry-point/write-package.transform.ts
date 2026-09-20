@@ -1,5 +1,5 @@
+import { basename, dirname, join, relative } from 'node:path';
 import ora, { type Ora } from 'ora';
-import * as path from 'path';
 import { glob } from 'tinyglobby';
 import { AssetPattern } from '../../../ng-package.schema';
 import { BuildGraph } from '../../graph/build-graph';
@@ -7,7 +7,7 @@ import { Node } from '../../graph/node';
 import { transformFromPromise } from '../../graph/transform';
 import { colors } from '../../utils/color';
 import { copyFile, mkdir, rmdir, stat, writeFile } from '../../utils/fs';
-import * as log from '../../utils/log';
+import log from '../../utils/log';
 import { ConditionalExport, generatePackageExports, generateWatchVersion } from '../../utils/package-json';
 import { ensureUnixPath } from '../../utils/path';
 import { EntryPointNode, PackageNode, fileUrl, findPackageNode, getActiveEntryPoint, isEntryPoint } from '../nodes';
@@ -40,7 +40,7 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
 
     // 6. WRITE PACKAGE.JSON
     const relativeUnixFromDestPath = (filePath: string) =>
-      ensureUnixPath(path.relative(ngEntryPoint.destinationPath, filePath));
+      ensureUnixPath(relative(ngEntryPoint.destinationPath, filePath));
 
     if (!ngEntryPoint.isSecondaryEntryPoint) {
       try {
@@ -56,14 +56,14 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
             }
 
             const packageJsonPath = ensureUnixPath(
-              path.join(path.relative(primary.destinationPath, data.entryPoint.destinationPath), 'package.json'),
+              join(relative(primary.destinationPath, data.entryPoint.destinationPath), 'package.json'),
             );
             nestedPackageJsons.push(packageJsonPath);
           }
 
           if (nestedPackageJsons.length) {
             await writeFile(
-              path.join(primary.destinationPath, '.npmignore'),
+              join(primary.destinationPath, '.npmignore'),
               `# Nested package.json's are only needed for development.\n${nestedPackageJsons.join('\n')}`,
             );
           }
@@ -95,7 +95,7 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
       // This is need for esbuild to secondary entry-points in dist correctly.
       await mkdir(ngEntryPoint.destinationPath, { recursive: true });
       await writeFile(
-        path.join(ngEntryPoint.destinationPath, 'package.json'),
+        join(ngEntryPoint.destinationPath, 'package.json'),
         JSON.stringify(
           {
             module: relativeUnixFromDestPath(destinationFiles.fesm2022),
@@ -135,23 +135,23 @@ async function copyAssets(
     if (typeof assetPath === 'object') {
       asset = { ...assetPath };
     } else {
-      const [isDir, isFile] = await stat(path.join(ngPackage.src, assetPath))
+      const [isDir, isFile] = await stat(join(ngPackage.src, assetPath))
         .then(stats => [stats.isDirectory(), stats.isFile()])
         .catch(() => [false, false]);
       if (isDir) {
         asset = { glob: '**/*', input: assetPath, output: assetPath };
       } else if (isFile) {
         // filenames are their own glob
-        asset = { glob: path.basename(assetPath), input: path.dirname(assetPath), output: path.dirname(assetPath) };
+        asset = { glob: basename(assetPath), input: dirname(assetPath), output: dirname(assetPath) };
       } else {
         asset = { glob: assetPath, input: '/', output: '/' };
       }
     }
 
-    asset.input = path.join(ngPackage.src, asset.input);
-    asset.output = path.join(ngPackage.dest, asset.output);
+    asset.input = join(ngPackage.src, asset.input);
+    asset.output = join(ngPackage.dest, asset.output);
 
-    const isAncestorPath = (target: string, datum: string) => path.relative(datum, target).startsWith('..');
+    const isAncestorPath = (target: string, datum: string) => relative(datum, target).startsWith('..');
     if (isAncestorPath(asset.input, ngPackage.src)) {
       throw new Error('Cannot read assets from a location outside of the project root.');
     }
@@ -171,8 +171,8 @@ async function copyAssets(
       followSymbolicLinks: asset.followSymlinks,
     });
     for (const filePath of filePaths) {
-      const fileSrcFullPath = path.join(asset.input, filePath);
-      const fileDestFullPath = path.join(asset.output, filePath);
+      const fileSrcFullPath = join(asset.input, filePath);
+      const fileDestFullPath = join(asset.output, filePath);
       const nodeUri = fileUrl(ensureUnixPath(fileSrcFullPath));
       let node = graph.get(nodeUri);
       if (!node) {
@@ -301,7 +301,7 @@ async function writePackageJson(
   }
 
   packageJson.name = entryPoint.moduleId;
-  await writeFile(path.join(entryPoint.destinationPath, 'package.json'), JSON.stringify(packageJson, undefined, 2));
+  await writeFile(join(entryPoint.destinationPath, 'package.json'), JSON.stringify(packageJson, undefined, 2));
 }
 
 function checkNonPeerDependencies(

@@ -1,4 +1,4 @@
-import * as path from 'path';
+import { isAbsolute, join, posix, relative, resolve } from 'node:path';
 import { NgPackageEntryConfig } from '../../../ng-entrypoint.schema';
 import { NgPackageConfig } from '../../../ng-package.schema';
 import { CssUrl } from '../../styles/css-url.enum';
@@ -65,7 +65,7 @@ export class NgEntryPoint {
 
   /** Absolute file path of the entry point's source code entry file. */
   public get entryFilePath(): string {
-    return path.resolve(this.basePath, this.entryFile);
+    return resolve(this.basePath, this.entryFile);
   }
 
   /** Whether or not the entrypoint is secondary */
@@ -75,7 +75,7 @@ export class NgEntryPoint {
 
   /** Absolute directory path of this entry point's 'package.json'. */
   public get destinationPath(): string {
-    return this.secondaryData ? this.secondaryData.destinationPath : path.resolve(this.basePath, this.$get('dest'));
+    return this.secondaryData ? this.secondaryData.destinationPath : resolve(this.basePath, this.$get('dest'));
   }
 
   public get destinationFiles(): DestinationFiles {
@@ -84,11 +84,11 @@ export class NgEntryPoint {
 
     if (this.secondaryData) {
       primaryDestPath = this.secondaryData.primaryDestinationPath;
-      secondaryDir = path.relative(primaryDestPath, this.secondaryData.destinationPath);
+      secondaryDir = relative(primaryDestPath, this.secondaryData.destinationPath);
     }
 
     const flatModuleFile = this.flatModuleFile;
-    const pathJoinWithDest = (...paths: string[]) => path.join(primaryDestPath, ...paths);
+    const pathJoinWithDest = (...paths: string[]) => join(primaryDestPath, ...paths);
 
     return {
       directory: ensureUnixPath(secondaryDir),
@@ -117,7 +117,7 @@ export class NgEntryPoint {
 
   public get entryFile(): string {
     // `./index.ts` -> `index.ts`
-    return path.posix.normalize(this.$get('lib.entryFile'));
+    return posix.normalize(this.$get('lib.entryFile'));
   }
 
   public get cssUrl(): CssUrl {
@@ -132,7 +132,7 @@ export class NgEntryPoint {
     const includePaths = this.$get('lib.styleIncludePaths') || [];
 
     return includePaths.map(includePath =>
-      path.isAbsolute(includePath) ? includePath : path.resolve(this.basePath, includePath),
+      isAbsolute(includePath) ? includePath : resolve(this.basePath, includePath),
     );
   }
 

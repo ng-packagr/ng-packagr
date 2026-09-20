@@ -1,4 +1,4 @@
-import * as fs from 'node:fs';
+import { statSync } from 'node:fs';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { TestHarness } from './test-harness';
 
@@ -50,15 +50,15 @@ describe('intra-dependent', () => {
     const secondaryFesmPath = harness.getFilePath('fesm2022/intra-dependent-secondary.mjs');
     const thirdFesmPath = harness.getFilePath('fesm2022/intra-dependent-third.mjs');
 
-    const primaryModifiedTime = fs.statSync(primaryFesmPath).mtimeMs;
-    const secondaryModifiedTime = fs.statSync(secondaryFesmPath).mtimeMs;
-    const thirdModifiedTime = fs.statSync(thirdFesmPath).mtimeMs;
+    const primaryModifiedTime = statSync(primaryFesmPath).mtimeMs;
+    const secondaryModifiedTime = statSync(secondaryFesmPath).mtimeMs;
+    const thirdModifiedTime = statSync(thirdFesmPath).mtimeMs;
     harness.copyTestCase('valid');
 
     harness.onComplete(() => {
-      expect(fs.statSync(primaryFesmPath).mtimeMs).to.greaterThan(primaryModifiedTime);
-      expect(fs.statSync(secondaryFesmPath).mtimeMs).to.greaterThan(secondaryModifiedTime);
-      expect(fs.statSync(thirdFesmPath).mtimeMs).to.equals(thirdModifiedTime);
+      expect(statSync(primaryFesmPath).mtimeMs).to.greaterThan(primaryModifiedTime);
+      expect(statSync(secondaryFesmPath).mtimeMs).to.greaterThan(secondaryModifiedTime);
+      expect(statSync(thirdFesmPath).mtimeMs).to.equals(thirdModifiedTime);
       done();
     });
   });

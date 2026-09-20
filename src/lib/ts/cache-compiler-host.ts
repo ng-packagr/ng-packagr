@@ -2,7 +2,7 @@ import type { CompilerHost, CompilerOptions } from '@angular/compiler-cli';
 import { createHash } from 'crypto';
 import { formatMessages } from 'esbuild';
 import assert from 'node:assert';
-import * as path from 'path';
+import { dirname, extname, resolve } from 'node:path';
 import ts from 'typescript';
 import { NgPackageConfig } from '../../ng-package.schema';
 import { FileCache } from '../file-system/file-cache';
@@ -83,7 +83,7 @@ export function cacheCompilerHost(
         return;
       }
 
-      const extension = path.extname(fileName);
+      const extension = extname(fileName);
       if (!sourceFiles?.length && extension === '.tsbuildinfo') {
         // Save builder info contents to specified location
         compilerHost.writeFile(fileName, data, writeByteOrderMark, onError, sourceFiles);
@@ -114,7 +114,7 @@ export function cacheCompilerHost(
     },
 
     resourceNameToFileName: (resourceName: string, containingFilePath: string) => {
-      const resourcePath = path.resolve(path.dirname(containingFilePath), resourceName);
+      const resourcePath = resolve(dirname(containingFilePath), resourceName);
       const containingNode = getNode(containingFilePath);
       const resourceNode = getNode(resourcePath);
       containingNode.dependsOn(resourceNode);
@@ -131,7 +131,7 @@ export function cacheCompilerHost(
           throw new Error(`Cannot read file ${fileName}.`);
         }
 
-        if (/(?:html?|svg)$/.test(path.extname(fileName))) {
+        if (/(?:html?|svg)$/.test(extname(fileName))) {
           // template
           cache.content = compilerHost.readFile(fileName);
         } else {

@@ -1,11 +1,11 @@
-import * as chokidar from 'chokidar';
-import { platform } from 'os';
-import * as path from 'path';
+import { FSWatcher, watch as chokidarWatch } from 'chokidar';
+import { platform } from 'node:os';
+import { resolve } from 'node:path';
 import { Observable, Observer } from 'rxjs';
 import { BuildGraph } from '../graph/build-graph';
 import { Node, STATE_PENDING } from '../graph/node';
 import { fileUrl, fileUrlPath, isEntryPoint } from '../ng-package/nodes';
-import * as log from '../utils/log';
+import log from '../utils/log';
 import { ensureUnixPath } from '../utils/path';
 import { FileCache } from './file-cache';
 
@@ -22,12 +22,12 @@ export function createFileWatch(
   ignoredPaths: string[] = [],
   poll?: number,
 ): {
-  watcher: chokidar.FSWatcher;
+  watcher: FSWatcher;
   onFileChange: Observable<FileChangedEvent>;
 } {
   log.debug(`Watching for changes: basePath: ${basePaths}, ignoredPaths: ${ignoredPaths}`);
 
-  const watch = chokidar.watch([], {
+  const watch = chokidarWatch([], {
     ignoreInitial: true,
     ignored: [
       /\.map$/,
@@ -60,7 +60,7 @@ export function createFileWatch(
     }
 
     observer.next({
-      filePath: ensureUnixPath(path.resolve(filePath)),
+      filePath: ensureUnixPath(resolve(filePath)),
       event,
     });
   };

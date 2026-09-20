@@ -1,6 +1,6 @@
-import * as nodePath from 'path';
+import { posix, win32 } from 'node:path';
 
-const PATH_REGEXP = new RegExp('\\' + nodePath.win32.sep, 'g');
+const PATH_REGEXP = new RegExp('\\' + win32.sep, 'g');
 const ensureUnixPathCache = new Map<string, string>();
 const IS_WINDOWS = process.platform === 'win32';
 
@@ -17,7 +17,7 @@ export const ensureUnixPath = IS_WINDOWS
 
       // we use a regex instead of the character literal due to a bug in some versions of node.js
       // the path separator needs to be preceded by an escape character
-      const normalizedPath = path.replace(PATH_REGEXP, nodePath.posix.sep);
+      const normalizedPath = path.replace(PATH_REGEXP, posix.sep);
       ensureUnixPathCache.set(path, normalizedPath);
 
       return normalizedPath;

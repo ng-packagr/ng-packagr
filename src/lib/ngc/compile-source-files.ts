@@ -6,7 +6,7 @@ import { findPackageNode, getActiveEntryPoint } from '../ng-package/nodes';
 import { NgPackagrOptions } from '../ng-package/options.di';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { augmentProgramWithVersioning, cacheCompilerHost } from '../ts/cache-compiler-host';
-import * as log from '../utils/log';
+import log from '../utils/log';
 
 interface BuilderWithBuildInfo {
   emitBuildInfo(writeFile?: ts.WriteFileCallback, cancellationToken?: ts.CancellationToken): ts.EmitResult;

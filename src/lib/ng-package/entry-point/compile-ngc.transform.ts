@@ -1,5 +1,5 @@
+import { dirname } from 'node:path';
 import ora from 'ora';
-import * as path from 'path';
 import ts from 'typescript';
 import { Transform, transformFromPromise } from '../../graph/transform';
 import { compileSourceFiles } from '../../ngc/compile-source-files';
@@ -52,8 +52,8 @@ export const compileNgcTransformFactory = (
         moduleResolutionCache,
         options,
         {
-          outDir: path.dirname(esm2022),
-          declarationDir: path.dirname(declarations),
+          outDir: dirname(esm2022),
+          declarationDir: dirname(declarations),
           declaration: true,
           target: ts.ScriptTarget.ES2022,
         },

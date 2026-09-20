@@ -1,7 +1,7 @@
 import { pipe, tap } from 'rxjs';
 import { STATE_DONE } from '../../graph/node';
 import { Transform } from '../../graph/transform';
-import * as log from '../../utils/log';
+import log from '../../utils/log';
 import { getActiveEntryPoint } from '../nodes';
 
 /**

@@ -1,4 +1,4 @@
-import * as path from 'path';
+import { join } from 'node:path';
 import { AssetPattern, NgPackageConfig } from '../../ng-package.schema';
 import { ensureUnixPath } from '../utils/path';
 import { NgEntryPoint } from './entry-point/entry-point';
@@ -59,7 +59,7 @@ export class NgPackage {
 
   /** Absolute path of the package's destination directory. */
   public get dest(): string {
-    const dest = path.join(this.basePath, this.primary.$get('dest'));
+    const dest = join(this.basePath, this.primary.$get('dest'));
 
     return ensureUnixPath(dest[dest.length - 1] === '/' ? dest.slice(0, -1) : dest);
   }

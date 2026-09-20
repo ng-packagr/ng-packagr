@@ -1,4 +1,4 @@
-import * as fs from 'node:fs';
+import { readFileSync, statSync } from 'node:fs';
 import { basename, dirname, extname, join, resolve } from 'node:path';
 import { map, pipe } from 'rxjs';
 import ts from 'typescript';
@@ -58,7 +58,7 @@ const RESOLUTION_EXTENSIONS: readonly string[] = [
 function checkFile(filePath: string, fileCache: FileCache): boolean {
   const entry = fileCache.getOrCreate(filePath);
   if (entry.exists === undefined) {
-    const stat = fs.statSync(filePath, { throwIfNoEntry: false });
+    const stat = statSync(filePath, { throwIfNoEntry: false });
     if (stat?.isFile()) {
       entry.exists = true;
     } else {
@@ -145,7 +145,7 @@ function analyseEntryPoint(
     const fileEntry = analyseSourcesFileCache.getOrCreate(currentFile);
     if (fileEntry.content === undefined) {
       try {
-        fileEntry.content = fs.readFileSync(currentFile, 'utf-8');
+        fileEntry.content = readFileSync(currentFile, 'utf-8');
         fileEntry.exists = true;
       } catch {
         continue;

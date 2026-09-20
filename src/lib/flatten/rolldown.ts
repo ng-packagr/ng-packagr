@@ -1,8 +1,8 @@
-import * as path from 'node:path';
+import { dirname, isAbsolute, join } from 'node:path';
 import { type OutputAsset, type OutputChunk, type RolldownPluginOption, rolldown } from 'rolldown';
 import { dts } from 'rolldown-plugin-dts';
 import { OutputFileCache } from '../ng-package/nodes';
-import * as log from '../utils/log';
+import log from '../utils/log';
 import { fileLoaderPlugin } from './file-loader-plugin';
 
 /**
@@ -25,7 +25,7 @@ export async function rolldownBundleFile(opts: RolldownOptions): Promise<{ files
   const dtsMode = opts.entry.endsWith('.d.ts');
   let outExtension: string;
   let plugins: RolldownPluginOption[];
-  const jail = path.dirname(opts.entry);
+  const jail = dirname(opts.entry);
 
   if (dtsMode) {
     outExtension = '.d.ts';
@@ -99,9 +99,9 @@ export async function rolldownBundleFile(opts: RolldownOptions): Promise<{ files
 function isExternalDependency(moduleId: string, parentId: string | undefined, jail: string): boolean {
   // more information about why we don't check for 'node_modules' path
   // https://github.com/rollup/rollup-plugin-node-resolve/issues/110#issuecomment-350353632
-  if (moduleId[0] === '.' || moduleId[0] === '/' || path.isAbsolute(moduleId)) {
+  if (moduleId[0] === '.' || moduleId[0] === '/' || isAbsolute(moduleId)) {
     // if it's either 'absolute', marked to embed, starts with a '.' or '/' or is the umd bundle and is tslib
-    return !parentId || !path.join(parentId, moduleId).startsWith(jail);
+    return !parentId || !join(parentId, moduleId).startsWith(jail);
   }
 
   return true;

@@ -1,7 +1,7 @@
 import findCacheDirectory from 'find-cache-directory';
 import { InjectionToken, Provider, ValueProvider } from 'injection-js';
-import { tmpdir } from 'os';
-import { resolve } from 'path';
+import { tmpdir } from 'node:os';
+import { resolve } from 'node:path';
 
 export const OPTIONS_TOKEN = new InjectionToken<NgPackagrOptions>(`ng.v5.options`);
 export interface NgPackagrOptions {

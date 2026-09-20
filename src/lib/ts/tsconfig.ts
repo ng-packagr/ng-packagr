@@ -1,10 +1,10 @@
 import type { AngularCompilerOptions, ParsedConfiguration } from '@angular/compiler-cli';
-import * as path from 'path';
+import { dirname, join } from 'node:path';
 import ts from 'typescript';
 import { EntryPointNode } from '../ng-package/nodes';
-import * as log from '../utils/log';
+import log from '../utils/log';
 
-export const defaultTsConfigPath = path.join(__dirname, 'conf', 'tsconfig.ngc.json');
+export const defaultTsConfigPath = join(__dirname, 'conf', 'tsconfig.ngc.json');
 /**
  * Reads the default TypeScript configuration.
  */
@@ -72,7 +72,7 @@ export async function initializeTsConfig(
   for (const currentEntryPoint of entryPoints) {
     const { entryPoint } = currentEntryPoint.data;
     log.debug(`Initializing tsconfig for ${entryPoint.moduleId}`);
-    const basePath = path.dirname(entryPoint.entryFilePath);
+    const basePath = dirname(entryPoint.entryFilePath);
 
     // Resolve defaults from DI token and create a deep copy of the defaults
     const tsConfig: ParsedConfiguration = JSON.parse(JSON.stringify(defaultTsConfigParsed));
