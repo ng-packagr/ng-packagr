@@ -104,9 +104,11 @@ export class NgPackagr {
    * @return A promisified result of the transformation pipeline.
    */
   public build(options: NgPackagrOptions = {}): Promise<void> {
-    console.log("Building", this.options, this.project, this.tsConfig, buildNgPackage);
-    // const opts = options || this.options;
-    // return buildNgPackage(opts, this.project, this.tsConfig);
+    const labsBuild = true; // XX... switch for promise vs. rxjs pipeline
+    if (labsBuild) {
+      const opts = options || this.options;
+      return buildNgPackage(opts, this.project, this.tsConfig);
+    }
 
     this.providers.push(provideOptions(options));
 

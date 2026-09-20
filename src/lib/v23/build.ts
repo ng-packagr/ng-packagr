@@ -13,6 +13,7 @@ import { compileNgcTransformFactory2 } from "../ng-package/entry-point/compile-n
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { writeBundlesTransform2 } from "../ng-package/entry-point/write-bundles.transform";
 import { writePackageTansform2 } from "../ng-package/entry-point/write-package.transform";
+import { buildTransformFactory2 } from "../ng-package/package.transform";
 
 export async function buildNgPackage(
   options: NgPackagrOptions,
@@ -60,14 +61,14 @@ export async function buildNgPackage(
   const initTs = initTsConfigTransformFactory2(tsConfig);
   initTs(graph);
 
+  console.log("graph...", graph);
+
   // XX: migrated from package.transform.ts
   const compileNgc = compileNgcTransformFactory2(StylesheetProcessor, normalizedOptions)
   const writeBundles = writeBundlesTransform2(normalizedOptions);
   const writePackages = writePackageTansform2(normalizedOptions);
   const entryPointTransform = entryPointTransformFactory2(compileNgc, writeBundles, writePackages);
-  console.log(entryPointTransform, analyseSourcesTransform2);
-  
-  //const buildTransform = buildTransformFactory2(project, normalizedOptions, analyseSourcesTransform2, entryPointTransform);
+  const buildTransform = buildTransformFactory2(project, normalizedOptions, analyseSourcesTransform2, entryPointTransform);
 
-  //buildTransform(graph);
+  buildTransform(graph);
 }

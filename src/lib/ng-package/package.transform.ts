@@ -178,6 +178,85 @@ export const buildTransformFactory2 = (
     // await scheduleEntryPoints2(entryPointTransform2, options)(graph);
     console.log(options, entryPointTransform2); // TODO scheduling of the entry point is the real blocker
 
+    // Calculate node/dependency depth and determine build order
+    const depGraph = new DepGraph({ circular: false });
+    const entryPoints = new Map<string, EntryPointNode>();
+
+    for (const node of graph.values()) {
+      if (!isEntryPoint(node)) {
+        continue;
+      }
+
+      // Remove `ng://` prefix for better error messages
+      const from = node.url.startsWith('ng://') ? node.url.slice(5) : node.url;
+      entryPoints.set(from, node);
+      depGraph.addNode(from);
+
+      for (const dep of node.dependents) {
+        if (!isEntryPoint(dep)) {
+          continue;
+        }
+
+        const to = dep.url.startsWith('ng://') ? dep.url.slice(5) : dep.url;
+        depGraph.addNode(to);
+        depGraph.addDependency(from, to);
+      }
+    }
+
+    // Topological sort will throw a DependencyCycleError if cycles exist
+    const overallOrder = depGraph.overallOrder();
+    const pending = new Set<string>();
+
+    for (const id of overallOrder) {
+      const ep = entryPoints.get(id);
+      if (ep && ep.state !== STATE_DONE) {
+        pending.add(id);
+      }
+    }
+
+    if (pending.size === 0) {
+      return;
+    }
+
+    const inDegree = new Map<string, number>();
+    const readyQueue: string[] = [];
+
+    for (const id of pending) {
+      const directDeps = depGraph.directDependenciesOf(id);
+      let pendingDepsCount = 0;
+      for (const dep of directDeps) {
+        if (pending.has(dep)) {
+          pendingDepsCount++;
+        }
+      }
+      inDegree.set(id, pendingDepsCount);
+      if (pendingDepsCount === 0) {
+        readyQueue.push(id);
+      }
+    }
+
+    while (readyQueue.length > 0) {
+      const id = readyQueue.shift();
+      if (!id) {
+        break;
+      }
+
+      const ep = entryPoints.get(id);
+      const scopedGraph = new ScopedBuildGraph(graph, ep);
+      ep.state = STATE_IN_PROGRESS;
+
+      try {
+        entryPointTransform2(scopedGraph);
+      } catch (err) {
+        ep.state = STATE_ERROR;
+        throw err;
+      } finally {
+        if (!options.watch) {
+          ep.dispose();
+        }
+      }
+    }
+
     printBuiltAngularPackage(ngPkg, startTime);
   };
 }
