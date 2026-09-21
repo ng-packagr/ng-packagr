@@ -1,9 +1,9 @@
 import { pipe, tap } from 'rxjs';
+import { BuildGraph } from '../../graph/build-graph';
 import { STATE_DONE } from '../../graph/node';
 import { PromiseBasedTransform, Transform } from '../../graph/transform';
 import log from '../../utils/log';
 import { getActiveEntryPoint } from '../nodes';
-import { BuildGraph } from '../../graph/build-graph';
 
 /**
  * A transform that compiles an entry point from sources to distributable files (ESM, APF).

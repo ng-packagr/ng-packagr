@@ -2,12 +2,12 @@ import { readFileSync, statSync } from 'node:fs';
 import { basename, dirname, extname, join, resolve } from 'node:path';
 import ts from 'typescript';
 import { FileCache } from '../../file-system/file-cache';
+import { BuildGraph } from '../../graph/build-graph';
 import { STATE_DONE } from '../../graph/node';
 import { PromiseBasedTransform, Transform, transformFromPromise } from '../../graph/transform';
 import { debug } from '../../utils/log';
 import { ensureUnixPath } from '../../utils/path';
 import { EntryPointNode, findPackageNode, isEntryPoint } from '../nodes';
-import { BuildGraph } from '../../graph/build-graph';
 
 export const analyseSourcesTransform2: PromiseBasedTransform = async (graph: BuildGraph): Promise<void> => {
   const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);

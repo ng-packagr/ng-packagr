@@ -1,19 +1,20 @@
 import { ParsedConfiguration } from "@angular/compiler-cli";
-import { NgPackagrOptions, normalizeOptions } from "../ng-package/options";
-import { initTsConfigTransformFactory2 } from "../ng-package/entry-point/init-tsconfig.transform";
-import log from '../utils/log';
-import { EntryPointNode, PackageNode, ngUrl } from '../ng-package/nodes';
 import { BuildGraph } from "../graph/build-graph";
 import { STATE_PENDING } from "../graph/node";
-import { analyseSourcesTransform2 } from "../ng-package/entry-point/analyse-sources.transform";
-import { entryPointTransformFactory2 } from "../ng-package/entry-point/entry-point.transform";
-import { rmdir } from '../utils/fs';
 import { discoverPackages } from '../ng-package/discover-packages';
+import { analyseSourcesTransform2 } from "../ng-package/entry-point/analyse-sources.transform";
 import { compileNgcTransformFactory2 } from "../ng-package/entry-point/compile-ngc.transform";
-import { StylesheetProcessor } from '../styles/stylesheet-processor';
+import { entryPointTransformFactory2 } from "../ng-package/entry-point/entry-point.transform";
+import { initTsConfigTransformFactory2 } from "../ng-package/entry-point/init-tsconfig.transform";
 import { writeBundlesTransform2 } from "../ng-package/entry-point/write-bundles.transform";
 import { writePackageTansform2 } from "../ng-package/entry-point/write-package.transform";
+import { EntryPointNode, PackageNode, ngUrl } from '../ng-package/nodes';
+import { NgPackagrOptions, normalizeOptions } from "../ng-package/options";
 import { buildTransformFactory2 } from "../ng-package/package.transform";
+import { StylesheetProcessor } from '../styles/stylesheet-processor';
+import { shutdownSassWorkerPool } from "../styles/stylesheets/sass-language";
+import { rmdir } from '../utils/fs';
+import log from '../utils/log';
 
 export async function buildNgPackage(
   options: NgPackagrOptions,
@@ -72,5 +73,14 @@ export async function buildNgPackage(
     )
   );
 
-  await buildTransform(graph);
+  try {
+    await buildTransform(graph);
+  } finally {
+    for (const node of ngPkg.dependents) {
+      if (node instanceof EntryPointNode) {
+        node.cache?.stylesheetProcessor?.destroy();
+      }
+    }
+    shutdownSassWorkerPool();    
+  }
 }
