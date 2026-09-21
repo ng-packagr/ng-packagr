@@ -243,6 +243,17 @@ export const buildTransformFactory2 = (
 
       try {
         await entryPointTransform2(scopedGraph);
+
+        // TODO... readyQieie..pending?!?
+        /*
+                            if (pending.has(depId)) {
+                      const remaining = (inDegree.get(depId) ?? 1) - 1;
+                      inDegree.set(depId, remaining);
+                      if (remaining === 0) {
+                        readyQueue.push(depId);
+                      }
+                    }
+*/
       } catch (err) {
         ep.state = STATE_ERROR;
         throw err;
