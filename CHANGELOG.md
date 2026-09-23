@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.3.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/22.2.0...22.3.0-next.0) (2026-09-23)
+
 ## [22.2.0](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-rc.0...22.2.0) (2026-09-23)
 
 
