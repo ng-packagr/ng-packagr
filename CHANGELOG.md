@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.2.0](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-rc.0...22.2.0) (2026-09-23)
+
+
+### Bug Fixes
+
+* **ng-packagr:** name the unknown option in a schema validation error ([1ab153a](https://github.com/ng-packagr/ng-packagr/commit/1ab153a2e7ba36b1931a696d1c9c483b86bbe2db)), closes [#2226](https://github.com/ng-packagr/ng-packagr/issues/2226)
+* **ng-packagr:** only reject a parallel index.ts when it is imported ([b633e1f](https://github.com/ng-packagr/ng-packagr/commit/b633e1f108c4c62a6e525a17fa3677d89d58f76b))
+* **ng-packagr:** scope Sass package resolution caching for stylesheets in node_modules ([80c0ce8](https://github.com/ng-packagr/ng-packagr/commit/80c0ce8345764f6119c4dfbcc74cd49494f2f4fa))
+
 ## [22.2.0-rc.0](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-next.6...22.2.0-rc.0) (2026-09-16)
 
 
