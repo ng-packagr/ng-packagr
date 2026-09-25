@@ -1,5 +1,4 @@
 import { join } from 'node:path';
-import ora from 'ora';
 import type { OutputAsset, OutputChunk } from 'rolldown';
 import { invalidateEntryPointsAndCacheOnFileChange } from '../../file-system/file-watcher';
 import { rolldownBundleFile } from '../../flatten/rolldown';
@@ -7,6 +6,7 @@ import { transformFromPromise } from '../../graph/transform';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../../utils/cache';
 import { exists, mkdir, writeFile } from '../../utils/fs';
 import { ensureUnixPath } from '../../utils/path';
+import { openSpinner } from '../../utils/spinner';
 import { getActiveEntryPoint } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 
@@ -34,10 +34,7 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
     const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
     const cache = entryPoint.cache;
     const { fesm2022Dir, esm2022, declarations, declarationsDir } = destinationFiles;
-    const spinner = ora({
-      hideCursor: false,
-      discardStdin: false,
-    });
+    const spinner = openSpinner(undefined, graph);
 
     const cacheKey = await generateKey(
       ngEntryPoint.moduleId,
