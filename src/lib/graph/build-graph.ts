@@ -25,6 +25,7 @@ export interface Traversable<T> {
  * Technically, it's implemented as a map-like collection with references between map entries.
  */
 export class BuildGraph implements Traversable<Node> {
+  readonly isParallel: boolean = false;
   readonly store: Map<string, Node>;
   private _watcher?: FSWatcher;
 
@@ -126,6 +127,7 @@ export class ScopedBuildGraph<T extends Node = Node> extends BuildGraph {
   constructor(
     readonly parentGraph: BuildGraph,
     readonly activeEntryPoint: T,
+    override readonly isParallel = false,
   ) {
     super(parentGraph.store);
   }

@@ -248,6 +248,7 @@ const scheduleEntryPoints = (epTransform: Transform, options: NgPackagrOptions):
           }
 
           const maxConcurrency = Math.max(1, Math.min(availableParallelism() - 1, 8));
+          const isParallel = maxConcurrency > 1 && pending.size > 1;
           let activeCount = 0;
           let buildError: unknown = null;
           let isCancelled = false;
@@ -318,7 +319,7 @@ const scheduleEntryPoints = (epTransform: Transform, options: NgPackagrOptions):
 
               activeCount++;
 
-              const scopedGraph = new ScopedBuildGraph(graph, ep);
+              const scopedGraph = new ScopedBuildGraph(graph, ep, isParallel);
               const run$ = of(scopedGraph).pipe(
                 tap(() => {
                   ep.state = STATE_IN_PROGRESS;
