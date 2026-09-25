@@ -1,10 +1,10 @@
 import { dirname } from 'node:path';
-import ora from 'ora';
 import ts from 'typescript';
 import { Transform, transformFromPromise } from '../../graph/transform';
 import { compileSourceFiles } from '../../ngc/compile-source-files';
 import { StylesheetProcessor as StylesheetProcessorClass } from '../../styles/stylesheet-processor';
 import { setDependenciesTsConfigPaths } from '../../ts/tsconfig';
+import { openSpinner } from '../../utils/spinner';
 import { findPackageNode, getActiveEntryPoint, isEntryPoint } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 
@@ -13,10 +13,7 @@ export const compileNgcTransformFactory = (
   options: NgPackagrOptions,
 ): Transform => {
   return transformFromPromise(async graph => {
-    const spinner = ora({
-      hideCursor: false,
-      discardStdin: false,
-    });
+    const spinner = openSpinner(undefined, graph);
 
     const entryPoints = graph.filter(isEntryPoint);
     const ngPackageNode = findPackageNode(graph);

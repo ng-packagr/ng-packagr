@@ -1,5 +1,5 @@
 import { basename, dirname, join, relative } from 'node:path';
-import ora, { type Ora } from 'ora';
+import type { Ora } from 'ora';
 import { glob } from 'tinyglobby';
 import { AssetPattern } from '../../../ng-package.schema';
 import { BuildGraph } from '../../graph/build-graph';
@@ -10,6 +10,7 @@ import { copyFile, mkdir, rmdir, stat, writeFile } from '../../utils/fs';
 import log from '../../utils/log';
 import { ConditionalExport, generatePackageExports, generateWatchVersion } from '../../utils/package-json';
 import { ensureUnixPath } from '../../utils/path';
+import { openSpinner } from '../../utils/spinner';
 import { EntryPointNode, PackageNode, fileUrl, findPackageNode, getActiveEntryPoint, isEntryPoint } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 import { NgPackage } from '../package';
@@ -19,7 +20,7 @@ type CompilationMode = 'partial' | 'full' | undefined;
 
 export const writePackageTransform = (options: NgPackagrOptions) =>
   transformFromPromise(async graph => {
-    const spinner = ora({ hideCursor: false, discardStdin: false });
+    const spinner = openSpinner(undefined, graph);
     const entryPoints = graph.filter(isEntryPoint);
     const entryPoint = getActiveEntryPoint(graph);
     const ngEntryPoint: NgEntryPoint = entryPoint.data.entryPoint;
