@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [22.2.2](https://github.com/ng-packagr/ng-packagr/compare/22.2.1...22.2.2) (2026-09-28)
+
+
+### Bug Fixes
+
+* **ng-packagr:** disable spinners during parallel entry-point builds ([53364ab](https://github.com/ng-packagr/ng-packagr/commit/53364ab33387653545e7926543c2c821654b7485)), closes [#3447](https://github.com/ng-packagr/ng-packagr/issues/3447)
+
 ### [22.2.1](https://github.com/ng-packagr/ng-packagr/compare/22.2.0...22.2.1) (2026-09-23)
 
 ## [22.2.0](https://github.com/ng-packagr/ng-packagr/compare/22.2.0-rc.0...22.2.0) (2026-09-23)
