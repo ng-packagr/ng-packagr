@@ -182,6 +182,13 @@ export async function compileSourceFiles(
   const errorDiagnostics = [];
   for (const diagnostic of allDiagnostics) {
     if (diagnostic.category === ts.DiagnosticCategory.Error) {
+      if (diagnostic.code === 6059) {
+        const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '');
+        if (message.includes('.ngtypecheck.ts')) {
+          continue;
+        }
+      }
+
       errorDiagnostics.push(diagnostic);
     } else {
       otherDiagnostics.push(diagnostic);
