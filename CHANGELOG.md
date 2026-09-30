@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [22.2.3](https://github.com/ng-packagr/ng-packagr/compare/22.2.2...22.2.3) (2026-09-30)
+
+
+### Bug Fixes
+
+* **ng-packagr:** ignore TS6059 on Angular compiler generated shims ([154c430](https://github.com/ng-packagr/ng-packagr/commit/154c43030c46b233841ef3556884adf7fe83d548)), closes [#3449](https://github.com/ng-packagr/ng-packagr/issues/3449)
+
 ### [22.2.2](https://github.com/ng-packagr/ng-packagr/compare/22.2.1...22.2.2) (2026-09-28)
 
 
