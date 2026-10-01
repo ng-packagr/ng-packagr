@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [22.2.4](https://github.com/ng-packagr/ng-packagr/compare/22.2.3...22.2.4) (2026-10-01)
+
+
+### Bug Fixes
+
+* **ng-packagr:** revert parallel entry point scheduling ([a440269](https://github.com/ng-packagr/ng-packagr/commit/a440269754997a8520c4514a267154864f348fff)), closes [#3451](https://github.com/ng-packagr/ng-packagr/issues/3451)
+
 ### [22.2.3](https://github.com/ng-packagr/ng-packagr/compare/22.2.2...22.2.3) (2026-09-30)
 
 
