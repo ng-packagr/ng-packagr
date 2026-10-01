@@ -6,7 +6,7 @@ import { dirname, extname, resolve } from 'node:path';
 import ts from 'typescript';
 import { NgPackageConfig } from '../../ng-package.schema';
 import { FileCache } from '../file-system/file-cache';
-import { BuildGraph, isScopedBuildGraph } from '../graph/build-graph';
+import { BuildGraph } from '../graph/build-graph';
 import { Node } from '../graph/node';
 import { EntryPointNode, fileUrl } from '../ng-package/nodes';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
@@ -23,15 +23,14 @@ export function cacheCompilerHost(
   sourcesFileCache: FileCache = entryPoint.cache.sourcesFileCache,
 ): CompilerHost {
   const compilerHost = ts.createIncrementalCompilerHost(compilerOptions);
-  const rootGraph = isScopedBuildGraph(graph) ? graph.parentGraph : graph;
 
   const getNode = (fileName: string) => {
     const nodeUri = fileUrl(ensureUnixPath(fileName));
-    let node = rootGraph.get(nodeUri);
+    let node = graph.get(nodeUri);
 
     if (!node) {
       node = new Node(nodeUri);
-      rootGraph.put(node);
+      graph.put(node);
     }
 
     return node;

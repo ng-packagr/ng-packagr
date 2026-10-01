@@ -1,11 +1,12 @@
 import { dirname } from 'node:path';
+import ora from 'ora';
 import ts from 'typescript';
+import { isInProgress } from '../../graph/select';
 import { Transform, transformFromPromise } from '../../graph/transform';
 import { compileSourceFiles } from '../../ngc/compile-source-files';
 import { StylesheetProcessor as StylesheetProcessorClass } from '../../styles/stylesheet-processor';
 import { setDependenciesTsConfigPaths } from '../../ts/tsconfig';
-import { openSpinner } from '../../utils/spinner';
-import { findPackageNode, getActiveEntryPoint, isEntryPoint } from '../nodes';
+import { EntryPointNode, PackageNode, isEntryPoint, isPackage } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 
 export const compileNgcTransformFactory = (
@@ -13,11 +14,27 @@ export const compileNgcTransformFactory = (
   options: NgPackagrOptions,
 ): Transform => {
   return transformFromPromise(async graph => {
-    const spinner = openSpinner(undefined, graph);
+    const spinner = ora({
+      hideCursor: false,
+      discardStdin: false,
+    });
 
-    const entryPoints = graph.filter(isEntryPoint);
-    const ngPackageNode = findPackageNode(graph);
-    const entryPoint = getActiveEntryPoint(graph);
+    const entryPoints: EntryPointNode[] = [];
+    let entryPoint: EntryPointNode;
+    let ngPackageNode: PackageNode;
+
+    for (const node of graph.values()) {
+      if (isEntryPoint(node)) {
+        entryPoints.push(node);
+
+        if (isInProgress(node)) {
+          entryPoint = node;
+        }
+      } else if (isPackage(node)) {
+        ngPackageNode = node;
+      }
+    }
+
     const projectBasePath = ngPackageNode.data.primary.basePath;
 
     try {
@@ -25,7 +42,7 @@ export const compileNgcTransformFactory = (
       const tsConfig = setDependenciesTsConfigPaths(entryPoint.data.tsConfig, entryPoints);
 
       // Compile TypeScript sources
-      const { esm2022, declarations } = entryPoint.data.destinationFiles;
+      const { esm2022: esm2022, declarations } = entryPoint.data.destinationFiles;
       const { basePath, cssUrl, styleIncludePaths, sass } = entryPoint.data.entryPoint;
       const { moduleResolutionCache } = entryPoint.cache;
 
@@ -59,6 +76,10 @@ export const compileNgcTransformFactory = (
     } catch (error) {
       spinner.fail();
       throw error;
+    } finally {
+      if (!options.watch) {
+        entryPoint.cache.stylesheetProcessor?.destroy();
+      }
     }
 
     spinner.succeed();

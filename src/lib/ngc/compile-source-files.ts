@@ -2,7 +2,7 @@ import { CompilerOptions, NgtscProgram, ParsedConfiguration, formatDiagnostics }
 import { join } from 'node:path';
 import ts from 'typescript';
 import { BuildGraph } from '../graph/build-graph';
-import { findPackageNode, getActiveEntryPoint } from '../ng-package/nodes';
+import { findEntryPointInProgress, findPackageNode } from '../ng-package/nodes';
 import { NgPackagrOptions } from '../ng-package/options.di';
 import { StylesheetProcessor } from '../styles/stylesheet-processor';
 import { augmentProgramWithVersioning, cacheCompilerHost } from '../ts/cache-compiler-host';
@@ -26,7 +26,7 @@ export async function compileSourceFiles(
 ) {
   const { cacheDirectory, watch, cacheEnabled } = options;
   const tsConfigOptions: CompilerOptions = { ...tsConfig.options, ...extraOptions };
-  const entryPoint = getActiveEntryPoint(graph);
+  const entryPoint = findEntryPointInProgress(graph);
   const ngPackageNode = findPackageNode(graph);
   const inlineStyleLanguage = ngPackageNode.data.inlineStyleLanguage;
 
@@ -182,13 +182,6 @@ export async function compileSourceFiles(
   const errorDiagnostics = [];
   for (const diagnostic of allDiagnostics) {
     if (diagnostic.category === ts.DiagnosticCategory.Error) {
-      if (diagnostic.code === 6059) {
-        const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '');
-        if (message.includes('.ngtypecheck.ts')) {
-          continue;
-        }
-      }
-
       errorDiagnostics.push(diagnostic);
     } else {
       otherDiagnostics.push(diagnostic);
