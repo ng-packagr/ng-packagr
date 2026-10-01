@@ -25,23 +25,10 @@ export interface Traversable<T> {
  * Technically, it's implemented as a map-like collection with references between map entries.
  */
 export class BuildGraph implements Traversable<Node> {
-  readonly isParallel: boolean = false;
-  readonly store: Map<string, Node>;
-  private _watcher?: FSWatcher;
+  private store = new Map<string, Node>();
+  watcher?: FSWatcher;
 
-  constructor(store?: Map<string, Node>) {
-    this.store = store ?? new Map<string, Node>();
-  }
-
-  get watcher(): FSWatcher | undefined {
-    return this._watcher;
-  }
-
-  set watcher(watcher: FSWatcher | undefined) {
-    this._watcher = watcher;
-  }
-
-  put(value: Node | Node[]) {
+  public put(value: Node | Node[]) {
     if (value instanceof Array) {
       for (const node of value) {
         this.insert(node);
@@ -70,23 +57,23 @@ export class BuildGraph implements Traversable<Node> {
     this.store.set(node.url, node);
   }
 
-  get(url: string): Node {
+  public get(url: string): Node {
     return this.store.get(url);
   }
 
-  has(url: string): boolean {
+  public has(url: string): boolean {
     return this.store.has(url);
   }
 
-  entries(): Node[] {
+  public entries(): Node[] {
     return Array.from(this.store.values());
   }
 
-  values(): IterableIterator<Node> {
+  public values(): IterableIterator<Node> {
     return this.store.values();
   }
 
-  some<T extends Node = Node>(by: ComplexPredicate<Node, T>): boolean {
+  public some<T extends Node = Node>(by: ComplexPredicate<Node, T>): boolean {
     for (const node of this.store.values()) {
       if (by(node)) {
         return true;
@@ -96,7 +83,7 @@ export class BuildGraph implements Traversable<Node> {
     return false;
   }
 
-  filter<T extends Node = Node>(by: ComplexPredicate<Node, T>): T[] {
+  public filter<T extends Node = Node>(by: ComplexPredicate<Node, T>): T[] {
     const result: T[] = [];
 
     for (const node of this.store.values()) {
@@ -108,7 +95,7 @@ export class BuildGraph implements Traversable<Node> {
     return result;
   }
 
-  find<T extends Node = Node>(by: ComplexPredicate<Node, T>): T | undefined {
+  public find<T extends Node = Node>(by: ComplexPredicate<Node, T>): T | undefined {
     for (const node of this.store.values()) {
       if (by(node)) {
         return node as T;
@@ -121,26 +108,4 @@ export class BuildGraph implements Traversable<Node> {
   get size(): number {
     return this.store.size;
   }
-}
-
-export class ScopedBuildGraph<T extends Node = Node> extends BuildGraph {
-  constructor(
-    readonly parentGraph: BuildGraph,
-    readonly activeEntryPoint: T,
-    override readonly isParallel = false,
-  ) {
-    super(parentGraph.store);
-  }
-
-  override get watcher(): FSWatcher | undefined {
-    return this.parentGraph.watcher;
-  }
-
-  override set watcher(watcher: FSWatcher | undefined) {
-    this.parentGraph.watcher = watcher;
-  }
-}
-
-export function isScopedBuildGraph<T extends Node = Node>(graph: BuildGraph): graph is ScopedBuildGraph<T> {
-  return graph instanceof ScopedBuildGraph;
 }

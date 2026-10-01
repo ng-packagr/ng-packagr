@@ -1,4 +1,5 @@
 import { join } from 'node:path';
+import ora from 'ora';
 import type { OutputAsset, OutputChunk } from 'rolldown';
 import { invalidateEntryPointsAndCacheOnFileChange } from '../../file-system/file-watcher';
 import { rolldownBundleFile } from '../../flatten/rolldown';
@@ -6,8 +7,7 @@ import { transformFromPromise } from '../../graph/transform';
 import { generateKey, readCacheEntry, saveCacheEntry } from '../../utils/cache';
 import { exists, mkdir, writeFile } from '../../utils/fs';
 import { ensureUnixPath } from '../../utils/path';
-import { openSpinner } from '../../utils/spinner';
-import { getActiveEntryPoint } from '../nodes';
+import { findEntryPointInProgress } from '../nodes';
 import { NgPackagrOptions } from '../options.di';
 
 type CachedBundleFile =
@@ -30,11 +30,14 @@ interface BundlesCache {
 
 export const writeBundlesTransform = (options: NgPackagrOptions) =>
   transformFromPromise(async graph => {
-    const entryPoint = getActiveEntryPoint(graph);
+    const entryPoint = findEntryPointInProgress(graph);
     const { destinationFiles, entryPoint: ngEntryPoint, tsConfig } = entryPoint.data;
     const cache = entryPoint.cache;
     const { fesm2022Dir, esm2022, declarations, declarationsDir } = destinationFiles;
-    const spinner = openSpinner(undefined, graph);
+    const spinner = ora({
+      hideCursor: false,
+      discardStdin: false,
+    });
 
     const cacheKey = await generateKey(
       ngEntryPoint.moduleId,
@@ -43,12 +46,8 @@ export const writeBundlesTransform = (options: NgPackagrOptions) =>
       tsConfig.options.compilationMode,
       (tsConfig.options.declarationMap ?? false).toString(),
     );
-    const hash = await generateKey(
-      [...cache.outputCache.entries()]
-        .sort(([a], [b]) => a.localeCompare(b))
-        .map(([p, { version }]) => `${p}:${version}`)
-        .join(':'),
-    );
+
+    const hash = await generateKey([...cache.outputCache.values()].map(({ version }) => version).join(':'));
     const cacheDirectory = options.cacheEnabled && options.cacheDirectory;
     if (cacheDirectory) {
       const cacheResult: BundlesCache = await readCacheEntry(options.cacheDirectory, cacheKey);
