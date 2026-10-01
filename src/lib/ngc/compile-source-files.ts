@@ -182,11 +182,12 @@ export async function compileSourceFiles(
   const errorDiagnostics = [];
   for (const diagnostic of allDiagnostics) {
     if (diagnostic.category === ts.DiagnosticCategory.Error) {
+      // Ignore TS6059: File is not under 'rootDir'.
+      // In ng-packagr, rootDir is scoped to each entry point's basePath.
+      // Sibling entry points and Angular compiler generated shims reside outside rootDir.
+      // ng-packagr handles output files and bundling via Rolldown, so rootDir directory structure checks do not apply.
       if (diagnostic.code === 6059) {
-        const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, '');
-        if (message.includes('.ngtypecheck.ts')) {
-          continue;
-        }
+        continue;
       }
 
       errorDiagnostics.push(diagnostic);
