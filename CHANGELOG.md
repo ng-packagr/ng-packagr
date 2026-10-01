@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.3.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/22.3.0-next.1...22.3.0-next.2) (2026-10-01)
+
+
+### Bug Fixes
+
+* **ng-packagr:** disable spinners during parallel entry-point builds ([eff8bb0](https://github.com/ng-packagr/ng-packagr/commit/eff8bb0049b78cd7bf9e6ea69bdda69f8519a037)), closes [#3447](https://github.com/ng-packagr/ng-packagr/issues/3447)
+* **ng-packagr:** ignore TS6059 on Angular compiler generated shims ([d1a9a3d](https://github.com/ng-packagr/ng-packagr/commit/d1a9a3dae8d58154c7428613273dbcca9c2f3d9f)), closes [#3449](https://github.com/ng-packagr/ng-packagr/issues/3449)
+* **ng-packagr:** revert parallel entry point scheduling ([4081e23](https://github.com/ng-packagr/ng-packagr/commit/4081e2366e54a391fab06bf69025d605ab4441d0)), closes [#3451](https://github.com/ng-packagr/ng-packagr/issues/3451)
+
 ## [22.3.0-next.1](https://github.com/ng-packagr/ng-packagr/compare/22.3.0-next.0...22.3.0-next.1) (2026-09-23)
 
 ## [22.3.0-next.0](https://github.com/ng-packagr/ng-packagr/compare/22.2.0...22.3.0-next.0) (2026-09-23)
