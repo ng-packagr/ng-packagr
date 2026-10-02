@@ -24,7 +24,7 @@ import {
 import { createFileWatch, invalidateEntryPointsAndCacheOnFileChange } from '../file-system/file-watcher';
 import { BuildGraph } from '../graph/build-graph';
 import { Node, STATE_DONE, STATE_ERROR, STATE_IN_PROGRESS, STATE_PENDING } from '../graph/node';
-import { Transform } from '../graph/transform';
+import { PromiseBasedTransform, Transform } from '../graph/transform';
 import { shutdownSassWorkerPool } from '../styles/stylesheets/sass-language';
 import { colors } from '../utils/color';
 import { rmdir } from '../utils/fs';
@@ -39,15 +39,13 @@ import {
   isEntryPointPending,
   ngUrl,
 } from './nodes';
-import { NgPackagrOptions } from './options.di';
+import { NgPackagrOptions } from './options';
 
 /**
  * A transformation for building an npm package:
  *
- *  - discoverPackages
- *  - options
  *  - initTsConfig
- *  - analyzeTsSources (thereby extracting template and stylesheet files)
+ *  - analyseSources
  *  - for each entry point
  *    - run the entryPontTransform
  *
@@ -170,6 +168,72 @@ const watchTransformFactory =
       }),
     );
   };
+
+export const buildTransformFactory2 = (
+  project: string,
+  options: NgPackagrOptions,
+  analyseSourcesTransform2: PromiseBasedTransform,
+  entryPointTransform2: PromiseBasedTransform,
+): PromiseBasedTransform => {
+  return async (graph: BuildGraph): Promise<void> => {
+    const startTime = Date.now();
+    const pkgUri = ngUrl(project);
+    const ngPkg = graph.get(pkgUri);
+
+    await analyseSourcesTransform2(graph);
+
+    // Calculate node/dependency depth and determine build order
+    const depGraph = new DepGraph({ circular: false });
+    for (const node of graph.values()) {
+      if (!isEntryPoint(node)) {
+        continue;
+      }
+
+      // Remove `ng://` prefix for better error messages
+      const from = node.url.substring(5);
+      depGraph.addNode(from);
+
+      for (const dep of node.dependents) {
+        if (!isEntryPoint(dep)) {
+          continue;
+        }
+
+        const to = dep.url.substring(5);
+        depGraph.addNode(to);
+        depGraph.addDependency(from, to);
+      }
+    }
+
+    // The array index is the depth.
+    const groups = depGraph.overallOrder().map(ngUrl);
+
+    for (const epUrl of groups) {
+      if (!epUrl) {
+        break;
+      }
+
+      const ep = graph.find(byEntryPoint().and(ep => ep.url === epUrl));
+      if (ep.state === STATE_DONE) {
+        // skip entry points that are already done - equivalent to `filter(ep => ep.state !== DONE)` (negated expression)
+        continue;
+      }
+      ep.state = STATE_IN_PROGRESS;
+
+      try {
+        await entryPointTransform2(graph);
+      } catch (err) {
+        ep.state = STATE_ERROR;
+        throw err;
+      } finally {
+        if (!options.watch) {
+          ep.dispose();
+        }
+      }
+    }
+
+    printBuiltAngularPackage(ngPkg, startTime);
+  };
+};
 
 const buildTransformFactory =
   (project: string, options: NgPackagrOptions, analyseSourcesTransform: Transform, entryPointTransform: Transform) =>
