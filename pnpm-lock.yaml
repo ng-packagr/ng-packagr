@@ -188,8 +188,8 @@ importers:
         specifier: ~22.2.0-next
         version: 22.2.0-rc.0(262213ab498e60641658d4239e6deda7)
       '@angular/ng-dev':
-        specifier: https://github.com/angular/dev-infra-private-ng-dev-builds.git#dfd8e03750c5c37eee602c47b8d6bb625fcf085e
-        version: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/dfd8e03750c5c37eee602c47b8d6bb625fcf085e
+        specifier: https://github.com/angular/dev-infra-private-ng-dev-builds.git#ab7cfd62d4983d6a8fea23974a0cd7da0ec6c265
+        version: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/ab7cfd62d4983d6a8fea23974a0cd7da0ec6c265
       '@angular/platform-browser':
         specifier: ~22.2.0-next
         version: 22.2.0-rc.0(@angular/common@22.2.0-rc.0(@angular/core@22.2.0-rc.0(@angular/compiler@22.2.0-rc.0)(rxjs@7.8.2))(rxjs@7.8.2))(@angular/core@22.2.0-rc.0(@angular/compiler@22.2.0-rc.0)(rxjs@7.8.2))
@@ -478,9 +478,9 @@ packages:
       '@angular/platform-browser': ^22.0.0-0 || ^22.1.0-0 || ^22.2.0-0 || ^22.3.0-0 || ^23.0.0-0
       rxjs: ^6.5.3 || ^7.4.0
 
-  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/dfd8e03750c5c37eee602c47b8d6bb625fcf085e':
-    resolution: {gitHosted: true, integrity: sha512-g5u5DSugzVdzJB9fFogjRRE570/yN9mrqCbYAZURvwYmKIwxS0s3dxzgzoVrWvzrcx646CuCVSWbTYwjP3hJEw==, tarball: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/dfd8e03750c5c37eee602c47b8d6bb625fcf085e}
-    version: 0.0.0-3b181b7da71ce256d7dc44532ed3df8198f7d853
+  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/ab7cfd62d4983d6a8fea23974a0cd7da0ec6c265':
+    resolution: {gitHosted: true, integrity: sha512-spGbNuYDiw9T3qzr6If6RyvnsRzyDMM4cjAVMJtJjf2G9cpNx8vZFoeFoD0hr0+1Wz736saRR3aM+i1gOLJkcw==, tarball: https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/ab7cfd62d4983d6a8fea23974a0cd7da0ec6c265}
+    version: 0.0.0-438f31efd5c7e1267eaadb4636f7ec0a6c1a088f
     hasBin: true
 
   '@angular/platform-browser@22.2.0-rc.0':
@@ -1061,8 +1061,8 @@ packages:
     resolution: {integrity: sha512-IJn+8A3QZJfe7FUtWqHVNo3xJs7KFpurCWGWCiCz3oEh+BkRymKZ1QxfAbU2yGMDzTytLGQ2IV6T2r3cuo75/w==}
     engines: {node: '>=18'}
 
-  '@google/genai@2.24.0':
-    resolution: {integrity: sha512-bIu5eoxF1AaPWs9ivmUJGp1RpDHyapoODvWvnkzRDx2CTIW6UJXFhDdjj0BlRve3ZHMMuEkQBVrA/ALqpW4apA==}
+  '@google/genai@2.25.0':
+    resolution: {integrity: sha512-g1hyidWxahzIg+hh+lLqPeBJl+Fu6051we2QKhFXdWgE4yGYf8PWOS8S3mMAdpe3eLx3KCWmhQR7GWyd3LYT1A==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       '@modelcontextprotocol/sdk': ^1.25.2
@@ -5663,12 +5663,12 @@ snapshots:
       rxjs: 7.8.2
       tslib: 2.8.1
 
-  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/dfd8e03750c5c37eee602c47b8d6bb625fcf085e':
+  '@angular/ng-dev@https://codeload.github.com/angular/dev-infra-private-ng-dev-builds/tar.gz/ab7cfd62d4983d6a8fea23974a0cd7da0ec6c265':
     dependencies:
       '@actions/core': 3.0.1
       '@conventional-changelog/git-client': 3.1.2(conventional-commits-filter@6.0.1)(conventional-commits-parser@7.1.2)
       '@google-cloud/spanner': 8.0.0(supports-color@11.0.0)
-      '@google/genai': 2.24.0(bufferutil@4.1.0)(supports-color@11.0.0)(utf-8-validate@6.0.6)
+      '@google/genai': 2.25.0(bufferutil@4.1.0)(supports-color@11.0.0)(utf-8-validate@6.0.6)
       '@inquirer/prompts': 8.7.2(@types/node@24.19.0)
       '@inquirer/type': 4.1.1(@types/node@24.19.0)
       '@octokit/auth-app': 8.3.1
@@ -6382,7 +6382,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@google/genai@2.24.0(bufferutil@4.1.0)(supports-color@11.0.0)(utf-8-validate@6.0.6)':
+  '@google/genai@2.25.0(bufferutil@4.1.0)(supports-color@11.0.0)(utf-8-validate@6.0.6)':
     dependencies:
       google-auth-library: 10.9.1(supports-color@11.0.0)
       p-retry: 4.6.2
