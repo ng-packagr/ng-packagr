@@ -140,17 +140,19 @@ export class NgPackagr {
         let handle: NgPackagrWatcher | undefined;
         let closed = false;
 
-        watchNgPackage({ ...opts, watch: true }, this.project, this.tsConfig)
+        watchNgPackage({ ...opts, watch: true }, this.project, this.tsConfig, () => subscriber.next())
           .then(h => {
             handle = h;
             if (closed) {
               void handle.close();
             }
-            // Intentionally never call next()/complete(): consumers (e.g. the Angular
-            // CLI builder) call `.watch(options).toPromise()` and expect it to hang for
-            // the life of the watch session, exactly like the legacy pipeline does.
-            // Build/compile errors are logged internally and never reach this Observable
-            // - only a setup-time failure (bad project/tsconfig) rejects it.
+            // Intentionally never call complete(): consumers (e.g. the Angular CLI
+            // builder) call `.watch(options).toPromise()` and expect it to hang for the
+            // life of the watch session, exactly like the legacy pipeline does. `next()`
+            // is still emitted once per build cycle (above) to match the legacy
+            // observable's contract for `.subscribe()`-based consumers. Build/compile
+            // errors are logged internally and never reach this Observable - only a
+            // setup-time failure (bad project/tsconfig) rejects it.
           })
           .catch((err: unknown) => subscriber.error(err));
 

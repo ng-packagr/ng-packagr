@@ -38,6 +38,7 @@ export async function watchNgPackage(
   options: NgPackagrOptions,
   project: string,
   tsConfig: ParsedConfiguration | string | undefined,
+  onBuildComplete?: () => void,
 ): Promise<NgPackagrWatcher> {
   log.info(`Building Angular Package`);
 
@@ -76,6 +77,11 @@ export async function watchNgPackage(
     try {
       await runBuildPass();
       log.msg(CompleteWaitingForFileChange);
+      // Matches the legacy observable's per-cycle `next()` (one emission per successful
+      // build pass, initial build included) - see `watchTransformFactory` in
+      // `package.transform.ts`, which emits once via `startWith(undefined)` for the first
+      // pass and again after every subsequent file-change rebuild.
+      onBuildComplete?.();
     } catch (err) {
       log.error(err);
       log.msg(FailedWaitingForFileChange);
