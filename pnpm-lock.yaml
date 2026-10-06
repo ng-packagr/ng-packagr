@@ -123,9 +123,6 @@ importers:
       chokidar:
         specifier: ^5.0.0
         version: 5.0.0
-      commander:
-        specifier: ^15.0.0
-        version: 15.0.0
       dependency-graph:
         specifier: ^1.0.0
         version: 1.0.0
@@ -168,6 +165,9 @@ importers:
       tinyglobby:
         specifier: ^0.2.12
         version: 0.2.17
+      yargs:
+        specifier: ^18.2.0
+        version: 18.2.0
     devDependencies:
       '@angular/cdk':
         specifier: ~22.2.0-next
@@ -2699,10 +2699,6 @@ packages:
 
   colorjs.io@0.7.1:
     resolution: {integrity: sha512-LY7OHnJZxHwT5UlzNa9bbhHHDbzB6yE5+3MIPwJEQKRvSCt/T4G7epsj+9j2BExUIIfXFIJGsIXUKdfrK9Q5tA==}
-
-  commander@15.0.0:
-    resolution: {integrity: sha512-z67u4ZhzCL/Tydu1lJARtEZYWbWaN7oYLHbsuzocr6y4N6WZAagG3RQ4FW61V1/0+jImpj293XfrcYnd1qxtPg==}
-    engines: {node: '>=22.12.0'}
 
   commander@4.1.1:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
@@ -7852,8 +7848,6 @@ snapshots:
   color-name@1.1.4: {}
 
   colorjs.io@0.7.1: {}
-
-  commander@15.0.0: {}
 
   commander@4.1.1: {}
 
