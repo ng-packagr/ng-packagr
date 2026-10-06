@@ -1,3 +1,9 @@
+/**
+ * @deprecated the DI system will be removed from ng-packagr. This module consolidates
+ * the `injection-js`-based providers/tokens that back the legacy `buildAsObservable()`
+ * pipeline; it will be deleted once the promise-based pipeline fully replaces it.
+ */
+
 import type { ParsedConfiguration } from '@angular/compiler-cli';
 import { FactoryProvider, InjectionToken, Provider, ValueProvider } from 'injection-js';
 import { Transform } from './graph/transform';
@@ -13,6 +19,8 @@ import { StylesheetProcessor } from './styles/stylesheet-processor';
 
 /**
  * A specialized `FactoryProvider` for a `Transform`.
+ *
+ * @deprecated the DI system will be removed from ng-packagr
  */
 export interface TransformProvider extends FactoryProvider {
   /**
@@ -49,6 +57,7 @@ export interface TransformProvider extends FactoryProvider {
  *
  * @param module The provider for the transform
  * @return A (normalized) provider for the transform
+ * @deprecated the DI system will be removed from ng-packagr
  */
 export function provideTransform(module: TransformProvider): TransformProvider {
   return {
@@ -57,28 +66,46 @@ export function provideTransform(module: TransformProvider): TransformProvider {
   };
 }
 
-/** DI Token for the project parameter */
+/**
+ * DI Token for the project parameter
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const PROJECT_TOKEN = new InjectionToken<string>(`ng.v5.project`);
 
-/** DI Provider for the project parameter */
+/**
+ * DI Provider for the project parameter
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const provideProject = (project: string): ValueProvider => ({
   provide: PROJECT_TOKEN,
   useValue: project,
 });
 
-/** DI Token for {@link NgPackagrOptions} */
+/**
+ * DI Token for {@link NgPackagrOptions}
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const OPTIONS_TOKEN = new InjectionToken<NgPackagrOptions>(`ng.v5.options`);
 
-/** DI Provider for {@link NgPackagrOptions} */
+/**
+ * DI Provider for {@link NgPackagrOptions}
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const provideOptions = (options: NgPackagrOptions = {}): ValueProvider => ({
   provide: OPTIONS_TOKEN,
   useValue: normalizeOptions(options),
 });
 
-/** DI Provider for default {@link NgPackagrOptions} */
+/**
+ * DI Provider for default {@link NgPackagrOptions}
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const DEFAULT_OPTIONS_PROVIDER: Provider = provideOptions();
 
-/** DI Token for the {@link Transform} of the full library package */
+/**
+ * DI Token for the {@link Transform} of the full library package
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const provideTsConfig = (values?: ParsedConfiguration | string): Provider => {
   return {
     provide: DEFAULT_TS_CONFIG_TOKEN,
@@ -86,77 +113,114 @@ export const provideTsConfig = (values?: ParsedConfiguration | string): Provider
   };
 };
 
+/** @deprecated the DI system will be removed from ng-packagr */
 export const DEFAULT_TS_CONFIG_TOKEN = new InjectionToken<ParsedConfiguration | string | undefined>(
   'ng.v5.defaultTsConfig',
 );
 
+/** @deprecated the DI system will be removed from ng-packagr */
 export const INIT_TS_CONFIG_TOKEN = new InjectionToken<Transform>('ng.v5.initTsConfigTransform');
 
+/** @deprecated the DI system will be removed from ng-packagr */
 export const INIT_TS_CONFIG_TRANSFORM: TransformProvider = provideTransform({
   provide: INIT_TS_CONFIG_TOKEN,
   useFactory: initTsConfigTransformFactory,
   deps: [DEFAULT_TS_CONFIG_TOKEN],
 });
 
-/** DI Token for the {@link Transform} that analyses sources (source discovery) */
+/**
+ * DI Token for the {@link Transform} that analyses sources (source discovery)
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const ANALYSE_SOURCES_TOKEN = new InjectionToken<Transform>(`ng.v5.analyseSourcesTransform`);
 
-/** DI Provider for the {@link Transform} that analyses sources (source discovery) */
+/**
+ * DI Provider for the {@link Transform} that analyses sources (source discovery)
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const ANALYSE_SOURCES_TRANSFORM: TransformProvider = provideTransform({
   provide: ANALYSE_SOURCES_TOKEN,
   useFactory: () => analyseSourcesTransform,
 });
 
-/** DI Token for the {@link StylesheetProcessor} */
+/**
+ * DI Token for the {@link StylesheetProcessor}
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const STYLESHEET_PROCESSOR_TOKEN = new InjectionToken<StylesheetProcessor>(`ng.v5.stylesheetProcessor`);
 
-/** DI Provider for the {@link StylesheetProcessor} */
+/**
+ * DI Provider for the {@link StylesheetProcessor}
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const STYLESHEET_PROCESSOR: FactoryProvider = {
   provide: STYLESHEET_PROCESSOR_TOKEN,
   useFactory: () => StylesheetProcessor,
   deps: [],
 };
 
-/** DI Token for the {@link Transform} that ngc/tsc compilation */
+/**
+ * DI Token for the {@link Transform} that ngc/tsc compilation
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const COMPILE_NGC_TOKEN = new InjectionToken<Transform>(`ng.v5.compileNgcTransform`);
 
-/** DI Provider for the {@link Transform} that ngc/tsc compilation */
+/**
+ * DI Provider for the {@link Transform} that ngc/tsc compilation
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const COMPILE_NGC_TRANSFORM: TransformProvider = provideTransform({
   provide: COMPILE_NGC_TOKEN,
   useFactory: compileNgcTransformFactory,
   deps: [STYLESHEET_PROCESSOR_TOKEN, OPTIONS_TOKEN],
 });
 
-/** DI Providers to the global injector scope */
+/**
+ * DI Providers to the global injector scope
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const COMPILE_NGC_PROVIDERS: Provider[] = [STYLESHEET_PROCESSOR, COMPILE_NGC_TRANSFORM];
 
+/** @deprecated the DI system will be removed from ng-packagr */
 export const WRITE_BUNDLES_TRANSFORM_TOKEN = new InjectionToken<Transform>(`ng.v5.writeBundlesTransform`);
 
+/** @deprecated the DI system will be removed from ng-packagr */
 export const WRITE_BUNDLES_TRANSFORM: TransformProvider = provideTransform({
   provide: WRITE_BUNDLES_TRANSFORM_TOKEN,
   useFactory: writeBundlesTransform,
   deps: [OPTIONS_TOKEN],
 });
 
+/** @deprecated the DI system will be removed from ng-packagr */
 export const WRITE_PACKAGE_TRANSFORM_TOKEN = new InjectionToken<Transform>(`ng.v5.writePackageTransform`);
 
+/** @deprecated the DI system will be removed from ng-packagr */
 export const WRITE_PACKAGE_TRANSFORM: TransformProvider = provideTransform({
   provide: WRITE_PACKAGE_TRANSFORM_TOKEN,
   useFactory: writePackageTransform,
   deps: [OPTIONS_TOKEN],
 });
 
-/** DI Token for the {@link Transform} compiling an entry point */
+/**
+ * DI Token for the {@link Transform} compiling an entry point
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const ENTRY_POINT_TRANSFORM_TOKEN = new InjectionToken<Transform>(`ng.v5.entryPointTransform`);
 
-/** DI Provider for the {@link Transform} compiling an entry point */
+/**
+ * DI Provider for the {@link Transform} compiling an entry point
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const ENTRY_POINT_TRANSFORM: TransformProvider = provideTransform({
   provide: ENTRY_POINT_TRANSFORM_TOKEN,
   useFactory: entryPointTransformFactory,
   deps: [COMPILE_NGC_TOKEN, WRITE_BUNDLES_TRANSFORM_TOKEN, WRITE_PACKAGE_TRANSFORM_TOKEN],
 });
 
-/** DI Providers added to the global injector scope */
+/**
+ * DI Providers added to the global injector scope
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const ENTRY_POINT_PROVIDERS: Provider[] = [
   ENTRY_POINT_TRANSFORM,
   ...COMPILE_NGC_PROVIDERS,
@@ -164,17 +228,26 @@ export const ENTRY_POINT_PROVIDERS: Provider[] = [
   WRITE_PACKAGE_TRANSFORM,
 ];
 
-/** DI Token for the {@link Transform} of the full library package */
+/**
+ * DI Token for the {@link Transform} of the full library package
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const PACKAGE_TRANSFORM_TOKEN = new InjectionToken<Transform>(`ng.v5.packageTransform`);
 
-/** DI Provider for the {@link Transform} of the full library package */
+/**
+ * DI Provider for the {@link Transform} of the full library package
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const PACKAGE_TRANSFORM: TransformProvider = provideTransform({
   provide: PACKAGE_TRANSFORM_TOKEN,
   useFactory: packageTransformFactory,
   deps: [PROJECT_TOKEN, OPTIONS_TOKEN, INIT_TS_CONFIG_TOKEN, ANALYSE_SOURCES_TOKEN, ENTRY_POINT_TRANSFORM_TOKEN],
 });
 
-/** DI Providers to be added to the global injection-js scope */
+/**
+ * DI Providers to be added to the global injection-js scope
+ * @deprecated the DI system will be removed from ng-packagr
+ */
 export const PACKAGE_PROVIDERS: Provider[] = [
   PACKAGE_TRANSFORM,
   DEFAULT_OPTIONS_PROVIDER,
