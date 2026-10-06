@@ -1,41 +1,60 @@
 #!/usr/bin/env node
 
-import { program } from 'commander';
 import { resolve } from 'node:path';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 import { error } from '../lib/utils/log';
 import { build, execute, version as versionCommand } from '../public_api';
 
 const DEFAULT_PROJECT_PATH = resolve(process.cwd(), 'ng-package.json');
 
-function parseProjectPath(parsed: string): string {
-  return parsed || DEFAULT_PROJECT_PATH;
-}
+const argv = yargs(hideBin(process.argv))
+  .scriptName('ng-packagr')
+  .usage('$0 [options]')
+  // Disable built-in version/help behaviors to match your custom logic
+  .version(false)
+  .help(false)
+  .options({
+    version: {
+      alias: 'v',
+      type: 'boolean',
+      description: 'Prints version info',
+    },
+    watch: {
+      alias: 'w',
+      type: 'boolean',
+      description: 'Watch for file changes',
+    },
+    poll: {
+      type: 'number',
+      description: 'Enable and define the file watching poll time period in milliseconds',
+    },
+    project: {
+      alias: 'p',
+      type: 'string',
+      description: "Path to the 'ng-package.json' or 'package.json' file.",
+      default: DEFAULT_PROJECT_PATH,
+    },
+    config: {
+      alias: 'c',
+      type: 'string',
+      description: 'Path to a tsconfig file.',
+    },
+  })
+  // Handle path resolutions and number parsing cleanly via coerce
+  .coerce({
+    poll: val => Number(val),
+    project: val => val || DEFAULT_PROJECT_PATH,
+    config: val => (val ? resolve(val) : undefined),
+  })
+  .parseSync();
 
-program
-  .name('ng-packagr')
-  .storeOptionsAsProperties(false)
-  .option('-v, --version', 'Prints version info')
-  .option('-w, --watch', 'Watch for file changes')
-  .option('--poll <interval>', 'Enable and define the file watching poll time period in milliseconds', x => +x)
-  .option(
-    '-p, --project <path>',
-    "Path to the 'ng-package.json' or 'package.json' file.",
-    parseProjectPath,
-    DEFAULT_PROJECT_PATH,
-  )
-  .option('-c, --config <config>', 'Path to a tsconfig file.', (value: string | undefined) =>
-    value ? resolve(value) : undefined,
-  );
-
-program.on('option:version', () => {
+// Custom version flag execution
+if (argv.version) {
   void versionCommand().then(() => process.exit(0));
-});
+} else {
+  const { config, project, watch, poll } = argv;
 
-program.parse(process.argv);
-
-const { config, project, watch, version, poll } = program.opts();
-
-if (!version) {
   execute(build, { config, project, watch: !!watch, poll }).catch(err => {
     error(err.message);
     process.exit(1);
