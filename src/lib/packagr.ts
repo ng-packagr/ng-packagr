@@ -14,6 +14,7 @@ import {
   provideTsConfig,
 } from './packagr.di';
 import { buildNgPackage } from './v23/build';
+import { NgPackagrWatcher, watchNgPackage } from './v23/watch';
 
 /**
  * The original ng-packagr implemented on top of a rxjs-ified and di-jectable transformation pipeline.
@@ -108,6 +109,15 @@ export class NgPackagr {
     if (labsBuild) {
       const opts = options || this.options;
 
+      // Replicates the legacy behavior: both `build()` and `watch()` used to funnel
+      // into `buildAsObservable()`, where `packageTransformFactory` swapped in the
+      // watch transform whenever `options.watch` was set - regardless of which method
+      // was called. Delegating here keeps that behavior for callers (and the CLI's
+      // `-w` flag, which has always only ever called `build({ watch })`).
+      if (opts.watch) {
+        return this.watch(opts).toPromise();
+      }
+
       return buildNgPackage(opts, this.project, this.tsConfig);
     }
 
@@ -122,6 +132,35 @@ export class NgPackagr {
    * @return An observable result of the transformation pipeline.
    */
   public watch(options: NgPackagrOptions = {}): Observable<void> {
+    const labsWatch = true; // XX... switch for promise vs. rxjs pipeline
+    if (labsWatch) {
+      const opts = options || this.options;
+
+      return new Observable<void>(subscriber => {
+        let handle: NgPackagrWatcher | undefined;
+        let closed = false;
+
+        watchNgPackage({ ...opts, watch: true }, this.project, this.tsConfig)
+          .then(h => {
+            handle = h;
+            if (closed) {
+              void handle.close();
+            }
+            // Intentionally never call next()/complete(): consumers (e.g. the Angular
+            // CLI builder) call `.watch(options).toPromise()` and expect it to hang for
+            // the life of the watch session, exactly like the legacy pipeline does.
+            // Build/compile errors are logged internally and never reach this Observable
+            // - only a setup-time failure (bad project/tsconfig) rejects it.
+          })
+          .catch((err: unknown) => subscriber.error(err));
+
+        return () => {
+          closed = true;
+          void handle?.close();
+        };
+      });
+    }
+
     this.providers.push(provideOptions({ ...options, watch: true }));
 
     return this.buildAsObservable();

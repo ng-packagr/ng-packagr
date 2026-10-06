@@ -27,6 +27,40 @@ export async function buildNgPackage(
   const normalizedOptions = normalizeOptions(options);
 
   // XX: migrated from package.transform.ts
+  const { graph, ngPkg } = await createPackageBuildGraph(project);
+
+  const initTs = initTsConfigTransformFactory2(tsConfig);
+  await initTs(graph);
+
+  // XX: migrated from package.transform.ts
+  const buildTransform = buildTransformFactory2(
+    project,
+    normalizedOptions,
+    analyseSourcesTransform2,
+    entryPointTransformFactory2(
+      compileNgcTransformFactory2(StylesheetProcessor, normalizedOptions),
+      writeBundlesTransform2(normalizedOptions),
+      writePackageTansform2(normalizedOptions),
+    ),
+  );
+
+  try {
+    await buildTransform(graph);
+  } finally {
+    disposeEntryPointCaches(ngPkg);
+  }
+}
+
+/**
+ * Discovers the package and its entry points and assembles the initial `BuildGraph`
+ * (a `PackageNode` depending on one `EntryPointNode` per primary/secondary entry point,
+ * each starting in `STATE_PENDING`), without running any build transform.
+ *
+ * Shared by the one-shot build pipeline (`buildNgPackage`) and the watch pipeline
+ * (`watchNgPackage`), which both need an identical starting graph but differ in how many
+ * times they subsequently run a build transform over it.
+ */
+export async function createPackageBuildGraph(project: string): Promise<{ graph: BuildGraph; ngPkg: PackageNode }> {
   const pkgUri = ngUrl(project);
   const ngPkg = new PackageNode(pkgUri);
   const graph = new BuildGraph();
@@ -54,29 +88,15 @@ export async function buildNgPackage(
   // Add entry points to graph
   graph.put(entryPoints);
 
-  const initTs = initTsConfigTransformFactory2(tsConfig);
-  await initTs(graph);
+  return { graph, ngPkg };
+}
 
-  // XX: migrated from package.transform.ts
-  const buildTransform = buildTransformFactory2(
-    project,
-    normalizedOptions,
-    analyseSourcesTransform2,
-    entryPointTransformFactory2(
-      compileNgcTransformFactory2(StylesheetProcessor, normalizedOptions),
-      writeBundlesTransform2(normalizedOptions),
-      writePackageTansform2(normalizedOptions),
-    ),
-  );
-
-  try {
-    await buildTransform(graph);
-  } finally {
-    for (const node of ngPkg.dependents) {
-      if (node instanceof EntryPointNode) {
-        node.cache?.stylesheetProcessor?.destroy();
-      }
+/** Disposes per-entry-point caches (stylesheet processors) and shuts down the shared Sass worker pool. */
+export function disposeEntryPointCaches(ngPkg: PackageNode): void {
+  for (const node of ngPkg.dependents) {
+    if (node instanceof EntryPointNode) {
+      node.cache?.stylesheetProcessor?.destroy();
     }
-    shutdownSassWorkerPool();
   }
+  shutdownSassWorkerPool();
 }
