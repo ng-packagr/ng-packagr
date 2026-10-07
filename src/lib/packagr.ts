@@ -17,6 +17,15 @@ import { buildNgPackage } from './v23/build';
 import { NgPackagrWatcher, watchNgPackage } from './v23/watch';
 
 /**
+ * Benchmarking escape hatch for comparing the legacy rxjs/DI pipeline against the
+ * promise-based pipeline (`src/lib/v23/*`). Set `NG_PACKAGR_LEGACY_PIPELINE=true` to force
+ * the legacy pipeline; unset or any other value runs the promise-based pipeline (the default).
+ */
+function useLegacyPipeline(): boolean {
+  return process.env['NG_PACKAGR_LEGACY_PIPELINE'] === 'true';
+}
+
+/**
  * The original ng-packagr implemented on top of a rxjs-ified and di-jectable transformation pipeline.
  *
  * See the `docs/transformations.md` for more prose description.
@@ -105,8 +114,7 @@ export class NgPackagr {
    * @return A promisified result of the transformation pipeline.
    */
   public build(options: NgPackagrOptions = {}): Promise<void> {
-    const labsBuild = true; // XX... switch for promise vs. rxjs pipeline
-    if (labsBuild) {
+    if (!useLegacyPipeline()) {
       const opts = options || this.options;
 
       // Replicates the legacy behavior: both `build()` and `watch()` used to funnel
@@ -132,8 +140,7 @@ export class NgPackagr {
    * @return An observable result of the transformation pipeline.
    */
   public watch(options: NgPackagrOptions = {}): Observable<void> {
-    const labsWatch = true; // XX... switch for promise vs. rxjs pipeline
-    if (labsWatch) {
+    if (!useLegacyPipeline()) {
       const opts = options || this.options;
 
       return new Observable<void>(subscriber => {
