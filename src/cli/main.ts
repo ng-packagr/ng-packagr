@@ -1,42 +1,55 @@
 #!/usr/bin/env node
 
-import { program } from 'commander';
 import { resolve } from 'node:path';
-import { error } from '../lib/utils/log';
+import { parseArgs } from 'node:util';
+import { error, msg } from '../lib/utils/log';
 import { build, execute, version as versionCommand } from '../public_api';
 
 const DEFAULT_PROJECT_PATH = resolve(process.cwd(), 'ng-package.json');
 
-function parseProjectPath(parsed: string): string {
-  return parsed || DEFAULT_PROJECT_PATH;
+const HELP = `ng-packagr [options]
+
+Options:
+  -v, --version   Prints version info
+  -w, --watch     Watch for file changes
+      --poll      Enable and define the file watching poll time period in milliseconds
+  -p, --project   Path to the 'ng-package.json' or 'package.json' file. (default: ${DEFAULT_PROJECT_PATH})
+  -c, --config    Path to a tsconfig file.
+  -h, --help      Show this help message
+`;
+
+function parseCliArgs() {
+  return parseArgs({
+    options: {
+      version: { type: 'boolean', short: 'v' },
+      watch: { type: 'boolean', short: 'w' },
+      poll: { type: 'string' },
+      project: { type: 'string', short: 'p' },
+      config: { type: 'string', short: 'c' },
+      help: { type: 'boolean', short: 'h' },
+    },
+  }).values;
 }
 
-program
-  .name('ng-packagr')
-  .storeOptionsAsProperties(false)
-  .option('-v, --version', 'Prints version info')
-  .option('-w, --watch', 'Watch for file changes')
-  .option('--poll <interval>', 'Enable and define the file watching poll time period in milliseconds', x => +x)
-  .option(
-    '-p, --project <path>',
-    "Path to the 'ng-package.json' or 'package.json' file.",
-    parseProjectPath,
-    DEFAULT_PROJECT_PATH,
-  )
-  .option('-c, --config <config>', 'Path to a tsconfig file.', (value: string | undefined) =>
-    value ? resolve(value) : undefined,
-  );
+let values: ReturnType<typeof parseCliArgs>;
+try {
+  values = parseCliArgs();
+} catch (err) {
+  error((err as Error).message);
+  msg(HELP);
+  process.exit(1);
+}
 
-program.on('option:version', () => {
+if (values.help) {
+  msg(HELP);
+} else if (values.version) {
   void versionCommand().then(() => process.exit(0));
-});
+} else {
+  const config = values.config ? resolve(values.config) : undefined;
+  const project = values.project || DEFAULT_PROJECT_PATH;
+  const poll = values.poll !== undefined ? Number(values.poll) : undefined;
 
-program.parse(process.argv);
-
-const { config, project, watch, version, poll } = program.opts();
-
-if (!version) {
-  execute(build, { config, project, watch: !!watch, poll }).catch(err => {
+  execute(build, { config, project, watch: !!values.watch, poll }).catch(err => {
     error(err.message);
     process.exit(1);
   });
