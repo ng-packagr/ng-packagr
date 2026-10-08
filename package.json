@@ -121,6 +121,7 @@
     "reference:clean": "rimraf integration/reference",
     "benchmark": "node scripts/measure-benchmark.js",
     "benchmark:sweep": "node scripts/measure-benchmark.js --sweep 10,50,100,250,500,1000,2000",
+    "benchmark:sweep:pipelines": "node scripts/measure-benchmark.js --sweep 10,50,100,250,500,1000,2000 --pipeline both --iterations 5",
     "test:specs": "vitest run ./src/",
     "test": "pnpm --silent build && pnpm --silent test:specs && pnpm --silent integration:samples && pnpm --silent integration:specs && pnpm --silent integration:watch:specs && pnpm --silent integration:consumers"
   }

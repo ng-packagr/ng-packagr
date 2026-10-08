@@ -8,7 +8,8 @@ const { performance } = require('perf_hooks');
 const CLI_MAIN = path.resolve(__dirname, '..', 'dist', 'src', 'cli', 'main.js');
 const CREATE_REFERENCE = path.resolve(__dirname, 'create-reference.js');
 const REFERENCE_DIR = path.resolve(__dirname, '..', 'integration', 'reference');
-const CSV_HEADER = 'timestamp,mode,fixture,layout,style,entryPoints,iteration,durationMs,status\n';
+const CSV_HEADER = 'timestamp,pipeline,mode,fixture,layout,style,entryPoints,iteration,durationMs,status\n';
+const PIPELINES = ['promise', 'legacy'];
 
 function parseArgs(argv) {
   const args = {
@@ -18,6 +19,7 @@ function parseArgs(argv) {
     style: 'inline',
     iterations: 1,
     out: 'benchmark-results.csv',
+    pipeline: 'both',
   };
 
   for (let i = 0; i < argv.length; i++) {
@@ -41,6 +43,9 @@ function parseArgs(argv) {
       case '--out':
         args.out = argv[++i];
         break;
+      case '--pipeline':
+        args.pipeline = argv[++i];
+        break;
       default:
         throw new Error(`Unknown argument: ${arg}`);
     }
@@ -52,8 +57,16 @@ function parseArgs(argv) {
   if (args.sweep && args.sweep.some(n => !Number.isInteger(n) || n < 1)) {
     throw new Error(`--sweep must be a comma-separated list of positive integers, got "${args.sweep}"`);
   }
+  if (!['both', ...PIPELINES].includes(args.pipeline)) {
+    throw new Error(`--pipeline must be one of both, ${PIPELINES.join(', ')}, got "${args.pipeline}"`);
+  }
 
   return args;
+}
+
+/** Pipeline values to actually run, in a fixed order so "both" is always promise-then-legacy. */
+function resolvePipelines(args) {
+  return args.pipeline === 'both' ? PIPELINES : [args.pipeline];
 }
 
 function assertCliIsBuilt() {
@@ -84,9 +97,14 @@ function countEntryPoints(dir) {
   return count - 1; // exclude the primary entry point
 }
 
-function buildOnce(ngPackageJsonPath) {
+function buildOnce(ngPackageJsonPath, pipeline) {
+  const env = { ...process.env, NG_PACKAGR_LEGACY_PIPELINE: pipeline === 'legacy' ? 'true' : 'false' };
   const start = performance.now();
-  const result = spawnSync(process.execPath, [CLI_MAIN, '-p', ngPackageJsonPath], { stdio: 'pipe' });
+  const result = spawnSync(process.execPath, [CLI_MAIN, '-p', ngPackageJsonPath], {
+    stdio: 'pipe',
+    env,
+    maxBuffer: Infinity,
+  });
   const durationMs = performance.now() - start;
   const status = result.status === 0 ? 'ok' : 'fail';
   if (status === 'fail') {
@@ -104,6 +122,7 @@ function appendRows(outPath, rows) {
     .map(r =>
       [
         r.timestamp,
+        r.pipeline,
         r.mode,
         r.fixture,
         r.layout,
@@ -118,18 +137,19 @@ function appendRows(outPath, rows) {
   fs.appendFileSync(outPath, lines + '\n');
 }
 
-function benchmarkFixture(dir, iterations) {
+function benchmarkFixture(dir, iterations, pipeline) {
   const ngPackageJsonPath = path.join(dir, 'ng-package.json');
   const fixtureName = path.basename(dir);
   const entryPoints = countEntryPoints(dir);
   const rows = [];
 
   for (let i = 1; i <= iterations; i++) {
-    console.log(`[fixture] ${fixtureName} (${entryPoints} entry points) -- run ${i}/${iterations}`);
-    const { durationMs, status } = buildOnce(ngPackageJsonPath);
+    console.log(`[fixture] ${fixtureName} (${entryPoints} entry points, ${pipeline}) -- run ${i}/${iterations}`);
+    const { durationMs, status } = buildOnce(ngPackageJsonPath, pipeline);
     console.log(`  ${status === 'ok' ? 'done' : 'FAILED'} in ${(durationMs / 1000).toFixed(2)}s`);
     rows.push({
       timestamp: new Date().toISOString(),
+      pipeline,
       mode: 'fixture',
       fixture: fixtureName,
       layout: fixtureName.includes('deep') ? 'deep' : 'flat',
@@ -156,13 +176,18 @@ function runFixtureMode(args) {
     process.exit(1);
   }
 
-  const rows = dirs.flatMap(dir => benchmarkFixture(dir, args.iterations));
+  const pipelines = resolvePipelines(args);
+  // For each fixture, run both pipeline variants back-to-back rather than all-of-one-pipeline-
+  // then-all-of-the-other -- minimizes machine-state drift (thermal throttling, cache warmth)
+  // between the two series being compared.
+  const rows = dirs.flatMap(dir => pipelines.flatMap(pipeline => benchmarkFixture(dir, args.iterations, pipeline)));
   appendRows(args.out, rows);
   console.log(`\nWrote ${rows.length} row(s) to ${args.out}`);
 }
 
 function runSweepMode(args) {
   const scratchRoot = path.resolve(__dirname, '..', '.benchmark-tmp');
+  const pipelines = resolvePipelines(args);
   const rows = [];
 
   for (const count of args.sweep) {
@@ -192,21 +217,27 @@ function runSweepMode(args) {
       throw new Error(`create-reference.js failed for count=${count}`);
     }
 
-    for (let i = 1; i <= args.iterations; i++) {
-      console.log(`[sweep] ${count} entry points -- run ${i}/${args.iterations}`);
-      const { durationMs, status } = buildOnce(path.join(scratchDir, 'ng-package.json'));
-      console.log(`  ${status === 'ok' ? 'done' : 'FAILED'} in ${(durationMs / 1000).toFixed(2)}s`);
-      rows.push({
-        timestamp: new Date().toISOString(),
-        mode: 'sweep',
-        fixture: label,
-        layout: args.layout,
-        style: args.style,
-        entryPoints: count,
-        iteration: i,
-        durationMs,
-        status,
-      });
+    // Pipeline is the inner loop (same generated fixture reused for both variants) so the
+    // two series being compared run back-to-back at each size, rather than all-of-one-pipeline-
+    // then-all-of-the-other -- minimizes machine-state drift between them.
+    for (const pipeline of pipelines) {
+      for (let i = 1; i <= args.iterations; i++) {
+        console.log(`[sweep] ${count} entry points, ${pipeline} -- run ${i}/${args.iterations}`);
+        const { durationMs, status } = buildOnce(path.join(scratchDir, 'ng-package.json'), pipeline);
+        console.log(`  ${status === 'ok' ? 'done' : 'FAILED'} in ${(durationMs / 1000).toFixed(2)}s`);
+        rows.push({
+          timestamp: new Date().toISOString(),
+          pipeline,
+          mode: 'sweep',
+          fixture: label,
+          layout: args.layout,
+          style: args.style,
+          entryPoints: count,
+          iteration: i,
+          durationMs,
+          status,
+        });
+      }
     }
 
     fs.rmSync(scratchDir, { recursive: true, force: true });
