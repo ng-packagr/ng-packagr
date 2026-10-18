@@ -1,9 +1,7 @@
 import findCacheDirectory from 'find-cache-directory';
-import { InjectionToken, Provider, ValueProvider } from 'injection-js';
 import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 
-export const OPTIONS_TOKEN = new InjectionToken<NgPackagrOptions>(`ng.v5.options`);
 export interface NgPackagrOptions {
   /** Whether or not ng-packagr will watch for file changes and perform an incremental build. */
   watch?: boolean;
@@ -12,14 +10,7 @@ export interface NgPackagrOptions {
   poll?: number;
 }
 
-export const provideOptions = (options: NgPackagrOptions = {}): ValueProvider => ({
-  provide: OPTIONS_TOKEN,
-  useValue: normalizeOptions(options),
-});
-
-export const DEFAULT_OPTIONS_PROVIDER: Provider = provideOptions();
-
-function normalizeOptions(options: NgPackagrOptions = {}) {
+export function normalizeOptions(options: NgPackagrOptions = {}) {
   const ciEnv = process.env['CI'];
   const isCI = ciEnv?.toLowerCase() === 'true' || ciEnv === '1';
   const { cacheEnabled = !isCI, cacheDirectory = findCachePath() } = options;
