@@ -20,7 +20,7 @@ export interface BundleStylesheetOptions {
   sass?: StylesheetPluginsass;
   target: string[];
   tailwindConfiguration?: { file: string; package: string };
-  postcssConfiguration?: PostcssConfiguration;
+  postcssConfiguration?: { config: PostcssConfiguration; configPath: string };
   cacheDirectory?: string | false;
 }
 
