@@ -33,4 +33,10 @@ describe('RelativeUrlRebasingImporter', () => {
       `.a { background: url("theme||file:./a.svg"); }\n.b { background: url("theme||file:./b.svg"); }`,
     );
   });
+
+  it('should rebase a url with a hyphen-namespaced Sass variable', async () => {
+    const contents = await load(`@use './vars' as named-hyphen;\n.a { background: url(named-hyphen.$icon); }`);
+
+    expect(contents).toContain('url("theme||file:#{named-hyphen.$icon}")');
+  });
 });
