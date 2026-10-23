@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [22.2.5](https://github.com/ng-packagr/ng-packagr/compare/22.2.4...22.2.5) (2026-10-23)
+
+
+### Bug Fixes
+
+* **ng-packagr:** enable dts tree-shaking and optimize dts bundling ([5a53b9a](https://github.com/ng-packagr/ng-packagr/commit/5a53b9af60df5e6339ccecea3ddae4b78d8bbd8a)), closes [#3471](https://github.com/ng-packagr/ng-packagr/issues/3471)
+
 ### [22.2.4](https://github.com/ng-packagr/ng-packagr/compare/22.2.3...22.2.4) (2026-10-01)
 
 
