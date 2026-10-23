@@ -1,6 +1,6 @@
 import { dirname, isAbsolute, join } from 'node:path';
 import { type OutputAsset, type OutputChunk, type RolldownPluginOption, rolldown } from 'rolldown';
-import { dts } from 'rolldown-plugin-dts';
+import { createFakeJsPlugin } from 'rolldown-plugin-dts';
 import { OutputFileCache } from '../ng-package/nodes';
 import log from '../utils/log';
 import { fileLoaderPlugin } from './file-loader-plugin';
@@ -31,7 +31,7 @@ export async function rolldownBundleFile(opts: RolldownOptions): Promise<{ files
     outExtension = '.d.ts';
     plugins = [
       fileLoaderPlugin(opts.fileCache, ['.d.ts', '/index.d.ts'], dtsMode),
-      dts({ dtsInput: true, tsconfig: false, generator: 'oxc', sourcemap: opts.sourcemap }),
+      createFakeJsPlugin({ sourcemap: opts.sourcemap, cjsDefault: false, sideEffects: false }),
     ];
   } else {
     outExtension = '.mjs';
@@ -44,8 +44,10 @@ export async function rolldownBundleFile(opts: RolldownOptions): Promise<{ files
     external: (moduleId, parentId) => isExternalDependency(moduleId, parentId, jail),
     input: opts.entry,
     plugins,
+    tsconfig: false,
     checks: {
       circularDependency: false,
+      pluginTimings: false,
     },
     onwarn: warning => {
       switch (warning.code) {
@@ -66,9 +68,9 @@ export async function rolldownBundleFile(opts: RolldownOptions): Promise<{ files
     resolve: {
       symlinks: false,
     },
-    // Disable treeshaking when generating bundles
+    // Disable treeshaking when generating FESM bundles
     // see: https://github.com/angular/angular/pull/32069
-    treeshake: false,
+    treeshake: dtsMode,
   });
 
   // Output the bundle to disk
