@@ -3,11 +3,27 @@ import { InjectionToken, Provider, ReflectiveInjector } from 'injection-js';
 import { Observable, map, of as observableOf } from 'rxjs';
 import { BuildGraph } from './graph/build-graph';
 import { Transform } from './graph/transform';
-import { ENTRY_POINT_PROVIDERS } from './ng-package/entry-point/entry-point.di';
-import { DEFAULT_TS_CONFIG_TOKEN, provideTsConfig } from './ng-package/entry-point/init-tsconfig.di';
-import { NgPackagrOptions, provideOptions } from './ng-package/options.di';
-import { PACKAGE_PROVIDERS, PACKAGE_TRANSFORM } from './ng-package/package.di';
-import { provideProject } from './project.di';
+import { NgPackagrOptions } from './ng-package/options';
+import {
+  DEFAULT_TS_CONFIG_TOKEN,
+  ENTRY_POINT_PROVIDERS,
+  PACKAGE_PROVIDERS,
+  PACKAGE_TRANSFORM,
+  provideOptions,
+  provideProject,
+  provideTsConfig,
+} from './packagr.di';
+import { buildNgPackage } from './v23/build';
+import { NgPackagrWatcher, watchNgPackage } from './v23/watch';
+
+/**
+ * Benchmarking escape hatch for comparing the legacy rxjs/DI pipeline against the
+ * promise-based pipeline (`src/lib/v23/*`). Set `NG_PACKAGR_LEGACY_PIPELINE=true` to force
+ * the legacy pipeline; unset or any other value runs the promise-based pipeline (the default).
+ */
+function useLegacyPipeline(): boolean {
+  return process.env['NG_PACKAGR_LEGACY_PIPELINE'] === 'true';
+}
 
 /**
  * The original ng-packagr implemented on top of a rxjs-ified and di-jectable transformation pipeline.
@@ -17,6 +33,10 @@ import { provideProject } from './project.di';
  * @link https://github.com/ng-packagr/ng-packagr/pull/572
  */
 export class NgPackagr {
+  private options: NgPackagrOptions;
+  private project: string;
+  private tsConfig: ParsedConfiguration | string;
+
   private buildTransform: InjectionToken<Transform> = PACKAGE_TRANSFORM.provide;
 
   constructor(private providers: Provider[]) {}
@@ -29,6 +49,7 @@ export class NgPackagr {
    * @deprecated use the options parameter in 'build' and 'watch' methods
    */
   public withOptions(options: NgPackagrOptions): NgPackagr {
+    this.options = options;
     this.providers.push(provideOptions(options));
 
     return this;
@@ -41,6 +62,7 @@ export class NgPackagr {
    * @return Self instance for fluent API
    */
   public forProject(project: string): NgPackagr {
+    this.project = project;
     this.providers.push(provideProject(project));
 
     return this;
@@ -52,6 +74,7 @@ export class NgPackagr {
    * @param providers
    * @return Self instance for fluent API
    * @link https://github.com/mgechev/injection-js
+   * @deprecated the DI system will be removed from ng-packagr
    */
   public withProviders(providers: Provider[]): NgPackagr {
     this.providers = [...this.providers, ...providers];
@@ -66,6 +89,7 @@ export class NgPackagr {
    * @return Self instance for fluent API
    */
   public withTsConfig(defaultValues: ParsedConfiguration | string): NgPackagr {
+    this.tsConfig = defaultValues;
     this.providers.push(provideTsConfig(defaultValues));
 
     return this;
@@ -76,6 +100,7 @@ export class NgPackagr {
    *
    * @param transform
    * @return Self instance for fluent API
+   * @deprecated the DI system will be removed from ng-packagr
    */
   public withBuildTransform(transform: InjectionToken<Transform>): NgPackagr {
     this.buildTransform = transform;
@@ -89,6 +114,21 @@ export class NgPackagr {
    * @return A promisified result of the transformation pipeline.
    */
   public build(options: NgPackagrOptions = {}): Promise<void> {
+    if (!useLegacyPipeline()) {
+      const opts = options || this.options;
+
+      // Replicates the legacy behavior: both `build()` and `watch()` used to funnel
+      // into `buildAsObservable()`, where `packageTransformFactory` swapped in the
+      // watch transform whenever `options.watch` was set - regardless of which method
+      // was called. Delegating here keeps that behavior for callers (and the CLI's
+      // `-w` flag, which has always only ever called `build({ watch })`).
+      if (opts.watch) {
+        return this.watch(opts).toPromise();
+      }
+
+      return buildNgPackage(opts, this.project, this.tsConfig);
+    }
+
     this.providers.push(provideOptions(options));
 
     return this.buildAsObservable().toPromise();
@@ -100,6 +140,36 @@ export class NgPackagr {
    * @return An observable result of the transformation pipeline.
    */
   public watch(options: NgPackagrOptions = {}): Observable<void> {
+    if (!useLegacyPipeline()) {
+      const opts = options || this.options;
+
+      return new Observable<void>(subscriber => {
+        let handle: NgPackagrWatcher | undefined;
+        let closed = false;
+
+        watchNgPackage({ ...opts, watch: true }, this.project, this.tsConfig, () => subscriber.next())
+          .then(h => {
+            handle = h;
+            if (closed) {
+              void handle.close();
+            }
+            // Intentionally never call complete(): consumers (e.g. the Angular CLI
+            // builder) call `.watch(options).toPromise()` and expect it to hang for the
+            // life of the watch session, exactly like the legacy pipeline does. `next()`
+            // is still emitted once per build cycle (above) to match the legacy
+            // observable's contract for `.subscribe()`-based consumers. Build/compile
+            // errors are logged internally and never reach this Observable - only a
+            // setup-time failure (bad project/tsconfig) rejects it.
+          })
+          .catch((err: unknown) => subscriber.error(err));
+
+        return () => {
+          closed = true;
+          void handle?.close();
+        };
+      });
+    }
+
     this.providers.push(provideOptions({ ...options, watch: true }));
 
     return this.buildAsObservable();
