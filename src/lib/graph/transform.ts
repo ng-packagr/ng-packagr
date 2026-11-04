@@ -10,14 +10,16 @@ import { BuildGraph } from './build-graph';
  *  - It returns a `BuildGraph` that will be passed to subsequent transformations.
  *
  * @link https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md#pipeable-operators
+ * @deprecated
  */
 export interface Transform extends MonoTypeOperatorFunction<BuildGraph> {
   (source$: Observable<BuildGraph>): Observable<BuildGraph>;
 }
 
-interface PromiseBasedTransform {
+export interface PromiseBasedTransform {
   (graph: BuildGraph): Promise<BuildGraph | void>;
 }
 
+/** @deprecated */
 export const transformFromPromise = (transformFn: PromiseBasedTransform): Transform =>
   switchMap(graph => transformFn(graph).then(r => r || graph));
