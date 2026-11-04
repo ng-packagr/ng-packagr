@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.3.0-next.3](https://github.com/ng-packagr/ng-packagr/compare/22.3.0-next.2...22.3.0-next.3) (2026-11-04)
+
+
+### Bug Fixes
+
+* **ng-packagr:** defer watch invalidation until the running build completes ([2922948](https://github.com/ng-packagr/ng-packagr/commit/292294813a39daa206a541a817a465dc66b325b7)), closes [#3477](https://github.com/ng-packagr/ng-packagr/issues/3477)
+* **ng-packagr:** enable dts tree-shaking and optimize dts bundling ([3f72cd0](https://github.com/ng-packagr/ng-packagr/commit/3f72cd000bae475cc39b6c2fa039023292f37045)), closes [#3471](https://github.com/ng-packagr/ng-packagr/issues/3471)
+* **ng-packagr:** rebase every url() in a Sass stylesheet ([0150b47](https://github.com/ng-packagr/ng-packagr/commit/0150b47e805df1e0e34560e27535c6c654c856ab))
+* **ng-packagr:** rebase url() with hyphen-namespaced Sass variables ([5c2d4a1](https://github.com/ng-packagr/ng-packagr/commit/5c2d4a1a4947a765cb6a98eb870f977ae14c7c86))
+
 ## [22.3.0-next.2](https://github.com/ng-packagr/ng-packagr/compare/22.3.0-next.1...22.3.0-next.2) (2026-10-01)
 
 
