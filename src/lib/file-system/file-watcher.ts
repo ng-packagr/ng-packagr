@@ -91,7 +91,7 @@ export function invalidateEntryPointsAndCacheOnFileChange(
 
   for (const filePath of files) {
     const changedFileUrl = fileUrl(filePath);
-    const nodeToClean = graph.find(node => changedFileUrl === node.url);
+    const nodeToClean = graph.get(changedFileUrl);
     if (!nodeToClean) {
       continue;
     }
