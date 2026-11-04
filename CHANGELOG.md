@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [22.2.6](https://github.com/ng-packagr/ng-packagr/compare/22.2.5...22.2.6) (2026-11-04)
+
+
+### Bug Fixes
+
+* **ng-packagr:** defer watch invalidation until the running build completes ([088fc1c](https://github.com/ng-packagr/ng-packagr/commit/088fc1c366280a21d619faa2eb359f8488bc101b)), closes [#3477](https://github.com/ng-packagr/ng-packagr/issues/3477)
+* **ng-packagr:** rebase every url() in a Sass stylesheet ([5464849](https://github.com/ng-packagr/ng-packagr/commit/5464849a6e5b61737696eb4a5a9d4dce39ef086f))
+* **ng-packagr:** rebase url() with hyphen-namespaced Sass variables ([2469e34](https://github.com/ng-packagr/ng-packagr/commit/2469e34a212d65c4bee3ac369000c8d19f77c740))
+
 ### [22.2.5](https://github.com/ng-packagr/ng-packagr/compare/22.2.4...22.2.5) (2026-10-23)
 
 
