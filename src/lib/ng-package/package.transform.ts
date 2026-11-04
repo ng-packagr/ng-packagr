@@ -1,7 +1,6 @@
 import { DepGraph } from 'dependency-graph';
 import {
   EMPTY,
-  NEVER,
   Observable,
   catchError,
   concatMap,
@@ -138,34 +137,51 @@ const watchTransformFactory =
         const { onFileChange, watcher } = createFileWatch([], [data.dest + '/'], options.poll);
         graph.watcher = watcher;
 
+        const changedFiles = new Set<string>();
+        const pendingFiles = new Set<string>();
+
         return onFileChange.pipe(
-          map(fileChange => invalidateEntryPointsAndCacheOnFileChange(graph, [fileChange.filePath], sourcesFileCache)),
-          filter(isChanged => isChanged),
+          tap(fileChange => pendingFiles.add(fileChange.filePath)),
           debounceTime(100),
-          tap(() => log.msg(FileChangeDetected)),
-          startWith(undefined),
-          map(() => graph),
-        );
-      }),
-      switchMap(graph => {
-        const startTime = Date.now();
-        const pkgUri = ngUrl(project);
-        const ngPkg = graph.get(pkgUri);
-
-        return observableOf(graph).pipe(
-          analyseSourcesTransform,
-          // Next, run through the entry point transformation (assets rendering, code compilation)
-          scheduleEntryPoints(entryPointTransform, options),
-          repeat({ delay: () => (graph.some(isEntryPointPending()) ? of(1) : EMPTY) }),
-          last(),
-          tap(() => printBuiltAngularPackage(ngPkg, startTime)),
-          catchError(error => {
-            log.error(error);
-            log.msg(FailedWaitingForFileChange);
-
-            return NEVER;
+          tap(() => {
+            for (const file of pendingFiles) {
+              changedFiles.add(file);
+            }
+            pendingFiles.clear();
           }),
-          tap(() => log.msg(CompleteWaitingForFileChange)),
+          startWith(undefined),
+          // Promise-based transforms cannot be cancelled by unsubscribing. Wait for the
+          // current build to finish before invalidating its graph and starting another.
+          concatMap((_, index) => {
+            const files = [...changedFiles];
+            changedFiles.clear();
+            if (index > 0) {
+              if (!invalidateEntryPointsAndCacheOnFileChange(graph, files, sourcesFileCache)) {
+                return EMPTY;
+              }
+              log.msg(FileChangeDetected);
+            }
+
+            const startTime = Date.now();
+            const pkgUri = ngUrl(project);
+            const ngPkg = graph.get(pkgUri);
+
+            return observableOf(graph).pipe(
+              analyseSourcesTransform,
+              // Next, run through the entry point transformation (assets rendering, code compilation)
+              scheduleEntryPoints(entryPointTransform, options),
+              repeat({ delay: () => (graph.some(isEntryPointPending()) ? of(1) : EMPTY) }),
+              last(),
+              tap(() => printBuiltAngularPackage(ngPkg, startTime)),
+              catchError(error => {
+                log.error(error);
+                log.msg(FailedWaitingForFileChange);
+
+                return EMPTY;
+              }),
+              tap(() => log.msg(CompleteWaitingForFileChange)),
+            );
+          }),
         );
       }),
     );
