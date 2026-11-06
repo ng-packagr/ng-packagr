@@ -49,7 +49,7 @@ jobs:
       - name: Run integration watch specs
         run: pnpm --silent integration:watch:specs
       - name: Run integration consumers
-        run: pnpm --silent integration:consumers
+        run: pnpm install && pnpm --silent integration:consumers
 
   test_windows:
     runs-on: windows-2025

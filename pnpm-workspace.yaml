@@ -2,6 +2,8 @@ packages:
   - .
   - integration/consumers/ng-cli
 
+excludeLinksFromLockfile: true
+
 allowBuilds:
   '@firebase/util': false
   '@google/genai': false
