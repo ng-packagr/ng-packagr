@@ -112,8 +112,9 @@ export const writePackageTransform = (options: NgPackagrOptions) =>
   });
 
 type AssetEntry = Exclude<AssetPattern, string>;
+const ASSET_COPY_CONCURRENCY = 4;
 
-async function copyAssets(
+export async function copyAssets(
   graph: BuildGraph,
   entryPointNode: EntryPointNode,
   ngPackageNode: PackageNode,
@@ -171,17 +172,38 @@ async function copyAssets(
       onlyFiles: true,
       followSymbolicLinks: asset.followSymlinks,
     });
-    for (const filePath of filePaths) {
-      const fileSrcFullPath = join(asset.input, filePath);
-      const fileDestFullPath = join(asset.output, filePath);
-      const nodeUri = fileUrl(ensureUnixPath(fileSrcFullPath));
-      let node = graph.get(nodeUri);
-      if (!node) {
-        node = new Node(nodeUri);
-        graph.put(node);
-      }
-      entryPointNode.dependsOn(node);
-      await copyFile(fileSrcFullPath, fileDestFullPath);
+    let nextFile = 0;
+    let firstError: unknown;
+    let failed = false;
+
+    await Promise.all(
+      Array.from({ length: Math.min(ASSET_COPY_CONCURRENCY, filePaths.length) }, async () => {
+        while (!failed && nextFile < filePaths.length) {
+          const filePath = filePaths[nextFile++];
+
+          try {
+            const fileSrcFullPath = join(asset.input, filePath);
+            const fileDestFullPath = join(asset.output, filePath);
+            const nodeUri = fileUrl(ensureUnixPath(fileSrcFullPath));
+            let node = graph.get(nodeUri);
+            if (!node) {
+              node = new Node(nodeUri);
+              graph.put(node);
+            }
+            entryPointNode.dependsOn(node);
+            await copyFile(fileSrcFullPath, fileDestFullPath);
+          } catch (error) {
+            if (!failed) {
+              firstError = error;
+              failed = true;
+            }
+          }
+        }
+      }),
+    );
+
+    if (failed) {
+      throw firstError;
     }
   }
 }
