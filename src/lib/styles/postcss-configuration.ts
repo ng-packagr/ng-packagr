@@ -89,7 +89,9 @@ function readPostcssConfiguration(configurationFile: string): RawPostcssConfigur
   return config;
 }
 
-export function loadPostcssConfiguration(searchDirectories: SearchDirectory[]): PostcssConfiguration | undefined {
+export function loadPostcssConfiguration(
+  searchDirectories: SearchDirectory[],
+): { config: PostcssConfiguration; configPath: string } | undefined {
   const configPath = findFile(searchDirectories, postcssConfigurationFiles);
   if (!configPath) {
     return undefined;
@@ -117,7 +119,7 @@ export function loadPostcssConfiguration(searchDirectories: SearchDirectory[]): 
       }
     }
 
-    return config;
+    return { config, configPath };
   }
 
   // Normalize plugin object map form
@@ -135,5 +137,5 @@ export function loadPostcssConfiguration(searchDirectories: SearchDirectory[]): 
     config.plugins.push([name, options]);
   }
 
-  return config;
+  return { config, configPath };
 }
