@@ -11,6 +11,7 @@ import { EntryPointNode, findPackageNode, isEntryPoint } from '../nodes';
 
 export const analyseSourcesTransform: Transform = pipe(
   map(graph => {
+    const missingFiles = new Set<string>();
     const entryPoints: EntryPointNode[] = graph.filter(isEntryPoint);
     const entryPointsMapped = new Map<string, EntryPointNode>(entryPoints.map(ep => [ep.data.entryPoint.moduleId, ep]));
     const packageNode = findPackageNode(graph);
@@ -18,7 +19,7 @@ export const analyseSourcesTransform: Transform = pipe(
 
     for (const entryPoint of entryPoints) {
       if (entryPoint.state !== STATE_DONE) {
-        analyseEntryPoint(entryPoint, entryPointsMapped, primaryModuleId);
+        analyseEntryPoint(entryPoint, entryPointsMapped, primaryModuleId, missingFiles);
       }
     }
 
@@ -55,13 +56,21 @@ const RESOLUTION_EXTENSIONS: readonly string[] = [
   '/index.cjs',
 ];
 
-function checkFile(filePath: string, fileCache: FileCache): boolean {
+function checkFile(filePath: string, fileCache: FileCache, missingFiles: Set<string>): boolean {
   const entry = fileCache.getOrCreate(filePath);
   if (entry.exists === undefined) {
+    const key = fileCache.normalizeKey(filePath);
+
+    if (missingFiles.has(key)) {
+      return false;
+    }
+
     const stat = statSync(filePath, { throwIfNoEntry: false });
     if (stat?.isFile()) {
       entry.exists = true;
     } else {
+      missingFiles.add(key);
+
       return false;
     }
   }
@@ -69,7 +78,12 @@ function checkFile(filePath: string, fileCache: FileCache): boolean {
   return entry.exists;
 }
 
-function resolveRelativeSourceFile(dir: string, moduleName: string, fileCache: FileCache): string | undefined {
+function resolveRelativeSourceFile(
+  dir: string,
+  moduleName: string,
+  fileCache: FileCache,
+  missingFiles: Set<string>,
+): string | undefined {
   const target = resolve(dir, moduleName);
   if (target.includes('/node_modules/') || target.includes('\\node_modules\\')) {
     return undefined;
@@ -81,19 +95,19 @@ function resolveRelativeSourceFile(dir: string, moduleName: string, fileCache: F
     const base = target.slice(0, -ext.length);
     for (const tsExt of tsExtensions) {
       const candidate = base + tsExt;
-      if (checkFile(candidate, fileCache)) {
+      if (checkFile(candidate, fileCache, missingFiles)) {
         return ensureUnixPath(candidate);
       }
     }
   }
 
-  if (checkFile(target, fileCache)) {
+  if (checkFile(target, fileCache, missingFiles)) {
     return ensureUnixPath(target);
   }
 
   for (const suffix of RESOLUTION_EXTENSIONS) {
     const candidate = target + suffix;
-    if (checkFile(candidate, fileCache)) {
+    if (checkFile(candidate, fileCache, missingFiles)) {
       return ensureUnixPath(candidate);
     }
   }
@@ -112,6 +126,7 @@ function analyseEntryPoint(
   entryPoint: EntryPointNode,
   entryPointsMapped: Map<string, EntryPointNode>,
   primaryModuleId: string,
+  missingFiles: Set<string>,
 ) {
   const { analyseSourcesFileCache } = entryPoint.cache;
   const { moduleId, entryFilePath } = entryPoint.data.entryPoint;
@@ -159,7 +174,12 @@ function analyseEntryPoint(
     );
 
     for (const ref of referencedFiles) {
-      const resolvedPath = resolveRelativeSourceFile(dirname(currentFile), ref.fileName, analyseSourcesFileCache);
+      const resolvedPath = resolveRelativeSourceFile(
+        dirname(currentFile),
+        ref.fileName,
+        analyseSourcesFileCache,
+        missingFiles,
+      );
       if (resolvedPath && !visited.has(resolvedPath)) {
         filesToScan.push(resolvedPath);
       }
@@ -173,7 +193,12 @@ function analyseEntryPoint(
           potentialDependencies.add(moduleName);
         }
       } else {
-        const resolvedPath = resolveRelativeSourceFile(dirname(currentFile), moduleName, analyseSourcesFileCache);
+        const resolvedPath = resolveRelativeSourceFile(
+          dirname(currentFile),
+          moduleName,
+          analyseSourcesFileCache,
+          missingFiles,
+        );
         if (resolvedPath && !visited.has(resolvedPath)) {
           filesToScan.push(resolvedPath);
         }
