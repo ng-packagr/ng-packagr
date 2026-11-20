@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { NgPackagr, ngPackagr } from './packagr';
-import { PROJECT_TOKEN, provideProject } from './project.di';
+import { PROJECT_TOKEN, provideProject } from './packagr.di';
 
 describe(`ngPackagr()`, () => {
   let packager: NgPackagr;
